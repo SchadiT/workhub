@@ -388,19 +388,50 @@
         .sputnik .tasks-btn { background: #8E24AA; }
         .technik .tasks-btn { background: #757575; }
         
-        .reinigung-list { padding: 10px 0; }
-        .reinigung-item { display: flex; padding: 8px 15px; border-bottom: 1px solid #e0e0e0; align-items: center; gap: 10px; }
-        .reinigung-date { font-weight: bold; min-width: 60px; font-size: 14px; color: #1E88E5; }
-        .reinigung-type { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
+        .reinigung-list { padding: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .reinigung-item { display: flex; padding: 6px 8px; background: #f5f5f5; border-radius: 6px; align-items: center; gap: 6px; justify-content: center; }
+        .reinigung-date { font-weight: bold; font-size: 13px; color: #1E88E5; }
+        .reinigung-type { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; }
         .reinigung-type.gross { background: #ef4444; }
         
-        .calendar-list { padding: 10px 0; }
-        .calendar-item { display: flex; padding: 10px 15px; border-bottom: 1px solid #f0f0f0; align-items: center; gap: 12px; }
-        .calendar-date { font-weight: bold; min-width: 70px; font-size: 14px; }
-        .calendar-day { color: #666; font-size: 12px; min-width: 30px; }
-        .calendar-event { flex: 1; font-size: 14px; }
-        .calendar-tech { background: #757575; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .tag-club { background: #757575; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 5px; }
+        .calendar-list { padding: 8px; }
+        .calendar-item { 
+            display: flex; 
+            padding: 10px 12px; 
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px; 
+            align-items: center; 
+            gap: 12px;
+            border-left: 4px solid #757575;
+        }
+        .calendar-item:last-child { margin-bottom: 0; }
+        .calendar-date { 
+            font-weight: 700; 
+            min-width: 65px; 
+            font-size: 14px; 
+            color: #333;
+        }
+        .calendar-day { 
+            background: #757575;
+            color: white;
+            font-size: 11px; 
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 4px;
+            min-width: 28px;
+            text-align: center;
+        }
+        .calendar-event { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
+        .calendar-tech { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 5px 12px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-weight: 700;
+        }
+        .tag-club { background: #ef4444; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px; font-weight: 600; }
         .calendar-time { color: #666; font-size: 12px; min-width: 50px; }
         .calendar-pax { background: #8E24AA; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
         
@@ -887,6 +918,10 @@
                         <label>RUNNER 5</label>
                         <input type="text" id="fs-runner5" value="" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group">
+                        <label>RUNNER 6</label>
+                        <input type="text" id="fs-runner6" value="" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -971,7 +1006,14 @@
                 <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
             </div>
         </div>
-        <a href="https://outlook.office.com/mail" class="quick-btn btn-email" target="_blank">📧 Outlook</a>
+        <div class="dropdown-container">
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')" style="background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);">📁 Storage ▼</button>
+            <div id="storage-dropdown" class="dropdown-content">
+                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
+                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔵</span> OneDrive</a>
+                <a href="https://www.onenote.com/stickynotes" class="dropdown-item" target="_blank"><span class="icon">📝</span> Sticky Notes</a>
+            </div>
+        </div>
         <a href="https://wa.me/" class="quick-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);" target="_blank">💬 WhatsApp</a>
     </div>
     
@@ -1174,6 +1216,10 @@
                         <div class="reinigung-list">
                             <div class="reinigung-item"><span class="reinigung-date">02.01</span><span class="reinigung-type gross">GROSS</span></div>
                             <div class="reinigung-item"><span class="reinigung-date">07.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">10.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">14.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">17.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">21.01</span><span class="reinigung-type gross">GROSS</span></div>
                         </div>
                     </div>
                 </div>
@@ -1259,11 +1305,11 @@
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
+                    <div class="section-label open" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
                         <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="section-content">
+                    <div class="section-content open">
                         <div class="calendar-list">
                             <div class="calendar-item">
                                 <span class="calendar-date">27. Dez</span>
@@ -1327,7 +1373,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.5 • 23.12.2025 • Unified Factsheet Generator</div>
+    <div class="version">Work Hub v12.7 • 23.12.2025 • UI Improvements</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1385,21 +1431,21 @@
             MAIN_00: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:00", main1: "23:00", main2: "23:00", main3: "00:00", main4: "00:15",
-                runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00",
+                runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
                 gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             MAIN_30: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:30", main4: "00:15",
-                runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00",
+                runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
                 gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             CONCERT: {
                 doors1: "19:00", terrasse: "18:30", doors2_early: "19:00", kitchen: "18:30",
                 doors2_late: "19:00", main1: "19:00", main2: "19:00", main3: "19:00", main4: "19:00",
-                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00",
+                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "20:00",
                 gard1: "18:45", gard2: "19:00", gard3: "20:15", technik: "16:00",
                 security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:30", pax: "1 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX (Abruf)" }]
             }
@@ -1416,16 +1462,27 @@
                 msalInstance = new msal.PublicClientApplication(msalConfig);
                 await msalInstance.initialize();
                 const response = await msalInstance.handleRedirectPromise();
-                if (response) { accessToken = response.accessToken; updateAuthUI(response.account); loadAllData(); }
+                if (response) { 
+                    accessToken = response.accessToken; 
+                    console.log('Token scopes:', response.scopes);
+                    updateAuthUI(response.account); 
+                    loadAllData(); 
+                }
                 else {
                     const accounts = msalInstance.getAllAccounts();
                     if (accounts.length > 0) {
                         try {
                             const silentResponse = await msalInstance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
                             accessToken = silentResponse.accessToken;
+                            console.log('Silent token scopes:', silentResponse.scopes);
                             updateAuthUI(accounts[0]);
                             loadAllData();
-                        } catch (e) { console.log("Silent token failed"); }
+                        } catch (e) { 
+                            console.log("Silent token failed, need re-consent:", e);
+                            // If silent fails, we need new consent - prompt user to re-login
+                            updateAuthUI(null);
+                            showToast("🔐 Bitte neu einloggen für alle Berechtigungen");
+                        }
                     }
                 }
             } catch (error) { console.error("MSAL init error:", error); }
@@ -1439,8 +1496,10 @@
                 resetAllUI();
             } else {
                 try {
-                    const response = await msalInstance.loginPopup(loginRequest);
+                    // Force consent to ensure all scopes are granted
+                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
                     accessToken = response.accessToken;
+                    console.log('Login scopes granted:', response.scopes);
                     updateAuthUI(response.account);
                     loadAllData();
                     showToast("✅ Verbunden!");
@@ -1484,14 +1543,26 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         async function loadEmails() {
-            if (!accessToken) return;
+            if (!accessToken) {
+                console.log('loadEmails: No access token');
+                return;
+            }
             const el = document.getElementById('email-list');
-            el.innerHTML = '<div class="loading-spinner">Lade</div>';
+            el.innerHTML = '<div class="loading-spinner">Lade Emails...</div>';
             try {
-                const r = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc', {
+                console.log('loadEmails: Fetching...');
+                const r = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc&$select=id,subject,bodyPreview,from,receivedDateTime,isRead', {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
+                console.log('loadEmails: Response status', r.status);
+                if (!r.ok) {
+                    const errorText = await r.text();
+                    console.error('loadEmails: Error', errorText);
+                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler: ${r.status}</div>`;
+                    return;
+                }
                 const data = await r.json();
+                console.log('loadEmails: Got', data.value?.length || 0, 'emails');
                 const emails = data.value || [];
                 el.innerHTML = emails.length ? emails.map(e => {
                     const from = e.from?.emailAddress?.name || e.from?.emailAddress?.address || '?';
@@ -1505,20 +1576,39 @@
                         </div>
                     </div>`;
                 }).join('') : '<div class="tasks-empty">📭 Keine Emails</div>';
-            } catch (e) { el.innerHTML = '<div class="tasks-empty">⚠️ Fehler</div>'; }
+            } catch (e) { 
+                console.error('loadEmails: Exception', e);
+                el.innerHTML = '<div class="tasks-empty">⚠️ Fehler beim Laden</div>'; 
+            }
         }
         
         async function loadCalendar() {
-            if (!accessToken) return;
+            if (!accessToken) {
+                console.log('loadCalendar: No access token');
+                return;
+            }
             const el = document.getElementById('calendar-events');
-            el.innerHTML = '<div class="loading-spinner">Lade</div>';
+            el.innerHTML = '<div class="loading-spinner">Lade Kalender...</div>';
             const now = new Date();
             const end = new Date(now.getTime() + 14 * 86400000);
             try {
-                const r = await fetch(`https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${end.toISOString()}&$top=15&$orderby=start/dateTime`, {
+                console.log('loadCalendar: Fetching...');
+                const r = await fetch(`https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${end.toISOString()}&$top=15&$orderby=start/dateTime&$select=id,subject,start,end,isAllDay,location`, {
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Prefer': 'outlook.timezone="Europe/Vienna"' }
                 });
+                console.log('loadCalendar: Response status', r.status);
+                if (!r.ok) {
+                    const errorText = await r.text();
+                    console.error('loadCalendar: Error', errorText);
+                    if (r.status === 403 || r.status === 401) {
+                        el.innerHTML = '<div class="tasks-empty">🔐 Neu einloggen für Kalender-Zugriff</div>';
+                    } else {
+                        el.innerHTML = `<div class="tasks-empty">⚠️ Fehler: ${r.status}</div>`;
+                    }
+                    return;
+                }
                 const data = await r.json();
+                console.log('loadCalendar: Got', data.value?.length || 0, 'events');
                 const events = data.value || [];
                 el.innerHTML = events.length ? events.map(e => {
                     const start = new Date(e.start.dateTime + 'Z');
@@ -1533,8 +1623,11 @@
                         <div class="event-time-block"><div class="event-date-label">${lbl}</div><div class="event-time-label">${time}</div></div>
                         <div class="event-details"><div class="event-title">${esc(e.subject || '?')}</div>${e.location?.displayName ? `<div class="event-location">📍 ${esc(e.location.displayName)}</div>` : ''}</div>
                     </div>`;
-                }).join('') : '<div class="tasks-empty">📅 Keine Termine</div>';
-            } catch (e) { el.innerHTML = '<div class="tasks-empty">⚠️ Fehler</div>'; }
+                }).join('') : '<div class="tasks-empty">📅 Keine Termine in den nächsten 14 Tagen</div>';
+            } catch (e) { 
+                console.error('loadCalendar: Exception', e);
+                el.innerHTML = '<div class="tasks-empty">⚠️ Fehler beim Laden</div>'; 
+            }
         }
         
         async function sendEmail() {
@@ -1772,6 +1865,7 @@
             const runner3 = document.getElementById('fs-runner3').value || '';
             const runner4 = document.getElementById('fs-runner4').value || '';
             const runner5 = document.getElementById('fs-runner5').value || '';
+            const runner6 = document.getElementById('fs-runner6').value || '';
             const gard1 = document.getElementById('fs-gard1').value || '';
             const gard2 = document.getElementById('fs-gard2').value || '';
             const gard3 = document.getElementById('fs-gard3').value || '';
@@ -1803,6 +1897,7 @@
                     <tr><td>RUNNER 3:</td><td>${t.runner3}</td><td>${runner3}</td></tr>
                     <tr><td>RUNNER 4:</td><td>${t.runner4}</td><td>${runner4}</td></tr>
                     <tr><td>RUNNER 5:</td><td>${t.runner5}</td><td>${runner5}</td></tr>
+                    ${runner6 ? `<tr><td>RUNNER 6:</td><td>${t.runner6 || t.runner5}</td><td>${runner6}</td></tr>` : ''}
                     <tr><td colspan="3"></td></tr>
                     <tr><td>GARDEROBE 1</td><td>${t.gard1}</td><td>${gard1}</td></tr>
                     <tr><td>GARDEROBE 2</td><td>${t.gard2}</td><td>${gard2}</td></tr>
@@ -1835,6 +1930,7 @@
                 runner3: 'TBA',
                 runner4: 'Peter',
                 runner5: 'Aziz',
+                runner6: '',
                 gard1: 'Sofia',
                 gard2: 'Fayez',
                 gard3: 'Nico'
@@ -1857,6 +1953,7 @@
                 runner3: 'TBA',
                 runner4: 'TBA',
                 runner5: 'TBA',
+                runner6: '',
                 gard1: 'TBA',
                 gard2: 'TBA',
                 gard3: 'TBA'
@@ -1897,6 +1994,7 @@
             document.getElementById('fs-runner3').value = e.runner3 || '';
             document.getElementById('fs-runner4').value = e.runner4 || '';
             document.getElementById('fs-runner5').value = e.runner5 || '';
+            document.getElementById('fs-runner6').value = e.runner6 || '';
             document.getElementById('fs-gard1').value = e.gard1 || '';
             document.getElementById('fs-gard2').value = e.gard2 || '';
             document.getElementById('fs-gard3').value = e.gard3 || '';
@@ -2026,7 +2124,7 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v12.5 - Unified Factsheet Generator');
+            console.log('Work Hub v12.7 - UI Improvements');
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
