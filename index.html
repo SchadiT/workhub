@@ -1499,7 +1499,9 @@
                     // Force consent to ensure all scopes are granted
                     const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
                     accessToken = response.accessToken;
-                    console.log('Login scopes granted:', response.scopes);
+                    console.log('=== LOGIN SUCCESS ===');
+                    console.log('Scopes granted:', response.scopes);
+                    console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
                     showToast("✅ Verbunden!");
@@ -1527,7 +1529,12 @@
             }
         }
         
-        function loadAllData() { loadAllTasks(); loadEmails(); loadCalendar(); }
+        function loadAllData() { 
+            console.log('loadAllData: Starting with token:', accessToken ? 'YES' : 'NO');
+            loadAllTasks(); 
+            loadEmails(); 
+            loadCalendar(); 
+        }
         
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
