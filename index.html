@@ -23,6 +23,7 @@
         .auth-bar {
             display: flex; justify-content: center; align-items: center; gap: 10px;
             margin-bottom: 15px; padding: 10px; background: #252542; border-radius: 10px;
+            flex-wrap: wrap;
         }
         .auth-status {
             display: flex; align-items: center; gap: 8px; font-size: 13px;
@@ -77,6 +78,117 @@
         .btn-post-creator { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
         .btn-calculator { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
         .btn-presale { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .btn-email { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); }
+        
+        /* Outlook Section */
+        .outlook-section {
+            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
+            border-radius: 15px; margin-bottom: 20px; overflow: hidden;
+            border: 1px solid #0078d4;
+        }
+        .outlook-header {
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .outlook-header h2 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .outlook-tabs {
+            display: flex; gap: 5px;
+        }
+        .outlook-tab {
+            background: rgba(255,255,255,0.2); border: none; padding: 8px 16px;
+            border-radius: 8px; color: white; font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .outlook-tab:hover { background: rgba(255,255,255,0.3); }
+        .outlook-tab.active { background: white; color: #0078d4; }
+        .outlook-content { padding: 15px; }
+        .outlook-panel { display: none; }
+        .outlook-panel.active { display: block; }
+        
+        /* Email List */
+        .email-list { max-height: 400px; overflow-y: auto; }
+        .email-item {
+            display: flex; gap: 12px; padding: 12px; border-radius: 8px;
+            margin-bottom: 8px; background: #1a1a2e; cursor: pointer;
+            transition: all 0.2s; border: 1px solid transparent;
+        }
+        .email-item:hover { border-color: #0078d4; background: #252542; }
+        .email-item.unread { border-left: 3px solid #0078d4; }
+        .email-item.unread .email-subject { font-weight: 700; }
+        .email-avatar {
+            width: 40px; height: 40px; border-radius: 50%; background: #3d3d54;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px; flex-shrink: 0;
+        }
+        .email-content { flex: 1; min-width: 0; }
+        .email-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .email-from { font-size: 14px; font-weight: 600; color: #fff; }
+        .email-time { font-size: 11px; color: #888; }
+        .email-subject { font-size: 13px; color: #ccc; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .email-preview { font-size: 12px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Calendar List */
+        .calendar-events { max-height: 400px; overflow-y: auto; }
+        .calendar-event-item {
+            display: flex; gap: 12px; padding: 12px; border-radius: 8px;
+            margin-bottom: 8px; background: #1a1a2e; border-left: 3px solid #22c55e;
+        }
+        .calendar-event-item.today { border-left-color: #ef4444; }
+        .calendar-event-item.tomorrow { border-left-color: #f59e0b; }
+        .event-time-block {
+            min-width: 60px; text-align: center;
+        }
+        .event-date-label { font-size: 11px; color: #888; margin-bottom: 2px; }
+        .event-time-label { font-size: 14px; font-weight: 700; color: #fff; }
+        .event-details { flex: 1; }
+        .event-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+        .event-location { font-size: 12px; color: #888; display: flex; align-items: center; gap: 5px; }
+        
+        /* Compose Modal */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: #252542; border-radius: 15px; width: 90%; max-width: 600px;
+            max-height: 90vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-header h3 { font-size: 16px; font-weight: 700; }
+        .modal-close {
+            background: none; border: none; color: white; font-size: 24px;
+            cursor: pointer; line-height: 1;
+        }
+        .modal-body { padding: 20px; max-height: 60vh; overflow-y: auto; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: #888; margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 10px 12px; border-radius: 8px;
+            border: 1px solid #3d3d54; background: #1a1a2e; color: #fff;
+            font-size: 14px; font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: #0078d4;
+        }
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        .template-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .template-btn {
+            background: #3d3d54; border: none; padding: 8px 12px; border-radius: 6px;
+            color: #fff; font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .template-btn:hover { background: #0078d4; }
+        .modal-footer { padding: 15px 20px; border-top: 1px solid #3d3d54; display: flex; justify-content: flex-end; gap: 10px; }
+        .modal-btn {
+            padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+            cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .modal-btn.cancel { background: #3d3d54; color: #fff; }
+        .modal-btn.send { background: #0078d4; color: #fff; }
+        .modal-btn:hover { opacity: 0.9; }
         
         /* Upcoming Events */
         .upcoming-events { margin-bottom: 20px; }
@@ -144,31 +256,22 @@
         .vvk-input-row {
             display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;
         }
-        .vvk-input-row label {
-            font-size: 12px; font-weight: 600; color: #f59e0b;
-        }
+        .vvk-input-row label { font-size: 12px; font-weight: 600; color: #f59e0b; }
         .vvk-input-row input {
             width: 60px; padding: 6px 8px; border-radius: 6px; border: 1px solid #3d3d54;
-            background: #1a1a2e; color: #fff; font-size: 14px; font-weight: 700;
-            text-align: center;
+            background: #1a1a2e; color: #fff; font-size: 14px; font-weight: 700; text-align: center;
         }
-        .vvk-input-row input:focus {
-            outline: none; border-color: #f59e0b;
-        }
+        .vvk-input-row input:focus { outline: none; border-color: #f59e0b; }
         .vvk-days {
             background: #3d3d54; padding: 6px 12px; border-radius: 6px;
             font-size: 12px; font-weight: 600; color: #888;
         }
-        .vvk-progress-bar {
-            height: 8px; background: #3d3d54; border-radius: 4px; overflow: hidden; margin-bottom: 8px;
-        }
+        .vvk-progress-bar { height: 8px; background: #3d3d54; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
         .vvk-progress {
             height: 100%; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #22c55e 100%);
             border-radius: 4px; transition: width 0.3s ease;
         }
-        .vvk-benchmark {
-            font-size: 11px; color: #888; text-align: center;
-        }
+        .vvk-benchmark { font-size: 11px; color: #888; text-align: center; }
         .vvk-status {
             display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px;
         }
@@ -189,9 +292,10 @@
         .toast {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: #22c55e; color: white; padding: 12px 24px; border-radius: 8px;
-            font-weight: 600; z-index: 1000; display: none;
+            font-weight: 600; z-index: 1001; display: none;
         }
         .toast.show { display: block; animation: fadeInOut 3s ease; }
+        .toast.error { background: #ef4444; }
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
             15% { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -245,13 +349,10 @@
         .section-content iframe { width: 100%; height: 300px; border: none; }
         
         /* Tasks Inline */
-        .tasks-inline {
-            background: white; border-radius: 8px; margin-top: 10px; overflow: hidden;
-        }
+        .tasks-inline { background: white; border-radius: 8px; margin-top: 10px; overflow: hidden; }
         .tasks-header {
             padding: 10px 15px; font-size: 14px; font-weight: bold; color: #333;
-            border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between;
-            align-items: center;
+            border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;
         }
         .tasks-header .refresh-btn {
             background: none; border: none; cursor: pointer; font-size: 14px;
@@ -286,17 +387,11 @@
         .task-due.overdue { color: #ef4444; }
         .task-due.today { color: #f59e0b; }
         
-        .task-importance {
-            width: 6px; height: 6px; border-radius: 50%; background: #ccc; flex-shrink: 0;
-        }
+        .task-importance { width: 6px; height: 6px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
         .task-importance.high { background: #ef4444; }
         
-        .tasks-empty {
-            padding: 20px; text-align: center; color: #888; font-size: 13px;
-        }
-        .tasks-login-prompt {
-            padding: 20px; text-align: center; color: #666; font-size: 13px;
-        }
+        .tasks-empty { padding: 20px; text-align: center; color: #888; font-size: 13px; }
+        .tasks-login-prompt { padding: 20px; text-align: center; color: #666; font-size: 13px; }
         .tasks-login-prompt button {
             margin-top: 10px; background: #0078d4; color: white; border: none;
             padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;
@@ -310,9 +405,7 @@
         }
         .reinigung-item:last-child { border-bottom: none; }
         .reinigung-date { font-weight: bold; min-width: 60px; font-size: 14px; color: #1E88E5; }
-        .reinigung-type {
-            padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white;
-        }
+        .reinigung-type { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
         .reinigung-type.gross { background: #ef4444; }
         .reinigung-type.mittel { background: #f59e0b; }
         
@@ -333,12 +426,6 @@
         .sputnik .calendar-date { color: #8E24AA; }
         .calendar-time { color: #666; font-size: 12px; min-width: 50px; }
         .calendar-pax { background: #8E24AA; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
-        .shift-item { display: flex; padding: 8px 15px; border-bottom: 1px solid #f0f0f0; align-items: center; }
-        .shift-item:last-child { border-bottom: none; }
-        .shift-date { font-weight: bold; width: 80px; font-size: 14px; }
-        .sputnik .shift-date { color: #8E24AA; }
-        .shift-day { color: #666; width: 35px; font-size: 13px; }
-        .shift-staff { color: #333; font-size: 14px; }
         
         .tag-club { background: #757575; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 5px; }
         
@@ -361,6 +448,15 @@
         }
         .footer a:hover { background: #3d3d54; }
         .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
+        
+        .loading-spinner {
+            text-align: center; padding: 40px; color: #888;
+        }
+        .loading-spinner::after {
+            content: ''; display: inline-block; width: 20px; height: 20px;
+            border: 2px solid #3d3d54; border-top-color: #0078d4;
+            border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -384,11 +480,44 @@
     <!-- Toast notification -->
     <div class="toast" id="toast"></div>
     
+    <!-- Compose Email Modal -->
+    <div class="modal-overlay" id="compose-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>✉️ Neue E-Mail</h3>
+                <button class="modal-close" onclick="closeComposeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="template-btns">
+                    <button class="template-btn" onclick="loadTemplate('security')">🔒 Security Order</button>
+                    <button class="template-btn" onclick="loadTemplate('booking')">🎵 Booking Anfrage</button>
+                    <button class="template-btn" onclick="loadTemplate('hausverwaltung')">🏢 Hausverwaltung</button>
+                </div>
+                <div class="form-group">
+                    <label>An:</label>
+                    <input type="email" id="email-to" placeholder="empfaenger@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Betreff:</label>
+                    <input type="text" id="email-subject" placeholder="Betreff">
+                </div>
+                <div class="form-group">
+                    <label>Nachricht:</label>
+                    <textarea id="email-body" placeholder="Nachricht eingeben..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeComposeModal()">Abbrechen</button>
+                <button class="modal-btn send" onclick="sendEmail()">📤 Senden</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Quick Actions Row 1 -->
     <div class="quick-actions">
         <a href="#" onclick="openFactsheetGenerator(); return false;" class="quick-btn">📄 Factsheet</a>
         <a href="#" onclick="openSecurityOrder(); return false;" class="quick-btn">🔒 Security</a>
-        <a href="https://outlook.office.com/mail" class="quick-btn" target="_blank">📧 E-Mail</a>
+        <button class="quick-btn btn-email" onclick="openComposeModal()">✉️ E-Mail</button>
         <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
     </div>
     
@@ -421,13 +550,43 @@
         <button class="quick-btn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);" onclick="openEventProjector()">📊 Projector</button>
     </div>
     
+    <!-- Outlook Section -->
+    <div class="outlook-section" id="outlook-section">
+        <div class="outlook-header">
+            <h2>📬 Outlook</h2>
+            <div class="outlook-tabs">
+                <button class="outlook-tab active" onclick="switchOutlookTab('inbox')">📧 Inbox</button>
+                <button class="outlook-tab" onclick="switchOutlookTab('calendar')">📅 Kalender</button>
+            </div>
+        </div>
+        <div class="outlook-content">
+            <!-- Inbox Panel -->
+            <div class="outlook-panel active" id="inbox-panel">
+                <div class="email-list" id="email-list">
+                    <div class="tasks-login-prompt">
+                        <p>Sign in um deine Emails zu sehen</p>
+                        <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Calendar Panel -->
+            <div class="outlook-panel" id="calendar-panel">
+                <div class="calendar-events" id="calendar-events">
+                    <div class="tasks-login-prompt">
+                        <p>Sign in um deinen Kalender zu sehen</p>
+                        <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Upcoming Events Dashboard -->
     <div class="upcoming-events">
         <div class="upcoming-header">
             <span class="upcoming-title">📅 UPCOMING EVENTS</span>
         </div>
         
-        <!-- This Week - KW 52 -->
         <div class="upcoming-week-label current">🔴 DIESE WOCHE (KW 52)</div>
         
         <!-- TURBO - SA 27.12 -->
@@ -445,7 +604,6 @@
                 </div>
             </div>
             <div class="event-details">
-                <!-- VVK TRACKER -->
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
                         <label>🎯 Ziel:</label>
@@ -467,7 +625,6 @@
                     </div>
                     <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | Max: 600 | 55% bei 5d → Soll ~248</div>
                 </div>
-                
                 <div class="auto-projection">
                     <div class="projection-grid">
                         <div class="proj-box">
@@ -513,7 +670,6 @@
                 </div>
             </div>
             <div class="event-details">
-                <!-- VVK TRACKER -->
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
                         <label>🎯 Ziel:</label>
@@ -535,7 +691,6 @@
                     </div>
                     <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | Max: 700 | 40% bei 9d → Soll ~180</div>
                 </div>
-                
                 <div class="auto-projection">
                     <div class="projection-grid">
                         <div class="proj-box">
@@ -589,7 +744,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tasks Inline Section -->
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header">
                         <span>📝 Tasks</span>
@@ -622,7 +776,6 @@
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
                     </div>
                 </div>
-                <!-- Tasks Inline Section -->
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header">
                         <span>📝 Tasks</span>
@@ -655,7 +808,6 @@
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
                     </div>
                 </div>
-                <!-- Tasks Inline Section -->
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header">
                         <span>📝 Tasks</span>
@@ -701,7 +853,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tasks Inline Section -->
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header">
                         <span>📝 Tasks</span>
@@ -751,7 +902,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tasks Inline Section -->
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header">
                         <span>📝 Tasks</span>
@@ -773,11 +923,11 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub Launcher v12.0 • 23.12.2025 • Microsoft To Do Integration</div>
+    <div class="version">Work Hub Launcher v12.1 • 23.12.2025 • Outlook Integration</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
-        // MICROSOFT TO DO INTEGRATION - MSAL.js Configuration
+        // MICROSOFT AUTHENTICATION - MSAL.js Configuration
         // ═══════════════════════════════════════════════════════════════════════════════
         
         const msalConfig = {
@@ -792,17 +942,84 @@
             }
         };
         
+        // Extended scopes for Outlook
         const loginRequest = {
-            scopes: ["Tasks.ReadWrite", "User.Read"]
+            scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Read", "Mail.Send", "Calendars.Read"]
         };
         
-        // To Do List IDs mapping
+        // To Do List IDs
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
             bar: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7QAAAA==",
             runner: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7gAAAA==",
             technik: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7wAAAA==",
             sputnik: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E8AAAAA=="
+        };
+        
+        // Email Templates
+        const EMAIL_TEMPLATES = {
+            security: {
+                to: "",
+                subject: "Security Bestellung - Grelle Forelle",
+                body: `Hallo,
+
+Hier die Bestellung für die nächsten Events.
+
+[WOCHENTAG] [DATUM] — [EVENT]
+- 22:45 — 1 PAX
+- 23:00 — 1 PAX
+- 23:30 — 1 PAX
+- 00:00 — 3 PAX
+- 01:00 — 1 PAX
+
+Bitte um Bestätigung. Danke
+
+--
+Schadi Tayyah
+st@grelleforelle.com
+Grelle Forelle CEO
+Turbo Projects GmbH
+Spittelauer Lände 12/1
+1090 Vienna, Austria`
+            },
+            booking: {
+                to: "",
+                subject: "Booking Anfrage - Grelle Forelle",
+                body: `Hallo,
+
+ich würde gerne folgendes anfragen:
+
+[DETAILS]
+
+Bitte um Rückmeldung.
+
+Beste Grüße,
+
+--
+Schadi Tayyah
+st@grelleforelle.com
+Grelle Forelle CEO
+Turbo Projects GmbH
+Spittelauer Lände 12/1
+1090 Vienna, Austria`
+            },
+            hausverwaltung: {
+                to: "",
+                subject: "Anfrage - Grelle Forelle / Turbo Projects",
+                body: `Sehr geehrte Damen und Herren,
+
+[ANLIEGEN]
+
+Mit freundlichen Grüßen,
+
+--
+Schadi Tayyah
+st@grelleforelle.com
+Grelle Forelle CEO
+Turbo Projects GmbH
+Spittelauer Lände 12/1
+1090 Vienna, Austria`
+            }
         };
         
         let msalInstance = null;
@@ -814,14 +1031,12 @@
                 msalInstance = new msal.PublicClientApplication(msalConfig);
                 await msalInstance.initialize();
                 
-                // Handle redirect response
                 const response = await msalInstance.handleRedirectPromise();
                 if (response) {
                     accessToken = response.accessToken;
                     updateAuthUI(response.account);
-                    loadAllTasks();
+                    loadAllData();
                 } else {
-                    // Check for existing account
                     const accounts = msalInstance.getAllAccounts();
                     if (accounts.length > 0) {
                         try {
@@ -831,9 +1046,9 @@
                             });
                             accessToken = silentResponse.accessToken;
                             updateAuthUI(accounts[0]);
-                            loadAllTasks();
+                            loadAllData();
                         } catch (e) {
-                            console.log("Silent token acquisition failed, user needs to login");
+                            console.log("Silent token acquisition failed");
                         }
                     }
                 }
@@ -845,22 +1060,20 @@
         // Handle login/logout
         async function handleAuth() {
             if (accessToken) {
-                // Logout
                 msalInstance.logoutPopup();
                 accessToken = null;
                 updateAuthUI(null);
-                resetTasksUI();
+                resetAllUI();
             } else {
-                // Login
                 try {
                     const response = await msalInstance.loginPopup(loginRequest);
                     accessToken = response.accessToken;
                     updateAuthUI(response.account);
-                    loadAllTasks();
-                    showToast("✅ Connected to Microsoft To Do!");
+                    loadAllData();
+                    showToast("✅ Verbunden mit Microsoft!");
                 } catch (error) {
                     console.error("Login error:", error);
-                    showToast("❌ Login failed. Please try again.");
+                    showToast("❌ Login fehlgeschlagen", true);
                 }
             }
         }
@@ -874,20 +1087,279 @@
             
             if (account) {
                 dot.classList.add('connected');
-                statusText.textContent = 'Connected';
+                statusText.textContent = 'Verbunden';
                 userText.textContent = account.username || account.name || '';
-                authBtn.innerHTML = '<span>🚪</span> Sign out';
+                authBtn.innerHTML = '<span>🚪</span> Abmelden';
                 authBtn.classList.add('logout');
             } else {
                 dot.classList.remove('connected');
-                statusText.textContent = 'Not connected';
+                statusText.textContent = 'Nicht verbunden';
                 userText.textContent = '';
-                authBtn.innerHTML = '<span>🔐</span> Sign in with Microsoft';
+                authBtn.innerHTML = '<span>🔐</span> Mit Microsoft anmelden';
                 authBtn.classList.remove('logout');
             }
         }
         
-        // Reset tasks UI when logged out
+        // Load all data after login
+        function loadAllData() {
+            loadAllTasks();
+            loadEmails();
+            loadCalendar();
+        }
+        
+        // Reset all UI when logged out
+        function resetAllUI() {
+            resetTasksUI();
+            document.getElementById('email-list').innerHTML = `
+                <div class="tasks-login-prompt">
+                    <p>Sign in um deine Emails zu sehen</p>
+                    <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
+                </div>
+            `;
+            document.getElementById('calendar-events').innerHTML = `
+                <div class="tasks-login-prompt">
+                    <p>Sign in um deinen Kalender zu sehen</p>
+                    <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
+                </div>
+            `;
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // OUTLOOK - EMAIL FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        async function loadEmails() {
+            if (!accessToken) return;
+            
+            const emailList = document.getElementById('email-list');
+            emailList.innerHTML = '<div class="loading-spinner">Lade Emails</div>';
+            
+            try {
+                const response = await fetch(
+                    'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc&$select=id,subject,bodyPreview,from,receivedDateTime,isRead',
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const emails = data.value || [];
+                
+                if (emails.length === 0) {
+                    emailList.innerHTML = '<div class="tasks-empty">📭 Keine Emails</div>';
+                } else {
+                    emailList.innerHTML = emails.map(email => renderEmail(email)).join('');
+                }
+            } catch (error) {
+                console.error("Error loading emails:", error);
+                emailList.innerHTML = '<div class="tasks-empty">⚠️ Emails konnten nicht geladen werden</div>';
+            }
+        }
+        
+        function renderEmail(email) {
+            const fromName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || 'Unknown';
+            const initials = fromName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const time = formatEmailTime(email.receivedDateTime);
+            const isUnread = !email.isRead;
+            
+            return `
+                <div class="email-item ${isUnread ? 'unread' : ''}" onclick="openEmail('${email.id}')">
+                    <div class="email-avatar">${initials}</div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">${escapeHtml(fromName)}</span>
+                            <span class="email-time">${time}</span>
+                        </div>
+                        <div class="email-subject">${escapeHtml(email.subject || '(Kein Betreff)')}</div>
+                        <div class="email-preview">${escapeHtml(email.bodyPreview || '')}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function formatEmailTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 60) return `vor ${diffMins}m`;
+            if (diffHours < 24) return `vor ${diffHours}h`;
+            if (diffDays < 7) return `vor ${diffDays}d`;
+            return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+        }
+        
+        function openEmail(emailId) {
+            window.open(`https://outlook.office.com/mail/inbox/id/${emailId}`, '_blank');
+        }
+        
+        // Compose Email
+        function openComposeModal() {
+            document.getElementById('compose-modal').classList.add('show');
+            document.getElementById('email-to').value = '';
+            document.getElementById('email-subject').value = '';
+            document.getElementById('email-body').value = '';
+        }
+        
+        function closeComposeModal() {
+            document.getElementById('compose-modal').classList.remove('show');
+        }
+        
+        function loadTemplate(templateName) {
+            const template = EMAIL_TEMPLATES[templateName];
+            if (template) {
+                document.getElementById('email-to').value = template.to;
+                document.getElementById('email-subject').value = template.subject;
+                document.getElementById('email-body').value = template.body;
+            }
+        }
+        
+        async function sendEmail() {
+            if (!accessToken) {
+                showToast("❌ Bitte erst anmelden", true);
+                return;
+            }
+            
+            const to = document.getElementById('email-to').value.trim();
+            const subject = document.getElementById('email-subject').value.trim();
+            const body = document.getElementById('email-body').value.trim();
+            
+            if (!to || !subject || !body) {
+                showToast("❌ Bitte alle Felder ausfüllen", true);
+                return;
+            }
+            
+            try {
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: {
+                            subject: subject,
+                            body: {
+                                contentType: "Text",
+                                content: body
+                            },
+                            toRecipients: [
+                                { emailAddress: { address: to } }
+                            ]
+                        }
+                    })
+                });
+                
+                if (response.ok || response.status === 202) {
+                    showToast("✅ Email gesendet!");
+                    closeComposeModal();
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.error("Error sending email:", error);
+                showToast("❌ Email konnte nicht gesendet werden", true);
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // OUTLOOK - CALENDAR FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        async function loadCalendar() {
+            if (!accessToken) return;
+            
+            const calendarEl = document.getElementById('calendar-events');
+            calendarEl.innerHTML = '<div class="loading-spinner">Lade Kalender</div>';
+            
+            const now = new Date();
+            const endDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000); // 2 weeks ahead
+            
+            try {
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${endDate.toISOString()}&$top=15&$orderby=start/dateTime&$select=id,subject,start,end,location,isAllDay`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'outlook.timezone="Europe/Vienna"'
+                        }
+                    }
+                );
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const events = data.value || [];
+                
+                if (events.length === 0) {
+                    calendarEl.innerHTML = '<div class="tasks-empty">📅 Keine Termine in den nächsten 2 Wochen</div>';
+                } else {
+                    calendarEl.innerHTML = events.map(event => renderCalendarEvent(event)).join('');
+                }
+            } catch (error) {
+                console.error("Error loading calendar:", error);
+                calendarEl.innerHTML = '<div class="tasks-empty">⚠️ Kalender konnte nicht geladen werden</div>';
+            }
+        }
+        
+        function renderCalendarEvent(event) {
+            const startDate = new Date(event.start.dateTime + 'Z');
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+            const eventDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+            
+            let dayClass = '';
+            let dateLabel = '';
+            
+            if (eventDay.getTime() === today.getTime()) {
+                dayClass = 'today';
+                dateLabel = 'Heute';
+            } else if (eventDay.getTime() === tomorrow.getTime()) {
+                dayClass = 'tomorrow';
+                dateLabel = 'Morgen';
+            } else {
+                dateLabel = startDate.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+            }
+            
+            const timeLabel = event.isAllDay ? 'Ganztägig' : startDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            const location = event.location?.displayName || '';
+            
+            return `
+                <div class="calendar-event-item ${dayClass}">
+                    <div class="event-time-block">
+                        <div class="event-date-label">${dateLabel}</div>
+                        <div class="event-time-label">${timeLabel}</div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-title">${escapeHtml(event.subject || '(Kein Titel)')}</div>
+                        ${location ? `<div class="event-location">📍 ${escapeHtml(location)}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Switch Outlook tabs
+        function switchOutlookTab(tab) {
+            document.querySelectorAll('.outlook-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.outlook-panel').forEach(p => p.classList.remove('active'));
+            
+            document.querySelector(`.outlook-tab[onclick*="${tab}"]`).classList.add('active');
+            document.getElementById(`${tab}-panel`).classList.add('active');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // TO DO - TASK FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
         function resetTasksUI() {
             const depts = ['office', 'bar', 'runner', 'technik', 'sputnik'];
             depts.forEach(dept => {
@@ -901,17 +1373,14 @@
             });
         }
         
-        // Load all tasks
         async function loadAllTasks() {
             if (!accessToken) return;
-            
             const depts = ['office', 'bar', 'runner', 'technik', 'sputnik'];
             for (const dept of depts) {
                 await loadTasks(dept);
             }
         }
         
-        // Load tasks for a specific department
         async function loadTasks(dept) {
             if (!accessToken) return;
             
@@ -933,9 +1402,7 @@
                     }
                 );
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 
                 const data = await response.json();
                 const tasks = data.value || [];
@@ -944,7 +1411,7 @@
                 countEl.classList.remove('loading');
                 
                 if (tasks.length === 0) {
-                    listEl.innerHTML = '<div class="tasks-empty">🎉 All tasks completed!</div>';
+                    listEl.innerHTML = '<div class="tasks-empty">🎉 Alle Tasks erledigt!</div>';
                 } else {
                     listEl.innerHTML = tasks.map(task => renderTask(task, dept)).join('');
                 }
@@ -952,11 +1419,10 @@
                 console.error(`Error loading ${dept} tasks:`, error);
                 countEl.textContent = '!';
                 countEl.classList.remove('loading');
-                listEl.innerHTML = '<div class="tasks-empty">⚠️ Could not load tasks</div>';
+                listEl.innerHTML = '<div class="tasks-empty">⚠️ Tasks konnten nicht geladen werden</div>';
             }
         }
         
-        // Render a single task
         function renderTask(task, dept) {
             const isCompleted = task.status === 'completed';
             const isImportant = task.importance === 'high';
@@ -967,19 +1433,15 @@
                 const dueDate = new Date(task.dueDateTime.dateTime + 'Z');
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
                 
                 if (dueDate < today) {
                     dueClass = 'overdue';
-                    dueText = `Overdue: ${dueDate.toLocaleDateString('de-DE')}`;
+                    dueText = `Überfällig: ${dueDate.toLocaleDateString('de-DE')}`;
                 } else if (dueDate.toDateString() === today.toDateString()) {
                     dueClass = 'today';
-                    dueText = 'Due today';
-                } else if (dueDate.toDateString() === tomorrow.toDateString()) {
-                    dueText = 'Due tomorrow';
+                    dueText = 'Fällig heute';
                 } else {
-                    dueText = `Due: ${dueDate.toLocaleDateString('de-DE')}`;
+                    dueText = `Fällig: ${dueDate.toLocaleDateString('de-DE')}`;
                 }
             }
             
@@ -995,7 +1457,6 @@
             `;
         }
         
-        // Toggle task completion
         async function toggleTask(taskId, dept) {
             if (!accessToken) return;
             
@@ -1018,79 +1479,64 @@
                         body: JSON.stringify({ status: 'completed' })
                     }
                 );
-                
-                showToast("✅ Task completed!");
-                
-                // Reload tasks after a short delay
+                showToast("✅ Task erledigt!");
                 setTimeout(() => loadTasks(dept), 500);
             } catch (error) {
                 console.error("Error completing task:", error);
                 checkbox.classList.remove('checked');
                 taskEl.classList.remove('completed');
-                showToast("❌ Could not complete task");
+                showToast("❌ Task konnte nicht abgeschlossen werden", true);
             }
         }
         
-        // Refresh tasks for a department
         function refreshTasks(dept) {
             const btn = document.querySelector(`#${dept}-tasks .refresh-btn`);
             btn.classList.add('spinning');
-            loadTasks(dept).then(() => {
-                btn.classList.remove('spinning');
-            });
+            loadTasks(dept).then(() => btn.classList.remove('spinning'));
         }
         
-        // Open To Do list in browser
         function openToDoList(dept) {
             const listId = TODO_LISTS[dept];
             window.open(`https://to-do.live.com/tasks/${listId}`, '_blank');
         }
         
-        // Escape HTML
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // UTILITY FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (isError ? ' error' : '');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
         // ═══════════════════════════════════════════════════════════════════════════════
         // EXISTING WORK HUB FUNCTIONALITY
         // ═══════════════════════════════════════════════════════════════════════════════
         
-        // KASSA Logic
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'xmas', 'weihnacht', 'sommerfest'];
         
         function isEigenveranstaltung(eventName) {
-            const nameLower = eventName.toLowerCase();
-            return EIGENVERANSTALTUNGEN.some(eigen => nameLower.includes(eigen));
+            return EIGENVERANSTALTUNGEN.some(eigen => eventName.toLowerCase().includes(eigen));
         }
         
         function getKassa(eventName) {
             return isEigenveranstaltung(eventName) ? "Matthäus / Schadi / Isa" : "FREMD";
         }
 
-        // VVK TRACKER - PROJECTION ENGINE
-        const VVK_BENCHMARKS = {
-            14: 0.35, 10: 0.42, 7: 0.50, 5: 0.55, 3: 0.65, 2: 0.72, 1: 0.80, 0: 0.85
-        };
-        
+        const VVK_BENCHMARKS = { 14: 0.35, 10: 0.42, 7: 0.50, 5: 0.55, 3: 0.65, 2: 0.72, 1: 0.80, 0: 0.85 };
         const SERIE_STATS = {
-            "turbo": { "avgVVK": 436, "avgFOH": 336, "avgTotal": 773, "avgBar": 11771, "barPerPerson": 15.3, "events": 25 },
-            "selected": { "avgVVK": 416, "avgFOH": 336, "avgTotal": 752, "avgBar": 12422, "barPerPerson": 16.9, "events": 9 },
-            "halloween": { "avgVVK": 527, "avgFOH": 489, "avgTotal": 1017, "avgBar": 16728, "barPerPerson": 16.4, "events": 4 },
-            "birthday": { "avgVVK": 499, "avgFOH": 427, "avgTotal": 927, "avgBar": 16039, "barPerPerson": 17.2, "events": 7 },
-            "special": { "avgVVK": 457, "avgFOH": 373, "avgTotal": 831, "avgBar": 14461, "barPerPerson": 17.5, "events": 11 },
-            "nye": { "avgVVK": 562, "avgFOH": 649, "avgTotal": 1211, "avgBar": 23635, "barPerPerson": 19.5, "events": 1 }
+            "turbo": { avgVVK: 436, avgFOH: 336, events: 25 },
+            "nye": { avgVVK: 562, avgFOH: 649, events: 1 }
         };
-        
-        const KW_BAR_STATS = {
-            "49": { "barPerPerson": 16.9, "avgTotal": 894, "events": 11 },
-            "50": { "barPerPerson": 17.0, "avgTotal": 948, "events": 11 },
-            "51": { "barPerPerson": 17.3, "avgTotal": 935, "events": 7 },
-            "52": { "barPerPerson": 16.3, "avgTotal": 1017, "events": 2 },
-            "1": { "barPerPerson": 17.7, "avgTotal": 904, "events": 1 }
-        };
-        
+        const KW_BAR_STATS = { "52": { barPerPerson: 16.3 } };
         const EVENT_CONFIG = {
             'turbo': { date: new Date('2025-12-27'), serie: 'turbo', kw: 52 },
             'nye': { date: new Date('2025-12-31'), serie: 'nye', kw: 52 }
@@ -1100,8 +1546,7 @@
             const eventDate = EVENT_CONFIG[eventId].date;
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            const diffTime = eventDate - today;
-            return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+            return Math.max(0, Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24)));
         }
         
         function getBenchmarkForDays(days) {
@@ -1112,83 +1557,40 @@
             return { days: 0, pct: 0.85 };
         }
         
-        function getKWBarStats(kw) {
-            return KW_BAR_STATS[kw] || { barPerPerson: 16.5, avgTotal: 850, events: 0 };
-        }
-        
         function updateProjection(eventId) {
-            const input = document.getElementById(`${eventId}-vvk-input`);
-            const zielInput = document.getElementById(`${eventId}-ziel-input`);
-            const maxInput = document.getElementById(`${eventId}-max-input`);
-            const vvkPriceInput = document.getElementById(`${eventId}-vvk-price`);
-            const fohPriceInput = document.getElementById(`${eventId}-foh-price`);
-            
-            const currentVVK = parseInt(input.value) || 0;
-            const vvkZiel = parseInt(zielInput.value) || 450;
-            const maxVVK = parseInt(maxInput.value) || 600;
-            const vvkPrice = parseFloat(vvkPriceInput.value) || 18;
-            const fohPrice = parseFloat(fohPriceInput.value) || 22;
+            const currentVVK = parseInt(document.getElementById(`${eventId}-vvk-input`).value) || 0;
+            const vvkZiel = parseInt(document.getElementById(`${eventId}-ziel-input`).value) || 450;
+            const maxVVK = parseInt(document.getElementById(`${eventId}-max-input`).value) || 600;
+            const vvkPrice = parseFloat(document.getElementById(`${eventId}-vvk-price`).value) || 18;
+            const fohPrice = parseFloat(document.getElementById(`${eventId}-foh-price`).value) || 22;
             
             const config = EVENT_CONFIG[eventId];
             const serie = SERIE_STATS[config.serie];
-            const kwStats = getKWBarStats(config.kw);
+            const kwStats = KW_BAR_STATS[config.kw] || { barPerPerson: 16.5 };
             const daysUntil = getDaysUntil(eventId);
             const benchmark = getBenchmarkForDays(daysUntil);
             
-            let projectedVVK, projectedFOH, projectedBar, projectedTotal;
-            let capped = false;
             const fohRatio = serie.avgFOH / serie.avgVVK;
-            
-            if (currentVVK > 0) {
-                projectedVVK = Math.round(currentVVK / benchmark.pct);
-                if (projectedVVK > maxVVK) {
-                    projectedVVK = maxVVK;
-                    capped = true;
-                }
-                projectedFOH = Math.round(projectedVVK * fohRatio);
-            } else {
-                projectedVVK = Math.min(vvkZiel, maxVVK);
-                projectedFOH = Math.round(projectedVVK * fohRatio);
-            }
-            
+            let projectedVVK = currentVVK > 0 ? Math.min(Math.round(currentVVK / benchmark.pct), maxVVK) : Math.min(vvkZiel, maxVVK);
+            let projectedFOH = Math.round(projectedVVK * fohRatio);
             const totalGuests = projectedVVK + projectedFOH;
-            projectedBar = totalGuests * kwStats.barPerPerson;
+            const projectedBar = totalGuests * kwStats.barPerPerson;
             const ticketRevenue = (projectedVVK * vvkPrice) + (projectedFOH * fohPrice);
-            projectedTotal = projectedBar + ticketRevenue;
             
             document.getElementById(`${eventId}-days`).textContent = `${daysUntil} Tage`;
-            document.getElementById(`${eventId}-vvk-proj`).textContent = capped ? `${projectedVVK} (MAX)` : `~${projectedVVK}`;
+            document.getElementById(`${eventId}-vvk-proj`).textContent = `~${projectedVVK}`;
             document.getElementById(`${eventId}-foh-proj`).textContent = `~${projectedFOH}`;
             document.getElementById(`${eventId}-bar-proj`).textContent = `~€${(projectedBar/1000).toFixed(1)}k`;
-            document.getElementById(`${eventId}-total-proj`).textContent = `~€${(projectedTotal/1000).toFixed(1)}k`;
-            
-            const totalTickets = projectedVVK + projectedFOH;
-            document.getElementById(`${eventId}-tickets-quick`).textContent = `🎫 ~${totalTickets}`;
+            document.getElementById(`${eventId}-total-proj`).textContent = `~€${((projectedBar + ticketRevenue)/1000).toFixed(1)}k`;
+            document.getElementById(`${eventId}-tickets-quick`).textContent = `🎫 ~${totalGuests}`;
             document.getElementById(`${eventId}-bar-quick`).textContent = `🍺 ~€${(projectedBar/1000).toFixed(1)}k`;
             
             const progressPct = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${eventId}-progress`).style.width = `${progressPct}%`;
             
             const expectedAtThisPoint = Math.round(vvkZiel * benchmark.pct);
-            let statusClass = 'on-track';
-            let statusText = 'On Track';
-            if (currentVVK > expectedAtThisPoint * 1.1) {
-                statusClass = 'ahead';
-                statusText = 'Ahead! 🚀';
-            } else if (currentVVK < expectedAtThisPoint * 0.9) {
-                statusClass = 'behind';
-                statusText = 'Behind ⚠️';
-            }
-            
             document.getElementById(`${eventId}-benchmark`).innerHTML = 
-                `Ziel: ${vvkZiel} | Max: ${maxVVK} | ${Math.round(benchmark.pct * 100)}% bei ${daysUntil}d → Soll ~${expectedAtThisPoint}` +
-                (currentVVK > 0 ? ` <span class="vvk-status ${statusClass}">${statusText}</span>` : '');
-            
-            const serieName = config.serie.toUpperCase();
-            document.getElementById(`${eventId}-basis`).textContent = 
-                currentVVK > 0 
-                    ? `📊 Proj: ${currentVVK} VVK × ${(1/benchmark.pct).toFixed(1)}${capped ? ' → CAPPED' : ''} | FOH: ${fohRatio.toFixed(2)} (${serieName}) | Bar: €${kwStats.barPerPerson}/P (KW${config.kw})`
-                    : `📊 ${serieName} Ø: ${serie.avgVVK} VVK, ${serie.avgFOH} FOH (${serie.events} Events) | KW${config.kw}: €${kwStats.barPerPerson}/Person`;
+                `Ziel: ${vvkZiel} | Max: ${maxVVK} | ${Math.round(benchmark.pct * 100)}% bei ${daysUntil}d → Soll ~${expectedAtThisPoint}`;
         }
         
         function initVVKTrackers() {
@@ -1196,99 +1598,47 @@
             updateProjection('nye');
         }
 
-        // Mobile detection
-        function isMobile() {
-            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        }
+        function isMobile() { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
         
-        // Toast notifications
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-        
-        // Open Claude with prompt
         function openClaudeOrCopy(prompt, successMsg) {
             if (isMobile()) {
-                navigator.clipboard.writeText(prompt).then(() => {
-                    showToast('📋 Prompt kopiert! Öffne Claude App und paste.');
-                }).catch(() => showToast('❌ Kopieren fehlgeschlagen'));
+                navigator.clipboard.writeText(prompt).then(() => showToast('📋 Prompt kopiert!'));
             } else {
                 window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank');
                 showToast(successMsg);
             }
         }
         
-        // Factsheet prompts
         function getFactsheetPrompt(eventName, datum, template, eventType, techniker) {
             const kassa = getKassa(eventName);
             return `Factsheet DOCX für Grelle Forelle: ${eventName} am ${datum}
 
 FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen:
-Header: EVENT: ${eventName.toUpperCase()} (ROT BOLD) | Datum: ${datum} | AUFSTELLUNG:
-
-Tabelle (3 Spalten: Position|Zeit|Name) mit SICHTBAREN BORDERS:
-PAX: | | 
-CVD: | 20:30 | [Runner Shiftplan]
-KASSA: | 22:30 | ${kassa}
-[LEERZEILE]
-DOORS 1: | 23:00 |
-TERRASSE 1 | 22:00 | [Bar Shiftplan]
-DOORS 2: | 23:00 |
-KITCHEN: | 22:00 | [Bar Shiftplan]
-[LEERZEILE]
-DOORS 2: | 00:00 |
-MAIN 1-4: | 23:00/00:00/00:15 | [Bar Shiftplan]
-[LEERZEILE]
-RUNNER 1-5: | 21:00-00:00 | [Runner Shiftplan]
-[LEERZEILE]
-GARDEROBE 1-3 | 22:45/23:00/00:15 | [Garderobe Shiftplan]
-[LEERZEILE]
-TECHNIK: | 21:00 | ${techniker}
-[LEERZEILE]
-SECURITY: | 22:45 | 1 PAX (dann 23:00/23:30/00:00/01:00 mit 1/1/3/1 PAX)
-
-KRITISCH: Schwarze Rahmen um ALLE Zellen! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen!
+KASSA: ${kassa}
+TECHNIK: ${techniker}
 
 Google Docs IDs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjlmIgIluAd6ZigqBItw6TkZAD29ZcdhOntJ2I_I Garderobe=1WwLF4B42STLHzG9dcjZFFCz-ZWgYjAak8Vbxh5gFDxg`;
         }
         
         function requestFactsheet(eventName, datum, template, eventType, techniker) {
-            const prompt = getFactsheetPrompt(eventName, datum, template, eventType, techniker);
-            openClaudeOrCopy(prompt, '📄 Factsheet Generator geöffnet...');
+            openClaudeOrCopy(getFactsheetPrompt(eventName, datum, template, eventType, techniker), '📄 Factsheet Generator...');
         }
         
         function openFactsheetGenerator() {
-            const prompt = `Factsheets für Grelle Forelle: 1) TURBO Sa 27.12.25 (Technik: Simon) 2) NYE Di 31.12.25 (Technik: Jan)
-
-FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen um alle Zellen:
-Header: EVENT (ROT BOLD) | Datum | AUFSTELLUNG:
-
-KASSA: TURBO/NYE = "Matthäus / Schadi / Isa"
-KRITISCH: Schwarze Borders! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen!
-
-Google Docs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjlmIgIluAd6ZigqBItw6TkZAD29ZcdhOntJ2I_I Garderobe=1WwLF4B42STLHzG9dcjZFFCz-ZWgYjAak8Vbxh5gFDxg
-
-Output: 2 DOCX files`;
-            openClaudeOrCopy(prompt, '📄 Opening Claude for Factsheets...');
+            openClaudeOrCopy('Factsheets für Grelle Forelle: 1) TURBO Sa 27.12.25 2) NYE Di 31.12.25', '📄 Factsheet Generator...');
         }
         
-        // Security Order
         function requestSecurityOrder(eventName, weekday, date, template) {
-            const schedules = {
-                'MAIN_00': `- 22:45 — 1 PAX\n- 23:00 — 1 PAX\n- 23:30 — 1 PAX\n- 00:00 — 3 PAX\n- 01:00 — 1 PAX`,
-                'MAIN_30': `- 22:45 — 1 PAX\n- 23:00 — 1 PAX\n- 23:30 — 1 PAX\n- 00:30 — 3 PAX\n- 01:00 — 1 PAX`,
-                'CONCERT': `- 18:45 — 1 PAX\n- 19:00 — 2 PAX\n- 19:30 — 1 PAX\n- 19:45 — 1 PAX\n- 20:30 — 1 PAX (Abruf)`
-            };
-            
             const content = `Hallo,
 
 Hier die Bestellung für die nächsten Events.
 
 ${weekday} ${date} — ${eventName}
-${schedules[template] || schedules['MAIN_00']}
+- 22:45 — 1 PAX
+- 23:00 — 1 PAX
+- 23:30 — 1 PAX
+- 00:00 — 3 PAX
+- 01:00 — 1 PAX
 
 Bitte um Bestätigung. Danke
 
@@ -1299,20 +1649,14 @@ Grelle Forelle CEO
 Turbo Projects GmbH
 Spittelauer Lände 12/1
 1090 Vienna, Austria`;
-
-            navigator.clipboard.writeText(content).then(() => {
-                showToast('✅ Security Order kopiert!');
-            }).catch(() => showToast('❌ Kopieren fehlgeschlagen'));
+            navigator.clipboard.writeText(content).then(() => showToast('✅ Security Order kopiert!'));
         }
         
         function openSecurityOrder() {
-            const prompt = `Generate security orders for the next 2 upcoming events.
-Use templates MAIN_00/MAIN_30/CONCERT based on event type.
-Format with PAX and signature block.`;
-            openClaudeOrCopy(prompt, '🔒 Opening Claude for Security Orders...');
+            openComposeModal();
+            loadTemplate('security');
         }
         
-        // UI Functions
         function toggleSection(label) {
             label.classList.toggle('open');
             label.nextElementSibling.classList.toggle('open');
@@ -1331,27 +1675,16 @@ Format with PAX and signature block.`;
             }
         });
         
-        function toggleEventCard(cardId) { 
-            document.getElementById(cardId).classList.toggle('open'); 
-        }
+        function toggleEventCard(cardId) { document.getElementById(cardId).classList.toggle('open'); }
         
-        // Other Tools
-        function openPostCreator() { 
-            openClaudeOrCopy('Open Post Creator for social media', '✨ Post Creator...'); 
-        }
-        function openCostCalculator() { 
-            openClaudeOrCopy('Open Cost Calculator for event planning', '🧮 Cost Calculator...'); 
-        }
-        function openPresaleCalculator() { 
-            openClaudeOrCopy('Open PreSale Calculator', '🎟️ PreSale Calculator...'); 
-        }
-        function openEventProjector() { 
-            openClaudeOrCopy('Open Event Projector with KW-based analysis', '📊 Event Projector...'); 
-        }
+        function openPostCreator() { openClaudeOrCopy('Post Creator', '✨ Post Creator...'); }
+        function openCostCalculator() { openClaudeOrCopy('Cost Calculator', '🧮 Cost Calculator...'); }
+        function openPresaleCalculator() { openClaudeOrCopy('PreSale Calculator', '🎟️ PreSale Calculator...'); }
+        function openEventProjector() { openClaudeOrCopy('Event Projector', '📊 Event Projector...'); }
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Work Hub v12.0 - Microsoft To Do Integration');
+            console.log('Work Hub v12.1 - Outlook Integration');
             initMsal();
             initVVKTrackers();
         });
