@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo-Projects Work Hub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 28px; margin-bottom: 5px; }
+        .header p { color: #888; font-size: 14px; }
+        
+        /* Quick Actions */
+        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+        .quick-actions-row2 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+        .quick-actions-row3 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        
+        .quick-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none; border-radius: 12px; padding: 15px 10px;
+            color: white; text-decoration: none; text-align: center;
+            font-weight: 600; font-size: 13px; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s; display: block;
+        }
+        .quick-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        
+        .dropdown-container { position: relative; }
+        .dropdown-btn { background: linear-gradient(135deg, #E4405F 0%, #c13584 100%); width: 100%; }
+        .dropdown-btn.sales { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+        .dropdown-content {
+            display: none; position: absolute; top: 100%; left: 0; right: 0;
+            background: #252542; border-radius: 8px; margin-top: 5px; z-index: 100;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .dropdown-content.show { display: block; }
+        .dropdown-item {
+            display: block; padding: 12px 15px; color: white; text-decoration: none;
+            font-size: 13px; border-bottom: 1px solid #3d3d54; transition: background 0.2s;
+        }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background: #3d3d54; }
+        .dropdown-item .icon { margin-right: 8px; }
+        
+        .btn-graphics { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); }
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); }
+        .btn-post-creator { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
+        .btn-calculator { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
+        .btn-presale { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        
+        /* Upcoming Events */
+        .upcoming-events { margin-bottom: 20px; }
+        .upcoming-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .upcoming-title { font-size: 18px; font-weight: 700; color: #fff; }
+        .upcoming-week-label { font-size: 14px; font-weight: 600; color: #888; margin-bottom: 10px; padding-left: 5px; }
+        .upcoming-week-label.current { color: #ef4444; }
+        .upcoming-week-label.next { color: #eab308; }
+        
+        .event-card {
+            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
+            border-radius: 12px; margin-bottom: 12px; overflow: hidden; border: 1px solid #3d3d54;
+        }
+        .event-card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 15px; cursor: pointer; user-select: none;
+        }
+        .event-card-header:hover { background: rgba(255,255,255,0.03); }
+        .event-main-info { display: flex; align-items: center; gap: 12px; }
+        .event-date {
+            background: #3d3d54; padding: 6px 10px; border-radius: 6px;
+            font-weight: 700; font-size: 13px; min-width: 70px; text-align: center;
+        }
+        .event-date.today { background: #ef4444; }
+        .event-date.tomorrow { background: #f97316; }
+        .event-name { font-weight: 600; font-size: 16px; }
+        .event-tech {
+            background: #757575; color: white; padding: 3px 8px;
+            border-radius: 4px; font-size: 11px; font-weight: 600;
+        }
+        .event-quick-stats { display: flex; align-items: center; gap: 15px; font-size: 13px; color: #888; }
+        .event-toggle { color: #888; font-size: 12px; transition: transform 0.3s; }
+        .event-card.open .event-toggle { transform: rotate(180deg); }
+        .event-details { display: none; padding: 0 15px 15px 15px; border-top: 1px solid #3d3d54; }
+        .event-card.open .event-details { display: block; }
+        
+        /* Auto Projection */
+        .auto-projection {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
+            border: 1px solid #3b82f6; border-radius: 10px; padding: 12px 15px; margin: 12px 0;
+        }
+        .projection-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+        .proj-box { background: #1a1a2e; padding: 10px; border-radius: 8px; text-align: center; }
+        .proj-box-label { font-size: 10px; color: #888; margin-bottom: 3px; text-transform: uppercase; }
+        .proj-box-value { font-size: 16px; font-weight: 700; color: #22c55e; }
+        .proj-box-value.tickets { color: #3b82f6; }
+        .proj-box-value.bar { color: #f59e0b; }
+        .proj-box-value.total { color: #22c55e; }
+        .projection-basis {
+            font-size: 11px; color: #888; text-align: center;
+            padding-top: 8px; border-top: 1px solid #3d3d54;
+        }
+        
+        .cvd-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: #43A047; color: white; padding: 5px 10px;
+            border-radius: 6px; font-size: 12px; font-weight: 600; margin: 10px 0;
+        }
+        
+        /* VVK Tracker */
+        .vvk-tracker {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
+            border: 1px solid #f59e0b; border-radius: 10px; padding: 12px 15px; margin-bottom: 12px;
+        }
+        .vvk-input-row {
+            display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .vvk-input-row label {
+            font-size: 12px; font-weight: 600; color: #f59e0b;
+        }
+        .vvk-input-row input {
+            width: 60px; padding: 6px 8px; border-radius: 6px; border: 1px solid #3d3d54;
+            background: #1a1a2e; color: #fff; font-size: 14px; font-weight: 700;
+            text-align: center;
+        }
+        .vvk-input-row input:focus {
+            outline: none; border-color: #f59e0b;
+        }
+        .vvk-days {
+            background: #3d3d54; padding: 6px 12px; border-radius: 6px;
+            font-size: 12px; font-weight: 600; color: #888;
+        }
+        .vvk-progress-bar {
+            height: 8px; background: #3d3d54; border-radius: 4px; overflow: hidden; margin-bottom: 8px;
+        }
+        .vvk-progress {
+            height: 100%; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #22c55e 100%);
+            border-radius: 4px; transition: width 0.3s ease;
+        }
+        .vvk-benchmark {
+            font-size: 11px; color: #888; text-align: center;
+        }
+        .vvk-status {
+            display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px;
+        }
+        .vvk-status.ahead { background: #22c55e; color: white; }
+        .vvk-status.on-track { background: #f59e0b; color: white; }
+        .vvk-status.behind { background: #ef4444; color: white; }
+        
+        .event-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .event-action-btn {
+            flex: 1; background: #3d3d54; border: none; border-radius: 8px;
+            padding: 10px; color: white; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .event-action-btn:hover { background: #4d4d64; }
+        .event-action-btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #22c55e; color: white; padding: 12px 24px; border-radius: 8px;
+            font-weight: 600; z-index: 1000; display: none;
+        }
+        .toast.show { display: block; animation: fadeInOut 3s ease; }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+        
+        /* Departments */
+        .departments { display: grid; gap: 15px; }
+        .dept { border-radius: 15px; overflow: hidden; text-decoration: none; display: block; }
+        .dept-header {
+            padding: 15px 20px; color: white; font-weight: bold; font-size: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .office .dept-header { background: #1E88E5; }
+        .office .dept-content { background: #E3F2FD; }
+        .bar .dept-header { background: #F4511E; }
+        .bar .dept-content { background: #FBE9E7; }
+        .runner .dept-header { background: #43A047; }
+        .runner .dept-content { background: #E8F5E9; }
+        .technik .dept-header { background: #757575; }
+        .technik .dept-content { background: #F5F5F5; }
+        .sputnik .dept-header { background: #8E24AA; }
+        .sputnik .dept-content { background: #F3E5F5; }
+        .dept-content { padding: 15px; }
+        
+        .collapsible-section { margin-bottom: 10px; }
+        .collapsible-section:last-child { margin-bottom: 0; }
+        .section-label {
+            color: white; padding: 12px 15px; font-size: 14px; font-weight: bold;
+            border-radius: 8px; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center; user-select: none;
+        }
+        .section-label:hover { opacity: 0.9; }
+        .section-label .toggle-icon { font-size: 12px; transition: transform 0.3s; }
+        .section-label.open .toggle-icon { transform: rotate(180deg); }
+        .section-label.open { border-radius: 8px 8px 0 0; }
+        .office .section-label { background: #1E88E5; }
+        .bar .section-label { background: #F4511E; }
+        .runner .section-label { background: #43A047; }
+        .sputnik .section-label { background: #8E24AA; }
+        .technik .section-label { background: #757575; }
+        .section-content { display: none; background: white; border-radius: 0 0 8px 8px; overflow: hidden; }
+        .section-content.open { display: block; }
+        .section-content iframe { width: 100%; height: 300px; border: none; }
+        
+        /* Reinigung */
+        .reinigung-list { padding: 10px 0; max-height: 250px; overflow-y: auto; }
+        .reinigung-item {
+            display: flex; padding: 8px 15px; border-bottom: 1px solid #e0e0e0;
+            align-items: center; gap: 10px;
+        }
+        .reinigung-item:last-child { border-bottom: none; }
+        .reinigung-date { font-weight: bold; min-width: 60px; font-size: 14px; color: #1E88E5; }
+        .reinigung-type {
+            padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white;
+        }
+        .reinigung-type.gross { background: #ef4444; }
+        .reinigung-type.mittel { background: #f59e0b; }
+        
+        .calendar-list, .shiftplan-list { padding: 10px 0; max-height: 400px; overflow-y: auto; }
+        .calendar-item {
+            display: flex; padding: 10px 15px; border-bottom: 1px solid #f0f0f0;
+            align-items: center; gap: 12px;
+        }
+        .calendar-item:last-child { border-bottom: none; }
+        .calendar-date { font-weight: bold; min-width: 70px; font-size: 14px; }
+        .calendar-day { color: #666; font-size: 12px; min-width: 30px; }
+        .calendar-event { flex: 1; font-size: 14px; }
+        .calendar-tech {
+            background: #757575; color: white; padding: 3px 8px;
+            border-radius: 4px; font-size: 12px; font-weight: bold;
+        }
+        .technik .calendar-date { color: #757575; }
+        .sputnik .calendar-date { color: #8E24AA; }
+        .calendar-time { color: #666; font-size: 12px; min-width: 50px; }
+        .calendar-pax { background: #8E24AA; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+        .shift-item { display: flex; padding: 8px 15px; border-bottom: 1px solid #f0f0f0; align-items: center; }
+        .shift-item:last-child { border-bottom: none; }
+        .shift-date { font-weight: bold; width: 80px; font-size: 14px; }
+        .sputnik .shift-date { color: #8E24AA; }
+        .shift-day { color: #666; width: 35px; font-size: 13px; }
+        .shift-staff { color: #333; font-size: 14px; }
+        
+        .tag-club { background: #757575; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 5px; }
+        
+        .tasks-btn {
+            color: white; padding: 12px; border-radius: 8px; font-size: 14px;
+            text-decoration: none; text-align: center; display: block;
+            width: 100%; font-weight: bold; margin-top: 10px;
+        }
+        .tasks-btn:hover { opacity: 0.9; }
+        .office .tasks-btn { background: #1E88E5; }
+        .bar .tasks-btn { background: #F4511E; }
+        .runner .tasks-btn { background: #43A047; }
+        .sputnik .tasks-btn { background: #8E24AA; }
+        .technik .tasks-btn { background: #757575; }
+        
+        .footer { margin-top: 25px; text-align: center; }
+        .footer a {
+            background: #2d2d44; color: white; padding: 15px 30px;
+            border-radius: 10px; text-decoration: none; display: inline-block; font-size: 16px;
+        }
+        .footer a:hover { background: #3d3d54; }
+        .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 TURBO-PROJECTS</h1>
+        <p>Work Hub Launcher</p>
+    </div>
+    
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Quick Actions Row 1 -->
+    <div class="quick-actions">
+        <a href="#" onclick="openFactsheetGenerator(); return false;" class="quick-btn">📄 Factsheet</a>
+        <a href="#" onclick="openSecurityOrder(); return false;" class="quick-btn">🔒 Security</a>
+        <a href="https://outlook.office.com/mail" class="quick-btn" target="_blank">📧 E-Mail</a>
+        <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
+    </div>
+    
+    <!-- Quick Actions Row 2 -->
+    <div class="quick-actions-row2">
+        <div class="dropdown-container">
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
+            <div id="social-dropdown" class="dropdown-content">
+                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
+                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📘</span> Facebook</a>
+            </div>
+        </div>
+        <div class="dropdown-container">
+            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">💰 Sales ▼</button>
+            <div id="sales-dropdown" class="dropdown-content">
+                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
+                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔗</span> Linktree</a>
+                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
+            </div>
+        </div>
+        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
+        <a href="https://wa.me/" class="quick-btn btn-whatsapp" target="_blank">💬 WhatsApp</a>
+    </div>
+    
+    <!-- Quick Actions Row 3 -->
+    <div class="quick-actions-row3">
+        <button class="quick-btn btn-post-creator" onclick="openPostCreator()">✨ Post Creator</button>
+        <button class="quick-btn btn-calculator" onclick="openCostCalculator()">🧮 Cost Calc</button>
+        <button class="quick-btn btn-presale" onclick="openPresaleCalculator()">🎟️ PreSale Calc</button>
+        <button class="quick-btn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);" onclick="openEventProjector()">📊 Projector</button>
+    </div>
+    
+    <!-- Upcoming Events Dashboard -->
+    <div class="upcoming-events">
+        <div class="upcoming-header">
+            <span class="upcoming-title">📅 UPCOMING EVENTS</span>
+        </div>
+        
+        <!-- This Week - KW 52 -->
+        <div class="upcoming-week-label current">🔴 DIESE WOCHE (KW 52)</div>
+        
+        <!-- TURBO - SA 27.12 -->
+        <div class="event-card" id="event-turbo27" data-event-date="2025-12-27" data-serie="TURBO">
+            <div class="event-card-header" onclick="toggleEventCard('event-turbo27')">
+                <div class="event-main-info">
+                    <span class="event-date">SA 27.12</span>
+                    <span class="event-name">TURBO</span>
+                    <span class="event-tech">Simon</span>
+                </div>
+                <div class="event-quick-stats">
+                    <span id="turbo-bar-quick">🍺 ~€14.5k</span>
+                    <span id="turbo-tickets-quick">🎫 ~763</span>
+                    <span class="event-toggle">▼</span>
+                </div>
+            </div>
+            <div class="event-details">
+                <!-- VVK TRACKER -->
+                <div class="vvk-tracker">
+                    <div class="vvk-input-row">
+                        <label>🎯 Ziel:</label>
+                        <input type="number" id="turbo-ziel-input" value="450" oninput="updateProjection('turbo')">
+                        <label>📊 Max:</label>
+                        <input type="number" id="turbo-max-input" value="600" oninput="updateProjection('turbo')">
+                        <label>🎫 Aktuell:</label>
+                        <input type="number" id="turbo-vvk-input" placeholder="0" oninput="updateProjection('turbo')">
+                        <span class="vvk-days" id="turbo-days">5 Tage</span>
+                    </div>
+                    <div class="vvk-input-row">
+                        <label>💶 Ø VVK €:</label>
+                        <input type="number" id="turbo-vvk-price" value="18" oninput="updateProjection('turbo')">
+                        <label>🚪 FOH €:</label>
+                        <input type="number" id="turbo-foh-price" value="22" oninput="updateProjection('turbo')">
+                    </div>
+                    <div class="vvk-progress-bar">
+                        <div class="vvk-progress" id="turbo-progress" style="width: 0%"></div>
+                    </div>
+                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | Max: 600 | 55% bei 5d → Soll ~248</div>
+                </div>
+                
+                <div class="auto-projection">
+                    <div class="projection-grid">
+                        <div class="proj-box">
+                            <div class="proj-box-label">VVK Proj.</div>
+                            <div class="proj-box-value tickets" id="turbo-vvk-proj">~426</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">FOH Proj.</div>
+                            <div class="proj-box-value tickets" id="turbo-foh-proj">~337</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">Bar Proj.</div>
+                            <div class="proj-box-value bar" id="turbo-bar-proj">~€14.5k</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">Total Rev</div>
+                            <div class="proj-box-value total" id="turbo-total-proj">~€29.8k</div>
+                        </div>
+                    </div>
+                    <div class="projection-basis" id="turbo-basis">📊 TURBO Ø: 436 VVK, 336 FOH (25 Events) | KW52: €16.3/Person</div>
+                </div>
+                <div class="cvd-badge">👔 CVD: Alain</div>
+                <div class="event-actions">
+                    <button class="event-action-btn primary" onclick="requestFactsheet('TURBO', 'Samstag, 27.12.2025', 'MAIN_00', 'Eigenveranstaltung', 'Simon')">📄 Factsheet</button>
+                    <button class="event-action-btn" onclick="requestSecurityOrder('TURBO', 'Samstag', '27.12.25', 'MAIN_00')">🔒 Security</button>
+                    <button class="event-action-btn" onclick="window.open('https://ntry.at/my/events?l=de', '_blank')">🎫 NTRY</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- NYE - DI 31.12 -->
+        <div class="event-card" id="event-silvester" data-event-date="2025-12-31" data-serie="NYE">
+            <div class="event-card-header" onclick="toggleEventCard('event-silvester')">
+                <div class="event-main-info">
+                    <span class="event-date">DI 31.12</span>
+                    <span class="event-name">SILVESTER</span>
+                    <span class="event-tech">Jan</span>
+                </div>
+                <div class="event-quick-stats">
+                    <span id="nye-bar-quick">🍺 ~€23k</span>
+                    <span id="nye-tickets-quick">🎫 ~1153</span>
+                    <span class="event-toggle">▼</span>
+                </div>
+            </div>
+            <div class="event-details">
+                <!-- VVK TRACKER -->
+                <div class="vvk-tracker">
+                    <div class="vvk-input-row">
+                        <label>🎯 Ziel:</label>
+                        <input type="number" id="nye-ziel-input" value="450" oninput="updateProjection('nye')">
+                        <label>📊 Max:</label>
+                        <input type="number" id="nye-max-input" value="700" oninput="updateProjection('nye')">
+                        <label>🎫 Aktuell:</label>
+                        <input type="number" id="nye-vvk-input" placeholder="0" oninput="updateProjection('nye')">
+                        <span class="vvk-days" id="nye-days">9 Tage</span>
+                    </div>
+                    <div class="vvk-input-row">
+                        <label>💶 Ø VVK €:</label>
+                        <input type="number" id="nye-vvk-price" value="25" oninput="updateProjection('nye')">
+                        <label>🚪 FOH €:</label>
+                        <input type="number" id="nye-foh-price" value="26" oninput="updateProjection('nye')">
+                    </div>
+                    <div class="vvk-progress-bar">
+                        <div class="vvk-progress" id="nye-progress" style="width: 0%"></div>
+                    </div>
+                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | Max: 700 | 40% bei 9d → Soll ~180</div>
+                </div>
+                
+                <div class="auto-projection">
+                    <div class="projection-grid">
+                        <div class="proj-box">
+                            <div class="proj-box-label">VVK Proj.</div>
+                            <div class="proj-box-value tickets" id="nye-vvk-proj">~522</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">FOH Proj.</div>
+                            <div class="proj-box-value tickets" id="nye-foh-proj">~631</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">Bar Proj.</div>
+                            <div class="proj-box-value bar" id="nye-bar-proj">~€23k</div>
+                        </div>
+                        <div class="proj-box">
+                            <div class="proj-box-label">Total Rev</div>
+                            <div class="proj-box-value total" id="nye-total-proj">~€46k</div>
+                        </div>
+                    </div>
+                    <div class="projection-basis" id="nye-basis">📊 NYE Ø: 562 VVK, 649 FOH (1 Event) | KW52: €16.3/Person</div>
+                </div>
+                <div class="cvd-badge">👔 CVD: Alain / Niat</div>
+                <div class="event-actions">
+                    <button class="event-action-btn primary" onclick="requestFactsheet('NYE SILVESTER', 'Dienstag, 31.12.2025', 'MAIN_00', 'Eigenveranstaltung', 'Jan')">📄 Factsheet</button>
+                    <button class="event-action-btn" onclick="requestSecurityOrder('Silvester', 'Dienstag', '31.12.25', 'MAIN_00')">🔒 Security</button>
+                    <button class="event-action-btn" onclick="window.open('https://ntry.at/my/events?l=de', '_blank')">🎫 NTRY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="departments">
+        <!-- OFFICE -->
+        <div class="dept office">
+            <div class="dept-header">💼 OFFICE</div>
+            <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>🧹 Reinigungsplan</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="reinigung-list">
+                            <div class="reinigung-item"><span class="reinigung-date">02.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">07.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">10.01</span><span class="reinigung-type gross">GROSS</span></div>
+                            <div class="reinigung-item"><span class="reinigung-date">12.01</span><span class="reinigung-type gross">GROSS</span></div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA=='); return false;" class="tasks-btn">📝 Office Tasks</a>
+            </div>
+        </div>
+        
+        <!-- BAR -->
+        <div class="dept bar">
+            <div class="dept-header">🍷 BAR</div>
+            <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📋 Shiftplan Dezember + Januar</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
+                    </div>
+                </div>
+                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7QAAAA=='); return false;" class="tasks-btn">📝 Bar Tasks</a>
+            </div>
+        </div>
+        
+        <!-- RUNNER -->
+        <div class="dept runner">
+            <div class="dept-header">🏃 RUNNER</div>
+            <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📋 Shiftplan Dezember + Januar</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
+                    </div>
+                </div>
+                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7gAAAA=='); return false;" class="tasks-btn">📝 Runner Tasks</a>
+            </div>
+        </div>
+        
+        <!-- TECHNIK -->
+        <div class="dept technik">
+            <div class="dept-header">🔧 TECHNIK</div>
+            <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📅 Technikerkalender</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="calendar-list">
+                            <div class="calendar-item">
+                                <span class="calendar-date">27. Dez</span>
+                                <span class="calendar-day">SA</span>
+                                <span class="calendar-event">TURBO<span class="tag-club">Club</span></span>
+                                <span class="calendar-tech">Simon</span>
+                            </div>
+                            <div class="calendar-item">
+                                <span class="calendar-date">31. Dez</span>
+                                <span class="calendar-day">DI</span>
+                                <span class="calendar-event">Silvester<span class="tag-club">Club</span></span>
+                                <span class="calendar-tech">Jan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7wAAAA=='); return false;" class="tasks-btn">📝 Technik Tasks</a>
+            </div>
+        </div>
+        
+        <!-- SPUTNIK -->
+        <div class="dept sputnik">
+            <div class="dept-header">🍸 SPUTNIK BAR</div>
+            <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📋 Shiftplan</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
+                    </div>
+                </div>
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📅 Reservierungen</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="calendar-list">
+                            <div class="calendar-item">
+                                <span class="calendar-date">27. Dez</span>
+                                <span class="calendar-day">SA</span>
+                                <span class="calendar-time">19:00</span>
+                                <span class="calendar-event">Reservierung</span>
+                                <span class="calendar-pax">TBA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E8AAAAA=='); return false;" class="tasks-btn">📝 Sputnik Tasks</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <a href="#" onclick="openToDo('https://to-do.live.com'); return false;">✅ Open Microsoft To Do</a>
+    </div>
+    
+    <div class="version">Work Hub Launcher v11.9.6 • 22.12.2025 • VVK Tracker + Custom Pricing</div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // FACTSHEET FORMAT v3.0 - LOCKED - DETAILED PROMPT
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // 
+        // DIESES FORMAT NIEMALS ÄNDERN!
+        // 
+        // Der Prompt muss das EXAKTE Format enthalten weil neue Chats
+        // die Projekt-Files nicht haben.
+        //
+        // ═══════════════════════════════════════════════════════════════════════════════
+
+        // KASSA Logic
+        const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'xmas', 'weihnacht', 'sommerfest'];
+        
+        function isEigenveranstaltung(eventName) {
+            const nameLower = eventName.toLowerCase();
+            return EIGENVERANSTALTUNGEN.some(eigen => nameLower.includes(eigen));
+        }
+        
+        function getKassa(eventName) {
+            return isEigenveranstaltung(eventName) ? "Matthäus / Schadi / Isa" : "FREMD";
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // VVK TRACKER - PROJECTION ENGINE (Data from Master DB)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        // Historical benchmarks: % sold at X days before event
+        const VVK_BENCHMARKS = {
+            14: 0.35,  // 35% at 14 days
+            10: 0.42,  // 42% at 10 days
+            7: 0.50,   // 50% at 7 days
+            5: 0.55,   // 55% at 5 days
+            3: 0.65,   // 65% at 3 days
+            2: 0.72,   // 72% at 2 days
+            1: 0.80,   // 80% at 1 day
+            0: 0.85    // 85% on event day
+        };
+        
+        // Serie Stats from Master DB (57 Eigenveranstaltungen)
+        const SERIE_STATS = {
+            "turbo": { "avgVVK": 436, "avgFOH": 336, "avgTotal": 773, "avgBar": 11771, "barPerPerson": 15.3, "events": 25 },
+            "selected": { "avgVVK": 416, "avgFOH": 336, "avgTotal": 752, "avgBar": 12422, "barPerPerson": 16.9, "events": 9 },
+            "halloween": { "avgVVK": 527, "avgFOH": 489, "avgTotal": 1017, "avgBar": 16728, "barPerPerson": 16.4, "events": 4 },
+            "birthday": { "avgVVK": 499, "avgFOH": 427, "avgTotal": 927, "avgBar": 16039, "barPerPerson": 17.2, "events": 7 },
+            "special": { "avgVVK": 457, "avgFOH": 373, "avgTotal": 831, "avgBar": 14461, "barPerPerson": 17.5, "events": 11 },
+            "nye": { "avgVVK": 562, "avgFOH": 649, "avgTotal": 1211, "avgBar": 23635, "barPerPerson": 19.5, "events": 1 }
+        };
+        
+        // KW Bar €/Person Stats (±2 week range from Master DB)
+        const KW_BAR_STATS = {
+            "49": { "barPerPerson": 16.9, "avgTotal": 894, "events": 11 },
+            "50": { "barPerPerson": 17.0, "avgTotal": 948, "events": 11 },
+            "51": { "barPerPerson": 17.3, "avgTotal": 935, "events": 7 },
+            "52": { "barPerPerson": 16.3, "avgTotal": 1017, "events": 2 },
+            "1": { "barPerPerson": 17.7, "avgTotal": 904, "events": 1 }
+        };
+        
+        // Event config
+        const EVENT_CONFIG = {
+            'turbo': { date: new Date('2025-12-27'), serie: 'turbo', kw: 52 },
+            'nye': { date: new Date('2025-12-31'), serie: 'nye', kw: 52 }  // Use KW52 for Dec season reference
+        };
+        
+        function getDaysUntil(eventId) {
+            const eventDate = EVENT_CONFIG[eventId].date;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diffTime = eventDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return Math.max(0, diffDays);
+        }
+        
+        function getBenchmarkForDays(days) {
+            const benchmarkDays = Object.keys(VVK_BENCHMARKS).map(Number).sort((a, b) => b - a);
+            for (let d of benchmarkDays) {
+                if (days >= d) return { days: d, pct: VVK_BENCHMARKS[d] };
+            }
+            return { days: 0, pct: 0.85 };
+        }
+        
+        function getKWBarStats(kw) {
+            // Get bar €/Person for this KW (or nearest)
+            if (KW_BAR_STATS[kw]) return KW_BAR_STATS[kw];
+            // Fallback to average
+            return { barPerPerson: 16.5, avgTotal: 850, events: 0 };
+        }
+        
+        function updateProjection(eventId) {
+            const input = document.getElementById(`${eventId}-vvk-input`);
+            const zielInput = document.getElementById(`${eventId}-ziel-input`);
+            const maxInput = document.getElementById(`${eventId}-max-input`);
+            const vvkPriceInput = document.getElementById(`${eventId}-vvk-price`);
+            const fohPriceInput = document.getElementById(`${eventId}-foh-price`);
+            
+            const currentVVK = parseInt(input.value) || 0;
+            const vvkZiel = parseInt(zielInput.value) || 450;
+            const maxVVK = parseInt(maxInput.value) || 600;
+            const vvkPrice = parseFloat(vvkPriceInput.value) || 18;
+            const fohPrice = parseFloat(fohPriceInput.value) || 22;
+            
+            const config = EVENT_CONFIG[eventId];
+            const serie = SERIE_STATS[config.serie];
+            const kwStats = getKWBarStats(config.kw);
+            const daysUntil = getDaysUntil(eventId);
+            const benchmark = getBenchmarkForDays(daysUntil);
+            
+            // Calculate projections
+            let projectedVVK, projectedFOH, projectedBar, projectedTotal;
+            let capped = false;
+            
+            // FOH ratio from serie
+            const fohRatio = serie.avgFOH / serie.avgVVK;
+            
+            if (currentVVK > 0) {
+                // Project based on current sales velocity
+                projectedVVK = Math.round(currentVVK / benchmark.pct);
+                
+                // Cap at max capacity
+                if (projectedVVK > maxVVK) {
+                    projectedVVK = maxVVK;
+                    capped = true;
+                }
+                
+                projectedFOH = Math.round(projectedVVK * fohRatio);
+            } else {
+                // Use target (but also cap)
+                projectedVVK = Math.min(vvkZiel, maxVVK);
+                projectedFOH = Math.round(projectedVVK * fohRatio);
+            }
+            
+            // Bar projection from KW-based €/Person
+            const totalGuests = projectedVVK + projectedFOH;
+            projectedBar = totalGuests * kwStats.barPerPerson;
+            
+            // Ticket revenue from user inputs
+            const ticketRevenue = (projectedVVK * vvkPrice) + (projectedFOH * fohPrice);
+            projectedTotal = projectedBar + ticketRevenue;
+            
+            // Update UI
+            document.getElementById(`${eventId}-days`).textContent = `${daysUntil} Tage`;
+            document.getElementById(`${eventId}-vvk-proj`).textContent = capped ? `${projectedVVK} (MAX)` : `~${projectedVVK}`;
+            document.getElementById(`${eventId}-foh-proj`).textContent = `~${projectedFOH}`;
+            document.getElementById(`${eventId}-bar-proj`).textContent = `~€${(projectedBar/1000).toFixed(1)}k`;
+            document.getElementById(`${eventId}-total-proj`).textContent = `~€${(projectedTotal/1000).toFixed(1)}k`;
+            
+            // Update quick stats in header
+            const totalTickets = projectedVVK + projectedFOH;
+            document.getElementById(`${eventId}-tickets-quick`).textContent = `🎫 ~${totalTickets}`;
+            document.getElementById(`${eventId}-bar-quick`).textContent = `🍺 ~€${(projectedBar/1000).toFixed(1)}k`;
+            
+            // Progress bar (% of VVK Ziel)
+            const progressPct = Math.min(100, (currentVVK / vvkZiel) * 100);
+            document.getElementById(`${eventId}-progress`).style.width = `${progressPct}%`;
+            
+            // Benchmark text
+            const expectedAtThisPoint = Math.round(vvkZiel * benchmark.pct);
+            let statusClass = 'on-track';
+            let statusText = 'On Track';
+            if (currentVVK > expectedAtThisPoint * 1.1) {
+                statusClass = 'ahead';
+                statusText = 'Ahead! 🚀';
+            } else if (currentVVK < expectedAtThisPoint * 0.9) {
+                statusClass = 'behind';
+                statusText = 'Behind ⚠️';
+            }
+            
+            document.getElementById(`${eventId}-benchmark`).innerHTML = 
+                `Ziel: ${vvkZiel} | Max: ${maxVVK} | ${Math.round(benchmark.pct * 100)}% bei ${daysUntil}d → Soll ~${expectedAtThisPoint}` +
+                (currentVVK > 0 ? ` <span class="vvk-status ${statusClass}">${statusText}</span>` : '');
+            
+            // Basis text with Serie + KW reference
+            const serieName = config.serie.toUpperCase();
+            document.getElementById(`${eventId}-basis`).textContent = 
+                currentVVK > 0 
+                    ? `📊 Proj: ${currentVVK} VVK × ${(1/benchmark.pct).toFixed(1)}${capped ? ' → CAPPED' : ''} | FOH: ${fohRatio.toFixed(2)} (${serieName}) | Bar: €${kwStats.barPerPerson}/P (KW${config.kw})`
+                    : `📊 ${serieName} Ø: ${serie.avgVVK} VVK, ${serie.avgFOH} FOH (${serie.events} Events) | KW${config.kw}: €${kwStats.barPerPerson}/Person`;
+        }
+        
+        // Initialize on page load
+        function initVVKTrackers() {
+            updateProjection('turbo');
+            updateProjection('nye');
+        }
+
+        // Mobile detection
+        function isMobile() {
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+        
+        // Toast notifications
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // Open Claude with prompt in URL (short prompts only)
+        function openClaudeOrCopy(prompt, successMsg) {
+            if (isMobile()) {
+                navigator.clipboard.writeText(prompt).then(() => {
+                    showToast('📋 Prompt kopiert! Öffne Claude App und paste.');
+                }).catch(() => {
+                    showToast('❌ Kopieren fehlgeschlagen');
+                });
+            } else {
+                window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank');
+                showToast(successMsg);
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // FACTSHEET GENERATION - LOCKED FORMAT PROMPT v3.0
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        function getFactsheetPrompt(eventName, datum, template, eventType, techniker) {
+            const kassa = getKassa(eventName);
+            
+            return `Factsheet DOCX für Grelle Forelle: ${eventName} am ${datum}
+
+FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen:
+Header: EVENT: ${eventName.toUpperCase()} (ROT BOLD) | Datum: ${datum} | AUFSTELLUNG:
+
+Tabelle (3 Spalten: Position|Zeit|Name) mit SICHTBAREN BORDERS:
+PAX: | | 
+CVD: | 20:30 | [Runner Shiftplan]
+KASSA: | 22:30 | ${kassa}
+[LEERZEILE]
+DOORS 1: | 23:00 |
+TERRASSE 1 | 22:00 | [Bar Shiftplan]
+DOORS 2: | 23:00 |
+KITCHEN: | 22:00 | [Bar Shiftplan]
+[LEERZEILE]
+DOORS 2: | 00:00 |
+MAIN 1-4: | 23:00/00:00/00:15 | [Bar Shiftplan]
+[LEERZEILE]
+RUNNER 1-5: | 21:00-00:00 | [Runner Shiftplan]
+[LEERZEILE]
+GARDEROBE 1-3 | 22:45/23:00/00:15 | [Garderobe Shiftplan]
+[LEERZEILE]
+TECHNIK: | 21:00 | ${techniker}
+[LEERZEILE]
+SECURITY: | 22:45 | 1 PAX (dann 23:00/23:30/00:00/01:00 mit 1/1/3/1 PAX)
+
+KRITISCH: Schwarze Rahmen um ALLE Zellen! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen!
+
+Google Docs IDs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjlmIgIluAd6ZigqBItw6TkZAD29ZcdhOntJ2I_I Garderobe=1WwLF4B42STLHzG9dcjZFFCz-ZWgYjAak8Vbxh5gFDxg`;
+        }
+        
+        function requestFactsheet(eventName, datum, template, eventType, techniker) {
+            const prompt = getFactsheetPrompt(eventName, datum, template, eventType, techniker);
+            openClaudeOrCopy(prompt, '📄 Factsheet Generator geöffnet...');
+        }
+        
+        // Quick button - generate for upcoming events
+        function openFactsheetGenerator() {
+            const prompt = `Factsheets für Grelle Forelle: 1) TURBO Sa 27.12.25 (Technik: Simon) 2) NYE Di 31.12.25 (Technik: Jan)
+
+FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen um alle Zellen:
+Header: EVENT (ROT BOLD) | Datum | AUFSTELLUNG:
+
+Struktur (Position|Zeit|Name):
+PAX→CVD(20:30)→KASSA(22:30)→[LEER]→DOORS1(23:00)→TERRASSE(22:00)→DOORS2(23:00)→KITCHEN(22:00)→[LEER]→DOORS2(00:00)→MAIN1-4(23:00/00:00/00:15)→[LEER]→RUNNER1-5(21:00-00:00)→[LEER]→GARDEROBE1-3(22:45/23:00/00:15)→[LEER]→TECHNIK(21:00)→[LEER]→SECURITY(22:45/23:00/23:30/00:00/01:00 mit 1/1/1/3/1 PAX)
+
+KASSA: TURBO/NYE = "Matthäus / Schadi / Isa"
+KRITISCH: Schwarze Borders! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen!
+
+Google Docs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjlmIgIluAd6ZigqBItw6TkZAD29ZcdhOntJ2I_I Garderobe=1WwLF4B42STLHzG9dcjZFFCz-ZWgYjAak8Vbxh5gFDxg
+
+Output: 2 DOCX files`;
+
+            openClaudeOrCopy(prompt, '📄 Opening Claude for Factsheets...');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // SECURITY ORDER GENERATION
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        function requestSecurityOrder(eventName, weekday, date, template) {
+            const schedules = {
+                'MAIN_00': `- 22:45 – 1 PAX
+- 23:00 – 1 PAX
+- 23:30 – 1 PAX
+- 00:00 – 3 PAX
+- 01:00 – 1 PAX`,
+                'MAIN_30': `- 22:45 – 1 PAX
+- 23:00 – 1 PAX
+- 23:30 – 1 PAX
+- 00:30 – 3 PAX
+- 01:00 – 1 PAX`,
+                'CONCERT': `- 18:45 – 1 PAX
+- 19:00 – 2 PAX
+- 19:30 – 1 PAX
+- 19:45 – 1 PAX
+- 20:30 – 1 PAX (Abruf)`
+            };
+            
+            const schedule = schedules[template] || schedules['MAIN_00'];
+            
+            const content = `Hallo,
+
+Hier die Bestellung für die nächsten Events.
+
+${weekday} ${date} – ${eventName}
+${schedule}
+
+Bitte um Bestätigung. Danke
+
+--
+Schadi Tayyah
+st@grelleforelle.com
+Grelle Forelle CEO
+Turbo Projects GmbH
+Spittelauer Lände 12/1
+1090 Vienna, Austria`;
+
+            navigator.clipboard.writeText(content).then(() => {
+                showToast('✅ Security Order kopiert!');
+            }).catch(() => {
+                showToast('❌ Kopieren fehlgeschlagen');
+            });
+        }
+        
+        function openSecurityOrder() {
+            const prompt = `Generate security orders for the next 2 upcoming events.
+Use templates MAIN_00/MAIN_30/CONCERT based on event type.
+Format with PAX and signature block.`;
+
+            openClaudeOrCopy(prompt, '🔒 Opening Claude for Security Orders...');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // UI FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        function toggleSection(label) {
+            label.classList.toggle('open');
+            label.nextElementSibling.classList.toggle('open');
+        }
+        
+        function toggleDropdown(dropdownId) {
+            document.querySelectorAll('.dropdown-content').forEach(d => {
+                if (d.id !== dropdownId) d.classList.remove('show');
+            });
+            document.getElementById(dropdownId).classList.toggle('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
+            }
+        });
+        
+        function toggleEventCard(cardId) { 
+            document.getElementById(cardId).classList.toggle('open'); 
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // OTHER TOOLS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        function openPresaleWithEvent(name, soll) { 
+            const prompt = `Open PreSale Calculator for ${name} with SOLL ${soll} tickets`;
+            openClaudeOrCopy(prompt, '🎫 PreSale Calculator...');
+        }
+        
+        function openPostCreator() { 
+            openClaudeOrCopy('Open Post Creator for social media', '✨ Post Creator...');
+        }
+        
+        function openCostCalculator() { 
+            openClaudeOrCopy('Open Cost Calculator for event planning', '🧮 Cost Calculator...');
+        }
+        
+        function openPresaleCalculator() { 
+            openClaudeOrCopy('Open PreSale Calculator', '🎟️ PreSale Calculator...');
+        }
+        
+        function openEventProjector() { 
+            openClaudeOrCopy('Open Event Projector with KW-based analysis', '📊 Event Projector...');
+        }
+        
+        function openToDo(url) {
+            if (isMobile()) {
+                window.location.href = 'ms-todo://';
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+        
+        function openToDoList(listId) {
+            if (isMobile()) {
+                window.location.href = 'ms-todo://';
+            } else {
+                window.open('https://to-do.live.com/tasks/' + listId, '_blank');
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Work Hub v11.9.3 - Factsheet Format v3.0 LOCKED');
+            console.log('VVK Tracker enabled');
+            initVVKTrackers();
+        });
+    </script>
+</body>
+</html>
