@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turbo-Projects Work Hub</title>
+    <!-- MSAL.js for Microsoft Authentication -->
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -16,6 +18,28 @@
         .header { text-align: center; margin-bottom: 20px; }
         .header h1 { font-size: 28px; margin-bottom: 5px; }
         .header p { color: #888; font-size: 14px; }
+        
+        /* Auth Status Bar */
+        .auth-bar {
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            margin-bottom: 15px; padding: 10px; background: #252542; border-radius: 10px;
+        }
+        .auth-status {
+            display: flex; align-items: center; gap: 8px; font-size: 13px;
+        }
+        .auth-status .dot {
+            width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
+        }
+        .auth-status .dot.connected { background: #22c55e; }
+        .auth-btn {
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            border: none; border-radius: 8px; padding: 8px 16px;
+            color: white; font-size: 13px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .auth-btn:hover { opacity: 0.9; }
+        .auth-btn.logout { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
+        .auth-user { font-size: 12px; color: #888; }
         
         /* Quick Actions */
         .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
@@ -180,8 +204,14 @@
         .dept { border-radius: 15px; overflow: hidden; text-decoration: none; display: block; }
         .dept-header {
             padding: 15px 20px; color: white; font-weight: bold; font-size: 18px;
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
         }
+        .dept-header-left { display: flex; align-items: center; gap: 10px; }
+        .task-count {
+            background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px;
+            font-size: 12px; font-weight: 600;
+        }
+        .task-count.loading { opacity: 0.5; }
         .office .dept-header { background: #1E88E5; }
         .office .dept-content { background: #E3F2FD; }
         .bar .dept-header { background: #F4511E; }
@@ -213,6 +243,64 @@
         .section-content { display: none; background: white; border-radius: 0 0 8px 8px; overflow: hidden; }
         .section-content.open { display: block; }
         .section-content iframe { width: 100%; height: 300px; border: none; }
+        
+        /* Tasks Inline */
+        .tasks-inline {
+            background: white; border-radius: 8px; margin-top: 10px; overflow: hidden;
+        }
+        .tasks-header {
+            padding: 10px 15px; font-size: 14px; font-weight: bold; color: #333;
+            border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between;
+            align-items: center;
+        }
+        .tasks-header .refresh-btn {
+            background: none; border: none; cursor: pointer; font-size: 14px;
+            color: #888; transition: transform 0.3s;
+        }
+        .tasks-header .refresh-btn:hover { color: #333; }
+        .tasks-header .refresh-btn.spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .tasks-list { max-height: 300px; overflow-y: auto; }
+        .task-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 15px;
+            border-bottom: 1px solid #f0f0f0; transition: background 0.2s;
+        }
+        .task-item:last-child { border-bottom: none; }
+        .task-item:hover { background: #f8f8f8; }
+        .task-item.completed { opacity: 0.5; }
+        .task-item.completed .task-title { text-decoration: line-through; }
+        
+        .task-checkbox {
+            width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; flex-shrink: 0;
+        }
+        .task-checkbox:hover { border-color: #22c55e; }
+        .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
+        .task-checkbox.checked::after { content: '✓'; color: white; font-size: 12px; }
+        
+        .task-info { flex: 1; min-width: 0; }
+        .task-title { font-size: 14px; color: #333; margin-bottom: 2px; }
+        .task-due { font-size: 11px; color: #888; }
+        .task-due.overdue { color: #ef4444; }
+        .task-due.today { color: #f59e0b; }
+        
+        .task-importance {
+            width: 6px; height: 6px; border-radius: 50%; background: #ccc; flex-shrink: 0;
+        }
+        .task-importance.high { background: #ef4444; }
+        
+        .tasks-empty {
+            padding: 20px; text-align: center; color: #888; font-size: 13px;
+        }
+        .tasks-login-prompt {
+            padding: 20px; text-align: center; color: #666; font-size: 13px;
+        }
+        .tasks-login-prompt button {
+            margin-top: 10px; background: #0078d4; color: white; border: none;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;
+        }
         
         /* Reinigung */
         .reinigung-list { padding: 10px 0; max-height: 250px; overflow-y: auto; }
@@ -257,7 +345,7 @@
         .tasks-btn {
             color: white; padding: 12px; border-radius: 8px; font-size: 14px;
             text-decoration: none; text-align: center; display: block;
-            width: 100%; font-weight: bold; margin-top: 10px;
+            width: 100%; font-weight: bold; margin-top: 10px; border: none; cursor: pointer;
         }
         .tasks-btn:hover { opacity: 0.9; }
         .office .tasks-btn { background: #1E88E5; }
@@ -279,6 +367,18 @@
     <div class="header">
         <h1>🚀 TURBO-PROJECTS</h1>
         <p>Work Hub Launcher</p>
+    </div>
+    
+    <!-- Auth Status Bar -->
+    <div class="auth-bar">
+        <div class="auth-status">
+            <span class="dot" id="auth-dot"></span>
+            <span id="auth-status-text">Not connected</span>
+        </div>
+        <span class="auth-user" id="auth-user"></span>
+        <button class="auth-btn" id="auth-btn" onclick="handleAuth()">
+            <span>🔐</span> Sign in with Microsoft
+        </button>
     </div>
     
     <!-- Toast notification -->
@@ -470,7 +570,10 @@
     <div class="departments">
         <!-- OFFICE -->
         <div class="dept office">
-            <div class="dept-header">💼 OFFICE</div>
+            <div class="dept-header">
+                <div class="dept-header-left">💼 OFFICE</div>
+                <span class="task-count" id="office-task-count">—</span>
+            </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
@@ -486,13 +589,29 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA=='); return false;" class="tasks-btn">📝 Office Tasks</a>
+                <!-- Tasks Inline Section -->
+                <div class="tasks-inline" id="office-tasks">
+                    <div class="tasks-header">
+                        <span>📝 Tasks</span>
+                        <button class="refresh-btn" onclick="refreshTasks('office')" title="Refresh">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="office-tasks-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="tasks-btn" onclick="openToDoList('office')">📝 Open in Microsoft To Do</button>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar">
-            <div class="dept-header">🍷 BAR</div>
+            <div class="dept-header">
+                <div class="dept-header-left">🍷 BAR</div>
+                <span class="task-count" id="bar-task-count">—</span>
+            </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
@@ -503,13 +622,29 @@
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
                     </div>
                 </div>
-                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7QAAAA=='); return false;" class="tasks-btn">📝 Bar Tasks</a>
+                <!-- Tasks Inline Section -->
+                <div class="tasks-inline" id="bar-tasks">
+                    <div class="tasks-header">
+                        <span>📝 Tasks</span>
+                        <button class="refresh-btn" onclick="refreshTasks('bar')" title="Refresh">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="bar-tasks-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="tasks-btn" onclick="openToDoList('bar')">📝 Open in Microsoft To Do</button>
             </div>
         </div>
         
         <!-- RUNNER -->
         <div class="dept runner">
-            <div class="dept-header">🏃 RUNNER</div>
+            <div class="dept-header">
+                <div class="dept-header-left">🏃 RUNNER</div>
+                <span class="task-count" id="runner-task-count">—</span>
+            </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
@@ -520,13 +655,29 @@
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:500px; background:#fff;"></iframe>
                     </div>
                 </div>
-                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7gAAAA=='); return false;" class="tasks-btn">📝 Runner Tasks</a>
+                <!-- Tasks Inline Section -->
+                <div class="tasks-inline" id="runner-tasks">
+                    <div class="tasks-header">
+                        <span>📝 Tasks</span>
+                        <button class="refresh-btn" onclick="refreshTasks('runner')" title="Refresh">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="runner-tasks-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="tasks-btn" onclick="openToDoList('runner')">📝 Open in Microsoft To Do</button>
             </div>
         </div>
         
         <!-- TECHNIK -->
         <div class="dept technik">
-            <div class="dept-header">🔧 TECHNIK</div>
+            <div class="dept-header">
+                <div class="dept-header-left">🔧 TECHNIK</div>
+                <span class="task-count" id="technik-task-count">—</span>
+            </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
@@ -550,13 +701,29 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7wAAAA=='); return false;" class="tasks-btn">📝 Technik Tasks</a>
+                <!-- Tasks Inline Section -->
+                <div class="tasks-inline" id="technik-tasks">
+                    <div class="tasks-header">
+                        <span>📝 Tasks</span>
+                        <button class="refresh-btn" onclick="refreshTasks('technik')" title="Refresh">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="technik-tasks-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="tasks-btn" onclick="openToDoList('technik')">📝 Open in Microsoft To Do</button>
             </div>
         </div>
         
         <!-- SPUTNIK -->
         <div class="dept sputnik">
-            <div class="dept-header">🍸 SPUTNIK BAR</div>
+            <div class="dept-header">
+                <div class="dept-header-left">🍸 SPUTNIK BAR</div>
+                <span class="task-count" id="sputnik-task-count">—</span>
+            </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
@@ -584,29 +751,312 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" onclick="openToDoList('AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E8AAAAA=='); return false;" class="tasks-btn">📝 Sputnik Tasks</a>
+                <!-- Tasks Inline Section -->
+                <div class="tasks-inline" id="sputnik-tasks">
+                    <div class="tasks-header">
+                        <span>📝 Tasks</span>
+                        <button class="refresh-btn" onclick="refreshTasks('sputnik')" title="Refresh">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="sputnik-tasks-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="tasks-btn" onclick="openToDoList('sputnik')">📝 Open in Microsoft To Do</button>
             </div>
         </div>
     </div>
     
     <div class="footer">
-        <a href="#" onclick="openToDo('https://to-do.live.com'); return false;">✅ Open Microsoft To Do</a>
+        <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub Launcher v11.9.6 • 22.12.2025 • VVK Tracker + Custom Pricing</div>
+    <div class="version">Work Hub Launcher v12.0 • 23.12.2025 • Microsoft To Do Integration</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
-        // FACTSHEET FORMAT v3.0 - LOCKED - DETAILED PROMPT
+        // MICROSOFT TO DO INTEGRATION - MSAL.js Configuration
         // ═══════════════════════════════════════════════════════════════════════════════
-        // 
-        // DIESES FORMAT NIEMALS ÄNDERN!
-        // 
-        // Der Prompt muss das EXAKTE Format enthalten weil neue Chats
-        // die Projekt-Files nicht haben.
-        //
+        
+        const msalConfig = {
+            auth: {
+                clientId: "0fc00e3e-4ff3-4806-ae4a-222d1abee84b",
+                authority: "https://login.microsoftonline.com/common",
+                redirectUri: window.location.origin + window.location.pathname
+            },
+            cache: {
+                cacheLocation: "localStorage",
+                storeAuthStateInCookie: false
+            }
+        };
+        
+        const loginRequest = {
+            scopes: ["Tasks.ReadWrite", "User.Read"]
+        };
+        
+        // To Do List IDs mapping
+        const TODO_LISTS = {
+            office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
+            bar: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7QAAAA==",
+            runner: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7gAAAA==",
+            technik: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E7wAAAA==",
+            sputnik: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqb6E8AAAAA=="
+        };
+        
+        let msalInstance = null;
+        let accessToken = null;
+        
+        // Initialize MSAL
+        async function initMsal() {
+            try {
+                msalInstance = new msal.PublicClientApplication(msalConfig);
+                await msalInstance.initialize();
+                
+                // Handle redirect response
+                const response = await msalInstance.handleRedirectPromise();
+                if (response) {
+                    accessToken = response.accessToken;
+                    updateAuthUI(response.account);
+                    loadAllTasks();
+                } else {
+                    // Check for existing account
+                    const accounts = msalInstance.getAllAccounts();
+                    if (accounts.length > 0) {
+                        try {
+                            const silentResponse = await msalInstance.acquireTokenSilent({
+                                ...loginRequest,
+                                account: accounts[0]
+                            });
+                            accessToken = silentResponse.accessToken;
+                            updateAuthUI(accounts[0]);
+                            loadAllTasks();
+                        } catch (e) {
+                            console.log("Silent token acquisition failed, user needs to login");
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("MSAL initialization error:", error);
+            }
+        }
+        
+        // Handle login/logout
+        async function handleAuth() {
+            if (accessToken) {
+                // Logout
+                msalInstance.logoutPopup();
+                accessToken = null;
+                updateAuthUI(null);
+                resetTasksUI();
+            } else {
+                // Login
+                try {
+                    const response = await msalInstance.loginPopup(loginRequest);
+                    accessToken = response.accessToken;
+                    updateAuthUI(response.account);
+                    loadAllTasks();
+                    showToast("✅ Connected to Microsoft To Do!");
+                } catch (error) {
+                    console.error("Login error:", error);
+                    showToast("❌ Login failed. Please try again.");
+                }
+            }
+        }
+        
+        // Update auth UI
+        function updateAuthUI(account) {
+            const dot = document.getElementById('auth-dot');
+            const statusText = document.getElementById('auth-status-text');
+            const userText = document.getElementById('auth-user');
+            const authBtn = document.getElementById('auth-btn');
+            
+            if (account) {
+                dot.classList.add('connected');
+                statusText.textContent = 'Connected';
+                userText.textContent = account.username || account.name || '';
+                authBtn.innerHTML = '<span>🚪</span> Sign out';
+                authBtn.classList.add('logout');
+            } else {
+                dot.classList.remove('connected');
+                statusText.textContent = 'Not connected';
+                userText.textContent = '';
+                authBtn.innerHTML = '<span>🔐</span> Sign in with Microsoft';
+                authBtn.classList.remove('logout');
+            }
+        }
+        
+        // Reset tasks UI when logged out
+        function resetTasksUI() {
+            const depts = ['office', 'bar', 'runner', 'technik', 'sputnik'];
+            depts.forEach(dept => {
+                document.getElementById(`${dept}-task-count`).textContent = '—';
+                document.getElementById(`${dept}-tasks-list`).innerHTML = `
+                    <div class="tasks-login-prompt">
+                        <p>Sign in to see your tasks</p>
+                        <button onclick="handleAuth()">🔐 Connect Microsoft To Do</button>
+                    </div>
+                `;
+            });
+        }
+        
+        // Load all tasks
+        async function loadAllTasks() {
+            if (!accessToken) return;
+            
+            const depts = ['office', 'bar', 'runner', 'technik', 'sputnik'];
+            for (const dept of depts) {
+                await loadTasks(dept);
+            }
+        }
+        
+        // Load tasks for a specific department
+        async function loadTasks(dept) {
+            if (!accessToken) return;
+            
+            const listId = TODO_LISTS[dept];
+            const countEl = document.getElementById(`${dept}-task-count`);
+            const listEl = document.getElementById(`${dept}-tasks-list`);
+            
+            countEl.textContent = '...';
+            countEl.classList.add('loading');
+            
+            try {
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$orderby=importance desc,createdDateTime desc&$top=10`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const tasks = data.value || [];
+                
+                countEl.textContent = tasks.length > 0 ? tasks.length : '✓';
+                countEl.classList.remove('loading');
+                
+                if (tasks.length === 0) {
+                    listEl.innerHTML = '<div class="tasks-empty">🎉 All tasks completed!</div>';
+                } else {
+                    listEl.innerHTML = tasks.map(task => renderTask(task, dept)).join('');
+                }
+            } catch (error) {
+                console.error(`Error loading ${dept} tasks:`, error);
+                countEl.textContent = '!';
+                countEl.classList.remove('loading');
+                listEl.innerHTML = '<div class="tasks-empty">⚠️ Could not load tasks</div>';
+            }
+        }
+        
+        // Render a single task
+        function renderTask(task, dept) {
+            const isCompleted = task.status === 'completed';
+            const isImportant = task.importance === 'high';
+            
+            let dueClass = '';
+            let dueText = '';
+            if (task.dueDateTime) {
+                const dueDate = new Date(task.dueDateTime.dateTime + 'Z');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                if (dueDate < today) {
+                    dueClass = 'overdue';
+                    dueText = `Overdue: ${dueDate.toLocaleDateString('de-DE')}`;
+                } else if (dueDate.toDateString() === today.toDateString()) {
+                    dueClass = 'today';
+                    dueText = 'Due today';
+                } else if (dueDate.toDateString() === tomorrow.toDateString()) {
+                    dueText = 'Due tomorrow';
+                } else {
+                    dueText = `Due: ${dueDate.toLocaleDateString('de-DE')}`;
+                }
+            }
+            
+            return `
+                <div class="task-item ${isCompleted ? 'completed' : ''}" data-task-id="${task.id}" data-dept="${dept}">
+                    <div class="task-checkbox ${isCompleted ? 'checked' : ''}" onclick="toggleTask('${task.id}', '${dept}')"></div>
+                    <div class="task-info">
+                        <div class="task-title">${escapeHtml(task.title)}</div>
+                        ${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}
+                    </div>
+                    ${isImportant ? '<div class="task-importance high"></div>' : ''}
+                </div>
+            `;
+        }
+        
+        // Toggle task completion
+        async function toggleTask(taskId, dept) {
+            if (!accessToken) return;
+            
+            const listId = TODO_LISTS[dept];
+            const taskEl = document.querySelector(`[data-task-id="${taskId}"]`);
+            const checkbox = taskEl.querySelector('.task-checkbox');
+            
+            checkbox.classList.add('checked');
+            taskEl.classList.add('completed');
+            
+            try {
+                await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'completed' })
+                    }
+                );
+                
+                showToast("✅ Task completed!");
+                
+                // Reload tasks after a short delay
+                setTimeout(() => loadTasks(dept), 500);
+            } catch (error) {
+                console.error("Error completing task:", error);
+                checkbox.classList.remove('checked');
+                taskEl.classList.remove('completed');
+                showToast("❌ Could not complete task");
+            }
+        }
+        
+        // Refresh tasks for a department
+        function refreshTasks(dept) {
+            const btn = document.querySelector(`#${dept}-tasks .refresh-btn`);
+            btn.classList.add('spinning');
+            loadTasks(dept).then(() => {
+                btn.classList.remove('spinning');
+            });
+        }
+        
+        // Open To Do list in browser
+        function openToDoList(dept) {
+            const listId = TODO_LISTS[dept];
+            window.open(`https://to-do.live.com/tasks/${listId}`, '_blank');
+        }
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         // ═══════════════════════════════════════════════════════════════════════════════
-
+        // EXISTING WORK HUB FUNCTIONALITY
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
         // KASSA Logic
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'xmas', 'weihnacht', 'sommerfest'];
         
@@ -619,23 +1069,11 @@
             return isEigenveranstaltung(eventName) ? "Matthäus / Schadi / Isa" : "FREMD";
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // VVK TRACKER - PROJECTION ENGINE (Data from Master DB)
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
-        // Historical benchmarks: % sold at X days before event
+        // VVK TRACKER - PROJECTION ENGINE
         const VVK_BENCHMARKS = {
-            14: 0.35,  // 35% at 14 days
-            10: 0.42,  // 42% at 10 days
-            7: 0.50,   // 50% at 7 days
-            5: 0.55,   // 55% at 5 days
-            3: 0.65,   // 65% at 3 days
-            2: 0.72,   // 72% at 2 days
-            1: 0.80,   // 80% at 1 day
-            0: 0.85    // 85% on event day
+            14: 0.35, 10: 0.42, 7: 0.50, 5: 0.55, 3: 0.65, 2: 0.72, 1: 0.80, 0: 0.85
         };
         
-        // Serie Stats from Master DB (57 Eigenveranstaltungen)
         const SERIE_STATS = {
             "turbo": { "avgVVK": 436, "avgFOH": 336, "avgTotal": 773, "avgBar": 11771, "barPerPerson": 15.3, "events": 25 },
             "selected": { "avgVVK": 416, "avgFOH": 336, "avgTotal": 752, "avgBar": 12422, "barPerPerson": 16.9, "events": 9 },
@@ -645,7 +1083,6 @@
             "nye": { "avgVVK": 562, "avgFOH": 649, "avgTotal": 1211, "avgBar": 23635, "barPerPerson": 19.5, "events": 1 }
         };
         
-        // KW Bar €/Person Stats (±2 week range from Master DB)
         const KW_BAR_STATS = {
             "49": { "barPerPerson": 16.9, "avgTotal": 894, "events": 11 },
             "50": { "barPerPerson": 17.0, "avgTotal": 948, "events": 11 },
@@ -654,10 +1091,9 @@
             "1": { "barPerPerson": 17.7, "avgTotal": 904, "events": 1 }
         };
         
-        // Event config
         const EVENT_CONFIG = {
             'turbo': { date: new Date('2025-12-27'), serie: 'turbo', kw: 52 },
-            'nye': { date: new Date('2025-12-31'), serie: 'nye', kw: 52 }  // Use KW52 for Dec season reference
+            'nye': { date: new Date('2025-12-31'), serie: 'nye', kw: 52 }
         };
         
         function getDaysUntil(eventId) {
@@ -665,8 +1101,7 @@
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const diffTime = eventDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return Math.max(0, diffDays);
+            return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
         }
         
         function getBenchmarkForDays(days) {
@@ -678,10 +1113,7 @@
         }
         
         function getKWBarStats(kw) {
-            // Get bar €/Person for this KW (or nearest)
-            if (KW_BAR_STATS[kw]) return KW_BAR_STATS[kw];
-            // Fallback to average
-            return { barPerPerson: 16.5, avgTotal: 850, events: 0 };
+            return KW_BAR_STATS[kw] || { barPerPerson: 16.5, avgTotal: 850, events: 0 };
         }
         
         function updateProjection(eventId) {
@@ -703,55 +1135,40 @@
             const daysUntil = getDaysUntil(eventId);
             const benchmark = getBenchmarkForDays(daysUntil);
             
-            // Calculate projections
             let projectedVVK, projectedFOH, projectedBar, projectedTotal;
             let capped = false;
-            
-            // FOH ratio from serie
             const fohRatio = serie.avgFOH / serie.avgVVK;
             
             if (currentVVK > 0) {
-                // Project based on current sales velocity
                 projectedVVK = Math.round(currentVVK / benchmark.pct);
-                
-                // Cap at max capacity
                 if (projectedVVK > maxVVK) {
                     projectedVVK = maxVVK;
                     capped = true;
                 }
-                
                 projectedFOH = Math.round(projectedVVK * fohRatio);
             } else {
-                // Use target (but also cap)
                 projectedVVK = Math.min(vvkZiel, maxVVK);
                 projectedFOH = Math.round(projectedVVK * fohRatio);
             }
             
-            // Bar projection from KW-based €/Person
             const totalGuests = projectedVVK + projectedFOH;
             projectedBar = totalGuests * kwStats.barPerPerson;
-            
-            // Ticket revenue from user inputs
             const ticketRevenue = (projectedVVK * vvkPrice) + (projectedFOH * fohPrice);
             projectedTotal = projectedBar + ticketRevenue;
             
-            // Update UI
             document.getElementById(`${eventId}-days`).textContent = `${daysUntil} Tage`;
             document.getElementById(`${eventId}-vvk-proj`).textContent = capped ? `${projectedVVK} (MAX)` : `~${projectedVVK}`;
             document.getElementById(`${eventId}-foh-proj`).textContent = `~${projectedFOH}`;
             document.getElementById(`${eventId}-bar-proj`).textContent = `~€${(projectedBar/1000).toFixed(1)}k`;
             document.getElementById(`${eventId}-total-proj`).textContent = `~€${(projectedTotal/1000).toFixed(1)}k`;
             
-            // Update quick stats in header
             const totalTickets = projectedVVK + projectedFOH;
             document.getElementById(`${eventId}-tickets-quick`).textContent = `🎫 ~${totalTickets}`;
             document.getElementById(`${eventId}-bar-quick`).textContent = `🍺 ~€${(projectedBar/1000).toFixed(1)}k`;
             
-            // Progress bar (% of VVK Ziel)
             const progressPct = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${eventId}-progress`).style.width = `${progressPct}%`;
             
-            // Benchmark text
             const expectedAtThisPoint = Math.round(vvkZiel * benchmark.pct);
             let statusClass = 'on-track';
             let statusText = 'On Track';
@@ -767,7 +1184,6 @@
                 `Ziel: ${vvkZiel} | Max: ${maxVVK} | ${Math.round(benchmark.pct * 100)}% bei ${daysUntil}d → Soll ~${expectedAtThisPoint}` +
                 (currentVVK > 0 ? ` <span class="vvk-status ${statusClass}">${statusText}</span>` : '');
             
-            // Basis text with Serie + KW reference
             const serieName = config.serie.toUpperCase();
             document.getElementById(`${eventId}-basis`).textContent = 
                 currentVVK > 0 
@@ -775,7 +1191,6 @@
                     : `📊 ${serieName} Ø: ${serie.avgVVK} VVK, ${serie.avgFOH} FOH (${serie.events} Events) | KW${config.kw}: €${kwStats.barPerPerson}/Person`;
         }
         
-        // Initialize on page load
         function initVVKTrackers() {
             updateProjection('turbo');
             updateProjection('nye');
@@ -794,27 +1209,21 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
         
-        // Open Claude with prompt in URL (short prompts only)
+        // Open Claude with prompt
         function openClaudeOrCopy(prompt, successMsg) {
             if (isMobile()) {
                 navigator.clipboard.writeText(prompt).then(() => {
                     showToast('📋 Prompt kopiert! Öffne Claude App und paste.');
-                }).catch(() => {
-                    showToast('❌ Kopieren fehlgeschlagen');
-                });
+                }).catch(() => showToast('❌ Kopieren fehlgeschlagen'));
             } else {
                 window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank');
                 showToast(successMsg);
             }
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // FACTSHEET GENERATION - LOCKED FORMAT PROMPT v3.0
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
+        // Factsheet prompts
         function getFactsheetPrompt(eventName, datum, template, eventType, techniker) {
             const kassa = getKassa(eventName);
-            
             return `Factsheet DOCX für Grelle Forelle: ${eventName} am ${datum}
 
 FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen:
@@ -851,15 +1260,11 @@ Google Docs IDs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjl
             openClaudeOrCopy(prompt, '📄 Factsheet Generator geöffnet...');
         }
         
-        // Quick button - generate for upcoming events
         function openFactsheetGenerator() {
             const prompt = `Factsheets für Grelle Forelle: 1) TURBO Sa 27.12.25 (Technik: Simon) 2) NYE Di 31.12.25 (Technik: Jan)
 
 FORMAT v3.0 - EINE TABELLE mit schwarzen Rahmen um alle Zellen:
 Header: EVENT (ROT BOLD) | Datum | AUFSTELLUNG:
-
-Struktur (Position|Zeit|Name):
-PAX→CVD(20:30)→KASSA(22:30)→[LEER]→DOORS1(23:00)→TERRASSE(22:00)→DOORS2(23:00)→KITCHEN(22:00)→[LEER]→DOORS2(00:00)→MAIN1-4(23:00/00:00/00:15)→[LEER]→RUNNER1-5(21:00-00:00)→[LEER]→GARDEROBE1-3(22:45/23:00/00:15)→[LEER]→TECHNIK(21:00)→[LEER]→SECURITY(22:45/23:00/23:30/00:00/01:00 mit 1/1/1/3/1 PAX)
 
 KASSA: TURBO/NYE = "Matthäus / Schadi / Isa"
 KRITISCH: Schwarze Borders! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen!
@@ -867,41 +1272,23 @@ KRITISCH: Schwarze Borders! DOORS+BAR verschachtelt! Leerzeilen zwischen Gruppen
 Google Docs: Bar=1QBLAIqBc_noXBUVbJAUMzvChLK-2_SvXqfCMZQ7UGoI Runner=1O-1jjlmIgIluAd6ZigqBItw6TkZAD29ZcdhOntJ2I_I Garderobe=1WwLF4B42STLHzG9dcjZFFCz-ZWgYjAak8Vbxh5gFDxg
 
 Output: 2 DOCX files`;
-
             openClaudeOrCopy(prompt, '📄 Opening Claude for Factsheets...');
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // SECURITY ORDER GENERATION
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
+        // Security Order
         function requestSecurityOrder(eventName, weekday, date, template) {
             const schedules = {
-                'MAIN_00': `- 22:45 – 1 PAX
-- 23:00 – 1 PAX
-- 23:30 – 1 PAX
-- 00:00 – 3 PAX
-- 01:00 – 1 PAX`,
-                'MAIN_30': `- 22:45 – 1 PAX
-- 23:00 – 1 PAX
-- 23:30 – 1 PAX
-- 00:30 – 3 PAX
-- 01:00 – 1 PAX`,
-                'CONCERT': `- 18:45 – 1 PAX
-- 19:00 – 2 PAX
-- 19:30 – 1 PAX
-- 19:45 – 1 PAX
-- 20:30 – 1 PAX (Abruf)`
+                'MAIN_00': `- 22:45 — 1 PAX\n- 23:00 — 1 PAX\n- 23:30 — 1 PAX\n- 00:00 — 3 PAX\n- 01:00 — 1 PAX`,
+                'MAIN_30': `- 22:45 — 1 PAX\n- 23:00 — 1 PAX\n- 23:30 — 1 PAX\n- 00:30 — 3 PAX\n- 01:00 — 1 PAX`,
+                'CONCERT': `- 18:45 — 1 PAX\n- 19:00 — 2 PAX\n- 19:30 — 1 PAX\n- 19:45 — 1 PAX\n- 20:30 — 1 PAX (Abruf)`
             };
-            
-            const schedule = schedules[template] || schedules['MAIN_00'];
             
             const content = `Hallo,
 
 Hier die Bestellung für die nächsten Events.
 
-${weekday} ${date} – ${eventName}
-${schedule}
+${weekday} ${date} — ${eventName}
+${schedules[template] || schedules['MAIN_00']}
 
 Bitte um Bestätigung. Danke
 
@@ -915,23 +1302,17 @@ Spittelauer Lände 12/1
 
             navigator.clipboard.writeText(content).then(() => {
                 showToast('✅ Security Order kopiert!');
-            }).catch(() => {
-                showToast('❌ Kopieren fehlgeschlagen');
-            });
+            }).catch(() => showToast('❌ Kopieren fehlgeschlagen'));
         }
         
         function openSecurityOrder() {
             const prompt = `Generate security orders for the next 2 upcoming events.
 Use templates MAIN_00/MAIN_30/CONCERT based on event type.
 Format with PAX and signature block.`;
-
             openClaudeOrCopy(prompt, '🔒 Opening Claude for Security Orders...');
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // UI FUNCTIONS
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
+        // UI Functions
         function toggleSection(label) {
             label.classList.toggle('open');
             label.nextElementSibling.classList.toggle('open');
@@ -954,54 +1335,24 @@ Format with PAX and signature block.`;
             document.getElementById(cardId).classList.toggle('open'); 
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // OTHER TOOLS
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
-        function openPresaleWithEvent(name, soll) { 
-            const prompt = `Open PreSale Calculator for ${name} with SOLL ${soll} tickets`;
-            openClaudeOrCopy(prompt, '🎫 PreSale Calculator...');
-        }
-        
+        // Other Tools
         function openPostCreator() { 
-            openClaudeOrCopy('Open Post Creator for social media', '✨ Post Creator...');
+            openClaudeOrCopy('Open Post Creator for social media', '✨ Post Creator...'); 
         }
-        
         function openCostCalculator() { 
-            openClaudeOrCopy('Open Cost Calculator for event planning', '🧮 Cost Calculator...');
+            openClaudeOrCopy('Open Cost Calculator for event planning', '🧮 Cost Calculator...'); 
         }
-        
         function openPresaleCalculator() { 
-            openClaudeOrCopy('Open PreSale Calculator', '🎟️ PreSale Calculator...');
+            openClaudeOrCopy('Open PreSale Calculator', '🎟️ PreSale Calculator...'); 
         }
-        
         function openEventProjector() { 
-            openClaudeOrCopy('Open Event Projector with KW-based analysis', '📊 Event Projector...');
+            openClaudeOrCopy('Open Event Projector with KW-based analysis', '📊 Event Projector...'); 
         }
         
-        function openToDo(url) {
-            if (isMobile()) {
-                window.location.href = 'ms-todo://';
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-        
-        function openToDoList(listId) {
-            if (isMobile()) {
-                window.location.href = 'ms-todo://';
-            } else {
-                window.open('https://to-do.live.com/tasks/' + listId, '_blank');
-            }
-        }
-        
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // INIT
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Work Hub v11.9.3 - Factsheet Format v3.0 LOCKED');
-            console.log('VVK Tracker enabled');
+            console.log('Work Hub v12.0 - Microsoft To Do Integration');
+            initMsal();
             initVVKTrackers();
         });
     </script>
