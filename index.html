@@ -621,18 +621,12 @@
                         <input type="text" id="ps-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>Kapazität (Total Tickets)</label>
-                        <input type="number" id="ps-capacity" value="800">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>VVK Anteil (%)</label>
-                        <input type="number" id="ps-vvk-percent" value="60">
+                        <label>FOH Tickets (geschätzt)</label>
+                        <input type="number" id="ps-foh-tickets" value="350" oninput="calculatePreSale()">
                     </div>
                     <div class="form-group">
-                        <label>Door Preis (€)</label>
-                        <input type="number" id="ps-door-price" value="25">
+                        <label>FOH Preis (€)</label>
+                        <input type="number" id="ps-door-price" value="22" oninput="calculatePreSale()">
                     </div>
                 </div>
                 
@@ -670,6 +664,18 @@
                             <td><input type="number" class="ps-tickets" value="80" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="24" oninput="calculatePreSale()"></td>
                             <td class="phase-revenue">€1.920</td>
+                        </tr>
+                        <tr>
+                            <td class="phase-name">Phase 4</td>
+                            <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
+                            <td><input type="number" class="ps-price" value="26" oninput="calculatePreSale()"></td>
+                            <td class="phase-revenue">€0</td>
+                        </tr>
+                        <tr>
+                            <td class="phase-name">Phase 5</td>
+                            <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
+                            <td><input type="number" class="ps-price" value="28" oninput="calculatePreSale()"></td>
+                            <td class="phase-revenue">€0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1124,7 +1130,6 @@
             <div id="storage-dropdown" class="dropdown-content">
                 <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
                 <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔵</span> OneDrive</a>
-                <a href="https://www.onenote.com/stickynotes" class="dropdown-item" target="_blank"><span class="icon">📝</span> Sticky Notes</a>
             </div>
         </div>
         <a href="https://wa.me/" class="quick-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);" target="_blank">💬 WhatsApp</a>
@@ -1737,31 +1742,32 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         function calculatePreSale() {
-            const capacity = parseInt(document.getElementById('ps-capacity').value) || 800;
-            const vvkPct = parseInt(document.getElementById('ps-vvk-percent').value) || 60;
-            const doorPrice = parseInt(document.getElementById('ps-door-price').value) || 25;
+            const fohTickets = parseInt(document.getElementById('ps-foh-tickets').value) || 350;
+            const doorPrice = parseInt(document.getElementById('ps-door-price').value) || 22;
             
+            // Sum all VVK phases
             const rows = document.querySelectorAll('#ps-phases-body tr');
-            let totalTickets = 0, totalRev = 0;
+            let totalVVK = 0, totalVVKRev = 0;
             rows.forEach(row => {
                 const tickets = parseInt(row.querySelector('.ps-tickets').value) || 0;
                 const price = parseInt(row.querySelector('.ps-price').value) || 0;
                 const rev = tickets * price;
-                row.querySelector('.phase-revenue').textContent = `€${rev.toLocaleString()}`;
-                totalTickets += tickets;
-                totalRev += rev;
+                row.querySelector('.phase-revenue').textContent = '€' + rev.toLocaleString();
+                totalVVK += tickets;
+                totalVVKRev += rev;
             });
             
-            const fohTickets = Math.round(capacity * (1 - vvkPct / 100));
             const fohRev = fohTickets * doorPrice;
-            const avgVvk = totalTickets > 0 ? (totalRev / totalTickets).toFixed(2) : 0;
+            const avgVvk = totalVVK > 0 ? (totalVVKRev / totalVVK).toFixed(2) : 0;
+            const totalTickets = totalVVK + fohTickets;
+            const totalRev = totalVVKRev + fohRev;
             
-            document.getElementById('ps-result-vvk').textContent = totalTickets;
-            document.getElementById('ps-result-vvk-rev').textContent = `€${totalRev.toLocaleString()}`;
-            document.getElementById('ps-result-avg').textContent = `€${avgVvk}`;
+            document.getElementById('ps-result-vvk').textContent = totalVVK;
+            document.getElementById('ps-result-vvk-rev').textContent = '€' + totalVVKRev.toLocaleString();
+            document.getElementById('ps-result-avg').textContent = '€' + avgVvk;
             document.getElementById('ps-result-foh').textContent = fohTickets;
-            document.getElementById('ps-result-foh-rev').textContent = `€${fohRev.toLocaleString()}`;
-            document.getElementById('ps-result-total').textContent = `€${(totalRev + fohRev).toLocaleString()}`;
+            document.getElementById('ps-result-foh-rev').textContent = '€' + fohRev.toLocaleString();
+            document.getElementById('ps-result-total').textContent = '€' + totalRev.toLocaleString();
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
