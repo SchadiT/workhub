@@ -7,11 +7,11 @@
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
-        function msalLoadSuccess() { window.msalLoaded = true; console.log('✅ MSAL loaded'); }
+        function msalLoadSuccess() { window.msalLoaded = true; console.log('âœ… MSAL loaded'); }
         function tryNextCDN(cdnList, index) {
             if (index >= cdnList.length) {
-                console.error('❌ All CDNs failed');
-                document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
+                console.error('âŒ All CDNs failed');
+                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
                 return;
             }
             var s = document.createElement('script');
@@ -334,7 +334,7 @@
         .task-checkbox { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .task-checkbox:hover { border-color: #22c55e; }
         .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
-        .task-checkbox.checked::after { content: '✓'; color: white; font-size: 12px; }
+        .task-checkbox.checked::after { content: 'âœ“'; color: white; font-size: 12px; }
         .task-info { flex: 1; }
         .task-title { font-size: 14px; color: #333; }
         .task-due { font-size: 11px; color: #888; }
@@ -405,11 +405,175 @@
         
         .loading-spinner { text-align: center; padding: 40px; color: #888; }
         .loading-spinner::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid #3d3d54; border-top-color: #0078d4; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px; }
+
+        /* Quick Notes */
+        .quick-notes {
+            background: #252542; border-radius: 10px; padding: 12px 15px; margin-bottom: 15px;
+            border: 1px solid #3d3d54;
+        }
+        .quick-notes-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+        }
+        .quick-notes-header span { font-size: 13px; font-weight: 600; color: #f59e0b; }
+        .quick-notes-header .save-indicator { font-size: 11px; color: #22c55e; opacity: 0; transition: opacity 0.3s; }
+        .quick-notes-header .save-indicator.show { opacity: 1; }
+        .quick-notes textarea {
+            width: 100%; min-height: 60px; padding: 10px; border-radius: 8px;
+            border: 1px solid #3d3d54; background: #1a1a2e; color: #fff;
+            font-size: 13px; font-family: inherit; resize: vertical;
+        }
+        .quick-notes textarea:focus { outline: none; border-color: #f59e0b; }
+        .quick-notes textarea::placeholder { color: #666; }
+        
+        /* Deep Analysis Button */
+        .btn-analysis { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+
+        /* =========================================================================== */
+        /* RESPONSIVE DESIGN */
+        /* =========================================================================== */
+        
+        /* Tablet (max 768px) */
+        @media screen and (max-width: 768px) {
+            body { padding: 12px; }
+            .header h1 { font-size: 24px; }
+            
+            .auth-bar { 
+                flex-direction: column; 
+                gap: 8px;
+                padding: 12px;
+            }
+            .auth-btn { width: 100%; justify-content: center; }
+            
+            .quick-actions,
+            .quick-actions-row2,
+            .quick-actions-row3 { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 8px;
+            }
+            
+            .quick-btn { 
+                padding: 12px 8px; 
+                font-size: 12px; 
+            }
+            
+            .quick-notes textarea { min-height: 50px; }
+            
+            .modal { margin: 10px; max-width: calc(100% - 20px); }
+            .modal-body { padding: 15px; max-height: 60vh; }
+            .form-row { grid-template-columns: 1fr; }
+            
+            .event-card-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .event-quick-stats { width: 100%; justify-content: space-between; }
+            
+            .projection-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .vvk-input-row { 
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .vvk-input-row label { font-size: 11px; }
+            .vvk-input-row input { width: 55px; }
+            
+            .dept-header { font-size: 16px; padding: 12px 15px; }
+            .section-content iframe { height: 250px; }
+            
+            .result-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .reinigung-list { grid-template-columns: repeat(2, 1fr); }
+            
+            .calendar-item { flex-wrap: wrap; gap: 8px; }
+            .calendar-event { width: 100%; order: -1; }
+        }
+        
+        /* Mobile (max 480px) */
+        @media screen and (max-width: 480px) {
+            body { padding: 8px; }
+            .header h1 { font-size: 20px; }
+            .header p { font-size: 12px; }
+            
+            .quick-actions,
+            .quick-actions-row2,
+            .quick-actions-row3 { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 6px;
+            }
+            
+            .quick-btn { 
+                padding: 10px 6px; 
+                font-size: 11px;
+                border-radius: 8px;
+            }
+            
+            .quick-notes { padding: 10px; }
+            .quick-notes-header span { font-size: 12px; }
+            
+            .event-card { margin-bottom: 10px; }
+            .event-date { min-width: 60px; font-size: 12px; padding: 4px 8px; }
+            .event-name { font-size: 14px; }
+            .event-tech { font-size: 10px; padding: 2px 6px; }
+            
+            .projection-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .proj-box { padding: 8px; }
+            .proj-box-label { font-size: 9px; }
+            .proj-box-value { font-size: 14px; }
+            
+            .vvk-tracker { padding: 10px; }
+            .vvk-input-row input { width: 50px; font-size: 12px; padding: 4px 6px; }
+            
+            .modal-header { padding: 12px 15px; }
+            .modal-header h3 { font-size: 16px; }
+            .modal-body { padding: 12px; }
+            .modal-footer { padding: 12px; flex-wrap: wrap; }
+            .modal-btn { flex: 1; min-width: 80px; padding: 8px 12px; font-size: 12px; }
+            
+            .phase-table input { width: 60px; font-size: 12px; }
+            
+            .result-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .result-item { padding: 8px; }
+            .result-item .label { font-size: 10px; }
+            .result-item .value { font-size: 16px; }
+            
+            .dept-header { font-size: 14px; padding: 10px 12px; }
+            .section-label { padding: 10px 12px; font-size: 13px; }
+            .section-content iframe { height: 200px; }
+            
+            .tasks-header { padding: 10px 12px; font-size: 13px; }
+            .task-item { padding: 8px 12px; }
+            .task-title { font-size: 13px; }
+            
+            .reinigung-list { grid-template-columns: 1fr 1fr; gap: 4px; }
+            .reinigung-item { padding: 4px 6px; }
+            .reinigung-date { font-size: 11px; }
+            
+            .calendar-item { padding: 8px 10px; }
+            .calendar-date { font-size: 12px; min-width: 55px; }
+            .calendar-event { font-size: 13px; }
+            .calendar-tech { font-size: 11px; padding: 3px 8px; }
+            
+            .footer a { padding: 12px 20px; font-size: 13px; }
+            .version { font-size: 10px; }
+            
+            .factsheet-preview { padding: 15px; font-size: 12px; }
+            .factsheet-preview table { font-size: 11px; }
+            .factsheet-preview th, 
+            .factsheet-preview td { padding: 5px; }
+        }
+        
+        /* Large Desktop (min 1200px) */
+        @media screen and (min-width: 1200px) {
+            body { max-width: 1400px; margin: 0 auto; }
+            
+            .departments { 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 20px; 
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🚀 TURBO-PROJECTS</h1>
+        <h1>ðŸš€ TURBO-PROJECTS</h1>
         <p>Work Hub Launcher</p>
     </div>
     
@@ -421,24 +585,33 @@
         </div>
         <span class="auth-user" id="auth-user"></span>
         <button class="auth-btn" id="auth-btn" onclick="handleAuth()">
-            <span>🔐</span> Sign in with Microsoft
+            <span>ðŸ”</span> Sign in with Microsoft
         </button>
-        <button class="auth-btn" onclick="forceResetAuth()" title="Cache löschen & neu verbinden" style="padding: 8px 12px; margin-left: 5px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-            🔄 Reset
+        <button class="auth-btn" onclick="forceResetAuth()" title="Cache lÃ¶schen & neu verbinden" style="padding: 8px 12px; margin-left: 5px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            ðŸ”„ Reset
         </button>
     </div>
     
     <div class="toast" id="toast"></div>
     
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- Quick Notes -->
+    <div class="quick-notes">
+        <div class="quick-notes-header">
+            <span>&#x1F4DD; Quick Notes</span>
+            <span class="save-indicator" id="notes-saved">&#x2713; Gespeichert</span>
+        </div>
+        <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
+    </div>
+    
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <!-- MODALS -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     
     <!-- PreSale Calculator Modal -->
     <div class="modal-overlay" id="presale-modal">
         <div class="modal">
             <div class="modal-header orange">
-                <h3>🎟️ PreSale Calculator</h3>
+                <h3>ðŸŽŸï¸ PreSale Calculator</h3>
                 <button class="modal-close" onclick="closeModal('presale-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -448,7 +621,7 @@
                         <input type="text" id="ps-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>Kapazität (Total Tickets)</label>
+                        <label>KapazitÃ¤t (Total Tickets)</label>
                         <input type="number" id="ps-capacity" value="800">
                     </div>
                 </div>
@@ -458,7 +631,7 @@
                         <input type="number" id="ps-vvk-percent" value="60">
                     </div>
                     <div class="form-group">
-                        <label>Door Preis (€)</label>
+                        <label>Door Preis (â‚¬)</label>
                         <input type="number" id="ps-door-price" value="25">
                     </div>
                 </div>
@@ -469,7 +642,7 @@
                         <tr>
                             <th>Phase</th>
                             <th>Tickets</th>
-                            <th>Preis (€)</th>
+                            <th>Preis (â‚¬)</th>
                             <th>Revenue</th>
                         </tr>
                     </thead>
@@ -478,31 +651,31 @@
                             <td class="phase-name">Early Bird</td>
                             <td><input type="number" class="ps-tickets" value="100" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="18" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€1.800</td>
+                            <td class="phase-revenue">â‚¬1.800</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 1</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="20" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€3.000</td>
+                            <td class="phase-revenue">â‚¬3.000</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 2</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="22" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€3.300</td>
+                            <td class="phase-revenue">â‚¬3.300</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 3</td>
                             <td><input type="number" class="ps-tickets" value="80" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="24" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€1.920</td>
+                            <td class="phase-revenue">â‚¬1.920</td>
                         </tr>
                     </tbody>
                 </table>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>📊 Ergebnis</h4>
+                    <h4>ðŸ“Š Ergebnis</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Tickets</div>
@@ -510,11 +683,11 @@
                         </div>
                         <div class="result-item">
                             <div class="label">VVK Revenue</div>
-                            <div class="value" id="ps-result-vvk-rev">€10.020</div>
+                            <div class="value" id="ps-result-vvk-rev">â‚¬10.020</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø VVK Preis</div>
-                            <div class="value orange" id="ps-result-avg">€20.88</div>
+                            <div class="label">Ã˜ VVK Preis</div>
+                            <div class="value orange" id="ps-result-avg">â‚¬20.88</div>
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Tickets</div>
@@ -522,17 +695,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Revenue</div>
-                            <div class="value" id="ps-result-foh-rev">€8.000</div>
+                            <div class="value" id="ps-result-foh-rev">â‚¬8.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ps-result-total">€18.020</div>
+                            <div class="value" id="ps-result-total">â‚¬18.020</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">SchlieÃŸen</button>
             </div>
         </div>
     </div>
@@ -541,7 +714,7 @@
     <div class="modal-overlay" id="cost-modal">
         <div class="modal">
             <div class="modal-header purple">
-                <h3>🧮 Cost Calculator</h3>
+                <h3>ðŸ§® Cost Calculator</h3>
                 <button class="modal-close" onclick="closeModal('cost-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -551,24 +724,24 @@
                         <input type="text" id="cc-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>Erwartete Gäste</label>
+                        <label>Erwartete GÃ¤ste</label>
                         <input type="number" id="cc-guests" value="800" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">💰 Einnahmen (Projektion)</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ’° Einnahmen (Projektion)</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Ticket Revenue (€)</label>
+                        <label>Ticket Revenue (â‚¬)</label>
                         <input type="number" id="cc-ticket-rev" value="18000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Bar Revenue (€)</label>
+                        <label>Bar Revenue (â‚¬)</label>
                         <input type="number" id="cc-bar-rev" value="12000" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">👥 Personal</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ‘¥ Personal</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Bar Team (Personen)</label>
@@ -600,50 +773,50 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">📦 Fixkosten</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ“¦ Fixkosten</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Artist Fee (€)</label>
+                        <label>Artist Fee (â‚¬)</label>
                         <input type="number" id="cc-artist" value="2000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>GEMA/AKM (€)</label>
+                        <label>GEMA/AKM (â‚¬)</label>
                         <input type="number" id="cc-gema" value="500" oninput="calculateCosts()">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Marketing (€)</label>
+                        <label>Marketing (â‚¬)</label>
                         <input type="number" id="cc-marketing" value="300" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Sonstiges (€)</label>
+                        <label>Sonstiges (â‚¬)</label>
                         <input type="number" id="cc-other" value="200" oninput="calculateCosts()">
                     </div>
                 </div>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>📊 Kalkulation</h4>
+                    <h4>ðŸ“Š Kalkulation</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">Total Einnahmen</div>
-                            <div class="value" id="cc-result-revenue">€30.000</div>
+                            <div class="value" id="cc-result-revenue">â‚¬30.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Personalkosten</div>
-                            <div class="value red" id="cc-result-staff">€3.150</div>
+                            <div class="value red" id="cc-result-staff">â‚¬3.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Fixkosten</div>
-                            <div class="value red" id="cc-result-fixed">€3.000</div>
+                            <div class="value red" id="cc-result-fixed">â‚¬3.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Kosten</div>
-                            <div class="value red" id="cc-result-costs">€6.150</div>
+                            <div class="value red" id="cc-result-costs">â‚¬6.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Deckungsbeitrag</div>
-                            <div class="value" id="cc-result-profit">€23.850</div>
+                            <div class="value" id="cc-result-profit">â‚¬23.850</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Marge</div>
@@ -651,10 +824,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="form-hint" style="margin-top: 10px;">⚠️ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar €150, Runner €120, Garderobe €100, Security €180, Technik €200, CVD €150</p>
+                <p class="form-hint" style="margin-top: 10px;">âš ï¸ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar â‚¬150, Runner â‚¬120, Garderobe â‚¬100, Security â‚¬180, Technik â‚¬200, CVD â‚¬150</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">SchlieÃŸen</button>
             </div>
         </div>
     </div>
@@ -663,7 +836,7 @@
     <div class="modal-overlay" id="projector-modal">
         <div class="modal">
             <div class="modal-header green">
-                <h3>📊 Event Projector</h3>
+                <h3>ðŸ“Š Event Projector</h3>
                 <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -693,18 +866,18 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>📈 Serie Durchschnitt</h4>
+                    <h4>ðŸ“ˆ Serie Durchschnitt</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">Ø VVK</div>
+                            <div class="label">Ã˜ VVK</div>
                             <div class="value blue" id="ep-avg-vvk">436</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø FOH</div>
+                            <div class="label">Ã˜ FOH</div>
                             <div class="value blue" id="ep-avg-foh">336</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø Total</div>
+                            <div class="label">Ã˜ Total</div>
                             <div class="value blue" id="ep-avg-total">772</div>
                         </div>
                         <div class="result-item">
@@ -715,24 +888,24 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>🍺 KW Bar-Statistik</h4>
+                    <h4>ðŸº KW Bar-Statistik</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">€/Person</div>
-                            <div class="value orange" id="ep-bar-pp">€16.3</div>
+                            <div class="label">â‚¬/Person</div>
+                            <div class="value orange" id="ep-bar-pp">â‚¬16.3</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø Bar Revenue</div>
-                            <div class="value" id="ep-bar-rev">€12.584</div>
+                            <div class="label">Ã˜ Bar Revenue</div>
+                            <div class="value" id="ep-bar-rev">â‚¬12.584</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø Total Gäste</div>
+                            <div class="label">Ã˜ Total GÃ¤ste</div>
                             <div class="value blue" id="ep-bar-guests">772</div>
                         </div>
                     </div>
                 </div>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px;">🎯 Projektion mit aktuellem VVK</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px;">ðŸŽ¯ Projektion mit aktuellem VVK</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Aktueller VVK Stand</label>
@@ -745,7 +918,7 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>🔮 Projektion</h4>
+                    <h4>ðŸ”® Projektion</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Projektion</div>
@@ -757,17 +930,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">Bar Projektion</div>
-                            <div class="value orange" id="ep-proj-bar">~€12.6k</div>
+                            <div class="value orange" id="ep-proj-bar">~â‚¬12.6k</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ep-proj-total">~€28k</div>
+                            <div class="value" id="ep-proj-total">~â‚¬28k</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">SchlieÃŸen</button>
             </div>
         </div>
     </div>
@@ -776,15 +949,15 @@
     <div class="modal-overlay" id="factsheet-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>📄 Factsheet Generator</h3>
+                <h3>ðŸ“„ Factsheet Generator</h3>
                 <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Event auswählen</label>
+                        <label>Event auswÃ¤hlen</label>
                         <select id="fs-event-select" onchange="loadEventData()">
-                            <option value="">-- Event wählen --</option>
+                            <option value="">-- Event wÃ¤hlen --</option>
                             <option value="turbo">TURBO - Sa 27.12.2025</option>
                             <option value="nye">NYE SILVESTER - Di 31.12.2025</option>
                         </select>
@@ -799,7 +972,7 @@
                 </div>
                 <div class="form-row" id="main-floor-row">
                     <div class="form-group">
-                        <label>Main Floor Öffnung</label>
+                        <label>Main Floor Ã–ffnung</label>
                         <div style="display: flex; gap: 15px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
                                 <input type="radio" name="main-floor-time" value="00:00" checked onchange="updateFactsheetPreview()"> 
@@ -823,7 +996,7 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">👥 Personal</h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ‘¥ Personal</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>CVD</label>
@@ -905,80 +1078,80 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">👀 Preview</h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ‘€ Preview</h4>
                 <div class="factsheet-preview" id="fs-preview">
                     <!-- Generated by JS -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schließen</button>
-                <button class="modal-btn primary" onclick="copyFactsheet()">📋 Kopieren</button>
-                <button class="modal-btn success" onclick="printFactsheet()">🖨️ Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">SchlieÃŸen</button>
+                <button class="modal-btn primary" onclick="copyFactsheet()">ðŸ“‹ Kopieren</button>
+                <button class="modal-btn success" onclick="printFactsheet()">ðŸ–¨ï¸ Drucken</button>
             </div>
         </div>
     </div>
     
     
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <!-- QUICK ACTIONS -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     
     <div class="quick-actions">
-        <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">📄 Factsheet</button>
-        <a href="https://outlook.office.com/mail" class="quick-btn btn-email" target="_blank">✉️ E-Mail</a>
-        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
-        <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
+        <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">ðŸ“„ Factsheet</button>
+        <a href="https://outlook.office.com/mail" class="quick-btn btn-email" target="_blank">âœ‰ï¸ E-Mail</a>
+        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">ðŸ“ Graphics</a>
+        <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">ðŸ“– BMT</a>
     </div>
     
     <div class="quick-actions-row2">
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">ðŸ“± Social â–¼</button>
             <div id="social-dropdown" class="dropdown-content">
-                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
-                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📘</span> Facebook</a>
+                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“¸</span> Instagram</a>
+                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“˜</span> Facebook</a>
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">💰 Sales ▼</button>
+            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">ðŸ’° Sales â–¼</button>
             <div id="sales-dropdown" class="dropdown-content">
-                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
-                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔗</span> Linktree</a>
-                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
+                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">ðŸ’³</span> WBV (POS)</a>
+                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">ðŸ”—</span> Linktree</a>
+                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">ðŸŽŸï¸</span> ntry (Pre-Sale)</a>
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')" style="background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);">📁 Storage ▼</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')" style="background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);">ðŸ“ Storage â–¼</button>
             <div id="storage-dropdown" class="dropdown-content">
-                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
-                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔵</span> OneDrive</a>
-                <a href="https://www.onenote.com/stickynotes" class="dropdown-item" target="_blank"><span class="icon">📝</span> Sticky Notes</a>
+                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">ðŸŸ¡</span> Google Drive</a>
+                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">ðŸ”µ</span> OneDrive</a>
+                <a href="https://www.onenote.com/stickynotes" class="dropdown-item" target="_blank"><span class="icon">ðŸ“</span> Sticky Notes</a>
             </div>
         </div>
-        <a href="https://wa.me/" class="quick-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);" target="_blank">💬 WhatsApp</a>
+        <a href="https://wa.me/" class="quick-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);" target="_blank">ðŸ’¬ WhatsApp</a>
     </div>
     
     <div class="quick-actions-row3">
-        <button class="quick-btn btn-presale" onclick="openModal('presale-modal')">🎟️ PreSale Calc</button>
-        <button class="quick-btn btn-calculator" onclick="openModal('cost-modal')">🧮 Cost Calc</button>
-        <button class="quick-btn btn-projector" onclick="openModal('projector-modal')">📊 Projector</button>
-        <a href="https://to-do.live.com" class="quick-btn" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);" target="_blank">✅ To Do</a>
+        <button class="quick-btn btn-presale" onclick="openModal('presale-modal')">ðŸŽŸï¸ PreSale Calc</button>
+        <button class="quick-btn btn-calculator" onclick="openModal('cost-modal')">ðŸ§® Cost Calc</button>
+        <button class="quick-btn btn-projector" onclick="openModal('projector-modal')">ðŸ“Š Projector</button>
+        <button class="quick-btn btn-analysis" onclick="openDeepAnalysis()">&#x1F52C; Deep Analysis</button>
     </div>
     
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <!-- OUTLOOK SECTION -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     
     
 
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <!-- UPCOMING EVENTS -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     
     <div class="upcoming-events">
         <div class="upcoming-header">
-            <span class="upcoming-title">📅 UPCOMING EVENTS</span>
+            <span class="upcoming-title">ðŸ“… UPCOMING EVENTS</span>
         </div>
-        <div class="upcoming-week-label current">🔴 DIESE WOCHE (KW 52)</div>
+        <div class="upcoming-week-label current">ðŸ”´ DIESE WOCHE (KW 52)</div>
         
         <!-- TURBO -->
         <div class="event-card" id="event-turbo27">
@@ -989,32 +1162,32 @@
                     <span class="event-tech">Simon</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="turbo-bar-quick">🍺 ~€14.5k</span>
-                    <span id="turbo-tickets-quick">🎫 ~763</span>
-                    <span class="event-toggle">▼</span>
+                    <span id="turbo-bar-quick">ðŸº ~â‚¬14.5k</span>
+                    <span id="turbo-tickets-quick">ðŸŽ« ~763</span>
+                    <span class="event-toggle">â–¼</span>
                 </div>
             </div>
             <div class="event-details">
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
-                        <label>🎯 Ziel:</label>
+                        <label>ðŸŽ¯ Ziel:</label>
                         <input type="number" id="turbo-ziel-input" value="450" oninput="updateProjection('turbo')">
-                        <label>📊 Max:</label>
+                        <label>ðŸ“Š Max:</label>
                         <input type="number" id="turbo-max-input" value="600" oninput="updateProjection('turbo')">
-                        <label>🎫 Aktuell:</label>
+                        <label>ðŸŽ« Aktuell:</label>
                         <input type="number" id="turbo-vvk-input" placeholder="0" oninput="updateProjection('turbo')">
                         <span class="vvk-days" id="turbo-days">4 Tage</span>
                     </div>
                     <div class="vvk-input-row">
-                        <label>💶 Ø VVK €:</label>
+                        <label>ðŸ’¶ Ã˜ VVK â‚¬:</label>
                         <input type="number" id="turbo-vvk-price" value="18" oninput="updateProjection('turbo')">
-                        <label>🚪 FOH €:</label>
+                        <label>ðŸšª FOH â‚¬:</label>
                         <input type="number" id="turbo-foh-price" value="22" oninput="updateProjection('turbo')">
                     </div>
                     <div class="vvk-progress-bar">
                         <div class="vvk-progress" id="turbo-progress" style="width: 0%"></div>
                     </div>
-                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | 55% bei 5d → Soll ~248</div>
+                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | 55% bei 5d â†’ Soll ~248</div>
                 </div>
                 <div class="auto-projection">
                     <div class="projection-grid">
@@ -1028,18 +1201,18 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="turbo-bar-proj">~€14.5k</div>
+                            <div class="proj-box-value bar" id="turbo-bar-proj">~â‚¬14.5k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="turbo-total-proj">~€29.8k</div>
+                            <div class="proj-box-value" id="turbo-total-proj">~â‚¬29.8k</div>
                         </div>
                     </div>
-                    <div class="projection-basis" id="turbo-basis">📊 TURBO Ø: 436 VVK, 336 FOH | KW52: €16.3/Person</div>
+                    <div class="projection-basis" id="turbo-basis">ðŸ“Š TURBO Ã˜: 436 VVK, 336 FOH | KW52: â‚¬16.3/Person</div>
                 </div>
-                <div class="cvd-badge">👔 CVD: Alain</div>
+                <div class="cvd-badge">ðŸ‘” CVD: Alain</div>
                 <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('turbo')">📄 Factsheet</button>
+                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('turbo')">ðŸ“„ Factsheet</button>
                 </div>
             </div>
         </div>
@@ -1053,32 +1226,32 @@
                     <span class="event-tech">Jan</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="nye-bar-quick">🍺 ~€23k</span>
-                    <span id="nye-tickets-quick">🎫 ~1153</span>
-                    <span class="event-toggle">▼</span>
+                    <span id="nye-bar-quick">ðŸº ~â‚¬23k</span>
+                    <span id="nye-tickets-quick">ðŸŽ« ~1153</span>
+                    <span class="event-toggle">â–¼</span>
                 </div>
             </div>
             <div class="event-details">
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
-                        <label>🎯 Ziel:</label>
+                        <label>ðŸŽ¯ Ziel:</label>
                         <input type="number" id="nye-ziel-input" value="450" oninput="updateProjection('nye')">
-                        <label>📊 Max:</label>
+                        <label>ðŸ“Š Max:</label>
                         <input type="number" id="nye-max-input" value="700" oninput="updateProjection('nye')">
-                        <label>🎫 Aktuell:</label>
+                        <label>ðŸŽ« Aktuell:</label>
                         <input type="number" id="nye-vvk-input" placeholder="0" oninput="updateProjection('nye')">
                         <span class="vvk-days" id="nye-days">8 Tage</span>
                     </div>
                     <div class="vvk-input-row">
-                        <label>💶 Ø VVK €:</label>
+                        <label>ðŸ’¶ Ã˜ VVK â‚¬:</label>
                         <input type="number" id="nye-vvk-price" value="25" oninput="updateProjection('nye')">
-                        <label>🚪 FOH €:</label>
+                        <label>ðŸšª FOH â‚¬:</label>
                         <input type="number" id="nye-foh-price" value="26" oninput="updateProjection('nye')">
                     </div>
                     <div class="vvk-progress-bar">
                         <div class="vvk-progress" id="nye-progress" style="width: 0%"></div>
                     </div>
-                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | 40% bei 9d → Soll ~180</div>
+                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | 40% bei 9d â†’ Soll ~180</div>
                 </div>
                 <div class="auto-projection">
                     <div class="projection-grid">
@@ -1092,39 +1265,39 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="nye-bar-proj">~€23k</div>
+                            <div class="proj-box-value bar" id="nye-bar-proj">~â‚¬23k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="nye-total-proj">~€46k</div>
+                            <div class="proj-box-value" id="nye-total-proj">~â‚¬46k</div>
                         </div>
                     </div>
-                    <div class="projection-basis" id="nye-basis">📊 NYE Ø: 562 VVK, 649 FOH | KW52: €16.3/Person</div>
+                    <div class="projection-basis" id="nye-basis">ðŸ“Š NYE Ã˜: 562 VVK, 649 FOH | KW52: â‚¬16.3/Person</div>
                 </div>
-                <div class="cvd-badge">👔 CVD: Alain / Niat</div>
+                <div class="cvd-badge">ðŸ‘” CVD: Alain / Niat</div>
                 <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('nye')">📄 Factsheet</button>
+                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('nye')">ðŸ“„ Factsheet</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <!-- DEPARTMENTS -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     
     <div class="departments">
         <!-- OFFICE -->
         <div class="dept office">
             <div class="dept-header">
-                <div class="dept-header-left">💼 OFFICE</div>
-                <span class="task-count" id="office-task-count">—</span>
+                <div class="dept-header-left">ðŸ’¼ OFFICE</div>
+                <span class="task-count" id="office-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>🧹 Reinigungsplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ§¹ Reinigungsplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <div class="reinigung-list">
@@ -1139,31 +1312,31 @@
                 </div>
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your tasks</p>
-                            <button onclick="handleAuth()">🔐 Connect</button>
+                            <button onclick="handleAuth()">ðŸ” Connect</button>
                         </div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('office')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('office')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header">
-                <div class="dept-header-left">🍷 BAR</div>
-                <span class="task-count" id="bar-task-count">—</span>
+                <div class="dept-header-left">ðŸ· BAR</div>
+                <span class="task-count" id="bar-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
@@ -1171,28 +1344,28 @@
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔐 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('bar')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('bar')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header">
-                <div class="dept-header-left">🏃 RUNNER</div>
-                <span class="task-count" id="runner-task-count">—</span>
+                <div class="dept-header-left">ðŸƒ RUNNER</div>
+                <span class="task-count" id="runner-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:400px;"></iframe>
@@ -1200,28 +1373,28 @@
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔐 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('runner')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('runner')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- TECHNIK -->
         <div class="dept technik">
             <div class="dept-header">
-                <div class="dept-header-left">🔧 TECHNIK</div>
-                <span class="task-count" id="technik-task-count">—</span>
+                <div class="dept-header-left">ðŸ”§ TECHNIK</div>
+                <span class="task-count" id="technik-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label open" onclick="toggleSection(this)">
-                        <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“… Technikerkalender</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content open">
                         <div class="calendar-list">
@@ -1242,28 +1415,28 @@
                 </div>
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔐 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('technik')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('technik')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header">
-                <div class="dept-header-left">🍸 SPUTNIK BAR</div>
-                <span class="task-count" id="sputnik-task-count">—</span>
+                <div class="dept-header-left">ðŸ¸ SPUTNIK BAR</div>
+                <span class="task-count" id="sputnik-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
@@ -1271,28 +1444,28 @@
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔐 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('sputnik')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('sputnik')">ðŸ“ Open in To Do</button>
             </div>
         </div>
     </div>
     
     <div class="footer">
-        <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
+        <a href="https://to-do.live.com" target="_blank">&#x2705; Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v13.0 • 24.12.2025 • Outlook Removed + To Do Focus</div>
+    <div class="version">Work Hub v13.2 â€¢ 24.12.2025 â€¢ Responsive + Capacity Caps + Quick Notes</div>
 
     <script>
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // MSAL CONFIG
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         const msalConfig = {
             auth: {
@@ -1316,9 +1489,9 @@
         let msalInstance = null;
         let accessToken = null;
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // DATA
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         const SERIE_STATS = {
             turbo: { avgVVK: 436, avgFOH: 336, avgTotal: 772, barPP: 15.3, events: 25 },
@@ -1335,6 +1508,13 @@
         };
         
         const VVK_BENCHMARKS = { 14: 0.35, 10: 0.42, 7: 0.50, 5: 0.55, 3: 0.65, 2: 0.72, 1: 0.80, 0: 0.85 };
+        
+        // Capacity Caps (basierend auf historischen Daten - 76 Events)
+        const CAPACITY_CAPS = {
+            MAX_VVK: 600,      // Historisch max: 573
+            MAX_FOH: 700,      // Historisch max: 649
+            MAX_TOTAL: 1250    // Historisch max: 1211
+        };
         
         const EVENT_CONFIG = {
             turbo: { date: new Date('2025-12-27'), serie: 'turbo', kw: 52 },
@@ -1367,15 +1547,15 @@
         
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // MSAL AUTH
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         async function initMsal() {
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
                 console.error('MSAL library not loaded!');
-                document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
+                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
                 return;
             }
             
@@ -1421,17 +1601,17 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("✅ Verbunden!");
+                    showToast("âœ… Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("❌ Login fehlgeschlagen", true); 
+                    showToast("âŒ Login fehlgeschlagen", true); 
                 }
             }
         }
         
         async function forceResetAuth() {
             // Clear everything and start fresh
-            showToast("🔄 Cache wird gelöscht...");
+            showToast("ðŸ”„ Cache wird gelÃ¶scht...");
             
             // Clear MSAL cache
             if (msalInstance) {
@@ -1452,7 +1632,7 @@
             updateAuthUI(null);
             resetAllUI();
             
-            showToast("✅ Cache gelöscht! Seite wird neu geladen...");
+            showToast("âœ… Cache gelÃ¶scht! Seite wird neu geladen...");
             
             // Reload page to ensure clean state
             setTimeout(() => location.reload(), 1000);
@@ -1467,13 +1647,13 @@
                 dot.classList.add('connected');
                 statusText.textContent = 'Verbunden';
                 userText.textContent = account.username || '';
-                authBtn.innerHTML = '<span>🚪</span> Abmelden';
+                authBtn.innerHTML = '<span>ðŸšª</span> Abmelden';
                 authBtn.classList.add('logout');
             } else {
                 dot.classList.remove('connected');
                 statusText.textContent = 'Nicht verbunden';
                 userText.textContent = '';
-                authBtn.innerHTML = '<span>🔐</span> Sign in';
+                authBtn.innerHTML = '<span>ðŸ”</span> Sign in';
                 authBtn.classList.remove('logout');
             }
         }
@@ -1490,14 +1670,14 @@
         
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
-                document.getElementById(`${d}-task-count`).textContent = '—';
-                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
+                document.getElementById(`${d}-task-count`).textContent = 'â€”';
+                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">ðŸ”</button></div>';
             });
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // TASKS
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         async function loadAllTasks() {
             if (!accessToken) return;
@@ -1516,13 +1696,13 @@
                 });
                 const data = await r.json();
                 const tasks = data.value || [];
-                countEl.textContent = tasks.length || '✓';
+                countEl.textContent = tasks.length || 'âœ“';
                 listEl.innerHTML = tasks.length ? tasks.map(t => {
                     let dueClass = '', dueText = '';
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = 'Überfällig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = 'ÃœberfÃ¤llig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -1531,8 +1711,8 @@
                         <div class="task-info"><div class="task-title">${esc(t.title)}</div>${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
-                }).join('') : '<div class="tasks-empty">🎉 Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">⚠️</div>'; }
+                }).join('') : '<div class="tasks-empty">ðŸŽ‰ Alles erledigt!</div>';
+            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">âš ï¸</div>'; }
         }
         
         async function completeTask(taskId, dept) {
@@ -1544,7 +1724,7 @@
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
-                showToast("✅ Erledigt!");
+                showToast("âœ… Erledigt!");
                 setTimeout(() => loadTasks(dept), 500);
             } catch (e) { el.querySelector('.task-checkbox').classList.remove('checked'); }
         }
@@ -1552,9 +1732,9 @@
         function refreshTasks(d) { const b = document.querySelector(`#${d}-tasks .refresh-btn`); b.classList.add('spinning'); loadTasks(d).then(() => b.classList.remove('spinning')); }
         function openToDoList(d) { window.open(`https://to-do.live.com/tasks/${TODO_LISTS[d]}`, '_blank'); }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // PRESALE CALCULATOR
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function calculatePreSale() {
             const capacity = parseInt(document.getElementById('ps-capacity').value) || 800;
@@ -1567,7 +1747,7 @@
                 const tickets = parseInt(row.querySelector('.ps-tickets').value) || 0;
                 const price = parseInt(row.querySelector('.ps-price').value) || 0;
                 const rev = tickets * price;
-                row.querySelector('.phase-revenue').textContent = `€${rev.toLocaleString()}`;
+                row.querySelector('.phase-revenue').textContent = `â‚¬${rev.toLocaleString()}`;
                 totalTickets += tickets;
                 totalRev += rev;
             });
@@ -1577,16 +1757,16 @@
             const avgVvk = totalTickets > 0 ? (totalRev / totalTickets).toFixed(2) : 0;
             
             document.getElementById('ps-result-vvk').textContent = totalTickets;
-            document.getElementById('ps-result-vvk-rev').textContent = `€${totalRev.toLocaleString()}`;
-            document.getElementById('ps-result-avg').textContent = `€${avgVvk}`;
+            document.getElementById('ps-result-vvk-rev').textContent = `â‚¬${totalRev.toLocaleString()}`;
+            document.getElementById('ps-result-avg').textContent = `â‚¬${avgVvk}`;
             document.getElementById('ps-result-foh').textContent = fohTickets;
-            document.getElementById('ps-result-foh-rev').textContent = `€${fohRev.toLocaleString()}`;
-            document.getElementById('ps-result-total').textContent = `€${(totalRev + fohRev).toLocaleString()}`;
+            document.getElementById('ps-result-foh-rev').textContent = `â‚¬${fohRev.toLocaleString()}`;
+            document.getElementById('ps-result-total').textContent = `â‚¬${(totalRev + fohRev).toLocaleString()}`;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // COST CALCULATOR
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function calculateCosts() {
             const ticketRev = parseInt(document.getElementById('cc-ticket-rev').value) || 0;
@@ -1613,18 +1793,18 @@
             const profit = totalRev - totalCosts;
             const margin = totalRev > 0 ? ((profit / totalRev) * 100).toFixed(1) : 0;
             
-            document.getElementById('cc-result-revenue').textContent = `€${totalRev.toLocaleString()}`;
-            document.getElementById('cc-result-staff').textContent = `€${staffCosts.toLocaleString()}`;
-            document.getElementById('cc-result-fixed').textContent = `€${fixedCosts.toLocaleString()}`;
-            document.getElementById('cc-result-costs').textContent = `€${totalCosts.toLocaleString()}`;
-            document.getElementById('cc-result-profit').textContent = `€${profit.toLocaleString()}`;
+            document.getElementById('cc-result-revenue').textContent = `â‚¬${totalRev.toLocaleString()}`;
+            document.getElementById('cc-result-staff').textContent = `â‚¬${staffCosts.toLocaleString()}`;
+            document.getElementById('cc-result-fixed').textContent = `â‚¬${fixedCosts.toLocaleString()}`;
+            document.getElementById('cc-result-costs').textContent = `â‚¬${totalCosts.toLocaleString()}`;
+            document.getElementById('cc-result-profit').textContent = `â‚¬${profit.toLocaleString()}`;
             document.getElementById('cc-result-profit').className = `value ${profit >= 0 ? '' : 'red'}`;
             document.getElementById('cc-result-margin').textContent = `${margin}%`;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // EVENT PROJECTOR
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function updateProjectorData() {
             const serie = document.getElementById('ep-serie').value;
@@ -1636,8 +1816,8 @@
             document.getElementById('ep-avg-foh').textContent = s.avgFOH;
             document.getElementById('ep-avg-total').textContent = s.avgTotal;
             document.getElementById('ep-events').textContent = s.events;
-            document.getElementById('ep-bar-pp').textContent = `€${k.barPP}`;
-            document.getElementById('ep-bar-rev').textContent = `€${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
+            document.getElementById('ep-bar-pp').textContent = `â‚¬${k.barPP}`;
+            document.getElementById('ep-bar-rev').textContent = `â‚¬${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
             document.getElementById('ep-bar-guests').textContent = s.avgTotal;
             
             updateProjectorProjection();
@@ -1663,16 +1843,16 @@
             
             document.getElementById('ep-proj-vvk').textContent = `~${projVVK}`;
             document.getElementById('ep-proj-foh').textContent = `~${projFOH}`;
-            document.getElementById('ep-proj-bar').textContent = `~€${(projBar/1000).toFixed(1)}k`;
-            document.getElementById('ep-proj-total').textContent = `~€${(projTotal/1000).toFixed(0)}k`;
+            document.getElementById('ep-proj-bar').textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById('ep-proj-total').textContent = `~â‚¬${(projTotal/1000).toFixed(0)}k`;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // FACTSHEET GENERATOR
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function isEigenveranstaltung(name) { return EIGENVERANSTALTUNGEN.some(e => name.toLowerCase().includes(e)); }
-        function getKassa(name) { return isEigenveranstaltung(name) ? "Matthäus / Schadi / Isa" : "FREMD"; }
+        function getKassa(name) { return isEigenveranstaltung(name) ? "MatthÃ¤us / Schadi / Isa" : "FREMD"; }
         
         function updateFactsheetPreview() {
             const eventName = document.getElementById('fs-event-name').value || 'EVENT';
@@ -1851,7 +2031,7 @@
                 document.getElementById('fs-event-select').value = eventId;
                 fillFactsheetForm(e);
                 openModal('factsheet-modal');
-                showToast(`📄 ${e.name} Factsheet geladen!`);
+                showToast(`ðŸ“„ ${e.name} Factsheet geladen!`);
             }
         }
         
@@ -1863,7 +2043,7 @@
             window.getSelection().addRange(range);
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
-            showToast("📋 Factsheet kopiert!");
+            showToast("ðŸ“‹ Factsheet kopiert!");
         }
         
         function printFactsheet() {
@@ -1874,9 +2054,9 @@
             w.print();
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // VVK TRACKER (Events Dashboard)
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function getDaysUntil(id) {
             const d = EVENT_CONFIG[id].date;
@@ -1892,37 +2072,50 @@
             
             const currentVVK = parseInt(document.getElementById(`${id}-vvk-input`).value) || 0;
             const vvkZiel = parseInt(document.getElementById(`${id}-ziel-input`).value) || 450;
-            const maxVVK = parseInt(document.getElementById(`${id}-max-input`).value) || 600;
+            const maxVVKInput = parseInt(document.getElementById(`${id}-max-input`).value) || 600;
             const vvkPrice = parseFloat(document.getElementById(`${id}-vvk-price`).value) || 18;
             const fohPrice = parseFloat(document.getElementById(`${id}-foh-price`).value) || 22;
+            
+            // Apply historical capacity caps
+            const maxVVK = Math.min(maxVVKInput, CAPACITY_CAPS.MAX_VVK);
             
             let pct = 0.5;
             for (const d of [14,10,7,5,3,2,1,0]) { if (days >= d) { pct = VVK_BENCHMARKS[d]; break; } }
             
             const fohRatio = s.avgFOH / s.avgVVK;
-            const projVVK = currentVVK > 0 ? Math.min(Math.round(currentVVK / pct), maxVVK) : Math.min(vvkZiel, maxVVK);
-            const projFOH = Math.round(projVVK * fohRatio);
+            let projVVK = currentVVK > 0 ? Math.min(Math.round(currentVVK / pct), maxVVK) : Math.min(vvkZiel, maxVVK);
+            let projFOH = Math.round(projVVK * fohRatio);
+            
+            // Apply FOH and Total caps
+            projFOH = Math.min(projFOH, CAPACITY_CAPS.MAX_FOH);
+            const projTotalGuests = projVVK + projFOH;
+            if (projTotalGuests > CAPACITY_CAPS.MAX_TOTAL) {
+                const scale = CAPACITY_CAPS.MAX_TOTAL / projTotalGuests;
+                projVVK = Math.round(projVVK * scale);
+                projFOH = Math.round(projFOH * scale);
+            }
+            
             const projBar = (projVVK + projFOH) * k.barPP;
             const projTotal = projBar + (projVVK * vvkPrice) + (projFOH * fohPrice);
             
             document.getElementById(`${id}-days`).textContent = `${days} Tage`;
             document.getElementById(`${id}-vvk-proj`).textContent = `~${projVVK}`;
             document.getElementById(`${id}-foh-proj`).textContent = `~${projFOH}`;
-            document.getElementById(`${id}-bar-proj`).textContent = `~€${(projBar/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-total-proj`).textContent = `~€${(projTotal/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-tickets-quick`).textContent = `🎫 ~${projVVK + projFOH}`;
-            document.getElementById(`${id}-bar-quick`).textContent = `🍺 ~€${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-bar-proj`).textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-total-proj`).textContent = `~â‚¬${(projTotal/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-tickets-quick`).textContent = `ðŸŽ« ~${projVVK + projFOH}`;
+            document.getElementById(`${id}-bar-quick`).textContent = `ðŸº ~â‚¬${(projBar/1000).toFixed(1)}k`;
             
             const progress = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${id}-progress`).style.width = `${progress}%`;
             
             const expected = Math.round(vvkZiel * pct);
-            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d → Soll ~${expected}`;
+            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d â†’ Soll ~${expected}`;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // UI HELPERS
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
@@ -1950,14 +2143,62 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
         
+        // Quick Notes Functions
+        let notesTimeout = null;
+        
+        function saveQuickNotes() {
+            clearTimeout(notesTimeout);
+            notesTimeout = setTimeout(() => {
+                const text = document.getElementById('quick-notes-text').value;
+                localStorage.setItem('workhub-quick-notes', text);
+                const indicator = document.getElementById('notes-saved');
+                indicator.classList.add('show');
+                setTimeout(() => indicator.classList.remove('show'), 2000);
+            }, 500);
+        }
+        
+        function loadQuickNotes() {
+            const saved = localStorage.getItem('workhub-quick-notes');
+            if (saved) {
+                document.getElementById('quick-notes-text').value = saved;
+            }
+        }
+        
+        // Deep Analysis Function
+        function openDeepAnalysis() {
+            const turboVVK = document.getElementById('turbo-vvk-input').value || 0;
+            const nyeVVK = document.getElementById('nye-vvk-input').value || 0;
+            const turboDays = getDaysUntil('turbo');
+            const nyeDays = getDaysUntil('nye');
+            
+            const prompt = encodeURIComponent(
+                'Analysiere die aktuellen Event-Daten fuer Grelle Forelle:\n\n' +
+                'TURBO (27.12.2025) - ' + turboDays + ' Tage\n' +
+                '- Aktueller VVK: ' + turboVVK + '\n' +
+                '- Serie-Durchschnitt: VVK 436, FOH 336\n\n' +
+                'NYE Silvester (31.12.2025) - ' + nyeDays + ' Tage\n' +
+                '- Aktueller VVK: ' + nyeVVK + '\n' +
+                '- Historisch: VVK 562, FOH 649\n\n' +
+                'Bitte analysiere:\n' +
+                '1. VVK Performance vs. Benchmark\n' +
+                '2. Erwarteter FOH basierend auf historischen Ratios\n' +
+                '3. Bar Revenue Projektion (KW52: EUR 16.3/Person)\n' +
+                '4. Empfehlungen fuer Marketing/Pricing\n\n' +
+                'Nutze die historischen Caps: MAX VVK 600, MAX FOH 700, MAX TOTAL 1250'
+            );
+            
+            window.open('https://claude.ai/new?q=' + prompt, '_blank');
+        }
+        
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // INIT
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v13.0 - To Do Focus');
+            console.log('Work Hub v13.2 - Capacity Caps + Quick Notes');
+            loadQuickNotes();
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
