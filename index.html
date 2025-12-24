@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turbo-Projects Work Hub</title>
-    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -1376,7 +1376,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.9 • 24.12.2025 • Redirect Auth Flow</div>
+    <div class="version">Work Hub v12.9.2 • 24.12.2025 • MSAL Fix</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1461,9 +1461,29 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         async function initMsal() {
+            // Check if MSAL library loaded
+            if (typeof msal === 'undefined') {
+                console.error('MSAL library not loaded! Trying to load dynamically...');
+                // Try loading dynamically
+                const script = document.createElement('script');
+                script.src = 'https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
+                script.onload = () => {
+                    console.log('MSAL loaded dynamically!');
+                    initMsal(); // Retry
+                };
+                script.onerror = () => {
+                    console.error('Failed to load MSAL!');
+                    document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
+                };
+                document.head.appendChild(script);
+                return;
+            }
+            
             try {
+                console.log('Initializing MSAL...');
                 msalInstance = new msal.PublicClientApplication(msalConfig);
                 await msalInstance.initialize();
+                console.log('MSAL initialized successfully');
                 const response = await msalInstance.handleRedirectPromise();
                 if (response) { 
                     accessToken = response.accessToken; 
@@ -1562,8 +1582,15 @@
         
         function loadAllData() { 
             console.log('loadAllData: Starting with token:', accessToken ? 'YES' : 'NO');
+            if (!accessToken) {
+                console.log('loadAllData: No token, skipping');
+                return;
+            }
+            console.log('loadAllData: Calling loadAllTasks...');
             loadAllTasks(); 
+            console.log('loadAllData: Calling loadEmails...');
             loadEmails(); 
+            console.log('loadAllData: Calling loadCalendar...');
             loadCalendar(); 
         }
         
@@ -1581,40 +1608,48 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         async function loadEmails() {
+            console.log('>>> loadEmails() called');
             const el = document.getElementById('email-list');
+            console.log('>>> email-list element:', el);
             
             if (!accessToken) {
-                el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
+                console.log('>>> No token!');
+                if (el) el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
                 return;
             }
             
-            el.innerHTML = '<div class="loading-spinner">📧 Lade Emails...</div>';
+            if (el) el.innerHTML = '<div class="loading-spinner">📧 Lade Emails...</div>';
             
             try {
+                console.log('>>> Fetching emails...');
                 const r = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc&$select=id,subject,bodyPreview,from,receivedDateTime,isRead', {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 
+                console.log('>>> Response status:', r.status);
+                
                 if (r.status === 403) {
-                    el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Emails.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Emails.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
                 
                 if (r.status === 401) {
-                    el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
                 
                 if (!r.ok) {
                     const errorText = await r.text();
-                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
+                    console.log('>>> Error:', errorText);
+                    if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
                     return;
                 }
                 
                 const data = await r.json();
                 const emails = data.value || [];
+                console.log('>>> Got', emails.length, 'emails');
                 
-                el.innerHTML = emails.length ? emails.map(e => {
+                if (el) el.innerHTML = emails.length ? emails.map(e => {
                     const from = e.from?.emailAddress?.name || e.from?.emailAddress?.address || '?';
                     const initials = from.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                     return `<div class="email-item ${e.isRead ? '' : 'unread'}" onclick="window.open('https://outlook.office.com/mail/inbox/id/${e.id}','_blank')">
@@ -1628,47 +1663,56 @@
                 }).join('') : '<div class="tasks-empty">📭 Keine Emails im Inbox</div>';
                 
             } catch (e) { 
-                el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
+                console.log('>>> Exception:', e);
+                if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
             }
         }
         
         async function loadCalendar() {
+            console.log('>>> loadCalendar() called');
             const el = document.getElementById('calendar-events');
+            console.log('>>> calendar-events element:', el);
             
             if (!accessToken) {
-                el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
+                console.log('>>> No token!');
+                if (el) el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
                 return;
             }
             
-            el.innerHTML = '<div class="loading-spinner">📅 Lade Kalender...</div>';
+            if (el) el.innerHTML = '<div class="loading-spinner">📅 Lade Kalender...</div>';
             const now = new Date();
             const end = new Date(now.getTime() + 14 * 86400000);
             
             try {
+                console.log('>>> Fetching calendar...');
                 const r = await fetch(`https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${end.toISOString()}&$top=15&$orderby=start/dateTime&$select=id,subject,start,end,isAllDay,location`, {
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Prefer': 'outlook.timezone="Europe/Vienna"' }
                 });
                 
+                console.log('>>> Calendar response status:', r.status);
+                
                 if (r.status === 403) {
-                    el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Kalender.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Kalender.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
                 
                 if (r.status === 401) {
-                    el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
                 
                 if (!r.ok) {
                     const errorText = await r.text();
-                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
+                    console.log('>>> Calendar error:', errorText);
+                    if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
                     return;
                 }
                 
                 const data = await r.json();
                 const events = data.value || [];
+                console.log('>>> Got', events.length, 'calendar events');
                 
-                el.innerHTML = events.length ? events.map(e => {
+                if (el) el.innerHTML = events.length ? events.map(e => {
                     const start = new Date(e.start.dateTime + 'Z');
                     const today = new Date(); today.setHours(0,0,0,0);
                     const tomorrow = new Date(today.getTime() + 86400000);
@@ -1684,7 +1728,8 @@
                 }).join('') : '<div class="tasks-empty">📅 Keine Termine in den nächsten 14 Tagen</div>';
                 
             } catch (e) { 
-                el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
+                console.log('>>> Calendar exception:', e);
+                if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
             }
         }
         
@@ -2182,7 +2227,7 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v12.9 - Redirect Auth Flow');
+            console.log('Work Hub v12.9.2 - MSAL Fix');
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
