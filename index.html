@@ -4,7 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turbo-Projects Work Hub</title>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.3/lib/msal-browser.min.js"></script>
+    <!-- MSAL Auth Library - Multiple fallbacks -->
+    <script>
+        window.msalLoaded = false;
+        function msalLoadSuccess() { window.msalLoaded = true; console.log('✅ MSAL loaded'); }
+        function tryNextCDN(cdnList, index) {
+            if (index >= cdnList.length) {
+                console.error('❌ All CDNs failed');
+                document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
+                return;
+            }
+            var s = document.createElement('script');
+            s.src = cdnList[index];
+            s.onload = msalLoadSuccess;
+            s.onerror = function() { 
+                console.log('CDN ' + (index+1) + ' failed: ' + cdnList[index]);
+                tryNextCDN(cdnList, index + 1);
+            };
+            document.head.appendChild(s);
+        }
+    </script>
+    <script src="https://unpkg.com/@azure/msal-browser@2.38.3/lib/msal-browser.min.js" onload="msalLoadSuccess()" onerror="tryNextCDN([
+        'https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.3/lib/msal-browser.min.js',
+        'https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
+    ], 0)"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -1376,7 +1400,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.9.3 • 24.12.2025 • jsdelivr CDN</div>
+    <div class="version">Work Hub v12.9.6 • 24.12.2025 • Multi-CDN Fallback</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1463,19 +1487,8 @@
         async function initMsal() {
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
-                console.error('MSAL library not loaded! Trying to load dynamically...');
-                // Try loading dynamically
-                const script = document.createElement('script');
-                script.src = 'https://unpkg.com/@azure/msal-browser@2.38.3/lib/msal-browser.min.js';
-                script.onload = () => {
-                    console.log('MSAL loaded dynamically!');
-                    initMsal(); // Retry
-                };
-                script.onerror = () => {
-                    console.error('Failed to load MSAL!');
-                    document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
-                };
-                document.head.appendChild(script);
+                console.error('MSAL library not loaded!');
+                document.getElementById('auth-status-text').textContent = '❌ Auth Library fehlt';
                 return;
             }
             
@@ -1484,30 +1497,19 @@
                 msalInstance = new msal.PublicClientApplication(msalConfig);
                 await msalInstance.initialize();
                 console.log('MSAL initialized successfully');
-                const response = await msalInstance.handleRedirectPromise();
-                if (response) { 
-                    accessToken = response.accessToken; 
-                    console.log('=== LOGIN SUCCESS (REDIRECT) ===');
-                    console.log('Scopes granted:', response.scopes);
-                    console.log('Account:', response.account?.username);
-                    updateAuthUI(response.account); 
-                    loadAllData();
-                    showToast("✅ Verbunden!");
-                }
-                else {
-                    const accounts = msalInstance.getAllAccounts();
-                    if (accounts.length > 0) {
-                        try {
-                            const silentResponse = await msalInstance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
-                            accessToken = silentResponse.accessToken;
-                            console.log('Silent token scopes:', silentResponse.scopes);
-                            updateAuthUI(accounts[0]);
-                            loadAllData();
-                        } catch (e) { 
-                            console.log("Silent token failed, need re-consent:", e);
-                            // If silent fails, we need new consent - prompt user to re-login
-                            updateAuthUI(null);
-                        }
+                
+                // Check for existing session
+                const accounts = msalInstance.getAllAccounts();
+                if (accounts.length > 0) {
+                    try {
+                        const silentResponse = await msalInstance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
+                        accessToken = silentResponse.accessToken;
+                        console.log('Silent token scopes:', silentResponse.scopes);
+                        updateAuthUI(accounts[0]);
+                        loadAllData();
+                    } catch (e) { 
+                        console.log("Silent token failed, need re-login:", e.message);
+                        updateAuthUI(null);
                     }
                 }
             } catch (error) { console.error("MSAL init error:", error); }
@@ -1516,14 +1518,23 @@
         async function handleAuth() {
             if (accessToken) {
                 // Logout
-                await msalInstance.logoutRedirect();
+                try {
+                    await msalInstance.logoutPopup();
+                } catch(e) { console.log('Logout error:', e); }
                 accessToken = null;
                 updateAuthUI(null);
                 resetAllUI();
             } else {
                 try {
-                    // Use redirect instead of popup for better compatibility
-                    await msalInstance.loginRedirect({ ...loginRequest, prompt: 'consent' });
+                    // Use popup (works in iframes)
+                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
+                    accessToken = response.accessToken;
+                    console.log('=== LOGIN SUCCESS (POPUP) ===');
+                    console.log('Scopes granted:', response.scopes);
+                    console.log('Account:', response.account?.username);
+                    updateAuthUI(response.account);
+                    loadAllData();
+                    showToast("✅ Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
                     showToast("❌ Login fehlgeschlagen", true); 
@@ -2227,7 +2238,7 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v12.9.3 - jsdelivr CDN');
+            console.log('Work Hub v12.9.6 - Multi-CDN Fallback');
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
