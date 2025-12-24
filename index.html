@@ -2172,28 +2172,8 @@
         
         // Deep Analysis Function
         function openDeepAnalysis() {
-            const turboVVK = document.getElementById('turbo-vvk-input').value || 0;
-            const nyeVVK = document.getElementById('nye-vvk-input').value || 0;
-            const turboDays = getDaysUntil('turbo');
-            const nyeDays = getDaysUntil('nye');
-            
-            const prompt = encodeURIComponent(
-                'Analysiere die aktuellen Event-Daten fuer Grelle Forelle:\n\n' +
-                'TURBO (27.12.2025) - ' + turboDays + ' Tage\n' +
-                '- Aktueller VVK: ' + turboVVK + '\n' +
-                '- Serie-Durchschnitt: VVK 436, FOH 336\n\n' +
-                'NYE Silvester (31.12.2025) - ' + nyeDays + ' Tage\n' +
-                '- Aktueller VVK: ' + nyeVVK + '\n' +
-                '- Historisch: VVK 562, FOH 649\n\n' +
-                'Bitte analysiere:\n' +
-                '1. VVK Performance vs. Benchmark\n' +
-                '2. Erwarteter FOH basierend auf historischen Ratios\n' +
-                '3. Bar Revenue Projektion (KW52: EUR 16.3/Person)\n' +
-                '4. Empfehlungen fuer Marketing/Pricing\n\n' +
-                'Nutze die historischen Caps: MAX VVK 600, MAX FOH 700, MAX TOTAL 1250'
-            );
-            
-            window.open('https://claude.ai/new?q=' + prompt, '_blank');
+            // Opens the Grelle Forelle Analysis Project in Claude
+            window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
         }
         
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
@@ -2207,8 +2187,8 @@
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
-            updateProjection('nye');
-            calculatePreSale();
+           updateProjection('nye');
+        ();
             calculateCosts();
             updateProjectorData();
             updateFactsheetPreview();
