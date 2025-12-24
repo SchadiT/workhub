@@ -459,6 +459,9 @@
         <button class="auth-btn" id="auth-btn" onclick="handleAuth()">
             <span>🔐</span> Sign in with Microsoft
         </button>
+        <button class="auth-btn" onclick="forceResetAuth()" title="Cache löschen & neu verbinden" style="padding: 8px 12px; margin-left: 5px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            🔄 Reset
+        </button>
     </div>
     
     <div class="toast" id="toast"></div>
@@ -1373,7 +1376,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.7 • 23.12.2025 • UI Improvements</div>
+    <div class="version">Work Hub v12.8 • 24.12.2025 • Auth Reset + Error Messages</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1509,6 +1512,33 @@
             }
         }
         
+        async function forceResetAuth() {
+            // Clear everything and start fresh
+            showToast("🔄 Cache wird gelöscht...");
+            
+            // Clear MSAL cache
+            if (msalInstance) {
+                const accounts = msalInstance.getAllAccounts();
+                for (const account of accounts) {
+                    await msalInstance.logoutPopup({ account });
+                }
+            }
+            
+            // Clear localStorage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Reset state
+            accessToken = null;
+            updateAuthUI(null);
+            resetAllUI();
+            
+            showToast("✅ Cache gelöscht! Bitte neu einloggen.");
+            
+            // Reload page to ensure clean state
+            setTimeout(() => location.reload(), 1500);
+        }
+        
         function updateAuthUI(account) {
             const dot = document.getElementById('auth-dot');
             const statusText = document.getElementById('auth-status-text');
@@ -1550,27 +1580,39 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         async function loadEmails() {
+            const el = document.getElementById('email-list');
+            
             if (!accessToken) {
-                console.log('loadEmails: No access token');
+                el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
                 return;
             }
-            const el = document.getElementById('email-list');
-            el.innerHTML = '<div class="loading-spinner">Lade Emails...</div>';
+            
+            el.innerHTML = '<div class="loading-spinner">📧 Lade Emails...</div>';
+            
             try {
-                console.log('loadEmails: Fetching...');
                 const r = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc&$select=id,subject,bodyPreview,from,receivedDateTime,isRead', {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                console.log('loadEmails: Response status', r.status);
-                if (!r.ok) {
-                    const errorText = await r.text();
-                    console.error('loadEmails: Error', errorText);
-                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler: ${r.status}</div>`;
+                
+                if (r.status === 403) {
+                    el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Emails.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
+                
+                if (r.status === 401) {
+                    el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    return;
+                }
+                
+                if (!r.ok) {
+                    const errorText = await r.text();
+                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
+                    return;
+                }
+                
                 const data = await r.json();
-                console.log('loadEmails: Got', data.value?.length || 0, 'emails');
                 const emails = data.value || [];
+                
                 el.innerHTML = emails.length ? emails.map(e => {
                     const from = e.from?.emailAddress?.name || e.from?.emailAddress?.address || '?';
                     const initials = from.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -1582,41 +1624,49 @@
                             <div class="email-preview">${esc(e.bodyPreview || '')}</div>
                         </div>
                     </div>`;
-                }).join('') : '<div class="tasks-empty">📭 Keine Emails</div>';
+                }).join('') : '<div class="tasks-empty">📭 Keine Emails im Inbox</div>';
+                
             } catch (e) { 
-                console.error('loadEmails: Exception', e);
-                el.innerHTML = '<div class="tasks-empty">⚠️ Fehler beim Laden</div>'; 
+                el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
             }
         }
         
         async function loadCalendar() {
+            const el = document.getElementById('calendar-events');
+            
             if (!accessToken) {
-                console.log('loadCalendar: No access token');
+                el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
                 return;
             }
-            const el = document.getElementById('calendar-events');
-            el.innerHTML = '<div class="loading-spinner">Lade Kalender...</div>';
+            
+            el.innerHTML = '<div class="loading-spinner">📅 Lade Kalender...</div>';
             const now = new Date();
             const end = new Date(now.getTime() + 14 * 86400000);
+            
             try {
-                console.log('loadCalendar: Fetching...');
                 const r = await fetch(`https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${end.toISOString()}&$top=15&$orderby=start/dateTime&$select=id,subject,start,end,isAllDay,location`, {
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Prefer': 'outlook.timezone="Europe/Vienna"' }
                 });
-                console.log('loadCalendar: Response status', r.status);
-                if (!r.ok) {
-                    const errorText = await r.text();
-                    console.error('loadCalendar: Error', errorText);
-                    if (r.status === 403 || r.status === 401) {
-                        el.innerHTML = '<div class="tasks-empty">🔐 Neu einloggen für Kalender-Zugriff</div>';
-                    } else {
-                        el.innerHTML = `<div class="tasks-empty">⚠️ Fehler: ${r.status}</div>`;
-                    }
+                
+                if (r.status === 403) {
+                    el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Kalender.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
                     return;
                 }
+                
+                if (r.status === 401) {
+                    el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
+                    return;
+                }
+                
+                if (!r.ok) {
+                    const errorText = await r.text();
+                    el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
+                    return;
+                }
+                
                 const data = await r.json();
-                console.log('loadCalendar: Got', data.value?.length || 0, 'events');
                 const events = data.value || [];
+                
                 el.innerHTML = events.length ? events.map(e => {
                     const start = new Date(e.start.dateTime + 'Z');
                     const today = new Date(); today.setHours(0,0,0,0);
@@ -1631,9 +1681,9 @@
                         <div class="event-details"><div class="event-title">${esc(e.subject || '?')}</div>${e.location?.displayName ? `<div class="event-location">📍 ${esc(e.location.displayName)}</div>` : ''}</div>
                     </div>`;
                 }).join('') : '<div class="tasks-empty">📅 Keine Termine in den nächsten 14 Tagen</div>';
+                
             } catch (e) { 
-                console.error('loadCalendar: Exception', e);
-                el.innerHTML = '<div class="tasks-empty">⚠️ Fehler beim Laden</div>'; 
+                el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
             }
         }
         
