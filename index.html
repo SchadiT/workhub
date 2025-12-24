@@ -192,66 +192,6 @@
         }
         .factsheet-preview th { background: #f0f0f0; }
         
-        /* Outlook Section */
-        .outlook-section {
-            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
-            border-radius: 15px; margin-bottom: 20px; overflow: hidden;
-            border: 1px solid #0078d4;
-        }
-        .outlook-header {
-            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
-            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .outlook-header h2 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .outlook-tabs { display: flex; gap: 5px; }
-        .outlook-tab {
-            background: rgba(255,255,255,0.2); border: none; padding: 8px 16px;
-            border-radius: 8px; color: white; font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .outlook-tab:hover { background: rgba(255,255,255,0.3); }
-        .outlook-tab.active { background: white; color: #0078d4; }
-        .outlook-content { padding: 15px; }
-        .outlook-panel { display: none; }
-        .outlook-panel.active { display: block; }
-        
-        /* Email List */
-        .email-list { max-height: 400px; overflow-y: auto; }
-        .email-item {
-            display: flex; gap: 12px; padding: 12px; border-radius: 8px;
-            margin-bottom: 8px; background: #1a1a2e; cursor: pointer;
-            transition: all 0.2s; border: 1px solid transparent;
-        }
-        .email-item:hover { border-color: #0078d4; background: #252542; }
-        .email-item.unread { border-left: 3px solid #0078d4; }
-        .email-item.unread .email-subject { font-weight: 700; }
-        .email-avatar {
-            width: 40px; height: 40px; border-radius: 50%; background: #3d3d54;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 14px; flex-shrink: 0;
-        }
-        .email-content { flex: 1; min-width: 0; }
-        .email-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .email-from { font-size: 14px; font-weight: 600; color: #fff; }
-        .email-time { font-size: 11px; color: #888; }
-        .email-subject { font-size: 13px; color: #ccc; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .email-preview { font-size: 12px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        /* Calendar List */
-        .calendar-events { max-height: 400px; overflow-y: auto; }
-        .calendar-event-item {
-            display: flex; gap: 12px; padding: 12px; border-radius: 8px;
-            margin-bottom: 8px; background: #1a1a2e; border-left: 3px solid #22c55e;
-        }
-        .calendar-event-item.today { border-left-color: #ef4444; }
-        .calendar-event-item.tomorrow { border-left-color: #f59e0b; }
-        .event-time-block { min-width: 60px; text-align: center; }
-        .event-date-label { font-size: 11px; color: #888; margin-bottom: 2px; }
-        .event-time-label { font-size: 14px; font-weight: 700; color: #fff; }
-        .event-details { flex: 1; }
-        .event-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-        .event-location { font-size: 12px; color: #888; display: flex; align-items: center; gap: 5px; }
-        
         /* Upcoming Events */
         .upcoming-events { margin-bottom: 20px; }
         .upcoming-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -978,33 +918,6 @@
         </div>
     </div>
     
-    <!-- Compose Email Modal -->
-    <div class="modal-overlay" id="compose-modal">
-        <div class="modal">
-            <div class="modal-header blue">
-                <h3>✉️ Neue E-Mail</h3>
-                <button class="modal-close" onclick="closeModal('compose-modal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>An:</label>
-                    <input type="email" id="email-to" placeholder="empfaenger@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Betreff:</label>
-                    <input type="text" id="email-subject" placeholder="Betreff">
-                </div>
-                <div class="form-group">
-                    <label>Nachricht:</label>
-                    <textarea id="email-body" placeholder="Nachricht eingeben..." style="min-height: 200px;"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('compose-modal')">Abbrechen</button>
-                <button class="modal-btn primary" onclick="sendEmail()">📤 Senden</button>
-            </div>
-        </div>
-    </div>
     
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- QUICK ACTIONS -->
@@ -1012,7 +925,7 @@
     
     <div class="quick-actions">
         <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">📄 Factsheet</button>
-        <button class="quick-btn btn-email" onclick="openModal('compose-modal')">✉️ E-Mail</button>
+        <a href="https://outlook.office.com/mail" class="quick-btn btn-email" target="_blank">✉️ E-Mail</a>
         <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
         <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
     </div>
@@ -1055,34 +968,8 @@
     <!-- OUTLOOK SECTION -->
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
-    <div class="outlook-section">
-        <div class="outlook-header">
-            <h2>📬 Outlook</h2>
-            <div class="outlook-tabs">
-                <button class="outlook-tab active" onclick="switchOutlookTab('inbox')">📧 Inbox</button>
-                <button class="outlook-tab" onclick="switchOutlookTab('calendar')">📅 Kalender</button>
-            </div>
-        </div>
-        <div class="outlook-content">
-            <div class="outlook-panel active" id="inbox-panel">
-                <div class="email-list" id="email-list">
-                    <div class="tasks-login-prompt">
-                        <p>Sign in um deine Emails zu sehen</p>
-                        <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
-                    </div>
-                </div>
-            </div>
-            <div class="outlook-panel" id="calendar-panel">
-                <div class="calendar-events" id="calendar-events">
-                    <div class="tasks-login-prompt">
-                        <p>Sign in um deinen Kalender zu sehen</p>
-                        <button onclick="handleAuth()">🔐 Mit Microsoft anmelden</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
+
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- UPCOMING EVENTS -->
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
@@ -1400,7 +1287,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.9.6 • 24.12.2025 • Multi-CDN Fallback</div>
+    <div class="version">Work Hub v13.0 • 24.12.2025 • Outlook Removed + To Do Focus</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1416,7 +1303,7 @@
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
         };
         
-        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Read", "Mail.Send", "Calendars.Read"] };
+        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read"] };
         
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
@@ -1599,10 +1486,6 @@
             }
             console.log('loadAllData: Calling loadAllTasks...');
             loadAllTasks(); 
-            console.log('loadAllData: Calling loadEmails...');
-            loadEmails(); 
-            console.log('loadAllData: Calling loadCalendar...');
-            loadCalendar(); 
         }
         
         function resetAllUI() {
@@ -1610,162 +1493,6 @@
                 document.getElementById(`${d}-task-count`).textContent = '—';
                 document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
             });
-            document.getElementById('email-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
-            document.getElementById('calendar-events').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
-        }
-        
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // OUTLOOK
-        // ═══════════════════════════════════════════════════════════════════════════════
-        
-        async function loadEmails() {
-            console.log('>>> loadEmails() called');
-            const el = document.getElementById('email-list');
-            console.log('>>> email-list element:', el);
-            
-            if (!accessToken) {
-                console.log('>>> No token!');
-                if (el) el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
-                return;
-            }
-            
-            if (el) el.innerHTML = '<div class="loading-spinner">📧 Lade Emails...</div>';
-            
-            try {
-                console.log('>>> Fetching emails...');
-                const r = await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=10&$orderby=receivedDateTime desc&$select=id,subject,bodyPreview,from,receivedDateTime,isRead', {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                
-                console.log('>>> Response status:', r.status);
-                
-                if (r.status === 403) {
-                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Emails.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
-                    return;
-                }
-                
-                if (r.status === 401) {
-                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
-                    return;
-                }
-                
-                if (!r.ok) {
-                    const errorText = await r.text();
-                    console.log('>>> Error:', errorText);
-                    if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
-                    return;
-                }
-                
-                const data = await r.json();
-                const emails = data.value || [];
-                console.log('>>> Got', emails.length, 'emails');
-                
-                if (el) el.innerHTML = emails.length ? emails.map(e => {
-                    const from = e.from?.emailAddress?.name || e.from?.emailAddress?.address || '?';
-                    const initials = from.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                    return `<div class="email-item ${e.isRead ? '' : 'unread'}" onclick="window.open('https://outlook.office.com/mail/inbox/id/${e.id}','_blank')">
-                        <div class="email-avatar">${initials}</div>
-                        <div class="email-content">
-                            <div class="email-header"><span class="email-from">${esc(from)}</span><span class="email-time">${formatTime(e.receivedDateTime)}</span></div>
-                            <div class="email-subject">${esc(e.subject || '(Kein Betreff)')}</div>
-                            <div class="email-preview">${esc(e.bodyPreview || '')}</div>
-                        </div>
-                    </div>`;
-                }).join('') : '<div class="tasks-empty">📭 Keine Emails im Inbox</div>';
-                
-            } catch (e) { 
-                console.log('>>> Exception:', e);
-                if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
-            }
-        }
-        
-        async function loadCalendar() {
-            console.log('>>> loadCalendar() called');
-            const el = document.getElementById('calendar-events');
-            console.log('>>> calendar-events element:', el);
-            
-            if (!accessToken) {
-                console.log('>>> No token!');
-                if (el) el.innerHTML = '<div class="tasks-empty">🔐 Nicht eingeloggt - Token fehlt</div>';
-                return;
-            }
-            
-            if (el) el.innerHTML = '<div class="loading-spinner">📅 Lade Kalender...</div>';
-            const now = new Date();
-            const end = new Date(now.getTime() + 14 * 86400000);
-            
-            try {
-                console.log('>>> Fetching calendar...');
-                const r = await fetch(`https://graph.microsoft.com/v1.0/me/calendarview?startDateTime=${now.toISOString()}&endDateTime=${end.toISOString()}&$top=15&$orderby=start/dateTime&$select=id,subject,start,end,isAllDay,location`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Prefer': 'outlook.timezone="Europe/Vienna"' }
-                });
-                
-                console.log('>>> Calendar response status:', r.status);
-                
-                if (r.status === 403) {
-                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 403 - Keine Berechtigung für Kalender.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
-                    return;
-                }
-                
-                if (r.status === 401) {
-                    if (el) el.innerHTML = '<div class="tasks-empty">⚠️ 401 - Token ungültig.<br><small>Bitte ausloggen und neu einloggen!</small></div>';
-                    return;
-                }
-                
-                if (!r.ok) {
-                    const errorText = await r.text();
-                    console.log('>>> Calendar error:', errorText);
-                    if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Fehler ${r.status}<br><small>${errorText.substring(0, 100)}</small></div>`;
-                    return;
-                }
-                
-                const data = await r.json();
-                const events = data.value || [];
-                console.log('>>> Got', events.length, 'calendar events');
-                
-                if (el) el.innerHTML = events.length ? events.map(e => {
-                    const start = new Date(e.start.dateTime + 'Z');
-                    const today = new Date(); today.setHours(0,0,0,0);
-                    const tomorrow = new Date(today.getTime() + 86400000);
-                    const eDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-                    let cls = '', lbl = start.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
-                    if (eDay.getTime() === today.getTime()) { cls = 'today'; lbl = 'Heute'; }
-                    else if (eDay.getTime() === tomorrow.getTime()) { cls = 'tomorrow'; lbl = 'Morgen'; }
-                    const time = e.isAllDay ? 'Ganztägig' : start.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-                    return `<div class="calendar-event-item ${cls}">
-                        <div class="event-time-block"><div class="event-date-label">${lbl}</div><div class="event-time-label">${time}</div></div>
-                        <div class="event-details"><div class="event-title">${esc(e.subject || '?')}</div>${e.location?.displayName ? `<div class="event-location">📍 ${esc(e.location.displayName)}</div>` : ''}</div>
-                    </div>`;
-                }).join('') : '<div class="tasks-empty">📅 Keine Termine in den nächsten 14 Tagen</div>';
-                
-            } catch (e) { 
-                console.log('>>> Calendar exception:', e);
-                if (el) el.innerHTML = `<div class="tasks-empty">⚠️ Netzwerk-Fehler<br><small>${e.message}</small></div>`; 
-            }
-        }
-        
-        async function sendEmail() {
-            if (!accessToken) return showToast("❌ Nicht angemeldet", true);
-            const to = document.getElementById('email-to').value.trim();
-            const subject = document.getElementById('email-subject').value.trim();
-            const body = document.getElementById('email-body').value.trim();
-            if (!to || !subject || !body) return showToast("❌ Alle Felder ausfüllen", true);
-            try {
-                await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: { subject, body: { contentType: "Text", content: body }, toRecipients: [{ emailAddress: { address: to } }] } })
-                });
-                showToast("✅ Email gesendet!");
-                closeModal('compose-modal');
-            } catch (e) { showToast("❌ Senden fehlgeschlagen", true); }
-        }
-        
-        function switchOutlookTab(tab) {
-            document.querySelectorAll('.outlook-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.outlook-panel').forEach(p => p.classList.remove('active'));
-            document.querySelector(`.outlook-tab[onclick*="${tab}"]`).classList.add('active');
-            document.getElementById(`${tab}-panel`).classList.add('active');
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2223,14 +1950,6 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
         
-        function formatTime(dateStr) {
-            const d = new Date(dateStr);
-            const diff = (new Date() - d) / 60000;
-            if (diff < 60) return `${Math.floor(diff)}m`;
-            if (diff < 1440) return `${Math.floor(diff/60)}h`;
-            return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
-        }
-        
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2238,7 +1957,7 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v12.9.6 - Multi-CDN Fallback');
+            console.log('Work Hub v13.0 - To Do Focus');
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
