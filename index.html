@@ -1376,7 +1376,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v12.8 • 24.12.2025 • Auth Reset + Error Messages</div>
+    <div class="version">Work Hub v12.9 • 24.12.2025 • Redirect Auth Flow</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -1467,9 +1467,12 @@
                 const response = await msalInstance.handleRedirectPromise();
                 if (response) { 
                     accessToken = response.accessToken; 
-                    console.log('Token scopes:', response.scopes);
+                    console.log('=== LOGIN SUCCESS (REDIRECT) ===');
+                    console.log('Scopes granted:', response.scopes);
+                    console.log('Account:', response.account?.username);
                     updateAuthUI(response.account); 
-                    loadAllData(); 
+                    loadAllData();
+                    showToast("✅ Verbunden!");
                 }
                 else {
                     const accounts = msalInstance.getAllAccounts();
@@ -1484,7 +1487,6 @@
                             console.log("Silent token failed, need re-consent:", e);
                             // If silent fails, we need new consent - prompt user to re-login
                             updateAuthUI(null);
-                            showToast("🔐 Bitte neu einloggen für alle Berechtigungen");
                         }
                     }
                 }
@@ -1493,22 +1495,19 @@
         
         async function handleAuth() {
             if (accessToken) {
-                msalInstance.logoutPopup();
+                // Logout
+                await msalInstance.logoutRedirect();
                 accessToken = null;
                 updateAuthUI(null);
                 resetAllUI();
             } else {
                 try {
-                    // Force consent to ensure all scopes are granted
-                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
-                    accessToken = response.accessToken;
-                    console.log('=== LOGIN SUCCESS ===');
-                    console.log('Scopes granted:', response.scopes);
-                    console.log('Account:', response.account?.username);
-                    updateAuthUI(response.account);
-                    loadAllData();
-                    showToast("✅ Verbunden!");
-                } catch (error) { console.error("Login error:", error); showToast("❌ Login fehlgeschlagen", true); }
+                    // Use redirect instead of popup for better compatibility
+                    await msalInstance.loginRedirect({ ...loginRequest, prompt: 'consent' });
+                } catch (error) { 
+                    console.error("Login error:", error); 
+                    showToast("❌ Login fehlgeschlagen", true); 
+                }
             }
         }
         
@@ -1520,7 +1519,9 @@
             if (msalInstance) {
                 const accounts = msalInstance.getAllAccounts();
                 for (const account of accounts) {
-                    await msalInstance.logoutPopup({ account });
+                    try {
+                        await msalInstance.clearCache();
+                    } catch(e) { console.log('Cache clear error:', e); }
                 }
             }
             
@@ -1533,10 +1534,10 @@
             updateAuthUI(null);
             resetAllUI();
             
-            showToast("✅ Cache gelöscht! Bitte neu einloggen.");
+            showToast("✅ Cache gelöscht! Seite wird neu geladen...");
             
             // Reload page to ensure clean state
-            setTimeout(() => location.reload(), 1500);
+            setTimeout(() => location.reload(), 1000);
         }
         
         function updateAuthUI(account) {
@@ -2181,7 +2182,7 @@
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v12.7 - UI Improvements');
+            console.log('Work Hub v12.9 - Redirect Auth Flow');
             initMsal();
             updateProjection('turbo');
             updateProjection('nye');
