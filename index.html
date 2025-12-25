@@ -561,8 +561,6 @@
         
         /* Large Desktop (min 1200px) */
         @media screen and (min-width: 1200px) {
-            body { max-width: 1400px; margin: 0 auto; }
-            
             .departments { 
                 display: grid; 
                 grid-template-columns: repeat(2, 1fr); 
@@ -597,8 +595,8 @@
     <!-- Quick Notes -->
     <div class="quick-notes">
         <div class="quick-notes-header">
-            <span>&#x1F4DD; Quick Notes</span>
-            <span class="save-indicator" id="notes-saved">&#x2713; Gespeichert</span>
+            <span>📝 Quick Notes</span>
+            <span class="save-indicator" id="notes-saved">✓ Gespeichert</span>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
     </div>
@@ -612,7 +610,7 @@
         <div class="modal">
             <div class="modal-header orange">
                 <h3>🎟️ PreSale Calculator</h3>
-                <button class="modal-close" onclick="closeModal('presale-modal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('presale-modal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -721,7 +719,7 @@
         <div class="modal">
             <div class="modal-header purple">
                 <h3>🧮 Cost Calculator</h3>
-                <button class="modal-close" onclick="closeModal('cost-modal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('cost-modal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -843,7 +841,7 @@
         <div class="modal">
             <div class="modal-header green">
                 <h3>📊 Event Projector</h3>
-                <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('projector-modal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -956,7 +954,7 @@
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
                 <h3>📄 Factsheet Generator</h3>
-                <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
+                <button class="modal-close" onclick="closeModal('factsheet-modal')">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -1139,7 +1137,7 @@
         <button class="quick-btn btn-presale" onclick="openModal('presale-modal')">🎟️ PreSale Calc</button>
         <button class="quick-btn btn-calculator" onclick="openModal('cost-modal')">🧮 Cost Calc</button>
         <button class="quick-btn btn-projector" onclick="openModal('projector-modal')">📊 Projector</button>
-        <button class="quick-btn btn-analysis" onclick="openDeepAnalysis()">&#x1F52C; Deep Analysis</button>
+        <button class="quick-btn btn-analysis" onclick="openDeepAnalysis()">🔬 Deep Analysis</button>
     </div>
     
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
@@ -1169,7 +1167,7 @@
                 <div class="event-quick-stats">
                     <span id="turbo-bar-quick">🍺 ~€14.5k</span>
                     <span id="turbo-tickets-quick">🎫 ~763</span>
-                    <span class="event-toggle">â–¼</span>
+                    <span class="event-toggle">▼</span>
                 </div>
             </div>
             <div class="event-details">
@@ -1233,7 +1231,7 @@
                 <div class="event-quick-stats">
                     <span id="nye-bar-quick">🍺 ~€23k</span>
                     <span id="nye-tickets-quick">🎫 ~1153</span>
-                    <span class="event-toggle">â–¼</span>
+                    <span class="event-toggle">▼</span>
                 </div>
             </div>
             <div class="event-details">
@@ -1302,7 +1300,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>🧹 Reinigungsplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
                         <div class="reinigung-list">
@@ -1341,7 +1339,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
@@ -1370,7 +1368,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:400px;"></iframe>
@@ -1399,7 +1397,7 @@
                 <div class="collapsible-section">
                     <div class="section-label open" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content open">
                         <div class="calendar-list">
@@ -1441,7 +1439,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
@@ -1462,7 +1460,7 @@
     </div>
     
     <div class="footer">
-        <a href="https://to-do.live.com" target="_blank">&#x2705; Open Microsoft To Do</a>
+        <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
     <div class="version">Work Hub v13.2 • 24.12.2025 • Responsive + Capacity Caps + Quick Notes</div>
