@@ -1094,7 +1094,36 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Email Composer Modal -->
+    <div class="modal-overlay" id="email-modal">
+        <div class="modal">
+            <div class="modal-header" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
+                <h3>✉️ E-Mail senden</h3>
+                <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>An (E-Mail)</label>
+                    <input type="email" id="email-to" placeholder="empfaenger@example.com">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Betreff</label>
+                    <input type="text" id="email-subject" placeholder="Betreff eingeben...">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Nachricht</label>
+                    <textarea id="email-body" rows="8" placeholder="Nachricht eingeben..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: inherit; resize: vertical;"></textarea>
+                </div>
+                <p class="form-hint" id="email-status" style="color: #888; font-size: 12px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
+                <button class="modal-btn primary" onclick="sendEmail()">📤 Senden</button>
+            </div>
+        </div>
+    </div>
+
     
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- QUICK ACTIONS -->
@@ -1102,7 +1131,7 @@
     
     <div class="quick-actions">
         <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">📄 Factsheet</button>
-        <a href="https://outlook.office.com/mail" class="quick-btn btn-email" target="_blank">✉️ E-Mail</a>
+        <button class="quick-btn btn-email" onclick="openModal('email-modal')">✉️ E-Mail</button>
         <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
         <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
     </div>
@@ -1479,7 +1508,7 @@
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
         };
         
-        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read"] };
+        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send"] };
         
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
@@ -2172,6 +2201,70 @@
         function openDeepAnalysis() {
             // Opens the Grelle Forelle Analysis Project in Claude
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // EMAIL COMPOSER
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        async function sendEmail() {
+            const to = document.getElementById('email-to').value;
+            const subject = document.getElementById('email-subject').value;
+            const body = document.getElementById('email-body').value;
+            const status = document.getElementById('email-status');
+            
+            if (!to || !subject || !body) {
+                status.textContent = '⚠️ Bitte alle Felder ausfüllen';
+                status.style.color = '#f59e0b';
+                return;
+            }
+            
+            if (!accessToken) {
+                status.textContent = '⚠️ Bitte zuerst mit Microsoft anmelden';
+                status.style.color = '#ef4444';
+                return;
+            }
+            
+            status.textContent = '📤 Sende...';
+            status.style.color = '#888';
+            
+            try {
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: {
+                            subject: subject,
+                            body: { contentType: 'Text', content: body },
+                            toRecipients: [{ emailAddress: { address: to } }]
+                        }
+                    })
+                });
+                
+                if (response.ok || response.status === 202) {
+                    status.textContent = '✅ E-Mail gesendet!';
+                    status.style.color = '#22c55e';
+                    showToast('✅ E-Mail gesendet!');
+                    // Clear form after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('email-to').value = '';
+                        document.getElementById('email-subject').value = '';
+                        document.getElementById('email-body').value = '';
+                        status.textContent = '';
+                        closeModal('email-modal');
+                    }, 2000);
+                } else {
+                    const err = await response.json();
+                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.style.color = '#ef4444';
+                }
+            } catch (e) {
+                status.textContent = '❌ Fehler: ' + e.message;
+                status.style.color = '#ef4444';
+            }
         }
         
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
