@@ -451,15 +451,35 @@
         .bmt-upload-input { display: none; }
         
         .bmt-events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 12px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .bmt-events-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+        .bmt-events-grid::-webkit-scrollbar-track {
+            background: #1a1a2e;
+            border-radius: 3px;
+        }
+        .bmt-events-grid::-webkit-scrollbar-thumb {
+            background: #3d3d54;
+            border-radius: 3px;
         }
         .bmt-event-card {
             background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
-            border-radius: 10px;
-            padding: 15px;
-            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 10px;
+            border-left: 3px solid #3b82f6;
+            min-width: 160px;
+            max-width: 160px;
+            flex-shrink: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .bmt-event-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .bmt-event-card.eigen { border-left-color: #22c55e; }
         .bmt-event-card.fremd { border-left-color: #f59e0b; }
@@ -468,22 +488,24 @@
         .bmt-event-card.holiday { border-left-color: #6b7280; opacity: 0.7; }
         
         .bmt-event-date {
-            font-size: 12px;
+            font-size: 10px;
             color: #888;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         .bmt-event-name {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .bmt-event-category {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
             font-weight: 600;
-            margin-bottom: 8px;
         }
         .bmt-event-category.eigen { background: #22c55e; color: white; }
         .bmt-event-category.fremd { background: #f59e0b; color: white; }
@@ -491,15 +513,10 @@
         .bmt-event-category.special { background: #ec4899; color: white; }
         .bmt-event-category.holiday { background: #6b7280; color: white; }
         
-        .bmt-event-lineup {
-            font-size: 12px;
-            color: #aaa;
-            line-height: 1.4;
-        }
         .bmt-event-time {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
-            margin-top: 8px;
+            margin-top: 4px;
         }
         
         /* Cleaning Schedule Section */
@@ -549,8 +566,8 @@
             font-weight: 700;
         }
         .cleaning-type.gross { background: #ef4444; color: white; }
-        .cleaning-type.standard { background: #f59e0b; color: white; }
-        .cleaning-type.none { background: #6b7280; color: white; }
+        .cleaning-type.mittel { background: #f59e0b; color: white; }
+        .cleaning-type.standard { background: #22c55e; color: white; }
         .cleaning-event {
             font-size: 11px;
             color: #888;
@@ -565,6 +582,35 @@
         }
         .bmt-status.success { color: #22c55e; }
         .bmt-status.error { color: #ef4444; }
+        
+        .bmt-collapsed { display: none; }
+        .bmt-expanded { display: block; }
+        .bmt-toggle { 
+            font-size: 12px; 
+            margin-left: 10px; 
+            transition: transform 0.3s; 
+        }
+        .bmt-toggle.open { transform: rotate(180deg); }
+        
+        .cleaning-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .cleaning-table th, .cleaning-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #3d3d54;
+        }
+        .cleaning-table th {
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .cleaning-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
         
         .footer { margin-top: 25px; text-align: center; }
         .footer a { background: #2d2d44; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; display: inline-block; }
@@ -770,49 +816,280 @@
     
 
     <!-- ═══════════════════════════════════════════════════════════════════════════ -->
-    <!-- BMT EVENTS SECTION -->
+    <!-- BMT EVENTS SECTION (Collapsible) -->
     <!-- ═══════════════════════════════════════════════════════════════════════════ -->
     
     <div class="bmt-section">
-        <div class="bmt-header">
+        <div class="bmt-header" onclick="toggleBMTSection()" style="cursor: pointer;">
             <div class="bmt-title">
                 📅 BMT Events
                 <span class="bmt-badge" id="bmt-event-count">0</span>
+                <span class="bmt-toggle" id="bmt-toggle">▼</span>
             </div>
-            <div class="bmt-actions">
+            <div class="bmt-actions" onclick="event.stopPropagation();">
                 <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
-                    📤 Upload .ics
+                    📤 .ics
                 </button>
-                <button class="bmt-btn" onclick="refreshBMTFromStorage()">
-                    🔄 Refresh
+                <button class="bmt-btn" onclick="openCleaningModal()">
+                    🧹 Reinigungsplan
                 </button>
             </div>
         </div>
-        <div id="bmt-events-container">
+        <div id="bmt-events-container" class="bmt-collapsed">
             <div class="bmt-status" id="bmt-status">
                 📁 Lade BMT Events... 
-                <br><small>Upload eine .ics Datei von BookMeTender oder klick Refresh</small>
+                <br><small>Upload eine .ics Datei von BookMeTender</small>
             </div>
         </div>
     </div>
     
-    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
-    <!-- CLEANING SCHEDULE SECTION -->
-    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
-    
-    <div class="cleaning-section">
-        <div class="cleaning-header">
-            <div class="cleaning-title">🧹 Reinigungsplan</div>
-            <span style="font-size: 12px; color: #888;" id="cleaning-period">Nächste 14 Tage</span>
-        </div>
-        <div id="cleaning-container">
-            <div class="bmt-status">Warte auf BMT Events...</div>
+    <!-- Cleaning Schedule Modal -->
+    <div class="modal-overlay" id="cleaning-modal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header green">
+                <h3>🧹 Reinigungsplan</h3>
+                <button class="modal-close" onclick="closeModal('cleaning-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>Monat</label>
+                        <select id="cleaning-month" onchange="generateCleaningSchedule()">
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
+                        <button class="modal-btn success" onclick="copyCleaningSchedule()">📋 Kopieren</button>
+                        <button class="modal-btn primary" onclick="showCleaningEmail()">✉️ Per E-Mail</button>
+                    </div>
+                </div>
+                <div id="cleaning-container">
+                    <div class="bmt-status">Warte auf BMT Events...</div>
+                </div>
+                <div id="cleaning-summary" style="margin-top: 15px; padding: 15px; background: #1a1a2e; border-radius: 10px;">
+                </div>
+                
+                <!-- Email Section (hidden by default) -->
+                <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 10px; border: 1px solid #3b82f6;">
+                    <h4 style="color: #3b82f6; margin-bottom: 15px;">✉️ Reinigungsplan versenden</h4>
+                    <div class="form-group">
+                        <label>Empfänger</label>
+                        <select id="cleaning-email-to" onchange="updateCleaningEmailTo()">
+                            <option value="custom">Andere E-Mail eingeben...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="cleaning-email-custom-group" style="display: none;">
+                        <label>E-Mail Adresse</label>
+                        <input type="email" id="cleaning-email-custom" placeholder="email@beispiel.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Betreff</label>
+                        <input type="text" id="cleaning-email-subject" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>Nachricht (kann bearbeitet werden)</label>
+                        <textarea id="cleaning-email-body" style="min-height: 200px; font-family: monospace; font-size: 12px;"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="modal-btn cancel" onclick="hideCleaningEmail()">Abbrechen</button>
+                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: #6b7280;">📝 Als Entwurf</button>
+                        <button class="modal-btn success" onclick="sendCleaningEmail()">📤 Senden</button>
+                    </div>
+                    <div id="cleaning-email-status" style="margin-top: 10px; font-size: 13px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schließen</button>
+            </div>
         </div>
     </div>
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- MODALS -->
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+    
+    <!-- NYE Projector Modal -->
+    <div class="modal-overlay" id="nye-projector-modal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <h3>🎆 NYE Projector (3-Jahre Benchmark)</h3>
+                <button class="modal-close" onclick="closeModal('nye-projector-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row" style="margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label>Aktueller VVK Stand</label>
+                        <input type="number" id="nye-current-vvk" value="0" onchange="calculateNYE()">
+                    </div>
+                    <div class="form-group">
+                        <label>Szenario</label>
+                        <select id="nye-scenario" onchange="calculateNYE()">
+                            <option value="base">Base (~960 PAX)</option>
+                            <option value="expected" selected>Expected (~1,096 PAX)</option>
+                            <option value="strong">Strong (~1,200 PAX)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #f59e0b;">
+                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">PRESALE</div>
+                        <div id="nye-presale" style="font-size: 28px; font-weight: 700; color: #f59e0b;">560</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #3b82f6;">
+                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">FOH</div>
+                        <div id="nye-foh" style="font-size: 28px; font-weight: 700; color: #3b82f6;">536</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid #22c55e;">
+                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">TOTAL PAX</div>
+                        <div id="nye-total" style="font-size: 28px; font-weight: 700; color: #22c55e;">1,096</div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 11px; color: #888;">FOH Revenue</div>
+                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">€13,392</div>
+                    </div>
+                    <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 11px; color: #888;">Bar Revenue</div>
+                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">€24,000</div>
+                    </div>
+                    <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 11px; color: #888;">TOTAL Revenue</div>
+                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">€37,392</div>
+                    </div>
+                </div>
+                
+                <h4 style="color: #f59e0b; margin: 20px 0 10px 0;">📊 Guest Arrival Stream</h4>
+                <table class="cleaning-table" id="nye-arrival-table">
+                    <thead>
+                        <tr>
+                            <th>Zeit</th>
+                            <th>Presale</th>
+                            <th>FOH</th>
+                            <th>Total</th>
+                            <th>Im Club</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nye-arrival-body">
+                    </tbody>
+                </table>
+                
+                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">🍺 Bar Revenue by Hour</h4>
+                <table class="cleaning-table">
+                    <thead>
+                        <tr>
+                            <th>Zeit</th>
+                            <th>Revenue</th>
+                            <th>Anteil</th>
+                            <th>Visual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nye-bar-body">
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); border-radius: 10px;">
+                    <div style="font-weight: 700; margin-bottom: 10px;">⚠️ CRITICAL PEAK: 01:00 - 03:00</div>
+                    <div style="font-size: 13px; line-height: 1.6;">
+                        "The night is not decided by how many tickets you sell, but by how many people you can move, store, and serve between 01:00 and 03:00."
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">Schließen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Peak Grid Dashboard Modal -->
+    <div class="modal-overlay" id="peak-grid-modal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <h3>📊 NYE Peak Grid Dashboard</h3>
+                <button class="modal-close" onclick="closeModal('peak-grid-modal')">×</button>
+            </div>
+            <div class="modal-body" style="padding: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <span style="font-size: 12px; color: #888;">Live Monitoring für</span>
+                        <span style="font-weight: 700; color: #ef4444;"> Silvester 31.12.</span>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <span class="cleaning-type gross" style="font-size: 11px;">MAX</span>
+                        <span class="cleaning-type mittel" style="font-size: 11px;">HIGH</span>
+                        <span class="cleaning-type standard" style="font-size: 11px;">MED</span>
+                        <span style="background: #3d3d54; padding: 2px 8px; border-radius: 4px; font-size: 11px;">LOW</span>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="cleaning-table" style="font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 90px;">Zeit</th>
+                                <th style="min-width: 70px;">Door</th>
+                                <th style="min-width: 70px;">Garderobe</th>
+                                <th style="min-width: 70px;">Bar</th>
+                                <th style="min-width: 200px;">Action / Notes</th>
+                                <th style="min-width: 50px;">✓</th>
+                            </tr>
+                        </thead>
+                        <tbody id="peak-grid-body">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
+                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">🧊 Tub Strategy</div>
+                        <div style="font-size: 12px; line-height: 1.8;">
+                            <div><span style="color: #f59e0b;">23:45-00:00</span> Initial Fill (BEFORE midnight!)</div>
+                            <div><span style="color: #ef4444; font-weight: 700;">01:15-01:30</span> <strong>MANDATORY REFILL</strong></div>
+                            <div><span style="color: #888;">02:45-03:00</span> Final Refill (if needed)</div>
+                            <div><span style="color: #888;">After 03:30</span> STOP - normal restock</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                        <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">🎯 Peak Rules</div>
+                        <div style="font-size: 12px; line-height: 1.8;">
+                            <div>• <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
+                            <div>• <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
+                            <div>• <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
+                            <div>• <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">
+                    <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 10px; color: #888;">Max Occupancy</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #ef4444;">~1,450</div>
+                        <div style="font-size: 10px; color: #666;">@ 02:00</div>
+                    </div>
+                    <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 10px; color: #888;">Peak Arrivals</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #f59e0b;">328</div>
+                        <div style="font-size: 10px; color: #666;">@ 01:00-02:00</div>
+                    </div>
+                    <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 10px; color: #888;">Peak Bar €</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">€4,000</div>
+                        <div style="font-size: 10px; color: #666;">@ 02:00-03:00</div>
+                    </div>
+                    <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 10px; color: #888;">FOH Pricing</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">€22/€26</div>
+                        <div style="font-size: 10px; color: #666;">pre/post 00:00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn primary" onclick="printPeakGrid()">🖨️ Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">Schließen</button>
+            </div>
+        </div>
+    </div>
     
     <!-- PreSale Calculator Modal -->
     <div class="modal-overlay" id="presale-modal">
@@ -1339,18 +1616,20 @@
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <div class="quick-actions">
+        <button class="quick-btn" onclick="openCleaningModal()" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">🧹 Reinigung</button>
         <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">📄 Factsheet</button>
         <button class="quick-btn btn-email" onclick="openModal('email-modal')">✉️ E-Mail</button>
-        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
         <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
     </div>
     
     <div class="quick-actions-row2">
+        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
         <div class="dropdown-container">
             <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
             <div id="social-dropdown" class="dropdown-content">
                 <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
                 <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📘</span> Facebook</a>
+                <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">💬</span> WhatsApp</a>
             </div>
         </div>
         <div class="dropdown-container">
@@ -1368,7 +1647,6 @@
                 <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔵</span> OneDrive</a>
             </div>
         </div>
-        <a href="https://wa.me/" class="quick-btn" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);" target="_blank">💬 WhatsApp</a>
     </div>
     
     <div class="quick-actions-row3">
@@ -1376,6 +1654,13 @@
         <button class="quick-btn btn-calculator" onclick="openModal('cost-modal')">🧮 Cost Calc</button>
         <button class="quick-btn btn-projector" onclick="openModal('projector-modal')">📊 Projector</button>
         <button class="quick-btn btn-analysis" onclick="openDeepAnalysis()">🔬 Deep Analysis</button>
+    </div>
+    
+    <div class="quick-actions-row3" style="margin-top: 10px;">
+        <button class="quick-btn" onclick="openModal('nye-projector-modal')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">🎆 NYE Projector</button>
+        <button class="quick-btn" onclick="openModal('peak-grid-modal')" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">📊 Peak Grid</button>
+        <a href="https://drive.google.com/drive/my-drive" class="quick-btn" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);" target="_blank">📁 Drive</a>
+        <a href="https://claude.ai" class="quick-btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);" target="_blank">🤖 Claude</a>
     </div>
     
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
@@ -1633,11 +1918,11 @@
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
-                    <div class="section-label open" onclick="toggleSection(this)">
+                    <div class="section-label" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="section-content open">
+                    <div class="section-content">
                         <div class="calendar-list">
                             <div class="calendar-item">
                                 <span class="calendar-date">27. Dez</span>
@@ -1906,7 +2191,9 @@
                 return;
             }
             console.log('loadAllData: Calling loadAllTasks...');
-            loadAllTasks(); 
+            loadAllTasks();
+            // Sync Quick Notes from To Do
+            loadQuickNotesFromToDo();
         }
         
         function resetAllUI() {
@@ -2388,6 +2675,7 @@
         
         // Quick Notes Functions
         let notesTimeout = null;
+        let notesListId = null; // Will store the "Notes" list ID
         
         function saveQuickNotes() {
             clearTimeout(notesTimeout);
@@ -2397,7 +2685,136 @@
                 const indicator = document.getElementById('notes-saved');
                 indicator.classList.add('show');
                 setTimeout(() => indicator.classList.remove('show'), 2000);
-            }, 500);
+                
+                // Sync to MS To Do if logged in
+                if (accessToken && text.trim()) {
+                    syncNotesToToDo(text);
+                }
+            }, 1000);
+        }
+        
+        async function getOrCreateNotesList() {
+            if (notesListId) return notesListId;
+            
+            try {
+                // Search for existing "Notes" list
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists', {
+                    headers: { 'Authorization': 'Bearer ' + accessToken }
+                });
+                const data = await response.json();
+                
+                const notesList = data.value?.find(list => list.displayName === 'Notes');
+                if (notesList) {
+                    notesListId = notesList.id;
+                    return notesListId;
+                }
+                
+                // Create "Notes" list if not exists
+                const createResponse = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ displayName: 'Notes' })
+                });
+                const newList = await createResponse.json();
+                notesListId = newList.id;
+                return notesListId;
+            } catch (err) {
+                console.error('Failed to get/create Notes list:', err);
+                return null;
+            }
+        }
+        
+        async function syncNotesToToDo(text) {
+            if (!accessToken) return;
+            
+            try {
+                const listId = await getOrCreateNotesList();
+                if (!listId) return;
+                
+                // Search for existing "Work Hub Quick Notes" task
+                const searchResponse = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=title eq 'Work Hub Quick Notes'`,
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                const searchData = await searchResponse.json();
+                
+                const noteBody = {
+                    title: 'Work Hub Quick Notes',
+                    body: {
+                        content: text,
+                        contentType: 'text'
+                    }
+                };
+                
+                if (searchData.value && searchData.value.length > 0) {
+                    // Update existing task
+                    const taskId = searchData.value[0].id;
+                    await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(noteBody)
+                    });
+                } else {
+                    // Create new task
+                    await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(noteBody)
+                    });
+                }
+                
+                const indicator = document.getElementById('notes-saved');
+                indicator.textContent = '☁️ Synced';
+                indicator.classList.add('show');
+                setTimeout(() => {
+                    indicator.textContent = '✔ Gespeichert';
+                    indicator.classList.remove('show');
+                }, 2000);
+            } catch (err) {
+                console.log('Note sync to To Do failed:', err);
+            }
+        }
+        
+        async function loadQuickNotesFromToDo() {
+            if (!accessToken) {
+                loadQuickNotes();
+                return;
+            }
+            
+            try {
+                const listId = await getOrCreateNotesList();
+                if (!listId) {
+                    loadQuickNotes();
+                    return;
+                }
+                
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=title eq 'Work Hub Quick Notes'`,
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                const data = await response.json();
+                
+                if (data.value && data.value.length > 0 && data.value[0].body?.content) {
+                    const notes = data.value[0].body.content;
+                    document.getElementById('quick-notes-text').value = notes;
+                    localStorage.setItem('workhub-quick-notes', notes);
+                    console.log('✅ Notes loaded from To Do');
+                } else {
+                    loadQuickNotes();
+                }
+            } catch (err) {
+                console.log('Failed to load from To Do, using local:', err);
+                loadQuickNotes();
+            }
         }
         
         function loadQuickNotes() {
@@ -2411,6 +2828,221 @@
         function openDeepAnalysis() {
             // Opens the Grelle Forelle Analysis Project in Claude
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // NYE PROJECTOR (3-Jahre Benchmark)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        const NYE_SCENARIOS = {
+            base: {
+                name: 'Base',
+                presale: 480,
+                foh: 480,
+                fohRevenue: 12120,
+                barRevenue: 23000,
+                arrivals: [
+                    { time: '22-23', presale: 30, foh: 30, inClub: 300 },
+                    { time: '23-00', presale: 90, foh: 60, inClub: 520 },
+                    { time: '00-01', presale: 55, foh: 105, inClub: 800 },
+                    { time: '01-02', presale: 150, foh: 135, inClub: 1250 },
+                    { time: '02-03', presale: 100, foh: 85, inClub: 1200 },
+                    { time: '03-04', presale: 35, foh: 40, inClub: 1000 },
+                    { time: 'After 04', presale: 20, foh: 25, inClub: 850 }
+                ]
+            },
+            expected: {
+                name: 'Expected',
+                presale: 560,
+                foh: 536,
+                fohRevenue: 13392,
+                barRevenue: 24000,
+                arrivals: [
+                    { time: '22-23', presale: 37, foh: 34, inClub: 350 },
+                    { time: '23-00', presale: 105, foh: 68, inClub: 610 },
+                    { time: '00-01', presale: 64, foh: 117, inClub: 950 },
+                    { time: '01-02', presale: 174, foh: 154, inClub: 1450 },
+                    { time: '02-03', presale: 121, foh: 94, inClub: 1350 },
+                    { time: '03-04', presale: 40, foh: 44, inClub: 1150 },
+                    { time: 'After 04', presale: 19, foh: 25, inClub: 950 }
+                ]
+            },
+            strong: {
+                name: 'Strong',
+                presale: 600,
+                foh: 600,
+                fohRevenue: 15120,
+                barRevenue: 25000,
+                arrivals: [
+                    { time: '22-23', presale: 45, foh: 40, inClub: 400 },
+                    { time: '23-00', presale: 120, foh: 80, inClub: 700 },
+                    { time: '00-01', presale: 75, foh: 130, inClub: 1100 },
+                    { time: '01-02', presale: 190, foh: 170, inClub: 1550 },
+                    { time: '02-03', presale: 130, foh: 105, inClub: 1450 },
+                    { time: '03-04', presale: 25, foh: 50, inClub: 1200 },
+                    { time: 'After 04', presale: 15, foh: 25, inClub: 1000 }
+                ]
+            }
+        };
+        
+        const NYE_BAR_REVENUE = [
+            { time: '22-23', revenue: 700, pct: 3 },
+            { time: '23-00', revenue: 1500, pct: 6 },
+            { time: '00-01', revenue: 2600, pct: 11 },
+            { time: '01-02', revenue: 3600, pct: 15 },
+            { time: '02-03', revenue: 4000, pct: 17 },
+            { time: '03-04', revenue: 3100, pct: 13 },
+            { time: '04-05', revenue: 2400, pct: 10 },
+            { time: '05-06', revenue: 1600, pct: 7 },
+            { time: '06-07', revenue: 900, pct: 4 }
+        ];
+        
+        function calculateNYE() {
+            const scenarioKey = document.getElementById('nye-scenario').value;
+            const currentVVK = parseInt(document.getElementById('nye-current-vvk').value) || 0;
+            const scenario = NYE_SCENARIOS[scenarioKey];
+            
+            // Update main metrics
+            document.getElementById('nye-presale').textContent = scenario.presale.toLocaleString('de-DE');
+            document.getElementById('nye-foh').textContent = scenario.foh.toLocaleString('de-DE');
+            document.getElementById('nye-total').textContent = (scenario.presale + scenario.foh).toLocaleString('de-DE');
+            
+            document.getElementById('nye-foh-revenue').textContent = '€' + scenario.fohRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-bar-revenue').textContent = '€' + scenario.barRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-total-revenue').textContent = '€' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
+            
+            // Update arrival table
+            const arrivalBody = document.getElementById('nye-arrival-body');
+            arrivalBody.innerHTML = scenario.arrivals.map(row => {
+                const total = row.presale + row.foh;
+                const isPeak = row.time === '01-02';
+                return `
+                    <tr style="${isPeak ? 'background: rgba(239, 68, 68, 0.2);' : ''}">
+                        <td style="${isPeak ? 'font-weight: 700; color: #ef4444;' : ''}">${row.time}</td>
+                        <td>${row.presale}</td>
+                        <td>${row.foh}</td>
+                        <td style="font-weight: 600;">${total}</td>
+                        <td style="${row.inClub >= 1400 ? 'color: #ef4444; font-weight: 700;' : ''}">${row.inClub >= 1000 ? '~' : ''}${row.inClub.toLocaleString('de-DE')}</td>
+                    </tr>
+                `;
+            }).join('') + `
+                <tr style="background: #252542; font-weight: 700;">
+                    <td>TOTAL</td>
+                    <td>${scenario.presale}</td>
+                    <td>${scenario.foh}</td>
+                    <td>${scenario.presale + scenario.foh}</td>
+                    <td>-</td>
+                </tr>
+            `;
+            
+            // Update bar revenue table
+            const barBody = document.getElementById('nye-bar-body');
+            barBody.innerHTML = NYE_BAR_REVENUE.map(row => {
+                const isPeak = row.time === '02-03';
+                const barWidth = (row.pct / 17) * 100;
+                return `
+                    <tr style="${isPeak ? 'background: rgba(34, 197, 94, 0.2);' : ''}">
+                        <td style="${isPeak ? 'font-weight: 700; color: #22c55e;' : ''}">${row.time}</td>
+                        <td style="${isPeak ? 'font-weight: 700;' : ''}">€${row.revenue.toLocaleString('de-DE')}</td>
+                        <td>${row.pct}%</td>
+                        <td><div style="background: ${isPeak ? '#22c55e' : '#3b82f6'}; height: 12px; width: ${barWidth}%; border-radius: 4px;"></div></td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Show VVK status if entered
+            if (currentVVK > 0) {
+                const pctSold = Math.round((currentVVK / scenario.presale) * 100);
+                // Could add a progress indicator here
+            }
+        }
+        
+        // Initialize NYE calculator when modal opens
+        document.getElementById('nye-projector-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) calculateNYE();
+        });
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // PEAK GRID DASHBOARD
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        const PEAK_GRID_DATA = [
+            { time: '22:00-22:30', door: 'low', coat: 'low', bar: 'low', action: 'Start. Systems check. Staff settle.' },
+            { time: '22:30-23:00', door: 'low', coat: 'low', bar: 'low', action: 'Prepare wardrobe rhythm. Keep lanes clean.' },
+            { time: '23:00-23:30', door: 'med', coat: 'med', bar: 'low', action: 'Early wave. Terrace helps absorb.' },
+            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '⚠️ Hanger check must be done!' },
+            { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: '🎆 Midnight push. Door speed only.' },
+            { time: '00:15-00:30', door: 'high', coat: 'high', bar: 'high', action: 'Queue mgmt. Keep corridor clear.' },
+            { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: '🔴 BOTH LANES DO EVERYTHING!' },
+            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: '🍺 Bar speed menu. Stop slow drinks.' },
+            { time: '01:00-01:15', door: 'max', coat: 'high', bar: 'max', action: 'Arrival overlap continues.' },
+            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: '🧊 MANDATORY TUB REFILL!' },
+            { time: '01:30-01:45', door: 'max', coat: 'high', bar: 'max', action: 'Wardrobe overflow if needed.' },
+            { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: '🚨 Security clears choke points.' },
+            { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: '👥 MAX density inside (~1,450)' },
+            { time: '02:15-02:30', door: 'high', coat: 'high', bar: 'high', action: 'Keep both lanes flexible.' },
+            { time: '02:30-02:45', door: 'high', coat: 'high', bar: 'high', action: 'Queues dropping? Decide lane merge.' },
+            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: '🧊 Optional final tub refill window.' },
+            { time: '03:00-03:30', door: 'med', coat: 'med', bar: 'high', action: 'Pressure easing. Stop tubs after 03:30.' },
+            { time: '03:30-04:00', door: 'low', coat: 'low', bar: 'med', action: 'Reset & deep restock. Stabilize.' }
+        ];
+        
+        function getLevelBadge(level) {
+            const colors = {
+                'low': 'background: #3d3d54;',
+                'med': 'background: #22c55e; color: white;',
+                'high': 'background: #f59e0b; color: white;',
+                'max': 'background: #ef4444; color: white; font-weight: 700;'
+            };
+            const labels = { 'low': 'LOW', 'med': 'MED', 'high': 'HIGH', 'max': 'MAX' };
+            return `<span style="${colors[level]} padding: 3px 8px; border-radius: 4px; font-size: 10px;">${labels[level]}</span>`;
+        }
+        
+        function renderPeakGrid() {
+            const body = document.getElementById('peak-grid-body');
+            if (!body) return;
+            
+            body.innerHTML = PEAK_GRID_DATA.map((row, idx) => {
+                const isMax = row.door === 'max' || row.bar === 'max';
+                const isCritical = row.action.includes('MANDATORY') || row.action.includes('BOTH LANES');
+                return `
+                    <tr style="${isMax ? 'background: rgba(239, 68, 68, 0.1);' : ''}">
+                        <td style="font-weight: 600; ${isMax ? 'color: #ef4444;' : ''}">${row.time}</td>
+                        <td>${getLevelBadge(row.door)}</td>
+                        <td>${getLevelBadge(row.coat)}</td>
+                        <td>${getLevelBadge(row.bar)}</td>
+                        <td style="${isCritical ? 'color: #ef4444; font-weight: 600;' : ''}">${row.action}</td>
+                        <td><input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;"></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function printPeakGrid() {
+            const content = document.getElementById('peak-grid-modal').querySelector('.modal-body').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>NYE Peak Grid - Grelle Forelle</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: white; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { padding: 8px; border: 1px solid #3d3d54; text-align: left; }
+                        th { background: #252542; }
+                        @media print { body { background: white; color: black; } }
+                    </style>
+                </head>
+                <body>${content}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // Initialize Peak Grid when modal opens
+        function initPeakGridModal() {
+            renderPeakGrid();
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2487,6 +3119,90 @@
         
         const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
         let bmtEvents = [];
+        let bmtSectionOpen = false;
+        
+        // Toggle BMT Section
+        function toggleBMTSection() {
+            const container = document.getElementById('bmt-events-container');
+            const toggle = document.getElementById('bmt-toggle');
+            bmtSectionOpen = !bmtSectionOpen;
+            
+            if (bmtSectionOpen) {
+                container.classList.remove('bmt-collapsed');
+                container.classList.add('bmt-expanded');
+                toggle.classList.add('open');
+            } else {
+                container.classList.add('bmt-collapsed');
+                container.classList.remove('bmt-expanded');
+                toggle.classList.remove('open');
+            }
+        }
+        
+        // Open event in BMT
+        function openInBMT(eventUid) {
+            window.open('https://club.bookmetender.com/events', '_blank');
+        }
+        
+        // Open BMT Factsheet - pre-fills factsheet from BMT event
+        function openBMTFactsheet(encodedData) {
+            try {
+                const eventData = JSON.parse(decodeURIComponent(encodedData));
+                const eventDate = new Date(eventData.date);
+                const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+                
+                // Determine template based on event time/category
+                const eventHour = eventDate.getHours();
+                let template = 'CLUB'; // Default
+                if (eventData.category === 'konzert' || eventHour === 19) {
+                    template = 'CONCERT';
+                }
+                
+                // Format date as "Samstag, 27.12.2025"
+                const dateStr = dayNames[eventDate.getDay()] + ', ' + 
+                    eventDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                
+                // Pre-fill factsheet modal fields
+                document.getElementById('fs-event-name').value = eventData.name;
+                document.getElementById('fs-datum').value = dateStr;
+                document.getElementById('fs-template').value = template;
+                
+                // Show/hide main floor row based on template
+                document.getElementById('main-floor-row').style.display = template === 'CLUB' ? 'flex' : 'none';
+                
+                // Update preview
+                updateFactsheetPreview();
+                
+                // Open factsheet modal
+                openModal('factsheet-modal');
+                
+                showToast('📄 ' + eventData.name + ' geladen');
+            } catch (e) {
+                console.error('Error parsing BMT event data:', e);
+                showToast('❌ Fehler beim Laden', 'error');
+            }
+        }
+        
+        // Open Cleaning Modal
+        function openCleaningModal() {
+            populateMonthSelect();
+            generateCleaningSchedule();
+            openModal('cleaning-modal');
+        }
+        
+        // Populate month selector
+        function populateMonthSelect() {
+            const select = document.getElementById('cleaning-month');
+            const now = new Date();
+            select.innerHTML = '';
+            
+            // Add current month + next 3 months
+            for (let i = 0; i < 4; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+                const monthName = d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+                const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                select.innerHTML += `<option value="${value}">${monthName}</option>`;
+            }
+        }
         
         // Parse iCal data
         function parseICS(icsData) {
@@ -2605,7 +3321,6 @@
                     localStorage.setItem('bmtLastUpdate', new Date().toISOString());
                     
                     renderBMTEvents();
-                    generateCleaningSchedule();
                     showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
                 } catch (err) {
                     console.error('Error parsing ICS:', err);
@@ -2630,7 +3345,6 @@
                         dtend: new Date(e.dtend)
                     }));
                     renderBMTEvents();
-                    generateCleaningSchedule();
                     
                     if (lastUpdate) {
                         const updateDate = new Date(lastUpdate);
@@ -2687,20 +3401,29 @@
                     
                     const catClass = event.category;
                     const catLabel = {
-                        'eigen': 'Eigenveranstaltung',
-                        'fremd': 'Fremdveranstaltung',
+                        'eigen': 'Eigen',
+                        'fremd': 'Fremd',
                         'konzert': 'Konzert',
                         'special': 'Special',
                         'holiday': 'Feiertag'
                     }[catClass] || 'Event';
                     
+                    // Encode event data for factsheet button
+                    const eventData = encodeURIComponent(JSON.stringify({
+                        name: event.summary,
+                        date: event.dtstart.toISOString(),
+                        category: event.category,
+                        uid: event.uid
+                    }));
+                    
                     return `
                         <div class="bmt-event-card ${catClass}">
-                            <div class="bmt-event-date">${dayName}, ${dateStr}</div>
-                            <div class="bmt-event-name">${escapeHtml(event.summary)}</div>
-                            <span class="bmt-event-category ${catClass}">${catLabel}</span>
-                            ${event.lineup ? `<div class="bmt-event-lineup">${escapeHtml(event.lineup.substring(0, 100))}${event.lineup.length > 100 ? '...' : ''}</div>` : ''}
-                            <div class="bmt-event-time">⏰ ${timeStr} Uhr</div>
+                            <div class="bmt-event-date">${dayName}, ${dateStr} · ${timeStr}</div>
+                            <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                                <span class="bmt-event-category ${catClass}">${catLabel}</span>
+                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen">📄</button>
+                            </div>
                         </div>
                     `;
                 }).join('') + '</div>';
@@ -2716,29 +3439,97 @@
         // CLEANING SCHEDULE GENERATOR
         // ═══════════════════════════════════════════════════════════════════════════
         
+        // Austrian public holidays 2025/2026
+        const HOLIDAYS = [
+            '2025-01-01', '2025-01-06', '2025-04-21', '2025-05-01', '2025-05-29',
+            '2025-06-09', '2025-06-19', '2025-08-15', '2025-10-26', '2025-11-01',
+            '2025-12-08', '2025-12-25', '2025-12-26',
+            '2026-01-01', '2026-01-06', '2026-04-06', '2026-05-01', '2026-05-14',
+            '2026-05-25', '2026-06-04', '2026-08-15', '2026-10-26', '2026-11-01',
+            '2026-12-08', '2026-12-25', '2026-12-26'
+        ];
+        
+        function isHoliday(date) {
+            const dateStr = date.toISOString().split('T')[0];
+            return HOLIDAYS.includes(dateStr);
+        }
+        
+        function isWeekend(date) {
+            return date.getDay() === 0 || date.getDay() === 6; // Sunday = 0, Saturday = 6
+        }
+        
+        function getNextWorkday(fromDate) {
+            const next = new Date(fromDate);
+            next.setDate(next.getDate() + 1);
+            
+            // Skip Sundays and holidays (but NOT Saturdays for Friday events)
+            while (next.getDay() === 0 || isHoliday(next)) {
+                next.setDate(next.getDate() + 1);
+            }
+            return next;
+        }
+        
+        function getCleaningDate(eventDate) {
+            const dayOfWeek = eventDate.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+            const cleaningDate = new Date(eventDate);
+            
+            if (dayOfWeek === 5) {
+                // FRIDAY event → Cleaning on SATURDAY (next day, so club is ready for Sat event)
+                cleaningDate.setDate(cleaningDate.getDate() + 1);
+            } else if (dayOfWeek === 6) {
+                // SATURDAY event → Cleaning on MONDAY (next workday, avoid Sunday double cost)
+                cleaningDate.setDate(cleaningDate.getDate() + 2); // +2 = Monday
+                // Check if Monday is a holiday
+                while (isHoliday(cleaningDate)) {
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                }
+            } else if (dayOfWeek === 0) {
+                // SUNDAY event → Cleaning on Monday (next workday)
+                cleaningDate.setDate(cleaningDate.getDate() + 1);
+                while (isHoliday(cleaningDate)) {
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                }
+            } else {
+                // MON-THU event → Cleaning next day
+                cleaningDate.setDate(cleaningDate.getDate() + 1);
+                // Skip if next day is Sunday or holiday
+                while (cleaningDate.getDay() === 0 || isHoliday(cleaningDate)) {
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                }
+            }
+            
+            cleaningDate.setHours(8, 0, 0, 0);
+            return cleaningDate;
+        }
+        
         function generateCleaningSchedule() {
             const container = document.getElementById('cleaning-container');
+            const summaryContainer = document.getElementById('cleaning-summary');
             
             if (bmtEvents.length === 0) {
-                container.innerHTML = '<div class="bmt-status">Keine BMT Events geladen</div>';
+                container.innerHTML = '<div class="bmt-status">Keine BMT Events geladen. Bitte erst .ics Datei uploaden.</div>';
+                summaryContainer.innerHTML = '';
                 return;
             }
             
-            // Get events from now to 14 days ahead
-            const now = new Date();
-            now.setHours(0, 0, 0, 0);
-            const in14Days = new Date(now);
-            in14Days.setDate(now.getDate() + 14);
+            // Get selected month
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
             
-            // Find events that need cleaning
+            const monthStart = new Date(year, month - 1, 1);
+            const monthEnd = new Date(year, month, 0); // Last day of month
+            
+            // Find events in selected month that need cleaning
             const eventsNeedingCleaning = bmtEvents.filter(e => {
-                // Only actual events need cleaning (not holidays, specials like meetings)
-                const isRealEvent = ['eigen', 'fremd', 'konzert'].includes(e.category);
-                const isInRange = e.dtstart >= now && e.dtstart <= in14Days;
+                const isClubOrConcert = ['eigen', 'fremd', 'konzert'].includes(e.category);
+                const eventMonth = e.dtstart.getMonth() + 1;
+                const eventYear = e.dtstart.getFullYear();
+                const isInMonth = eventYear === year && eventMonth === month;
+                const isActualEvent = e.dtstart.getHours() >= 18 || e.dtstart.getHours() === 19; // Events 18:00+
                 const isNotMeeting = !e.summary.toLowerCase().includes('meeting') && 
                                      !e.summary.toLowerCase().includes('treffen') &&
-                                     e.dtstart.getHours() >= 18; // Events starting after 6pm
-                return isRealEvent && isInRange && isNotMeeting;
+                                     !e.summary.toLowerCase().includes('holiday');
+                return isClubOrConcert && isInMonth && isActualEvent && isNotMeeting;
             });
             
             // Generate cleaning entries
@@ -2746,90 +3537,355 @@
             const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
             
             eventsNeedingCleaning.forEach(event => {
-                // Cleaning happens the morning after the event
-                const cleaningDate = new Date(event.dtstart);
+                const cleaningDate = getCleaningDate(event.dtstart);
                 
-                // If event ends after midnight (typical for club nights)
-                // The dtend is usually the next day, so cleaning is that day
-                if (event.dtend && event.dtend.getDate() !== event.dtstart.getDate()) {
-                    cleaningDate.setDate(event.dtend.getDate());
-                    cleaningDate.setMonth(event.dtend.getMonth());
-                } else {
-                    cleaningDate.setDate(cleaningDate.getDate() + 1);
-                }
-                cleaningDate.setHours(8, 0, 0, 0);
-                
-                // Determine cleaning type based on event
-                let cleaningType = 'standard';
+                // Determine cleaning type: GROSS for club nights (23:00), MITTEL for concerts (19:00)
+                let cleaningType = 'mittel'; // Default
                 const eventHour = event.dtstart.getHours();
-                
-                // Club nights (start at 23:00) need full cleaning
-                if (eventHour >= 22 || eventHour <= 2) {
-                    cleaningType = 'gross';
-                }
-                // Konzerte ending earlier need standard cleaning
-                if (event.category === 'konzert' && eventHour < 22) {
-                    cleaningType = 'standard';
+                if (eventHour >= 23 || eventHour <= 4) {
+                    cleaningType = 'gross'; // Club night (23:00) = GROSS
+                } else if (eventHour === 19 || event.category === 'konzert') {
+                    cleaningType = 'mittel'; // Concert (19:00) = MITTEL
                 }
                 
                 cleaningDates.push({
                     date: cleaningDate,
                     type: cleaningType,
                     eventName: event.summary,
+                    eventDate: event.dtstart,
                     eventCategory: event.category
                 });
             });
             
-            // Sort by date
+            // Sort by cleaning date
             cleaningDates.sort((a, b) => a.date - b.date);
             
-            // Remove duplicates (same date)
+            // Merge duplicates (same cleaning date) - keep GROSS if mixed
             const uniqueCleanings = cleaningDates.reduce((acc, curr) => {
                 const dateKey = curr.date.toDateString();
-                if (!acc.find(c => c.date.toDateString() === dateKey)) {
-                    acc.push(curr);
+                const existing = acc.find(c => c.date.toDateString() === dateKey);
+                
+                if (!existing) {
+                    acc.push({...curr, events: [curr.eventName]});
                 } else {
-                    // If same date, upgrade to gross if needed
-                    const existing = acc.find(c => c.date.toDateString() === dateKey);
                     if (curr.type === 'gross') {
                         existing.type = 'gross';
-                        existing.eventName += ', ' + curr.eventName;
                     }
+                    existing.events.push(curr.eventName);
                 }
                 return acc;
             }, []);
             
             if (uniqueCleanings.length === 0) {
-                container.innerHTML = '<div class="bmt-status">Keine Reinigungen geplant</div>';
+                container.innerHTML = '<div class="bmt-status">Keine Reinigungen in diesem Monat geplant</div>';
+                summaryContainer.innerHTML = '';
                 return;
             }
             
-            container.innerHTML = '<div class="cleaning-grid">' + 
-                uniqueCleanings.map(cleaning => {
-                    const dateStr = cleaning.date.toLocaleDateString('de-DE', { 
-                        day: '2-digit', 
-                        month: '2-digit'
-                    });
-                    const dayName = dayNames[cleaning.date.getDay()];
-                    const typeLabel = cleaning.type === 'gross' ? 'GROSS' : 'Standard';
+            // Count by type
+            const grossCount = uniqueCleanings.filter(c => c.type === 'gross').length;
+            const mittelCount = uniqueCleanings.filter(c => c.type === 'mittel').length;
+            
+            // Build table
+            container.innerHTML = `
+                <table class="cleaning-table" id="cleaning-table-data">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Tag</th>
+                            <th>Art</th>
+                            <th>Nach Event</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${uniqueCleanings.map(cleaning => {
+                            const dateStr = cleaning.date.toLocaleDateString('de-DE', { 
+                                day: '2-digit', 
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+                            const dayName = dayNames[cleaning.date.getDay()];
+                            const typeLabel = cleaning.type === 'gross' ? 'GROSS' : 'MITTEL';
+                            const eventDayName = dayNames[cleaning.eventDate.getDay()];
+                            
+                            return `
+                                <tr>
+                                    <td>${dateStr}</td>
+                                    <td>${dayName}</td>
+                                    <td><span class="cleaning-type ${cleaning.type}">${typeLabel}</span></td>
+                                    <td>${eventDayName}: ${escapeHtml(cleaning.events.join(', '))}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            // Summary
+            summaryContainer.innerHTML = `
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #ef4444;">${grossCount}</div>
+                        <div style="font-size: 12px; color: #888;">GROSS</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">${mittelCount}</div>
+                        <div style="font-size: 12px; color: #888;">MITTEL</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #22c55e;">${uniqueCleanings.length}</div>
+                        <div style="font-size: 12px; color: #888;">TOTAL</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function copyCleaningSchedule() {
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            const monthName = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+            
+            const table = document.getElementById('cleaning-table-data');
+            if (!table) {
+                showToast('❌ Keine Daten zum Kopieren', 'error');
+                return;
+            }
+            
+            const rows = table.querySelectorAll('tbody tr');
+            let text = `REINIGUNGSPLAN ${monthName.toUpperCase()}\n`;
+            text += `${'='.repeat(50)}\n\n`;
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const date = cells[0].textContent;
+                const day = cells[1].textContent;
+                const type = cells[2].textContent;
+                const event = cells[3].textContent;
+                text += `${date} (${day}) - ${type}\n  → ${event}\n\n`;
+            });
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✅ Reinigungsplan kopiert!');
+            }).catch(() => {
+                showToast('❌ Kopieren fehlgeschlagen', 'error');
+            });
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CLEANING EMAIL FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        // Fixed cleaning contacts - always send to all 3
+        const CLEANING_CONTACTS = [
+            { name: 'Alexander Pichler', email: 'ap@gfg-services.at' },
+            { name: 'GFG Services', email: 'pf@gfg-services.at' },
+            { name: 'Matthäus Gabor', email: 'mg@grelleforelle.com' }
+        ];
+        
+        const SCHADI_SIGNATURE = `
+--
+Schadi Tayyah
+st@grelleforelle.com
+Grelle Forelle CEO
+Turbo Projects GmbH
+Spittelauer Lände 12/1
+1090 Vienna, Austria`;
+        
+        function showCleaningEmail() {
+            const section = document.getElementById('cleaning-email-section');
+            section.style.display = 'block';
+            
+            // Show fixed recipients (no dropdown needed)
+            const recipientsList = CLEANING_CONTACTS.map(c => c.email).join(', ');
+            document.getElementById('cleaning-email-to').innerHTML = `<option value="all" selected>Alle: ${recipientsList}</option>`;
+            document.getElementById('cleaning-email-custom-group').style.display = 'none';
+            
+            // Generate email content
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            const monthName = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+            
+            // Subject: "Reinigungsplan [Monat] Grelle Forelle"
+            document.getElementById('cleaning-email-subject').value = `Reinigungsplan ${monthName} Grelle Forelle`;
+            
+            // Build email body from table with event-on-cleaning-day check
+            const table = document.getElementById('cleaning-table-data');
+            let body = `Hallo,\n\nanbei der Reinigungsplan für ${monthName}:\n\n`;
+            
+            if (table) {
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const dateStr = cells[0].textContent; // e.g., "04.01.2026"
+                    const day = cells[1].textContent;
+                    const type = cells[2].textContent;
+                    const event = cells[3].textContent;
                     
-                    return `
-                        <div class="cleaning-item">
-                            <div>
-                                <div class="cleaning-date">${dayName.substring(0, 2)}, ${dateStr}</div>
-                                <div class="cleaning-event">Nach: ${escapeHtml(cleaning.eventName.substring(0, 25))}${cleaning.eventName.length > 25 ? '...' : ''}</div>
-                            </div>
-                            <span class="cleaning-type ${cleaning.type}">${typeLabel}</span>
-                        </div>
-                    `;
-                }).join('') + '</div>';
+                    // Check if there's an event on this cleaning day
+                    const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
+                    
+                    body += `• ${dateStr} (${day}) - ${type}\n`;
+                    body += `  Nach: ${event}\n`;
+                    if (hasEventOnCleaningDay) {
+                        body += `  ⚠️ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                    }
+                    body += `\n`;
+                });
+            }
+            
+            body += `Bitte um Bestätigung.\n`;
+            body += SCHADI_SIGNATURE;
+            
+            document.getElementById('cleaning-email-body').value = body;
+            document.getElementById('cleaning-email-status').textContent = '';
+        }
+        
+        // Check if there's an event on the cleaning day
+        function checkEventOnCleaningDay(dateStr) {
+            // Parse date string "DD.MM.YYYY"
+            const parts = dateStr.split('.');
+            if (parts.length !== 3) return false;
+            
+            const cleaningDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            
+            // Check bmtEvents for any event on this day
+            return bmtEvents.some(event => {
+                const eventDate = new Date(event.dtstart);
+                return eventDate.getFullYear() === cleaningDate.getFullYear() &&
+                       eventDate.getMonth() === cleaningDate.getMonth() &&
+                       eventDate.getDate() === cleaningDate.getDate() &&
+                       (event.category === 'eigen' || event.category === 'fremd' || event.category === 'konzert');
+            });
+        }
+        
+        function hideCleaningEmail() {
+            document.getElementById('cleaning-email-section').style.display = 'none';
+        }
+        
+        function updateCleaningEmailTo() {
+            const select = document.getElementById('cleaning-email-to');
+            const customGroup = document.getElementById('cleaning-email-custom-group');
+            customGroup.style.display = select.value === 'custom' ? 'block' : 'none';
+        }
+        
+        async function sendCleaningEmail() {
+            const subject = document.getElementById('cleaning-email-subject').value;
+            const body = document.getElementById('cleaning-email-body').value;
+            const status = document.getElementById('cleaning-email-status');
+            
+            if (!subject || !body) {
+                status.textContent = '⚠️ Bitte alle Felder ausfüllen';
+                status.style.color = '#f59e0b';
+                return;
+            }
+            
+            if (!accessToken) {
+                status.textContent = '⚠️ Bitte zuerst mit Microsoft anmelden';
+                status.style.color = '#ef4444';
+                return;
+            }
+            
+            status.textContent = '📤 Sende an alle 3 Empfänger...';
+            status.style.color = '#888';
+            
+            // Build recipients array for all 3 contacts
+            const toRecipients = CLEANING_CONTACTS.map(contact => ({
+                emailAddress: { address: contact.email }
+            }));
+            
+            try {
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: {
+                            subject: subject,
+                            body: { contentType: 'Text', content: body },
+                            toRecipients: toRecipients
+                        }
+                    })
+                });
+                
+                if (response.ok || response.status === 202) {
+                    status.textContent = '✅ E-Mail an alle 3 gesendet!';
+                    status.style.color = '#22c55e';
+                    showToast('✅ Reinigungsplan an alle 3 Empfänger gesendet!');
+                    setTimeout(() => hideCleaningEmail(), 2000);
+                } else {
+                    const err = await response.json();
+                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.style.color = '#ef4444';
+                }
+            } catch (e) {
+                status.textContent = '❌ Fehler: ' + e.message;
+                status.style.color = '#ef4444';
+            }
+        }
+        
+        // Save cleaning email as draft in Outlook
+        async function saveDraftCleaningEmail() {
+            const subject = document.getElementById('cleaning-email-subject').value;
+            const body = document.getElementById('cleaning-email-body').value;
+            const status = document.getElementById('cleaning-email-status');
+            
+            if (!subject || !body) {
+                status.textContent = '⚠️ Bitte alle Felder ausfüllen';
+                status.style.color = '#f59e0b';
+                return;
+            }
+            
+            if (!accessToken) {
+                status.textContent = '⚠️ Bitte zuerst mit Microsoft anmelden';
+                status.style.color = '#ef4444';
+                return;
+            }
+            
+            status.textContent = '📝 Speichere als Entwurf...';
+            status.style.color = '#888';
+            
+            // Build recipients array for all 3 contacts
+            const toRecipients = CLEANING_CONTACTS.map(contact => ({
+                emailAddress: { address: contact.email }
+            }));
+            
+            try {
+                // POST to /me/messages creates a draft (without sending)
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subject: subject,
+                        body: { contentType: 'Text', content: body },
+                        toRecipients: toRecipients
+                    })
+                });
+                
+                if (response.ok || response.status === 201) {
+                    status.textContent = '✅ Entwurf gespeichert! Check deine Outlook Drafts.';
+                    status.style.color = '#22c55e';
+                    showToast('📝 Entwurf in Outlook gespeichert!');
+                } else {
+                    const err = await response.json();
+                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.style.color = '#ef4444';
+                }
+            } catch (e) {
+                status.textContent = '❌ Fehler: ' + e.message;
+                status.style.color = '#ef4444';
+            }
         }
         
         // INIT
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v13.3 - BMT Integration + Cleaning Schedule');
+            console.log('Work Hub v13.3 - BMT Integration + Cleaning Schedule + NYE Tools');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -2839,6 +3895,16 @@
             updateProjectorData();
             updateFactsheetPreview();
             refreshBMTFromStorage();
+            
+            // Initialize NYE tools when modals open
+            document.getElementById('nye-projector-modal').addEventListener('transitionend', calculateNYE);
+            document.getElementById('peak-grid-modal').addEventListener('transitionend', renderPeakGrid);
+            
+            // Pre-calculate for immediate display
+            setTimeout(() => {
+                calculateNYE();
+                renderPeakGrid();
+            }, 100);
         });
     </script>
 </body>
