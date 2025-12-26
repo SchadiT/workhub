@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo-Projects Work Hub</title>
+    <title>Turbo-Projects Work Hub v13.3</title>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -399,6 +399,173 @@
         .calendar-time { color: #666; font-size: 12px; min-width: 50px; }
         .calendar-pax { background: #8E24AA; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
         
+        /* BMT Events Section */
+        .bmt-section {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
+            border: 1px solid #3b82f6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .bmt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .bmt-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bmt-badge {
+            background: #3b82f6;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .bmt-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .bmt-btn {
+            background: #3b82f6;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bmt-btn:hover { opacity: 0.9; }
+        .bmt-btn.secondary { background: #4b5563; }
+        .bmt-upload-input { display: none; }
+        
+        .bmt-events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        .bmt-event-card {
+            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #3b82f6;
+        }
+        .bmt-event-card.eigen { border-left-color: #22c55e; }
+        .bmt-event-card.fremd { border-left-color: #f59e0b; }
+        .bmt-event-card.konzert { border-left-color: #8b5cf6; }
+        .bmt-event-card.special { border-left-color: #ec4899; }
+        .bmt-event-card.holiday { border-left-color: #6b7280; opacity: 0.7; }
+        
+        .bmt-event-date {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .bmt-event-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .bmt-event-category {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .bmt-event-category.eigen { background: #22c55e; color: white; }
+        .bmt-event-category.fremd { background: #f59e0b; color: white; }
+        .bmt-event-category.konzert { background: #8b5cf6; color: white; }
+        .bmt-event-category.special { background: #ec4899; color: white; }
+        .bmt-event-category.holiday { background: #6b7280; color: white; }
+        
+        .bmt-event-lineup {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.4;
+        }
+        .bmt-event-time {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        /* Cleaning Schedule Section */
+        .cleaning-section {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
+            border: 1px solid #22c55e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .cleaning-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .cleaning-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .cleaning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .cleaning-item {
+            background: #252542;
+            border-radius: 10px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cleaning-date {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .cleaning-day {
+            font-size: 11px;
+            color: #888;
+        }
+        .cleaning-type {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .cleaning-type.gross { background: #ef4444; color: white; }
+        .cleaning-type.standard { background: #f59e0b; color: white; }
+        .cleaning-type.none { background: #6b7280; color: white; }
+        .cleaning-event {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        .bmt-status {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+        }
+        .bmt-status.success { color: #22c55e; }
+        .bmt-status.error { color: #ef4444; }
+        
         .footer { margin-top: 25px; text-align: center; }
         .footer a { background: #2d2d44; color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; display: inline-block; }
         .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
@@ -601,6 +768,48 @@
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
     </div>
     
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- BMT EVENTS SECTION -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    
+    <div class="bmt-section">
+        <div class="bmt-header">
+            <div class="bmt-title">
+                📅 BMT Events
+                <span class="bmt-badge" id="bmt-event-count">0</span>
+            </div>
+            <div class="bmt-actions">
+                <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
+                <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
+                    📤 Upload .ics
+                </button>
+                <button class="bmt-btn" onclick="refreshBMTFromStorage()">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+        <div id="bmt-events-container">
+            <div class="bmt-status" id="bmt-status">
+                📁 Lade BMT Events... 
+                <br><small>Upload eine .ics Datei von BookMeTender oder klick Refresh</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- CLEANING SCHEDULE SECTION -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    
+    <div class="cleaning-section">
+        <div class="cleaning-header">
+            <div class="cleaning-title">🧹 Reinigungsplan</div>
+            <span style="font-size: 12px; color: #888;" id="cleaning-period">Nächste 14 Tage</span>
+        </div>
+        <div id="cleaning-container">
+            <div class="bmt-status">Warte auf BMT Events...</div>
+        </div>
+    </div>
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- MODALS -->
     <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
@@ -1196,7 +1405,7 @@
                 <div class="event-quick-stats">
                     <span id="turbo-bar-quick">🍺 ~€14.5k</span>
                     <span id="turbo-tickets-quick">🎫 ~763</span>
-                    <span class="event-toggle">▼</span>
+                    <span class="event-toggle">â–¼</span>
                 </div>
             </div>
             <div class="event-details">
@@ -1260,7 +1469,7 @@
                 <div class="event-quick-stats">
                     <span id="nye-bar-quick">🍺 ~€23k</span>
                     <span id="nye-tickets-quick">🎫 ~1153</span>
-                    <span class="event-toggle">▼</span>
+                    <span class="event-toggle">â–¼</span>
                 </div>
             </div>
             <div class="event-details">
@@ -1329,7 +1538,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>🧹 Reinigungsplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <div class="reinigung-list">
@@ -1368,7 +1577,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
@@ -1397,7 +1606,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:400px;"></iframe>
@@ -1426,7 +1635,7 @@
                 <div class="collapsible-section">
                     <div class="section-label open" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content open">
                         <div class="calendar-list">
@@ -1468,7 +1677,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
@@ -2054,6 +2263,7 @@
             document.getElementById('fs-gard3').value = e.gard3 || '';
             
             updateFactsheetPreview();
+            refreshBMTFromStorage();
         }
         
         // Quick factsheet for specific event from dashboard
@@ -2270,11 +2480,356 @@
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
         // ═══════════════════════════════════════════════════════════════════════════════
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // BMT CALENDAR INTEGRATION
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
+        let bmtEvents = [];
+        
+        // Parse iCal data
+        function parseICS(icsData) {
+            const events = [];
+            const lines = icsData.split(/\r?\n/);
+            let currentEvent = null;
+            let currentField = null;
+            
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                
+                // Handle line continuations (lines starting with space)
+                while (i + 1 < lines.length && (lines[i + 1].startsWith(' ') || lines[i + 1].startsWith('\t'))) {
+                    i++;
+                    line += lines[i].substring(1);
+                }
+                
+                if (line === 'BEGIN:VEVENT') {
+                    currentEvent = {};
+                } else if (line === 'END:VEVENT' && currentEvent) {
+                    // Parse the event
+                    const event = {
+                        uid: currentEvent.UID || '',
+                        summary: currentEvent.SUMMARY || 'Unknown Event',
+                        dtstart: parseICSDate(currentEvent.DTSTART || currentEvent['DTSTART;VALUE=DATE'] || ''),
+                        dtend: parseICSDate(currentEvent.DTEND || currentEvent['DTEND;VALUE=DATE'] || ''),
+                        description: decodeICSText(currentEvent.DESCRIPTION || ''),
+                        location: decodeICSText(currentEvent.LOCATION || ''),
+                        category: extractCategory(currentEvent.DESCRIPTION || ''),
+                        lineup: extractLineup(currentEvent.DESCRIPTION || '')
+                    };
+                    
+                    // Only include future events and recent past
+                    const now = new Date();
+                    now.setDate(now.getDate() - 7); // Include events from 7 days ago
+                    if (event.dtstart && event.dtstart >= now) {
+                        events.push(event);
+                    }
+                    currentEvent = null;
+                } else if (currentEvent) {
+                    const colonIndex = line.indexOf(':');
+                    if (colonIndex > 0) {
+                        let key = line.substring(0, colonIndex);
+                        const value = line.substring(colonIndex + 1);
+                        
+                        // Handle properties with parameters like DTSTART;TZID=Europe/Berlin
+                        if (key.includes(';')) {
+                            const parts = key.split(';');
+                            key = parts[0];
+                        }
+                        
+                        currentEvent[key] = value;
+                    }
+                }
+            }
+            
+            // Sort by date
+            events.sort((a, b) => a.dtstart - b.dtstart);
+            return events;
+        }
+        
+        function parseICSDate(dateStr) {
+            if (!dateStr) return null;
+            
+            // Remove timezone info for parsing
+            const cleanDate = dateStr.replace(/;TZID=[^:]+/, '').replace(/^:/, '');
+            
+            // Format: YYYYMMDD or YYYYMMDDTHHmmss or YYYYMMDDTHHmmssZ
+            const match = cleanDate.match(/(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?/);
+            if (match) {
+                const [, year, month, day, hour = '00', min = '00', sec = '00'] = match;
+                return new Date(year, parseInt(month) - 1, day, hour, min, sec);
+            }
+            return null;
+        }
+        
+        function decodeICSText(text) {
+            return text
+                .replace(/\\n/g, '\n')
+                .replace(/\\,/g, ',')
+                .replace(/\\;/g, ';')
+                .replace(/\\\\/g, '\\');
+        }
+        
+        function extractCategory(description) {
+            const match = description.match(/Event Category:\s*([^\n]+)/i);
+            if (match) {
+                const cat = match[1].trim().toLowerCase();
+                if (cat.includes('eigen')) return 'eigen';
+                if (cat.includes('fremd')) return 'fremd';
+                if (cat.includes('konzert') || cat.includes('newdeal')) return 'konzert';
+                if (cat.includes('feiertag') || cat.includes('holiday')) return 'holiday';
+                if (cat.includes('special') || cat.includes('firmen')) return 'special';
+            }
+            return 'fremd';
+        }
+        
+        function extractLineup(description) {
+            const match = description.match(/Lineup:\s*([^\n]+)/i);
+            return match ? match[1].trim() : '';
+        }
+        
+        // Handle file upload
+        function handleBMTUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const icsData = e.target.result;
+                    bmtEvents = parseICS(icsData);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('bmtEvents', JSON.stringify(bmtEvents));
+                    localStorage.setItem('bmtLastUpdate', new Date().toISOString());
+                    
+                    renderBMTEvents();
+                    generateCleaningSchedule();
+                    showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
+                } catch (err) {
+                    console.error('Error parsing ICS:', err);
+                    showToast('❌ Fehler beim Parsen der ICS Datei', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        // Load from localStorage
+        function refreshBMTFromStorage() {
+            const stored = localStorage.getItem('bmtEvents');
+            const lastUpdate = localStorage.getItem('bmtLastUpdate');
+            
+            if (stored) {
+                try {
+                    bmtEvents = JSON.parse(stored);
+                    // Convert date strings back to Date objects
+                    bmtEvents = bmtEvents.map(e => ({
+                        ...e,
+                        dtstart: new Date(e.dtstart),
+                        dtend: new Date(e.dtend)
+                    }));
+                    renderBMTEvents();
+                    generateCleaningSchedule();
+                    
+                    if (lastUpdate) {
+                        const updateDate = new Date(lastUpdate);
+                        showToast('✅ Events geladen (Update: ' + updateDate.toLocaleDateString('de-DE') + ')');
+                    }
+                } catch (err) {
+                    console.error('Error loading stored events:', err);
+                    document.getElementById('bmt-status').innerHTML = 
+                        '❌ Fehler beim Laden. Bitte .ics Datei neu uploaden.';
+                }
+            } else {
+                document.getElementById('bmt-status').innerHTML = 
+                    '📁 Keine Events gespeichert.<br><small>Bitte .ics Datei von BookMeTender uploaden</small>';
+            }
+        }
+        
+        // Render BMT Events
+        function renderBMTEvents() {
+            const container = document.getElementById('bmt-events-container');
+            const countBadge = document.getElementById('bmt-event-count');
+            
+            // Filter to show only upcoming events (next 30 days)
+            const now = new Date();
+            const in30Days = new Date();
+            in30Days.setDate(now.getDate() + 30);
+            
+            const upcomingEvents = bmtEvents.filter(e => 
+                e.dtstart >= now && e.dtstart <= in30Days && 
+                e.category !== 'holiday' && 
+                !e.summary.toLowerCase().includes('holiday')
+            );
+            
+            countBadge.textContent = upcomingEvents.length;
+            
+            if (upcomingEvents.length === 0) {
+                container.innerHTML = '<div class="bmt-status">Keine Events in den nächsten 30 Tagen</div>';
+                return;
+            }
+            
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            container.innerHTML = '<div class="bmt-events-grid">' + 
+                upcomingEvents.map(event => {
+                    const dateStr = event.dtstart.toLocaleDateString('de-DE', { 
+                        day: '2-digit', 
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    const dayName = dayNames[event.dtstart.getDay()];
+                    const timeStr = event.dtstart.toLocaleTimeString('de-DE', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    
+                    const catClass = event.category;
+                    const catLabel = {
+                        'eigen': 'Eigenveranstaltung',
+                        'fremd': 'Fremdveranstaltung',
+                        'konzert': 'Konzert',
+                        'special': 'Special',
+                        'holiday': 'Feiertag'
+                    }[catClass] || 'Event';
+                    
+                    return `
+                        <div class="bmt-event-card ${catClass}">
+                            <div class="bmt-event-date">${dayName}, ${dateStr}</div>
+                            <div class="bmt-event-name">${escapeHtml(event.summary)}</div>
+                            <span class="bmt-event-category ${catClass}">${catLabel}</span>
+                            ${event.lineup ? `<div class="bmt-event-lineup">${escapeHtml(event.lineup.substring(0, 100))}${event.lineup.length > 100 ? '...' : ''}</div>` : ''}
+                            <div class="bmt-event-time">⏰ ${timeStr} Uhr</div>
+                        </div>
+                    `;
+                }).join('') + '</div>';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CLEANING SCHEDULE GENERATOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        function generateCleaningSchedule() {
+            const container = document.getElementById('cleaning-container');
+            
+            if (bmtEvents.length === 0) {
+                container.innerHTML = '<div class="bmt-status">Keine BMT Events geladen</div>';
+                return;
+            }
+            
+            // Get events from now to 14 days ahead
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const in14Days = new Date(now);
+            in14Days.setDate(now.getDate() + 14);
+            
+            // Find events that need cleaning
+            const eventsNeedingCleaning = bmtEvents.filter(e => {
+                // Only actual events need cleaning (not holidays, specials like meetings)
+                const isRealEvent = ['eigen', 'fremd', 'konzert'].includes(e.category);
+                const isInRange = e.dtstart >= now && e.dtstart <= in14Days;
+                const isNotMeeting = !e.summary.toLowerCase().includes('meeting') && 
+                                     !e.summary.toLowerCase().includes('treffen') &&
+                                     e.dtstart.getHours() >= 18; // Events starting after 6pm
+                return isRealEvent && isInRange && isNotMeeting;
+            });
+            
+            // Generate cleaning entries
+            const cleaningDates = [];
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            
+            eventsNeedingCleaning.forEach(event => {
+                // Cleaning happens the morning after the event
+                const cleaningDate = new Date(event.dtstart);
+                
+                // If event ends after midnight (typical for club nights)
+                // The dtend is usually the next day, so cleaning is that day
+                if (event.dtend && event.dtend.getDate() !== event.dtstart.getDate()) {
+                    cleaningDate.setDate(event.dtend.getDate());
+                    cleaningDate.setMonth(event.dtend.getMonth());
+                } else {
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                }
+                cleaningDate.setHours(8, 0, 0, 0);
+                
+                // Determine cleaning type based on event
+                let cleaningType = 'standard';
+                const eventHour = event.dtstart.getHours();
+                
+                // Club nights (start at 23:00) need full cleaning
+                if (eventHour >= 22 || eventHour <= 2) {
+                    cleaningType = 'gross';
+                }
+                // Konzerte ending earlier need standard cleaning
+                if (event.category === 'konzert' && eventHour < 22) {
+                    cleaningType = 'standard';
+                }
+                
+                cleaningDates.push({
+                    date: cleaningDate,
+                    type: cleaningType,
+                    eventName: event.summary,
+                    eventCategory: event.category
+                });
+            });
+            
+            // Sort by date
+            cleaningDates.sort((a, b) => a.date - b.date);
+            
+            // Remove duplicates (same date)
+            const uniqueCleanings = cleaningDates.reduce((acc, curr) => {
+                const dateKey = curr.date.toDateString();
+                if (!acc.find(c => c.date.toDateString() === dateKey)) {
+                    acc.push(curr);
+                } else {
+                    // If same date, upgrade to gross if needed
+                    const existing = acc.find(c => c.date.toDateString() === dateKey);
+                    if (curr.type === 'gross') {
+                        existing.type = 'gross';
+                        existing.eventName += ', ' + curr.eventName;
+                    }
+                }
+                return acc;
+            }, []);
+            
+            if (uniqueCleanings.length === 0) {
+                container.innerHTML = '<div class="bmt-status">Keine Reinigungen geplant</div>';
+                return;
+            }
+            
+            container.innerHTML = '<div class="cleaning-grid">' + 
+                uniqueCleanings.map(cleaning => {
+                    const dateStr = cleaning.date.toLocaleDateString('de-DE', { 
+                        day: '2-digit', 
+                        month: '2-digit'
+                    });
+                    const dayName = dayNames[cleaning.date.getDay()];
+                    const typeLabel = cleaning.type === 'gross' ? 'GROSS' : 'Standard';
+                    
+                    return `
+                        <div class="cleaning-item">
+                            <div>
+                                <div class="cleaning-date">${dayName.substring(0, 2)}, ${dateStr}</div>
+                                <div class="cleaning-event">Nach: ${escapeHtml(cleaning.eventName.substring(0, 25))}${cleaning.eventName.length > 25 ? '...' : ''}</div>
+                            </div>
+                            <span class="cleaning-type ${cleaning.type}">${typeLabel}</span>
+                        </div>
+                    `;
+                }).join('') + '</div>';
+        }
+        
         // INIT
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v13.2 - Capacity Caps + Quick Notes');
+            console.log('Work Hub v13.3 - BMT Integration + Cleaning Schedule');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -2283,6 +2838,7 @@
             calculateCosts();
             updateProjectorData();
             updateFactsheetPreview();
+            refreshBMTFromStorage();
         });
     </script>
 </body>
