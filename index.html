@@ -750,29 +750,12 @@
         
         /* Notes Dropdown */
         .note-item-container { margin-bottom: 2px; }
-        .note-item.has-details { cursor: pointer; }
-        .note-item.has-details:hover { background: #3d3d54; }
-        .note-toggle { 
+        .note-toggle-icon { 
             display: inline-block; 
             width: 14px; 
             font-size: 10px; 
             color: #8b5cf6;
-            transition: transform 0.2s;
-        }
-        .note-details {
-            background: #1a1a2e;
-            border-left: 3px solid #8b5cf6;
-            margin-left: 30px;
-            padding: 10px 12px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 5px;
-        }
-        .note-body {
-            color: #9ca3af;
-            font-size: 12px;
-            line-height: 1.5;
-            margin-bottom: 8px;
-            white-space: pre-wrap;
+            margin-right: 4px;
         }
         .note-checklist {
             display: flex;
@@ -2677,41 +2660,46 @@
                     const title = note.title || 'Untitled';
                     const body = note.body?.content ? note.body.content.replace(/<[^>]*>/g, '') : '';
                     const created = note.createdDateTime ? new Date(note.createdDateTime).toLocaleDateString('de-AT') : '';
-                    const hasDetails = body || (note.checklistItems && note.checklistItems.length > 0);
+                    const hasChecklist = note.checklistItems && note.checklistItems.length > 0;
+                    const hasDetails = body.length > 0 || hasChecklist;
                     
                     let checklistHtml = '';
-                    if (note.checklistItems && note.checklistItems.length > 0) {
-                        checklistHtml = `<div class="note-checklist">
-                            ${note.checklistItems.map(item => `
-                                <div class="checklist-item ${item.isChecked ? 'checked' : ''}">
-                                    <span class="checklist-bullet">${item.isChecked ? '☑' : '☐'}</span>
-                                    <span>${item.displayName}</span>
-                                </div>
-                            `).join('')}
-                        </div>`;
+                    if (hasChecklist) {
+                        checklistHtml = '<div class="note-checklist">' +
+                            note.checklistItems.map(item => 
+                                '<div class="checklist-item ' + (item.isChecked ? 'checked' : '') + '">' +
+                                '<span class="checklist-bullet">' + (item.isChecked ? '☑' : '☐') + '</span>' +
+                                '<span>' + item.displayName + '</span>' +
+                                '</div>'
+                            ).join('') +
+                        '</div>';
                     }
                     
                     const noteId = note.id;
                     
-                    return `
-                        <div class="note-item-container" data-id="${noteId}" data-has-details="${hasDetails}">
-                            <div class="task-item note-item ${hasDetails ? 'has-details' : ''}" onclick="toggleNoteDetails(this)">
-                                <div class="task-checkbox" onclick="event.stopPropagation(); completeNote('${noteId}', this.closest('.note-item-container'))"></div>
-                                <div class="task-info">
-                                    <div class="task-title">
-                                        ${hasDetails ? '<span class="note-toggle">▶</span>' : ''} ${title}
-                                    </div>
-                                    <div class="task-due" style="color: #667eea;">${created}</div>
-                                </div>
-                            </div>
-                            ${hasDetails ? `
-                                <div class="note-details" style="display: none;">
-                                    ${body ? `<div class="note-body">${body}</div>` : ''}
-                                    ${checklistHtml}
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
+                    let html = '<div class="note-item-container" data-noteid="' + noteId + '">';
+                    html += '<div class="task-item note-item" style="cursor:pointer;" onclick="noteToggle(this)">';
+                    html += '<div class="task-checkbox" onclick="event.stopPropagation(); noteComplete(\'' + noteId + '\', this)"></div>';
+                    html += '<div class="task-info">';
+                    if (hasDetails) {
+                        html += '<div class="task-title"><span class="note-toggle-icon">▶</span> ' + title + '</div>';
+                    } else {
+                        html += '<div class="task-title">' + title + '</div>';
+                    }
+                    html += '<div class="task-due" style="color: #667eea;">' + created + '</div>';
+                    html += '</div></div>';
+                    
+                    if (hasDetails) {
+                        html += '<div class="note-details-box" style="display:none; background:#1a1a2e; border-left:3px solid #8b5cf6; margin-left:30px; padding:10px 12px; border-radius:0 8px 8px 0; margin-bottom:5px;">';
+                        if (body) {
+                            html += '<div style="color:#9ca3af; font-size:12px; line-height:1.5; margin-bottom:8px; white-space:pre-wrap;">' + body + '</div>';
+                        }
+                        html += checklistHtml;
+                        html += '</div>';
+                    }
+                    
+                    html += '</div>';
+                    return html;
                 }).join('');
                 
             } catch (err) {
@@ -2720,39 +2708,35 @@
             }
         }
         
-        function toggleNoteDetails(el) {
-            const container = el.closest('.note-item-container');
-            if (!container || container.dataset.hasDetails !== 'true') return;
-            
-            const details = container.querySelector('.note-details');
-            const toggle = container.querySelector('.note-toggle');
-            
-            if (!details) return;
-            
-            if (details.style.display === 'none') {
-                details.style.display = 'block';
-                if (toggle) toggle.textContent = '▼';
-            } else {
-                details.style.display = 'none';
-                if (toggle) toggle.textContent = '▶';
+        function noteToggle(el) {
+            var container = el.parentElement;
+            var details = container.querySelector('.note-details-box');
+            var icon = container.querySelector('.note-toggle-icon');
+            if (details) {
+                if (details.style.display === 'none') {
+                    details.style.display = 'block';
+                    if (icon) icon.textContent = '▼';
+                } else {
+                    details.style.display = 'none';
+                    if (icon) icon.textContent = '▶';
+                }
             }
         }
         
-        async function completeNote(noteId, container) {
+        async function noteComplete(noteId, checkboxEl) {
             if (!accessToken) return;
-            const checkbox = container.querySelector('.task-checkbox');
-            if (checkbox) checkbox.classList.add('checked');
+            checkboxEl.classList.add('checked');
             try {
                 const listId = await getOrCreateNotesList();
-                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${noteId}`, {
+                await fetch('https://graph.microsoft.com/v1.0/me/todo/lists/' + listId + '/tasks/' + noteId, {
                     method: 'PATCH',
-                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
                 showToast("✅ Note erledigt!");
-                setTimeout(() => loadNotesList(), 500);
+                setTimeout(function() { loadNotesList(); }, 500);
             } catch (e) { 
-                if (checkbox) checkbox.classList.remove('checked'); 
+                checkboxEl.classList.remove('checked'); 
             }
         }
         
