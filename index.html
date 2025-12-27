@@ -617,6 +617,47 @@
         .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
         
         .loading-spinner { text-align: center; padding: 40px; color: #888; }
+
+        /* Month Filter Dropdown */
+        .bmt-month-filter { position: relative; margin-left: 15px; }
+        .bmt-month-btn {
+            background: #3d3d54; border: 1px solid #4d4d64; border-radius: 6px;
+            padding: 6px 12px; color: #fff; font-size: 12px; cursor: pointer;
+        }
+        .bmt-month-btn:hover { background: #4d4d64; }
+        .month-dropdown {
+            display: none; position: absolute; top: 100%; left: 0; margin-top: 5px;
+            background: #252542; border: 1px solid #3d3d54; border-radius: 8px;
+            padding: 10px; z-index: 100; min-width: 280px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .month-dropdown.show { display: block; }
+        .month-dropdown-header { display: flex; gap: 5px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #3d3d54; }
+        .month-select-btn {
+            flex: 1; background: #3d3d54; border: none; border-radius: 4px;
+            padding: 5px 8px; color: #fff; font-size: 11px; cursor: pointer;
+        }
+        .month-select-btn:hover { background: #4d4d64; }
+        .month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .month-grid label {
+            display: flex; align-items: center; gap: 4px; font-size: 12px;
+            padding: 4px 6px; border-radius: 4px; cursor: pointer;
+        }
+        .month-grid label:hover { background: #3d3d54; }
+        .month-grid input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
+        
+        /* Cleaning Checkboxes */
+        .cleaning-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: #22c55e; }
+        .cleaning-row-disabled { opacity: 0.4; text-decoration: line-through; }
+        
+        /* Quick Notes Add Button */
+        .quick-notes-add {
+            background: #22c55e; border: none; border-radius: 6px;
+            padding: 6px 12px; color: white; font-size: 12px; font-weight: 600;
+            cursor: pointer; margin-left: 10px;
+        }
+        .quick-notes-add:hover { background: #16a34a; }
+        
         .loading-spinner::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid #3d3d54; border-top-color: #0078d4; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px; }
 
         /* Quick Notes */
@@ -783,9 +824,13 @@
     </style>
 </head>
 <body>
+
+    <!-- ENCODING TEST -->
+    <div id="encoding-test" style="background: linear-gradient(90deg, #ff0000, #ff6600); color: white; padding: 15px; text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px;">
+        ✅ ENCODING OK — 🚀 🧹 📄 🎆 ❌ — v13.5 — Month Filter + Cleaning CB + New Tasks
+    </div>
     <div class="header">
         <h1>🚀 TURBO-PROJECTS</h1>
-        <p style="color: #22c55e; font-weight: bold;">✅ v13.4 ENCODING FIXED - 27.12.2025</p>
         <p>Work Hub Launcher</p>
     </div>
     
@@ -810,7 +855,10 @@
     <div class="quick-notes">
         <div class="quick-notes-header">
             <span>📝 Quick Notes</span>
-            <span class="save-indicator" id="notes-saved">✓ Gespeichert</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="save-indicator" id="notes-saved">✓ Gespeichert</span>
+                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">➕ Task</button>
+            </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
     </div>
@@ -821,11 +869,35 @@
     <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
     
     <div class="bmt-section">
-        <div class="bmt-header" onclick="toggleBMTSection()" style="cursor: pointer;">
-            <div class="bmt-title">
+        <div class="bmt-header" style="cursor: pointer;">
+            <div class="bmt-title" onclick="toggleBMTSection()">
                 📅 BMT Events
                 <span class="bmt-badge" id="bmt-event-count">0</span>
-                <span class="bmt-toggle" id="bmt-toggle">✓</span>
+                <span class="bmt-toggle" id="bmt-toggle">▼</span>
+            </div>
+            <div class="bmt-month-filter" onclick="event.stopPropagation();">
+                <button class="bmt-month-btn" onclick="toggleMonthFilter()" id="month-filter-btn">📆 Monate ▼</button>
+                <div class="month-dropdown" id="month-dropdown">
+                    <div class="month-dropdown-header">
+                        <button onclick="selectAllMonths()" class="month-select-btn">Alle</button>
+                        <button onclick="selectCurrentMonth()" class="month-select-btn">Aktuell</button>
+                        <button onclick="clearMonths()" class="month-select-btn">Keine</button>
+                    </div>
+                    <div class="month-grid">
+                        <label><input type="checkbox" class="month-cb" value="1" onchange="filterBMTByMonth()"> Jan</label>
+                        <label><input type="checkbox" class="month-cb" value="2" onchange="filterBMTByMonth()"> Feb</label>
+                        <label><input type="checkbox" class="month-cb" value="3" onchange="filterBMTByMonth()"> Mär</label>
+                        <label><input type="checkbox" class="month-cb" value="4" onchange="filterBMTByMonth()"> Apr</label>
+                        <label><input type="checkbox" class="month-cb" value="5" onchange="filterBMTByMonth()"> Mai</label>
+                        <label><input type="checkbox" class="month-cb" value="6" onchange="filterBMTByMonth()"> Jun</label>
+                        <label><input type="checkbox" class="month-cb" value="7" onchange="filterBMTByMonth()"> Jul</label>
+                        <label><input type="checkbox" class="month-cb" value="8" onchange="filterBMTByMonth()"> Aug</label>
+                        <label><input type="checkbox" class="month-cb" value="9" onchange="filterBMTByMonth()"> Sep</label>
+                        <label><input type="checkbox" class="month-cb" value="10" onchange="filterBMTByMonth()"> Okt</label>
+                        <label><input type="checkbox" class="month-cb" value="11" onchange="filterBMTByMonth()"> Nov</label>
+                        <label><input type="checkbox" class="month-cb" value="12" onchange="filterBMTByMonth()"> Dez</label>
+                    </div>
+                </div>
             </div>
             <div class="bmt-actions" onclick="event.stopPropagation();">
                 <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
@@ -2552,6 +2624,7 @@
             
             updateFactsheetPreview();
             refreshBMTFromStorage();
+            initMonthFilter();
         }
         
         // Quick factsheet for specific event from dashboard
@@ -3367,16 +3440,16 @@
             const container = document.getElementById('bmt-events-container');
             const countBadge = document.getElementById('bmt-event-count');
             
-            // Filter to show only upcoming events (next 30 days)
+            // Filter by selected months (or show all if no filter)
             const now = new Date();
-            const in30Days = new Date();
-            in30Days.setDate(now.getDate() + 30);
             
-            const upcomingEvents = bmtEvents.filter(e => 
-                e.dtstart >= now && e.dtstart <= in30Days && 
-                e.category !== 'holiday' && 
-                !e.summary.toLowerCase().includes('holiday')
-            );
+            const upcomingEvents = bmtEvents.filter(e => {
+                const eventMonth = e.dtstart.getMonth() + 1;
+                const isNotHoliday = e.category !== 'holiday' && !e.summary.toLowerCase().includes('holiday');
+                const isFuture = e.dtstart >= now;
+                const monthMatch = selectedMonths.size === 0 || selectedMonths.has(eventMonth);
+                return isNotHoliday && isFuture && monthMatch;
+            });
             
             countBadge.textContent = upcomingEvents.length;
             
@@ -3592,6 +3665,7 @@
                 <table class="cleaning-table" id="cleaning-table-data">
                     <thead>
                         <tr>
+                            <th style="width: 40px;"><input type="checkbox" checked onclick="toggleAllCleanings(this)" title="Alle an/aus"></th>
                             <th>Datum</th>
                             <th>Tag</th>
                             <th>Art</th>
@@ -3599,7 +3673,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${uniqueCleanings.map(cleaning => {
+                        ${uniqueCleanings.map((cleaning, idx) => {
                             const dateStr = cleaning.date.toLocaleDateString('de-DE', { 
                                 day: '2-digit', 
                                 month: '2-digit',
@@ -3882,6 +3956,201 @@ Spittelauer Lände 12/1
             }
         }
         
+
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // MONTH FILTER FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        let selectedMonths = new Set();
+        
+        function initMonthFilter() {
+            // Default: current month selected
+            const currentMonth = new Date().getMonth() + 1;
+            selectedMonths.add(currentMonth);
+            document.querySelectorAll('.month-cb').forEach(cb => {
+                if (parseInt(cb.value) === currentMonth) {
+                    cb.checked = true;
+                }
+            });
+            updateMonthButtonLabel();
+        }
+        
+        function toggleMonthFilter() {
+            document.getElementById('month-dropdown').classList.toggle('show');
+        }
+        
+        function selectAllMonths() {
+            document.querySelectorAll('.month-cb').forEach(cb => {
+                cb.checked = true;
+                selectedMonths.add(parseInt(cb.value));
+            });
+            filterBMTByMonth();
+        }
+        
+        function selectCurrentMonth() {
+            const currentMonth = new Date().getMonth() + 1;
+            document.querySelectorAll('.month-cb').forEach(cb => {
+                cb.checked = parseInt(cb.value) === currentMonth;
+            });
+            selectedMonths.clear();
+            selectedMonths.add(currentMonth);
+            filterBMTByMonth();
+        }
+        
+        function clearMonths() {
+            document.querySelectorAll('.month-cb').forEach(cb => cb.checked = false);
+            selectedMonths.clear();
+            filterBMTByMonth();
+        }
+        
+        function filterBMTByMonth() {
+            selectedMonths.clear();
+            document.querySelectorAll('.month-cb:checked').forEach(cb => {
+                selectedMonths.add(parseInt(cb.value));
+            });
+            updateMonthButtonLabel();
+            renderBMTEvents();
+        }
+        
+        function updateMonthButtonLabel() {
+            const btn = document.getElementById('month-filter-btn');
+            const count = selectedMonths.size;
+            if (count === 0) {
+                btn.textContent = '📆 Keine ▼';
+            } else if (count === 12) {
+                btn.textContent = '📆 Alle ▼';
+            } else if (count === 1) {
+                const monthNames = ['', 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+                btn.textContent = '📆 ' + monthNames[[...selectedMonths][0]] + ' ▼';
+            } else {
+                btn.textContent = '📆 ' + count + ' Monate ▼';
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.bmt-month-filter')) {
+                document.getElementById('month-dropdown')?.classList.remove('show');
+            }
+        });
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // CLEANING CHECKBOX FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        function toggleCleaningRow(rowId) {
+            const row = document.getElementById(rowId);
+            const checkbox = row.querySelector('.cleaning-checkbox');
+            if (checkbox.checked) {
+                row.classList.remove('cleaning-row-disabled');
+            } else {
+                row.classList.add('cleaning-row-disabled');
+            }
+            updateCleaningSummary();
+        }
+        
+        function toggleAllCleanings(masterCheckbox) {
+            const checkboxes = document.querySelectorAll('.cleaning-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = masterCheckbox.checked;
+                const row = cb.closest('tr');
+                if (masterCheckbox.checked) {
+                    row.classList.remove('cleaning-row-disabled');
+                } else {
+                    row.classList.add('cleaning-row-disabled');
+                }
+            });
+            updateCleaningSummary();
+        }
+        
+        function updateCleaningSummary() {
+            const checkedRows = document.querySelectorAll('.cleaning-checkbox:checked');
+            let grossCount = 0;
+            let mittelCount = 0;
+            
+            checkedRows.forEach(cb => {
+                const row = cb.closest('tr');
+                if (row.dataset.type === 'gross') grossCount++;
+                else mittelCount++;
+            });
+            
+            const summaryContainer = document.getElementById('cleaning-summary');
+            summaryContainer.innerHTML = \`
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #ef4444;">\${grossCount}</div>
+                        <div style="font-size: 12px; color: #888;">GROSS</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">\${mittelCount}</div>
+                        <div style="font-size: 12px; color: #888;">MITTEL</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: #22c55e;">\${grossCount + mittelCount}</div>
+                        <div style="font-size: 12px; color: #888;">AUSGEWÄHLT</div>
+                    </div>
+                </div>
+            \`;
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // QUICK NOTES - CREATE NEW TASK
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        async function createNewTask() {
+            const text = document.getElementById('quick-notes-text').value.trim();
+            if (!text) {
+                showToast('⚠️ Bitte erst Text eingeben', true);
+                return;
+            }
+            
+            if (!accessToken) {
+                showToast('⚠️ Bitte zuerst anmelden', true);
+                return;
+            }
+            
+            try {
+                const listId = await getOrCreateNotesList();
+                if (!listId) {
+                    showToast('❌ Notes Liste nicht gefunden', true);
+                    return;
+                }
+                
+                // Create new task with timestamp
+                const now = new Date();
+                const timestamp = now.toLocaleString('de-DE', { 
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+                
+                const response = await fetch(\`https://graph.microsoft.com/v1.0/me/todo/lists/\${listId}/tasks\`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+                        body: {
+                            content: text + '\n\n---\nErstellt: ' + timestamp,
+                            contentType: 'text'
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    showToast('✅ Task erstellt!');
+                    document.getElementById('quick-notes-text').value = '';
+                    localStorage.removeItem('workhub-quick-notes');
+                } else {
+                    showToast('❌ Fehler beim Erstellen', true);
+                }
+            } catch (err) {
+                console.error('Create task error:', err);
+                showToast('❌ Fehler: ' + err.message, true);
+            }
+        }
+        
         // INIT
         // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
         
@@ -3896,6 +4165,7 @@ Spittelauer Lände 12/1
             updateProjectorData();
             updateFactsheetPreview();
             refreshBMTFromStorage();
+            initMonthFilter();
             
             // Initialize NYE tools when modals open
             document.getElementById('nye-projector-modal').addEventListener('transitionend', calculateNYE);
