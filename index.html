@@ -9,11 +9,11 @@
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
-        function msalLoadSuccess() { window.msalLoaded = true; console.log('âœ… MSAL loaded'); }
+        function msalLoadSuccess() { window.msalLoaded = true; console.log('Ã¢Å“â€¦ MSAL loaded'); }
         function tryNextCDN(cdnList, index) {
             if (index >= cdnList.length) {
-                console.error('âŒ All CDNs failed');
-                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
+                console.error('Ã¢ÂÅ’ All CDNs failed');
+                document.getElementById('auth-status-text').textContent = 'Ã¢ÂÅ’ Auth Library fehlt';
                 return;
             }
             var s = document.createElement('script');
@@ -424,7 +424,7 @@
         .task-checkbox { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .task-checkbox:hover { border-color: #22c55e; }
         .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
-        .task-checkbox.checked::after { content: 'âœ”'; color: white; font-size: 12px; }
+        .task-checkbox.checked::after { content: 'Ã¢Å“â€'; color: white; font-size: 12px; }
         .task-info { flex: 1; }
         .task-title { font-size: 14px; color: #333; }
         .task-due { font-size: 11px; color: #888; }
@@ -1000,8 +1000,8 @@
         </div>
         <span class="auth-user" id="auth-user"></span>
         <div class="auth-buttons">
-            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">ðŸ” Sign in</button>
-            <button class="auth-btn reset" onclick="forceResetAuth()">ðŸ”„ Refresh</button>
+            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">Ã°Å¸â€Â Sign in</button>
+            <button class="auth-btn reset" onclick="forceResetAuth()">Ã°Å¸â€â€ž Refresh</button>
         </div>
     </div>
     
@@ -1010,29 +1010,29 @@
     <!-- Quick Notes -->
     <div class="quick-notes">
         <div class="quick-notes-header">
-            <span>ðŸ“ Quick Notes</span>
+            <span>Ã°Å¸â€œÂ Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="save-indicator" id="notes-saved">âœ” Gespeichert</span>
-                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">âž• Task</button>
+                <span class="save-indicator" id="notes-saved">Ã¢Å“â€ Gespeichert</span>
+                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">Ã¢Å¾â€¢ Task</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
     </div>
     
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- BMT EVENTS SECTION (Collapsible) -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     <div class="bmt-section">
         <div class="bmt-header" style="cursor: pointer;">
             <div class="bmt-title" onclick="toggleBMTSection()">
-                ðŸ“… BMT Events
+                Ã°Å¸â€œâ€¦ BMT Events
                 <span class="bmt-badge" id="bmt-event-count">0</span>
-                <span class="bmt-toggle" id="bmt-toggle">â–¼</span>
+                <span class="bmt-toggle" id="bmt-toggle">Ã¢â€“Â¼</span>
             </div>
             <div class="bmt-month-filter" onclick="event.stopPropagation();">
-                <button class="bmt-month-btn" onclick="toggleMonthFilter()" id="month-filter-btn">ðŸ“† Monate â–¼</button>
+                <button class="bmt-month-btn" onclick="toggleMonthFilter()" id="month-filter-btn">Ã°Å¸â€œâ€  Monate Ã¢â€“Â¼</button>
                 <div class="month-dropdown" id="month-dropdown">
                     <div class="month-dropdown-header">
                         <button onclick="selectAllMonths()" class="month-select-btn">Alle</button>
@@ -1042,7 +1042,7 @@
                     <div class="month-grid">
                         <label><input type="checkbox" class="month-cb" value="1" onchange="filterBMTByMonth()"> Jan</label>
                         <label><input type="checkbox" class="month-cb" value="2" onchange="filterBMTByMonth()"> Feb</label>
-                        <label><input type="checkbox" class="month-cb" value="3" onchange="filterBMTByMonth()"> MÃ¤r</label>
+                        <label><input type="checkbox" class="month-cb" value="3" onchange="filterBMTByMonth()"> MÃƒÂ¤r</label>
                         <label><input type="checkbox" class="month-cb" value="4" onchange="filterBMTByMonth()"> Apr</label>
                         <label><input type="checkbox" class="month-cb" value="5" onchange="filterBMTByMonth()"> Mai</label>
                         <label><input type="checkbox" class="month-cb" value="6" onchange="filterBMTByMonth()"> Jun</label>
@@ -1058,16 +1058,16 @@
             <div class="bmt-actions" onclick="event.stopPropagation();">
                 <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
-                    ðŸ“¤ .ics
+                    Ã°Å¸â€œÂ¤ .ics
                 </button>
                 <button class="bmt-btn" onclick="openCleaningModal()">
-                    ðŸ§¹ Reinigungsplan
+                    Ã°Å¸Â§Â¹ Reinigungsplan
                 </button>
             </div>
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
             <div class="bmt-status" id="bmt-status">
-                ðŸ“… Lade BMT Events... 
+                Ã°Å¸â€œâ€¦ Lade BMT Events... 
                 <br><small>Upload eine .ics Datei von BookMeTender</small>
             </div>
         </div>
@@ -1077,7 +1077,7 @@
     <div class="modal-overlay" id="cleaning-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header green">
-                <h3>ðŸ§¹ Reinigungsplan</h3>
+                <h3>Ã°Å¸Â§Â¹ Reinigungsplan</h3>
                 <button class="modal-close" onclick="closeModal('cleaning-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1088,8 +1088,8 @@
                         </select>
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
-                        <button class="modal-btn success" onclick="copyCleaningSchedule()">ðŸ“‹ Kopieren</button>
-                        <button class="modal-btn primary" onclick="showCleaningEmail()">âœ‰ï¸ Per E-Mail</button>
+                        <button class="modal-btn success" onclick="copyCleaningSchedule()">Ã°Å¸â€œâ€¹ Kopieren</button>
+                        <button class="modal-btn primary" onclick="showCleaningEmail()">Ã¢Å“â€°Ã¯Â¸Â Per E-Mail</button>
                     </div>
                 </div>
                 <div id="cleaning-container">
@@ -1100,9 +1100,9 @@
                 
                 <!-- Email Section (hidden by default) -->
                 <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 10px; border: 1px solid #3b82f6;">
-                    <h4 style="color: #3b82f6; margin-bottom: 15px;">âœ‰ï¸ Reinigungsplan versenden</h4>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px;">Ã¢Å“â€°Ã¯Â¸Â Reinigungsplan versenden</h4>
                     <div class="form-group">
-                        <label>EmpfÃ¤nger</label>
+                        <label>EmpfÃƒÂ¤nger</label>
                         <select id="cleaning-email-to" onchange="updateCleaningEmailTo()">
                             <option value="custom">Andere E-Mail eingeben...</option>
                         </select>
@@ -1121,26 +1121,26 @@
                     </div>
                     <div style="display: flex; gap: 10px; justify-content: flex-end;">
                         <button class="modal-btn cancel" onclick="hideCleaningEmail()">Abbrechen</button>
-                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: #6b7280;">ðŸ“ Als Entwurf</button>
-                        <button class="modal-btn success" onclick="sendCleaningEmail()">ðŸ“¤ Senden</button>
+                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: #6b7280;">Ã°Å¸â€œÂ Als Entwurf</button>
+                        <button class="modal-btn success" onclick="sendCleaningEmail()">Ã°Å¸â€œÂ¤ Senden</button>
                     </div>
                     <div id="cleaning-email-status" style="margin-top: 10px; font-size: 13px;"></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- MODALS -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     <!-- NYE Projector Modal -->
     <div class="modal-overlay" id="nye-projector-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <h3>ðŸŽ† NYE Projector (3-Jahre Benchmark)</h3>
+                <h3>Ã°Å¸Å½â€  NYE Projector (3-Jahre Benchmark)</h3>
                 <button class="modal-close" onclick="closeModal('nye-projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1177,19 +1177,19 @@
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">FOH Revenue</div>
-                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">â‚¬13,392</div>
+                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">Ã¢â€šÂ¬13,392</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">Bar Revenue</div>
-                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">â‚¬24,000</div>
+                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">Ã¢â€šÂ¬24,000</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">TOTAL Revenue</div>
-                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">â‚¬37,392</div>
+                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">Ã¢â€šÂ¬37,392</div>
                     </div>
                 </div>
                 
-                <h4 style="color: #f59e0b; margin: 20px 0 10px 0;">ðŸ“Š Guest Arrival Stream</h4>
+                <h4 style="color: #f59e0b; margin: 20px 0 10px 0;">Ã°Å¸â€œÅ  Guest Arrival Stream</h4>
                 <table class="cleaning-table" id="nye-arrival-table">
                     <thead>
                         <tr>
@@ -1204,7 +1204,7 @@
                     </tbody>
                 </table>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">ðŸº Bar Revenue by Hour</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">Ã°Å¸ÂÂº Bar Revenue by Hour</h4>
                 <table class="cleaning-table">
                     <thead>
                         <tr>
@@ -1219,14 +1219,14 @@
                 </table>
                 
                 <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); border-radius: 10px;">
-                    <div style="font-weight: 700; margin-bottom: 10px;">âš ï¸ CRITICAL PEAK: 01:00 - 03:00</div>
+                    <div style="font-weight: 700; margin-bottom: 10px;">Ã¢Å¡Â Ã¯Â¸Â CRITICAL PEAK: 01:00 - 03:00</div>
                     <div style="font-size: 13px; line-height: 1.6;">
                         "The night is not decided by how many tickets you sell, but by how many people you can move, store, and serve between 01:00 and 03:00."
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
@@ -1235,13 +1235,13 @@
     <div class="modal-overlay" id="peak-grid-modal">
         <div class="modal" style="max-width: 1000px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <h3>ðŸ“Š NYE Peak Grid Dashboard</h3>
+                <h3>Ã°Å¸â€œÅ  NYE Peak Grid Dashboard</h3>
                 <button class="modal-close" onclick="closeModal('peak-grid-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <div>
-                        <span style="font-size: 12px; color: #888;">Live Monitoring fÃ¼r</span>
+                        <span style="font-size: 12px; color: #888;">Live Monitoring fÃƒÂ¼r</span>
                         <span style="font-weight: 700; color: #ef4444;"> Silvester 31.12.</span>
                     </div>
                     <div style="display: flex; gap: 10px;">
@@ -1261,7 +1261,7 @@
                                 <th style="min-width: 70px;">Garderobe</th>
                                 <th style="min-width: 70px;">Bar</th>
                                 <th style="min-width: 200px;">Action / Notes</th>
-                                <th style="min-width: 50px;">âœ”</th>
+                                <th style="min-width: 50px;">Ã¢Å“â€</th>
                             </tr>
                         </thead>
                         <tbody id="peak-grid-body">
@@ -1271,7 +1271,7 @@
                 
                 <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
                     <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
-                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">ðŸ§Š Tub Strategy</div>
+                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">Ã°Å¸Â§Å  Tub Strategy</div>
                         <div style="font-size: 12px; line-height: 1.8;">
                             <div><span style="color: #f59e0b;">23:45-00:00</span> Initial Fill (BEFORE midnight!)</div>
                             <div><span style="color: #ef4444; font-weight: 700;">01:15-01:30</span> <strong>MANDATORY REFILL</strong></div>
@@ -1280,12 +1280,12 @@
                         </div>
                     </div>
                     <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444;">
-                        <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">ðŸŽ¯ Peak Rules</div>
+                        <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">Ã°Å¸Å½Â¯ Peak Rules</div>
                         <div style="font-size: 12px; line-height: 1.8;">
-                            <div>â€¢ <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
-                            <div>â€¢ <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
-                            <div>â€¢ <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
-                            <div>â€¢ <strong>Bottleneck Priority:</strong> Doorâ†’Garderobeâ†’Barâ†’Corridors</div>
+                            <div>Ã¢â‚¬Â¢ <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
+                            <div>Ã¢â‚¬Â¢ <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
+                            <div>Ã¢â‚¬Â¢ <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
+                            <div>Ã¢â‚¬Â¢ <strong>Bottleneck Priority:</strong> DoorÃ¢â€ â€™GarderobeÃ¢â€ â€™BarÃ¢â€ â€™Corridors</div>
                         </div>
                     </div>
                 </div>
@@ -1302,20 +1302,20 @@
                         <div style="font-size: 10px; color: #666;">@ 01:00-02:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 10px; color: #888;">Peak Bar â‚¬</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">â‚¬4,000</div>
+                        <div style="font-size: 10px; color: #888;">Peak Bar Ã¢â€šÂ¬</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">Ã¢â€šÂ¬4,000</div>
                         <div style="font-size: 10px; color: #666;">@ 02:00-03:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
                         <div style="font-size: 10px; color: #888;">FOH Pricing</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">â‚¬22/â‚¬26</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">Ã¢â€šÂ¬22/Ã¢â€šÂ¬26</div>
                         <div style="font-size: 10px; color: #666;">pre/post 00:00</div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn primary" onclick="printPeakGrid()">ðŸ–¨ï¸ Drucken</button>
-                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">SchlieÃŸen</button>
+                <button class="modal-btn primary" onclick="printPeakGrid()">Ã°Å¸â€“Â¨Ã¯Â¸Â Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
@@ -1324,7 +1324,7 @@
     <div class="modal-overlay" id="presale-modal">
         <div class="modal">
             <div class="modal-header orange">
-                <h3>ðŸŽŸï¸ PreSale Calculator</h3>
+                <h3>Ã°Å¸Å½Å¸Ã¯Â¸Â PreSale Calculator</h3>
                 <button class="modal-close" onclick="closeModal('presale-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1334,11 +1334,11 @@
                         <input type="text" id="ps-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>FOH Tickets (geschÃ¤tzt)</label>
+                        <label>FOH Tickets (geschÃƒÂ¤tzt)</label>
                         <input type="number" id="ps-foh-tickets" value="350" oninput="calculatePreSale()">
                     </div>
                     <div class="form-group">
-                        <label>FOH Preis (â‚¬)</label>
+                        <label>FOH Preis (Ã¢â€šÂ¬)</label>
                         <input type="number" id="ps-door-price" value="22" oninput="calculatePreSale()">
                     </div>
                 </div>
@@ -1349,7 +1349,7 @@
                         <tr>
                             <th>Phase</th>
                             <th>Tickets</th>
-                            <th>Preis (â‚¬)</th>
+                            <th>Preis (Ã¢â€šÂ¬)</th>
                             <th>Revenue</th>
                         </tr>
                     </thead>
@@ -1358,43 +1358,43 @@
                             <td class="phase-name">Early Bird</td>
                             <td><input type="number" class="ps-tickets" value="100" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="18" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬1.800</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬1.800</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 1</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="20" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬3.000</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬3.000</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 2</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="22" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬3.300</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬3.300</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 3</td>
                             <td><input type="number" class="ps-tickets" value="80" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="24" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬1.920</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬1.920</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 4</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="26" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬0</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬0</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 5</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="28" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">â‚¬0</td>
+                            <td class="phase-revenue">Ã¢â€šÂ¬0</td>
                         </tr>
                     </tbody>
                 </table>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>ðŸ“Š Ergebnis</h4>
+                    <h4>Ã°Å¸â€œÅ  Ergebnis</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Tickets</div>
@@ -1402,11 +1402,11 @@
                         </div>
                         <div class="result-item">
                             <div class="label">VVK Revenue</div>
-                            <div class="value" id="ps-result-vvk-rev">â‚¬10.020</div>
+                            <div class="value" id="ps-result-vvk-rev">Ã¢â€šÂ¬10.020</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ã˜ VVK Preis</div>
-                            <div class="value orange" id="ps-result-avg">â‚¬20.88</div>
+                            <div class="label">ÃƒËœ VVK Preis</div>
+                            <div class="value orange" id="ps-result-avg">Ã¢â€šÂ¬20.88</div>
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Tickets</div>
@@ -1414,17 +1414,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Revenue</div>
-                            <div class="value" id="ps-result-foh-rev">â‚¬8.000</div>
+                            <div class="value" id="ps-result-foh-rev">Ã¢â€šÂ¬8.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ps-result-total">â‚¬18.020</div>
+                            <div class="value" id="ps-result-total">Ã¢â€šÂ¬18.020</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
@@ -1433,7 +1433,7 @@
     <div class="modal-overlay" id="cost-modal">
         <div class="modal">
             <div class="modal-header purple">
-                <h3>ðŸ§® Cost Calculator</h3>
+                <h3>Ã°Å¸Â§Â® Cost Calculator</h3>
                 <button class="modal-close" onclick="closeModal('cost-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1443,24 +1443,24 @@
                         <input type="text" id="cc-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>Erwartete GÃ¤ste</label>
+                        <label>Erwartete GÃƒÂ¤ste</label>
                         <input type="number" id="cc-guests" value="800" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ’° Einnahmen (Projektion)</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">Ã°Å¸â€™Â° Einnahmen (Projektion)</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Ticket Revenue (â‚¬)</label>
+                        <label>Ticket Revenue (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-ticket-rev" value="18000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Bar Revenue (â‚¬)</label>
+                        <label>Bar Revenue (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-bar-rev" value="12000" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ‘¥ Personal</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">Ã°Å¸â€˜Â¥ Personal</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Bar Team (Personen)</label>
@@ -1492,50 +1492,50 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ“¦ Fixkosten</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">Ã°Å¸â€œÂ¦ Fixkosten</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Artist Fee (â‚¬)</label>
+                        <label>Artist Fee (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-artist" value="2000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>GEMA/AKM (â‚¬)</label>
+                        <label>GEMA/AKM (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-gema" value="500" oninput="calculateCosts()">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Marketing (â‚¬)</label>
+                        <label>Marketing (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-marketing" value="300" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Sonstiges (â‚¬)</label>
+                        <label>Sonstiges (Ã¢â€šÂ¬)</label>
                         <input type="number" id="cc-other" value="200" oninput="calculateCosts()">
                     </div>
                 </div>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>ðŸ“Š Kalkulation</h4>
+                    <h4>Ã°Å¸â€œÅ  Kalkulation</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">Total Einnahmen</div>
-                            <div class="value" id="cc-result-revenue">â‚¬30.000</div>
+                            <div class="value" id="cc-result-revenue">Ã¢â€šÂ¬30.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Personalkosten</div>
-                            <div class="value red" id="cc-result-staff">â‚¬3.150</div>
+                            <div class="value red" id="cc-result-staff">Ã¢â€šÂ¬3.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Fixkosten</div>
-                            <div class="value red" id="cc-result-fixed">â‚¬3.000</div>
+                            <div class="value red" id="cc-result-fixed">Ã¢â€šÂ¬3.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Kosten</div>
-                            <div class="value red" id="cc-result-costs">â‚¬6.150</div>
+                            <div class="value red" id="cc-result-costs">Ã¢â€šÂ¬6.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Deckungsbeitrag</div>
-                            <div class="value" id="cc-result-profit">â‚¬23.850</div>
+                            <div class="value" id="cc-result-profit">Ã¢â€šÂ¬23.850</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Marge</div>
@@ -1543,10 +1543,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="form-hint" style="margin-top: 10px;">â‚¬ï¸ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar â‚¬150, Runner â‚¬120, Garderobe â‚¬100, Security â‚¬180, Technik â‚¬200, CVD â‚¬150</p>
+                <p class="form-hint" style="margin-top: 10px;">Ã¢â€šÂ¬Ã¯Â¸Â Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar Ã¢â€šÂ¬150, Runner Ã¢â€šÂ¬120, Garderobe Ã¢â€šÂ¬100, Security Ã¢â€šÂ¬180, Technik Ã¢â€šÂ¬200, CVD Ã¢â€šÂ¬150</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
@@ -1555,7 +1555,7 @@
     <div class="modal-overlay" id="projector-modal">
         <div class="modal">
             <div class="modal-header green">
-                <h3>ðŸ“Š Event Projector</h3>
+                <h3>Ã°Å¸â€œÅ  Event Projector</h3>
                 <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1585,18 +1585,18 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>ðŸ“ˆ Serie Durchschnitt</h4>
+                    <h4>Ã°Å¸â€œË† Serie Durchschnitt</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">â‚¬ VVK</div>
+                            <div class="label">Ã¢â€šÂ¬ VVK</div>
                             <div class="value blue" id="ep-avg-vvk">436</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">â‚¬ FOH</div>
+                            <div class="label">Ã¢â€šÂ¬ FOH</div>
                             <div class="value blue" id="ep-avg-foh">336</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">â‚¬ Total</div>
+                            <div class="label">Ã¢â€šÂ¬ Total</div>
                             <div class="value blue" id="ep-avg-total">772</div>
                         </div>
                         <div class="result-item">
@@ -1607,24 +1607,24 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>â‚¬ KW Bar-Statistik</h4>
+                    <h4>Ã¢â€šÂ¬ KW Bar-Statistik</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">â‚¬/Person</div>
-                            <div class="value orange" id="ep-bar-pp">â‚¬16.3</div>
+                            <div class="label">Ã¢â€šÂ¬/Person</div>
+                            <div class="value orange" id="ep-bar-pp">Ã¢â€šÂ¬16.3</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">ðŸº Bar Revenue</div>
-                            <div class="value" id="ep-bar-rev">â‚¬12.584</div>
+                            <div class="label">Ã°Å¸ÂÂº Bar Revenue</div>
+                            <div class="value" id="ep-bar-rev">Ã¢â€šÂ¬12.584</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">â‚¬ Total GÃ¤ste</div>
+                            <div class="label">Ã¢â€šÂ¬ Total GÃƒÂ¤ste</div>
                             <div class="value blue" id="ep-bar-guests">772</div>
                         </div>
                     </div>
                 </div>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px;">ðŸŽ¯ Projektion mit aktuellem VVK</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px;">Ã°Å¸Å½Â¯ Projektion mit aktuellem VVK</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Aktueller VVK Stand</label>
@@ -1637,7 +1637,7 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>ðŸŽ¯ Projektion</h4>
+                    <h4>Ã°Å¸Å½Â¯ Projektion</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Projektion</div>
@@ -1649,17 +1649,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">Bar Projektion</div>
-                            <div class="value orange" id="ep-proj-bar">~â‚¬12.6k</div>
+                            <div class="value orange" id="ep-proj-bar">~Ã¢â€šÂ¬12.6k</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ep-proj-total">~â‚¬28k</div>
+                            <div class="value" id="ep-proj-total">~Ã¢â€šÂ¬28k</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
@@ -1668,15 +1668,15 @@
     <div class="modal-overlay" id="factsheet-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>ðŸ“„ Factsheet Generator</h3>
+                <h3>Ã°Å¸â€œâ€ž Factsheet Generator</h3>
                 <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Event auswÃ¤hlen</label>
+                        <label>Event auswÃƒÂ¤hlen</label>
                         <select id="fs-event-select" onchange="loadEventData()">
-                            <option value="">-- Event wÃ¤hlen --</option>
+                            <option value="">-- Event wÃƒÂ¤hlen --</option>
                             <option value="turbo">TURBO - Sa 27.12.2025</option>
                             <option value="nye">NYE SILVESTER - Di 31.12.2025</option>
                         </select>
@@ -1691,7 +1691,7 @@
                 </div>
                 <div class="form-row" id="main-floor-row">
                     <div class="form-group">
-                        <label>Main Floor Ã–ffnung</label>
+                        <label>Main Floor Ãƒâ€“ffnung</label>
                         <div style="display: flex; gap: 15px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
                                 <input type="radio" name="main-floor-time" value="00:00" checked onchange="updateFactsheetPreview()"> 
@@ -1715,7 +1715,7 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ‘¥ Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">Ã°Å¸â€˜Â¥ Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
                 
                 <!-- CVD & Technik -->
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
@@ -1740,11 +1740,11 @@
                 <!-- KASSA (Eigenveranstaltung) -->
                 <div class="form-row" id="kassa-row">
                     <div class="form-group" style="grid-column: span 4;">
-                        <label>ðŸ’° KASSA (Eigenveranstaltung)</label>
+                        <label>Ã°Å¸â€™Â° KASSA (Eigenveranstaltung)</label>
                         <div style="display: flex; gap: 20px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-matthaeus" checked onchange="updateFactsheetPreview()"> 
-                                <span>MatthÃ¤us</span>
+                                <span>MatthÃƒÂ¤us</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-schadi" checked onchange="updateFactsheetPreview()"> 
@@ -1899,15 +1899,15 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ‘€ Preview</h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">Ã°Å¸â€˜â‚¬ Preview</h4>
                 <div class="factsheet-preview" id="fs-preview">
                     <!-- Generated by JS -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">SchlieÃŸen</button>
-                <button class="modal-btn primary" onclick="copyFactsheet()">ðŸ“‹ Kopieren</button>
-                <button class="modal-btn success" onclick="printFactsheet()">ðŸ–¨ï¸ Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">SchlieÃƒÅ¸en</button>
+                <button class="modal-btn primary" onclick="copyFactsheet()">Ã°Å¸â€œâ€¹ Kopieren</button>
+                <button class="modal-btn success" onclick="printFactsheet()">Ã°Å¸â€“Â¨Ã¯Â¸Â Drucken</button>
             </div>
         </div>
     </div>
@@ -1916,7 +1916,7 @@
     <div class="modal-overlay" id="email-modal">
         <div class="modal">
             <div class="modal-header" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
-                <h3>âœ‰ï¸ E-Mail senden</h3>
+                <h3>Ã¢Å“â€°Ã¯Â¸Â E-Mail senden</h3>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1936,7 +1936,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
-                <button class="modal-btn primary" onclick="sendEmail()">ðŸ“¤ Senden</button>
+                <button class="modal-btn primary" onclick="sendEmail()">Ã°Å¸â€œÂ¤ Senden</button>
             </div>
         </div>
     </div>
@@ -1945,17 +1945,17 @@
     <div class="modal-overlay" id="guestlist-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
-                <h3>ðŸ“‹ Guest List Parser</h3>
+                <h3>Ã°Å¸â€œâ€¹ Guest List Parser</h3>
                 <button class="modal-close" onclick="closeModal('guestlist-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>ðŸ“… Event Datum</label>
+                        <label>Ã°Å¸â€œâ€¦ Event Datum</label>
                         <input type="text" id="gl-date" placeholder="27.12.25" style="font-size: 16px; font-weight: 600;">
                     </div>
                     <div class="form-group">
-                        <label>ðŸŽ‰ Event Name</label>
+                        <label>Ã°Å¸Å½â€° Event Name</label>
                         <input type="text" id="gl-event-name" placeholder="TURBO">
                     </div>
                 </div>
@@ -1963,30 +1963,30 @@
                 <div class="form-group">
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <input type="file" id="gl-file-upload" accept="*/*" onchange="handleGuestListFile(event)" style="display: none;">
-                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">ðŸ“¤ WhatsApp Export</button>
-                        <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">ðŸ—‘ï¸ Leeren</button>
+                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">Ã°Å¸â€œÂ¤ WhatsApp Export</button>
+                        <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">Ã°Å¸â€”â€˜Ã¯Â¸Â Leeren</button>
                     </div>
                     <div id="gl-upload-status" style="background: #3d3d54; border-radius: 8px; padding: 12px; text-align: center; color: #888; font-size: 12px;">
-                        ðŸ“± Noch kein Chat geladen
+                        Ã°Å¸â€œÂ± Noch kein Chat geladen
                     </div>
                     <textarea id="gl-chat-input" style="display: none;"></textarea>
                 </div>
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="modal-btn success" onclick="parseGuestListV2()" style="flex: 1;">ðŸ” Guest List extrahieren</button>
+                    <button class="modal-btn success" onclick="parseGuestListV2()" style="flex: 1;">Ã°Å¸â€Â Guest List extrahieren</button>
                 </div>
                 
                 <div id="gl-filtered-preview" style="display: none; margin-bottom: 15px;">
-                    <label style="color: #888; font-size: 11px;">ðŸ“‹ Gefundene EintrÃ¤ge fÃ¼r dieses Datum:</label>
+                    <label style="color: #888; font-size: 11px;">Ã°Å¸â€œâ€¹ Gefundene EintrÃƒÂ¤ge fÃƒÂ¼r dieses Datum:</label>
                     <div id="gl-filtered-text" style="background: #1a1a2e; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 11px; max-height: 150px; overflow-y: auto; white-space: pre-wrap; color: #22c55e;"></div>
                 </div>
                 
                 <div id="gl-results" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h4 style="color: #22c55e; margin: 0;">ðŸ“‹ Ergebnis</h4>
+                        <h4 style="color: #22c55e; margin: 0;">Ã°Å¸â€œâ€¹ Ergebnis</h4>
                         <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn" style="background: #3b82f6; padding: 6px 12px; font-size: 12px;" onclick="copyGuestList()">ðŸ“‹ Kopieren</button>
-                            <button class="modal-btn" style="background: #8b5cf6; padding: 6px 12px; font-size: 12px;" onclick="downloadGuestListCSV()">ðŸ“¥ CSV</button>
+                            <button class="modal-btn" style="background: #3b82f6; padding: 6px 12px; font-size: 12px;" onclick="copyGuestList()">Ã°Å¸â€œâ€¹ Kopieren</button>
+                            <button class="modal-btn" style="background: #8b5cf6; padding: 6px 12px; font-size: 12px;" onclick="downloadGuestListCSV()">Ã°Å¸â€œÂ¥ CSV</button>
                         </div>
                     </div>
                     <div id="gl-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
@@ -1996,39 +1996,39 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">SchlieÃŸen</button>
+                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">SchlieÃƒÅ¸en</button>
             </div>
         </div>
     </div>
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- QUICK ACTIONS -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     <div class="quick-actions">
-        <button class="quick-btn" onclick="openModal('factsheet-modal')">ðŸ“„ Factsheet</button>
-        <button class="quick-btn" onclick="openModal('email-modal')">âœ‰ï¸ E-Mail</button>
+        <button class="quick-btn" onclick="openModal('factsheet-modal')">Ã°Å¸â€œâ€ž Factsheet</button>
+        <button class="quick-btn" onclick="openModal('email-modal')">Ã¢Å“â€°Ã¯Â¸Â E-Mail</button>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">ðŸ“± Social â–¼</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">Ã°Å¸â€œÂ± Social Ã¢â€“Â¼</button>
             <div id="social-dropdown" class="dropdown-content">
-                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“¸</span> Instagram</a>
-                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“˜</span> Facebook</a>
-                <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">ðŸ’¬</span> WhatsApp</a>
-                <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">ðŸ“–</span> BMT Dashboard</a>
+                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€œÂ¸</span> Instagram</a>
+                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€œËœ</span> Facebook</a>
+                <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€™Â¬</span> WhatsApp</a>
+                <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€œâ€“</span> BMT Dashboard</a>
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">ðŸ’° Sales â–¼</button>
+            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">Ã°Å¸â€™Â° Sales Ã¢â€“Â¼</button>
             <div id="sales-dropdown" class="dropdown-content">
-                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">ðŸ’³</span> WBV (POS)</a>
-                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">ðŸ”—</span> Linktree</a>
-                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">ðŸŽŸï¸</span> ntry (Pre-Sale)</a>
+                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€™Â³</span> WBV (POS)</a>
+                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€â€”</span> Linktree</a>
+                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸Å½Å¸Ã¯Â¸Â</span> ntry (Pre-Sale)</a>
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')">ðŸ“ Storage â–¼</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')">Ã°Å¸â€œÂ Storage Ã¢â€“Â¼</button>
             <div id="storage-dropdown" class="dropdown-content">
-                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">ðŸŸ¡</span> Google Drive</a>
-                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">ðŸ”µ</span> OneDrive</a>
+                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸Å¸Â¡</span> Google Drive</a>
+                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">Ã°Å¸â€Âµ</span> OneDrive</a>
             </div>
         </div>
     </div>
@@ -2036,61 +2036,61 @@
     <!-- Tools Expander -->
     <div class="tools-expander">
         <button class="tools-toggle" id="tools-toggle" onclick="toggleTools()">
-            ðŸ”§ Club Tools <span class="arrow">â–¼</span>
+            Ã°Å¸â€Â§ Club Tools <span class="arrow">Ã¢â€“Â¼</span>
         </button>
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
                 <button class="tool-btn" onclick="openCleaningModal()">
-                    <span class="tool-icon">ðŸ§¹</span>
+                    <span class="tool-icon">Ã°Å¸Â§Â¹</span>
                     Reinigung
                 </button>
                 <button class="tool-btn" onclick="openModal('presale-modal')">
-                    <span class="tool-icon">ðŸŽŸï¸</span>
+                    <span class="tool-icon">Ã°Å¸Å½Å¸Ã¯Â¸Â</span>
                     PreSale Calc
                 </button>
                 <button class="tool-btn" onclick="openModal('cost-modal')">
-                    <span class="tool-icon">ðŸ§®</span>
+                    <span class="tool-icon">Ã°Å¸Â§Â®</span>
                     Cost Calc
                 </button>
                 <button class="tool-btn" onclick="openModal('projector-modal')">
-                    <span class="tool-icon">ðŸ“Š</span>
+                    <span class="tool-icon">Ã°Å¸â€œÅ </span>
                     Projector
                 </button>
                 <button class="tool-btn" onclick="openDeepAnalysis()">
-                    <span class="tool-icon">ðŸ”¬</span>
+                    <span class="tool-icon">Ã°Å¸â€Â¬</span>
                     Deep Analysis
                 </button>
                 <button class="tool-btn" onclick="openModal('nye-projector-modal')" style="border-color: #f59e0b;">
-                    <span class="tool-icon">ðŸŽ†</span>
+                    <span class="tool-icon">Ã°Å¸Å½â€ </span>
                     NYE Projector
                 </button>
                 <button class="tool-btn" onclick="openModal('peak-grid-modal')" style="border-color: #ef4444;">
-                    <span class="tool-icon">ðŸ“ˆ</span>
+                    <span class="tool-icon">Ã°Å¸â€œË†</span>
                     Peak Grid
                 </button>
                 <button class="tool-btn" onclick="openModal('guestlist-modal')" style="border-color: #22c55e;">
-                    <span class="tool-icon">ðŸ“‹</span>
+                    <span class="tool-icon">Ã°Å¸â€œâ€¹</span>
                     Guest List
                 </button>
             </div>
         </div>
     </div>
     
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- OUTLOOK SECTION -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     
 
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- UPCOMING EVENTS -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     <div class="upcoming-events">
         <div class="upcoming-header">
-            <span class="upcoming-title">ðŸ“… UPCOMING EVENTS</span>
+            <span class="upcoming-title">Ã°Å¸â€œâ€¦ UPCOMING EVENTS</span>
         </div>
-        <div class="upcoming-week-label current">ðŸ”´ DIESE WOCHE (KW 52)</div>
+        <div class="upcoming-week-label current">Ã°Å¸â€Â´ DIESE WOCHE (KW 52)</div>
         
         <!-- TURBO -->
         <div class="event-card" id="event-turbo27">
@@ -2101,32 +2101,32 @@
                     <span class="event-tech">Simon</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="turbo-bar-quick">â‚¬ ~â‚¬14.5k</span>
-                    <span id="turbo-tickets-quick">ðŸŽ« ~763</span>
-                    <span class="event-toggle">â–¼</span>
+                    <span id="turbo-bar-quick">Ã¢â€šÂ¬ ~Ã¢â€šÂ¬14.5k</span>
+                    <span id="turbo-tickets-quick">Ã°Å¸Å½Â« ~763</span>
+                    <span class="event-toggle">Ã¢â€“Â¼</span>
                 </div>
             </div>
             <div class="event-details">
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
-                        <label>ðŸŽ¯ Ziel:</label>
+                        <label>Ã°Å¸Å½Â¯ Ziel:</label>
                         <input type="number" id="turbo-ziel-input" value="450" oninput="updateProjection('turbo')">
-                        <label>ðŸ“Š Max:</label>
+                        <label>Ã°Å¸â€œÅ  Max:</label>
                         <input type="number" id="turbo-max-input" value="600" oninput="updateProjection('turbo')">
-                        <label>ðŸŽ« Aktuell:</label>
+                        <label>Ã°Å¸Å½Â« Aktuell:</label>
                         <input type="number" id="turbo-vvk-input" placeholder="0" oninput="updateProjection('turbo')">
                         <span class="vvk-days" id="turbo-days">4 Tage</span>
                     </div>
                     <div class="vvk-input-row">
-                        <label>ðŸ’¶ Ã˜ VVK â‚¬:</label>
+                        <label>Ã°Å¸â€™Â¶ ÃƒËœ VVK Ã¢â€šÂ¬:</label>
                         <input type="number" id="turbo-vvk-price" value="18" oninput="updateProjection('turbo')">
-                        <label>ðŸšª FOH â‚¬:</label>
+                        <label>Ã°Å¸Å¡Âª FOH Ã¢â€šÂ¬:</label>
                         <input type="number" id="turbo-foh-price" value="22" oninput="updateProjection('turbo')">
                     </div>
                     <div class="vvk-progress-bar">
                         <div class="vvk-progress" id="turbo-progress" style="width: 0%"></div>
                     </div>
-                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | 55% bei 5d â†’ Soll ~248</div>
+                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | 55% bei 5d Ã¢â€ â€™ Soll ~248</div>
                 </div>
                 <div class="auto-projection">
                     <div class="projection-grid">
@@ -2140,18 +2140,18 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="turbo-bar-proj">~â‚¬14.5k</div>
+                            <div class="proj-box-value bar" id="turbo-bar-proj">~Ã¢â€šÂ¬14.5k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="turbo-total-proj">~â‚¬29.8k</div>
+                            <div class="proj-box-value" id="turbo-total-proj">~Ã¢â€šÂ¬29.8k</div>
                         </div>
                     </div>
-                    <div class="projection-basis" id="turbo-basis">ðŸ“Š TURBO Ã˜: 436 VVK, 336 FOH | KW52: â‚¬16.3/Person</div>
+                    <div class="projection-basis" id="turbo-basis">Ã°Å¸â€œÅ  TURBO ÃƒËœ: 436 VVK, 336 FOH | KW52: Ã¢â€šÂ¬16.3/Person</div>
                 </div>
-                <div class="cvd-badge">ðŸ‘” CVD: Alain</div>
+                <div class="cvd-badge">Ã°Å¸â€˜â€ CVD: Alain</div>
                 <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('turbo')">ðŸ“„ Factsheet</button>
+                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('turbo')">Ã°Å¸â€œâ€ž Factsheet</button>
                 </div>
             </div>
         </div>
@@ -2165,32 +2165,32 @@
                     <span class="event-tech">Jan</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="nye-bar-quick">â‚¬ ~â‚¬23k</span>
-                    <span id="nye-tickets-quick">ðŸŽ« ~1153</span>
-                    <span class="event-toggle">â–¼</span>
+                    <span id="nye-bar-quick">Ã¢â€šÂ¬ ~Ã¢â€šÂ¬23k</span>
+                    <span id="nye-tickets-quick">Ã°Å¸Å½Â« ~1153</span>
+                    <span class="event-toggle">Ã¢â€“Â¼</span>
                 </div>
             </div>
             <div class="event-details">
                 <div class="vvk-tracker">
                     <div class="vvk-input-row">
-                        <label>ðŸŽ¯ Ziel:</label>
+                        <label>Ã°Å¸Å½Â¯ Ziel:</label>
                         <input type="number" id="nye-ziel-input" value="450" oninput="updateProjection('nye')">
-                        <label>ðŸ“Š Max:</label>
+                        <label>Ã°Å¸â€œÅ  Max:</label>
                         <input type="number" id="nye-max-input" value="700" oninput="updateProjection('nye')">
-                        <label>ðŸŽ« Aktuell:</label>
+                        <label>Ã°Å¸Å½Â« Aktuell:</label>
                         <input type="number" id="nye-vvk-input" placeholder="0" oninput="updateProjection('nye')">
                         <span class="vvk-days" id="nye-days">8 Tage</span>
                     </div>
                     <div class="vvk-input-row">
-                        <label>ðŸ’¶ Ã˜ VVK â‚¬:</label>
+                        <label>Ã°Å¸â€™Â¶ ÃƒËœ VVK Ã¢â€šÂ¬:</label>
                         <input type="number" id="nye-vvk-price" value="25" oninput="updateProjection('nye')">
-                        <label>ðŸšª FOH â‚¬:</label>
+                        <label>Ã°Å¸Å¡Âª FOH Ã¢â€šÂ¬:</label>
                         <input type="number" id="nye-foh-price" value="26" oninput="updateProjection('nye')">
                     </div>
                     <div class="vvk-progress-bar">
                         <div class="vvk-progress" id="nye-progress" style="width: 0%"></div>
                     </div>
-                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | 40% bei 9d â†’ Soll ~180</div>
+                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | 40% bei 9d Ã¢â€ â€™ Soll ~180</div>
                 </div>
                 <div class="auto-projection">
                     <div class="projection-grid">
@@ -2204,74 +2204,74 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="nye-bar-proj">~â‚¬23k</div>
+                            <div class="proj-box-value bar" id="nye-bar-proj">~Ã¢â€šÂ¬23k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="nye-total-proj">~â‚¬46k</div>
+                            <div class="proj-box-value" id="nye-total-proj">~Ã¢â€šÂ¬46k</div>
                         </div>
                     </div>
-                    <div class="projection-basis" id="nye-basis">ðŸ“Š NYE Ã˜: 562 VVK, 649 FOH | KW52: â‚¬16.3/Person</div>
+                    <div class="projection-basis" id="nye-basis">Ã°Å¸â€œÅ  NYE ÃƒËœ: 562 VVK, 649 FOH | KW52: Ã¢â€šÂ¬16.3/Person</div>
                 </div>
-                <div class="cvd-badge">ðŸ‘” CVD: Alain / Niat</div>
+                <div class="cvd-badge">Ã°Å¸â€˜â€ CVD: Alain / Niat</div>
                 <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('nye')">ðŸ“„ Factsheet</button>
+                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('nye')">Ã°Å¸â€œâ€ž Factsheet</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     <!-- DEPARTMENTS -->
-    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+    <!-- Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â -->
     
     <div class="departments">
         <!-- OFFICE -->
         <div class="dept office">
             <div class="dept-header">
-                <div class="dept-header-left">ðŸ’¼ OFFICE</div>
-                <span class="task-count" id="office-task-count">â€”</span>
+                <div class="dept-header-left">Ã°Å¸â€™Â¼ OFFICE</div>
+                <span class="task-count" id="office-task-count">Ã¢â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">ðŸ”„</button>
+                        <span>Ã°Å¸â€œÂ Tasks <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your tasks</p>
-                            <button onclick="handleAuth()">ðŸ” Connect</button>
+                            <button onclick="handleAuth()">Ã°Å¸â€Â Connect</button>
                         </div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="office-notes">
                     <div class="tasks-header" onclick="toggleNotesSection()">
-                        <span>ðŸ““ Notes <span class="task-count" id="notes-count">â€”</span> <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">ðŸ”„</button>
+                        <span>Ã°Å¸â€œâ€œ Notes <span class="task-count" id="notes-count">Ã¢â‚¬â€</span> <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="office-notes-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your notes</p>
-                            <button onclick="handleAuth()">ðŸ” Connect</button>
+                            <button onclick="handleAuth()">Ã°Å¸â€Â Connect</button>
                         </div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('office')">ðŸ“ Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('office')">Ã°Å¸â€œÂ Open in To Do</button>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header">
-                <div class="dept-header-left">ðŸ¸ BAR</div>
-                <span class="task-count" id="bar-task-count">â€”</span>
+                <div class="dept-header-left">Ã°Å¸ÂÂ¸ BAR</div>
+                <span class="task-count" id="bar-task-count">Ã¢â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>ðŸ“‹ Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span>Ã°Å¸â€œâ€¹ Shiftplan</span>
+                        <span class="toggle-icon">Ã¢â€“Â¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
@@ -2279,28 +2279,28 @@
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">ðŸ”„</button>
+                        <span>Ã°Å¸â€œÂ Tasks <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">Ã°Å¸â€Â Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('bar')">ðŸ“ Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('bar')">Ã°Å¸â€œÂ Open in To Do</button>
             </div>
         </div>
         
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header">
-                <div class="dept-header-left">ðŸƒ RUNNER</div>
-                <span class="task-count" id="runner-task-count">â€”</span>
+                <div class="dept-header-left">Ã°Å¸ÂÆ’ RUNNER</div>
+                <span class="task-count" id="runner-task-count">Ã¢â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>ðŸ“‹ Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span>Ã°Å¸â€œâ€¹ Shiftplan</span>
+                        <span class="toggle-icon">Ã¢â€“Â¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:400px;"></iframe>
@@ -2308,28 +2308,28 @@
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">ðŸ”„</button>
+                        <span>Ã°Å¸â€œÂ Tasks <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">Ã°Å¸â€Â Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('runner')">ðŸ“ Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('runner')">Ã°Å¸â€œÂ Open in To Do</button>
             </div>
         </div>
         
         <!-- TECHNIK -->
         <div class="dept technik">
             <div class="dept-header">
-                <div class="dept-header-left">ðŸ”§ TECHNIK</div>
-                <span class="task-count" id="technik-task-count">â€”</span>
+                <div class="dept-header-left">Ã°Å¸â€Â§ TECHNIK</div>
+                <span class="task-count" id="technik-task-count">Ã¢â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>ðŸ“… Technikerkalender</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span>Ã°Å¸â€œâ€¦ Technikerkalender</span>
+                        <span class="toggle-icon">Ã¢â€“Â¼</span>
                     </div>
                     <div class="section-content">
                         <div class="calendar-list">
@@ -2350,28 +2350,28 @@
                 </div>
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">ðŸ”„</button>
+                        <span>Ã°Å¸â€œÂ Tasks <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">Ã°Å¸â€Â Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('technik')">ðŸ“ Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('technik')">Ã°Å¸â€œÂ Open in To Do</button>
             </div>
         </div>
         
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header">
-                <div class="dept-header-left">ðŸ›¸ SPUTNIK BAR</div>
-                <span class="task-count" id="sputnik-task-count">â€”</span>
+                <div class="dept-header-left">Ã°Å¸â€ºÂ¸ SPUTNIK BAR</div>
+                <span class="task-count" id="sputnik-task-count">Ã¢â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>ðŸ“‹ Shiftplan</span>
-                        <span class="toggle-icon">â–¼</span>
+                        <span>Ã°Å¸â€œâ€¹ Shiftplan</span>
+                        <span class="toggle-icon">Ã¢â€“Â¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
@@ -2379,28 +2379,28 @@
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">ðŸ”„</button>
+                        <span>Ã°Å¸â€œÂ Tasks <span class="toggle-icon">Ã¢â€“Â¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">Ã°Å¸â€â€ž</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ” Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">Ã°Å¸â€Â Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('sputnik')">ðŸ“ Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('sputnik')">Ã°Å¸â€œÂ Open in To Do</button>
             </div>
         </div>
     </div>
     
     <div class="footer">
-        <a href="https://to-do.live.com" target="_blank">âœ… Open Microsoft To Do</a>
+        <a href="https://to-do.live.com" target="_blank">Ã¢Å“â€¦ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.3 â€¢ 27.12.2025 â€¢ Guest List Parser v2</div>
+    <div class="version">Work Hub v14.3 Ã¢â‚¬Â¢ 27.12.2025 Ã¢â‚¬Â¢ Guest List Parser v2</div>
 
     <script>
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // MSAL CONFIG
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         const msalConfig = {
             auth: {
@@ -2424,9 +2424,9 @@
         let msalInstance = null;
         let accessToken = null;
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // DATA
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         const SERIE_STATS = {
             turbo: { avgVVK: 436, avgFOH: 336, avgTotal: 772, barPP: 15.3, events: 25 },
@@ -2482,15 +2482,15 @@
         
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // MSAL AUTH
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         async function initMsal() {
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
                 console.error('MSAL library not loaded!');
-                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
+                document.getElementById('auth-status-text').textContent = 'Ã¢ÂÅ’ Auth Library fehlt';
                 return;
             }
             
@@ -2536,17 +2536,17 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("âœ… Verbunden!");
+                    showToast("Ã¢Å“â€¦ Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("âŒ Login fehlgeschlagen", true); 
+                    showToast("Ã¢ÂÅ’ Login fehlgeschlagen", true); 
                 }
             }
         }
         
         async function forceResetAuth() {
             // Clear everything and start fresh
-            showToast("ðŸ”„ Cache wird gelÃ¶scht...");
+            showToast("Ã°Å¸â€â€ž Cache wird gelÃƒÂ¶scht...");
             
             // Clear MSAL cache
             if (msalInstance) {
@@ -2567,7 +2567,7 @@
             updateAuthUI(null);
             resetAllUI();
             
-            showToast("âœ… Cache gelÃ¶scht! Seite wird neu geladen...");
+            showToast("Ã¢Å“â€¦ Cache gelÃƒÂ¶scht! Seite wird neu geladen...");
             
             // Reload page to ensure clean state
             setTimeout(() => location.reload(), 1000);
@@ -2582,13 +2582,13 @@
                 dot.classList.add('connected');
                 statusText.textContent = 'Connected';
                 userText.textContent = account.username || '';
-                authBtn.innerHTML = 'ðŸšª Sign out';
+                authBtn.innerHTML = 'Ã°Å¸Å¡Âª Sign out';
                 authBtn.classList.add('logout');
             } else {
                 dot.classList.remove('connected');
                 statusText.textContent = 'Not connected';
                 userText.textContent = '';
-                authBtn.innerHTML = 'ðŸ” Sign in';
+                authBtn.innerHTML = 'Ã°Å¸â€Â Sign in';
                 authBtn.classList.remove('logout');
             }
         }
@@ -2609,17 +2609,17 @@
         
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
-                document.getElementById(`${d}-task-count`).textContent = 'â€”';
-                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">ðŸ”</button></div>';
+                document.getElementById(`${d}-task-count`).textContent = 'Ã¢â‚¬â€';
+                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Ã°Å¸â€Â</button></div>';
             });
             // Reset Notes section
-            document.getElementById('notes-count').textContent = 'â€”';
-            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">ðŸ”</button></div>';
+            document.getElementById('notes-count').textContent = 'Ã¢â‚¬â€';
+            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Ã°Å¸â€Â</button></div>';
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // TASKS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         async function loadAllTasks() {
             if (!accessToken) return;
@@ -2638,13 +2638,13 @@
                 });
                 const data = await r.json();
                 const tasks = data.value || [];
-                countEl.textContent = tasks.length || 'âœ”';
+                countEl.textContent = tasks.length || 'Ã¢Å“â€';
                 listEl.innerHTML = tasks.length ? tasks.map(t => {
                     let dueClass = '', dueText = '';
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = 'â‚¬berfÃ¤llig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = 'Ã¢â€šÂ¬berfÃƒÂ¤llig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -2653,8 +2653,8 @@
                         <div class="task-info"><div class="task-title">${esc(t.title)}</div>${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
-                }).join('') : '<div class="tasks-empty">ðŸŽ‰ Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">â‚¬ï¸</div>'; }
+                }).join('') : '<div class="tasks-empty">Ã°Å¸Å½â€° Alles erledigt!</div>';
+            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">Ã¢â€šÂ¬Ã¯Â¸Â</div>'; }
         }
         
         async function completeTask(taskId, dept) {
@@ -2666,7 +2666,7 @@
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
-                showToast("âœ… Erledigt!");
+                showToast("Ã¢Å“â€¦ Erledigt!");
                 setTimeout(() => loadTasks(dept), 500);
             } catch (e) { el.querySelector('.task-checkbox').classList.remove('checked'); }
         }
@@ -2674,9 +2674,9 @@
         function refreshTasks(d) { const b = document.querySelector(`#${d}-tasks .refresh-btn`); b.classList.add('spinning'); loadTasks(d).then(() => b.classList.remove('spinning')); }
         function openToDoList(d) { window.open(`https://to-do.live.com/tasks/${TODO_LISTS[d]}`, '_blank'); }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // NOTES LIST (Office)
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         async function loadNotesList() {
             if (!accessToken) return;
@@ -2736,7 +2736,7 @@
                         checklistHtml = '<div class="note-checklist">' +
                             note.checklistItems.map(item => 
                                 '<div class="checklist-item ' + (item.isChecked ? 'checked' : '') + '">' +
-                                '<span class="checklist-bullet">' + (item.isChecked ? 'â˜‘' : 'â˜') + '</span>' +
+                                '<span class="checklist-bullet">' + (item.isChecked ? 'Ã¢Ëœâ€˜' : 'Ã¢ËœÂ') + '</span>' +
                                 '<span>' + item.displayName + '</span>' +
                                 '</div>'
                             ).join('') +
@@ -2750,7 +2750,7 @@
                     html += '<div class="task-checkbox" onclick="event.stopPropagation(); noteComplete(\'' + noteId + '\', this)"></div>';
                     html += '<div class="task-info">';
                     if (hasDetails) {
-                        html += '<div class="task-title"><span class="note-toggle-icon">â–¶</span> ' + title + '</div>';
+                        html += '<div class="task-title"><span class="note-toggle-icon">Ã¢â€“Â¶</span> ' + title + '</div>';
                     } else {
                         html += '<div class="task-title">' + title + '</div>';
                     }
@@ -2798,11 +2798,11 @@
             if (isOpen) {
                 details.classList.remove('open');
                 details.style.display = 'none';
-                if (icon) icon.textContent = 'â–¶';
+                if (icon) icon.textContent = 'Ã¢â€“Â¶';
             } else {
                 details.classList.add('open');
                 details.style.display = 'block';
-                if (icon) icon.textContent = 'â–¼';
+                if (icon) icon.textContent = 'Ã¢â€“Â¼';
             }
         }
         
@@ -2816,7 +2816,7 @@
                     headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
-                showToast("âœ… Note erledigt!");
+                showToast("Ã¢Å“â€¦ Note erledigt!");
                 setTimeout(function() { loadNotesList(); }, 500);
             } catch (e) { 
                 checkboxEl.classList.remove('checked'); 
@@ -2827,12 +2827,12 @@
             const list = document.getElementById('office-notes-list');
             const icon = document.querySelector('#office-notes .toggle-icon');
             list.classList.toggle('collapsed');
-            icon.textContent = list.classList.contains('collapsed') ? 'â–¶' : 'â–¼';
+            icon.textContent = list.classList.contains('collapsed') ? 'Ã¢â€“Â¶' : 'Ã¢â€“Â¼';
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // PRESALE CALCULATOR
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function calculatePreSale() {
             const fohTickets = parseInt(document.getElementById('ps-foh-tickets').value) || 350;
@@ -2845,7 +2845,7 @@
                 const tickets = parseInt(row.querySelector('.ps-tickets').value) || 0;
                 const price = parseInt(row.querySelector('.ps-price').value) || 0;
                 const rev = tickets * price;
-                row.querySelector('.phase-revenue').textContent = 'â‚¬' + rev.toLocaleString();
+                row.querySelector('.phase-revenue').textContent = 'Ã¢â€šÂ¬' + rev.toLocaleString();
                 totalVVK += tickets;
                 totalVVKRev += rev;
             });
@@ -2856,16 +2856,16 @@
             const totalRev = totalVVKRev + fohRev;
             
             document.getElementById('ps-result-vvk').textContent = totalVVK;
-            document.getElementById('ps-result-vvk-rev').textContent = 'â‚¬' + totalVVKRev.toLocaleString();
-            document.getElementById('ps-result-avg').textContent = 'â‚¬' + avgVvk;
+            document.getElementById('ps-result-vvk-rev').textContent = 'Ã¢â€šÂ¬' + totalVVKRev.toLocaleString();
+            document.getElementById('ps-result-avg').textContent = 'Ã¢â€šÂ¬' + avgVvk;
             document.getElementById('ps-result-foh').textContent = fohTickets;
-            document.getElementById('ps-result-foh-rev').textContent = 'â‚¬' + fohRev.toLocaleString();
-            document.getElementById('ps-result-total').textContent = 'â‚¬' + totalRev.toLocaleString();
+            document.getElementById('ps-result-foh-rev').textContent = 'Ã¢â€šÂ¬' + fohRev.toLocaleString();
+            document.getElementById('ps-result-total').textContent = 'Ã¢â€šÂ¬' + totalRev.toLocaleString();
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // COST CALCULATOR
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function calculateCosts() {
             const ticketRev = parseInt(document.getElementById('cc-ticket-rev').value) || 0;
@@ -2892,18 +2892,18 @@
             const profit = totalRev - totalCosts;
             const margin = totalRev > 0 ? ((profit / totalRev) * 100).toFixed(1) : 0;
             
-            document.getElementById('cc-result-revenue').textContent = `â‚¬${totalRev.toLocaleString()}`;
-            document.getElementById('cc-result-staff').textContent = `â‚¬${staffCosts.toLocaleString()}`;
-            document.getElementById('cc-result-fixed').textContent = `â‚¬${fixedCosts.toLocaleString()}`;
-            document.getElementById('cc-result-costs').textContent = `â‚¬${totalCosts.toLocaleString()}`;
-            document.getElementById('cc-result-profit').textContent = `â‚¬${profit.toLocaleString()}`;
+            document.getElementById('cc-result-revenue').textContent = `Ã¢â€šÂ¬${totalRev.toLocaleString()}`;
+            document.getElementById('cc-result-staff').textContent = `Ã¢â€šÂ¬${staffCosts.toLocaleString()}`;
+            document.getElementById('cc-result-fixed').textContent = `Ã¢â€šÂ¬${fixedCosts.toLocaleString()}`;
+            document.getElementById('cc-result-costs').textContent = `Ã¢â€šÂ¬${totalCosts.toLocaleString()}`;
+            document.getElementById('cc-result-profit').textContent = `Ã¢â€šÂ¬${profit.toLocaleString()}`;
             document.getElementById('cc-result-profit').className = `value ${profit >= 0 ? '' : 'red'}`;
             document.getElementById('cc-result-margin').textContent = `${margin}%`;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // EVENT PROJECTOR
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function updateProjectorData() {
             const serie = document.getElementById('ep-serie').value;
@@ -2915,8 +2915,8 @@
             document.getElementById('ep-avg-foh').textContent = s.avgFOH;
             document.getElementById('ep-avg-total').textContent = s.avgTotal;
             document.getElementById('ep-events').textContent = s.events;
-            document.getElementById('ep-bar-pp').textContent = `â‚¬${k.barPP}`;
-            document.getElementById('ep-bar-rev').textContent = `â‚¬${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
+            document.getElementById('ep-bar-pp').textContent = `Ã¢â€šÂ¬${k.barPP}`;
+            document.getElementById('ep-bar-rev').textContent = `Ã¢â€šÂ¬${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
             document.getElementById('ep-bar-guests').textContent = s.avgTotal;
             
             updateProjectorProjection();
@@ -2942,24 +2942,24 @@
             
             document.getElementById('ep-proj-vvk').textContent = `~${projVVK}`;
             document.getElementById('ep-proj-foh').textContent = `~${projFOH}`;
-            document.getElementById('ep-proj-bar').textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
-            document.getElementById('ep-proj-total').textContent = `~â‚¬${(projTotal/1000).toFixed(0)}k`;
+            document.getElementById('ep-proj-bar').textContent = `~Ã¢â€šÂ¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById('ep-proj-total').textContent = `~Ã¢â€šÂ¬${(projTotal/1000).toFixed(0)}k`;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // FACTSHEET GENERATOR
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function isEigenveranstaltung(name) { return EIGENVERANSTALTUNGEN.some(e => name.toLowerCase().includes(e)); }
         function getKassa(name) { 
             if (!isEigenveranstaltung(name)) return "FREMD";
             
             const selected = [];
-            if (document.getElementById('kassa-matthaeus')?.checked) selected.push('MatthÃ¤us');
+            if (document.getElementById('kassa-matthaeus')?.checked) selected.push('MatthÃƒÂ¤us');
             if (document.getElementById('kassa-schadi')?.checked) selected.push('Schadi');
             if (document.getElementById('kassa-isa')?.checked) selected.push('Isa');
             
-            return selected.length > 0 ? selected.join(' / ') : "â€”";
+            return selected.length > 0 ? selected.join(' / ') : "Ã¢â‚¬â€";
         }
         
         function updateFactsheetPreview() {
@@ -3168,7 +3168,7 @@
                 document.getElementById('fs-event-select').value = eventId;
                 fillFactsheetForm(e);
                 openModal('factsheet-modal');
-                showToast(`ðŸ“„ ${e.name} Factsheet geladen!`);
+                showToast(`Ã°Å¸â€œâ€ž ${e.name} Factsheet geladen!`);
             }
         }
         
@@ -3180,7 +3180,7 @@
             window.getSelection().addRange(range);
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
-            showToast("ðŸ“„ Factsheet kopiert!");
+            showToast("Ã°Å¸â€œâ€ž Factsheet kopiert!");
         }
         
         function printFactsheet() {
@@ -3191,9 +3191,9 @@
             w.print();
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // VVK TRACKER (Events Dashboard)
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function getDaysUntil(id) {
             const d = EVENT_CONFIG[id].date;
@@ -3238,21 +3238,21 @@
             document.getElementById(`${id}-days`).textContent = `${days} Tage`;
             document.getElementById(`${id}-vvk-proj`).textContent = `~${projVVK}`;
             document.getElementById(`${id}-foh-proj`).textContent = `~${projFOH}`;
-            document.getElementById(`${id}-bar-proj`).textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-total-proj`).textContent = `~â‚¬${(projTotal/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-tickets-quick`).textContent = `ðŸŽ« ~${projVVK + projFOH}`;
-            document.getElementById(`${id}-bar-quick`).textContent = `â‚¬ ~â‚¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-bar-proj`).textContent = `~Ã¢â€šÂ¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-total-proj`).textContent = `~Ã¢â€šÂ¬${(projTotal/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-tickets-quick`).textContent = `Ã°Å¸Å½Â« ~${projVVK + projFOH}`;
+            document.getElementById(`${id}-bar-quick`).textContent = `Ã¢â€šÂ¬ ~Ã¢â€šÂ¬${(projBar/1000).toFixed(1)}k`;
             
             const progress = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${id}-progress`).style.width = `${progress}%`;
             
             const expected = Math.round(vvkZiel * pct);
-            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d â†’ Soll ~${expected}`;
+            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d Ã¢â€ â€™ Soll ~${expected}`;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // UI HELPERS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
@@ -3387,10 +3387,10 @@
                 }
                 
                 const indicator = document.getElementById('notes-saved');
-                indicator.textContent = 'â‚¬ï¸ Synced';
+                indicator.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Synced';
                 indicator.classList.add('show');
                 setTimeout(() => {
-                    indicator.textContent = 'âœ” Gespeichert';
+                    indicator.textContent = 'Ã¢Å“â€ Gespeichert';
                     indicator.classList.remove('show');
                 }, 2000);
             } catch (err) {
@@ -3421,7 +3421,7 @@
                     const notes = data.value[0].body.content;
                     document.getElementById('quick-notes-text').value = notes;
                     localStorage.setItem('workhub-quick-notes', notes);
-                    console.log('âœ… Notes loaded from To Do');
+                    console.log('Ã¢Å“â€¦ Notes loaded from To Do');
                 } else {
                     loadQuickNotes();
                 }
@@ -3444,9 +3444,9 @@
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // NYE PROJECTOR (3-Jahre Benchmark)
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         const NYE_SCENARIOS = {
             base: {
@@ -3521,9 +3521,9 @@
             document.getElementById('nye-foh').textContent = scenario.foh.toLocaleString('de-DE');
             document.getElementById('nye-total').textContent = (scenario.presale + scenario.foh).toLocaleString('de-DE');
             
-            document.getElementById('nye-foh-revenue').textContent = 'â‚¬' + scenario.fohRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-bar-revenue').textContent = 'â‚¬' + scenario.barRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-total-revenue').textContent = 'â‚¬' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
+            document.getElementById('nye-foh-revenue').textContent = 'Ã¢â€šÂ¬' + scenario.fohRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-bar-revenue').textContent = 'Ã¢â€šÂ¬' + scenario.barRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-total-revenue').textContent = 'Ã¢â€šÂ¬' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
             
             // Update arrival table
             const arrivalBody = document.getElementById('nye-arrival-body');
@@ -3557,7 +3557,7 @@
                 return `
                     <tr style="${isPeak ? 'background: rgba(34, 197, 94, 0.2);' : ''}">
                         <td style="${isPeak ? 'font-weight: 700; color: #22c55e;' : ''}">${row.time}</td>
-                        <td style="${isPeak ? 'font-weight: 700;' : ''}">â‚¬${row.revenue.toLocaleString('de-DE')}</td>
+                        <td style="${isPeak ? 'font-weight: 700;' : ''}">Ã¢â€šÂ¬${row.revenue.toLocaleString('de-DE')}</td>
                         <td>${row.pct}%</td>
                         <td><div style="background: ${isPeak ? '#22c55e' : '#3b82f6'}; height: 12px; width: ${barWidth}%; border-radius: 4px;"></div></td>
                     </tr>
@@ -3576,27 +3576,27 @@
             if (e.target === this) calculateNYE();
         });
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // PEAK GRID DASHBOARD
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         const PEAK_GRID_DATA = [
             { time: '22:00-22:30', door: 'low', coat: 'low', bar: 'low', action: 'Start. Systems check. Staff settle.' },
             { time: '22:30-23:00', door: 'low', coat: 'low', bar: 'low', action: 'Prepare wardrobe rhythm. Keep lanes clean.' },
             { time: '23:00-23:30', door: 'med', coat: 'med', bar: 'low', action: 'Early wave. Terrace helps absorb.' },
-            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: 'â‚¬ï¸ Hanger check must be done!' },
-            { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: 'ðŸŽ† Midnight push. Door speed only.' },
+            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: 'Ã¢â€šÂ¬Ã¯Â¸Â Hanger check must be done!' },
+            { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: 'Ã°Å¸Å½â€  Midnight push. Door speed only.' },
             { time: '00:15-00:30', door: 'high', coat: 'high', bar: 'high', action: 'Queue mgmt. Keep corridor clear.' },
-            { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: 'ðŸ”´ BOTH LANES DO EVERYTHING!' },
-            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: 'â‚¬ Bar speed menu. Stop slow drinks.' },
+            { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: 'Ã°Å¸â€Â´ BOTH LANES DO EVERYTHING!' },
+            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: 'Ã¢â€šÂ¬ Bar speed menu. Stop slow drinks.' },
             { time: '01:00-01:15', door: 'max', coat: 'high', bar: 'max', action: 'Arrival overlap continues.' },
-            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: 'â‚¬â‚¬ MANDATORY TUB REFILL!' },
+            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: 'Ã¢â€šÂ¬Ã¢â€šÂ¬ MANDATORY TUB REFILL!' },
             { time: '01:30-01:45', door: 'max', coat: 'high', bar: 'max', action: 'Wardrobe overflow if needed.' },
-            { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: 'ðŸš¨ Security clears choke points.' },
-            { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: 'ðŸ’¥ MAX density inside (~1,450)' },
+            { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: 'Ã°Å¸Å¡Â¨ Security clears choke points.' },
+            { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: 'Ã°Å¸â€™Â¥ MAX density inside (~1,450)' },
             { time: '02:15-02:30', door: 'high', coat: 'high', bar: 'high', action: 'Keep both lanes flexible.' },
             { time: '02:30-02:45', door: 'high', coat: 'high', bar: 'high', action: 'Queues dropping? Decide lane merge.' },
-            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: 'â‚¬â‚¬ Optional final tub refill window.' },
+            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: 'Ã¢â€šÂ¬Ã¢â€šÂ¬ Optional final tub refill window.' },
             { time: '03:00-03:30', door: 'med', coat: 'med', bar: 'high', action: 'Pressure easing. Stop tubs after 03:30.' },
             { time: '03:30-04:00', door: 'low', coat: 'low', bar: 'med', action: 'Reset & deep restock. Stabilize.' }
         ];
@@ -3659,9 +3659,9 @@
             renderPeakGrid();
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // EMAIL COMPOSER
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         async function sendEmail() {
             const to = document.getElementById('email-to').value;
@@ -3670,18 +3670,18 @@
             const status = document.getElementById('email-status');
             
             if (!to || !subject || !body) {
-                status.textContent = 'â‚¬ï¸ Bitte alle Felder ausfÃ¼llen';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte alle Felder ausfÃƒÂ¼llen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = 'â‚¬ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = 'ðŸ“¤ Sende...';
+            status.textContent = 'Ã°Å¸â€œÂ¤ Sende...';
             status.style.color = '#888';
             
             try {
@@ -3701,9 +3701,9 @@
                 });
                 
                 if (response.ok || response.status === 202) {
-                    status.textContent = 'âœ… E-Mail gesendet!';
+                    status.textContent = 'Ã¢Å“â€¦ E-Mail gesendet!';
                     status.style.color = '#22c55e';
-                    showToast('âœ… E-Mail gesendet!');
+                    showToast('Ã¢Å“â€¦ E-Mail gesendet!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -3714,18 +3714,18 @@
                     }, 2000);
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // GUEST LIST PARSER v2 - Simplified
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         let glChatData = ''; // Store full chat
         let parsedGuestList = [];
@@ -3752,7 +3752,7 @@
             
             if (isZip) {
                 try {
-                    showToast('ðŸ“¦ ZIP wird extrahiert...');
+                    showToast('Ã°Å¸â€œÂ¦ ZIP wird extrahiert...');
                     const zip = await JSZip.loadAsync(file);
                     let txtFile = null;
                     let foundFiles = [];
@@ -3771,7 +3771,7 @@
                     }
                 } catch (e) {
                     console.error('ZIP error:', e);
-                    showToast('âŒ ZIP Fehler', true);
+                    showToast('Ã¢ÂÅ’ ZIP Fehler', true);
                     return;
                 }
             } else {
@@ -3785,11 +3785,11 @@
             
             const lines = content.split('\n').filter(l => l.trim()).length;
             
-            document.getElementById('gl-upload-status').innerHTML = `âœ… Chat geladen (${lines} Zeilen)`;
+            document.getElementById('gl-upload-status').innerHTML = `Ã¢Å“â€¦ Chat geladen (${lines} Zeilen)`;
             document.getElementById('gl-upload-status').style.background = '#22c55e20';
             document.getElementById('gl-upload-status').style.color = '#22c55e';
             document.getElementById('gl-upload-status').style.border = '1px solid #22c55e';
-            showToast('âœ… Chat geladen!');
+            showToast('Ã¢Å“â€¦ Chat geladen!');
         }
         
         function clearGuestListInput() {
@@ -3797,7 +3797,7 @@
             document.getElementById('gl-chat-input').value = '';
             document.getElementById('gl-results').style.display = 'none';
             document.getElementById('gl-filtered-preview').style.display = 'none';
-            document.getElementById('gl-upload-status').innerHTML = 'ðŸ“± Noch kein Chat geladen';
+            document.getElementById('gl-upload-status').innerHTML = 'Ã°Å¸â€œÂ± Noch kein Chat geladen';
             document.getElementById('gl-upload-status').style.background = '#3d3d54';
             document.getElementById('gl-upload-status').style.color = '#888';
             document.getElementById('gl-upload-status').style.border = 'none';
@@ -3805,7 +3805,7 @@
         }
         
         function parseGuestListV2() {
-            console.log('ðŸš€ parseGuestListV2 called');
+            console.log('Ã°Å¸Å¡â‚¬ parseGuestListV2 called');
             const dateInput = document.getElementById('gl-date').value.trim();
             const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
             const textareaValue = document.getElementById('gl-chat-input').value;
@@ -3820,11 +3820,11 @@
             console.log('dateInput:', dateInput);
             
             if (!dateInput) {
-                showToast('âš ï¸ Bitte Datum eingeben (z.B. 27.12.25)', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Bitte Datum eingeben (z.B. 27.12.25)', true);
                 return;
             }
             if (!chatText) {
-                showToast('âš ï¸ Bitte WhatsApp Chat hochladen', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Bitte WhatsApp Chat hochladen', true);
                 return;
             }
             
@@ -3842,7 +3842,7 @@
                 `${parseInt(day)}.${parseInt(month)}.${y2}`, `${parseInt(day)}.${parseInt(month)}.${y4}`
             ];
             
-            console.log('ðŸ“… Looking for dates:', datePatterns);
+            console.log('Ã°Å¸â€œâ€¦ Looking for dates:', datePatterns);
             
             // Find all messages containing the date
             // Normalize line endings (Windows uses \r\n)
@@ -3881,7 +3881,7 @@
                 
                 // DEBUG: Check specifically for Lisa
                 if (line.toLowerCase().includes('lisa')) {
-                    console.log('ðŸ”´ LISA FOUND at line', i, ':', JSON.stringify(line));
+                    console.log('Ã°Å¸â€Â´ LISA FOUND at line', i, ':', JSON.stringify(line));
                     console.log('  collecting:', collecting);
                     console.log('  currentSender:', currentSender);
                 }
@@ -3907,7 +3907,7 @@
                         collecting = true;
                         currentSender = sender.trim();
                         filteredLines.push(line);
-                        console.log('âœ… Found date match, collecting=TRUE, sender:', currentSender);
+                        console.log('Ã¢Å“â€¦ Found date match, collecting=TRUE, sender:', currentSender);
                         console.log('  Full line:', line.substring(0, 80));
                     } else {
                         // New message without our date - stop collecting
@@ -3918,10 +3918,10 @@
                     filteredLines.push(line);
                     
                     let rawLine = line.trim();
-                    console.log('ðŸ“ Continuation line:', JSON.stringify(rawLine));
+                    console.log('Ã°Å¸â€œÂ Continuation line:', JSON.stringify(rawLine));
                     
                     // Clean leading bullets/dashes
-                    rawLine = rawLine.replace(/^[\-â€“â€”â€¢Â·*#\d.\)]+\s*/, '').trim();
+                    rawLine = rawLine.replace(/^[\-Ã¢â‚¬â€œÃ¢â‚¬â€Ã¢â‚¬Â¢Ã‚Â·*#\d.\)]+\s*/, '').trim();
                     console.log('  After cleaning:', JSON.stringify(rawLine));
                     
                     // Split by comma, newline, semicolon for multiple names
@@ -3930,7 +3930,7 @@
                     nameParts.forEach(part => {
                         let name = part.trim();
                         // Clean up
-                        name = name.replace(/^[\-â€“â€”â€¢Â·*#\d.\)]+\s*/, '').trim();
+                        name = name.replace(/^[\-Ã¢â‚¬â€œÃ¢â‚¬â€Ã¢â‚¬Â¢Ã‚Â·*#\d.\)]+\s*/, '').trim();
                         name = name.replace(/[.,;:!?*]+$/, '').trim();
                         
                         // Skip non-names
@@ -3939,7 +3939,7 @@
                         if (/^(ja|nein|ok|yes|no|danke|hi|hey|hallo|hello|\+\d|thx|thanks|bitte)$/i.test(name)) return;
                         
                         // Check if it looks like a name
-                        if (/[a-zA-ZÃ¤Ã¶Ã¼Ã„Ã–ÃœÃŸÃ©Ã¨ÃªÃ«Ã Ã¢Ã®Ã¯Ã´Ã¹Ã»Ã§]/i.test(name)) {
+                        if (/[a-zA-ZÃƒÂ¤ÃƒÂ¶ÃƒÂ¼Ãƒâ€žÃƒâ€“ÃƒÅ“ÃƒÅ¸ÃƒÂ©ÃƒÂ¨ÃƒÂªÃƒÂ«ÃƒÂ ÃƒÂ¢ÃƒÂ®ÃƒÂ¯ÃƒÂ´ÃƒÂ¹ÃƒÂ»ÃƒÂ§]/i.test(name)) {
                             // Proper case
                             name = name.split(/\s+/).map(w => 
                                 w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
@@ -3949,7 +3949,7 @@
                                 name: name,
                                 submittedBy: currentSender
                             });
-                            console.log('ðŸ‘¤ Found guest:', name, 'by', currentSender);
+                            console.log('Ã°Å¸â€˜Â¤ Found guest:', name, 'by', currentSender);
                         }
                     });
                 }
@@ -3979,7 +3979,7 @@
             parsedGuestList = uniqueGuests;
             
             if (uniqueGuests.length === 0) {
-                showToast(`âš ï¸ Keine GÃ¤ste fÃ¼r ${dateInput} gefunden`, true);
+                showToast(`Ã¢Å¡Â Ã¯Â¸Â Keine GÃƒÂ¤ste fÃƒÂ¼r ${dateInput} gefunden`, true);
                 document.getElementById('gl-results').style.display = 'none';
                 return;
             }
@@ -3999,7 +3999,7 @@
             summaryDiv.innerHTML = `
                 <div style="background: #252542; padding: 15px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 28px; font-weight: 700; color: #22c55e;">${guests.length}</div>
-                    <div style="font-size: 12px; color: #888;">GÃ¤ste</div>
+                    <div style="font-size: 12px; color: #888;">GÃƒÂ¤ste</div>
                 </div>
                 <div style="background: #252542; padding: 15px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${submitters.length}</div>
@@ -4032,21 +4032,21 @@
             html += `</tbody></table>`;
             outputDiv.innerHTML = html;
             
-            showToast(`âœ… ${guests.length} GÃ¤ste gefunden!`);
+            showToast(`Ã¢Å“â€¦ ${guests.length} GÃƒÂ¤ste gefunden!`);
         }
         
         
         function copyGuestList() {
             if (parsedGuestList.length === 0) {
-                showToast('âš ï¸ Keine GÃ¤ste zum Kopieren', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Keine GÃƒÂ¤ste zum Kopieren', true);
                 return;
             }
             
             const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
             const date = document.getElementById('gl-date').value.trim();
             
-            let text = `GUEST LIST â€“ ${eventName.toUpperCase()} ${date}\n`;
-            text += 'â”€'.repeat(40) + '\n\n';
+            let text = `GUEST LIST Ã¢â‚¬â€œ ${eventName.toUpperCase()} ${date}\n`;
+            text += 'Ã¢â€â‚¬'.repeat(40) + '\n\n';
             
             parsedGuestList.forEach((g, i) => {
                 text += `${i + 1}. ${g.name}`;
@@ -4056,19 +4056,19 @@
                 text += '\n';
             });
             
-            text += '\n' + 'â”€'.repeat(40);
-            text += `\nTotal: ${parsedGuestList.length} GÃ¤ste`;
+            text += '\n' + 'Ã¢â€â‚¬'.repeat(40);
+            text += `\nTotal: ${parsedGuestList.length} GÃƒÂ¤ste`;
             
             navigator.clipboard.writeText(text).then(() => {
-                showToast('ðŸ“‹ Guest List kopiert!');
+                showToast('Ã°Å¸â€œâ€¹ Guest List kopiert!');
             }).catch(() => {
-                showToast('âŒ Kopieren fehlgeschlagen', true);
+                showToast('Ã¢ÂÅ’ Kopieren fehlgeschlagen', true);
             });
         }
         
         function downloadGuestListCSV() {
             if (parsedGuestList.length === 0) {
-                showToast('âš ï¸ Keine GÃ¤ste zum Exportieren', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Keine GÃƒÂ¤ste zum Exportieren', true);
                 return;
             }
             
@@ -4086,16 +4086,16 @@
             link.download = `GuestList_${eventName}_${date}.csv`;
             link.click();
             
-            showToast('ðŸ“¥ CSV heruntergeladen!');
+            showToast('Ã°Å¸â€œÂ¥ CSV heruntergeladen!');
         }
         
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // BMT CALENDAR INTEGRATION
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
         let bmtEvents = [];
@@ -4155,10 +4155,10 @@
                 // Open factsheet modal
                 openModal('factsheet-modal');
                 
-                showToast('ðŸ“„ ' + eventData.name + ' geladen');
+                showToast('Ã°Å¸â€œâ€ž ' + eventData.name + ' geladen');
             } catch (e) {
                 console.error('Error parsing BMT event data:', e);
-                showToast('âŒ Fehler beim Laden', 'error');
+                showToast('Ã¢ÂÅ’ Fehler beim Laden', 'error');
             }
         }
         
@@ -4301,10 +4301,10 @@
                     localStorage.setItem('bmtLastUpdate', new Date().toISOString());
                     
                     renderBMTEvents();
-                    showToast('âœ… ' + bmtEvents.length + ' BMT Events geladen!');
+                    showToast('Ã¢Å“â€¦ ' + bmtEvents.length + ' BMT Events geladen!');
                 } catch (err) {
                     console.error('Error parsing ICS:', err);
-                    showToast('âŒ Fehler beim Parsen der ICS Datei', 'error');
+                    showToast('Ã¢ÂÅ’ Fehler beim Parsen der ICS Datei', 'error');
                 }
             };
             reader.readAsText(file);
@@ -4328,16 +4328,16 @@
                     
                     if (lastUpdate) {
                         const updateDate = new Date(lastUpdate);
-                        showToast('âœ… Events geladen (Update: ' + updateDate.toLocaleDateString('de-DE') + ')');
+                        showToast('Ã¢Å“â€¦ Events geladen (Update: ' + updateDate.toLocaleDateString('de-DE') + ')');
                     }
                 } catch (err) {
                     console.error('Error loading stored events:', err);
                     document.getElementById('bmt-status').innerHTML = 
-                        'âŒ Fehler beim Laden. Bitte .ics Datei neu uploaden.';
+                        'Ã¢ÂÅ’ Fehler beim Laden. Bitte .ics Datei neu uploaden.';
                 }
             } else {
                 document.getElementById('bmt-status').innerHTML = 
-                    'ðŸ“… Keine Events gespeichert.<br><small>Bitte .ics Datei von BookMeTender uploaden</small>';
+                    'Ã°Å¸â€œâ€¦ Keine Events gespeichert.<br><small>Bitte .ics Datei von BookMeTender uploaden</small>';
             }
         }
         
@@ -4360,7 +4360,7 @@
             countBadge.textContent = upcomingEvents.length;
             
             if (upcomingEvents.length === 0) {
-                container.innerHTML = '<div class="bmt-status">Keine Events in den nÃ¤chsten 30 Tagen</div>';
+                container.innerHTML = '<div class="bmt-status">Keine Events in den nÃƒÂ¤chsten 30 Tagen</div>';
                 return;
             }
             
@@ -4398,11 +4398,11 @@
                     
                     return `
                         <div class="bmt-event-card ${catClass}">
-                            <div class="bmt-event-date">${dayName}, ${dateStr} Â· ${timeStr}</div>
+                            <div class="bmt-event-date">${dayName}, ${dateStr} Ã‚Â· ${timeStr}</div>
                             <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
                                 <span class="bmt-event-category ${catClass}">${catLabel}</span>
-                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen">ðŸ“„</button>
+                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen">Ã°Å¸â€œâ€ž</button>
                             </div>
                         </div>
                     `;
@@ -4415,9 +4415,9 @@
             return div.innerHTML;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // CLEANING SCHEDULE GENERATOR
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         // Austrian public holidays 2025/2026
         const HOLIDAYS = [
@@ -4454,23 +4454,23 @@
             const cleaningDate = new Date(eventDate);
             
             if (dayOfWeek === 5) {
-                // FRIDAY event â†’ Cleaning on SATURDAY (next day, so club is ready for Sat event)
+                // FRIDAY event Ã¢â€ â€™ Cleaning on SATURDAY (next day, so club is ready for Sat event)
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
             } else if (dayOfWeek === 6) {
-                // SATURDAY event â†’ Cleaning on MONDAY (next workday, avoid Sunday double cost)
+                // SATURDAY event Ã¢â€ â€™ Cleaning on MONDAY (next workday, avoid Sunday double cost)
                 cleaningDate.setDate(cleaningDate.getDate() + 2); // +2 = Monday
                 // Check if Monday is a holiday
                 while (isHoliday(cleaningDate)) {
                     cleaningDate.setDate(cleaningDate.getDate() + 1);
                 }
             } else if (dayOfWeek === 0) {
-                // SUNDAY event â†’ Cleaning on Monday (next workday)
+                // SUNDAY event Ã¢â€ â€™ Cleaning on Monday (next workday)
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
                 while (isHoliday(cleaningDate)) {
                     cleaningDate.setDate(cleaningDate.getDate() + 1);
                 }
             } else {
-                // MON-THU event â†’ Cleaning next day
+                // MON-THU event Ã¢â€ â€™ Cleaning next day
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
                 // Skip if next day is Sunday or holiday
                 while (cleaningDate.getDay() === 0 || isHoliday(cleaningDate)) {
@@ -4629,14 +4629,14 @@
             
             const table = document.getElementById('cleaning-table-data');
             if (!table) {
-                showToast('âŒ Keine Daten zum Kopieren', 'error');
+                showToast('Ã¢ÂÅ’ Keine Daten zum Kopieren', 'error');
                 return;
             }
             
             // Only get rows with checked checkboxes
             const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
             if (checkedRows.length === 0) {
-                showToast('âš ï¸ Keine Reinigungen ausgewÃ¤hlt', 'error');
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Keine Reinigungen ausgewÃƒÂ¤hlt', 'error');
                 return;
             }
             
@@ -4650,25 +4650,25 @@
                 const day = cells[2].textContent;
                 const type = cells[3].textContent;
                 const event = cells[4].textContent;
-                text += `${date} (${day}) - ${type}\n  â†’ ${event}\n\n`;
+                text += `${date} (${day}) - ${type}\n  Ã¢â€ â€™ ${event}\n\n`;
             });
             
             navigator.clipboard.writeText(text).then(() => {
-                showToast(`âœ… ${checkedRows.length} Reinigungen kopiert!`);
+                showToast(`Ã¢Å“â€¦ ${checkedRows.length} Reinigungen kopiert!`);
             }).catch(() => {
-                showToast('âŒ Kopieren fehlgeschlagen', 'error');
+                showToast('Ã¢ÂÅ’ Kopieren fehlgeschlagen', 'error');
             });
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // CLEANING EMAIL FUNCTIONS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         // Fixed cleaning contacts - always send to all 3
         const CLEANING_CONTACTS = [
             { name: 'Alexander Pichler', email: 'ap@gfg-services.at' },
             { name: 'GFG Services', email: 'pf@gfg-services.at' },
-            { name: 'MatthÃ¤us Gabor', email: 'mg@grelleforelle.com' }
+            { name: 'MatthÃƒÂ¤us Gabor', email: 'mg@grelleforelle.com' }
         ];
         
         const SCHADI_SIGNATURE = `
@@ -4677,7 +4677,7 @@ Schadi Tayyah
 st@grelleforelle.com
 Grelle Forelle CEO
 Turbo Projects GmbH
-Spittelauer LÃ¤nde 12/1
+Spittelauer LÃƒÂ¤nde 12/1
 1090 Vienna, Austria`;
         
         function showCleaningEmail() {
@@ -4699,7 +4699,7 @@ Spittelauer LÃ¤nde 12/1
             
             // Build email body from table with event-on-cleaning-day check
             const table = document.getElementById('cleaning-table-data');
-            let body = `Hallo,\n\nanbei der Reinigungsplan fÃ¼r ${monthName}:\n\n`;
+            let body = `Hallo,\n\nanbei der Reinigungsplan fÃƒÂ¼r ${monthName}:\n\n`;
             
             if (table) {
                 // Only get checked rows
@@ -4715,16 +4715,16 @@ Spittelauer LÃ¤nde 12/1
                     // Check if there's an event on this cleaning day
                     const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
                     
-                    body += `â€¢ ${dateStr} (${day}) - ${type}\n`;
+                    body += `Ã¢â‚¬Â¢ ${dateStr} (${day}) - ${type}\n`;
                     body += `  Nach: ${event}\n`;
                     if (hasEventOnCleaningDay) {
-                        body += `  âš ï¸ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                        body += `  Ã¢Å¡Â Ã¯Â¸Â (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
                     }
                     body += `\n`;
                 });
             }
             
-            body += `Bitte um BestÃ¤tigung.\n`;
+            body += `Bitte um BestÃƒÂ¤tigung.\n`;
             body += SCHADI_SIGNATURE;
             
             document.getElementById('cleaning-email-body').value = body;
@@ -4765,18 +4765,18 @@ Spittelauer LÃ¤nde 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = 'â‚¬ï¸ Bitte alle Felder ausfÃ¼llen';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte alle Felder ausfÃƒÂ¼llen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = 'â‚¬ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = 'ðŸ“¤ Sende an alle 3 EmpfÃ¤nger...';
+            status.textContent = 'Ã°Å¸â€œÂ¤ Sende an alle 3 EmpfÃƒÂ¤nger...';
             status.style.color = '#888';
             
             // Build recipients array for all 3 contacts
@@ -4801,17 +4801,17 @@ Spittelauer LÃ¤nde 12/1
                 });
                 
                 if (response.ok || response.status === 202) {
-                    status.textContent = 'âœ‰ï¸ E-Mail an alle 3 gesendet!';
+                    status.textContent = 'Ã¢Å“â€°Ã¯Â¸Â E-Mail an alle 3 gesendet!';
                     status.style.color = '#22c55e';
-                    showToast('ðŸ§¹ Reinigungsplan an alle 3 EmpfÃ¤nger gesendet!');
+                    showToast('Ã°Å¸Â§Â¹ Reinigungsplan an alle 3 EmpfÃƒÂ¤nger gesendet!');
                     setTimeout(() => hideCleaningEmail(), 2000);
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -4823,18 +4823,18 @@ Spittelauer LÃ¤nde 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = 'â‚¬ï¸ Bitte alle Felder ausfÃ¼llen';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte alle Felder ausfÃƒÂ¼llen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = 'â‚¬ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢â€šÂ¬Ã¯Â¸Â Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = 'ðŸ“ Speichere als Entwurf...';
+            status.textContent = 'Ã°Å¸â€œÂ Speichere als Entwurf...';
             status.style.color = '#888';
             
             // Build recipients array for all 3 contacts
@@ -4858,24 +4858,24 @@ Spittelauer LÃ¤nde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = 'âœ… Entwurf gespeichert! Check deine Outlook Drafts.';
+                    status.textContent = 'Ã¢Å“â€¦ Entwurf gespeichert! Check deine Outlook Drafts.';
                     status.style.color = '#22c55e';
-                    showToast('ðŸ“ Entwurf in Outlook gespeichert!');
+                    showToast('Ã°Å¸â€œÂ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
         
 
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // MONTH FILTER FUNCTIONS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         let selectedMonths = new Set();
         
@@ -4932,14 +4932,14 @@ Spittelauer LÃ¤nde 12/1
             const btn = document.getElementById('month-filter-btn');
             const count = selectedMonths.size;
             if (count === 0) {
-                btn.textContent = 'ðŸ“† Keine â–¼';
+                btn.textContent = 'Ã°Å¸â€œâ€  Keine Ã¢â€“Â¼';
             } else if (count === 12) {
-                btn.textContent = 'ðŸ“† Alle â–¼';
+                btn.textContent = 'Ã°Å¸â€œâ€  Alle Ã¢â€“Â¼';
             } else if (count === 1) {
-                const monthNames = ['', 'Jan', 'Feb', 'MÃ¤r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-                btn.textContent = 'ðŸ“† ' + monthNames[[...selectedMonths][0]] + ' â–¼';
+                const monthNames = ['', 'Jan', 'Feb', 'MÃƒÂ¤r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+                btn.textContent = 'Ã°Å¸â€œâ€  ' + monthNames[[...selectedMonths][0]] + ' Ã¢â€“Â¼';
             } else {
-                btn.textContent = 'ðŸ“† ' + count + ' Monate â–¼';
+                btn.textContent = 'Ã°Å¸â€œâ€  ' + count + ' Monate Ã¢â€“Â¼';
             }
         }
         
@@ -4950,9 +4950,9 @@ Spittelauer LÃ¤nde 12/1
             }
         });
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // CLEANING CHECKBOX FUNCTIONS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         function toggleCleaningRow(checkbox) {
             const row = checkbox.closest('tr');
@@ -5002,32 +5002,32 @@ Spittelauer LÃ¤nde 12/1
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #22c55e;">${grossCount + mittelCount}</div>
-                        <div style="font-size: 12px; color: #888;">AUSGEWÃ„HLT</div>
+                        <div style="font-size: 12px; color: #888;">AUSGEWÃƒâ€žHLT</div>
                     </div>
                 </div>
             `;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // QUICK NOTES - CREATE NEW TASK
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         async function createNewTask() {
             const text = document.getElementById('quick-notes-text').value.trim();
             if (!text) {
-                showToast('âš ï¸ Bitte erst Text eingeben', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Bitte erst Text eingeben', true);
                 return;
             }
             
             if (!accessToken) {
-                showToast('âš ï¸ Bitte zuerst anmelden', true);
+                showToast('Ã¢Å¡Â Ã¯Â¸Â Bitte zuerst anmelden', true);
                 return;
             }
             
             try {
                 const listId = await getOrCreateNotesList();
                 if (!listId) {
-                    showToast('âŒ Notes Liste nicht gefunden', true);
+                    showToast('Ã¢ÂÅ’ Notes Liste nicht gefunden', true);
                     return;
                 }
                 
@@ -5054,20 +5054,20 @@ Spittelauer LÃ¤nde 12/1
                 });
                 
                 if (response.ok) {
-                    showToast('âœ… Task erstellt!');
+                    showToast('Ã¢Å“â€¦ Task erstellt!');
                     document.getElementById('quick-notes-text').value = '';
                     localStorage.removeItem('workhub-quick-notes');
                 } else {
-                    showToast('âŒ Fehler beim Erstellen', true);
+                    showToast('Ã¢ÂÅ’ Fehler beim Erstellen', true);
                 }
             } catch (err) {
                 console.error('Create task error:', err);
-                showToast('âŒ Fehler: ' + err.message, true);
+                showToast('Ã¢ÂÅ’ Fehler: ' + err.message, true);
             }
         }
         
         // INIT
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Work Hub v14.3 - Guest List Parser v2');
