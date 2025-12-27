@@ -1963,18 +1963,21 @@
                 <div class="form-group">
                     <label>📱 WhatsApp Chat Export (.zip oder .txt) oder Text einfügen</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="file" id="gl-file-upload" accept=".txt,.zip" onchange="handleGuestListFile(event)" style="display: none;">
+                        <input type="file" id="gl-file-upload" accept=".txt,.zip,application/zip,application/x-zip-compressed,*/*" onchange="handleGuestListFile(event)" style="display: none;">
                         <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 WhatsApp Export hochladen</button>
                         <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">🗑️ Leeren</button>
+                        <button class="modal-btn" style="background: #6366f1;" onclick="toggleChatPreview()" id="gl-toggle-btn">👁️ Chat anzeigen</button>
                     </div>
-                    <div style="font-size: 11px; color: #888; margin-bottom: 8px;">💡 WhatsApp exportiert Chats als ZIP-Datei. Einfach die ZIP hochladen!</div>
-                    <textarea id="gl-chat-input" rows="8" placeholder="WhatsApp Chat Export hier einfügen...
-
-Beispiel Format:
-27/12/2025, 12:21 - Patrick: GL 27.12.25 TURBO
-- Lisa Fuchs
-27/12/2025, 12:39 - Sofia 3 Stanojevic: 27.12.25
-Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
+                    <div style="font-size: 11px; color: #888; margin-bottom: 8px;">💡 WhatsApp Export hochladen (ZIP oder TXT) - wird automatisch erkannt!</div>
+                    <div id="gl-chat-preview" style="display: none;">
+                        <div id="gl-chat-status" style="background: #22c55e20; border: 1px solid #22c55e; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 12px; color: #22c55e; display: none;">
+                            ✅ Chat geladen (<span id="gl-line-count">0</span> Zeilen)
+                        </div>
+                        <textarea id="gl-chat-input" rows="6" placeholder="WhatsApp Chat Export hier einfügen oder hochladen..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 11px; resize: vertical;"></textarea>
+                    </div>
+                    <div id="gl-upload-status" style="background: #3d3d54; border-radius: 8px; padding: 12px; text-align: center; color: #888; font-size: 12px;">
+                        📱 Noch kein Chat geladen
+                    </div>
                 </div>
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
@@ -2395,7 +2398,7 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.1 • 27.12.2025 • Guest List Parser + ZIP Support</div>
+    <div class="version">Work Hub v14.2 • 27.12.2025 • Guest List Parser - Clean UI</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -3729,14 +3732,50 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
         
         let parsedGuestList = [];
         
+        function toggleChatPreview() {
+            const preview = document.getElementById('gl-chat-preview');
+            const btn = document.getElementById('gl-toggle-btn');
+            const status = document.getElementById('gl-upload-status');
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                status.style.display = 'none';
+                btn.innerHTML = '👁️ Chat ausblenden';
+            } else {
+                preview.style.display = 'none';
+                const chatText = document.getElementById('gl-chat-input').value;
+                status.style.display = chatText ? 'block' : 'block';
+                btn.innerHTML = '👁️ Chat anzeigen';
+            }
+        }
+        
+        function updateChatStatus(content) {
+            const lines = content.split('\n').filter(l => l.trim()).length;
+            document.getElementById('gl-line-count').textContent = lines;
+            document.getElementById('gl-chat-status').style.display = 'block';
+            document.getElementById('gl-upload-status').innerHTML = `✅ Chat geladen (${lines} Zeilen) - Wähle Datum und klicke "Guest List extrahieren"`;
+            document.getElementById('gl-upload-status').style.background = '#22c55e20';
+            document.getElementById('gl-upload-status').style.color = '#22c55e';
+            document.getElementById('gl-upload-status').style.border = '1px solid #22c55e';
+        }
+
         async function handleGuestListFile(event) {
             const file = event.target.files[0];
             if (!file) return;
             
             const fileName = file.name.toLowerCase();
             
-            // Check if it's a ZIP file (WhatsApp exports chats as ZIP)
-            if (fileName.endsWith('.zip')) {
+            // Helper function to check if file is a ZIP (by magic bytes)
+            async function isZipFile(file) {
+                const buffer = await file.slice(0, 4).arrayBuffer();
+                const bytes = new Uint8Array(buffer);
+                // ZIP magic bytes: PK (0x50 0x4B 0x03 0x04)
+                return bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04;
+            }
+            
+            // Check if it's a ZIP file by extension OR magic bytes
+            const isZip = fileName.endsWith('.zip') || await isZipFile(file);
+            
+            if (isZip) {
                 try {
                     showToast('📦 ZIP wird extrahiert...');
                     const zip = await JSZip.loadAsync(file);
@@ -3752,8 +3791,11 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
                     });
                     
                     if (txtFile) {
-                        const content = await txtFile.async('string');
+                        // Extract as Uint8Array and decode with UTF-8
+                        const uint8array = await txtFile.async('uint8array');
+                        const content = new TextDecoder('utf-8').decode(uint8array);
                         document.getElementById('gl-chat-input').value = content;
+                        updateChatStatus(content);
                         showToast('✅ WhatsApp Chat aus ZIP extrahiert!');
                         console.log('Extracted:', txtFileName, '- Length:', content.length);
                     } else {
@@ -3768,6 +3810,7 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('gl-chat-input').value = e.target.result;
+                    updateChatStatus(e.target.result);
                     showToast('📱 WhatsApp Export geladen!');
                 };
                 // Try UTF-8 first, then fall back
@@ -3778,6 +3821,11 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
         function clearGuestListInput() {
             document.getElementById('gl-chat-input').value = '';
             document.getElementById('gl-results').style.display = 'none';
+            document.getElementById('gl-chat-status').style.display = 'none';
+            document.getElementById('gl-upload-status').innerHTML = '📱 Noch kein Chat geladen';
+            document.getElementById('gl-upload-status').style.background = '#3d3d54';
+            document.getElementById('gl-upload-status').style.color = '#888';
+            document.getElementById('gl-upload-status').style.border = 'none';
             parsedGuestList = [];
         }
         
@@ -3813,7 +3861,9 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
                 const line = lines[i];
                 
                 // Check if this is a new message header
-                const headerMatch = line.match(/^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*([^:]+):\s*(.*)$/);
+                // WhatsApp format: "27/12/2025, 12:21 - Sender Name: Message"
+                // Or with brackets: "[27.12.25, 12:21:30] Sender: Message"
+                const headerMatch = line.match(/^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*-?\s*([^:]+):\s*(.*)$/);
                 
                 if (headerMatch) {
                     // Process previous message if we were collecting names
@@ -5053,7 +5103,7 @@ Spittelauer Lände 12/1
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.1 - Guest List Parser + ZIP Support');
+            console.log('Work Hub v14.2 - Guest List Parser Clean UI');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
