@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Work Hub v13.9</title>
+    <title>Turbo Projects Work Hub</title>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -43,28 +43,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
             margin-bottom: 15px;
         }
-        .logo-box {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+        .header-box {
+            background: #000000;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            padding: 12px 24px;
         }
         .header-text {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
-        }
-        .header-turbo {
             color: #ffffff;
-        }
-        .header-workhub {
-            color: #a78bfa;
         }
         
         /* Auth Status Bar - Clean Minimal Style */
@@ -75,41 +65,40 @@
         .auth-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b7280; }
         .auth-status .dot { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; }
         .auth-status .dot.connected { background: #22c55e; }
-        .auth-buttons { display: flex; gap: 10px; }
+        .auth-buttons { display: flex; gap: 8px; }
         .auth-btn {
-            background: #60a5fa;
+            background: #ffffff;
             border: none;
-            border-radius: 10px;
-            padding: 12px 20px;
-            color: #0f172a; font-size: 14px; font-weight: 700; cursor: pointer;
+            border-radius: 6px;
+            padding: 6px 16px;
+            color: #1f1f2e; font-size: 11px; font-weight: 600; cursor: pointer;
             transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            white-space: nowrap;
         }
-        .auth-btn:hover { background: #93c5fd; }
-        .auth-btn.logout { background: #94a3b8; }
+        .auth-btn:hover { background: #e5e5e5; }
+        .auth-btn.logout { background: #e2e8f0; }
         .auth-btn.reset { 
             background: #e2e8f0;
-            padding: 12px 16px;
+            padding: 6px 12px;
         }
-        .auth-btn.reset:hover { background: #f1f5f9; }
+        .auth-btn.reset:hover { background: #d1d5db; }
         .auth-user { font-size: 11px; color: #6b7280; }
         
         /* Quick Actions */
-        .quick-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
-        .quick-actions-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+        .quick-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 6px; }
+        .quick-actions-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 6px; }
         
         /* Tools Expander */
         .tools-expander {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .tools-toggle {
             width: 100%;
             background: #2d2d3d;
             border: 1px solid #3d3d4d;
-            border-radius: 8px; padding: 12px 20px;
-            color: white; font-weight: 500; font-size: 14px; cursor: pointer;
+            border-radius: 8px; padding: 10px 16px;
+            color: white; font-weight: 500; font-size: 13px; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 10px;
             transition: all 0.2s;
         }
@@ -128,8 +117,8 @@
             display: none;
             background: #1f1f2e;
             border-radius: 8px;
-            padding: 12px;
-            margin-top: 8px;
+            padding: 10px;
+            margin-top: 6px;
             border: 1px solid #3d3d4d;
         }
         .tools-content.show {
@@ -142,18 +131,18 @@
         }
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px;
         }
         .tool-btn {
             background: #2d2d3d;
             border: 1px solid #3d3d4d;
             border-radius: 8px;
-            padding: 12px 10px;
+            padding: 10px 8px;
             color: white;
             text-align: center;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -163,16 +152,16 @@
         }
         .tool-btn .tool-icon {
             display: block;
-            font-size: 20px;
-            margin-bottom: 4px;
+            font-size: 18px;
+            margin-bottom: 2px;
         }
         
         .quick-btn {
             background: #2d2d3d;
             border: 1px solid #3d3d4d;
-            border-radius: 8px; padding: 14px 10px;
+            border-radius: 8px; padding: 10px 8px;
             color: white; text-decoration: none; text-align: center;
-            font-weight: 500; font-size: 13px; cursor: pointer;
+            font-weight: 500; font-size: 12px; cursor: pointer;
             transition: all 0.2s; display: block;
         }
         .quick-btn:hover { 
@@ -759,6 +748,54 @@
             font-weight: 500;
         }
         
+        /* Notes Dropdown */
+        .note-item-container { margin-bottom: 2px; }
+        .note-item.has-details { cursor: pointer; }
+        .note-item.has-details:hover { background: #3d3d54; }
+        .note-toggle { 
+            display: inline-block; 
+            width: 14px; 
+            font-size: 10px; 
+            color: #8b5cf6;
+            transition: transform 0.2s;
+        }
+        .note-details {
+            background: #1a1a2e;
+            border-left: 3px solid #8b5cf6;
+            margin-left: 30px;
+            padding: 10px 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 5px;
+        }
+        .note-body {
+            color: #9ca3af;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            white-space: pre-wrap;
+        }
+        .note-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #d1d5db;
+            padding: 4px 0;
+        }
+        .checklist-item.checked {
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        .checklist-bullet {
+            color: #8b5cf6;
+            font-size: 14px;
+        }
+        
         /* Quick Notes Add Button */
         .quick-notes-add {
             background: #22c55e; border: none; border-radius: 6px;
@@ -965,9 +1002,8 @@
 
     <!-- Header - Clean Modern Style -->
     <div class="header-container">
-        <div class="logo-box">🚀</div>
-        <div class="header-text">
-            <span class="header-turbo">Turbo</span> <span class="header-workhub">Work Hub</span>
+        <div class="header-box">
+            <div class="header-text">Turbo Projects Work Hub &lt;&gt;&lt;</div>
         </div>
     </div>
     
@@ -979,8 +1015,8 @@
         </div>
         <span class="auth-user" id="auth-user"></span>
         <div class="auth-buttons">
-            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">🔐 SIGN IN</button>
-            <button class="auth-btn reset" onclick="forceResetAuth()">🔄 REFRESH</button>
+            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">🔐 Sign in</button>
+            <button class="auth-btn reset" onclick="forceResetAuth()">🔄 Refresh</button>
         </div>
     </div>
     
@@ -2168,12 +2204,24 @@
                 </div>
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔄</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your tasks</p>
+                            <button onclick="handleAuth()">🔐 Connect</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tasks-inline" id="office-notes">
+                    <div class="tasks-header" onclick="toggleNotesSection()">
+                        <span>📓 Notes <span class="task-count" id="notes-count">—</span> <span class="toggle-icon">▼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">🔄</button>
+                    </div>
+                    <div class="tasks-list" id="office-notes-list">
+                        <div class="tasks-login-prompt">
+                            <p>Sign in to see your notes</p>
                             <button onclick="handleAuth()">🔐 Connect</button>
                         </div>
                     </div>
@@ -2185,7 +2233,7 @@
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header">
-                <div class="dept-header-left">€ BAR</div>
+                <div class="dept-header-left">🍸 BAR</div>
                 <span class="task-count" id="bar-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -2200,7 +2248,7 @@
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔄</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
@@ -2214,7 +2262,7 @@
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header">
-                <div class="dept-header-left">€€ RUNNER</div>
+                <div class="dept-header-left">🏃 RUNNER</div>
                 <span class="task-count" id="runner-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -2229,7 +2277,7 @@
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔄</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
@@ -2250,7 +2298,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">€</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
                         <div class="calendar-list">
@@ -2271,7 +2319,7 @@
                 </div>
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
@@ -2285,7 +2333,7 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header">
-                <div class="dept-header-left">€ SPUTNIK BAR</div>
+                <div class="dept-header-left">🛸 SPUTNIK BAR</div>
                 <span class="task-count" id="sputnik-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -2300,7 +2348,7 @@
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
@@ -2316,7 +2364,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v13.9 • 27.12.2025 • Clean Header + KASSA Checkboxes</div>
+    <div class="version">Work Hub v13.9 • 27.12.2025 • Clean Header + KASSA Checkboxes + Notes List</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2503,13 +2551,13 @@
                 dot.classList.add('connected');
                 statusText.textContent = 'Connected';
                 userText.textContent = account.username || '';
-                authBtn.innerHTML = '🚪 SIGN OUT';
+                authBtn.innerHTML = '🚪 Sign out';
                 authBtn.classList.add('logout');
             } else {
                 dot.classList.remove('connected');
                 statusText.textContent = 'Not connected';
                 userText.textContent = '';
-                authBtn.innerHTML = '🔐 SIGN IN';
+                authBtn.innerHTML = '🔐 Sign in';
                 authBtn.classList.remove('logout');
             }
         }
@@ -2522,6 +2570,8 @@
             }
             console.log('loadAllData: Calling loadAllTasks...');
             loadAllTasks();
+            // Load Notes list
+            loadNotesList();
             // Sync Quick Notes from To Do
             loadQuickNotesFromToDo();
         }
@@ -2531,6 +2581,9 @@
                 document.getElementById(`${d}-task-count`).textContent = '—';
                 document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
             });
+            // Reset Notes section
+            document.getElementById('notes-count').textContent = '—';
+            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔐</button></div>';
         }
         
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -2589,6 +2642,134 @@
         
         function refreshTasks(d) { const b = document.querySelector(`#${d}-tasks .refresh-btn`); b.classList.add('spinning'); loadTasks(d).then(() => b.classList.remove('spinning')); }
         function openToDoList(d) { window.open(`https://to-do.live.com/tasks/${TODO_LISTS[d]}`, '_blank'); }
+        
+        // ═══════════════════════════════════════════════════════════════════════════════
+        // NOTES LIST (Office)
+        // ═══════════════════════════════════════════════════════════════════════════════
+        
+        async function loadNotesList() {
+            if (!accessToken) return;
+            
+            const countEl = document.getElementById('notes-count');
+            const listEl = document.getElementById('office-notes-list');
+            
+            try {
+                const listId = await getOrCreateNotesList();
+                if (!listId) {
+                    listEl.innerHTML = '<div class="task-item" style="color: #888;">Notes list not found</div>';
+                    return;
+                }
+                
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$orderby=createdDateTime desc&$top=20`,
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                const data = await response.json();
+                const notes = data.value || [];
+                
+                countEl.textContent = notes.length;
+                
+                if (notes.length === 0) {
+                    listEl.innerHTML = '<div class="task-item" style="color: #888;">Keine Notes vorhanden</div>';
+                    return;
+                }
+                
+                // Fetch checklist items for each note
+                const notesWithChecklists = await Promise.all(notes.map(async (note) => {
+                    try {
+                        const checklistResponse = await fetch(
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${note.id}/checklistItems`,
+                            { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                        );
+                        const checklistData = await checklistResponse.json();
+                        note.checklistItems = checklistData.value || [];
+                    } catch (e) {
+                        note.checklistItems = [];
+                    }
+                    return note;
+                }));
+                
+                listEl.innerHTML = notesWithChecklists.map(note => {
+                    const title = note.title || 'Untitled';
+                    const body = note.body?.content ? note.body.content.replace(/<[^>]*>/g, '') : '';
+                    const created = note.createdDateTime ? new Date(note.createdDateTime).toLocaleDateString('de-AT') : '';
+                    const hasDetails = body || (note.checklistItems && note.checklistItems.length > 0);
+                    
+                    let checklistHtml = '';
+                    if (note.checklistItems && note.checklistItems.length > 0) {
+                        checklistHtml = `<div class="note-checklist">
+                            ${note.checklistItems.map(item => `
+                                <div class="checklist-item ${item.isChecked ? 'checked' : ''}">
+                                    <span class="checklist-bullet">${item.isChecked ? '☑' : '☐'}</span>
+                                    <span>${item.displayName}</span>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                    }
+                    
+                    return `
+                        <div class="note-item-container" data-id="${note.id}">
+                            <div class="task-item note-item ${hasDetails ? 'has-details' : ''}" onclick="${hasDetails ? `toggleNoteDetails('${note.id}')` : ''}">
+                                <div class="task-checkbox" onclick="event.stopPropagation(); completeNote('${note.id}', this.parentElement.parentElement)"></div>
+                                <div class="task-info">
+                                    <div class="task-title">
+                                        ${hasDetails ? '<span class="note-toggle">▶</span>' : ''} ${title}
+                                    </div>
+                                    <div class="task-due" style="color: #667eea;">${created}</div>
+                                </div>
+                            </div>
+                            ${hasDetails ? `
+                                <div class="note-details" id="note-details-${note.id}" style="display: none;">
+                                    ${body ? `<div class="note-body">${body}</div>` : ''}
+                                    ${checklistHtml}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (err) {
+                console.error('Failed to load notes:', err);
+                listEl.innerHTML = '<div class="task-item" style="color: #ef4444;">Error loading notes</div>';
+            }
+        }
+        
+        function toggleNoteDetails(noteId) {
+            const details = document.getElementById(`note-details-${noteId}`);
+            const toggle = document.querySelector(`[data-id="${noteId}"] .note-toggle`);
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                if (toggle) toggle.textContent = '▼';
+            } else {
+                details.style.display = 'none';
+                if (toggle) toggle.textContent = '▶';
+            }
+        }
+        
+        async function completeNote(noteId, container) {
+            if (!accessToken) return;
+            const checkbox = container.querySelector('.task-checkbox');
+            if (checkbox) checkbox.classList.add('checked');
+            try {
+                const listId = await getOrCreateNotesList();
+                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${noteId}`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+                showToast("✅ Note erledigt!");
+                setTimeout(() => loadNotesList(), 500);
+            } catch (e) { 
+                if (checkbox) checkbox.classList.remove('checked'); 
+            }
+        }
+        
+        function toggleNotesSection() {
+            const list = document.getElementById('office-notes-list');
+            const icon = document.querySelector('#office-notes .toggle-icon');
+            list.classList.toggle('collapsed');
+            icon.textContent = list.classList.contains('collapsed') ? '▶' : '▼';
+        }
         
         // ═══════════════════════════════════════════════════════════════════════════════
         // PRESALE CALCULATOR
@@ -4464,7 +4645,7 @@ Spittelauer Lände 12/1
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v13.9 - Clean Header + KASSA Checkboxes');
+            console.log('Work Hub v13.9 - Clean Header + KASSA Checkboxes + Notes List');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
