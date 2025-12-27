@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo-Projects Work Hub v13.5</title>
+    <title>Turbo-Projects Work Hub v13.7</title>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -38,33 +38,101 @@
             padding: 20px;
             color: #fff;
         }
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 28px; margin-bottom: 5px; }
-        .header p { color: #888; font-size: 14px; }
+        .header { text-align: center; margin-bottom: 8px; }
+        .header h1 { font-size: 24px; margin-bottom: 2px; }
+        .header p { color: #888; font-size: 12px; }
         
-        /* Auth Status Bar */
+        /* Auth Status Bar - Compact */
         .auth-bar {
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            margin-bottom: 15px; padding: 10px; background: #252542; border-radius: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            margin-bottom: 10px; padding: 6px 12px; background: #252542; border-radius: 8px;
             flex-wrap: wrap;
         }
-        .auth-status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-        .auth-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; }
+        .auth-status { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+        .auth-status .dot { width: 6px; height: 6px; border-radius: 50%; background: #ef4444; }
         .auth-status .dot.connected { background: #22c55e; }
         .auth-btn {
             background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
-            border: none; border-radius: 8px; padding: 8px 16px;
-            color: white; font-size: 13px; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; gap: 6px;
+            border: none; border-radius: 6px; padding: 5px 10px;
+            color: white; font-size: 11px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 4px;
         }
         .auth-btn:hover { opacity: 0.9; }
         .auth-btn.logout { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
-        .auth-user { font-size: 12px; color: #888; }
+        .auth-user { font-size: 10px; color: #888; }
         
         /* Quick Actions */
-        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-        .quick-actions-row2 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-        .quick-actions-row3 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .quick-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
+        .quick-actions-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+        
+        /* Tools Expander */
+        .tools-expander {
+            margin-bottom: 15px;
+        }
+        .tools-toggle {
+            width: 100%;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            border: none; border-radius: 12px; padding: 14px 20px;
+            color: white; font-weight: 700; font-size: 15px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        .tools-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+        .tools-toggle .arrow {
+            transition: transform 0.3s ease;
+            font-size: 12px;
+        }
+        .tools-toggle.open .arrow {
+            transform: rotate(180deg);
+        }
+        .tools-content {
+            display: none;
+            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
+            border-radius: 0 0 12px 12px;
+            padding: 15px;
+            margin-top: -5px;
+            border: 1px solid #3d3d54;
+            border-top: none;
+        }
+        .tools-content.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .tool-btn {
+            background: linear-gradient(135deg, #3d3d54 0%, #2d2d44 100%);
+            border: 1px solid #4d4d64;
+            border-radius: 10px;
+            padding: 12px 10px;
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tool-btn:hover {
+            background: linear-gradient(135deg, #4d4d64 0%, #3d3d54 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .tool-btn .tool-icon {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
         
         .quick-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -121,7 +189,8 @@
         .modal-header.green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
         .modal-header.blue { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); }
         .modal-header h3 { font-size: 18px; font-weight: 700; }
-        .modal-close { background: none; border: none; color: white; font-size: 28px; cursor: pointer; line-height: 1; }
+        .modal-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.2s; }
+        .modal-close:hover { opacity: 1; }
         .modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
         .modal-footer { padding: 15px 20px; border-top: 1px solid #3d3d54; display: flex; justify-content: flex-end; gap: 10px; }
         
@@ -138,6 +207,7 @@
             outline: none; border-color: #667eea;
         }
         .form-group input[type="number"] { text-align: right; }
+        .form-group .time-input { width: 80px; text-align: center; font-weight: 600; }
         .form-group textarea { min-height: 100px; resize: vertical; }
         .form-group-inline { display: flex; align-items: center; gap: 10px; }
         .form-hint { font-size: 11px; color: #666; margin-top: 4px; }
@@ -662,19 +732,19 @@
 
         /* Quick Notes */
         .quick-notes {
-            background: #252542; border-radius: 10px; padding: 12px 15px; margin-bottom: 15px;
+            background: #252542; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;
             border: 1px solid #3d3d54;
         }
         .quick-notes-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
         }
-        .quick-notes-header span { font-size: 13px; font-weight: 600; color: #f59e0b; }
-        .quick-notes-header .save-indicator { font-size: 11px; color: #22c55e; opacity: 0; transition: opacity 0.3s; }
+        .quick-notes-header span { font-size: 12px; font-weight: 600; color: #f59e0b; }
+        .quick-notes-header .save-indicator { font-size: 10px; color: #22c55e; opacity: 0; transition: opacity 0.3s; }
         .quick-notes-header .save-indicator.show { opacity: 1; }
         .quick-notes textarea {
-            width: 100%; min-height: 60px; padding: 10px; border-radius: 8px;
+            width: 100%; min-height: 45px; padding: 8px; border-radius: 6px;
             border: 1px solid #3d3d54; background: #1a1a2e; color: #fff;
-            font-size: 13px; font-family: inherit; resize: vertical;
+            font-size: 12px; font-family: inherit; resize: vertical;
         }
         .quick-notes textarea:focus { outline: none; border-color: #f59e0b; }
         .quick-notes textarea::placeholder { color: #666; }
@@ -698,11 +768,21 @@
             }
             .auth-btn { width: 100%; justify-content: center; }
             
-            .quick-actions,
-            .quick-actions-row2,
-            .quick-actions-row3 { 
+            .quick-actions { 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 6px;
+            }
+            .quick-actions-row2 { 
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 8px;
+                gap: 6px;
+            }
+            
+            .tools-toggle {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
             
             .quick-btn { 
@@ -745,11 +825,29 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
-            .quick-actions,
-            .quick-actions-row2,
-            .quick-actions-row3 { 
+            .quick-actions { 
                 grid-template-columns: repeat(2, 1fr); 
-                gap: 6px;
+                gap: 5px;
+            }
+            .quick-actions-row2 { 
+                grid-template-columns: 1fr; 
+                gap: 5px;
+            }
+            
+            .tools-toggle {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .tool-btn {
+                padding: 10px 8px;
+                font-size: 11px;
+            }
+            .tool-btn .tool-icon {
+                font-size: 18px;
             }
             
             .quick-btn { 
@@ -827,26 +925,21 @@
 
     <!-- ENCODING TEST -->
     <div id="encoding-test" style="background: linear-gradient(90deg, #ff0000, #ff6600); color: white; padding: 15px; text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px;">
-        ✅ ENCODING OK — 🚀 🧹 📄 🎆 ❌ — v13.5 — Month Filter + Cleaning CB + New Tasks
     </div>
     <div class="header">
         <h1>🚀 TURBO-PROJECTS</h1>
         <p>Work Hub Launcher</p>
     </div>
     
-    <!-- Auth Bar -->
+    <!-- Auth Bar - Compact -->
     <div class="auth-bar">
         <div class="auth-status">
             <span class="dot" id="auth-dot"></span>
             <span id="auth-status-text">Not connected</span>
         </div>
         <span class="auth-user" id="auth-user"></span>
-        <button class="auth-btn" id="auth-btn" onclick="handleAuth()">
-            <span>🔐</span> Sign in with Microsoft
-        </button>
-        <button class="auth-btn" onclick="forceResetAuth()" title="Cache löschen & neu verbinden" style="padding: 8px 12px; margin-left: 5px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-            🔄 Reset
-        </button>
+        <button class="auth-btn" id="auth-btn" onclick="handleAuth()">🔐 Sign in</button>
+        <button class="auth-btn" onclick="forceResetAuth()" title="Reset" style="padding: 5px 8px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">🔄</button>
     </div>
     
     <div class="toast" id="toast"></div>
@@ -856,7 +949,7 @@
         <div class="quick-notes-header">
             <span>📝 Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="save-indicator" id="notes-saved">✓ Gespeichert</span>
+                <span class="save-indicator" id="notes-saved">✔ Gespeichert</span>
                 <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">➕ Task</button>
             </div>
         </div>
@@ -864,9 +957,9 @@
     </div>
     
 
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
     <!-- BMT EVENTS SECTION (Collapsible) -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
     
     <div class="bmt-section">
         <div class="bmt-header" style="cursor: pointer;">
@@ -905,7 +998,7 @@
                     📤 .ics
                 </button>
                 <button class="bmt-btn" onclick="openCleaningModal()">
-                    ✓ Reinigungsplan
+                    🧹 Reinigungsplan
                 </button>
             </div>
         </div>
@@ -921,8 +1014,8 @@
     <div class="modal-overlay" id="cleaning-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header green">
-                <h3>✓ Reinigungsplan</h3>
-                <button class="modal-close" onclick="closeModal('cleaning-modal')">✓</button>
+                <h3>🧹 Reinigungsplan</h3>
+                <button class="modal-close" onclick="closeModal('cleaning-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row" style="margin-bottom: 15px;">
@@ -972,20 +1065,20 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schließen</button>
             </div>
         </div>
     </div>
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- MODALS -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <!-- NYE Projector Modal -->
     <div class="modal-overlay" id="nye-projector-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                 <h3>🎆 NYE Projector (3-Jahre Benchmark)</h3>
-                <button class="modal-close" onclick="closeModal('nye-projector-modal')">✓</button>
+                <button class="modal-close" onclick="closeModal('nye-projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row" style="margin-bottom: 20px;">
@@ -1021,15 +1114,15 @@
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">FOH Revenue</div>
-                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">✓13,392</div>
+                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">€13,392</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">Bar Revenue</div>
-                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">✓24,000</div>
+                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">€24,000</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">TOTAL Revenue</div>
-                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">✓37,392</div>
+                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">€37,392</div>
                     </div>
                 </div>
                 
@@ -1048,7 +1141,7 @@
                     </tbody>
                 </table>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">✓ Bar Revenue by Hour</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">🍺 Bar Revenue by Hour</h4>
                 <table class="cleaning-table">
                     <thead>
                         <tr>
@@ -1063,14 +1156,14 @@
                 </table>
                 
                 <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); border-radius: 10px;">
-                    <div style="font-weight: 700; margin-bottom: 10px;">✓️ CRITICAL PEAK: 01:00 - 03:00</div>
+                    <div style="font-weight: 700; margin-bottom: 10px;">⚠️ CRITICAL PEAK: 01:00 - 03:00</div>
                     <div style="font-size: 13px; line-height: 1.6;">
                         "The night is not decided by how many tickets you sell, but by how many people you can move, store, and serve between 01:00 and 03:00."
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">Schließen</button>
             </div>
         </div>
     </div>
@@ -1080,7 +1173,7 @@
         <div class="modal" style="max-width: 1000px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
                 <h3>📊 NYE Peak Grid Dashboard</h3>
-                <button class="modal-close" onclick="closeModal('peak-grid-modal')">✓</button>
+                <button class="modal-close" onclick="closeModal('peak-grid-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -1115,7 +1208,7 @@
                 
                 <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
                     <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
-                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">✓✓ Tub Strategy</div>
+                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">🧊 Tub Strategy</div>
                         <div style="font-size: 12px; line-height: 1.8;">
                             <div><span style="color: #f59e0b;">23:45-00:00</span> Initial Fill (BEFORE midnight!)</div>
                             <div><span style="color: #ef4444; font-weight: 700;">01:15-01:30</span> <strong>MANDATORY REFILL</strong></div>
@@ -1126,10 +1219,10 @@
                     <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444;">
                         <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">🎯 Peak Rules</div>
                         <div style="font-size: 12px; line-height: 1.8;">
-                            <div>✓ <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
-                            <div>✓ <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
-                            <div>✓ <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
-                            <div>✓ <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
+                            <div>• <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
+                            <div>• <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
+                            <div>• <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
+                            <div>• <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
                         </div>
                     </div>
                 </div>
@@ -1146,20 +1239,20 @@
                         <div style="font-size: 10px; color: #666;">@ 01:00-02:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 10px; color: #888;">Peak Bar ✓</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">✓4,000</div>
+                        <div style="font-size: 10px; color: #888;">Peak Bar €</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">€4,000</div>
                         <div style="font-size: 10px; color: #666;">@ 02:00-03:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
                         <div style="font-size: 10px; color: #888;">FOH Pricing</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">✓22/✓26</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">€22/€26</div>
                         <div style="font-size: 10px; color: #666;">pre/post 00:00</div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn primary" onclick="printPeakGrid()">🖨️ Drucken</button>
-                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">Schließen</button>
             </div>
         </div>
     </div>
@@ -1169,7 +1262,7 @@
         <div class="modal">
             <div class="modal-header orange">
                 <h3>🎟️ PreSale Calculator</h3>
-                <button class="modal-close" onclick="closeModal('presale-modal')">✓</button>
+                <button class="modal-close" onclick="closeModal('presale-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -1182,7 +1275,7 @@
                         <input type="number" id="ps-foh-tickets" value="350" oninput="calculatePreSale()">
                     </div>
                     <div class="form-group">
-                        <label>FOH Preis (✓)</label>
+                        <label>FOH Preis (€)</label>
                         <input type="number" id="ps-door-price" value="22" oninput="calculatePreSale()">
                     </div>
                 </div>
@@ -1193,7 +1286,7 @@
                         <tr>
                             <th>Phase</th>
                             <th>Tickets</th>
-                            <th>Preis (✓)</th>
+                            <th>Preis (€)</th>
                             <th>Revenue</th>
                         </tr>
                     </thead>
@@ -1202,37 +1295,37 @@
                             <td class="phase-name">Early Bird</td>
                             <td><input type="number" class="ps-tickets" value="100" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="18" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓1.800</td>
+                            <td class="phase-revenue">€1.800</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 1</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="20" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓3.000</td>
+                            <td class="phase-revenue">€3.000</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 2</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="22" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓3.300</td>
+                            <td class="phase-revenue">€3.300</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 3</td>
                             <td><input type="number" class="ps-tickets" value="80" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="24" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓1.920</td>
+                            <td class="phase-revenue">€1.920</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 4</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="26" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓0</td>
+                            <td class="phase-revenue">€0</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 5</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="28" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">✓0</td>
+                            <td class="phase-revenue">€0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1246,11 +1339,11 @@
                         </div>
                         <div class="result-item">
                             <div class="label">VVK Revenue</div>
-                            <div class="value" id="ps-result-vvk-rev">✓10.020</div>
+                            <div class="value" id="ps-result-vvk-rev">€10.020</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">✓ VVK Preis</div>
-                            <div class="value orange" id="ps-result-avg">✓20.88</div>
+                            <div class="label">Ø VVK Preis</div>
+                            <div class="value orange" id="ps-result-avg">€20.88</div>
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Tickets</div>
@@ -1258,17 +1351,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Revenue</div>
-                            <div class="value" id="ps-result-foh-rev">✓8.000</div>
+                            <div class="value" id="ps-result-foh-rev">€8.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ps-result-total">✓18.020</div>
+                            <div class="value" id="ps-result-total">€18.020</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">Schließen</button>
             </div>
         </div>
     </div>
@@ -1277,8 +1370,8 @@
     <div class="modal-overlay" id="cost-modal">
         <div class="modal">
             <div class="modal-header purple">
-                <h3>✓ Cost Calculator</h3>
-                <button class="modal-close" onclick="closeModal('cost-modal')">✓</button>
+                <h3>🧮 Cost Calculator</h3>
+                <button class="modal-close" onclick="closeModal('cost-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -1295,11 +1388,11 @@
                 <h4 style="color: #8b5cf6; margin: 20px 0 10px;">💰 Einnahmen (Projektion)</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Ticket Revenue (✓)</label>
+                        <label>Ticket Revenue (€)</label>
                         <input type="number" id="cc-ticket-rev" value="18000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Bar Revenue (✓)</label>
+                        <label>Bar Revenue (€)</label>
                         <input type="number" id="cc-bar-rev" value="12000" oninput="calculateCosts()">
                     </div>
                 </div>
@@ -1339,21 +1432,21 @@
                 <h4 style="color: #8b5cf6; margin: 20px 0 10px;">📦 Fixkosten</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Artist Fee (✓)</label>
+                        <label>Artist Fee (€)</label>
                         <input type="number" id="cc-artist" value="2000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>GEMA/AKM (✓)</label>
+                        <label>GEMA/AKM (€)</label>
                         <input type="number" id="cc-gema" value="500" oninput="calculateCosts()">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Marketing (✓)</label>
+                        <label>Marketing (€)</label>
                         <input type="number" id="cc-marketing" value="300" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Sonstiges (✓)</label>
+                        <label>Sonstiges (€)</label>
                         <input type="number" id="cc-other" value="200" oninput="calculateCosts()">
                     </div>
                 </div>
@@ -1363,23 +1456,23 @@
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">Total Einnahmen</div>
-                            <div class="value" id="cc-result-revenue">✓30.000</div>
+                            <div class="value" id="cc-result-revenue">€30.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Personalkosten</div>
-                            <div class="value red" id="cc-result-staff">✓3.150</div>
+                            <div class="value red" id="cc-result-staff">€3.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Fixkosten</div>
-                            <div class="value red" id="cc-result-fixed">✓3.000</div>
+                            <div class="value red" id="cc-result-fixed">€3.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Kosten</div>
-                            <div class="value red" id="cc-result-costs">✓6.150</div>
+                            <div class="value red" id="cc-result-costs">€6.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Deckungsbeitrag</div>
-                            <div class="value" id="cc-result-profit">✓23.850</div>
+                            <div class="value" id="cc-result-profit">€23.850</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Marge</div>
@@ -1387,10 +1480,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="form-hint" style="margin-top: 10px;">✓️ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar ✓150, Runner ✓120, Garderobe ✓100, Security ✓180, Technik ✓200, CVD ✓150</p>
+                <p class="form-hint" style="margin-top: 10px;">€️ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar €150, Runner €120, Garderobe €100, Security €180, Technik €200, CVD €150</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schließen</button>
             </div>
         </div>
     </div>
@@ -1400,7 +1493,7 @@
         <div class="modal">
             <div class="modal-header green">
                 <h3>📊 Event Projector</h3>
-                <button class="modal-close" onclick="closeModal('projector-modal')">✓</button>
+                <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -1432,15 +1525,15 @@
                     <h4>📈 Serie Durchschnitt</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">✓ VVK</div>
+                            <div class="label">€ VVK</div>
                             <div class="value blue" id="ep-avg-vvk">436</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">✓ FOH</div>
+                            <div class="label">€ FOH</div>
                             <div class="value blue" id="ep-avg-foh">336</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">✓ Total</div>
+                            <div class="label">€ Total</div>
                             <div class="value blue" id="ep-avg-total">772</div>
                         </div>
                         <div class="result-item">
@@ -1451,18 +1544,18 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>✓ KW Bar-Statistik</h4>
+                    <h4>€ KW Bar-Statistik</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">✓/Person</div>
-                            <div class="value orange" id="ep-bar-pp">✓16.3</div>
+                            <div class="label">€/Person</div>
+                            <div class="value orange" id="ep-bar-pp">€16.3</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">✓ Bar Revenue</div>
-                            <div class="value" id="ep-bar-rev">✓12.584</div>
+                            <div class="label">🍺 Bar Revenue</div>
+                            <div class="value" id="ep-bar-rev">€12.584</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">✓ Total Gäste</div>
+                            <div class="label">€ Total Gäste</div>
                             <div class="value blue" id="ep-bar-guests">772</div>
                         </div>
                     </div>
@@ -1493,17 +1586,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">Bar Projektion</div>
-                            <div class="value orange" id="ep-proj-bar">~✓12.6k</div>
+                            <div class="value orange" id="ep-proj-bar">~€12.6k</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ep-proj-total">~✓28k</div>
+                            <div class="value" id="ep-proj-total">~€28k</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schließen</button>
             </div>
         </div>
     </div>
@@ -1513,7 +1606,7 @@
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
                 <h3>📄 Factsheet Generator</h3>
-                <button class="modal-close" onclick="closeModal('factsheet-modal')">✓</button>
+                <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
@@ -1535,7 +1628,7 @@
                 </div>
                 <div class="form-row" id="main-floor-row">
                     <div class="form-group">
-                        <label>Main Floor ✓ffnung</label>
+                        <label>Main Floor Öffnung</label>
                         <div style="display: flex; gap: 15px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
                                 <input type="radio" name="main-floor-time" value="00:00" checked onchange="updateFactsheetPreview()"> 
@@ -1559,85 +1652,165 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">👥 Personal</h4>
-                <div class="form-row">
-                    <div class="form-group">
+                <h4 style="color: #667eea; margin: 20px 0 10px;">👥 Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
+                
+                <!-- CVD & Technik -->
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>CVD</label>
                         <input type="text" id="fs-cvd" value="Alain" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-cvd-time" value="20:30" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>Technik</label>
                         <input type="text" id="fs-technik" value="Simon" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-technik-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                
+                <!-- TERRASSE & KITCHEN -->
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>TERRASSE</label>
                         <input type="text" id="fs-terrasse" value="-" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-terrasse-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>KITCHEN</label>
                         <input type="text" id="fs-kitchen" value="" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-kitchen-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                
+                <!-- MAIN 1-4 -->
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 1</label>
                         <input type="text" id="fs-main1" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-main1-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 2</label>
                         <input type="text" id="fs-main2" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-main2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                </div>
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 3</label>
                         <input type="text" id="fs-main3" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-main3-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 4</label>
                         <input type="text" id="fs-main4" value="" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-main4-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                
+                <!-- RUNNER 1-6 -->
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 1</label>
                         <input type="text" id="fs-runner1" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner1-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 2</label>
                         <input type="text" id="fs-runner2" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner2-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 3</label>
                         <input type="text" id="fs-runner3" value="" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner3-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 4</label>
                         <input type="text" id="fs-runner4" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner4-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 5</label>
                         <input type="text" id="fs-runner5" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner5-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 6</label>
                         <input type="text" id="fs-runner6" value="" oninput="updateFactsheetPreview()">
                     </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-runner6-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                
+                <!-- GARDEROBE 1-3 -->
+                <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 1</label>
                         <input type="text" id="fs-gard1" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-gard1-time" value="22:45" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 2</label>
                         <input type="text" id="fs-gard2" value="" oninput="updateFactsheetPreview()">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-gard2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 3</label>
                         <input type="text" id="fs-gard3" value="" oninput="updateFactsheetPreview()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <label>Zeit</label>
+                        <input type="text" id="fs-gard3-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -1647,7 +1820,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schlie✓en</button>
+                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schließen</button>
                 <button class="modal-btn primary" onclick="copyFactsheet()">📋 Kopieren</button>
                 <button class="modal-btn success" onclick="printFactsheet()">🖨️ Drucken</button>
             </div>
@@ -1684,29 +1857,24 @@
     </div>
 
     
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- QUICK ACTIONS -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <div class="quick-actions">
-        <button class="quick-btn" onclick="openCleaningModal()" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">✓ Reinigung</button>
         <button class="quick-btn btn-factsheet" onclick="openModal('factsheet-modal')">📄 Factsheet</button>
         <button class="quick-btn btn-email" onclick="openModal('email-modal')">✉️ E-Mail</button>
-        <a href="https://club.bookmetender.com/dashboards" class="quick-btn" target="_blank">📖 BMT</a>
-    </div>
-    
-    <div class="quick-actions-row2">
-        <a href="https://drive.google.com/drive/folders/1w7spIO25kEPGOfv1MLi73fMfKapemKB9" class="quick-btn btn-graphics" target="_blank">📁 Graphics</a>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ✓</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
             <div id="social-dropdown" class="dropdown-content">
                 <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
                 <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📘</span> Facebook</a>
                 <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">💬</span> WhatsApp</a>
+                <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">📖</span> BMT Dashboard</a>
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">💰 Sales ✓</button>
+            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">💰 Sales ▼</button>
             <div id="sales-dropdown" class="dropdown-content">
                 <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
                 <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔗</span> Linktree</a>
@@ -1714,7 +1882,7 @@
             </div>
         </div>
         <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')" style="background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);">📁 Storage ✓</button>
+            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')" style="background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);">📁 Storage ▼</button>
             <div id="storage-dropdown" class="dropdown-content">
                 <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
                 <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔵</span> OneDrive</a>
@@ -1722,29 +1890,54 @@
         </div>
     </div>
     
-    <div class="quick-actions-row3">
-        <button class="quick-btn btn-presale" onclick="openModal('presale-modal')">🎟️ PreSale Calc</button>
-        <button class="quick-btn btn-calculator" onclick="openModal('cost-modal')">✓ Cost Calc</button>
-        <button class="quick-btn btn-projector" onclick="openModal('projector-modal')">📊 Projector</button>
-        <button class="quick-btn btn-analysis" onclick="openDeepAnalysis()">🔬 Deep Analysis</button>
+    <!-- Tools Expander -->
+    <div class="tools-expander">
+        <button class="tools-toggle" id="tools-toggle" onclick="toggleTools()">
+            🔧 Club Tools <span class="arrow">▼</span>
+        </button>
+        <div class="tools-content" id="tools-content">
+            <div class="tools-grid">
+                <button class="tool-btn" onclick="openCleaningModal()">
+                    <span class="tool-icon">🧹</span>
+                    Reinigung
+                </button>
+                <button class="tool-btn" onclick="openModal('presale-modal')">
+                    <span class="tool-icon">🎟️</span>
+                    PreSale Calc
+                </button>
+                <button class="tool-btn" onclick="openModal('cost-modal')">
+                    <span class="tool-icon">🧮</span>
+                    Cost Calc
+                </button>
+                <button class="tool-btn" onclick="openModal('projector-modal')">
+                    <span class="tool-icon">📊</span>
+                    Projector
+                </button>
+                <button class="tool-btn" onclick="openDeepAnalysis()">
+                    <span class="tool-icon">🔬</span>
+                    Deep Analysis
+                </button>
+                <button class="tool-btn" onclick="openModal('nye-projector-modal')" style="border-color: #f59e0b;">
+                    <span class="tool-icon">🎆</span>
+                    NYE Projector
+                </button>
+                <button class="tool-btn" onclick="openModal('peak-grid-modal')" style="border-color: #ef4444;">
+                    <span class="tool-icon">📈</span>
+                    Peak Grid
+                </button>
+            </div>
+        </div>
     </div>
     
-    <div class="quick-actions-row3" style="margin-top: 10px;">
-        <button class="quick-btn" onclick="openModal('nye-projector-modal')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">🎆 NYE Projector</button>
-        <button class="quick-btn" onclick="openModal('peak-grid-modal')" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">📊 Peak Grid</button>
-        <a href="https://drive.google.com/drive/my-drive" class="quick-btn" style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);" target="_blank">📁 Drive</a>
-        <a href="https://claude.ai" class="quick-btn" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);" target="_blank">✓✓ Claude</a>
-    </div>
-    
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- OUTLOOK SECTION -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     
 
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- UPCOMING EVENTS -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <div class="upcoming-events">
         <div class="upcoming-header">
@@ -1761,7 +1954,7 @@
                     <span class="event-tech">Simon</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="turbo-bar-quick">✓ ~✓14.5k</span>
+                    <span id="turbo-bar-quick">€ ~€14.5k</span>
                     <span id="turbo-tickets-quick">🎫 ~763</span>
                     <span class="event-toggle">▼</span>
                 </div>
@@ -1780,7 +1973,7 @@
                     <div class="vvk-input-row">
                         <label>💶 Ø VVK €:</label>
                         <input type="number" id="turbo-vvk-price" value="18" oninput="updateProjection('turbo')">
-                        <label>🚪 FOH ✓:</label>
+                        <label>🚪 FOH €:</label>
                         <input type="number" id="turbo-foh-price" value="22" oninput="updateProjection('turbo')">
                     </div>
                     <div class="vvk-progress-bar">
@@ -1800,11 +1993,11 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="turbo-bar-proj">~✓14.5k</div>
+                            <div class="proj-box-value bar" id="turbo-bar-proj">~€14.5k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="turbo-total-proj">~✓29.8k</div>
+                            <div class="proj-box-value" id="turbo-total-proj">~€29.8k</div>
                         </div>
                     </div>
                     <div class="projection-basis" id="turbo-basis">📊 TURBO Ø: 436 VVK, 336 FOH | KW52: €16.3/Person</div>
@@ -1825,7 +2018,7 @@
                     <span class="event-tech">Jan</span>
                 </div>
                 <div class="event-quick-stats">
-                    <span id="nye-bar-quick">✓ ~✓23k</span>
+                    <span id="nye-bar-quick">€ ~€23k</span>
                     <span id="nye-tickets-quick">🎫 ~1153</span>
                     <span class="event-toggle">▼</span>
                 </div>
@@ -1844,7 +2037,7 @@
                     <div class="vvk-input-row">
                         <label>💶 Ø VVK €:</label>
                         <input type="number" id="nye-vvk-price" value="25" oninput="updateProjection('nye')">
-                        <label>🚪 FOH ✓:</label>
+                        <label>🚪 FOH €:</label>
                         <input type="number" id="nye-foh-price" value="26" oninput="updateProjection('nye')">
                     </div>
                     <div class="vvk-progress-bar">
@@ -1864,11 +2057,11 @@
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="nye-bar-proj">~✓23k</div>
+                            <div class="proj-box-value bar" id="nye-bar-proj">~€23k</div>
                         </div>
                         <div class="proj-box">
                             <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="nye-total-proj">~✓46k</div>
+                            <div class="proj-box-value" id="nye-total-proj">~€46k</div>
                         </div>
                     </div>
                     <div class="projection-basis" id="nye-basis">📊 NYE Ø: 562 VVK, 649 FOH | KW52: €16.3/Person</div>
@@ -1881,9 +2074,9 @@
         </div>
     </div>
     
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     <!-- DEPARTMENTS -->
-    <!-- ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓ -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
     
     <div class="departments">
         <!-- OFFICE -->
@@ -1895,7 +2088,7 @@
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>✓ Reinigungsplan</span>
+                        <span>🧹 Reinigungsplan</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="section-content">
@@ -1911,7 +2104,7 @@
                 </div>
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span>📝 Tasks <span class="toggle-icon">✓</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔄</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
@@ -1928,7 +2121,7 @@
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header">
-                <div class="dept-header-left">✓ BAR</div>
+                <div class="dept-header-left">€ BAR</div>
                 <span class="task-count" id="bar-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -1943,7 +2136,7 @@
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span>📝 Tasks <span class="toggle-icon">✓</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔄</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
@@ -1957,7 +2150,7 @@
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header">
-                <div class="dept-header-left">✓✓ RUNNER</div>
+                <div class="dept-header-left">€€ RUNNER</div>
                 <span class="task-count" id="runner-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -1972,7 +2165,7 @@
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span>📝 Tasks <span class="toggle-icon">✓</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔄</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
@@ -1993,7 +2186,7 @@
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">✓</span>
+                        <span class="toggle-icon">€</span>
                     </div>
                     <div class="section-content">
                         <div class="calendar-list">
@@ -2014,7 +2207,7 @@
                 </div>
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span>📝 Tasks <span class="toggle-icon">✓</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
@@ -2028,7 +2221,7 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header">
-                <div class="dept-header-left">✓ SPUTNIK BAR</div>
+                <div class="dept-header-left">€ SPUTNIK BAR</div>
                 <span class="task-count" id="sputnik-task-count">—</span>
             </div>
             <div class="dept-content">
@@ -2043,7 +2236,7 @@
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span>📝 Tasks <span class="toggle-icon">✓</span></span>
+                        <span>📝 Tasks <span class="toggle-icon">€</span></span>
                         <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
@@ -2059,12 +2252,12 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v13.5 ✓ 24.12.2025 ✓ Responsive + Capacity Caps + Quick Notes</div>
+    <div class="version">Work Hub v13.7 • 27.12.2025 • Tools Expander + Compact UI</div>
 
     <script>
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // MSAL CONFIG
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         const msalConfig = {
             auth: {
@@ -2088,9 +2281,9 @@
         let msalInstance = null;
         let accessToken = null;
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // DATA
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         const SERIE_STATS = {
             turbo: { avgVVK: 436, avgFOH: 336, avgTotal: 772, barPP: 15.3, events: 25 },
@@ -2146,9 +2339,9 @@
         
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // MSAL AUTH
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         async function initMsal() {
             // Check if MSAL library loaded
@@ -2276,9 +2469,9 @@
             });
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // TASKS
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         async function loadAllTasks() {
             if (!accessToken) return;
@@ -2303,7 +2496,7 @@
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = '✓berfällig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = '€berfällig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -2313,7 +2506,7 @@
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
                 }).join('') : '<div class="tasks-empty">🎉 Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">✓️</div>'; }
+            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">€️</div>'; }
         }
         
         async function completeTask(taskId, dept) {
@@ -2333,9 +2526,9 @@
         function refreshTasks(d) { const b = document.querySelector(`#${d}-tasks .refresh-btn`); b.classList.add('spinning'); loadTasks(d).then(() => b.classList.remove('spinning')); }
         function openToDoList(d) { window.open(`https://to-do.live.com/tasks/${TODO_LISTS[d]}`, '_blank'); }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // PRESALE CALCULATOR
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function calculatePreSale() {
             const fohTickets = parseInt(document.getElementById('ps-foh-tickets').value) || 350;
@@ -2348,7 +2541,7 @@
                 const tickets = parseInt(row.querySelector('.ps-tickets').value) || 0;
                 const price = parseInt(row.querySelector('.ps-price').value) || 0;
                 const rev = tickets * price;
-                row.querySelector('.phase-revenue').textContent = '✓' + rev.toLocaleString();
+                row.querySelector('.phase-revenue').textContent = '€' + rev.toLocaleString();
                 totalVVK += tickets;
                 totalVVKRev += rev;
             });
@@ -2359,16 +2552,16 @@
             const totalRev = totalVVKRev + fohRev;
             
             document.getElementById('ps-result-vvk').textContent = totalVVK;
-            document.getElementById('ps-result-vvk-rev').textContent = '✓' + totalVVKRev.toLocaleString();
-            document.getElementById('ps-result-avg').textContent = '✓' + avgVvk;
+            document.getElementById('ps-result-vvk-rev').textContent = '€' + totalVVKRev.toLocaleString();
+            document.getElementById('ps-result-avg').textContent = '€' + avgVvk;
             document.getElementById('ps-result-foh').textContent = fohTickets;
-            document.getElementById('ps-result-foh-rev').textContent = '✓' + fohRev.toLocaleString();
-            document.getElementById('ps-result-total').textContent = '✓' + totalRev.toLocaleString();
+            document.getElementById('ps-result-foh-rev').textContent = '€' + fohRev.toLocaleString();
+            document.getElementById('ps-result-total').textContent = '€' + totalRev.toLocaleString();
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // COST CALCULATOR
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function calculateCosts() {
             const ticketRev = parseInt(document.getElementById('cc-ticket-rev').value) || 0;
@@ -2395,18 +2588,18 @@
             const profit = totalRev - totalCosts;
             const margin = totalRev > 0 ? ((profit / totalRev) * 100).toFixed(1) : 0;
             
-            document.getElementById('cc-result-revenue').textContent = `✓${totalRev.toLocaleString()}`;
-            document.getElementById('cc-result-staff').textContent = `✓${staffCosts.toLocaleString()}`;
-            document.getElementById('cc-result-fixed').textContent = `✓${fixedCosts.toLocaleString()}`;
-            document.getElementById('cc-result-costs').textContent = `✓${totalCosts.toLocaleString()}`;
-            document.getElementById('cc-result-profit').textContent = `✓${profit.toLocaleString()}`;
+            document.getElementById('cc-result-revenue').textContent = `€${totalRev.toLocaleString()}`;
+            document.getElementById('cc-result-staff').textContent = `€${staffCosts.toLocaleString()}`;
+            document.getElementById('cc-result-fixed').textContent = `€${fixedCosts.toLocaleString()}`;
+            document.getElementById('cc-result-costs').textContent = `€${totalCosts.toLocaleString()}`;
+            document.getElementById('cc-result-profit').textContent = `€${profit.toLocaleString()}`;
             document.getElementById('cc-result-profit').className = `value ${profit >= 0 ? '' : 'red'}`;
             document.getElementById('cc-result-margin').textContent = `${margin}%`;
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // EVENT PROJECTOR
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function updateProjectorData() {
             const serie = document.getElementById('ep-serie').value;
@@ -2418,8 +2611,8 @@
             document.getElementById('ep-avg-foh').textContent = s.avgFOH;
             document.getElementById('ep-avg-total').textContent = s.avgTotal;
             document.getElementById('ep-events').textContent = s.events;
-            document.getElementById('ep-bar-pp').textContent = `✓${k.barPP}`;
-            document.getElementById('ep-bar-rev').textContent = `✓${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
+            document.getElementById('ep-bar-pp').textContent = `€${k.barPP}`;
+            document.getElementById('ep-bar-rev').textContent = `€${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
             document.getElementById('ep-bar-guests').textContent = s.avgTotal;
             
             updateProjectorProjection();
@@ -2445,13 +2638,13 @@
             
             document.getElementById('ep-proj-vvk').textContent = `~${projVVK}`;
             document.getElementById('ep-proj-foh').textContent = `~${projFOH}`;
-            document.getElementById('ep-proj-bar').textContent = `~✓${(projBar/1000).toFixed(1)}k`;
-            document.getElementById('ep-proj-total').textContent = `~✓${(projTotal/1000).toFixed(0)}k`;
+            document.getElementById('ep-proj-bar').textContent = `~€${(projBar/1000).toFixed(1)}k`;
+            document.getElementById('ep-proj-total').textContent = `~€${(projTotal/1000).toFixed(0)}k`;
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // FACTSHEET GENERATOR
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function isEigenveranstaltung(name) { return EIGENVERANSTALTUNGEN.some(e => name.toLowerCase().includes(e)); }
         function getKassa(name) { return isEigenveranstaltung(name) ? "Matthäus / Schadi / Isa" : "FREMD"; }
@@ -2475,6 +2668,8 @@
             const t = TEMPLATES[template];
             
             const kassa = getKassa(eventName);
+            
+            // Staff names
             const cvd = document.getElementById('fs-cvd').value || '';
             const technik = document.getElementById('fs-technik').value || '';
             const terrasse = document.getElementById('fs-terrasse').value || '';
@@ -2493,6 +2688,25 @@
             const gard2 = document.getElementById('fs-gard2').value || '';
             const gard3 = document.getElementById('fs-gard3').value || '';
             
+            // Individual times (read from inputs, fallback to template)
+            const cvdTime = document.getElementById('fs-cvd-time')?.value || '20:30';
+            const technikTime = document.getElementById('fs-technik-time')?.value || t.technik;
+            const terrasseTime = document.getElementById('fs-terrasse-time')?.value || t.terrasse;
+            const kitchenTime = document.getElementById('fs-kitchen-time')?.value || t.kitchen;
+            const main1Time = document.getElementById('fs-main1-time')?.value || t.main1;
+            const main2Time = document.getElementById('fs-main2-time')?.value || t.main2;
+            const main3Time = document.getElementById('fs-main3-time')?.value || t.main3;
+            const main4Time = document.getElementById('fs-main4-time')?.value || t.main4;
+            const runner1Time = document.getElementById('fs-runner1-time')?.value || t.runner1;
+            const runner2Time = document.getElementById('fs-runner2-time')?.value || t.runner2;
+            const runner3Time = document.getElementById('fs-runner3-time')?.value || t.runner3;
+            const runner4Time = document.getElementById('fs-runner4-time')?.value || t.runner4;
+            const runner5Time = document.getElementById('fs-runner5-time')?.value || t.runner5;
+            const runner6Time = document.getElementById('fs-runner6-time')?.value || t.runner5;
+            const gard1Time = document.getElementById('fs-gard1-time')?.value || t.gard1;
+            const gard2Time = document.getElementById('fs-gard2-time')?.value || t.gard2;
+            const gard3Time = document.getElementById('fs-gard3-time')?.value || t.gard3;
+            
             const secRows = t.security.map((s, i) => `<tr><td>${i === 0 ? 'SECURITY:' : ''}</td><td>${s.time}</td><td>${s.pax}</td></tr>`).join('');
             
             document.getElementById('fs-preview').innerHTML = `
@@ -2501,32 +2715,32 @@
                 <p><strong>AUFSTELLUNG:</strong></p>
                 <table>
                     <tr><td><strong>PAX:</strong></td><td></td><td></td></tr>
-                    <tr><td><strong>CVD:</strong></td><td>20:30</td><td>${cvd}</td></tr>
+                    <tr><td><strong>CVD:</strong></td><td>${cvdTime}</td><td>${cvd}</td></tr>
                     <tr><td><strong>KASSA:</strong></td><td>22:30</td><td>${kassa}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     <tr><td><strong>DOORS 1:</strong></td><td>${t.doors1}</td><td></td></tr>
-                    <tr><td>TERRASSE 1</td><td>${t.terrasse}</td><td>${terrasse}</td></tr>
+                    <tr><td>TERRASSE 1</td><td>${terrasseTime}</td><td>${terrasse}</td></tr>
                     <tr><td><strong>DOORS 2:</strong></td><td>${t.doors2_early}</td><td></td></tr>
-                    <tr><td>KITCHEN:</td><td>${t.kitchen}</td><td>${kitchen}</td></tr>
+                    <tr><td>KITCHEN:</td><td>${kitchenTime}</td><td>${kitchen}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     <tr><td><strong>DOORS 2:</strong></td><td>${t.doors2_late}</td><td></td></tr>
-                    <tr><td>MAIN 1:</td><td>${t.main1}</td><td>${main1}</td></tr>
-                    <tr><td>MAIN 2:</td><td>${t.main2}</td><td>${main2}</td></tr>
-                    <tr><td>MAIN 3:</td><td>${t.main3}</td><td>${main3}</td></tr>
-                    <tr><td>MAIN 4:</td><td>${t.main4}</td><td>${main4}</td></tr>
+                    <tr><td>MAIN 1:</td><td>${main1Time}</td><td>${main1}</td></tr>
+                    <tr><td>MAIN 2:</td><td>${main2Time}</td><td>${main2}</td></tr>
+                    <tr><td>MAIN 3:</td><td>${main3Time}</td><td>${main3}</td></tr>
+                    <tr><td>MAIN 4:</td><td>${main4Time}</td><td>${main4}</td></tr>
                     <tr><td colspan="3"></td></tr>
-                    <tr><td>RUNNER 1:</td><td>${t.runner1}</td><td>${runner1}</td></tr>
-                    <tr><td>RUNNER 2:</td><td>${t.runner2}</td><td>${runner2}</td></tr>
-                    <tr><td>RUNNER 3:</td><td>${t.runner3}</td><td>${runner3}</td></tr>
-                    <tr><td>RUNNER 4:</td><td>${t.runner4}</td><td>${runner4}</td></tr>
-                    <tr><td>RUNNER 5:</td><td>${t.runner5}</td><td>${runner5}</td></tr>
-                    ${runner6 ? `<tr><td>RUNNER 6:</td><td>${t.runner6 || t.runner5}</td><td>${runner6}</td></tr>` : ''}
+                    <tr><td>RUNNER 1:</td><td>${runner1Time}</td><td>${runner1}</td></tr>
+                    <tr><td>RUNNER 2:</td><td>${runner2Time}</td><td>${runner2}</td></tr>
+                    <tr><td>RUNNER 3:</td><td>${runner3Time}</td><td>${runner3}</td></tr>
+                    <tr><td>RUNNER 4:</td><td>${runner4Time}</td><td>${runner4}</td></tr>
+                    <tr><td>RUNNER 5:</td><td>${runner5Time}</td><td>${runner5}</td></tr>
+                    ${runner6 ? `<tr><td>RUNNER 6:</td><td>${runner6Time}</td><td>${runner6}</td></tr>` : ''}
                     <tr><td colspan="3"></td></tr>
-                    <tr><td>GARDEROBE 1</td><td>${t.gard1}</td><td>${gard1}</td></tr>
-                    <tr><td>GARDEROBE 2</td><td>${t.gard2}</td><td>${gard2}</td></tr>
-                    <tr><td>GARDEROBE 3</td><td>${t.gard3}</td><td>${gard3}</td></tr>
+                    <tr><td>GARDEROBE 1</td><td>${gard1Time}</td><td>${gard1}</td></tr>
+                    <tr><td>GARDEROBE 2</td><td>${gard2Time}</td><td>${gard2}</td></tr>
+                    <tr><td>GARDEROBE 3</td><td>${gard3Time}</td><td>${gard3}</td></tr>
                     <tr><td colspan="3"></td></tr>
-                    <tr><td><strong>TECHNIK:</strong></td><td>${t.technik}</td><td>${technik}</td></tr>
+                    <tr><td><strong>TECHNIK:</strong></td><td>${technikTime}</td><td>${technik}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     ${secRows}
                 </table>
@@ -2658,9 +2872,9 @@
             w.print();
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // VVK TRACKER (Events Dashboard)
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function getDaysUntil(id) {
             const d = EVENT_CONFIG[id].date;
@@ -2705,10 +2919,10 @@
             document.getElementById(`${id}-days`).textContent = `${days} Tage`;
             document.getElementById(`${id}-vvk-proj`).textContent = `~${projVVK}`;
             document.getElementById(`${id}-foh-proj`).textContent = `~${projFOH}`;
-            document.getElementById(`${id}-bar-proj`).textContent = `~✓${(projBar/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-total-proj`).textContent = `~✓${(projTotal/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-bar-proj`).textContent = `~€${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-total-proj`).textContent = `~€${(projTotal/1000).toFixed(1)}k`;
             document.getElementById(`${id}-tickets-quick`).textContent = `🎫 ~${projVVK + projFOH}`;
-            document.getElementById(`${id}-bar-quick`).textContent = `✓ ~✓${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-bar-quick`).textContent = `€ ~€${(projBar/1000).toFixed(1)}k`;
             
             const progress = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${id}-progress`).style.width = `${progress}%`;
@@ -2717,9 +2931,9 @@
             document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d → Soll ~${expected}`;
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // UI HELPERS
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
@@ -2739,6 +2953,13 @@
         }
         document.addEventListener('click', e => { if (!e.target.closest('.dropdown-container')) document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show')); });
         function toggleEventCard(id) { document.getElementById(id).classList.toggle('open'); }
+        
+        function toggleTools() {
+            const toggle = document.getElementById('tools-toggle');
+            const content = document.getElementById('tools-content');
+            toggle.classList.toggle('open');
+            content.classList.toggle('show');
+        }
         
         function showToast(msg, isError) {
             const t = document.getElementById('toast');
@@ -2847,10 +3068,10 @@
                 }
                 
                 const indicator = document.getElementById('notes-saved');
-                indicator.textContent = '✓️ Synced';
+                indicator.textContent = '€️ Synced';
                 indicator.classList.add('show');
                 setTimeout(() => {
-                    indicator.textContent = '✓ Gespeichert';
+                    indicator.textContent = '✔ Gespeichert';
                     indicator.classList.remove('show');
                 }, 2000);
             } catch (err) {
@@ -2904,9 +3125,9 @@
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // NYE PROJECTOR (3-Jahre Benchmark)
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         const NYE_SCENARIOS = {
             base: {
@@ -2981,9 +3202,9 @@
             document.getElementById('nye-foh').textContent = scenario.foh.toLocaleString('de-DE');
             document.getElementById('nye-total').textContent = (scenario.presale + scenario.foh).toLocaleString('de-DE');
             
-            document.getElementById('nye-foh-revenue').textContent = '✓' + scenario.fohRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-bar-revenue').textContent = '✓' + scenario.barRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-total-revenue').textContent = '✓' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
+            document.getElementById('nye-foh-revenue').textContent = '€' + scenario.fohRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-bar-revenue').textContent = '€' + scenario.barRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-total-revenue').textContent = '€' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
             
             // Update arrival table
             const arrivalBody = document.getElementById('nye-arrival-body');
@@ -3017,7 +3238,7 @@
                 return `
                     <tr style="${isPeak ? 'background: rgba(34, 197, 94, 0.2);' : ''}">
                         <td style="${isPeak ? 'font-weight: 700; color: #22c55e;' : ''}">${row.time}</td>
-                        <td style="${isPeak ? 'font-weight: 700;' : ''}">✓${row.revenue.toLocaleString('de-DE')}</td>
+                        <td style="${isPeak ? 'font-weight: 700;' : ''}">€${row.revenue.toLocaleString('de-DE')}</td>
                         <td>${row.pct}%</td>
                         <td><div style="background: ${isPeak ? '#22c55e' : '#3b82f6'}; height: 12px; width: ${barWidth}%; border-radius: 4px;"></div></td>
                     </tr>
@@ -3036,27 +3257,27 @@
             if (e.target === this) calculateNYE();
         });
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // PEAK GRID DASHBOARD
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         const PEAK_GRID_DATA = [
             { time: '22:00-22:30', door: 'low', coat: 'low', bar: 'low', action: 'Start. Systems check. Staff settle.' },
             { time: '22:30-23:00', door: 'low', coat: 'low', bar: 'low', action: 'Prepare wardrobe rhythm. Keep lanes clean.' },
             { time: '23:00-23:30', door: 'med', coat: 'med', bar: 'low', action: 'Early wave. Terrace helps absorb.' },
-            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '✓️ Hanger check must be done!' },
+            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '€️ Hanger check must be done!' },
             { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: '🎆 Midnight push. Door speed only.' },
             { time: '00:15-00:30', door: 'high', coat: 'high', bar: 'high', action: 'Queue mgmt. Keep corridor clear.' },
             { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: '🔴 BOTH LANES DO EVERYTHING!' },
-            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: '✓ Bar speed menu. Stop slow drinks.' },
+            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: '€ Bar speed menu. Stop slow drinks.' },
             { time: '01:00-01:15', door: 'max', coat: 'high', bar: 'max', action: 'Arrival overlap continues.' },
-            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: '✓✓ MANDATORY TUB REFILL!' },
+            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: '€€ MANDATORY TUB REFILL!' },
             { time: '01:30-01:45', door: 'max', coat: 'high', bar: 'max', action: 'Wardrobe overflow if needed.' },
             { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: '🚨 Security clears choke points.' },
             { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: '💥 MAX density inside (~1,450)' },
             { time: '02:15-02:30', door: 'high', coat: 'high', bar: 'high', action: 'Keep both lanes flexible.' },
             { time: '02:30-02:45', door: 'high', coat: 'high', bar: 'high', action: 'Queues dropping? Decide lane merge.' },
-            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: '✓✓ Optional final tub refill window.' },
+            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: '€€ Optional final tub refill window.' },
             { time: '03:00-03:30', door: 'med', coat: 'med', bar: 'high', action: 'Pressure easing. Stop tubs after 03:30.' },
             { time: '03:30-04:00', door: 'low', coat: 'low', bar: 'med', action: 'Reset & deep restock. Stabilize.' }
         ];
@@ -3119,9 +3340,9 @@
             renderPeakGrid();
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         // EMAIL COMPOSER
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         async function sendEmail() {
             const to = document.getElementById('email-to').value;
@@ -3130,13 +3351,13 @@
             const status = document.getElementById('email-status');
             
             if (!to || !subject || !body) {
-                status.textContent = '✓️ Bitte alle Felder ausfüllen';
+                status.textContent = '€️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '✓️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '€️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -3185,11 +3406,11 @@
         
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
 
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         // BMT CALENDAR INTEGRATION
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         
         const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
         let bmtEvents = [];
@@ -3509,9 +3730,9 @@
             return div.innerHTML;
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         // CLEANING SCHEDULE GENERATOR
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         
         // Austrian public holidays 2025/2026
         const HOLIDAYS = [
@@ -3684,7 +3905,8 @@
                             const eventDayName = dayNames[cleaning.eventDate.getDay()];
                             
                             return `
-                                <tr>
+                                <tr data-type="${cleaning.type}" data-row-id="cleaning-${idx}">
+                                    <td style="text-align: center;"><input type="checkbox" class="cleaning-checkbox" checked onchange="toggleCleaningRow(this)"></td>
                                     <td>${dateStr}</td>
                                     <td>${dayName}</td>
                                     <td><span class="cleaning-type ${cleaning.type}">${typeLabel}</span></td>
@@ -3722,33 +3944,40 @@
             
             const table = document.getElementById('cleaning-table-data');
             if (!table) {
-                showToast('✓ Keine Daten zum Kopieren', 'error');
+                showToast('❌ Keine Daten zum Kopieren', 'error');
                 return;
             }
             
-            const rows = table.querySelectorAll('tbody tr');
+            // Only get rows with checked checkboxes
+            const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
+            if (checkedRows.length === 0) {
+                showToast('⚠️ Keine Reinigungen ausgewählt', 'error');
+                return;
+            }
+            
             let text = `REINIGUNGSPLAN ${monthName.toUpperCase()}\n`;
             text += `${'='.repeat(50)}\n\n`;
             
-            rows.forEach(row => {
+            checkedRows.forEach(row => {
                 const cells = row.querySelectorAll('td');
-                const date = cells[0].textContent;
-                const day = cells[1].textContent;
-                const type = cells[2].textContent;
-                const event = cells[3].textContent;
+                // Index 0 = checkbox, 1 = date, 2 = day, 3 = type, 4 = event
+                const date = cells[1].textContent;
+                const day = cells[2].textContent;
+                const type = cells[3].textContent;
+                const event = cells[4].textContent;
                 text += `${date} (${day}) - ${type}\n  → ${event}\n\n`;
             });
             
             navigator.clipboard.writeText(text).then(() => {
-                showToast('🧹 Reinigungsplan kopiert!');
+                showToast(`✅ ${checkedRows.length} Reinigungen kopiert!`);
             }).catch(() => {
-                showToast('✓ Kopieren fehlgeschlagen', 'error');
+                showToast('❌ Kopieren fehlgeschlagen', 'error');
             });
         }
         
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         // CLEANING EMAIL FUNCTIONS
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════
         
         // Fixed cleaning contacts - always send to all 3
         const CLEANING_CONTACTS = [
@@ -3788,21 +4017,23 @@ Spittelauer Lände 12/1
             let body = `Hallo,\n\nanbei der Reinigungsplan für ${monthName}:\n\n`;
             
             if (table) {
-                const rows = table.querySelectorAll('tbody tr');
-                rows.forEach(row => {
+                // Only get checked rows
+                const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
+                checkedRows.forEach(row => {
                     const cells = row.querySelectorAll('td');
-                    const dateStr = cells[0].textContent; // e.g., "04.01.2026"
-                    const day = cells[1].textContent;
-                    const type = cells[2].textContent;
-                    const event = cells[3].textContent;
+                    // Index 0 = checkbox, 1 = date, 2 = day, 3 = type, 4 = event
+                    const dateStr = cells[1].textContent;
+                    const day = cells[2].textContent;
+                    const type = cells[3].textContent;
+                    const event = cells[4].textContent;
                     
                     // Check if there's an event on this cleaning day
                     const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
                     
-                    body += `✓ ${dateStr} (${day}) - ${type}\n`;
+                    body += `• ${dateStr} (${day}) - ${type}\n`;
                     body += `  Nach: ${event}\n`;
                     if (hasEventOnCleaningDay) {
-                        body += `  ✓️ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                        body += `  ⚠️ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
                     }
                     body += `\n`;
                 });
@@ -3849,13 +4080,13 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '✓️ Bitte alle Felder ausfüllen';
+                status.textContent = '€️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '✓️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '€️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -3907,13 +4138,13 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '✓️ Bitte alle Felder ausfüllen';
+                status.textContent = '€️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '✓️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '€️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -4038,9 +4269,8 @@ Spittelauer Lände 12/1
         // CLEANING CHECKBOX FUNCTIONS
         // ═══════════════════════════════════════════════════════════════════════════════
         
-        function toggleCleaningRow(rowId) {
-            const row = document.getElementById(rowId);
-            const checkbox = row.querySelector('.cleaning-checkbox');
+        function toggleCleaningRow(checkbox) {
+            const row = checkbox.closest('tr');
             if (checkbox.checked) {
                 row.classList.remove('cleaning-row-disabled');
             } else {
@@ -4152,10 +4382,10 @@ Spittelauer Lände 12/1
         }
         
         // INIT
-        // ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+        // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v13.5 - BMT Integration + Cleaning Schedule + NYE Tools');
+            console.log('Work Hub v13.7 - Tools Expander + Compact UI');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
