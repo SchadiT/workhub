@@ -2186,22 +2186,6 @@
                 <span class="task-count" id="office-task-count">—</span>
             </div>
             <div class="dept-content">
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span>🧹 Reinigungsplan</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="reinigung-list">
-                            <div class="reinigung-item"><span class="reinigung-date">02.01</span><span class="reinigung-type gross">GROSS</span></div>
-                            <div class="reinigung-item"><span class="reinigung-date">07.01</span><span class="reinigung-type gross">GROSS</span></div>
-                            <div class="reinigung-item"><span class="reinigung-date">10.01</span><span class="reinigung-type gross">GROSS</span></div>
-                            <div class="reinigung-item"><span class="reinigung-date">14.01</span><span class="reinigung-type gross">GROSS</span></div>
-                            <div class="reinigung-item"><span class="reinigung-date">17.01</span><span class="reinigung-type gross">GROSS</span></div>
-                            <div class="reinigung-item"><span class="reinigung-date">21.01</span><span class="reinigung-type gross">GROSS</span></div>
-                        </div>
-                    </div>
-                </div>
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
@@ -2707,10 +2691,12 @@
                         </div>`;
                     }
                     
+                    const noteId = note.id;
+                    
                     return `
-                        <div class="note-item-container" data-id="${note.id}">
-                            <div class="task-item note-item ${hasDetails ? 'has-details' : ''}" onclick="${hasDetails ? `toggleNoteDetails('${note.id}')` : ''}">
-                                <div class="task-checkbox" onclick="event.stopPropagation(); completeNote('${note.id}', this.parentElement.parentElement)"></div>
+                        <div class="note-item-container" data-id="${noteId}" data-has-details="${hasDetails}">
+                            <div class="task-item note-item ${hasDetails ? 'has-details' : ''}" onclick="toggleNoteDetails(this)">
+                                <div class="task-checkbox" onclick="event.stopPropagation(); completeNote('${noteId}', this.closest('.note-item-container'))"></div>
                                 <div class="task-info">
                                     <div class="task-title">
                                         ${hasDetails ? '<span class="note-toggle">▶</span>' : ''} ${title}
@@ -2719,7 +2705,7 @@
                                 </div>
                             </div>
                             ${hasDetails ? `
-                                <div class="note-details" id="note-details-${note.id}" style="display: none;">
+                                <div class="note-details" style="display: none;">
                                     ${body ? `<div class="note-body">${body}</div>` : ''}
                                     ${checklistHtml}
                                 </div>
@@ -2734,9 +2720,15 @@
             }
         }
         
-        function toggleNoteDetails(noteId) {
-            const details = document.getElementById(`note-details-${noteId}`);
-            const toggle = document.querySelector(`[data-id="${noteId}"] .note-toggle`);
+        function toggleNoteDetails(el) {
+            const container = el.closest('.note-item-container');
+            if (!container || container.dataset.hasDetails !== 'true') return;
+            
+            const details = container.querySelector('.note-details');
+            const toggle = container.querySelector('.note-toggle');
+            
+            if (!details) return;
+            
             if (details.style.display === 'none') {
                 details.style.display = 'block';
                 if (toggle) toggle.textContent = '▼';
