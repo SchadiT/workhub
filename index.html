@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turbo Projects Work Hub</title>
+    <!-- JSZip Library for WhatsApp export ZIP files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -1959,18 +1961,19 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>📱 WhatsApp Chat Export (.txt) oder Text einfügen</label>
+                    <label>📱 WhatsApp Chat Export (.zip oder .txt) oder Text einfügen</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="file" id="gl-file-upload" accept=".txt" onchange="handleGuestListFile(event)" style="display: none;">
-                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 .txt Datei hochladen</button>
+                        <input type="file" id="gl-file-upload" accept=".txt,.zip" onchange="handleGuestListFile(event)" style="display: none;">
+                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 WhatsApp Export hochladen</button>
                         <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">🗑️ Leeren</button>
                     </div>
+                    <div style="font-size: 11px; color: #888; margin-bottom: 8px;">💡 WhatsApp exportiert Chats als ZIP-Datei. Einfach die ZIP hochladen!</div>
                     <textarea id="gl-chat-input" rows="8" placeholder="WhatsApp Chat Export hier einfügen...
 
 Beispiel Format:
-[27.12.24, 14:22:15] ~ Patrick +49 176 70939715: GL 27.12.25 TURBO
-• Lisa Fuchs
-[27.12.24, 12:39:00] Sofia 3 Stanojevic: 27.12.25
+27/12/2025, 12:21 - Patrick: GL 27.12.25 TURBO
+- Lisa Fuchs
+27/12/2025, 12:39 - Sofia 3 Stanojevic: 27.12.25
 Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
                 </div>
                 
@@ -2392,7 +2395,7 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.0 • 27.12.2025 • Guest List Parser</div>
+    <div class="version">Work Hub v14.1 • 27.12.2025 • Guest List Parser + ZIP Support</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -3726,16 +3729,50 @@ Eweline Reininger" style="width: 100%; padding: 10px; border-radius: 8px; border
         
         let parsedGuestList = [];
         
-        function handleGuestListFile(event) {
+        async function handleGuestListFile(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('gl-chat-input').value = e.target.result;
-                showToast('📱 WhatsApp Export geladen!');
-            };
-            reader.readAsText(file);
+            const fileName = file.name.toLowerCase();
+            
+            // Check if it's a ZIP file (WhatsApp exports chats as ZIP)
+            if (fileName.endsWith('.zip')) {
+                try {
+                    showToast('📦 ZIP wird extrahiert...');
+                    const zip = await JSZip.loadAsync(file);
+                    
+                    // Find the .txt file inside the ZIP
+                    let txtFile = null;
+                    let txtFileName = '';
+                    zip.forEach((relativePath, zipEntry) => {
+                        if (relativePath.toLowerCase().endsWith('.txt') && !zipEntry.dir) {
+                            txtFile = zipEntry;
+                            txtFileName = relativePath;
+                        }
+                    });
+                    
+                    if (txtFile) {
+                        const content = await txtFile.async('string');
+                        document.getElementById('gl-chat-input').value = content;
+                        showToast('✅ WhatsApp Chat aus ZIP extrahiert!');
+                        console.log('Extracted:', txtFileName, '- Length:', content.length);
+                    } else {
+                        showToast('⚠️ Keine .txt Datei im ZIP gefunden', true);
+                    }
+                } catch (err) {
+                    console.error('ZIP extraction error:', err);
+                    showToast('❌ ZIP konnte nicht gelesen werden', true);
+                }
+            } else {
+                // Regular text file
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('gl-chat-input').value = e.target.result;
+                    showToast('📱 WhatsApp Export geladen!');
+                };
+                // Try UTF-8 first, then fall back
+                reader.readAsText(file, 'UTF-8');
+            }
         }
         
         function clearGuestListInput() {
@@ -5016,7 +5053,7 @@ Spittelauer Lände 12/1
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.0 - Guest List Parser');
+            console.log('Work Hub v14.1 - Guest List Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
