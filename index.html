@@ -1951,37 +1951,34 @@
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>📅 Event Datum (z.B. 27.12.25)</label>
+                        <label>📅 Event Datum</label>
                         <input type="text" id="gl-date" placeholder="27.12.25" style="font-size: 16px; font-weight: 600;">
                     </div>
                     <div class="form-group">
-                        <label>🎉 Event Name (optional)</label>
+                        <label>🎉 Event Name</label>
                         <input type="text" id="gl-event-name" placeholder="TURBO">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>📱 WhatsApp Chat Export (.zip oder .txt) oder Text einfügen</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="file" id="gl-file-upload" accept=".txt,.zip,application/zip,application/x-zip-compressed,*/*" onchange="handleGuestListFile(event)" style="display: none;">
-                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 WhatsApp Export hochladen</button>
+                        <input type="file" id="gl-file-upload" accept="*/*" onchange="handleGuestListFile(event)" style="display: none;">
+                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 WhatsApp Export</button>
                         <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">🗑️ Leeren</button>
-                        <button class="modal-btn" style="background: #6366f1;" onclick="toggleChatPreview()" id="gl-toggle-btn">👁️ Chat anzeigen</button>
-                    </div>
-                    <div style="font-size: 11px; color: #888; margin-bottom: 8px;">💡 WhatsApp Export hochladen (ZIP oder TXT) - wird automatisch erkannt!</div>
-                    <div id="gl-chat-preview" style="display: none;">
-                        <div id="gl-chat-status" style="background: #22c55e20; border: 1px solid #22c55e; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 12px; color: #22c55e; display: none;">
-                            ✅ Chat geladen (<span id="gl-line-count">0</span> Zeilen)
-                        </div>
-                        <textarea id="gl-chat-input" rows="6" placeholder="WhatsApp Chat Export hier einfügen oder hochladen..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 11px; resize: vertical;"></textarea>
                     </div>
                     <div id="gl-upload-status" style="background: #3d3d54; border-radius: 8px; padding: 12px; text-align: center; color: #888; font-size: 12px;">
                         📱 Noch kein Chat geladen
                     </div>
+                    <textarea id="gl-chat-input" style="display: none;"></textarea>
                 </div>
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="modal-btn success" onclick="parseGuestList()" style="flex: 1;">🔍 Guest List extrahieren</button>
+                    <button class="modal-btn success" onclick="parseGuestListV2()" style="flex: 1;">🔍 Guest List extrahieren</button>
+                </div>
+                
+                <div id="gl-filtered-preview" style="display: none; margin-bottom: 15px;">
+                    <label style="color: #888; font-size: 11px;">📋 Gefundene Einträge für dieses Datum:</label>
+                    <div id="gl-filtered-text" style="background: #1a1a2e; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 11px; max-height: 150px; overflow-y: auto; white-space: pre-wrap; color: #22c55e;"></div>
                 </div>
                 
                 <div id="gl-results" style="display: none;">
@@ -2398,7 +2395,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.2 • 27.12.2025 • Guest List Parser - Clean UI</div>
+    <div class="version">Work Hub v14.3 • 27.12.2025 • Guest List Parser v2</div>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════════
@@ -3726,102 +3723,80 @@
             }
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════════
-        // GUEST LIST PARSER
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════
+        // GUEST LIST PARSER v2 - Simplified
+        // ═══════════════════════════════════════════════════════════════
         
+        let glChatData = ''; // Store full chat
         let parsedGuestList = [];
         
-        function toggleChatPreview() {
-            const preview = document.getElementById('gl-chat-preview');
-            const btn = document.getElementById('gl-toggle-btn');
-            const status = document.getElementById('gl-upload-status');
-            if (preview.style.display === 'none') {
-                preview.style.display = 'block';
-                status.style.display = 'none';
-                btn.innerHTML = '👁️ Chat ausblenden';
-            } else {
-                preview.style.display = 'none';
-                const chatText = document.getElementById('gl-chat-input').value;
-                status.style.display = chatText ? 'block' : 'block';
-                btn.innerHTML = '👁️ Chat anzeigen';
-            }
-        }
-        
-        function updateChatStatus(content) {
-            const lines = content.split('\n').filter(l => l.trim()).length;
-            document.getElementById('gl-line-count').textContent = lines;
-            document.getElementById('gl-chat-status').style.display = 'block';
-            document.getElementById('gl-upload-status').innerHTML = `✅ Chat geladen (${lines} Zeilen) - Wähle Datum und klicke "Guest List extrahieren"`;
-            document.getElementById('gl-upload-status').style.background = '#22c55e20';
-            document.getElementById('gl-upload-status').style.color = '#22c55e';
-            document.getElementById('gl-upload-status').style.border = '1px solid #22c55e';
-        }
-
         async function handleGuestListFile(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            const fileName = file.name.toLowerCase();
+            console.log('=== FILE UPLOAD DEBUG ===');
+            console.log('File name:', file.name);
+            console.log('File size:', file.size);
             
-            // Helper function to check if file is a ZIP (by magic bytes)
-            async function isZipFile(file) {
-                const buffer = await file.slice(0, 4).arrayBuffer();
+            // Check if ZIP by magic bytes
+            async function isZipFile(f) {
+                const buffer = await f.slice(0, 4).arrayBuffer();
                 const bytes = new Uint8Array(buffer);
-                // ZIP magic bytes: PK (0x50 0x4B 0x03 0x04)
-                return bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04;
+                console.log('Magic bytes:', bytes[0], bytes[1], bytes[2], bytes[3]);
+                return bytes[0] === 0x50 && bytes[1] === 0x4B;
             }
             
-            // Check if it's a ZIP file by extension OR magic bytes
-            const isZip = fileName.endsWith('.zip') || await isZipFile(file);
+            let content = '';
+            const isZip = file.name.toLowerCase().endsWith('.zip') || await isZipFile(file);
+            console.log('Is ZIP:', isZip);
             
             if (isZip) {
                 try {
                     showToast('📦 ZIP wird extrahiert...');
                     const zip = await JSZip.loadAsync(file);
-                    
-                    // Find the .txt file inside the ZIP
                     let txtFile = null;
-                    let txtFileName = '';
-                    zip.forEach((relativePath, zipEntry) => {
-                        if (relativePath.toLowerCase().endsWith('.txt') && !zipEntry.dir) {
-                            txtFile = zipEntry;
-                            txtFileName = relativePath;
-                        }
+                    let foundFiles = [];
+                    zip.forEach((path, entry) => {
+                        foundFiles.push(path);
+                        if (path.toLowerCase().endsWith('.txt') && !entry.dir) txtFile = entry;
                     });
+                    console.log('Files in ZIP:', foundFiles);
+                    console.log('TXT file found:', txtFile ? 'yes' : 'no');
                     
                     if (txtFile) {
-                        // Extract as Uint8Array and decode with UTF-8
-                        const uint8array = await txtFile.async('uint8array');
-                        const content = new TextDecoder('utf-8').decode(uint8array);
-                        document.getElementById('gl-chat-input').value = content;
-                        updateChatStatus(content);
-                        showToast('✅ WhatsApp Chat aus ZIP extrahiert!');
-                        console.log('Extracted:', txtFileName, '- Length:', content.length);
-                    } else {
-                        showToast('⚠️ Keine .txt Datei im ZIP gefunden', true);
+                        const uint8 = await txtFile.async('uint8array');
+                        content = new TextDecoder('utf-8').decode(uint8);
+                        console.log('Extracted content length:', content.length);
+                        console.log('First 200 chars:', content.substring(0, 200));
                     }
-                } catch (err) {
-                    console.error('ZIP extraction error:', err);
-                    showToast('❌ ZIP konnte nicht gelesen werden', true);
+                } catch (e) {
+                    console.error('ZIP error:', e);
+                    showToast('❌ ZIP Fehler', true);
+                    return;
                 }
             } else {
-                // Regular text file
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('gl-chat-input').value = e.target.result;
-                    updateChatStatus(e.target.result);
-                    showToast('📱 WhatsApp Export geladen!');
-                };
-                // Try UTF-8 first, then fall back
-                reader.readAsText(file, 'UTF-8');
+                content = await file.text();
+                console.log('Text file content length:', content.length);
             }
+            
+            glChatData = content;
+            document.getElementById('gl-chat-input').value = content;
+            console.log('glChatData set, length:', glChatData.length);
+            
+            const lines = content.split('\n').filter(l => l.trim()).length;
+            
+            document.getElementById('gl-upload-status').innerHTML = `✅ Chat geladen (${lines} Zeilen)`;
+            document.getElementById('gl-upload-status').style.background = '#22c55e20';
+            document.getElementById('gl-upload-status').style.color = '#22c55e';
+            document.getElementById('gl-upload-status').style.border = '1px solid #22c55e';
+            showToast('✅ Chat geladen!');
         }
         
         function clearGuestListInput() {
+            glChatData = '';
             document.getElementById('gl-chat-input').value = '';
             document.getElementById('gl-results').style.display = 'none';
-            document.getElementById('gl-chat-status').style.display = 'none';
+            document.getElementById('gl-filtered-preview').style.display = 'none';
             document.getElementById('gl-upload-status').innerHTML = '📱 Noch kein Chat geladen';
             document.getElementById('gl-upload-status').style.background = '#3d3d54';
             document.getElementById('gl-upload-status').style.color = '#888';
@@ -3829,191 +3804,197 @@
             parsedGuestList = [];
         }
         
-        function parseGuestList() {
+        function parseGuestListV2() {
+            console.log('🚀 parseGuestListV2 called');
             const dateInput = document.getElementById('gl-date').value.trim();
             const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
-            const chatText = document.getElementById('gl-chat-input').value;
+            const textareaValue = document.getElementById('gl-chat-input').value;
+            const chatText = glChatData || textareaValue;
+            
+            // DEBUG
+            console.log('=== PARSE DEBUG ===');
+            console.log('glChatData length:', glChatData.length);
+            console.log('textarea length:', textareaValue.length);
+            console.log('chatText length:', chatText.length);
+            console.log('First 300 chars:', chatText.substring(0, 300));
+            console.log('dateInput:', dateInput);
             
             if (!dateInput) {
                 showToast('⚠️ Bitte Datum eingeben (z.B. 27.12.25)', true);
                 return;
             }
-            
             if (!chatText) {
-                showToast('⚠️ Bitte WhatsApp Chat einfügen', true);
+                showToast('⚠️ Bitte WhatsApp Chat hochladen', true);
                 return;
             }
             
-            // Normalize date formats (27.12.25, 27.12.2025, 27/12/25, etc.)
-            const dateVariants = generateDateVariants(dateInput);
+            // Generate date variants
+            const parts = dateInput.split(/[\./]/);
+            const day = parts[0]?.padStart(2, '0') || '';
+            const month = parts[1]?.padStart(2, '0') || '';
+            const year = parts[2] || new Date().getFullYear().toString().slice(-2);
+            const y2 = year.length === 4 ? year.slice(-2) : year;
+            const y4 = year.length === 2 ? '20' + year : year;
             
-            // Parse WhatsApp chat format
-            // Format: [DD.MM.YY, HH:MM:SS] Sender Name: Message
-            // Or: [DD.MM.YYYY, HH:MM:SS] Sender Name: Message
-            const lines = chatText.split('\n');
+            const datePatterns = [
+                `${day}.${month}.${y2}`, `${day}.${month}.${y4}`,
+                `${day}/${month}/${y2}`, `${day}/${month}/${y4}`,
+                `${parseInt(day)}.${parseInt(month)}.${y2}`, `${parseInt(day)}.${parseInt(month)}.${y4}`
+            ];
+            
+            console.log('📅 Looking for dates:', datePatterns);
+            
+            // Find all messages containing the date
+            // Normalize line endings (Windows uses \r\n)
+            const normalizedText = chatText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            const lines = normalizedText.split('\n');
             const guests = [];
+            const filteredLines = [];
+            let collecting = false;
             let currentSender = '';
-            let currentTimestamp = '';
-            let collectingNames = false;
-            let currentMessage = '';
+            
+            console.log('Total lines to process:', lines.length);
+            console.log('First 5 lines:');
+            for (let j = 0; j < Math.min(5, lines.length); j++) {
+                console.log('  Line', j, ':', JSON.stringify(lines[j].substring(0, 80)));
+            }
+            
+            // Find lines containing our date
+            const matchingLines = lines.filter(l => datePatterns.some(d => l.includes(d)));
+            console.log('Lines containing target date:', matchingLines.length);
+            matchingLines.forEach(l => console.log('  Match:', JSON.stringify(l.substring(0, 100))));
+            
+            // Also find indices of matching lines
+            const matchIndices = [];
+            lines.forEach((l, idx) => {
+                if (datePatterns.some(d => l.includes(d))) {
+                    matchIndices.push(idx);
+                    console.log('Date found at line', idx, ':', JSON.stringify(l.substring(0, 80)));
+                    // Show surrounding lines
+                    if (lines[idx+1]) console.log('  Next line:', JSON.stringify(lines[idx+1]));
+                    if (lines[idx+2]) console.log('  Next+1 line:', JSON.stringify(lines[idx+2]));
+                }
+            });
             
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 
-                // Check if this is a new message header
-                // WhatsApp format: "27/12/2025, 12:21 - Sender Name: Message"
-                // Or with brackets: "[27.12.25, 12:21:30] Sender: Message"
-                const headerMatch = line.match(/^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*-?\s*([^:]+):\s*(.*)$/);
+                // DEBUG: Check specifically for Lisa
+                if (line.toLowerCase().includes('lisa')) {
+                    console.log('🔴 LISA FOUND at line', i, ':', JSON.stringify(line));
+                    console.log('  collecting:', collecting);
+                    console.log('  currentSender:', currentSender);
+                }
                 
-                if (headerMatch) {
-                    // Process previous message if we were collecting names
-                    if (collectingNames && currentMessage) {
-                        const names = extractNamesFromMessage(currentMessage, dateVariants);
-                        names.forEach(name => {
-                            guests.push({
-                                name: name,
-                                submittedBy: currentSender,
-                                timestamp: currentTimestamp
-                            });
-                        });
-                    }
-                    
-                    currentTimestamp = headerMatch[1] + ' ' + headerMatch[2];
-                    currentSender = headerMatch[3].trim();
-                    currentMessage = headerMatch[4];
-                    
-                    // Check if this message contains our target date
-                    collectingNames = dateVariants.some(d => currentMessage.includes(d));
-                } else if (line.trim() && collectingNames) {
-                    // Continuation of previous message
-                    currentMessage += '\n' + line;
-                } else if (line.trim()) {
-                    // Could be a continuation line or standalone entry
-                    // Check if it contains the date
-                    if (dateVariants.some(d => line.includes(d))) {
-                        const names = extractNamesFromMessage(line, dateVariants);
-                        names.forEach(name => {
-                            guests.push({
-                                name: name,
-                                submittedBy: 'Unknown',
-                                timestamp: ''
-                            });
-                        });
+                // WhatsApp message header: "27/12/2025, 12:21 - Sender: Message"
+                const msgMatch = line.match(/^(\d{1,2}\/\d{1,2}\/\d{2,4}),\s*(\d{1,2}:\d{2})\s*-\s*([^:]+):\s*(.*)$/);
+                
+                // Debug: log if this line contains our date but doesn't match header regex
+                if (datePatterns.some(d => line.includes(d))) {
+                    console.log('Line with date at', i, '- Header match:', !!msgMatch);
+                    if (msgMatch) {
+                        console.log('  Sender:', msgMatch[3], 'Message:', msgMatch[4]);
                     }
                 }
-            }
-            
-            // Process final message
-            if (collectingNames && currentMessage) {
-                const names = extractNamesFromMessage(currentMessage, dateVariants);
-                names.forEach(name => {
-                    guests.push({
-                        name: name,
-                        submittedBy: currentSender,
-                        timestamp: currentTimestamp
+                
+                if (msgMatch) {
+                    const [, msgDate, msgTime, sender, message] = msgMatch;
+                    
+                    // Check if message contains our target date
+                    const hasDate = datePatterns.some(d => message.includes(d));
+                    
+                    if (hasDate) {
+                        collecting = true;
+                        currentSender = sender.trim();
+                        filteredLines.push(line);
+                        console.log('✅ Found date match, collecting=TRUE, sender:', currentSender);
+                        console.log('  Full line:', line.substring(0, 80));
+                    } else {
+                        // New message without our date - stop collecting
+                        collecting = false;
+                    }
+                } else if (collecting && line.trim()) {
+                    // Continuation line - this should contain name(s)
+                    filteredLines.push(line);
+                    
+                    let rawLine = line.trim();
+                    console.log('📝 Continuation line:', JSON.stringify(rawLine));
+                    
+                    // Clean leading bullets/dashes
+                    rawLine = rawLine.replace(/^[\-–—•·*#\d.\)]+\s*/, '').trim();
+                    console.log('  After cleaning:', JSON.stringify(rawLine));
+                    
+                    // Split by comma, newline, semicolon for multiple names
+                    const nameParts = rawLine.split(/[,;\n]+/);
+                    
+                    nameParts.forEach(part => {
+                        let name = part.trim();
+                        // Clean up
+                        name = name.replace(/^[\-–—•·*#\d.\)]+\s*/, '').trim();
+                        name = name.replace(/[.,;:!?*]+$/, '').trim();
+                        
+                        // Skip non-names
+                        if (name.length < 2) return;
+                        if (/^\d+$/.test(name)) return;
+                        if (/^(ja|nein|ok|yes|no|danke|hi|hey|hallo|hello|\+\d|thx|thanks|bitte)$/i.test(name)) return;
+                        
+                        // Check if it looks like a name
+                        if (/[a-zA-ZäöüÄÖÜßéèêëàâîïôùûç]/i.test(name)) {
+                            // Proper case
+                            name = name.split(/\s+/).map(w => 
+                                w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+                            ).join(' ');
+                            
+                            guests.push({
+                                name: name,
+                                submittedBy: currentSender
+                            });
+                            console.log('👤 Found guest:', name, 'by', currentSender);
+                        }
                     });
-                });
+                }
             }
             
-            // Remove duplicates (same name, same submitter)
-            const uniqueGuests = [];
+            console.log('Total guests found:', guests.length);
+            console.log('Filtered lines:', filteredLines.length);
+            console.log('Guests:', guests);
+            
+            // Show filtered preview
+            if (filteredLines.length > 0) {
+                document.getElementById('gl-filtered-preview').style.display = 'block';
+                document.getElementById('gl-filtered-text').textContent = filteredLines.join('\n');
+            } else {
+                document.getElementById('gl-filtered-preview').style.display = 'none';
+            }
+            
+            // Remove duplicates
             const seen = new Set();
-            guests.forEach(g => {
+            const uniqueGuests = guests.filter(g => {
                 const key = g.name.toLowerCase();
-                if (!seen.has(key) && g.name.length > 1) {
-                    seen.add(key);
-                    uniqueGuests.push(g);
-                }
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
             });
             
             parsedGuestList = uniqueGuests;
-            displayGuestList(uniqueGuests, eventName, dateInput);
-        }
-        
-        function generateDateVariants(dateInput) {
-            // Generate multiple date format variants
-            const variants = [dateInput];
             
-            // Parse input date
-            const parts = dateInput.split(/[\./]/);
-            if (parts.length >= 2) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                let year = parts[2] || new Date().getFullYear().toString().slice(-2);
-                
-                // Handle 2-digit vs 4-digit year
-                const year2 = year.length === 4 ? year.slice(-2) : year;
-                const year4 = year.length === 2 ? '20' + year : year;
-                
-                variants.push(`${day}.${month}.${year2}`);
-                variants.push(`${day}.${month}.${year4}`);
-                variants.push(`${day}/${month}/${year2}`);
-                variants.push(`${day}/${month}/${year4}`);
-                variants.push(`${parseInt(day)}.${parseInt(month)}.${year2}`);
-                variants.push(`${parseInt(day)}.${parseInt(month)}.${year4}`);
+            if (uniqueGuests.length === 0) {
+                showToast(`⚠️ Keine Gäste für ${dateInput} gefunden`, true);
+                document.getElementById('gl-results').style.display = 'none';
+                return;
             }
             
-            return [...new Set(variants)]; // Remove duplicates
+            displayGuestListV2(uniqueGuests, eventName, dateInput);
         }
         
-        function extractNamesFromMessage(message, dateVariants) {
-            const names = [];
-            
-            // Remove the date and event keywords from message
-            let cleanMessage = message;
-            dateVariants.forEach(d => {
-                cleanMessage = cleanMessage.replace(new RegExp(d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '');
-            });
-            
-            // Remove common keywords
-            const keywords = ['GL', 'GUESTLIST', 'GUEST LIST', 'GÄSTE', 'TURBO', 'SELECTED', 'NYE', 'SILVESTER', 
-                           'HALLOWEEN', 'GRELLE', 'FORELLE', 'VIP', 'FREE', 'ENTRY', 'EINTRITT', '+1', '+2', '+3'];
-            keywords.forEach(kw => {
-                cleanMessage = cleanMessage.replace(new RegExp('\\b' + kw + '\\b', 'gi'), '');
-            });
-            
-            // Split by common separators
-            const lines = cleanMessage.split(/[•\n,;\/\\|]+/);
-            
-            lines.forEach(line => {
-                let name = line.trim();
-                
-                // Remove leading bullets, dashes, numbers
-                name = name.replace(/^[\s\-–—•·*#\d.\)]+/, '').trim();
-                
-                // Remove trailing punctuation
-                name = name.replace(/[.,;:!?]+$/, '').trim();
-                
-                // Skip if too short, is a number, or contains only special chars
-                if (name.length < 2) return;
-                if (/^\d+$/.test(name)) return;
-                if (/^[^a-zA-ZäöüÄÖÜß]+$/.test(name)) return;
-                
-                // Skip common non-name patterns
-                if (/^(ja|nein|ok|yes|no|danke|bitte|hi|hey|hallo|hello|thx|thanks)$/i.test(name)) return;
-                
-                // Check if it looks like a name (has at least one letter)
-                if (/[a-zA-ZäöüÄÖÜß]/.test(name)) {
-                    // Capitalize properly
-                    name = name.split(' ')
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                        .join(' ');
-                    names.push(name);
-                }
-            });
-            
-            return names;
-        }
-        
-        function displayGuestList(guests, eventName, date) {
+        function displayGuestListV2(guests, eventName, date) {
             const resultsDiv = document.getElementById('gl-results');
             const summaryDiv = document.getElementById('gl-summary');
             const outputDiv = document.getElementById('gl-output');
             
             resultsDiv.style.display = 'block';
             
-            // Summary stats
-            const submitters = [...new Set(guests.map(g => g.submittedBy))].filter(s => s !== 'Unknown');
+            const submitters = [...new Set(guests.map(g => g.submittedBy))];
             
             summaryDiv.innerHTML = `
                 <div style="background: #252542; padding: 15px; border-radius: 10px; text-align: center;">
@@ -4030,21 +4011,7 @@
                 </div>
             `;
             
-            // Group by submitter
-            const bySubmitter = {};
-            guests.forEach(g => {
-                if (!bySubmitter[g.submittedBy]) {
-                    bySubmitter[g.submittedBy] = [];
-                }
-                bySubmitter[g.submittedBy].push(g.name);
-            });
-            
-            let html = `<div style="font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #fff;">
-                GUEST LIST – ${eventName.toUpperCase()} ${date}
-            </div>`;
-            
-            // Table view
-            html += `<table style="width: 100%; border-collapse: collapse;">
+            let html = `<table style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr style="border-bottom: 2px solid #3d3d54;">
                         <th style="text-align: left; padding: 8px; color: #888; font-size: 12px;">#</th>
@@ -4063,11 +4030,11 @@
             });
             
             html += `</tbody></table>`;
-            
             outputDiv.innerHTML = html;
             
             showToast(`✅ ${guests.length} Gäste gefunden!`);
         }
+        
         
         function copyGuestList() {
             if (parsedGuestList.length === 0) {
@@ -5103,7 +5070,7 @@ Spittelauer Lände 12/1
         // ═══════════════════════════════════════════════════════════════════════════════
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.2 - Guest List Parser Clean UI');
+            console.log('Work Hub v14.3 - Guest List Parser v2');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
