@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.3</title>
+    <title>Turbo Projects Work Hub v14.8</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -284,6 +284,26 @@
         
         /* Upcoming Events */
         .upcoming-events { margin-bottom: 20px; }
+        .upcoming-placeholder { text-align: center; padding: 30px; color: #888; background: rgba(255,255,255,0.02); border-radius: 8px; }
+        .upcoming-placeholder p { margin: 0 0 8px 0; font-size: 14px; }
+        .upcoming-placeholder small { font-size: 12px; color: #666; }
+        .upcoming-count { background: #3b82f6; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 10px; }
+        .upcoming-event { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px 15px; margin-bottom: 10px; border-left: 3px solid #3b82f6; cursor: pointer; transition: all 0.2s; }
+        .upcoming-event:hover { background: rgba(255,255,255,0.05); }
+        .upcoming-event.eigen { border-left-color: #22c55e; }
+        .upcoming-event.fremd { border-left-color: #f59e0b; }
+        .upcoming-event-header { display: flex; justify-content: space-between; align-items: center; }
+        .upcoming-event-info { display: flex; align-items: center; gap: 12px; }
+        .upcoming-event-date { font-size: 13px; color: #888; min-width: 60px; }
+        .upcoming-event-name { font-weight: 600; font-size: 15px; }
+        .upcoming-event-name.eigen { color: #22c55e; }
+        .upcoming-event-name.fremd { color: #f59e0b; }
+        .upcoming-event.konzert { border-left-color: #8b5cf6; }
+        .upcoming-event-name.konzert { color: #8b5cf6; }
+        .upcoming-event-type.konzert { background: #8b5cf6; color: white; }
+        .upcoming-event-type { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .upcoming-event-type.eigen { background: #22c55e; color: white; }
+        .upcoming-event-type.fremd { background: #f59e0b; color: white; }
         .upcoming-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .upcoming-title { font-size: 18px; font-weight: 700; color: #fff; }
         .upcoming-week-label { font-size: 14px; font-weight: 600; color: #888; margin-bottom: 10px; padding-left: 5px; }
@@ -1001,7 +1021,7 @@
         <span class="auth-user" id="auth-user"></span>
         <div class="auth-buttons">
             <button class="auth-btn" id="auth-btn" onclick="handleAuth()">🔒 Sign in</button>
-            <button class="auth-btn reset" onclick="forceResetAuth()">🔞 Refresh</button>
+            <button class="auth-btn reset" onclick="forceResetAuth()">🔄 Refresh</button>
         </div>
     </div>
     
@@ -1013,7 +1033,8 @@
             <span>📝 Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="save-indicator" id="notes-saved">âœ” Gespeichert</span>
-                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">âž• Task</button>
+                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">🎤</button>
+                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">➕ Task</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
@@ -1060,9 +1081,6 @@
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
                     📤 .ics
                 </button>
-                <button class="bmt-btn" onclick="openCleaningModal()">
-                    🧹 Reinigungsplan
-                </button>
             </div>
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
@@ -1089,7 +1107,7 @@
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
                         <button class="modal-btn success" onclick="copyCleaningSchedule()">📋 Kopieren</button>
-                        <button class="modal-btn primary" onclick="showCleaningEmail()">âœ‰ï¸ Per E-Mail</button>
+                        <button class="modal-btn primary" onclick="showCleaningEmail()">✉️ Per E-Mail</button>
                     </div>
                 </div>
                 <div id="cleaning-container">
@@ -1100,7 +1118,7 @@
                 
                 <!-- Email Section (hidden by default) -->
                 <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 10px; border: 1px solid #3b82f6;">
-                    <h4 style="color: #3b82f6; margin-bottom: 15px;">âœ‰ï¸ Reinigungsplan versenden</h4>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px;">✉️ Reinigungsplan versenden</h4>
                     <div class="form-group">
                         <label>Empfänger</label>
                         <select id="cleaning-email-to" onchange="updateCleaningEmailTo()">
@@ -1282,10 +1300,10 @@
                     <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444;">
                         <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">🎯 Peak Rules</div>
                         <div style="font-size: 12px; line-height: 1.8;">
-                            <div>â€¢ <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
-                            <div>â€¢ <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
-                            <div>â€¢ <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
-                            <div>â€¢ <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
+                            <div>• <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
+                            <div>• <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
+                            <div>• <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
+                            <div>• <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
                         </div>
                     </div>
                 </div>
@@ -1456,7 +1474,7 @@
                             <div class="value" id="ps-result-vvk-rev">€10.020</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ã˜ VVK Preis</div>
+                            <div class="label">Ø VVK Preis</div>
                             <div class="value orange" id="ps-result-avg">€20.88</div>
                         </div>
                         <div class="result-item">
@@ -1594,7 +1612,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="form-hint" style="margin-top: 10px;">€ï¸ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar €150, Runner €120, Garderobe €100, Security €180, Technik €200, CVD €150</p>
+                <p class="form-hint" style="margin-top: 10px;">⚙️ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar €150, Runner €120, Garderobe €100, Security €180, Technik €200, CVD €150</p>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schließen</button>
@@ -1967,7 +1985,7 @@
     <div class="modal-overlay" id="email-modal">
         <div class="modal">
             <div class="modal-header" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
-                <h3>âœ‰ï¸ E-Mail senden</h3>
+                <h3>✉️ E-Mail senden</h3>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1987,6 +2005,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
+                <button class="modal-btn" onclick="saveEmailDraft()" style="background: #6b7280;">📝 Als Entwurf</button>
                 <button class="modal-btn primary" onclick="sendEmail()">📤 Senden</button>
             </div>
         </div>
@@ -1999,7 +2018,7 @@
     
     <div class="quick-actions">
         <button class="quick-btn" onclick="openModal('factsheet-modal')">📎 Factsheet</button>
-        <button class="quick-btn" onclick="openModal('email-modal')">âœ‰ï¸ E-Mail</button>
+        <button class="quick-btn" onclick="openModal('email-modal')">✉️ E-Mail</button>
         <div class="dropdown-container">
             <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
             <div id="social-dropdown" class="dropdown-content">
@@ -2022,13 +2041,6 @@
             <div id="storage-dropdown" class="dropdown-content">
                 <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
                 <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔒</span> OneDrive</a>
-            </div>
-        </div>
-        <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('finance-dropdown')" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">💶 Finance ▼</button>
-            <div id="finance-dropdown" class="dropdown-content">
-                <a href="#" class="dropdown-item" onclick="event.preventDefault(); showToast('📦 Inventory Tool - Coming Soon!');"><span class="icon">📦</span> Inventory & Restock</a>
-                <a href="#" class="dropdown-item" onclick="event.preventDefault(); showToast('🧾 Receipt System - Coming Soon!');"><span class="icon">🧾</span> Receipt System</a>
             </div>
         </div>
     </div>
@@ -2057,7 +2069,7 @@
                     Projector
                 </button>
                 <button class="tool-btn" onclick="openDeepAnalysis()">
-                    <span class="tool-icon">🔒¬</span>
+                    <span class="tool-icon">🔬</span>
                     Deep Analysis
                 </button>
                 <button class="tool-btn" onclick="openModal('nye-projector-modal')" style="border-color: #f59e0b;">
@@ -2076,6 +2088,25 @@
         </div>
     </div>
     
+    <!-- Finance/Controlling/Operations Expander -->
+    <div class="tools-expander">
+        <button class="tools-toggle" id="finance-toggle" onclick="toggleFinanceTools()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+            💶 Finance / Controlling / Operations <span class="arrow">▼</span>
+        </button>
+        <div class="tools-content" id="finance-content">
+            <div class="tools-grid">
+                <button class="tool-btn" onclick="showToast('📦 Inventory Tool - Coming Soon!');" style="border-color: #059669;">
+                    <span class="tool-icon">📦</span>
+                    Inventory & Restock
+                </button>
+                <button class="tool-btn" onclick="showToast('💳 Financials - Coming Soon!');" style="border-color: #059669;">
+                    <span class="tool-icon">💳</span>
+                    Financials
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
     <!-- OUTLOOK SECTION -->
     <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
@@ -2089,139 +2120,16 @@
     <div class="upcoming-events">
         <div class="upcoming-header">
             <span class="upcoming-title">📅 UPCOMING EVENTS</span>
+            <span class="upcoming-count" id="upcoming-count">0</span>
         </div>
-        <div class="upcoming-week-label current" id="upcoming-week-label">🔴 DIESE WOCHE (KW 52)</div>
-        
-        <!-- TURBO -->
-        <div class="event-card" id="event-turbo27" data-date="2025-12-27">
-            <div class="event-card-header" onclick="toggleEventCard('event-turbo27')">
-                <div class="event-main-info">
-                    <span class="event-date">SA 27.12</span>
-                    <span class="event-name">TURBO</span>
-                    <span class="event-tech">Simon</span>
-                </div>
-                <div class="event-quick-stats">
-                    <span id="turbo-bar-quick">€ ~€14.5k</span>
-                    <span id="turbo-tickets-quick">🎫 ~763</span>
-                    <span class="event-toggle">▼</span>
-                </div>
-            </div>
-            <div class="event-details">
-                <div class="vvk-tracker">
-                    <div class="vvk-input-row">
-                        <label>🎯 Ziel:</label>
-                        <input type="number" id="turbo-ziel-input" value="450" oninput="updateProjection('turbo')">
-                        <label>📊 Max:</label>
-                        <input type="number" id="turbo-max-input" value="600" oninput="updateProjection('turbo')">
-                        <label>🎫 Aktuell:</label>
-                        <input type="number" id="turbo-vvk-input" placeholder="0" oninput="updateProjection('turbo')">
-                        <span class="vvk-days" id="turbo-days">4 Tage</span>
-                    </div>
-                    <div class="vvk-input-row">
-                        <label>💶 Ã˜ VVK €:</label>
-                        <input type="number" id="turbo-vvk-price" value="18" oninput="updateProjection('turbo')">
-                        <label>🚪 FOH €:</label>
-                        <input type="number" id="turbo-foh-price" value="22" oninput="updateProjection('turbo')">
-                    </div>
-                    <div class="vvk-progress-bar">
-                        <div class="vvk-progress" id="turbo-progress" style="width: 0%"></div>
-                    </div>
-                    <div class="vvk-benchmark" id="turbo-benchmark">Ziel: 450 | 55% bei 5d → Soll ~248</div>
-                </div>
-                <div class="auto-projection">
-                    <div class="projection-grid">
-                        <div class="proj-box">
-                            <div class="proj-box-label">VVK Proj.</div>
-                            <div class="proj-box-value tickets" id="turbo-vvk-proj">~426</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">FOH Proj.</div>
-                            <div class="proj-box-value tickets" id="turbo-foh-proj">~337</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="turbo-bar-proj">~€14.5k</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="turbo-total-proj">~€29.8k</div>
-                        </div>
-                    </div>
-                    <div class="projection-basis" id="turbo-basis">📊 TURBO Ã˜: 436 VVK, 336 FOH | KW52: €16.3/Person</div>
-                </div>
-                <div class="cvd-badge">💸” CVD: Alain</div>
-                <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('turbo')">📎 Factsheet</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- NYE -->
-        <div class="event-card" id="event-silvester" data-date="2025-12-31">
-            <div class="event-card-header" onclick="toggleEventCard('event-silvester')">
-                <div class="event-main-info">
-                    <span class="event-date">DI 31.12</span>
-                    <span class="event-name">SILVESTER</span>
-                    <span class="event-tech">Jan</span>
-                </div>
-                <div class="event-quick-stats">
-                    <span id="nye-bar-quick">€ ~€23k</span>
-                    <span id="nye-tickets-quick">🎫 ~1153</span>
-                    <span class="event-toggle">▼</span>
-                </div>
-            </div>
-            <div class="event-details">
-                <div class="vvk-tracker">
-                    <div class="vvk-input-row">
-                        <label>🎯 Ziel:</label>
-                        <input type="number" id="nye-ziel-input" value="450" oninput="updateProjection('nye')">
-                        <label>📊 Max:</label>
-                        <input type="number" id="nye-max-input" value="700" oninput="updateProjection('nye')">
-                        <label>🎫 Aktuell:</label>
-                        <input type="number" id="nye-vvk-input" placeholder="0" oninput="updateProjection('nye')">
-                        <span class="vvk-days" id="nye-days">8 Tage</span>
-                    </div>
-                    <div class="vvk-input-row">
-                        <label>💶 Ã˜ VVK €:</label>
-                        <input type="number" id="nye-vvk-price" value="25" oninput="updateProjection('nye')">
-                        <label>🚪 FOH €:</label>
-                        <input type="number" id="nye-foh-price" value="26" oninput="updateProjection('nye')">
-                    </div>
-                    <div class="vvk-progress-bar">
-                        <div class="vvk-progress" id="nye-progress" style="width: 0%"></div>
-                    </div>
-                    <div class="vvk-benchmark" id="nye-benchmark">Ziel: 450 | 40% bei 9d → Soll ~180</div>
-                </div>
-                <div class="auto-projection">
-                    <div class="projection-grid">
-                        <div class="proj-box">
-                            <div class="proj-box-label">VVK Proj.</div>
-                            <div class="proj-box-value tickets" id="nye-vvk-proj">~522</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">FOH Proj.</div>
-                            <div class="proj-box-value tickets" id="nye-foh-proj">~631</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">Bar Proj.</div>
-                            <div class="proj-box-value bar" id="nye-bar-proj">~€23k</div>
-                        </div>
-                        <div class="proj-box">
-                            <div class="proj-box-label">Total Rev</div>
-                            <div class="proj-box-value" id="nye-total-proj">~€46k</div>
-                        </div>
-                    </div>
-                    <div class="projection-basis" id="nye-basis">📊 NYE Ã˜: 562 VVK, 649 FOH | KW52: €16.3/Person</div>
-                </div>
-                <div class="cvd-badge">💸” CVD: Alain / Niat</div>
-                <div class="event-actions">
-                    <button class="event-action-btn primary" onclick="autoFactsheetForEvent('nye')">📎 Factsheet</button>
-                </div>
+        <div id="upcoming-events-container">
+            <div class="upcoming-placeholder" id="upcoming-placeholder">
+                <p>📤 Upload BMT .ics Datei um Events zu sehen</p>
+                <small>Events werden automatisch aus BookMeTender geladen</small>
             </div>
         </div>
     </div>
     
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
     <!-- DEPARTMENTS -->
     <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
     
@@ -2236,7 +2144,7 @@
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔄</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
                         <div class="tasks-login-prompt">
@@ -2248,7 +2156,7 @@
                 <div class="tasks-inline" id="office-notes">
                     <div class="tasks-header" onclick="toggleNotesSection()">
                         <span>📌 Notes <span class="task-count" id="notes-count">â€”</span> <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">🔄</button>
                     </div>
                     <div class="tasks-list" id="office-notes-list">
                         <div class="tasks-login-prompt">
@@ -2280,7 +2188,7 @@
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔄</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
@@ -2309,7 +2217,7 @@
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔄</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
@@ -2351,7 +2259,7 @@
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
@@ -2365,9 +2273,23 @@
         <div class="dept sputnik">
             <div class="dept-header">
                 <div class="dept-header-left">🛸 SPUTNIK BAR</div>
-                <span class="task-count" id="sputnik-task-count">â€”</span>
+                <span class="task-count" id="sputnik-task-count">—</span>
             </div>
             <div class="dept-content">
+                <div class="collapsible-section">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <span>📅 Reservierungen</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div id="sputnik-reservations-container" style="padding: 10px;">
+                            <div style="text-align: center; color: #888; font-size: 13px;">
+                                <p>📅 Reservierungen aus Google Calendar</p>
+                                <button onclick="loadSputnikReservations()" style="margin-top: 10px; background: #8E24AA; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">🔄 Laden</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
                         <span>📋 Shiftplan</span>
@@ -2380,10 +2302,10 @@
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
                         <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔞</button>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔄</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
                     </div>
                 </div>
                 <button class="tasks-btn" onclick="openToDoList('sputnik')">📝 Open in To Do</button>
@@ -2395,7 +2317,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.3 â€¢ 27.12.2025 â€¢ Guest List Parser + ZIP Support</div>
+    <div class="version">Work Hub v14.8 • 29.12.2025 • Sputnik Calendar Live</div>
 
     <script>
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -2411,7 +2333,7 @@
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
         };
         
-        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send"] };
+        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send", "Mail.ReadWrite"] };
         
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
@@ -2546,7 +2468,7 @@
         
         async function forceResetAuth() {
             // Clear everything and start fresh
-            showToast("🔞 Cache wird gelöscht...");
+            showToast("🔄 Cache wird gelöscht...");
             
             // Clear MSAL cache
             if (msalInstance) {
@@ -2654,7 +2576,7 @@
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
                 }).join('') : '<div class="tasks-empty">🎉 Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">€ï¸</div>'; }
+            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">⚙️</div>'; }
         }
         
         async function completeTask(taskId, dept) {
@@ -2750,7 +2672,7 @@
                     html += '<div class="task-checkbox" onclick="event.stopPropagation(); noteComplete(\'' + noteId + '\', this)"></div>';
                     html += '<div class="task-info">';
                     if (hasDetails) {
-                        html += '<div class="task-title"><span class="note-toggle-icon">â–¶</span> ' + title + '</div>';
+                        html += '<div class="task-title"><span class="note-toggle-icon">▶</span> ' + title + '</div>';
                     } else {
                         html += '<div class="task-title">' + title + '</div>';
                     }
@@ -2798,7 +2720,7 @@
             if (isOpen) {
                 details.classList.remove('open');
                 details.style.display = 'none';
-                if (icon) icon.textContent = 'â–¶';
+                if (icon) icon.textContent = '▶';
             } else {
                 details.classList.add('open');
                 details.style.display = 'block';
@@ -2824,10 +2746,10 @@
         }
         
         function toggleNotesSection() {
+            const header = document.querySelector('#office-notes .tasks-header');
             const list = document.getElementById('office-notes-list');
-            const icon = document.querySelector('#office-notes .toggle-icon');
-            list.classList.toggle('collapsed');
-            icon.textContent = list.classList.contains('collapsed') ? 'â–¶' : '▼';
+            header.classList.toggle('open');
+            list.classList.toggle('open');
         }
         
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -3281,11 +3203,87 @@
             content.classList.toggle('show');
         }
         
+        function toggleFinanceTools() {
+            const toggle = document.getElementById('finance-toggle');
+            const content = document.getElementById('finance-content');
+            toggle.classList.toggle('open');
+            content.classList.toggle('show');
+        }
+        
         function showToast(msg, isError) {
             const t = document.getElementById('toast');
             t.textContent = msg;
             t.className = 'toast show' + (isError ? ' error' : '');
             setTimeout(() => t.classList.remove('show'), 3000);
+        }
+        
+        // Speech-to-Text for Quick Notes
+        let speechRecognition = null;
+        let isListening = false;
+        
+        function toggleSpeechToText() {
+            const btn = document.getElementById('speech-btn');
+            const textarea = document.getElementById('quick-notes-text');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showToast('❌ Speech-to-Text nicht unterstützt in diesem Browser', true);
+                return;
+            }
+            
+            if (isListening) {
+                // Stop listening
+                if (speechRecognition) {
+                    speechRecognition.stop();
+                }
+                isListening = false;
+                btn.style.background = '';
+                btn.textContent = '🎤';
+                showToast('🎤 Spracheingabe beendet');
+                return;
+            }
+            
+            // Start listening
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            speechRecognition = new SpeechRecognition();
+            speechRecognition.continuous = true;
+            speechRecognition.interimResults = true;
+            speechRecognition.lang = 'de-DE';
+            
+            speechRecognition.onstart = function() {
+                isListening = true;
+                btn.style.background = '#ef4444';
+                btn.textContent = '🔴';
+                showToast('🎤 Spracheingabe aktiv...');
+            };
+            
+            speechRecognition.onresult = function(event) {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                if (finalTranscript) {
+                    textarea.value += (textarea.value ? ' ' : '') + finalTranscript;
+                    saveQuickNotes();
+                }
+            };
+            
+            speechRecognition.onerror = function(event) {
+                console.error('Speech error:', event.error);
+                isListening = false;
+                btn.style.background = '';
+                btn.textContent = '🎤';
+                showToast('❌ Spracheingabe Fehler: ' + event.error, true);
+            };
+            
+            speechRecognition.onend = function() {
+                isListening = false;
+                btn.style.background = '';
+                btn.textContent = '🎤';
+            };
+            
+            speechRecognition.start();
         }
         
         // Quick Notes Functions
@@ -3388,7 +3386,7 @@
                 }
                 
                 const indicator = document.getElementById('notes-saved');
-                indicator.textContent = '€ï¸ Synced';
+                indicator.textContent = '⚙️ Synced';
                 indicator.classList.add('show');
                 setTimeout(() => {
                     indicator.textContent = 'âœ” Gespeichert';
@@ -3585,7 +3583,7 @@
             { time: '22:00-22:30', door: 'low', coat: 'low', bar: 'low', action: 'Start. Systems check. Staff settle.' },
             { time: '22:30-23:00', door: 'low', coat: 'low', bar: 'low', action: 'Prepare wardrobe rhythm. Keep lanes clean.' },
             { time: '23:00-23:30', door: 'med', coat: 'med', bar: 'low', action: 'Early wave. Terrace helps absorb.' },
-            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '€ï¸ Hanger check must be done!' },
+            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '⚙️ Hanger check must be done!' },
             { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: '🎆 Midnight push. Door speed only.' },
             { time: '00:15-00:30', door: 'high', coat: 'high', bar: 'high', action: 'Queue mgmt. Keep corridor clear.' },
             { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: '🔴 BOTH LANES DO EVERYTHING!' },
@@ -3826,11 +3824,11 @@
                 cleanMessage = cleanMessage.replace(new RegExp('\\*?' + kw + '\\*?', 'gi'), '');
             });
             
-            const lines = cleanMessage.split(/[â€¢\n,;\/\\|]+/);
+            const lines = cleanMessage.split(/[•\n,;\/\\|]+/);
             
             lines.forEach(line => {
                 let name = line.trim();
-                name = name.replace(/^[\s\-â€“â€”â€¢Â·*#\d.\)]+/, '').trim();
+                name = name.replace(/^[\s\-â€“â€”•·*#\d.\)]+/, '').trim();
                 name = name.replace(/[.,;:!?]+$/, '').trim();
                 
                 const subNames = name.split(/,\s*/);
@@ -3975,13 +3973,13 @@
             const status = document.getElementById('email-status');
             
             if (!to || !subject || !body) {
-                status.textContent = '€ï¸ Bitte alle Felder ausfüllen';
+                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '€ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -4024,6 +4022,73 @@
                 }
             } catch (e) {
                 status.textContent = 'âŒ Fehler: ' + e.message;
+                status.style.color = '#ef4444';
+            }
+        }
+        
+        // Save email as draft in Outlook
+        async function saveEmailDraft() {
+            const to = document.getElementById('email-to').value;
+            const subject = document.getElementById('email-subject').value;
+            const body = document.getElementById('email-body').value;
+            const status = document.getElementById('email-status');
+            
+            if (!subject || !body) {
+                status.textContent = '⚠️ Bitte mindestens Betreff und Nachricht ausfüllen';
+                status.style.color = '#f59e0b';
+                return;
+            }
+            
+            if (!accessToken) {
+                status.textContent = '⚠️ Bitte zuerst mit Microsoft anmelden';
+                status.style.color = '#ef4444';
+                return;
+            }
+            
+            status.textContent = '📝 Speichere als Entwurf...';
+            status.style.color = '#888';
+            
+            try {
+                // Build message object
+                const messageData = {
+                    subject: subject,
+                    body: { contentType: 'Text', content: body }
+                };
+                
+                // Add recipient if provided
+                if (to) {
+                    messageData.toRecipients = [{ emailAddress: { address: to } }];
+                }
+                
+                // POST to /me/messages creates a draft (without sending)
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(messageData)
+                });
+                
+                if (response.ok || response.status === 201) {
+                    status.textContent = '✅ Entwurf gespeichert!';
+                    status.style.color = '#22c55e';
+                    showToast('📝 Entwurf in Outlook gespeichert!');
+                    // Clear form after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('email-to').value = '';
+                        document.getElementById('email-subject').value = '';
+                        document.getElementById('email-body').value = '';
+                        status.textContent = '';
+                        closeModal('email-modal');
+                    }, 2000);
+                } else {
+                    const err = await response.json();
+                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.style.color = '#ef4444';
+                }
+            } catch (e) {
+                status.textContent = '❌ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -4240,6 +4305,7 @@
                     localStorage.setItem('bmtLastUpdate', new Date().toISOString());
                     
                     renderBMTEvents();
+                    renderUpcomingFromBMT();
                     showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
                 } catch (err) {
                     console.error('Error parsing ICS:', err);
@@ -4264,6 +4330,7 @@
                         dtend: new Date(e.dtend)
                     }));
                     renderBMTEvents();
+                    renderUpcomingFromBMT();
                     
                     if (lastUpdate) {
                         const updateDate = new Date(lastUpdate);
@@ -4337,7 +4404,7 @@
                     
                     return `
                         <div class="bmt-event-card ${catClass}">
-                            <div class="bmt-event-date">${dayName}, ${dateStr} Â· ${timeStr}</div>
+                            <div class="bmt-event-date">${dayName}, ${dateStr} · ${timeStr}</div>
                             <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
                                 <span class="bmt-event-category ${catClass}">${catLabel}</span>
@@ -4354,7 +4421,113 @@
             return div.innerHTML;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // Render Upcoming Events from BMT data (next 4 events)
+        function renderUpcomingFromBMT() {
+            const container = document.getElementById('upcoming-events-container');
+            const countBadge = document.getElementById('upcoming-count');
+            
+            if (!container) return;
+            
+            if (!bmtEvents || bmtEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="upcoming-placeholder">
+                        <p>📤 Upload BMT .ics Datei um Events zu sehen</p>
+                        <small>Events werden automatisch aus BookMeTender geladen</small>
+                    </div>
+                `;
+                if (countBadge) countBadge.textContent = '0';
+                return;
+            }
+            
+            const now = new Date();
+            const upcomingEvents = bmtEvents
+                .filter(e => {
+                    const isNotHoliday = e.category !== 'holiday' && !e.summary.toLowerCase().includes('holiday');
+                    const isFuture = e.dtstart >= now;
+                    return isNotHoliday && isFuture;
+                })
+                .slice(0, 4); // Only show next 4
+            
+            if (countBadge) countBadge.textContent = upcomingEvents.length;
+            
+            if (upcomingEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="upcoming-placeholder">
+                        <p>📅 Keine kommenden Events</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            container.innerHTML = upcomingEvents.map(event => {
+                const dayName = dayNames[event.dtstart.getDay()];
+                const dateStr = event.dtstart.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+                const isEigen = event.category === 'eigen';
+                const isKonzert = event.category === 'konzert';
+                const typeClass = isEigen ? 'eigen' : (isKonzert ? 'konzert' : 'fremd');
+                const typeLabel = isEigen ? 'EIGEN' : (isKonzert ? 'KONZERT' : 'FREMD');
+                
+                const eventData = encodeURIComponent(JSON.stringify({
+                    name: event.summary,
+                    date: event.dtstart.toISOString(),
+                    category: event.category
+                }));
+                
+                return `
+                    <div class="upcoming-event ${typeClass}" onclick="openBMTFactsheet('${eventData}')">
+                        <div class="upcoming-event-header">
+                            <div class="upcoming-event-info">
+                                <span class="upcoming-event-date">${dayName} ${dateStr}</span>
+                                <span class="upcoming-event-name ${typeClass}">${escapeHtml(event.summary)}</span>
+                            </div>
+                            <span class="upcoming-event-type ${typeClass}">${typeLabel}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        
+        // SPUTNIK RESERVATIONS (Google Calendar)
+        
+        const SPUTNIK_CALENDAR_ID = '355f939de7df075c2527053dadea64b9ba41a6916d7e1917043623230b6b7451@group.calendar.google.com';
+        
+        function loadSputnikReservations() {
+            const container = document.getElementById('sputnik-reservations-container');
+            if (!container) return;
+            
+            const encodedCalId = encodeURIComponent(SPUTNIK_CALENDAR_ID);
+            const calendarUrl = `https://calendar.google.com/calendar/embed?src=${encodedCalId}&mode=AGENDA&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&height=350&wkst=2&bgcolor=%23F3E5F5&ctz=Europe%2FVienna`;
+            
+            container.innerHTML = `
+                <div style="background: white; border-radius: 8px; overflow: hidden;">
+                    <iframe src="${calendarUrl}" 
+                            style="border: 0; width: 100%; height: 350px;" 
+                            frameborder="0" 
+                            scrolling="no">
+                    </iframe>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px; justify-content: center;">
+                    <a href="https://calendar.google.com/calendar/u/0?cid=MzU1ZjkzOWRlN2RmMDc1YzI1MjcwNTNkYWRlYTY0YjliYTQxYTY5MTZkN2UxOTE3MDQzNjIzMjMwYjZiNzQ1MUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t" 
+                       target="_blank"
+                       style="background: #8E24AA; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                        📅 In Google Calendar öffnen
+                    </a>
+                    <button onclick="loadSputnikReservations()" 
+                            style="background: #6b7280; color: white; padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; cursor: pointer; font-weight: 600;">
+                        🔄 Aktualisieren
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Auto-load reservations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadSputnikReservations, 1500);
+        });
+        
         // CLEANING SCHEDULE GENERATOR
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
         
@@ -4654,7 +4827,7 @@ Spittelauer Lände 12/1
                     // Check if there's an event on this cleaning day
                     const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
                     
-                    body += `â€¢ ${dateStr} (${day}) - ${type}\n`;
+                    body += `• ${dateStr} (${day}) - ${type}\n`;
                     body += `  Nach: ${event}\n`;
                     if (hasEventOnCleaningDay) {
                         body += `  âš ï¸ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
@@ -4704,13 +4877,13 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '€ï¸ Bitte alle Felder ausfüllen';
+                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '€ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -4740,7 +4913,7 @@ Spittelauer Lände 12/1
                 });
                 
                 if (response.ok || response.status === 202) {
-                    status.textContent = 'âœ‰ï¸ E-Mail an alle 3 gesendet!';
+                    status.textContent = '✉️ E-Mail an alle 3 gesendet!';
                     status.style.color = '#22c55e';
                     showToast('🧹 Reinigungsplan an alle 3 Empfänger gesendet!');
                     setTimeout(() => hideCleaningEmail(), 2000);
@@ -4762,13 +4935,13 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '€ï¸ Bitte alle Felder ausfüllen';
+                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '€ï¸ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5077,7 +5250,7 @@ Spittelauer Lände 12/1
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.3.1 - Guest List Parser + ZIP Support');
+            console.log('Work Hub v14.8 - Guest List Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
