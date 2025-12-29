@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.8</title>
+    <title>Turbo Projects Work Hub v14.8.1</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2317,7 +2317,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.8 • 29.12.2025 • Sputnik Calendar Live</div>
+    <div class="version">Work Hub v14.8.1.1 • 29.12.2025 • Draft Fix</div>
 
     <script>
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -2464,6 +2464,37 @@
                     showToast("âŒ Login fehlgeschlagen", true); 
                 }
             }
+        }
+        
+        
+        // Force sign out and re-authenticate (for permission updates)
+        async function handleSignOut() {
+            showToast("🔄 Melde ab und aktualisiere Berechtigungen...");
+            try {
+                if (msalInstance) {
+                    await msalInstance.logoutPopup();
+                }
+            } catch(e) { console.log('Logout error:', e); }
+            
+            accessToken = null;
+            updateAuthUI(null);
+            resetAllUI();
+            
+            // Small delay then prompt re-login
+            setTimeout(async () => {
+                try {
+                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
+                    accessToken = response.accessToken;
+                    console.log('=== RE-LOGIN SUCCESS ===');
+                    console.log('New scopes granted:', response.scopes);
+                    updateAuthUI(response.account);
+                    loadAllData();
+                    showToast("✅ Neu verbunden mit aktualisierten Berechtigungen!");
+                } catch (error) {
+                    console.error("Re-login error:", error);
+                    showToast("❌ Re-Login fehlgeschlagen", true);
+                }
+            }, 500);
         }
         
         async function forceResetAuth() {
@@ -4060,6 +4091,8 @@
                     messageData.toRecipients = [{ emailAddress: { address: to } }];
                 }
                 
+                console.log('Saving draft with data:', messageData);
+                
                 // POST to /me/messages creates a draft (without sending)
                 const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
                     method: 'POST',
@@ -4069,6 +4102,8 @@
                     },
                     body: JSON.stringify(messageData)
                 });
+                
+                console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
                     status.textContent = '✅ Entwurf gespeichert!';
@@ -4084,10 +4119,17 @@
                     }, 2000);
                 } else {
                     const err = await response.json();
-                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    console.error('Draft error:', err);
+                    // Check if it's a permission error
+                    if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
+                        status.innerHTML = '❌ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
+                    } else {
+                        status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    }
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
+                console.error('Draft exception:', e);
                 status.textContent = '❌ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
@@ -4954,6 +4996,8 @@ Spittelauer Lände 12/1
                 emailAddress: { address: contact.email }
             }));
             
+            
+            console.log('Saving cleaning draft with recipients:', toRecipients);
             try {
                 // POST to /me/messages creates a draft (without sending)
                 const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
@@ -4969,17 +5013,25 @@ Spittelauer Lände 12/1
                     })
                 });
                 
+                console.log('Cleaning draft response status:', response.status);
+                
                 if (response.ok || response.status === 201) {
                     status.textContent = '✅ Entwurf gespeichert! Check deine Outlook Drafts.';
                     status.style.color = '#22c55e';
                     showToast('📝 Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    console.error('Cleaning draft error:', err);
+                    if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
+                        status.innerHTML = '❌ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
+                    } else {
+                        status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    }
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                console.error('Cleaning draft exception:', e);
+                status.textContent = '❌ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -5250,7 +5302,7 @@ Spittelauer Lände 12/1
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.8 - Guest List Parser + ZIP Support');
+            console.log('Work Hub v14.8.1 - Guest List Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
