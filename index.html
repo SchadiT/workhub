@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.8.5</title>
+    <title>Turbo Projects Work Hub v14.9</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
-        function msalLoadSuccess() { window.msalLoaded = true; console.log('✅ MSAL loaded'); }
+        function msalLoadSuccess() { window.msalLoaded = true; console.log('âœ… MSAL loaded'); }
         function tryNextCDN(cdnList, index) {
             if (index >= cdnList.length) {
-                console.error('âŒ All CDNs failed');
-                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
+                console.error('Å’ All CDNs failed');
+                document.getElementById('auth-status-text').textContent = 'Å’ Auth Library fehlt';
                 return;
             }
             var s = document.createElement('script');
@@ -444,7 +444,7 @@
         .task-checkbox { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .task-checkbox:hover { border-color: #22c55e; }
         .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
-        .task-checkbox.checked::after { content: 'âœ”'; color: white; font-size: 12px; }
+        .task-checkbox.checked::after { content: 'Å“â€'; color: white; font-size: 12px; }
         .task-info { flex: 1; }
         .task-title { font-size: 14px; color: #333; }
         .task-due { font-size: 11px; color: #888; }
@@ -1020,8 +1020,8 @@
         </div>
         <span class="auth-user" id="auth-user"></span>
         <div class="auth-buttons">
-            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">🔒 Sign in</button>
-            <button class="auth-btn reset" onclick="forceResetAuth()">🔄 Refresh</button>
+            <button class="auth-btn" id="auth-btn" onclick="handleAuth()">ðŸ”’ Sign in</button>
+            <button class="auth-btn reset" onclick="forceResetAuth()">ðŸ”„ Refresh</button>
         </div>
     </div>
     
@@ -1030,30 +1030,30 @@
     <!-- Quick Notes -->
     <div class="quick-notes">
         <div class="quick-notes-header">
-            <span>📝 Quick Notes</span>
+            <span>ðŸ“ Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="save-indicator" id="notes-saved">âœ” Gespeichert</span>
-                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">🎤</button>
-                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">➕ Task</button>
+                <span class="save-indicator" id="notes-saved">Å“â€ Gespeichert</span>
+                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">ðŸŽ¤</button>
+                <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern">âž• Task</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
     </div>
     
 
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     <!-- BMT EVENTS SECTION (Collapsible) -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     <div class="bmt-section">
         <div class="bmt-header" style="cursor: pointer;">
             <div class="bmt-title" onclick="toggleBMTSection()">
-                📅 BMT Events
+                ðŸ“… BMT Events
                 <span class="bmt-badge" id="bmt-event-count">0</span>
-                <span class="bmt-toggle" id="bmt-toggle">▼</span>
+                <span class="bmt-toggle" id="bmt-toggle">â–¼</span>
             </div>
             <div class="bmt-month-filter" onclick="event.stopPropagation();">
-                <button class="bmt-month-btn" onclick="toggleMonthFilter()" id="month-filter-btn">📆 Monate ▼</button>
+                <button class="bmt-month-btn" onclick="toggleMonthFilter()" id="month-filter-btn">ðŸ“† Monate â–¼</button>
                 <div class="month-dropdown" id="month-dropdown">
                     <div class="month-dropdown-header">
                         <button onclick="selectAllMonths()" class="month-select-btn">Alle</button>
@@ -1063,7 +1063,7 @@
                     <div class="month-grid">
                         <label><input type="checkbox" class="month-cb" value="1" onchange="filterBMTByMonth()"> Jan</label>
                         <label><input type="checkbox" class="month-cb" value="2" onchange="filterBMTByMonth()"> Feb</label>
-                        <label><input type="checkbox" class="month-cb" value="3" onchange="filterBMTByMonth()"> Mär</label>
+                        <label><input type="checkbox" class="month-cb" value="3" onchange="filterBMTByMonth()"> Maer</label>
                         <label><input type="checkbox" class="month-cb" value="4" onchange="filterBMTByMonth()"> Apr</label>
                         <label><input type="checkbox" class="month-cb" value="5" onchange="filterBMTByMonth()"> Mai</label>
                         <label><input type="checkbox" class="month-cb" value="6" onchange="filterBMTByMonth()"> Jun</label>
@@ -1079,18 +1079,18 @@
             <div class="bmt-actions" onclick="event.stopPropagation();">
                 <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
                 <button class="bmt-btn" onclick="autoLoadBMT()" title="Automatisch von BMT laden">
-                    🔄 Auto
+                    ðŸ”„ Auto
                 </button>
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
-                    📤 .ics
+                    ðŸ“¤ .ics
                 </button>
             </div>
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
             <div class="bmt-status" id="bmt-status">
-                📅 Keine Events geladen
-                <br><small>Klicke 🔄 Auto oder 📤 .ics zum Laden</small>
-                <br><small style="color: #22c55e;">💾 Events bleiben nach Reload gespeichert</small>
+                ðŸ“… Keine Events geladen
+                <br><small>Klicke ðŸ”„ Auto oder ðŸ“¤ .ics zum Laden</small>
+                <br><small style="color: #22c55e;">ðŸ’¾ Events bleiben nach Reload gespeichert</small>
             </div>
         </div>
     </div>
@@ -1099,7 +1099,7 @@
     <div class="modal-overlay" id="cleaning-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header green">
-                <h3>🧹 Reinigungsplan</h3>
+                <h3>ðŸ§¹ Reinigungsplan</h3>
                 <button class="modal-close" onclick="closeModal('cleaning-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1110,9 +1110,9 @@
                         </select>
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
-                        <button class="modal-btn success" onclick="copyCleaningSchedule()">📋 Kopieren</button>
-                        <button class="modal-btn" style="background: #6b7280;" onclick="quickSaveCleaningDraft()">📝 Als Entwurf</button>
-                        <button class="modal-btn primary" onclick="showCleaningEmail()">✉️ Per E-Mail</button>
+                        <button class="modal-btn success" onclick="copyCleaningSchedule()">ðŸ“‹ Kopieren</button>
+                        <button class="modal-btn" style="background: #6b7280;" onclick="quickSaveCleaningDraft()">ðŸ“ Als Entwurf</button>
+                        <button class="modal-btn primary" onclick="showCleaningEmail()">âœ‰ï¸ Per E-Mail</button>
                     </div>
                 </div>
                 <div id="cleaning-container">
@@ -1123,9 +1123,9 @@
                 
                 <!-- Email Section (hidden by default) -->
                 <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 10px; border: 1px solid #3b82f6;">
-                    <h4 style="color: #3b82f6; margin-bottom: 15px;">✉️ Reinigungsplan versenden</h4>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px;">âœ‰ï¸ Reinigungsplan versenden</h4>
                     <div class="form-group">
-                        <label>Empfänger</label>
+                        <label>Empfaenger</label>
                         <select id="cleaning-email-to" onchange="updateCleaningEmailTo()">
                             <option value="custom">Andere E-Mail eingeben...</option>
                         </select>
@@ -1144,26 +1144,26 @@
                     </div>
                     <div style="display: flex; gap: 10px; justify-content: flex-end;">
                         <button class="modal-btn cancel" onclick="hideCleaningEmail()">Abbrechen</button>
-                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: #6b7280;">📝 Als Entwurf</button>
-                        <button class="modal-btn success" onclick="sendCleaningEmail()">📤 Senden</button>
+                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: #6b7280;">ðŸ“ Als Entwurf</button>
+                        <button class="modal-btn success" onclick="sendCleaningEmail()">ðŸ“¤ Senden</button>
                     </div>
                     <div id="cleaning-email-status" style="margin-top: 10px; font-size: 13px;"></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schliessen</button>
             </div>
         </div>
     </div>
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     <!-- MODALS -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     <!-- NYE Projector Modal -->
     <div class="modal-overlay" id="nye-projector-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <h3>🎆 NYE Projector (3-Jahre Benchmark)</h3>
+                <h3>ðŸŽ† NYE Projector (3-Jahre Benchmark)</h3>
                 <button class="modal-close" onclick="closeModal('nye-projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1200,19 +1200,19 @@
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">FOH Revenue</div>
-                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">€13,392</div>
+                        <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">â‚¬13,392</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">Bar Revenue</div>
-                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">€24,000</div>
+                        <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">â‚¬24,000</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 15px; border-radius: 10px; text-align: center;">
                         <div style="font-size: 11px; color: #888;">TOTAL Revenue</div>
-                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">€37,392</div>
+                        <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">â‚¬37,392</div>
                     </div>
                 </div>
                 
-                <h4 style="color: #f59e0b; margin: 20px 0 10px 0;">📊 Guest Arrival Stream</h4>
+                <h4 style="color: #f59e0b; margin: 20px 0 10px 0;">ðŸ“Š Guest Arrival Stream</h4>
                 <table class="cleaning-table" id="nye-arrival-table">
                     <thead>
                         <tr>
@@ -1227,7 +1227,7 @@
                     </tbody>
                 </table>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">🍺 Bar Revenue by Hour</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px 0;">ðŸº Bar Revenue by Hour</h4>
                 <table class="cleaning-table">
                     <thead>
                         <tr>
@@ -1242,14 +1242,14 @@
                 </table>
                 
                 <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); border-radius: 10px;">
-                    <div style="font-weight: 700; margin-bottom: 10px;">âš ï¸ CRITICAL PEAK: 01:00 - 03:00</div>
+                    <div style="font-weight: 700; margin-bottom: 10px;">Å¡  CRITICAL PEAK: 01:00 - 03:00</div>
                     <div style="font-size: 13px; line-height: 1.6;">
                         "The night is not decided by how many tickets you sell, but by how many people you can move, store, and serve between 01:00 and 03:00."
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('nye-projector-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1258,13 +1258,13 @@
     <div class="modal-overlay" id="peak-grid-modal">
         <div class="modal" style="max-width: 1000px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <h3>📊 NYE Peak Grid Dashboard</h3>
+                <h3>ðŸ“Š NYE Peak Grid Dashboard</h3>
                 <button class="modal-close" onclick="closeModal('peak-grid-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <div>
-                        <span style="font-size: 12px; color: #888;">Live Monitoring für</span>
+                        <span style="font-size: 12px; color: #888;">Live Monitoring fuer</span>
                         <span style="font-weight: 700; color: #ef4444;"> Silvester 31.12.</span>
                     </div>
                     <div style="display: flex; gap: 10px;">
@@ -1284,7 +1284,7 @@
                                 <th style="min-width: 70px;">Garderobe</th>
                                 <th style="min-width: 70px;">Bar</th>
                                 <th style="min-width: 200px;">Action / Notes</th>
-                                <th style="min-width: 50px;">âœ”</th>
+                                <th style="min-width: 50px;">Å“â€</th>
                             </tr>
                         </thead>
                         <tbody id="peak-grid-body">
@@ -1294,7 +1294,7 @@
                 
                 <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
                     <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
-                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">🧊 Tub Strategy</div>
+                        <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;">ðŸ§Š Tub Strategy</div>
                         <div style="font-size: 12px; line-height: 1.8;">
                             <div><span style="color: #f59e0b;">23:45-00:00</span> Initial Fill (BEFORE midnight!)</div>
                             <div><span style="color: #ef4444; font-weight: 700;">01:15-01:30</span> <strong>MANDATORY REFILL</strong></div>
@@ -1303,12 +1303,12 @@
                         </div>
                     </div>
                     <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444;">
-                        <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">🎯 Peak Rules</div>
+                        <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;">ðŸŽ¯ Peak Rules</div>
                         <div style="font-size: 12px; line-height: 1.8;">
-                            <div>• <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
-                            <div>• <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
-                            <div>• <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
-                            <div>• <strong>Bottleneck Priority:</strong> Door→Garderobe→Bar→Corridors</div>
+                            <div>â€¢ <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
+                            <div>â€¢ <strong>00:30-03:00:</strong> Bar staff NEVER stop selling</div>
+                            <div>â€¢ <strong>Speed Menu:</strong> Stop slow drinks during peak</div>
+                            <div>â€¢ <strong>Bottleneck Priority:</strong> Doorâ†’Garderobeâ†’Barâ†’Corridors</div>
                         </div>
                     </div>
                 </div>
@@ -1325,20 +1325,20 @@
                         <div style="font-size: 10px; color: #666;">@ 01:00-02:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 10px; color: #888;">Peak Bar €</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">€4,000</div>
+                        <div style="font-size: 10px; color: #888;">Peak Bar â‚¬</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #22c55e;">â‚¬4,000</div>
                         <div style="font-size: 10px; color: #666;">@ 02:00-03:00</div>
                     </div>
                     <div style="background: #1a1a2e; padding: 12px; border-radius: 8px;">
                         <div style="font-size: 10px; color: #888;">FOH Pricing</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">€22/€26</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">â‚¬22/â‚¬26</div>
                         <div style="font-size: 10px; color: #666;">pre/post 00:00</div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn primary" onclick="printPeakGrid()">🖨️ Drucken</button>
-                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">Schließen</button>
+                <button class="modal-btn primary" onclick="printPeakGrid()">ðŸ–¨ï¸ Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('peak-grid-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1347,41 +1347,41 @@
     <div class="modal-overlay" id="guestlist-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
-                <h3>📋 Guest List Parser</h3>
+                <h3>ðŸ“‹ Guest List Parser</h3>
                 <button class="modal-close" onclick="closeModal('guestlist-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
-                        <label>📅 Event Datum (z.B. 27.12.25)</label>
+                        <label>ðŸ“… Event Datum (z.B. 27.12.25)</label>
                         <input type="text" id="gl-date" placeholder="27.12.25" style="font-size: 16px; font-weight: 600;">
                     </div>
                     <div class="form-group">
-                        <label>🎉 Event Name (optional)</label>
+                        <label>ðŸŽ‰ Event Name (optional)</label>
                         <input type="text" id="gl-event-name" placeholder="TURBO">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label>📱 WhatsApp Chat Export (.zip oder .txt)</label>
+                    <label>ðŸ“± WhatsApp Chat Export (.zip oder .txt)</label>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                         <input type="file" id="gl-file-upload" accept=".txt,.zip" onchange="handleGuestListFile(event)" style="display: none;">
-                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">📤 Datei hochladen</button>
-                        <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">🗑️ Leeren</button>
+                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()">ðŸ“¤ Datei hochladen</button>
+                        <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()">ðŸ—‘ï¸ Leeren</button>
                     </div>
-                    <textarea id="gl-chat-input" rows="8" placeholder="WhatsApp Chat Export hier einfügen oder .zip/.txt Datei hochladen..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
+                    <textarea id="gl-chat-input" rows="8" placeholder="WhatsApp Chat Export hier einfuegen oder .zip/.txt Datei hochladen..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
                 </div>
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="modal-btn success" onclick="parseGuestList()" style="flex: 1; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">🔒 Guest List extrahieren</button>
+                    <button class="modal-btn success" onclick="parseGuestList()" style="flex: 1; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">ðŸ”’ Guest List extrahieren</button>
                 </div>
                 
                 <div id="gl-results" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h4 style="color: #22c55e; margin: 0;">📋 Ergebnis</h4>
+                        <h4 style="color: #22c55e; margin: 0;">ðŸ“‹ Ergebnis</h4>
                         <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn" style="background: #3b82f6; padding: 6px 12px; font-size: 12px;" onclick="copyGuestList()">📋 Kopieren</button>
-                            <button class="modal-btn" style="background: #8b5cf6; padding: 6px 12px; font-size: 12px;" onclick="downloadGuestListCSV()">📥 CSV</button>
+                            <button class="modal-btn" style="background: #3b82f6; padding: 6px 12px; font-size: 12px;" onclick="copyGuestList()">ðŸ“‹ Kopieren</button>
+                            <button class="modal-btn" style="background: #8b5cf6; padding: 6px 12px; font-size: 12px;" onclick="downloadGuestListCSV()">ðŸ“¥ CSV</button>
                         </div>
                     </div>
                     <div id="gl-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;"></div>
@@ -1389,7 +1389,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1398,7 +1398,7 @@
     <div class="modal-overlay" id="presale-modal">
         <div class="modal">
             <div class="modal-header orange">
-                <h3>🎟️ PreSale Calculator</h3>
+                <h3>ðŸŽŸï¸ PreSale Calculator</h3>
                 <button class="modal-close" onclick="closeModal('presale-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1408,11 +1408,11 @@
                         <input type="text" id="ps-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>FOH Tickets (geschätzt)</label>
+                        <label>FOH Tickets (geschaetzt)</label>
                         <input type="number" id="ps-foh-tickets" value="350" oninput="calculatePreSale()">
                     </div>
                     <div class="form-group">
-                        <label>FOH Preis (€)</label>
+                        <label>FOH Preis (â‚¬)</label>
                         <input type="number" id="ps-door-price" value="22" oninput="calculatePreSale()">
                     </div>
                 </div>
@@ -1423,7 +1423,7 @@
                         <tr>
                             <th>Phase</th>
                             <th>Tickets</th>
-                            <th>Preis (€)</th>
+                            <th>Preis (â‚¬)</th>
                             <th>Revenue</th>
                         </tr>
                     </thead>
@@ -1432,43 +1432,43 @@
                             <td class="phase-name">Early Bird</td>
                             <td><input type="number" class="ps-tickets" value="100" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="18" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€1.800</td>
+                            <td class="phase-revenue">â‚¬1.800</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 1</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="20" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€3.000</td>
+                            <td class="phase-revenue">â‚¬3.000</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 2</td>
                             <td><input type="number" class="ps-tickets" value="150" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="22" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€3.300</td>
+                            <td class="phase-revenue">â‚¬3.300</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 3</td>
                             <td><input type="number" class="ps-tickets" value="80" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="24" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€1.920</td>
+                            <td class="phase-revenue">â‚¬1.920</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 4</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="26" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€0</td>
+                            <td class="phase-revenue">â‚¬0</td>
                         </tr>
                         <tr>
                             <td class="phase-name">Phase 5</td>
                             <td><input type="number" class="ps-tickets" value="0" oninput="calculatePreSale()"></td>
                             <td><input type="number" class="ps-price" value="28" oninput="calculatePreSale()"></td>
-                            <td class="phase-revenue">€0</td>
+                            <td class="phase-revenue">â‚¬0</td>
                         </tr>
                     </tbody>
                 </table>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>📊 Ergebnis</h4>
+                    <h4>ðŸ“Š Ergebnis</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Tickets</div>
@@ -1476,11 +1476,11 @@
                         </div>
                         <div class="result-item">
                             <div class="label">VVK Revenue</div>
-                            <div class="value" id="ps-result-vvk-rev">€10.020</div>
+                            <div class="value" id="ps-result-vvk-rev">â‚¬10.020</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Ø VVK Preis</div>
-                            <div class="value orange" id="ps-result-avg">€20.88</div>
+                            <div class="label">˜ VVK Preis</div>
+                            <div class="value orange" id="ps-result-avg">â‚¬20.88</div>
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Tickets</div>
@@ -1488,17 +1488,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">FOH Revenue</div>
-                            <div class="value" id="ps-result-foh-rev">€8.000</div>
+                            <div class="value" id="ps-result-foh-rev">â‚¬8.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ps-result-total">€18.020</div>
+                            <div class="value" id="ps-result-total">â‚¬18.020</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('presale-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1507,7 +1507,7 @@
     <div class="modal-overlay" id="cost-modal">
         <div class="modal">
             <div class="modal-header purple">
-                <h3>🧮 Cost Calculator</h3>
+                <h3>ðŸ§® Cost Calculator</h3>
                 <button class="modal-close" onclick="closeModal('cost-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1517,24 +1517,24 @@
                         <input type="text" id="cc-event-name" placeholder="z.B. TURBO">
                     </div>
                     <div class="form-group">
-                        <label>Erwartete Gäste</label>
+                        <label>Erwartete Gaeste</label>
                         <input type="number" id="cc-guests" value="800" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">💰 Einnahmen (Projektion)</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ’° Einnahmen (Projektion)</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Ticket Revenue (€)</label>
+                        <label>Ticket Revenue (â‚¬)</label>
                         <input type="number" id="cc-ticket-rev" value="18000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Bar Revenue (€)</label>
+                        <label>Bar Revenue (â‚¬)</label>
                         <input type="number" id="cc-bar-rev" value="12000" oninput="calculateCosts()">
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">💸¥ Personal</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ’¸ Personal</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Bar Team (Personen)</label>
@@ -1566,50 +1566,50 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">📦 Fixkosten</h4>
+                <h4 style="color: #8b5cf6; margin: 20px 0 10px;">ðŸ“¦ Fixkosten</h4>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Artist Fee (€)</label>
+                        <label>Artist Fee (â‚¬)</label>
                         <input type="number" id="cc-artist" value="2000" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>GEMA/AKM (€)</label>
+                        <label>GEMA/AKM (â‚¬)</label>
                         <input type="number" id="cc-gema" value="500" oninput="calculateCosts()">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Marketing (€)</label>
+                        <label>Marketing (â‚¬)</label>
                         <input type="number" id="cc-marketing" value="300" oninput="calculateCosts()">
                     </div>
                     <div class="form-group">
-                        <label>Sonstiges (€)</label>
+                        <label>Sonstiges (â‚¬)</label>
                         <input type="number" id="cc-other" value="200" oninput="calculateCosts()">
                     </div>
                 </div>
                 
                 <div class="result-card" style="margin-top: 20px;">
-                    <h4>📊 Kalkulation</h4>
+                    <h4>ðŸ“Š Kalkulation</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">Total Einnahmen</div>
-                            <div class="value" id="cc-result-revenue">€30.000</div>
+                            <div class="value" id="cc-result-revenue">â‚¬30.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Personalkosten</div>
-                            <div class="value red" id="cc-result-staff">€3.150</div>
+                            <div class="value red" id="cc-result-staff">â‚¬3.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Fixkosten</div>
-                            <div class="value red" id="cc-result-fixed">€3.000</div>
+                            <div class="value red" id="cc-result-fixed">â‚¬3.000</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Kosten</div>
-                            <div class="value red" id="cc-result-costs">€6.150</div>
+                            <div class="value red" id="cc-result-costs">â‚¬6.150</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Deckungsbeitrag</div>
-                            <div class="value" id="cc-result-profit">€23.850</div>
+                            <div class="value" id="cc-result-profit">â‚¬23.850</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Marge</div>
@@ -1617,10 +1617,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="form-hint" style="margin-top: 10px;">⚙️ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar €150, Runner €120, Garderobe €100, Security €180, Technik €200, CVD €150</p>
+                <p class="form-hint" style="margin-top: 10px;">âš™ï¸ Personalkosten-Logik wird noch angepasst. Aktuelle Pauschalen: Bar â‚¬150, Runner â‚¬120, Garderobe â‚¬100, Security â‚¬180, Technik â‚¬200, CVD â‚¬150</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('cost-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1629,7 +1629,7 @@
     <div class="modal-overlay" id="projector-modal">
         <div class="modal">
             <div class="modal-header green">
-                <h3>📊 Event Projector</h3>
+                <h3>ðŸ“Š Event Projector</h3>
                 <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1659,18 +1659,18 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>📆 Serie Durchschnitt</h4>
+                    <h4>ðŸ“† Serie Durchschnitt</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">€ VVK</div>
+                            <div class="label">â‚¬ VVK</div>
                             <div class="value blue" id="ep-avg-vvk">436</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">€ FOH</div>
+                            <div class="label">â‚¬ FOH</div>
                             <div class="value blue" id="ep-avg-foh">336</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">€ Total</div>
+                            <div class="label">â‚¬ Total</div>
                             <div class="value blue" id="ep-avg-total">772</div>
                         </div>
                         <div class="result-item">
@@ -1681,24 +1681,24 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>€ KW Bar-Statistik</h4>
+                    <h4>â‚¬ KW Bar-Statistik</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">€/Person</div>
-                            <div class="value orange" id="ep-bar-pp">€16.3</div>
+                            <div class="label">â‚¬/Person</div>
+                            <div class="value orange" id="ep-bar-pp">â‚¬16.3</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">🍺 Bar Revenue</div>
-                            <div class="value" id="ep-bar-rev">€12.584</div>
+                            <div class="label">ðŸº Bar Revenue</div>
+                            <div class="value" id="ep-bar-rev">â‚¬12.584</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">€ Total Gäste</div>
+                            <div class="label">â‚¬ Total Gaeste</div>
                             <div class="value blue" id="ep-bar-guests">772</div>
                         </div>
                     </div>
                 </div>
                 
-                <h4 style="color: #22c55e; margin: 20px 0 10px;">🎯 Projektion mit aktuellem VVK</h4>
+                <h4 style="color: #22c55e; margin: 20px 0 10px;">ðŸŽ¯ Projektion mit aktuellem VVK</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Aktueller VVK Stand</label>
@@ -1711,7 +1711,7 @@
                 </div>
                 
                 <div class="result-card">
-                    <h4>🎯 Projektion</h4>
+                    <h4>ðŸŽ¯ Projektion</h4>
                     <div class="result-grid">
                         <div class="result-item">
                             <div class="label">VVK Projektion</div>
@@ -1723,17 +1723,17 @@
                         </div>
                         <div class="result-item">
                             <div class="label">Bar Projektion</div>
-                            <div class="value orange" id="ep-proj-bar">~€12.6k</div>
+                            <div class="value orange" id="ep-proj-bar">~â‚¬12.6k</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ep-proj-total">~€28k</div>
+                            <div class="value" id="ep-proj-total">~â‚¬28k</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schließen</button>
+                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -1742,17 +1742,16 @@
     <div class="modal-overlay" id="factsheet-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>📎 Factsheet Generator</h3>
+                <h3>ðŸ“Ž Factsheet Generator</h3>
                 <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Event auswählen</label>
+                        <label>Event auswahlen</label>
                         <select id="fs-event-select" onchange="loadEventData()">
-                            <option value="">-- Event wählen --</option>
-                            <option value="turbo">TURBO - Sa 27.12.2025</option>
-                            <option value="nye">NYE SILVESTER - Di 31.12.2025</option>
+                            <option value="">-- Event wahlen --</option>
+                            <!-- Dynamic: populateFactsheetDropdown() -->
                         </select>
                     </div>
                     <div class="form-group">
@@ -1765,7 +1764,7 @@
                 </div>
                 <div class="form-row" id="main-floor-row">
                     <div class="form-group">
-                        <label>Main Floor Öffnung</label>
+                        <label>Main Floor Oeffnung</label>
                         <div style="display: flex; gap: 15px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
                                 <input type="radio" name="main-floor-time" value="00:00" checked onchange="updateFactsheetPreview()"> 
@@ -1789,7 +1788,7 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">💸¥ Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ’¸ Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
                 
                 <!-- CVD & Technik -->
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
@@ -1814,11 +1813,11 @@
                 <!-- KASSA (Eigenveranstaltung) -->
                 <div class="form-row" id="kassa-row">
                     <div class="form-group" style="grid-column: span 4;">
-                        <label>💰 KASSA (Eigenveranstaltung)</label>
+                        <label>ðŸ’° KASSA (Eigenveranstaltung)</label>
                         <div style="display: flex; gap: 20px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-matthaeus" checked onchange="updateFactsheetPreview()"> 
-                                <span>Matthäus</span>
+                                <span>Matthaeus</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-schadi" checked onchange="updateFactsheetPreview()"> 
@@ -1973,15 +1972,15 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;">💸€ Preview</h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;">ðŸ’¸â‚¬ Preview</h4>
                 <div class="factsheet-preview" id="fs-preview">
                     <!-- Generated by JS -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schließen</button>
-                <button class="modal-btn primary" onclick="copyFactsheet()">📋 Kopieren</button>
-                <button class="modal-btn success" onclick="printFactsheet()">🖨️ Drucken</button>
+                <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schliessen</button>
+                <button class="modal-btn primary" onclick="copyFactsheet()">ðŸ“‹ Kopieren</button>
+                <button class="modal-btn success" onclick="printFactsheet()">ðŸ–¨ï¸ Drucken</button>
             </div>
         </div>
     </div>
@@ -1990,7 +1989,7 @@
     <div class="modal-overlay" id="email-modal">
         <div class="modal">
             <div class="modal-header" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
-                <h3>✉️ E-Mail senden</h3>
+                <h3>âœ‰ï¸ E-Mail senden</h3>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -2010,63 +2009,63 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
-                <button class="modal-btn" onclick="saveEmailDraft()" style="background: #6b7280;">📝 Als Entwurf</button>
-                <button class="modal-btn primary" onclick="sendEmail()">📤 Senden</button>
+                <button class="modal-btn" onclick="saveEmailDraft()" style="background: #6b7280;">ðŸ“ Als Entwurf</button>
+                <button class="modal-btn primary" onclick="sendEmail()">ðŸ“¤ Senden</button>
             </div>
         </div>
     </div>
 
     
     
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     <!-- APPLICATIONS EXPANDER -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     <div class="tools-expander">
         <button class="tools-toggle" id="apps-toggle" onclick="toggleApps()" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-            📱 Applications <span class="arrow">▼</span>
+            ðŸ“± Applications <span class="arrow">â–¼</span>
         </button>
         <div class="tools-content" id="apps-content">
             <div class="tools-grid">
                 <button class="tool-btn" onclick="openModal('factsheet-modal')">
-                    <span class="tool-icon">📎</span>
+                    <span class="tool-icon">ðŸ“Ž</span>
                     Factsheet
                 </button>
                 <button class="tool-btn" onclick="openModal('email-modal')">
-                    <span class="tool-icon">✉️</span>
+                    <span class="tool-icon">âœ‰ï¸</span>
                     E-Mail
                 </button>
                 <div class="tool-btn dropdown-container" style="position: relative;">
                     <button class="tool-btn" onclick="toggleDropdown('social-dropdown')" style="width: 100%; border: none; padding: 0;">
-                        <span class="tool-icon">📱</span>
-                        Social ▼
+                        <span class="tool-icon">ðŸ“±</span>
+                        Social â–¼
                     </button>
                     <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
-                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📜</span> Facebook</a>
-                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">💬</span> WhatsApp</a>
-                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">📓</span> BMT Dashboard</a>
+                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“¸</span> Instagram</a>
+                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">ðŸ“œ</span> Facebook</a>
+                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">ðŸ’¬</span> WhatsApp</a>
+                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">ðŸ““</span> BMT Dashboard</a>
                     </div>
                 </div>
                 <div class="tool-btn dropdown-container" style="position: relative;">
                     <button class="tool-btn" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; border: none; padding: 0;">
-                        <span class="tool-icon">💰</span>
-                        Sales ▼
+                        <span class="tool-icon">ðŸ’°</span>
+                        Sales â–¼
                     </button>
                     <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
-                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔔</span> Linktree</a>
-                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
+                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">ðŸ’³</span> WBV (POS)</a>
+                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">ðŸ””</span> Linktree</a>
+                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">ðŸŽŸï¸</span> ntry (Pre-Sale)</a>
                     </div>
                 </div>
                 <div class="tool-btn dropdown-container" style="position: relative;">
                     <button class="tool-btn" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; border: none; padding: 0;">
-                        <span class="tool-icon">📁</span>
-                        Storage ▼
+                        <span class="tool-icon">ðŸ“</span>
+                        Storage â–¼
                     </button>
                     <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
-                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔒</span> OneDrive</a>
+                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">ðŸŸ¡</span> Google Drive</a>
+                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">ðŸ”’</span> OneDrive</a>
                     </div>
                 </div>
             </div>
@@ -2076,40 +2075,40 @@
     <!-- Tools Expander -->
     <div class="tools-expander">
         <button class="tools-toggle" id="tools-toggle" onclick="toggleTools()">
-            🔧 Club Tools <span class="arrow">▼</span>
+            ðŸ”§ Club Tools <span class="arrow">â–¼</span>
         </button>
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
                 <button class="tool-btn" onclick="openCleaningModal()">
-                    <span class="tool-icon">🧹</span>
+                    <span class="tool-icon">ðŸ§¹</span>
                     Reinigung
                 </button>
                 <button class="tool-btn" onclick="openModal('presale-modal')">
-                    <span class="tool-icon">🎟️</span>
+                    <span class="tool-icon">ðŸŽŸï¸</span>
                     PreSale Calc
                 </button>
                 <button class="tool-btn" onclick="openModal('cost-modal')">
-                    <span class="tool-icon">🧮</span>
+                    <span class="tool-icon">ðŸ§®</span>
                     Cost Calc
                 </button>
                 <button class="tool-btn" onclick="openModal('projector-modal')">
-                    <span class="tool-icon">📊</span>
+                    <span class="tool-icon">ðŸ“Š</span>
                     Projector
                 </button>
                 <button class="tool-btn" onclick="openDeepAnalysis()">
-                    <span class="tool-icon">🔬</span>
+                    <span class="tool-icon">ðŸ”¬</span>
                     Deep Analysis
                 </button>
                 <button class="tool-btn" onclick="openModal('nye-projector-modal')" style="border-color: #f59e0b;">
-                    <span class="tool-icon">🎆</span>
+                    <span class="tool-icon">ðŸŽ†</span>
                     NYE Projector
                 </button>
                 <button class="tool-btn" onclick="openModal('peak-grid-modal')" style="border-color: #ef4444;">
-                    <span class="tool-icon">📆</span>
+                    <span class="tool-icon">ðŸ“†</span>
                     Peak Grid
                 </button>
                 <button class="tool-btn" onclick="openModal('guestlist-modal')" style="border-color: #22c55e;">
-                    <span class="tool-icon">📋</span>
+                    <span class="tool-icon">ðŸ“‹</span>
                     Guest List
                 </button>
             </div>
@@ -2119,95 +2118,95 @@
     <!-- Finance/Controlling/Operations Expander -->
     <div class="tools-expander">
         <button class="tools-toggle" id="finance-toggle" onclick="toggleFinanceTools()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-            💶 Finance / Controlling / Operations <span class="arrow">▼</span>
+            ðŸ’¶ Finance / Controlling / Operations <span class="arrow">â–¼</span>
         </button>
         <div class="tools-content" id="finance-content">
             <div class="tools-grid">
-                <button class="tool-btn" onclick="showToast('📦 Inventory Tool - Coming Soon!');" style="border-color: #059669;">
-                    <span class="tool-icon">📦</span>
+                <button class="tool-btn" onclick="showToast('ðŸ“¦ Inventory Tool - Coming Soon!');" style="border-color: #059669;">
+                    <span class="tool-icon">ðŸ“¦</span>
                     Inventory & Restock
                 </button>
-                <button class="tool-btn" onclick="showToast('💳 Financials - Coming Soon!');" style="border-color: #059669;">
-                    <span class="tool-icon">💳</span>
+                <button class="tool-btn" onclick="showToast('ðŸ’³ Financials - Coming Soon!');" style="border-color: #059669;">
+                    <span class="tool-icon">ðŸ’³</span>
                     Financials
                 </button>
             </div>
         </div>
     </div>
     
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     <!-- OUTLOOK SECTION -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     
 
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     <!-- UPCOMING EVENTS -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     <div class="upcoming-events">
         <div class="upcoming-header">
-            <span class="upcoming-title">📅 UPCOMING EVENTS</span>
+            <span class="upcoming-title">ðŸ“… UPCOMING EVENTS</span>
             <span class="upcoming-count" id="upcoming-count">0</span>
         </div>
         <div id="upcoming-events-container">
             <div class="upcoming-placeholder" id="upcoming-placeholder">
-                <p>📤 Upload BMT .ics Datei um Events zu sehen</p>
+                <p>ðŸ“¤ Upload BMT .ics Datei um Events zu sehen</p>
                 <small>Events werden automatisch aus BookMeTender geladen</small>
             </div>
         </div>
     </div>
     
     <!-- DEPARTMENTS -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ -->
     
     <div class="departments">
         <!-- OFFICE -->
         <div class="dept office">
             <div class="dept-header">
-                <div class="dept-header-left">💼 OFFICE</div>
-                <span class="task-count" id="office-task-count">â€”</span>
+                <div class="dept-header-left">ðŸ’¼ OFFICE</div>
+                <span class="task-count" id="office-task-count">â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="tasks-inline" id="office-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="office-tasks-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your tasks</p>
-                            <button onclick="handleAuth()">🔒 Connect</button>
+                            <button onclick="handleAuth()">ðŸ”’ Connect</button>
                         </div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="office-notes">
                     <div class="tasks-header" onclick="toggleNotesSection()">
-                        <span>📌 Notes <span class="task-count" id="notes-count">â€”</span> <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">🔄</button>
+                        <span>ðŸ“Œ Notes <span class="task-count" id="notes-count">â‚¬â€</span> <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="office-notes-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your notes</p>
-                            <button onclick="handleAuth()">🔒 Connect</button>
+                            <button onclick="handleAuth()">ðŸ”’ Connect</button>
                         </div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('office')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('office')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header">
-                <div class="dept-header-left">🍸 BAR</div>
-                <span class="task-count" id="bar-task-count">â€”</span>
+                <div class="dept-header-left">ðŸ¸ BAR</div>
+                <span class="task-count" id="bar-task-count">â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
@@ -2215,28 +2214,28 @@
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="bar-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ”’ Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('bar')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('bar')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header">
-                <div class="dept-header-left">🏃 RUNNER</div>
-                <span class="task-count" id="runner-task-count">â€”</span>
+                <div class="dept-header-left">ðŸƒ RUNNER</div>
+                <span class="task-count" id="runner-task-count">â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQf_QmeV8FxX-7zYGW1qi1t0D9WJjEk47bYCbXBGey4qAbDY5dU3yw_ByQ6jY1r59sUFlS_8NmCy3jl/pub?embedded=true" style="height:400px;"></iframe>
@@ -2244,28 +2243,28 @@
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="runner-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ”’ Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('runner')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('runner')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- TECHNIK -->
         <div class="dept technik">
             <div class="dept-header">
-                <div class="dept-header-left">🔧 TECHNIK</div>
-                <span class="task-count" id="technik-task-count">â€”</span>
+                <div class="dept-header-left">ðŸ”§ TECHNIK</div>
+                <span class="task-count" id="technik-task-count">â‚¬â€</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📅 Technikerkalender</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“… Technikerkalender</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <div class="calendar-list">
@@ -2286,42 +2285,42 @@
                 </div>
                 <div class="tasks-inline" id="technik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="technik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ”’ Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('technik')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('technik')">ðŸ“ Open in To Do</button>
             </div>
         </div>
         
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header">
-                <div class="dept-header-left">🛸 SPUTNIK BAR</div>
-                <span class="task-count" id="sputnik-task-count">—</span>
+                <div class="dept-header-left">ðŸ›¸ SPUTNIK BAR</div>
+                <span class="task-count" id="sputnik-task-count">â€”</span>
             </div>
             <div class="dept-content">
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📅 Reservierungen</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“… Reservierungen</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <div id="sputnik-reservations-container" style="padding: 10px;">
                             <div style="text-align: center; color: #888; font-size: 13px;">
-                                <p>📅 Reservierungen aus Google Calendar</p>
-                                <button onclick="loadSputnikReservations()" style="margin-top: 10px; background: #8E24AA; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">🔄 Laden</button>
+                                <p>ðŸ“… Reservierungen aus Google Calendar</p>
+                                <button onclick="loadSputnikReservations()" style="margin-top: 10px; background: #8E24AA; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">ðŸ”„ Laden</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="collapsible-section">
                     <div class="section-label" onclick="toggleSection(this)">
-                        <span>📋 Shiftplan</span>
-                        <span class="toggle-icon">▼</span>
+                        <span>ðŸ“‹ Shiftplan</span>
+                        <span class="toggle-icon">â–¼</span>
                     </div>
                     <div class="section-content">
                         <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
@@ -2329,28 +2328,28 @@
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
                     <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span>📝 Tasks <span class="toggle-icon">▼</span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">🔄</button>
+                        <span>ðŸ“ Tasks <span class="toggle-icon">â–¼</span></span>
+                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')">ðŸ”„</button>
                     </div>
                     <div class="tasks-list" id="sputnik-tasks-list">
-                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">🔒 Connect</button></div>
+                        <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()">ðŸ”’ Connect</button></div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('sputnik')">📝 Open in To Do</button>
+                <button class="tasks-btn" onclick="openToDoList('sputnik')">ðŸ“ Open in To Do</button>
             </div>
         </div>
     </div>
     
     <div class="footer">
-        <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
+        <a href="https://to-do.live.com" target="_blank">âœ… Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.8.5.1 • 29.12.2025 • Draft Fix</div>
+    <div class="version">Work Hub v14.9 â€¢ 29.12.2025 â€¢ Draft Fix</div>
 
     <script>
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // MSAL CONFIG
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         const msalConfig = {
             auth: {
@@ -2374,9 +2373,9 @@
         let msalInstance = null;
         let accessToken = null;
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // DATA
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         const SERIE_STATS = {
             turbo: { avgVVK: 436, avgFOH: 336, avgTotal: 772, barPP: 15.3, events: 25 },
@@ -2432,15 +2431,15 @@
         
         const EIGENVERANSTALTUNGEN = ['turbo', 'selected', 'halloween', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // MSAL AUTH
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         async function initMsal() {
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
                 console.error('MSAL library not loaded!');
-                document.getElementById('auth-status-text').textContent = 'âŒ Auth Library fehlt';
+                document.getElementById('auth-status-text').textContent = 'Å’ Auth Library fehlt';
                 return;
             }
             
@@ -2486,10 +2485,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("✅ Verbunden!");
+                    showToast("âœ… Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("âŒ Login fehlgeschlagen", true); 
+                    showToast("Å’ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -2497,7 +2496,7 @@
         
         // Force sign out and re-authenticate (for permission updates)
         async function handleSignOut() {
-            showToast("🔄 Melde ab und aktualisiere Berechtigungen...");
+            showToast("ðŸ”„ Melde ab und aktualisiere Berechtigungen...");
             try {
                 if (msalInstance) {
                     await msalInstance.logoutPopup();
@@ -2517,17 +2516,17 @@
                     console.log('New scopes granted:', response.scopes);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("✅ Neu verbunden mit aktualisierten Berechtigungen!");
+                    showToast("âœ… Neu verbunden mit aktualisierten Berechtigungen!");
                 } catch (error) {
                     console.error("Re-login error:", error);
-                    showToast("❌ Re-Login fehlgeschlagen", true);
+                    showToast("âŒ Re-Login fehlgeschlagen", true);
                 }
             }, 500);
         }
         
         async function forceResetAuth() {
             // Clear everything and start fresh
-            showToast("🔄 Cache wird gelöscht...");
+            showToast("ðŸ”„ Cache wird geloescht...");
             
             // Clear MSAL cache
             if (msalInstance) {
@@ -2548,7 +2547,7 @@
             updateAuthUI(null);
             resetAllUI();
             
-            showToast("✅ Cache gelöscht! Seite wird neu geladen...");
+            showToast("âœ… Cache geloescht! Seite wird neu geladen...");
             
             // Reload page to ensure clean state
             setTimeout(() => location.reload(), 1000);
@@ -2563,13 +2562,13 @@
                 dot.classList.add('connected');
                 statusText.textContent = 'Connected';
                 userText.textContent = account.username || '';
-                authBtn.innerHTML = '🚪 Sign out';
+                authBtn.innerHTML = 'ðŸšª Sign out';
                 authBtn.classList.add('logout');
             } else {
                 dot.classList.remove('connected');
                 statusText.textContent = 'Not connected';
                 userText.textContent = '';
-                authBtn.innerHTML = '🔒 Sign in';
+                authBtn.innerHTML = 'ðŸ”’ Sign in';
                 authBtn.classList.remove('logout');
             }
         }
@@ -2590,17 +2589,17 @@
         
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
-                document.getElementById(`${d}-task-count`).textContent = 'â€”';
-                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔒</button></div>';
+                document.getElementById(`${d}-task-count`).textContent = 'â‚¬â€';
+                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">ðŸ”’</button></div>';
             });
             // Reset Notes section
-            document.getElementById('notes-count').textContent = 'â€”';
-            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">🔒</button></div>';
+            document.getElementById('notes-count').textContent = 'â‚¬â€';
+            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">ðŸ”’</button></div>';
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // TASKS
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         async function loadAllTasks() {
             if (!accessToken) return;
@@ -2619,13 +2618,13 @@
                 });
                 const data = await r.json();
                 const tasks = data.value || [];
-                countEl.textContent = tasks.length || 'âœ”';
+                countEl.textContent = tasks.length || 'Å“â€';
                 listEl.innerHTML = tasks.length ? tasks.map(t => {
                     let dueClass = '', dueText = '';
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = '€berfällig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = 'â‚¬berfaellig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -2634,8 +2633,8 @@
                         <div class="task-info"><div class="task-title">${esc(t.title)}</div>${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
-                }).join('') : '<div class="tasks-empty">🎉 Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">⚙️</div>'; }
+                }).join('') : '<div class="tasks-empty">ðŸŽ‰ Alles erledigt!</div>';
+            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty">âš™ï¸</div>'; }
         }
         
         async function completeTask(taskId, dept) {
@@ -2647,7 +2646,7 @@
                     headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
-                showToast("✅ Erledigt!");
+                showToast("âœ… Erledigt!");
                 setTimeout(() => loadTasks(dept), 500);
             } catch (e) { el.querySelector('.task-checkbox').classList.remove('checked'); }
         }
@@ -2655,9 +2654,9 @@
         function refreshTasks(d) { const b = document.querySelector(`#${d}-tasks .refresh-btn`); b.classList.add('spinning'); loadTasks(d).then(() => b.classList.remove('spinning')); }
         function openToDoList(d) { window.open(`https://to-do.live.com/tasks/${TODO_LISTS[d]}`, '_blank'); }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // NOTES LIST (Office)
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         async function loadNotesList() {
             if (!accessToken) return;
@@ -2717,7 +2716,7 @@
                         checklistHtml = '<div class="note-checklist">' +
                             note.checklistItems.map(item => 
                                 '<div class="checklist-item ' + (item.isChecked ? 'checked' : '') + '">' +
-                                '<span class="checklist-bullet">' + (item.isChecked ? 'â˜‘' : 'â˜') + '</span>' +
+                                '<span class="checklist-bullet">' + (item.isChecked ? 'Ëœâ€˜' : 'Ëœ') + '</span>' +
                                 '<span>' + item.displayName + '</span>' +
                                 '</div>'
                             ).join('') +
@@ -2731,7 +2730,7 @@
                     html += '<div class="task-checkbox" onclick="event.stopPropagation(); noteComplete(\'' + noteId + '\', this)"></div>';
                     html += '<div class="task-info">';
                     if (hasDetails) {
-                        html += '<div class="task-title"><span class="note-toggle-icon">▶</span> ' + title + '</div>';
+                        html += '<div class="task-title"><span class="note-toggle-icon">â–¶</span> ' + title + '</div>';
                     } else {
                         html += '<div class="task-title">' + title + '</div>';
                     }
@@ -2779,11 +2778,11 @@
             if (isOpen) {
                 details.classList.remove('open');
                 details.style.display = 'none';
-                if (icon) icon.textContent = '▶';
+                if (icon) icon.textContent = 'â–¶';
             } else {
                 details.classList.add('open');
                 details.style.display = 'block';
-                if (icon) icon.textContent = '▼';
+                if (icon) icon.textContent = 'â–¼';
             }
         }
         
@@ -2797,7 +2796,7 @@
                     headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: 'completed' })
                 });
-                showToast("✅ Note erledigt!");
+                showToast("âœ… Note erledigt!");
                 setTimeout(function() { loadNotesList(); }, 500);
             } catch (e) { 
                 checkboxEl.classList.remove('checked'); 
@@ -2811,12 +2810,14 @@
             list.classList.toggle('open');
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // PRESALE CALCULATOR
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function calculatePreSale() {
-            const fohTickets = parseInt(document.getElementById('ps-foh-tickets').value) || 350;
+            const fohEl = document.getElementById('ps-foh-tickets');
+            if (!fohEl) return;
+            const fohTickets = parseInt(fohEl.value) || 350;
             const doorPrice = parseInt(document.getElementById('ps-door-price').value) || 22;
             
             // Sum all VVK phases
@@ -2826,7 +2827,7 @@
                 const tickets = parseInt(row.querySelector('.ps-tickets').value) || 0;
                 const price = parseInt(row.querySelector('.ps-price').value) || 0;
                 const rev = tickets * price;
-                row.querySelector('.phase-revenue').textContent = '€' + rev.toLocaleString();
+                row.querySelector('.phase-revenue').textContent = 'â‚¬' + rev.toLocaleString();
                 totalVVK += tickets;
                 totalVVKRev += rev;
             });
@@ -2837,19 +2838,21 @@
             const totalRev = totalVVKRev + fohRev;
             
             document.getElementById('ps-result-vvk').textContent = totalVVK;
-            document.getElementById('ps-result-vvk-rev').textContent = '€' + totalVVKRev.toLocaleString();
-            document.getElementById('ps-result-avg').textContent = '€' + avgVvk;
+            document.getElementById('ps-result-vvk-rev').textContent = 'â‚¬' + totalVVKRev.toLocaleString();
+            document.getElementById('ps-result-avg').textContent = 'â‚¬' + avgVvk;
             document.getElementById('ps-result-foh').textContent = fohTickets;
-            document.getElementById('ps-result-foh-rev').textContent = '€' + fohRev.toLocaleString();
-            document.getElementById('ps-result-total').textContent = '€' + totalRev.toLocaleString();
+            document.getElementById('ps-result-foh-rev').textContent = 'â‚¬' + fohRev.toLocaleString();
+            document.getElementById('ps-result-total').textContent = 'â‚¬' + totalRev.toLocaleString();
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // COST CALCULATOR
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function calculateCosts() {
-            const ticketRev = parseInt(document.getElementById('cc-ticket-rev').value) || 0;
+            const ticketEl = document.getElementById('cc-ticket-rev');
+            if (!ticketEl) return;
+            const ticketRev = parseInt(ticketEl.value) || 0;
             const barRev = parseInt(document.getElementById('cc-bar-rev').value) || 0;
             const totalRev = ticketRev + barRev;
             
@@ -2873,18 +2876,18 @@
             const profit = totalRev - totalCosts;
             const margin = totalRev > 0 ? ((profit / totalRev) * 100).toFixed(1) : 0;
             
-            document.getElementById('cc-result-revenue').textContent = `€${totalRev.toLocaleString()}`;
-            document.getElementById('cc-result-staff').textContent = `€${staffCosts.toLocaleString()}`;
-            document.getElementById('cc-result-fixed').textContent = `€${fixedCosts.toLocaleString()}`;
-            document.getElementById('cc-result-costs').textContent = `€${totalCosts.toLocaleString()}`;
-            document.getElementById('cc-result-profit').textContent = `€${profit.toLocaleString()}`;
+            document.getElementById('cc-result-revenue').textContent = `â‚¬${totalRev.toLocaleString()}`;
+            document.getElementById('cc-result-staff').textContent = `â‚¬${staffCosts.toLocaleString()}`;
+            document.getElementById('cc-result-fixed').textContent = `â‚¬${fixedCosts.toLocaleString()}`;
+            document.getElementById('cc-result-costs').textContent = `â‚¬${totalCosts.toLocaleString()}`;
+            document.getElementById('cc-result-profit').textContent = `â‚¬${profit.toLocaleString()}`;
             document.getElementById('cc-result-profit').className = `value ${profit >= 0 ? '' : 'red'}`;
             document.getElementById('cc-result-margin').textContent = `${margin}%`;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // EVENT PROJECTOR
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function updateProjectorData() {
             const serie = document.getElementById('ep-serie').value;
@@ -2896,8 +2899,8 @@
             document.getElementById('ep-avg-foh').textContent = s.avgFOH;
             document.getElementById('ep-avg-total').textContent = s.avgTotal;
             document.getElementById('ep-events').textContent = s.events;
-            document.getElementById('ep-bar-pp').textContent = `€${k.barPP}`;
-            document.getElementById('ep-bar-rev').textContent = `€${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
+            document.getElementById('ep-bar-pp').textContent = `â‚¬${k.barPP}`;
+            document.getElementById('ep-bar-rev').textContent = `â‚¬${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
             document.getElementById('ep-bar-guests').textContent = s.avgTotal;
             
             updateProjectorProjection();
@@ -2923,24 +2926,55 @@
             
             document.getElementById('ep-proj-vvk').textContent = `~${projVVK}`;
             document.getElementById('ep-proj-foh').textContent = `~${projFOH}`;
-            document.getElementById('ep-proj-bar').textContent = `~€${(projBar/1000).toFixed(1)}k`;
-            document.getElementById('ep-proj-total').textContent = `~€${(projTotal/1000).toFixed(0)}k`;
+            document.getElementById('ep-proj-bar').textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById('ep-proj-total').textContent = `~â‚¬${(projTotal/1000).toFixed(0)}k`;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // FACTSHEET GENERATOR
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
+        
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9 ===
+        function populateFactsheetDropdown() {
+            const select = document.getElementById('fs-event-select');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Event wahlen --</option>';
+            const stored = localStorage.getItem('bmtEvents');
+            if (!stored) return;
+            let events = [];
+            try { events = JSON.parse(stored); } catch(e) { return; }
+            const today = new Date(); today.setHours(0,0,0,0);
+            const future = events.filter(e => {
+                const d = new Date(e.date || e.dtstart);
+                return d >= today;
+            }).sort((a,b) => new Date(a.date||a.dtstart) - new Date(b.date||b.dtstart)).slice(0,4);
+            if (!future.length) { select.innerHTML += '<option disabled>Keine Events</option>'; return; }
+            future.forEach((e,i) => {
+                const d = new Date(e.date || e.dtstart);
+                const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+                const id = 'bmt_' + i + '_' + d.toISOString().slice(0,10).replace(/-/g,'');
+                const name = e.name || e.summary || 'Event';
+                const opt = document.createElement('option');
+                opt.value = id; opt.textContent = name + ' - ' + days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE');
+                select.appendChild(opt);
+                EVENT_STAFF_DATA[id] = { name: name, datum: d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}),
+                    technik:'', cvd:'', eventType:'CLUB', mainFloorTime:'00:00', terrasse:'', kitchen:'',
+                    main1:'',main2:'',main3:'',main4:'', runner1:'',runner2:'',runner3:'',runner4:'',runner5:'',runner6:'',
+                    gard1:'',gard2:'',gard3:'' };
+            });
+            console.log('Factsheet dropdown: ' + future.length + ' events');
+        }
         function isEigenveranstaltung(name) { return EIGENVERANSTALTUNGEN.some(e => name.toLowerCase().includes(e)); }
         function getKassa(name) { 
             if (!isEigenveranstaltung(name)) return "FREMD";
             
             const selected = [];
-            if (document.getElementById('kassa-matthaeus')?.checked) selected.push('Matthäus');
+            if (document.getElementById('kassa-matthaeus')?.checked) selected.push('Matthaeus');
             if (document.getElementById('kassa-schadi')?.checked) selected.push('Schadi');
             if (document.getElementById('kassa-isa')?.checked) selected.push('Isa');
             
-            return selected.length > 0 ? selected.join(' / ') : "â€”";
+            return selected.length > 0 ? selected.join(' / ') : "â‚¬â€";
         }
         
         function updateFactsheetPreview() {
@@ -3138,6 +3172,7 @@
             
             updateFactsheetPreview();
             refreshBMTFromStorage();
+            populateFactsheetDropdown();
             initMonthFilter();
             updateUpcomingEvents();
         }
@@ -3150,7 +3185,7 @@
                 document.getElementById('fs-event-select').value = eventId;
                 fillFactsheetForm(e);
                 openModal('factsheet-modal');
-                showToast(`📎 ${e.name} Factsheet geladen!`);
+                showToast(`ðŸ“Ž ${e.name} Factsheet geladen!`);
             }
         }
         
@@ -3162,7 +3197,7 @@
             window.getSelection().addRange(range);
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
-            showToast("📎 Factsheet kopiert!");
+            showToast("ðŸ“Ž Factsheet kopiert!");
         }
         
         function printFactsheet() {
@@ -3173,9 +3208,9 @@
             w.print();
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // VVK TRACKER (Events Dashboard)
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function getDaysUntil(id) {
             const d = EVENT_CONFIG[id].date;
@@ -3185,6 +3220,9 @@
         
         function updateProjection(id) {
             const cfg = EVENT_CONFIG[id];
+            if (!cfg) return;
+            const el = document.getElementById(id + '-vvk-input');
+            if (!el) return;
             const s = SERIE_STATS[cfg.serie];
             const k = KW_STATS[cfg.kw] || { barPP: 16.5 };
             const days = getDaysUntil(id);
@@ -3220,21 +3258,21 @@
             document.getElementById(`${id}-days`).textContent = `${days} Tage`;
             document.getElementById(`${id}-vvk-proj`).textContent = `~${projVVK}`;
             document.getElementById(`${id}-foh-proj`).textContent = `~${projFOH}`;
-            document.getElementById(`${id}-bar-proj`).textContent = `~€${(projBar/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-total-proj`).textContent = `~€${(projTotal/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-tickets-quick`).textContent = `🎫 ~${projVVK + projFOH}`;
-            document.getElementById(`${id}-bar-quick`).textContent = `€ ~€${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-bar-proj`).textContent = `~â‚¬${(projBar/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-total-proj`).textContent = `~â‚¬${(projTotal/1000).toFixed(1)}k`;
+            document.getElementById(`${id}-tickets-quick`).textContent = `ðŸŽ« ~${projVVK + projFOH}`;
+            document.getElementById(`${id}-bar-quick`).textContent = `â‚¬ ~â‚¬${(projBar/1000).toFixed(1)}k`;
             
             const progress = Math.min(100, (currentVVK / vvkZiel) * 100);
             document.getElementById(`${id}-progress`).style.width = `${progress}%`;
             
             const expected = Math.round(vvkZiel * pct);
-            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d → Soll ~${expected}`;
+            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d â†’ Soll ~${expected}`;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // UI HELPERS
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
@@ -3292,7 +3330,7 @@
             const textarea = document.getElementById('quick-notes-text');
             
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showToast('❌ Speech-to-Text nicht unterstützt in diesem Browser', true);
+                showToast('âŒ Speech-to-Text nicht unterstuetzt in diesem Browser', true);
                 return;
             }
             
@@ -3303,8 +3341,8 @@
                 }
                 isListening = false;
                 btn.style.background = '';
-                btn.textContent = '🎤';
-                showToast('🎤 Spracheingabe beendet');
+                btn.textContent = 'ðŸŽ¤';
+                showToast('ðŸŽ¤ Spracheingabe beendet');
                 return;
             }
             
@@ -3318,8 +3356,8 @@
             speechRecognition.onstart = function() {
                 isListening = true;
                 btn.style.background = '#ef4444';
-                btn.textContent = '🔴';
-                showToast('🎤 Spracheingabe aktiv...');
+                btn.textContent = 'ðŸ”´';
+                showToast('ðŸŽ¤ Spracheingabe aktiv...');
             };
             
             speechRecognition.onresult = function(event) {
@@ -3339,14 +3377,14 @@
                 console.error('Speech error:', event.error);
                 isListening = false;
                 btn.style.background = '';
-                btn.textContent = '🎤';
-                showToast('❌ Spracheingabe Fehler: ' + event.error, true);
+                btn.textContent = 'ðŸŽ¤';
+                showToast('âŒ Spracheingabe Fehler: ' + event.error, true);
             };
             
             speechRecognition.onend = function() {
                 isListening = false;
                 btn.style.background = '';
-                btn.textContent = '🎤';
+                btn.textContent = 'ðŸŽ¤';
             };
             
             speechRecognition.start();
@@ -3452,10 +3490,10 @@
                 }
                 
                 const indicator = document.getElementById('notes-saved');
-                indicator.textContent = '⚙️ Synced';
+                indicator.textContent = 'âš™ï¸ Synced';
                 indicator.classList.add('show');
                 setTimeout(() => {
-                    indicator.textContent = 'âœ” Gespeichert';
+                    indicator.textContent = 'Å“â€ Gespeichert';
                     indicator.classList.remove('show');
                 }, 2000);
             } catch (err) {
@@ -3486,7 +3524,7 @@
                     const notes = data.value[0].body.content;
                     document.getElementById('quick-notes-text').value = notes;
                     localStorage.setItem('workhub-quick-notes', notes);
-                    console.log('✅ Notes loaded from To Do');
+                    console.log('âœ… Notes loaded from To Do');
                 } else {
                     loadQuickNotes();
                 }
@@ -3509,9 +3547,9 @@
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // NYE PROJECTOR (3-Jahre Benchmark)
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         const NYE_SCENARIOS = {
             base: {
@@ -3586,9 +3624,9 @@
             document.getElementById('nye-foh').textContent = scenario.foh.toLocaleString('de-DE');
             document.getElementById('nye-total').textContent = (scenario.presale + scenario.foh).toLocaleString('de-DE');
             
-            document.getElementById('nye-foh-revenue').textContent = '€' + scenario.fohRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-bar-revenue').textContent = '€' + scenario.barRevenue.toLocaleString('de-DE');
-            document.getElementById('nye-total-revenue').textContent = '€' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
+            document.getElementById('nye-foh-revenue').textContent = 'â‚¬' + scenario.fohRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-bar-revenue').textContent = 'â‚¬' + scenario.barRevenue.toLocaleString('de-DE');
+            document.getElementById('nye-total-revenue').textContent = 'â‚¬' + (scenario.fohRevenue + scenario.barRevenue).toLocaleString('de-DE');
             
             // Update arrival table
             const arrivalBody = document.getElementById('nye-arrival-body');
@@ -3622,7 +3660,7 @@
                 return `
                     <tr style="${isPeak ? 'background: rgba(34, 197, 94, 0.2);' : ''}">
                         <td style="${isPeak ? 'font-weight: 700; color: #22c55e;' : ''}">${row.time}</td>
-                        <td style="${isPeak ? 'font-weight: 700;' : ''}">€${row.revenue.toLocaleString('de-DE')}</td>
+                        <td style="${isPeak ? 'font-weight: 700;' : ''}">â‚¬${row.revenue.toLocaleString('de-DE')}</td>
                         <td>${row.pct}%</td>
                         <td><div style="background: ${isPeak ? '#22c55e' : '#3b82f6'}; height: 12px; width: ${barWidth}%; border-radius: 4px;"></div></td>
                     </tr>
@@ -3641,27 +3679,27 @@
             if (e.target === this) calculateNYE();
         });
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // PEAK GRID DASHBOARD
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         const PEAK_GRID_DATA = [
             { time: '22:00-22:30', door: 'low', coat: 'low', bar: 'low', action: 'Start. Systems check. Staff settle.' },
             { time: '22:30-23:00', door: 'low', coat: 'low', bar: 'low', action: 'Prepare wardrobe rhythm. Keep lanes clean.' },
             { time: '23:00-23:30', door: 'med', coat: 'med', bar: 'low', action: 'Early wave. Terrace helps absorb.' },
-            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: '⚙️ Hanger check must be done!' },
-            { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: '🎆 Midnight push. Door speed only.' },
+            { time: '23:30-00:00', door: 'high', coat: 'high', bar: 'med', action: 'âš™ï¸ Hanger check must be done!' },
+            { time: '00:00-00:15', door: 'high', coat: 'high', bar: 'high', action: 'ðŸŽ† Midnight push. Door speed only.' },
             { time: '00:15-00:30', door: 'high', coat: 'high', bar: 'high', action: 'Queue mgmt. Keep corridor clear.' },
-            { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: '🔴 BOTH LANES DO EVERYTHING!' },
-            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: '€ Bar speed menu. Stop slow drinks.' },
+            { time: '00:30-00:45', door: 'max', coat: 'high', bar: 'max', action: 'ðŸ”´ BOTH LANES DO EVERYTHING!' },
+            { time: '00:45-01:00', door: 'max', coat: 'high', bar: 'max', action: 'â‚¬ Bar speed menu. Stop slow drinks.' },
             { time: '01:00-01:15', door: 'max', coat: 'high', bar: 'max', action: 'Arrival overlap continues.' },
-            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: '€€ MANDATORY TUB REFILL!' },
+            { time: '01:15-01:30', door: 'max', coat: 'high', bar: 'max', action: 'â‚¬â‚¬ MANDATORY TUB REFILL!' },
             { time: '01:30-01:45', door: 'max', coat: 'high', bar: 'max', action: 'Wardrobe overflow if needed.' },
-            { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: '🚨 Security clears choke points.' },
-            { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: '💥 MAX density inside (~1,450)' },
+            { time: '01:45-02:00', door: 'max', coat: 'high', bar: 'max', action: 'ðŸš¨ Security clears choke points.' },
+            { time: '02:00-02:15', door: 'high', coat: 'high', bar: 'max', action: 'ðŸ’¥ MAX density inside (~1,450)' },
             { time: '02:15-02:30', door: 'high', coat: 'high', bar: 'high', action: 'Keep both lanes flexible.' },
             { time: '02:30-02:45', door: 'high', coat: 'high', bar: 'high', action: 'Queues dropping? Decide lane merge.' },
-            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: '€€ Optional final tub refill window.' },
+            { time: '02:45-03:00', door: 'high', coat: 'med', bar: 'high', action: 'â‚¬â‚¬ Optional final tub refill window.' },
             { time: '03:00-03:30', door: 'med', coat: 'med', bar: 'high', action: 'Pressure easing. Stop tubs after 03:30.' },
             { time: '03:30-04:00', door: 'low', coat: 'low', bar: 'med', action: 'Reset & deep restock. Stabilize.' }
         ];
@@ -3724,9 +3762,9 @@
             renderPeakGrid();
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // GUEST LIST PARSER
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         let parsedGuestList = [];
         
@@ -3738,7 +3776,7 @@
             
             if (fileName.endsWith('.zip') || file.type === 'application/zip') {
                 try {
-                    showToast('📦 ZIP wird entpackt...');
+                    showToast('ðŸ“¦ ZIP wird entpackt...');
                     const zip = await JSZip.loadAsync(file);
                     
                     let txtFile = null;
@@ -3752,19 +3790,19 @@
                     if (txtFile) {
                         const content = await txtFile.async('string');
                         document.getElementById('gl-chat-input').value = content;
-                        showToast('📱 WhatsApp Export aus ZIP geladen!');
+                        showToast('ðŸ“± WhatsApp Export aus ZIP geladen!');
                     } else {
-                        showToast('âš ï¸ Keine .txt Datei im ZIP gefunden', true);
+                        showToast('Å¡  Keine .txt Datei im ZIP gefunden', true);
                     }
                 } catch (e) {
                     console.error('ZIP error:', e);
-                    showToast('âŒ ZIP konnte nicht gelesen werden', true);
+                    showToast('Å’ ZIP konnte nicht gelesen werden', true);
                 }
             } else {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('gl-chat-input').value = e.target.result;
-                    showToast('📱 WhatsApp Export geladen!');
+                    showToast('ðŸ“± WhatsApp Export geladen!');
                 };
                 reader.readAsText(file);
             }
@@ -3782,12 +3820,12 @@
             const chatText = document.getElementById('gl-chat-input').value;
             
             if (!dateInput) {
-                showToast('âš ï¸ Bitte Datum eingeben (z.B. 27.12.25)', true);
+                showToast('Å¡  Bitte Datum eingeben (z.B. 27.12.25)', true);
                 return;
             }
             
             if (!chatText) {
-                showToast('âš ï¸ Bitte WhatsApp Chat einfügen', true);
+                showToast('Å¡  Bitte WhatsApp Chat einfuegen', true);
                 return;
             }
             
@@ -3800,8 +3838,8 @@
             let currentMessage = '';
             
             const headerPatterns = [
-                /^(\d{1,2}\/\d{1,2}\/\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\s*[-â€“]\s*([^:]+):\s*(.*)$/,
-                /^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*[-â€“]?\s*([^:]+):\s*(.*)$/
+                /^(\d{1,2}\/\d{1,2}\/\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\s*[-â‚¬â€œ]\s*([^:]+):\s*(.*)$/,
+                /^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*[-â‚¬â€œ]?\s*([^:]+):\s*(.*)$/
             ];
             
             for (let i = 0; i < lines.length; i++) {
@@ -3884,17 +3922,17 @@
                 cleanMessage = cleanMessage.replace(new RegExp(d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '');
             });
             
-            const keywords = ['GL', 'GUESTLIST', 'GUEST LIST', 'GÄSTE', 'TURBO', 'SELECTED', 'NYE', 
+            const keywords = ['GL', 'GUESTLIST', 'GUEST LIST', 'G„STE', 'TURBO', 'SELECTED', 'NYE', 
                 'SILVESTER', 'HALLOWEEN', 'GRELLE', 'FORELLE', 'VIP', 'FREE', 'ENTRY', 'EINTRITT', '+1', '+2', '+3'];
             keywords.forEach(kw => {
                 cleanMessage = cleanMessage.replace(new RegExp('\\*?' + kw + '\\*?', 'gi'), '');
             });
             
-            const lines = cleanMessage.split(/[•\n,;\/\\|]+/);
+            const lines = cleanMessage.split(/[â€¢\n,;\/\\|]+/);
             
             lines.forEach(line => {
                 let name = line.trim();
-                name = name.replace(/^[\s\-â€“â€”•·*#\d.\)]+/, '').trim();
+                name = name.replace(/^[\s\-â‚¬â€œâ‚¬â€â€¢*#\d.\)]+/, '').trim();
                 name = name.replace(/[.,;:!?]+$/, '').trim();
                 
                 const subNames = name.split(/,\s*/);
@@ -3902,10 +3940,10 @@
                     subName = subName.trim();
                     if (subName.length < 2) return;
                     if (/^\d+$/.test(subName)) return;
-                    if (/^[^a-zA-ZäöüÄÖÜß]+$/.test(subName)) return;
+                    if (/^[^a-zA-Zaeoeue„–œŸ]+$/.test(subName)) return;
                     if (/^(ja|nein|ok|yes|no|danke|bitte|hi|hey|hallo|hello|thx|thanks)$/i.test(subName)) return;
                     
-                    if (/[a-zA-ZäöüÄÖÜß]/.test(subName)) {
+                    if (/[a-zA-Zaeoeue„–œŸ]/.test(subName)) {
                         subName = subName.split(' ').map(word => 
                             word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
                         ).join(' ');
@@ -3929,7 +3967,7 @@
             summaryDiv.innerHTML = `
                 <div style="background: #252542; padding: 15px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 28px; font-weight: 700; color: #22c55e;">${guests.length}</div>
-                    <div style="font-size: 12px; color: #888;">Gäste</div>
+                    <div style="font-size: 12px; color: #888;">Gaeste</div>
                 </div>
                 <div style="background: #252542; padding: 15px; border-radius: 10px; text-align: center;">
                     <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${submitters.length}</div>
@@ -3942,7 +3980,7 @@
             `;
             
             let html = `<div style="font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #fff;">
-                GUEST LIST â€“ ${eventName.toUpperCase()} ${date}
+                GUEST LIST â‚¬â€œ ${eventName.toUpperCase()} ${date}
             </div>`;
             
             html += `<table style="width: 100%; border-collapse: collapse;">
@@ -3966,20 +4004,20 @@
             html += `</tbody></table>`;
             outputDiv.innerHTML = html;
             
-            showToast(`✅ ${guests.length} Gäste gefunden!`);
+            showToast(`âœ… ${guests.length} Gaeste gefunden!`);
         }
         
         function copyGuestList() {
             if (parsedGuestList.length === 0) {
-                showToast('âš ï¸ Keine Gäste zum Kopieren', true);
+                showToast('Å¡  Keine Gaeste zum Kopieren', true);
                 return;
             }
             
             const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
             const date = document.getElementById('gl-date').value.trim();
             
-            let text = `GUEST LIST â€“ ${eventName.toUpperCase()} ${date}\n`;
-            text += 'â”€'.repeat(40) + '\n\n';
+            let text = `GUEST LIST â‚¬â€œ ${eventName.toUpperCase()} ${date}\n`;
+            text += 'â€â‚¬'.repeat(40) + '\n\n';
             
             parsedGuestList.forEach((g, i) => {
                 text += `${i + 1}. ${g.name}`;
@@ -3989,19 +4027,19 @@
                 text += '\n';
             });
             
-            text += '\n' + 'â”€'.repeat(40);
-            text += `\nTotal: ${parsedGuestList.length} Gäste`;
+            text += '\n' + 'â€â‚¬'.repeat(40);
+            text += `\nTotal: ${parsedGuestList.length} Gaeste`;
             
             navigator.clipboard.writeText(text).then(() => {
-                showToast('📋 Guest List kopiert!');
+                showToast('ðŸ“‹ Guest List kopiert!');
             }).catch(() => {
-                showToast('âŒ Kopieren fehlgeschlagen', true);
+                showToast('Å’ Kopieren fehlgeschlagen', true);
             });
         }
         
         function downloadGuestListCSV() {
             if (parsedGuestList.length === 0) {
-                showToast('âš ï¸ Keine Gäste zum Exportieren', true);
+                showToast('Å¡  Keine Gaeste zum Exportieren', true);
                 return;
             }
             
@@ -4019,7 +4057,7 @@
             link.download = `GuestList_${eventName}_${date}.csv`;
             link.click();
             
-            showToast('📥 CSV heruntergeladen!');
+            showToast('ðŸ“¥ CSV heruntergeladen!');
         }
         
         function escapeHtml(str) {
@@ -4028,9 +4066,9 @@
             return div.innerHTML;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // EMAIL COMPOSER
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         async function sendEmail() {
             const to = document.getElementById('email-to').value;
@@ -4039,18 +4077,18 @@
             const status = document.getElementById('email-status');
             
             if (!to || !subject || !body) {
-                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
+                status.textContent = 'âš™ï¸ Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âš™ï¸ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '📤 Sende...';
+            status.textContent = 'ðŸ“¤ Sende...';
             status.style.color = '#888';
             
             try {
@@ -4070,9 +4108,9 @@
                 });
                 
                 if (response.ok || response.status === 202) {
-                    status.textContent = '✅ E-Mail gesendet!';
+                    status.textContent = 'âœ… E-Mail gesendet!';
                     status.style.color = '#22c55e';
-                    showToast('✅ E-Mail gesendet!');
+                    showToast('âœ… E-Mail gesendet!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -4083,11 +4121,11 @@
                     }, 2000);
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Å’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Å’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -4100,18 +4138,18 @@
             const status = document.getElementById('email-status');
             
             if (!subject || !body) {
-                status.textContent = '⚠️ Bitte mindestens Betreff und Nachricht ausfüllen';
+                status.textContent = 'âš ï¸ Bitte mindestens Betreff und Nachricht ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '⚠️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âš ï¸ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '📝 Speichere als Entwurf...';
+            status.textContent = 'ðŸ“ Speichere als Entwurf...';
             status.style.color = '#888';
             
             try {
@@ -4141,9 +4179,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = '✅ Entwurf gespeichert!';
+                    status.textContent = 'âœ… Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('📝 Entwurf in Outlook gespeichert!');
+                    showToast('ðŸ“ Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -4157,26 +4195,26 @@
                     console.error('Draft error:', err);
                     // Check if it's a permission error
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
-                        status.innerHTML = '❌ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
+                        status.innerHTML = 'âŒ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
                     } else {
-                        status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                        status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
                     }
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = '❌ Fehler: ' + e.message;
+                status.textContent = 'âŒ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
         
         function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
 
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // BMT CALENDAR INTEGRATION
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
         let bmtEvents = [];
@@ -4184,7 +4222,7 @@
         
         // Auto-load BMT calendar via CORS proxy
         async function autoLoadBMT() {
-            showToast('🔄 Lade BMT Kalender...');
+            showToast('ðŸ”„ Lade BMT Kalender...');
             
             // Try multiple CORS proxies
             const proxies = [
@@ -4212,7 +4250,7 @@
                             
                             renderBMTEvents();
                             renderUpcomingFromBMT();
-                            showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
+                            showToast('âœ… ' + bmtEvents.length + ' BMT Events geladen!');
                             return;
                         }
                     }
@@ -4222,10 +4260,10 @@
             }
             
             // All proxies failed - offer manual download
-            showToast('⚠️ Auto-Load fehlgeschlagen. Bitte manuell herunterladen.', true);
+            showToast('âš ï¸ Auto-Load fehlgeschlagen. Bitte manuell herunterladen.', true);
             
             // Open direct download link
-            if (confirm('Auto-Load nicht möglich (CORS).\n\nKlicke OK um die .ics Datei herunterzuladen, dann lade sie mit dem 📤 Button hoch.')) {
+            if (confirm('Auto-Load nicht moeglich (CORS).\n\nKlicke OK um die .ics Datei herunterzuladen, dann lade sie mit dem ðŸ“¤ Button hoch.')) {
                 window.open(BMT_FEED_URL, '_blank');
             }
         }
@@ -4284,10 +4322,10 @@
                 // Open factsheet modal
                 openModal('factsheet-modal');
                 
-                showToast('📎 ' + eventData.name + ' geladen');
+                showToast('ðŸ“Ž ' + eventData.name + ' geladen');
             } catch (e) {
                 console.error('Error parsing BMT event data:', e);
-                showToast('âŒ Fehler beim Laden', 'error');
+                showToast('Å’ Fehler beim Laden', 'error');
             }
         }
         
@@ -4431,10 +4469,10 @@
                     
                     renderBMTEvents();
                     renderUpcomingFromBMT();
-                    showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
+                    showToast('âœ… ' + bmtEvents.length + ' BMT Events geladen!');
                 } catch (err) {
                     console.error('Error parsing ICS:', err);
-                    showToast('âŒ Fehler beim Parsen der ICS Datei', 'error');
+                    showToast('Å’ Fehler beim Parsen der ICS Datei', 'error');
                 }
             };
             reader.readAsText(file);
@@ -4459,16 +4497,16 @@
                     
                     if (lastUpdate) {
                         const updateDate = new Date(lastUpdate);
-                        showToast('✅ Events geladen (Update: ' + updateDate.toLocaleDateString('de-DE') + ')');
+                        showToast('âœ… Events geladen (Update: ' + updateDate.toLocaleDateString('de-DE') + ')');
                     }
                 } catch (err) {
                     console.error('Error loading stored events:', err);
                     document.getElementById('bmt-status').innerHTML = 
-                        'âŒ Fehler beim Laden. Bitte .ics Datei neu uploaden.';
+                        'Å’ Fehler beim Laden. Bitte .ics Datei neu uploaden.';
                 }
             } else {
                 document.getElementById('bmt-status').innerHTML = 
-                    '📅 Keine Events gespeichert.<br><small>Bitte .ics Datei von BookMeTender uploaden</small>';
+                    'ðŸ“… Keine Events gespeichert.<br><small>Bitte .ics Datei von BookMeTender uploaden</small>';
             }
         }
         
@@ -4491,7 +4529,7 @@
             countBadge.textContent = upcomingEvents.length;
             
             if (upcomingEvents.length === 0) {
-                container.innerHTML = '<div class="bmt-status">Keine Events in den nächsten 30 Tagen</div>';
+                container.innerHTML = '<div class="bmt-status">Keine Events in den naechsten 30 Tagen</div>';
                 return;
             }
             
@@ -4529,11 +4567,11 @@
                     
                     return `
                         <div class="bmt-event-card ${catClass}">
-                            <div class="bmt-event-date">${dayName}, ${dateStr} · ${timeStr}</div>
+                            <div class="bmt-event-date">${dayName}, ${dateStr}  ${timeStr}</div>
                             <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
                                 <span class="bmt-event-category ${catClass}">${catLabel}</span>
-                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen">📎</button>
+                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen">ðŸ“Ž</button>
                             </div>
                         </div>
                     `;
@@ -4556,7 +4594,7 @@
             if (!bmtEvents || bmtEvents.length === 0) {
                 container.innerHTML = `
                     <div class="upcoming-placeholder">
-                        <p>📤 Upload BMT .ics Datei um Events zu sehen</p>
+                        <p>ðŸ“¤ Upload BMT .ics Datei um Events zu sehen</p>
                         <small>Events werden automatisch aus BookMeTender geladen</small>
                     </div>
                 `;
@@ -4580,7 +4618,7 @@
             if (upcomingEvents.length === 0) {
                 container.innerHTML = `
                     <div class="upcoming-placeholder">
-                        <p>📅 Keine kommenden Events</p>
+                        <p>ðŸ“… Keine kommenden Events</p>
                     </div>
                 `;
                 return;
@@ -4640,11 +4678,11 @@
                     <a href="https://calendar.google.com/calendar/u/0?cid=MzU1ZjkzOWRlN2RmMDc1YzI1MjcwNTNkYWRlYTY0YjliYTQxYTY5MTZkN2UxOTE3MDQzNjIzMjMwYjZiNzQ1MUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t" 
                        target="_blank"
                        style="background: #8E24AA; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600;">
-                        📅 In Google Calendar öffnen
+                        ðŸ“… In Google Calendar oeffnen
                     </a>
                     <button onclick="loadSputnikReservations()" 
                             style="background: #6b7280; color: white; padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; cursor: pointer; font-weight: 600;">
-                        🔄 Aktualisieren
+                        ðŸ”„ Aktualisieren
                     </button>
                 </div>
             `;
@@ -4656,7 +4694,7 @@
         });
         
         // CLEANING SCHEDULE GENERATOR
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         // Austrian public holidays 2025/2026
         const HOLIDAYS = [
@@ -4693,23 +4731,23 @@
             const cleaningDate = new Date(eventDate);
             
             if (dayOfWeek === 5) {
-                // FRIDAY event → Cleaning on SATURDAY (next day, so club is ready for Sat event)
+                // FRIDAY event â†’ Cleaning on SATURDAY (next day, so club is ready for Sat event)
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
             } else if (dayOfWeek === 6) {
-                // SATURDAY event → Cleaning on MONDAY (next workday, avoid Sunday double cost)
+                // SATURDAY event â†’ Cleaning on MONDAY (next workday, avoid Sunday double cost)
                 cleaningDate.setDate(cleaningDate.getDate() + 2); // +2 = Monday
                 // Check if Monday is a holiday
                 while (isHoliday(cleaningDate)) {
                     cleaningDate.setDate(cleaningDate.getDate() + 1);
                 }
             } else if (dayOfWeek === 0) {
-                // SUNDAY event → Cleaning on Monday (next workday)
+                // SUNDAY event â†’ Cleaning on Monday (next workday)
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
                 while (isHoliday(cleaningDate)) {
                     cleaningDate.setDate(cleaningDate.getDate() + 1);
                 }
             } else {
-                // MON-THU event → Cleaning next day
+                // MON-THU event â†’ Cleaning next day
                 cleaningDate.setDate(cleaningDate.getDate() + 1);
                 // Skip if next day is Sunday or holiday
                 while (cleaningDate.getDay() === 0 || isHoliday(cleaningDate)) {
@@ -4868,14 +4906,14 @@
             
             const table = document.getElementById('cleaning-table-data');
             if (!table) {
-                showToast('âŒ Keine Daten zum Kopieren', 'error');
+                showToast('Å’ Keine Daten zum Kopieren', 'error');
                 return;
             }
             
             // Only get rows with checked checkboxes
             const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
             if (checkedRows.length === 0) {
-                showToast('âš ï¸ Keine Reinigungen ausgewählt', 'error');
+                showToast('Å¡  Keine Reinigungen ausgewaehlt', 'error');
                 return;
             }
             
@@ -4889,25 +4927,25 @@
                 const day = cells[2].textContent;
                 const type = cells[3].textContent;
                 const event = cells[4].textContent;
-                text += `${date} (${day}) - ${type}\n  → ${event}\n\n`;
+                text += `${date} (${day}) - ${type}\n  â†’ ${event}\n\n`;
             });
             
             navigator.clipboard.writeText(text).then(() => {
-                showToast(`✅ ${checkedRows.length} Reinigungen kopiert!`);
+                showToast(`âœ… ${checkedRows.length} Reinigungen kopiert!`);
             }).catch(() => {
-                showToast('âŒ Kopieren fehlgeschlagen', 'error');
+                showToast('Å’ Kopieren fehlgeschlagen', 'error');
             });
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // CLEANING EMAIL FUNCTIONS
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         // Fixed cleaning contacts - always send to all 3
         const CLEANING_CONTACTS = [
             { name: 'Alexander Pichler', email: 'ap@gfg-services.at' },
             { name: 'GFG Services', email: 'pf@gfg-services.at' },
-            { name: 'Matthäus Gabor', email: 'mg@grelleforelle.com' }
+            { name: 'Matthaeus Gabor', email: 'mg@grelleforelle.com' }
         ];
         
         const SCHADI_SIGNATURE = `
@@ -4916,7 +4954,7 @@ Schadi Tayyah
 st@grelleforelle.com
 Grelle Forelle CEO
 Turbo Projects GmbH
-Spittelauer Lände 12/1
+Spittelauer Laende 12/1
 1090 Vienna, Austria`;
         
         function showCleaningEmail() {
@@ -4938,7 +4976,7 @@ Spittelauer Lände 12/1
             
             // Build email body from table with event-on-cleaning-day check
             const table = document.getElementById('cleaning-table-data');
-            let body = `Hallo,\n\nanbei der Reinigungsplan für ${monthName}:\n\n`;
+            let body = `Hallo,\n\nanbei der Reinigungsplan fuer ${monthName}:\n\n`;
             
             if (table) {
                 // Only get checked rows
@@ -4954,16 +4992,16 @@ Spittelauer Lände 12/1
                     // Check if there's an event on this cleaning day
                     const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
                     
-                    body += `• ${dateStr} (${day}) - ${type}\n`;
+                    body += `â€¢ ${dateStr} (${day}) - ${type}\n`;
                     body += `  Nach: ${event}\n`;
                     if (hasEventOnCleaningDay) {
-                        body += `  âš ï¸ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                        body += `  Å¡  (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
                     }
                     body += `\n`;
                 });
             }
             
-            body += `Bitte um Bestätigung.\n`;
+            body += `Bitte um Bestaetigung.\n`;
             body += SCHADI_SIGNATURE;
             
             document.getElementById('cleaning-email-body').value = body;
@@ -4992,7 +5030,7 @@ Spittelauer Lände 12/1
         // Quick save cleaning schedule as draft (without opening email section)
         async function quickSaveCleaningDraft() {
             if (!accessToken) {
-                showToast('⚠️ Bitte zuerst mit Microsoft anmelden', true);
+                showToast('âš ï¸ Bitte zuerst mit Microsoft anmelden', true);
                 return;
             }
             
@@ -5005,12 +5043,12 @@ Spittelauer Lände 12/1
             
             // Build email body from table
             const table = document.getElementById('cleaning-table-data');
-            let body = `Hallo,\n\nanbei der Reinigungsplan für ${monthName}:\n\n`;
+            let body = `Hallo,\n\nanbei der Reinigungsplan fuer ${monthName}:\n\n`;
             
             if (table) {
                 const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
                 if (checkedRows.length === 0) {
-                    showToast('⚠️ Keine Reinigungstermine ausgewählt', true);
+                    showToast('âš ï¸ Keine Reinigungstermine ausgewaehlt', true);
                     return;
                 }
                 checkedRows.forEach(row => {
@@ -5021,23 +5059,23 @@ Spittelauer Lände 12/1
                     const event = cells[4].textContent;
                     const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
                     
-                    body += `• ${dateStr} (${day}) - ${type}\n`;
+                    body += `â€¢ ${dateStr} (${day}) - ${type}\n`;
                     body += `  Nach: ${event}\n`;
                     if (hasEventOnCleaningDay) {
-                        body += `  ⚠️ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                        body += `  âš ï¸ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
                     }
                     body += `\n`;
                 });
             } else {
-                showToast('⚠️ Kein Reinigungsplan generiert', true);
+                showToast('âš ï¸ Kein Reinigungsplan generiert', true);
                 return;
             }
             
-            body += `Bitte um Bestätigung.\n`;
+            body += `Bitte um Bestaetigung.\n`;
             body += SCHADI_SIGNATURE;
             
             // Save as draft
-            showToast('📝 Speichere als Entwurf...');
+            showToast('ðŸ“ Speichere als Entwurf...');
             
             const toRecipients = CLEANING_CONTACTS.map(contact => ({
                 emailAddress: { address: contact.email }
@@ -5058,18 +5096,18 @@ Spittelauer Lände 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('✅ Entwurf in Outlook gespeichert!');
+                    showToast('âœ… Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
-                        showToast('❌ Keine Berechtigung - bitte neu anmelden', true);
+                        showToast('âŒ Keine Berechtigung - bitte neu anmelden', true);
                         setTimeout(() => handleSignOut(), 1500);
                     } else {
-                        showToast('❌ Fehler: ' + (err.error?.message || 'Unbekannt'), true);
+                        showToast('âŒ Fehler: ' + (err.error?.message || 'Unbekannt'), true);
                     }
                 }
             } catch (e) {
-                showToast('❌ Fehler: ' + e.message, true);
+                showToast('âŒ Fehler: ' + e.message, true);
             }
         }
         
@@ -5089,18 +5127,18 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
+                status.textContent = 'âš™ï¸ Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âš™ï¸ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '📤 Sende an alle 3 Empfänger...';
+            status.textContent = 'ðŸ“¤ Sende an alle 3 Empfaenger...';
             status.style.color = '#888';
             
             // Build recipients array for all 3 contacts
@@ -5125,17 +5163,17 @@ Spittelauer Lände 12/1
                 });
                 
                 if (response.ok || response.status === 202) {
-                    status.textContent = '✉️ E-Mail an alle 3 gesendet!';
+                    status.textContent = 'âœ‰ï¸ E-Mail an alle 3 gesendet!';
                     status.style.color = '#22c55e';
-                    showToast('🧹 Reinigungsplan an alle 3 Empfänger gesendet!');
+                    showToast('ðŸ§¹ Reinigungsplan an alle 3 Empfaenger gesendet!');
                     setTimeout(() => hideCleaningEmail(), 2000);
                 } else {
                     const err = await response.json();
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Å’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Å’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -5147,18 +5185,18 @@ Spittelauer Lände 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '⚙️ Bitte alle Felder ausfüllen';
+                status.textContent = 'âš™ï¸ Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '⚙️ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âš™ï¸ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '📝 Speichere als Entwurf...';
+            status.textContent = 'ðŸ“ Speichere als Entwurf...';
             status.style.color = '#888';
             
             // Build recipients array for all 3 contacts
@@ -5186,30 +5224,30 @@ Spittelauer Lände 12/1
                 console.log('Cleaning draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = '✅ Entwurf gespeichert! Check deine Outlook Drafts.';
+                    status.textContent = 'âœ… Entwurf gespeichert! Check deine Outlook Drafts.';
                     status.style.color = '#22c55e';
-                    showToast('📝 Entwurf in Outlook gespeichert!');
+                    showToast('ðŸ“ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     console.error('Cleaning draft error:', err);
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
-                        status.innerHTML = '❌ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
+                        status.innerHTML = 'âŒ Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
                     } else {
-                        status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                        status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
                     }
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Cleaning draft exception:', e);
-                status.textContent = '❌ Fehler: ' + e.message;
+                status.textContent = 'âŒ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
         
 
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // MONTH FILTER FUNCTIONS
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         let selectedMonths = new Set();
         
@@ -5266,14 +5304,14 @@ Spittelauer Lände 12/1
             const btn = document.getElementById('month-filter-btn');
             const count = selectedMonths.size;
             if (count === 0) {
-                btn.textContent = '📆 Keine ▼';
+                btn.textContent = 'ðŸ“† Keine â–¼';
             } else if (count === 12) {
-                btn.textContent = '📆 Alle ▼';
+                btn.textContent = 'ðŸ“† Alle â–¼';
             } else if (count === 1) {
-                const monthNames = ['', 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-                btn.textContent = '📆 ' + monthNames[[...selectedMonths][0]] + ' ▼';
+                const monthNames = ['', 'Jan', 'Feb', 'Maer', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+                btn.textContent = 'ðŸ“† ' + monthNames[[...selectedMonths][0]] + ' â–¼';
             } else {
-                btn.textContent = '📆 ' + count + ' Monate ▼';
+                btn.textContent = 'ðŸ“† ' + count + ' Monate â–¼';
             }
         }
         
@@ -5284,9 +5322,9 @@ Spittelauer Lände 12/1
             }
         });
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // CLEANING CHECKBOX FUNCTIONS
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         function toggleCleaningRow(checkbox) {
             const row = checkbox.closest('tr');
@@ -5336,32 +5374,32 @@ Spittelauer Lände 12/1
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #22c55e;">${grossCount + mittelCount}</div>
-                        <div style="font-size: 12px; color: #888;">AUSGEWÄHLT</div>
+                        <div style="font-size: 12px; color: #888;">AUSGEWAEHLT</div>
                     </div>
                 </div>
             `;
         }
         
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         // QUICK NOTES - CREATE NEW TASK
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         async function createNewTask() {
             const text = document.getElementById('quick-notes-text').value.trim();
             if (!text) {
-                showToast('âš ï¸ Bitte erst Text eingeben', true);
+                showToast('Å¡  Bitte erst Text eingeben', true);
                 return;
             }
             
             if (!accessToken) {
-                showToast('âš ï¸ Bitte zuerst anmelden', true);
+                showToast('Å¡  Bitte zuerst anmelden', true);
                 return;
             }
             
             try {
                 const listId = await getOrCreateNotesList();
                 if (!listId) {
-                    showToast('âŒ Notes Liste nicht gefunden', true);
+                    showToast('Å’ Notes Liste nicht gefunden', true);
                     return;
                 }
                 
@@ -5388,22 +5426,22 @@ Spittelauer Lände 12/1
                 });
                 
                 if (response.ok) {
-                    showToast('✅ Task erstellt!');
+                    showToast('âœ… Task erstellt!');
                     document.getElementById('quick-notes-text').value = '';
                     localStorage.removeItem('workhub-quick-notes');
                 } else {
-                    showToast('âŒ Fehler beim Erstellen', true);
+                    showToast('Å’ Fehler beim Erstellen', true);
                 }
             } catch (err) {
                 console.error('Create task error:', err);
-                showToast('âŒ Fehler: ' + err.message, true);
+                showToast('Å’ Fehler: ' + err.message, true);
             }
         }
         
 
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // UPCOMING EVENTS AUTO-UPDATE
-        // ═══════════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         function getWeekNumber(date) {
             const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -5421,7 +5459,7 @@ Spittelauer Lände 12/1
             // Update KW label
             const kwLabel = document.getElementById('upcoming-week-label');
             if (kwLabel) {
-                kwLabel.innerHTML = '🔴 DIESE WOCHE (KW ' + currentKW + ')';
+                kwLabel.innerHTML = 'ðŸ”´ DIESE WOCHE (KW ' + currentKW + ')';
             }
             
             // Get all event cards with data-date
@@ -5460,7 +5498,7 @@ Spittelauer Lände 12/1
                     const msg = document.createElement('div');
                     msg.id = 'no-upcoming-msg';
                     msg.style.cssText = 'text-align: center; padding: 20px; color: #888; font-size: 14px;';
-                    msg.innerHTML = '✅ Keine anstehenden Events. Nächste Events in BMT Calendar.';
+                    msg.innerHTML = 'âœ… Keine anstehenden Events. Naechste Events in BMT Calendar.';
                     upcomingSection.appendChild(msg);
                 }
             }
@@ -5469,10 +5507,10 @@ Spittelauer Lände 12/1
         }
         
         // INIT
-        // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        // â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.8.5 - Guest List Parser + ZIP Support');
+            console.log('Work Hub v14.9 - Dynamic Factsheet Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -5482,6 +5520,7 @@ Spittelauer Lände 12/1
             updateProjectorData();
             updateFactsheetPreview();
             refreshBMTFromStorage();
+            populateFactsheetDropdown();
             initMonthFilter();
             updateUpcomingEvents();
             
