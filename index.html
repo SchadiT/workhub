@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9</title>
+    <title>Turbo Projects Work Hub v14.9.1</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -1033,7 +1033,7 @@
             <span> Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
-                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn"></button>
+                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">Mic</button>
                 <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern"> Task</button>
             </div>
         </div>
@@ -2344,7 +2344,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9  29.12.2025  Draft Fix</div>
+    <div class="version">Work Hub v14.9.1  29.12.2025  Draft Fix</div>
 
     <script>
         // 
@@ -4482,10 +4482,15 @@
             
             const upcomingEvents = bmtEvents.filter(e => {
                 const eventMonth = e.dtstart.getMonth() + 1;
-                const isNotHoliday = e.category !== 'holiday' && !e.summary.toLowerCase().includes('holiday');
+                const summaryLower = e.summary.toLowerCase();
+                // Only show club nights and concerts (EIGEN, FREMD, KONZERT)
+                const isEvent = e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert';
+                const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
+                const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting') && !summaryLower.includes('besprechung');
                 const isFuture = e.dtstart >= now;
                 const monthMatch = selectedMonths.size === 0 || selectedMonths.has(eventMonth);
-                return isNotHoliday && isFuture && monthMatch;
+                return isEvent && isNotHoliday && isNotClosed && isNotAppointment && isFuture && monthMatch;
             });
             
             countBadge.textContent = upcomingEvents.length;
@@ -4533,7 +4538,7 @@
                             <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
                                 <span class="bmt-event-category ${catClass}">${catLabel}</span>
-                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer;" title="Factsheet erstellen"></button>
+                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;" title="Factsheet erstellen">FS</button>
                             </div>
                         </div>
                     `;
@@ -4568,10 +4573,13 @@
             const upcomingEvents = bmtEvents
                 .filter(e => {
                     const summaryLower = e.summary.toLowerCase();
+                    // Only show club nights and concerts (EIGEN, FREMD, KONZERT)
+                    const isEvent = e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert';
                     const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
                     const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                    const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting') && !summaryLower.includes('besprechung');
                     const isFuture = e.dtstart >= now;
-                    return isNotHoliday && isNotClosed && isFuture;
+                    return isEvent && isNotHoliday && isNotClosed && isNotAppointment && isFuture;
                 })
                 .slice(0, 4); // Only show next 4
             
@@ -5472,7 +5480,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9 - Dynamic Factsheet Parser + ZIP Support');
+            console.log('Work Hub v14.9.1 - Dynamic Factsheet Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
