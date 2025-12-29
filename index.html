@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.8.1</title>
+    <title>Turbo Projects Work Hub v14.8.5</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -1078,6 +1078,9 @@
             </div>
             <div class="bmt-actions" onclick="event.stopPropagation();">
                 <input type="file" id="bmt-upload" class="bmt-upload-input" accept=".ics" onchange="handleBMTUpload(event)">
+                <button class="bmt-btn" onclick="autoLoadBMT()" title="Automatisch von BMT laden">
+                    🔄 Auto
+                </button>
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
                     📤 .ics
                 </button>
@@ -1085,8 +1088,9 @@
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
             <div class="bmt-status" id="bmt-status">
-                📅 Lade BMT Events... 
-                <br><small>Upload eine .ics Datei von BookMeTender</small>
+                📅 Keine Events geladen
+                <br><small>Klicke 🔄 Auto oder 📤 .ics zum Laden</small>
+                <br><small style="color: #22c55e;">💾 Events bleiben nach Reload gespeichert</small>
             </div>
         </div>
     </div>
@@ -1107,6 +1111,7 @@
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
                         <button class="modal-btn success" onclick="copyCleaningSchedule()">📋 Kopieren</button>
+                        <button class="modal-btn" style="background: #6b7280;" onclick="quickSaveCleaningDraft()">📝 Als Entwurf</button>
                         <button class="modal-btn primary" onclick="showCleaningEmail()">✉️ Per E-Mail</button>
                     </div>
                 </div>
@@ -2012,35 +2017,58 @@
     </div>
 
     
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
-    <!-- QUICK ACTIONS -->
-    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
     
-    <div class="quick-actions">
-        <button class="quick-btn" onclick="openModal('factsheet-modal')">📎 Factsheet</button>
-        <button class="quick-btn" onclick="openModal('email-modal')">✉️ E-Mail</button>
-        <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('social-dropdown')">📱 Social ▼</button>
-            <div id="social-dropdown" class="dropdown-content">
-                <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
-                <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📜</span> Facebook</a>
-                <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">💬</span> WhatsApp</a>
-                <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">📓</span> BMT Dashboard</a>
-            </div>
-        </div>
-        <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn sales" onclick="toggleDropdown('sales-dropdown')">💰 Sales ▼</button>
-            <div id="sales-dropdown" class="dropdown-content">
-                <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
-                <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔔</span> Linktree</a>
-                <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
-            </div>
-        </div>
-        <div class="dropdown-container">
-            <button class="quick-btn dropdown-btn" onclick="toggleDropdown('storage-dropdown')">📁 Storage ▼</button>
-            <div id="storage-dropdown" class="dropdown-content">
-                <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
-                <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔒</span> OneDrive</a>
+    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    <!-- APPLICATIONS EXPANDER -->
+    <!-- ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• -->
+    
+    <div class="tools-expander">
+        <button class="tools-toggle" id="apps-toggle" onclick="toggleApps()" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+            📱 Applications <span class="arrow">▼</span>
+        </button>
+        <div class="tools-content" id="apps-content">
+            <div class="tools-grid">
+                <button class="tool-btn" onclick="openModal('factsheet-modal')">
+                    <span class="tool-icon">📎</span>
+                    Factsheet
+                </button>
+                <button class="tool-btn" onclick="openModal('email-modal')">
+                    <span class="tool-icon">✉️</span>
+                    E-Mail
+                </button>
+                <div class="tool-btn dropdown-container" style="position: relative;">
+                    <button class="tool-btn" onclick="toggleDropdown('social-dropdown')" style="width: 100%; border: none; padding: 0;">
+                        <span class="tool-icon">📱</span>
+                        Social ▼
+                    </button>
+                    <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon">📸</span> Instagram</a>
+                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon">📜</span> Facebook</a>
+                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon">💬</span> WhatsApp</a>
+                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon">📓</span> BMT Dashboard</a>
+                    </div>
+                </div>
+                <div class="tool-btn dropdown-container" style="position: relative;">
+                    <button class="tool-btn" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; border: none; padding: 0;">
+                        <span class="tool-icon">💰</span>
+                        Sales ▼
+                    </button>
+                    <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon">💳</span> WBV (POS)</a>
+                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon">🔔</span> Linktree</a>
+                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon">🎟️</span> ntry (Pre-Sale)</a>
+                    </div>
+                </div>
+                <div class="tool-btn dropdown-container" style="position: relative;">
+                    <button class="tool-btn" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; border: none; padding: 0;">
+                        <span class="tool-icon">📁</span>
+                        Storage ▼
+                    </button>
+                    <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon">🟡</span> Google Drive</a>
+                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon">🔒</span> OneDrive</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -2317,7 +2345,7 @@
         <a href="https://to-do.live.com" target="_blank">✅ Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.8.1.1 • 29.12.2025 • Draft Fix</div>
+    <div class="version">Work Hub v14.8.5.1 • 29.12.2025 • Draft Fix</div>
 
     <script>
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -3226,6 +3254,13 @@
         }
         document.addEventListener('click', e => { if (!e.target.closest('.dropdown-container')) document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show')); });
         function toggleEventCard(id) { document.getElementById(id).classList.toggle('open'); }
+        
+        function toggleApps() {
+            const toggle = document.getElementById('apps-toggle');
+            const content = document.getElementById('apps-content');
+            toggle.classList.toggle('open');
+            content.classList.toggle('show');
+        }
         
         function toggleTools() {
             const toggle = document.getElementById('tools-toggle');
@@ -4147,6 +4182,54 @@
         let bmtEvents = [];
         let bmtSectionOpen = false;
         
+        // Auto-load BMT calendar via CORS proxy
+        async function autoLoadBMT() {
+            showToast('🔄 Lade BMT Kalender...');
+            
+            // Try multiple CORS proxies
+            const proxies = [
+                'https://api.allorigins.win/raw?url=',
+                'https://corsproxy.io/?'
+            ];
+            
+            for (const proxy of proxies) {
+                try {
+                    const response = await fetch(proxy + encodeURIComponent(BMT_FEED_URL), {
+                        method: 'GET',
+                        headers: { 'Accept': 'text/calendar' }
+                    });
+                    
+                    if (response.ok) {
+                        const icsData = await response.text();
+                        
+                        // Verify it's valid ICS data
+                        if (icsData.includes('BEGIN:VCALENDAR')) {
+                            bmtEvents = parseICS(icsData);
+                            
+                            // Save to localStorage
+                            localStorage.setItem('bmtEvents', JSON.stringify(bmtEvents));
+                            localStorage.setItem('bmtLastUpdate', new Date().toISOString());
+                            
+                            renderBMTEvents();
+                            renderUpcomingFromBMT();
+                            showToast('✅ ' + bmtEvents.length + ' BMT Events geladen!');
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    console.log('Proxy failed:', proxy, err);
+                }
+            }
+            
+            // All proxies failed - offer manual download
+            showToast('⚠️ Auto-Load fehlgeschlagen. Bitte manuell herunterladen.', true);
+            
+            // Open direct download link
+            if (confirm('Auto-Load nicht möglich (CORS).\n\nKlicke OK um die .ics Datei herunterzuladen, dann lade sie mit dem 📤 Button hoch.')) {
+                window.open(BMT_FEED_URL, '_blank');
+            }
+        }
+        
         // Toggle BMT Section
         function toggleBMTSection() {
             const container = document.getElementById('bmt-events-container');
@@ -4484,9 +4567,11 @@
             const now = new Date();
             const upcomingEvents = bmtEvents
                 .filter(e => {
-                    const isNotHoliday = e.category !== 'holiday' && !e.summary.toLowerCase().includes('holiday');
+                    const summaryLower = e.summary.toLowerCase();
+                    const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
+                    const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
                     const isFuture = e.dtstart >= now;
-                    return isNotHoliday && isFuture;
+                    return isNotHoliday && isNotClosed && isFuture;
                 })
                 .slice(0, 4); // Only show next 4
             
@@ -4903,6 +4988,91 @@ Spittelauer Lände 12/1
             });
         }
         
+        
+        // Quick save cleaning schedule as draft (without opening email section)
+        async function quickSaveCleaningDraft() {
+            if (!accessToken) {
+                showToast('⚠️ Bitte zuerst mit Microsoft anmelden', true);
+                return;
+            }
+            
+            // Generate email content (same as showCleaningEmail)
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            const monthName = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+            
+            const subject = `Reinigungsplan ${monthName} Grelle Forelle`;
+            
+            // Build email body from table
+            const table = document.getElementById('cleaning-table-data');
+            let body = `Hallo,\n\nanbei der Reinigungsplan für ${monthName}:\n\n`;
+            
+            if (table) {
+                const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
+                if (checkedRows.length === 0) {
+                    showToast('⚠️ Keine Reinigungstermine ausgewählt', true);
+                    return;
+                }
+                checkedRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const dateStr = cells[1].textContent;
+                    const day = cells[2].textContent;
+                    const type = cells[3].textContent;
+                    const event = cells[4].textContent;
+                    const hasEventOnCleaningDay = checkEventOnCleaningDay(dateStr);
+                    
+                    body += `• ${dateStr} (${day}) - ${type}\n`;
+                    body += `  Nach: ${event}\n`;
+                    if (hasEventOnCleaningDay) {
+                        body += `  ⚠️ (Bitte bis 10:00 fertigstellen wegen Folgeveranstaltung)\n`;
+                    }
+                    body += `\n`;
+                });
+            } else {
+                showToast('⚠️ Kein Reinigungsplan generiert', true);
+                return;
+            }
+            
+            body += `Bitte um Bestätigung.\n`;
+            body += SCHADI_SIGNATURE;
+            
+            // Save as draft
+            showToast('📝 Speichere als Entwurf...');
+            
+            const toRecipients = CLEANING_CONTACTS.map(contact => ({
+                emailAddress: { address: contact.email }
+            }));
+            
+            try {
+                const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subject: subject,
+                        body: { contentType: 'Text', content: body },
+                        toRecipients: toRecipients
+                    })
+                });
+                
+                if (response.ok || response.status === 201) {
+                    showToast('✅ Entwurf in Outlook gespeichert!');
+                } else {
+                    const err = await response.json();
+                    if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
+                        showToast('❌ Keine Berechtigung - bitte neu anmelden', true);
+                        setTimeout(() => handleSignOut(), 1500);
+                    } else {
+                        showToast('❌ Fehler: ' + (err.error?.message || 'Unbekannt'), true);
+                    }
+                }
+            } catch (e) {
+                showToast('❌ Fehler: ' + e.message, true);
+            }
+        }
+        
         function hideCleaningEmail() {
             document.getElementById('cleaning-email-section').style.display = 'none';
         }
@@ -5302,7 +5472,7 @@ Spittelauer Lände 12/1
         // •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.8.1 - Guest List Parser + ZIP Support');
+            console.log('Work Hub v14.8.5 - Guest List Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
