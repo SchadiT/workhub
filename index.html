@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.1</title>
+    <title>Turbo Projects Work Hub v15.0</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2344,7 +2344,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.1  29.12.2025  Draft Fix</div>
+    <div class="version">Work Hub v15.0 • 30.12.2025 • Factsheet Generator Fix</div>
 
     <script>
         // 
@@ -2406,26 +2406,29 @@
         };
         
         const TEMPLATES = {
+            // CLUB MAIN 00:00
             MAIN_00: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
-                doors2_late: "00:00", main1: "23:00", main2: "23:00", main3: "00:00", main4: "00:15",
+                doors2_late: "00:00", main1: "22:30", main2: "22:30", main3: "23:00", main4: "23:45",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
-                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
+                gard1: "22:45", gard2: "23:00", gard3: "23:45", technik: "21:00",
+                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
+            // CLUB MAIN 00:30
             MAIN_30: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
-                doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:30", main4: "00:15",
+                doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:45", main4: "00:15",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
-                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
+                gard1: "22:45", gard2: "23:00", gard3: "23:45", technik: "21:00",
+                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
+            // KONZERT - no Terrasse/Kitchen
             CONCERT: {
-                doors1: "19:00", terrasse: "18:30", doors2_early: "19:00", kitchen: "18:30",
-                doors2_late: "19:00", main1: "19:00", main2: "19:00", main3: "19:00", main4: "19:00",
-                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "20:00",
-                gard1: "18:45", gard2: "19:00", gard3: "20:15", technik: "16:00",
-                security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:30", pax: "1 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX (Abruf)" }]
+                doors1: "19:00", terrasse: "-", doors2_early: "19:00", kitchen: "-",
+                doors2_late: "19:00", main1: "17:30", main2: "17:30", main3: "18:00", main4: "19:00",
+                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "",
+                gard1: "18:45", gard2: "19:00", gard3: "20:00", technik: "16:00",
+                security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX" }]
             }
         };
         
@@ -3046,11 +3049,12 @@
             `;
         }
         
-        // Event data storage
+        // Event data storage - Dec 2025 + Jan 2026
         const EVENT_STAFF_DATA = {
-            'turbo': { 
+            'turbo-27-12': { 
                 name: 'TURBO', 
-                datum: 'Samstag, 27.12.2025', 
+                datum: 'SA 27.12.25', 
+                date: '2025-12-27',
                 technik: 'Simon', 
                 cvd: 'Alain',
                 eventType: 'CLUB',
@@ -3071,9 +3075,10 @@
                 gard2: 'Fayez',
                 gard3: 'Nico'
             },
-            'nye': { 
+            'nye-31-12': { 
                 name: 'NYE SILVESTER', 
-                datum: 'Dienstag, 31.12.2025', 
+                datum: 'DI 31.12.25', 
+                date: '2025-12-31',
                 technik: 'Jan', 
                 cvd: 'Alain / Niat',
                 eventType: 'CLUB',
@@ -3093,8 +3098,41 @@
                 gard1: 'TBA',
                 gard2: 'TBA',
                 gard3: 'TBA'
-            }
+            },
+            'paracek-05-01': { name: 'Paracek', datum: 'SO 05.01.26', date: '2026-01-05', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'zuckerwatt-09-01': { name: 'Zuckerwatt', datum: 'DO 09.01.26', date: '2026-01-09', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'impulse-10-01': { name: 'Impulse', datum: 'FR 10.01.26', date: '2026-01-10', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'fishmarket-16-01': { name: 'Fish Market', datum: 'DO 16.01.26', date: '2026-01-16', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'contrast-17-01': { name: 'Contrast', datum: 'FR 17.01.26', date: '2026-01-17', technik: 'Jan', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'selected-23-01': { name: 'Selected', datum: 'DO 23.01.26', date: '2026-01-23', technik: 'Jan', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'purradox-24-01': { name: 'Purradox', datum: 'FR 24.01.26', date: '2026-01-24', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'mahlwerk-30-01': { name: 'Mahlwerk', datum: 'DO 30.01.26', date: '2026-01-30', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
+            'flashback-31-01': { name: 'Flashback', datum: 'FR 31.01.26', date: '2026-01-31', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' }
         };
+        
+        // Populate factsheet dropdown - auto-removes past events
+        function populateFactsheetDropdown() {
+            const select = document.getElementById('fs-event-select');
+            if (!select) return;
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            select.innerHTML = '<option value="">-- Event wählen --</option>';
+            
+            const sortedEvents = Object.entries(EVENT_STAFF_DATA)
+                .map(([id, e]) => ({ id, ...e }))
+                .filter(e => e.date && new Date(e.date) >= today)
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            sortedEvents.forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id;
+                const techBadge = event.technik ? ` [${event.technik}]` : '';
+                option.textContent = `${event.datum} | ${event.name}${techBadge}`;
+                select.appendChild(option);
+            });
+        }
         
         // Load event data when dropdown changes
         function loadEventData() {
@@ -3103,7 +3141,31 @@
             
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
-                fillFactsheetForm(e);
+                // Fill missing fields with TBA
+                const fullEvent = {
+                    name: e.name || '',
+                    datum: e.datum || '',
+                    technik: e.technik || 'TBA',
+                    cvd: e.cvd || 'TBA',
+                    eventType: e.eventType || 'CLUB',
+                    mainFloorTime: e.mainFloorTime || '00:00',
+                    terrasse: e.terrasse || 'TBA',
+                    kitchen: e.kitchen || 'TBA',
+                    main1: e.main1 || 'TBA',
+                    main2: e.main2 || 'TBA',
+                    main3: e.main3 || 'TBA',
+                    main4: e.main4 || 'TBA',
+                    runner1: e.runner1 || 'TBA',
+                    runner2: e.runner2 || 'TBA',
+                    runner3: e.runner3 || 'TBA',
+                    runner4: e.runner4 || 'TBA',
+                    runner5: e.runner5 || 'TBA',
+                    runner6: e.runner6 || '',
+                    gard1: e.gard1 || 'TBA',
+                    gard2: e.gard2 || 'TBA',
+                    gard3: e.gard3 || 'TBA'
+                };
+                fillFactsheetForm(fullEvent);
             }
         }
         
@@ -3135,11 +3197,27 @@
             document.getElementById('fs-gard2').value = e.gard2 || '';
             document.getElementById('fs-gard3').value = e.gard3 || '';
             
+            // Update times based on template
+            const template = e.eventType === 'CONCERT' ? 'CONCERT' : 
+                            (e.mainFloorTime === '00:30' ? 'MAIN_30' : 'MAIN_00');
+            const t = TEMPLATES[template];
+            
+            document.getElementById('fs-terrasse-time').value = t.terrasse;
+            document.getElementById('fs-kitchen-time').value = t.kitchen;
+            document.getElementById('fs-main1-time').value = t.main1;
+            document.getElementById('fs-main2-time').value = t.main2;
+            document.getElementById('fs-main3-time').value = t.main3;
+            document.getElementById('fs-main4-time').value = t.main4;
+            document.getElementById('fs-runner1-time').value = t.runner1;
+            document.getElementById('fs-runner2-time').value = t.runner2;
+            document.getElementById('fs-runner3-time').value = t.runner3;
+            document.getElementById('fs-runner4-time').value = t.runner4;
+            document.getElementById('fs-runner5-time').value = t.runner5;
+            document.getElementById('fs-gard1-time').value = t.gard1;
+            document.getElementById('fs-gard2-time').value = t.gard2;
+            document.getElementById('fs-gard3-time').value = t.gard3;
+            
             updateFactsheetPreview();
-            refreshBMTFromStorage();
-            populateFactsheetDropdown();
-            initMonthFilter();
-            updateUpcomingEvents();
         }
         
         // Quick factsheet for specific event from dashboard
@@ -5480,7 +5558,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.1 - Dynamic Factsheet Parser + ZIP Support');
+            console.log('Work Hub v15.0 - Factsheet Generator + Dynamic Times');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
