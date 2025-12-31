@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.3</title>
+    <title>Turbo Projects Work Hub v14.9.4</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2343,7 +2343,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.3  29.12.2025  Draft Fix</div>
+    <div class="version">Work Hub v14.9.4  29.12.2025  Draft Fix</div>
 
     <script>
         // 
@@ -2929,7 +2929,7 @@
         // FACTSHEET GENERATOR
         // 
         
-        // === DYNAMIC FACTSHEET DROPDOWN v14.9.3 ===
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9.4 ===
         function populateFactsheetDropdown() {
             const select = document.getElementById('fs-event-select');
             if (!select) { 
@@ -3195,9 +3195,16 @@
         
         // Fill all factsheet form fields
         function fillFactsheetForm(e) {
-            document.getElementById('fs-event-name').value = e.name;
-            document.getElementById('fs-datum').value = e.datum;
+            document.getElementById('fs-event-name').value = e.name || '';
+            document.getElementById('fs-datum').value = e.datum || '';
             document.getElementById('fs-template').value = e.eventType || 'CLUB';
+            
+            // Show/hide main floor row based on template
+            const template = e.eventType || 'CLUB';
+            const mainFloorRow = document.getElementById('main-floor-row');
+            if (mainFloorRow) {
+                mainFloorRow.style.display = template === 'CLUB' ? 'flex' : 'none';
+            }
             
             // Set main floor time radio
             const mainFloorRadio = document.querySelector(`input[name="main-floor-time"][value="${e.mainFloorTime || '00:00'}"]`);
@@ -3205,8 +3212,13 @@
             
             document.getElementById('fs-technik').value = e.technik || '';
             document.getElementById('fs-cvd').value = e.cvd || '';
-            document.getElementById('fs-terrasse').value = e.terrasse || '';
-            document.getElementById('fs-kitchen').value = e.kitchen || '';
+            
+            const terrasseEl = document.getElementById('fs-terrasse');
+            if (terrasseEl) terrasseEl.value = e.terrasse || '';
+            
+            const kitchenEl = document.getElementById('fs-kitchen');
+            if (kitchenEl) kitchenEl.value = e.kitchen || '';
+            
             document.getElementById('fs-main1').value = e.main1 || '';
             document.getElementById('fs-main2').value = e.main2 || '';
             document.getElementById('fs-main3').value = e.main3 || '';
@@ -3222,11 +3234,6 @@
             document.getElementById('fs-gard3').value = e.gard3 || '';
             
             updateFactsheetPreview();
-            refreshBMTFromStorage();
-            populateFactsheetDropdown();
-            
-            initMonthFilter();
-            updateUpcomingEvents();
         }
         
         // Quick factsheet for specific event from dashboard
@@ -4350,7 +4357,7 @@
                 
                 // Determine template based on event time/category
                 const eventHour = eventDate.getHours();
-                let template = 'CLUB'; // Default
+                let template = 'CLUB';
                 if (eventData.category === 'konzert' || eventHour === 19) {
                     template = 'CONCERT';
                 }
@@ -4359,13 +4366,25 @@
                 const dateStr = dayNames[eventDate.getDay()] + ', ' + 
                     eventDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 
-                // Pre-fill factsheet modal fields
-                document.getElementById('fs-event-name').value = eventData.name;
+                // Pre-fill ALL factsheet modal fields
+                document.getElementById('fs-event-name').value = eventData.name || '';
                 document.getElementById('fs-datum').value = dateStr;
                 document.getElementById('fs-template').value = template;
                 
+                // Reset dropdown to no selection (manual entry)
+                document.getElementById('fs-event-select').value = '';
+                
                 // Show/hide main floor row based on template
-                document.getElementById('main-floor-row').style.display = template === 'CLUB' ? 'flex' : 'none';
+                const mainFloorRow = document.getElementById('main-floor-row');
+                if (mainFloorRow) {
+                    mainFloorRow.style.display = template === 'CLUB' ? 'flex' : 'none';
+                }
+                
+                // Set default Main Floor time for club nights
+                if (template === 'CLUB') {
+                    const radio00 = document.querySelector('input[name="main-floor-time"][value="00:00"]');
+                    if (radio00) radio00.checked = true;
+                }
                 
                 // Update preview
                 updateFactsheetPreview();
@@ -4373,10 +4392,11 @@
                 // Open factsheet modal
                 openModal('factsheet-modal');
                 
-                showToast(' ' + eventData.name + ' geladen');
+                console.log('Factsheet loaded for:', eventData.name);
+                showToast(eventData.name + ' geladen');
             } catch (e) {
                 console.error('Error parsing BMT event data:', e);
-                showToast(' Fehler beim Laden', 'error');
+                showToast('Fehler beim Laden', 'error');
             }
         }
         
@@ -4638,12 +4658,6 @@
                 }).join('') + '</div>';
         }
         
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
         // Render Upcoming Events from BMT data (next 4 events)
         function renderUpcomingFromBMT() {
             const container = document.getElementById('upcoming-events-container');
@@ -4652,12 +4666,7 @@
             if (!container) return;
             
             if (!bmtEvents || bmtEvents.length === 0) {
-                container.innerHTML = `
-                    <div class="upcoming-placeholder">
-                        <p>Upload BMT .ics Datei um Events zu sehen</p>
-                        <small>Events werden automatisch aus BookMeTender geladen</small>
-                    </div>
-                `;
+                container.innerHTML = '<div class="upcoming-placeholder"><p>Upload BMT .ics Datei um Events zu sehen</p><small>Events werden automatisch aus BookMeTender geladen</small></div>';
                 if (countBadge) countBadge.textContent = '0';
                 return;
             }
@@ -4665,7 +4674,7 @@
             const now = new Date();
             const upcomingEvents = bmtEvents
                 .filter(e => {
-                    const summaryLower = e.summary.toLowerCase();
+                    const summaryLower = (e.summary || '').toLowerCase();
                     const isEvent = e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert';
                     const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
                     const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
@@ -4678,9 +4687,12 @@
             if (countBadge) countBadge.textContent = upcomingEvents.length;
             
             if (upcomingEvents.length === 0) {
-                container.innerHTML = `<div class="upcoming-placeholder"><p>Keine kommenden Events</p></div>`;
+                container.innerHTML = '<div class="upcoming-placeholder"><p>Keine kommenden Events</p></div>';
                 return;
             }
+            
+            // Store events globally for factsheet access
+            window.upcomingEventsData = upcomingEvents;
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
             
@@ -4699,12 +4711,6 @@
                 const daysText = daysUntil === 0 ? 'HEUTE' : daysUntil === 1 ? '1 Tag' : daysUntil + ' Tage';
                 const daysColor = daysUntil <= 3 ? '#ef4444' : daysUntil <= 7 ? '#f59e0b' : '#22c55e';
                 
-                const eventData = encodeURIComponent(JSON.stringify({
-                    name: event.summary,
-                    date: event.dtstart.toISOString(),
-                    category: event.category
-                }));
-                
                 // VVK Tracker only for CLUB NIGHTS (not concerts!)
                 const showVVKTracker = !isKonzert;
                 
@@ -4713,17 +4719,17 @@
                         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
                             <div>
                                 <label style="font-size: 9px; color: #888; display: block;">VVK aktuell</label>
-                                <input type="number" id="vvk-current-${idx}" value="0" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                <input type="number" id="vvk-current-${idx}" value="0" oninput="calcEventProj(${idx})" 
                                     style="width: 60px; background: #1a1a2e; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600;">
                             </div>
                             <div>
                                 <label style="font-size: 9px; color: #888; display: block;">Ziel</label>
-                                <input type="number" id="vvk-goal-${idx}" value="450" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                <input type="number" id="vvk-goal-${idx}" value="450" oninput="calcEventProj(${idx})" 
                                     style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
                             </div>
                             <div>
                                 <label style="font-size: 9px; color: #888; display: block;">Max</label>
-                                <input type="number" id="vvk-max-${idx}" value="550" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                <input type="number" id="vvk-max-${idx}" value="550" oninput="calcEventProj(${idx})" 
                                     style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
                             </div>
                         </div>
@@ -4747,14 +4753,16 @@
                         </div>
                         <div id="vvk-benchmark-${idx}" style="font-size: 9px; color: #888; margin-top: 6px; text-align: center;">Benchmark wird berechnet...</div>
                     </div>
-                ` : `<div style="margin-top: 8px; padding: 8px; background: #1a1a2e; border-radius: 4px; text-align: center; font-size: 11px; color: #8b5cf6;">Konzert - keine VVK Projektion</div>`;
+                ` : '<div style="margin-top: 8px; padding: 8px; background: #1a1a2e; border-radius: 4px; text-align: center; font-size: 11px; color: #8b5cf6;">Konzert - keine VVK Projektion</div>';
+                
+                const escapedName = (event.summary || 'Event').replace(/'/g, "\\'").replace(/"/g, '\\"');
                 
                 return `
                     <div class="upcoming-event-card ${typeClass}" style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); border-radius: 10px; padding: 12px; margin-bottom: 12px; border-left: 3px solid ${isEigen ? '#22c55e' : isKonzert ? '#8b5cf6' : '#f59e0b'};">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <div style="font-size: 12px; color: #888;">${dayName} ${dateStr}</div>
-                                <div style="font-size: 16px; font-weight: 700; color: white; margin: 4px 0;">${escapeHtml(event.summary)}</div>
+                                <div style="font-size: 16px; font-weight: 700; color: white; margin: 4px 0;">${event.summary || 'Event'}</div>
                             </div>
                             <div style="text-align: right;">
                                 <span class="upcoming-event-type ${typeClass}" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 600; background: ${isEigen ? '#22c55e' : isKonzert ? '#8b5cf6' : '#f59e0b'}; color: white;">${typeLabel}</span>
@@ -4763,7 +4771,7 @@
                         </div>
                         ${vvkTrackerHTML}
                         <div style="margin-top: 10px; display: flex; gap: 8px;">
-                            <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Factsheet</button>
+                            <button onclick="openFactsheetForEvent(${idx})" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Factsheet</button>
                         </div>
                     </div>
                 `;
@@ -4772,19 +4780,71 @@
             // Initialize projections for all club night events
             upcomingEvents.forEach((event, idx) => {
                 if (event.category !== 'konzert') {
-                    calcEventProj(idx, event.dtstart.toISOString());
+                    calcEventProj(idx);
                 }
             });
         }
         
+        // Open factsheet for a specific event by index
+        function openFactsheetForEvent(idx) {
+            const events = window.upcomingEventsData;
+            if (!events || !events[idx]) {
+                console.error('Event not found at index:', idx);
+                showToast('Event nicht gefunden', 'error');
+                return;
+            }
+            
+            const event = events[idx];
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            
+            // Determine template
+            const isKonzert = event.category === 'konzert';
+            const template = isKonzert ? 'CONCERT' : 'CLUB';
+            
+            // Format date
+            const dateStr = dayNames[event.dtstart.getDay()] + ', ' + 
+                event.dtstart.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            
+            // Fill form fields
+            document.getElementById('fs-event-name').value = event.summary || '';
+            document.getElementById('fs-datum').value = dateStr;
+            document.getElementById('fs-template').value = template;
+            document.getElementById('fs-event-select').value = '';
+            
+            // Show/hide main floor row
+            const mainFloorRow = document.getElementById('main-floor-row');
+            if (mainFloorRow) {
+                mainFloorRow.style.display = template === 'CLUB' ? 'flex' : 'none';
+            }
+            
+            // Set default radio for club
+            if (template === 'CLUB') {
+                const radio = document.querySelector('input[name="main-floor-time"][value="00:00"]');
+                if (radio) radio.checked = true;
+            }
+            
+            // Update preview
+            updateFactsheetPreview();
+            
+            // Open modal
+            openModal('factsheet-modal');
+            
+            console.log('Factsheet opened for:', event.summary);
+            showToast(event.summary + ' geladen');
+        }
+        
         // Calculate projection for a specific event
-        function calcEventProj(idx, dateStr) {
+        function calcEventProj(idx) {
+            const events = window.upcomingEventsData;
+            if (!events || !events[idx]) return;
+            
+            const event = events[idx];
             const currentVVK = parseInt(document.getElementById('vvk-current-' + idx)?.value) || 0;
             const vvkGoal = parseInt(document.getElementById('vvk-goal-' + idx)?.value) || 450;
             const vvkMax = parseInt(document.getElementById('vvk-max-' + idx)?.value) || 550;
             
             const today = new Date(); today.setHours(0,0,0,0);
-            const eventDate = new Date(dateStr); eventDate.setHours(0,0,0,0);
+            const eventDate = new Date(event.dtstart); eventDate.setHours(0,0,0,0);
             const days = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
             
             // Benchmarks
@@ -5673,7 +5733,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.3 - Dynamic Factsheet Parser + ZIP Support');
+            console.log('Work Hub v14.9.4 - Dynamic Factsheet Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
