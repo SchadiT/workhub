@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.5</title>
+    <title>Turbo Projects Work Hub v14.9.6</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2343,7 +2343,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.4  29.12.2025  Draft Fix</div>
+    <div class="version">Work Hub v14.9.6  31.12.2025  Shiftplan Autofill</div>
 
     <script>
         // 
@@ -2929,7 +2929,7 @@
         // FACTSHEET GENERATOR
         // 
         
-        // === DYNAMIC FACTSHEET DROPDOWN v14.9.4 ===
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9.6 ===
         function populateFactsheetDropdown() {
             const select = document.getElementById('fs-event-select');
             if (!select) { 
@@ -2997,20 +2997,37 @@
                 // Determine event type for factsheet template
                 const isKonzert = cat === 'konzert' || name.toLowerCase().includes('concert');
                 
-                // Store event data for factsheet autofill
+                // Store event data for factsheet autofill - with Shiftplan lookup!
+                const dateKey = d.toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit', year: 'numeric'});
+                const shiftData = getShiftplanByDate(dateKey);
+                
                 EVENT_STAFF_DATA[id] = {
                     name: name, 
                     datum: d.toLocaleDateString('de-DE', {weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'}),
                     technik: '', 
-                    cvd: '', 
+                    cvd: shiftData?.cvd || '', 
                     eventType: isKonzert ? 'CONCERT' : 'CLUB', 
                     mainFloorTime: '00:00', 
-                    terrasse: '', 
-                    kitchen: '',
-                    main1: '', main2: '', main3: '', main4: '', 
-                    runner1: '', runner2: '', runner3: '', runner4: '', runner5: '', runner6: '',
-                    gard1: '', gard2: '', gard3: ''
+                    terrasse: shiftData?.terrasse || '', 
+                    kitchen: shiftData?.kitchen || '',
+                    main1: shiftData?.main1 || '', 
+                    main2: shiftData?.main2 || '', 
+                    main3: shiftData?.main3 || '', 
+                    main4: shiftData?.main4 || '', 
+                    runner1: shiftData?.runner1 || '', 
+                    runner2: shiftData?.runner2 || '', 
+                    runner3: shiftData?.runner3 || '', 
+                    runner4: shiftData?.runner4 || '', 
+                    runner5: shiftData?.runner5 || '', 
+                    runner6: shiftData?.runner6 || '',
+                    gard1: shiftData?.gard1 || '', 
+                    gard2: shiftData?.gard2 || '', 
+                    gard3: shiftData?.gard3 || ''
                 };
+                
+                if (shiftData) {
+                    console.log('Shiftplan data found for ' + dateKey + ': CVD=' + shiftData.cvd);
+                }
             });
             
             console.log('Factsheet dropdown populated with ' + futureEvents.length + ' events');
@@ -3132,7 +3149,76 @@
             `;
         }
         
-        // Event data storage
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs)
+        // Key: DD.MM.YYYY format for date matching
+        // ═══════════════════════════════════════════════════════════════════════════
+        const SHIFTPLAN_DATABASE = {
+            // DECEMBER 2025
+            '27.12.2025': {
+                terrasse: '-', kitchen: 'Dhanna', main1: 'Ada', main2: 'Lino', main3: 'Milos', main4: 'Dora',
+                cvd: 'Alain', runner1: 'Jakob', runner2: 'Kaan', runner3: '', runner4: 'Peter', runner5: 'Aziz', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '31.12.2025': {
+                terrasse: 'Milos', kitchen: 'Kamil', main1: 'Dora', main2: 'Lino', main3: 'Ada', main4: 'Camillo',
+                cvd: 'Alain / Niat', runner1: 'Patrick', runner2: 'Gordan', runner3: 'Peter', runner4: 'Zuzu', runner5: 'Kaan', runner6: 'Aziz',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            // JANUARY 2026
+            '05.01.2026': {
+                terrasse: 'Kamil', kitchen: 'Martina', main1: 'Ada', main2: 'Yohanna', main3: 'Lino', main4: 'Milos',
+                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Gordan', runner4: 'Peter', runner5: 'Zuzu', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '09.01.2026': {
+                terrasse: 'Milos', kitchen: 'Dora', main1: 'Lino', main2: 'Martina', main3: 'Yohanna', main4: 'Kamil',
+                cvd: 'Alain', runner1: 'Jakob', runner2: 'Gordan', runner3: 'Peter', runner4: 'Kaan', runner5: 'Aziz', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '10.01.2026': {
+                terrasse: 'Camillo', kitchen: 'Milos', main1: 'Kamil', main2: 'Lino', main3: 'Martina', main4: 'TBA',
+                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Gordan', runner4: 'Patrick', runner5: 'Zuzu', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '16.01.2026': {
+                terrasse: 'Lino', kitchen: 'Milos', main1: 'Kamil', main2: 'Dora', main3: 'Camillo', main4: 'Martina',
+                cvd: 'Niat', runner1: 'Jakob', runner2: 'Zuzu', runner3: 'Gordan', runner4: '', runner5: '', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '17.01.2026': {
+                terrasse: 'TBA', kitchen: 'Kamil', main1: 'Milos', main2: 'Lino', main3: 'Yohanna', main4: 'Dora',
+                cvd: 'Alain', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Peter', runner4: 'Hasib', runner5: 'Aziz', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '23.01.2026': {
+                terrasse: 'Dora', kitchen: 'Yohanna', main1: 'Camillo', main2: 'Dora', main3: 'Kamil', main4: 'Milos',
+                cvd: 'Niat', runner1: 'Zuzu', runner2: 'Gordan', runner3: 'Peter', runner4: 'Hasib', runner5: 'Aziz', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '24.01.2026': {
+                terrasse: 'TBA', kitchen: 'Dora', main1: 'Kamil', main2: 'Milos', main3: 'Camillo', main4: 'Martina',
+                cvd: 'Niat', runner1: 'Kaan', runner2: 'Patrick', runner3: 'Zuzu', runner4: 'Hasib', runner5: '', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '30.01.2026': {
+                terrasse: 'Martina', kitchen: 'Lino', main1: 'Ada', main2: 'Yohanna', main3: 'Milos', main4: 'Kamil',
+                cvd: 'Alain', runner1: 'Jakob', runner2: 'Zuzu', runner3: 'Gordan', runner4: 'Kaan', runner5: '', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            },
+            '31.01.2026': {
+                terrasse: 'Kamil', kitchen: 'Dora', main1: 'Milos', main2: 'Martina', main3: 'Camillo', main4: 'Ada',
+                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Peter', runner4: 'Gordan', runner5: 'Aziz', runner6: '',
+                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
+            }
+        };
+        
+        // Get shiftplan data by date (DD.MM.YYYY format)
+        function getShiftplanByDate(dateStr) {
+            return SHIFTPLAN_DATABASE[dateStr] || null;
+        }
+        
+        // Event data storage (legacy + dynamic from BMT)
         const EVENT_STAFF_DATA = {
             'turbo': { 
                 name: 'TURBO', 
@@ -3149,7 +3235,7 @@
                 main4: 'Dora',
                 runner1: 'Jakob',
                 runner2: 'Kaan',
-                runner3: 'TBA',
+                runner3: '',
                 runner4: 'Peter',
                 runner5: 'Aziz',
                 runner6: '',
@@ -3164,21 +3250,21 @@
                 cvd: 'Alain / Niat',
                 eventType: 'CLUB',
                 mainFloorTime: '00:00',
-                terrasse: '-',
-                kitchen: 'TBA',
-                main1: 'TBA',
-                main2: 'TBA',
-                main3: 'TBA',
-                main4: 'TBA',
-                runner1: 'TBA',
-                runner2: 'TBA',
-                runner3: 'TBA',
-                runner4: 'TBA',
-                runner5: 'TBA',
-                runner6: '',
-                gard1: 'TBA',
-                gard2: 'TBA',
-                gard3: 'TBA'
+                terrasse: 'Milos',
+                kitchen: 'Kamil',
+                main1: 'Dora',
+                main2: 'Lino',
+                main3: 'Ada',
+                main4: 'Camillo',
+                runner1: 'Patrick',
+                runner2: 'Gordan',
+                runner3: 'Peter',
+                runner4: 'Zuzu',
+                runner5: 'Kaan',
+                runner6: 'Aziz',
+                gard1: 'Sofia',
+                gard2: 'Fayez',
+                gard3: 'Nico'
             }
         };
         
@@ -5733,7 +5819,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.5 - Factsheet Dropdown Fix (future events only)');
+            console.log('Work Hub v14.9.6 - Shiftplan Autofill from Master Database');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
