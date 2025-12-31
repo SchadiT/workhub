@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.0</title>
+    <title>Turbo Projects Work Hub v14.9.3</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -308,49 +308,6 @@
         .upcoming-title { font-size: 18px; font-weight: 700; color: #fff; }
         .upcoming-week-label { font-size: 14px; font-weight: 600; color: #888; margin-bottom: 10px; padding-left: 5px; }
         .upcoming-week-label.current { color: #ef4444; }
-        
-        /* Expandable Upcoming Events */
-        .upcoming-event { overflow: hidden; }
-        .upcoming-event-right { display: flex; align-items: center; gap: 10px; }
-        .upcoming-event-days { font-size: 11px; color: #888; padding: 3px 8px; background: #3d3d54; border-radius: 4px; }
-        .upcoming-event-days.urgent { color: #ef4444; font-weight: 600; }
-        .upcoming-toggle { color: #888; font-size: 10px; transition: transform 0.3s; }
-        .upcoming-event.open .upcoming-toggle { transform: rotate(180deg); }
-        
-        /* Tech Badge - GREEN */
-        .event-tech-badge { background: #22c55e; color: white; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-        
-        /* Expandable Details */
-        .upcoming-event-details { 
-            display: none; 
-            padding: 12px 0 0 0; 
-            margin-top: 12px; 
-            border-top: 1px solid #3d3d54; 
-        }
-        .upcoming-event.open .upcoming-event-details { display: block; }
-        
-        .event-cvd { font-size: 13px; color: #22c55e; margin-bottom: 10px; font-weight: 600; }
-        
-        .upcoming-projections { display: flex; gap: 15px; margin-bottom: 12px; }
-        .proj-item { display: flex; flex-direction: column; align-items: center; flex: 1; background: #1a1a2e; padding: 8px; border-radius: 6px; }
-        .proj-label { font-size: 10px; color: #888; text-transform: uppercase; }
-        .proj-value { font-size: 14px; font-weight: 700; }
-        .proj-value.blue { color: #3b82f6; }
-        .proj-value.orange { color: #f59e0b; }
-        
-        .upcoming-factsheet-btn { 
-            width: 100%; 
-            background: #3d3d54; 
-            border: none; 
-            border-radius: 6px; 
-            padding: 10px; 
-            color: white; 
-            font-size: 12px; 
-            font-weight: 600;
-            cursor: pointer; 
-            transition: all 0.2s; 
-        }
-        .upcoming-factsheet-btn:hover { background: #4d4d64; }
         
         .event-card {
             background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
@@ -2182,14 +2139,13 @@
     <!--  -->
     
     
-
     <!--  -->
-    <!-- UPCOMING EVENTS -->
+    <!-- UPCOMING EVENTS (with integrated VVK Tracker per event) -->
     <!--  -->
     
     <div class="upcoming-events">
         <div class="upcoming-header">
-            <span class="upcoming-title"> UPCOMING EVENTS</span>
+            <span class="upcoming-title">UPCOMING EVENTS</span>
             <span class="upcoming-count" id="upcoming-count">0</span>
         </div>
         <div id="upcoming-events-container">
@@ -2387,7 +2343,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.0 • 30.12.2025 • Factsheet + Projections</div>
+    <div class="version">Work Hub v14.9.3  29.12.2025  Draft Fix</div>
 
     <script>
         // 
@@ -2449,29 +2405,26 @@
         };
         
         const TEMPLATES = {
-            // CLUB MAIN 00:00
             MAIN_00: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
-                doors2_late: "00:00", main1: "22:30", main2: "22:30", main3: "23:00", main4: "23:45",
+                doors2_late: "00:00", main1: "23:00", main2: "23:00", main3: "00:00", main4: "00:15",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:00", gard3: "23:45", technik: "21:00",
-                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
+                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
+                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
-            // CLUB MAIN 00:30
             MAIN_30: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
-                doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:45", main4: "00:15",
+                doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:30", main4: "00:15",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:00", gard3: "23:45", technik: "21:00",
-                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
+                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
+                security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
-            // KONZERT - no Terrasse/Kitchen
             CONCERT: {
-                doors1: "19:00", terrasse: "-", doors2_early: "19:00", kitchen: "-",
-                doors2_late: "19:00", main1: "17:30", main2: "17:30", main3: "18:00", main4: "19:00",
-                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "",
-                gard1: "18:45", gard2: "19:00", gard3: "20:00", technik: "16:00",
-                security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX" }]
+                doors1: "19:00", terrasse: "18:30", doors2_early: "19:00", kitchen: "18:30",
+                doors2_late: "19:00", main1: "19:00", main2: "19:00", main3: "19:00", main4: "19:00",
+                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "20:00",
+                gard1: "18:45", gard2: "19:00", gard3: "20:15", technik: "16:00",
+                security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:30", pax: "1 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX (Abruf)" }]
             }
         };
         
@@ -2976,6 +2929,93 @@
         // FACTSHEET GENERATOR
         // 
         
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9.3 ===
+        function populateFactsheetDropdown() {
+            const select = document.getElementById('fs-event-select');
+            if (!select) { 
+                console.log('Factsheet select element not found'); 
+                return; 
+            }
+            
+            select.innerHTML = '<option value="">-- Event waehlen --</option>';
+            
+            const stored = localStorage.getItem('bmtEvents');
+            if (!stored) { 
+                console.log('No bmtEvents in localStorage - load BMT first');
+                select.innerHTML += '<option disabled>Bitte BMT Events laden</option>';
+                return; 
+            }
+            
+            let events = [];
+            try { 
+                events = JSON.parse(stored); 
+                console.log('Parsed ' + events.length + ' events from localStorage');
+            } catch(e) { 
+                console.error('Error parsing bmtEvents:', e);
+                return; 
+            }
+            
+            const today = new Date(); 
+            today.setHours(0, 0, 0, 0);
+            
+            // Filter: future events, only club nights and concerts (EIGEN, FREMD, KONZERT)
+            const futureEvents = events.filter(e => {
+                const d = new Date(e.dtstart || e.date);
+                if (isNaN(d.getTime())) return false;
+                
+                const summaryLower = (e.summary || e.name || '').toLowerCase();
+                const cat = e.category || '';
+                
+                // Only show EIGEN, FREMD, KONZERT
+                const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
+                const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting');
+                
+                return d >= today && isEvent && isNotClosed && isNotAppointment;
+            }).sort((a, b) => new Date(a.dtstart || a.date) - new Date(b.dtstart || b.date)).slice(0, 6);
+            
+            console.log('Filtered to ' + futureEvents.length + ' future events for dropdown');
+            
+            if (futureEvents.length === 0) { 
+                select.innerHTML += '<option disabled>Keine kommenden Events</option>'; 
+                return; 
+            }
+            
+            futureEvents.forEach((e, i) => {
+                const d = new Date(e.dtstart || e.date);
+                const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+                const dateKey = d.toISOString().slice(0, 10).replace(/-/g, '');
+                const id = 'bmt_' + i + '_' + dateKey;
+                const name = e.summary || e.name || 'Event';
+                const cat = e.category || 'fremd';
+                
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = name + ' - ' + days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE');
+                select.appendChild(opt);
+                
+                // Determine event type for factsheet template
+                const isKonzert = cat === 'konzert' || name.toLowerCase().includes('concert');
+                
+                // Store event data for factsheet autofill
+                EVENT_STAFF_DATA[id] = {
+                    name: name, 
+                    datum: d.toLocaleDateString('de-DE', {weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'}),
+                    technik: '', 
+                    cvd: '', 
+                    eventType: isKonzert ? 'CONCERT' : 'CLUB', 
+                    mainFloorTime: '00:00', 
+                    terrasse: '', 
+                    kitchen: '',
+                    main1: '', main2: '', main3: '', main4: '', 
+                    runner1: '', runner2: '', runner3: '', runner4: '', runner5: '', runner6: '',
+                    gard1: '', gard2: '', gard3: ''
+                };
+            });
+            
+            console.log('Factsheet dropdown populated with ' + futureEvents.length + ' events');
+        }
+        
         function isEigenveranstaltung(name) { return EIGENVERANSTALTUNGEN.some(e => name.toLowerCase().includes(e)); }
         function getKassa(name) { 
             if (!isEigenveranstaltung(name)) return "FREMD";
@@ -3092,12 +3132,11 @@
             `;
         }
         
-        // Event data storage - Dec 2025 + Jan 2026
+        // Event data storage
         const EVENT_STAFF_DATA = {
-            'turbo-27-12': { 
+            'turbo': { 
                 name: 'TURBO', 
-                datum: 'SA 27.12.25', 
-                date: '2025-12-27',
+                datum: 'Samstag, 27.12.2025', 
                 technik: 'Simon', 
                 cvd: 'Alain',
                 eventType: 'CLUB',
@@ -3118,10 +3157,9 @@
                 gard2: 'Fayez',
                 gard3: 'Nico'
             },
-            'nye-31-12': { 
+            'nye': { 
                 name: 'NYE SILVESTER', 
-                datum: 'DI 31.12.25', 
-                date: '2025-12-31',
+                datum: 'Dienstag, 31.12.2025', 
                 technik: 'Jan', 
                 cvd: 'Alain / Niat',
                 eventType: 'CLUB',
@@ -3141,52 +3179,8 @@
                 gard1: 'TBA',
                 gard2: 'TBA',
                 gard3: 'TBA'
-            },
-            'paracek-05-01': { name: 'Paracek', datum: 'SO 05.01.26', date: '2026-01-05', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'zuckerwatt-09-01': { name: 'Zuckerwatt', datum: 'DO 09.01.26', date: '2026-01-09', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'impulse-10-01': { name: 'Impulse', datum: 'FR 10.01.26', date: '2026-01-10', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'fishmarket-16-01': { name: 'Fish Market', datum: 'DO 16.01.26', date: '2026-01-16', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'contrast-17-01': { name: 'Contrast', datum: 'FR 17.01.26', date: '2026-01-17', technik: 'Jan', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'selected-23-01': { name: 'Selected', datum: 'DO 23.01.26', date: '2026-01-23', technik: 'Jan', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'purradox-24-01': { name: 'Purradox', datum: 'FR 24.01.26', date: '2026-01-24', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'mahlwerk-30-01': { name: 'Mahlwerk', datum: 'DO 30.01.26', date: '2026-01-30', technik: 'Elias', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' },
-            'flashback-31-01': { name: 'Flashback', datum: 'FR 31.01.26', date: '2026-01-31', technik: 'Simon', cvd: 'TBA', eventType: 'CLUB', mainFloorTime: '00:00' }
+            }
         };
-        
-        // Populate factsheet dropdown - auto-removes past events
-        function populateFactsheetDropdown() {
-            const select = document.getElementById('fs-event-select');
-            if (!select) return;
-            
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            select.innerHTML = '<option value="">-- Event wählen --</option>';
-            
-            const allEvents = Object.entries(EVENT_STAFF_DATA);
-            console.log('All events:', allEvents.length);
-            
-            const sortedEvents = allEvents
-                .map(([id, e]) => ({ id, ...e }))
-                .filter(e => {
-                    if (!e.date) return false;
-                    const eventDate = new Date(e.date + 'T00:00:00');
-                    return eventDate >= today;
-                })
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-            
-            console.log('Filtered events:', sortedEvents.length);
-            
-            sortedEvents.forEach(event => {
-                const option = document.createElement('option');
-                option.value = event.id;
-                const techBadge = event.technik ? ` [${event.technik}]` : '';
-                option.textContent = `${event.datum} | ${event.name}${techBadge}`;
-                select.appendChild(option);
-            });
-            
-            console.log('Dropdown populated with', sortedEvents.length, 'events');
-        }
         
         // Load event data when dropdown changes
         function loadEventData() {
@@ -3195,31 +3189,7 @@
             
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
-                // Fill missing fields with TBA
-                const fullEvent = {
-                    name: e.name || '',
-                    datum: e.datum || '',
-                    technik: e.technik || 'TBA',
-                    cvd: e.cvd || 'TBA',
-                    eventType: e.eventType || 'CLUB',
-                    mainFloorTime: e.mainFloorTime || '00:00',
-                    terrasse: e.terrasse || 'TBA',
-                    kitchen: e.kitchen || 'TBA',
-                    main1: e.main1 || 'TBA',
-                    main2: e.main2 || 'TBA',
-                    main3: e.main3 || 'TBA',
-                    main4: e.main4 || 'TBA',
-                    runner1: e.runner1 || 'TBA',
-                    runner2: e.runner2 || 'TBA',
-                    runner3: e.runner3 || 'TBA',
-                    runner4: e.runner4 || 'TBA',
-                    runner5: e.runner5 || 'TBA',
-                    runner6: e.runner6 || '',
-                    gard1: e.gard1 || 'TBA',
-                    gard2: e.gard2 || 'TBA',
-                    gard3: e.gard3 || 'TBA'
-                };
-                fillFactsheetForm(fullEvent);
+                fillFactsheetForm(e);
             }
         }
         
@@ -3251,27 +3221,12 @@
             document.getElementById('fs-gard2').value = e.gard2 || '';
             document.getElementById('fs-gard3').value = e.gard3 || '';
             
-            // Update times based on template
-            const template = e.eventType === 'CONCERT' ? 'CONCERT' : 
-                            (e.mainFloorTime === '00:30' ? 'MAIN_30' : 'MAIN_00');
-            const t = TEMPLATES[template];
-            
-            document.getElementById('fs-terrasse-time').value = t.terrasse;
-            document.getElementById('fs-kitchen-time').value = t.kitchen;
-            document.getElementById('fs-main1-time').value = t.main1;
-            document.getElementById('fs-main2-time').value = t.main2;
-            document.getElementById('fs-main3-time').value = t.main3;
-            document.getElementById('fs-main4-time').value = t.main4;
-            document.getElementById('fs-runner1-time').value = t.runner1;
-            document.getElementById('fs-runner2-time').value = t.runner2;
-            document.getElementById('fs-runner3-time').value = t.runner3;
-            document.getElementById('fs-runner4-time').value = t.runner4;
-            document.getElementById('fs-runner5-time').value = t.runner5;
-            document.getElementById('fs-gard1-time').value = t.gard1;
-            document.getElementById('fs-gard2-time').value = t.gard2;
-            document.getElementById('fs-gard3-time').value = t.gard3;
-            
             updateFactsheetPreview();
+            refreshBMTFromStorage();
+            populateFactsheetDropdown();
+            
+            initMonthFilter();
+            updateUpcomingEvents();
         }
         
         // Quick factsheet for specific event from dashboard
@@ -4344,6 +4299,8 @@
                             
                             renderBMTEvents();
                             renderUpcomingFromBMT();
+                            populateFactsheetDropdown();
+            
                             showToast(' ' + bmtEvents.length + ' BMT Events geladen!');
                             return;
                         }
@@ -4563,6 +4520,8 @@
                     
                     renderBMTEvents();
                     renderUpcomingFromBMT();
+                    populateFactsheetDropdown();
+            
                     showToast(' ' + bmtEvents.length + ' BMT Events geladen!');
                 } catch (err) {
                     console.error('Error parsing ICS:', err);
@@ -4588,6 +4547,8 @@
                     }));
                     renderBMTEvents();
                     renderUpcomingFromBMT();
+                    populateFactsheetDropdown();
+            
                     
                     if (lastUpdate) {
                         const updateDate = new Date(lastUpdate);
@@ -4690,151 +4651,170 @@
             
             if (!container) return;
             
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            
-            let eventsToShow = [];
-            
-            // Use BMT events if available
-            if (bmtEvents && bmtEvents.length > 0) {
-                eventsToShow = bmtEvents
-                    .filter(e => {
-                        const summaryLower = e.summary.toLowerCase();
-                        const isEvent = e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert';
-                        const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
-                        const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
-                        const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting');
-                        const isFuture = e.dtstart >= today;
-                        return isEvent && isNotHoliday && isNotClosed && isNotAppointment && isFuture;
-                    })
-                    .slice(0, 6)
-                    .map(e => {
-                        // Try to find matching event in EVENT_STAFF_DATA for tech/cvd
-                        const staffData = findStaffDataForEvent(e.summary, e.dtstart);
-                        return {
-                            name: e.summary,
-                            date: e.dtstart,
-                            category: e.category,
-                            technik: staffData?.technik || '',
-                            cvd: staffData?.cvd || ''
-                        };
-                    });
-            } else {
-                // Use static EVENT_STAFF_DATA
-                eventsToShow = Object.values(EVENT_STAFF_DATA)
-                    .filter(e => e.date && new Date(e.date) >= today)
-                    .sort((a, b) => new Date(a.date) - new Date(b.date))
-                    .slice(0, 6)
-                    .map(e => ({
-                        name: e.name,
-                        date: new Date(e.date),
-                        category: isEigenveranstaltung(e.name) ? 'eigen' : 'fremd',
-                        technik: e.technik || '',
-                        cvd: e.cvd || ''
-                    }));
-            }
-            
-            if (countBadge) countBadge.textContent = eventsToShow.length;
-            
-            if (eventsToShow.length === 0) {
+            if (!bmtEvents || bmtEvents.length === 0) {
                 container.innerHTML = `
                     <div class="upcoming-placeholder">
-                        <p>📅 Keine kommenden Events</p>
+                        <p>Upload BMT .ics Datei um Events zu sehen</p>
+                        <small>Events werden automatisch aus BookMeTender geladen</small>
                     </div>
                 `;
+                if (countBadge) countBadge.textContent = '0';
                 return;
             }
             
-            container.innerHTML = eventsToShow.map((event, idx) => {
-                const eventDate = event.date instanceof Date ? event.date : new Date(event.date);
-                const dayName = dayNames[eventDate.getDay()];
-                const dateStr = eventDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+            const now = new Date();
+            const upcomingEvents = bmtEvents
+                .filter(e => {
+                    const summaryLower = e.summary.toLowerCase();
+                    const isEvent = e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert';
+                    const isNotHoliday = e.category !== 'holiday' && !summaryLower.includes('holiday');
+                    const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                    const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting');
+                    const isFuture = e.dtstart >= now;
+                    return isEvent && isNotHoliday && isNotClosed && isNotAppointment && isFuture;
+                })
+                .slice(0, 4);
+            
+            if (countBadge) countBadge.textContent = upcomingEvents.length;
+            
+            if (upcomingEvents.length === 0) {
+                container.innerHTML = `<div class="upcoming-placeholder"><p>Keine kommenden Events</p></div>`;
+                return;
+            }
+            
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            container.innerHTML = upcomingEvents.map((event, idx) => {
+                const dayName = dayNames[event.dtstart.getDay()];
+                const dateStr = event.dtstart.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 const isEigen = event.category === 'eigen';
                 const isKonzert = event.category === 'konzert';
                 const typeClass = isEigen ? 'eigen' : (isKonzert ? 'konzert' : 'fremd');
                 const typeLabel = isEigen ? 'EIGEN' : (isKonzert ? 'KONZERT' : 'FREMD');
                 
-                // Days until event
+                // Calculate days until event
+                const today = new Date(); today.setHours(0,0,0,0);
+                const eventDate = new Date(event.dtstart); eventDate.setHours(0,0,0,0);
                 const daysUntil = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
-                const daysText = daysUntil === 0 ? 'HEUTE' : daysUntil === 1 ? 'Morgen' : daysUntil + ' Tage';
+                const daysText = daysUntil === 0 ? 'HEUTE' : daysUntil === 1 ? '1 Tag' : daysUntil + ' Tage';
+                const daysColor = daysUntil <= 3 ? '#ef4444' : daysUntil <= 7 ? '#f59e0b' : '#22c55e';
                 
-                // Projections
-                const projVVK = isEigen ? '~450' : '~350';
-                const projFOH = isEigen ? '~350' : '~280';
-                const projBar = isEigen ? '~13k' : '~10k';
+                const eventData = encodeURIComponent(JSON.stringify({
+                    name: event.summary,
+                    date: event.dtstart.toISOString(),
+                    category: event.category
+                }));
                 
-                const techBadge = event.technik ? `<span class="event-tech-badge">${event.technik}</span>` : '';
-                const cvdInfo = event.cvd ? `<div class="event-cvd">CVD: ${event.cvd}</div>` : '';
+                // VVK Tracker only for CLUB NIGHTS (not concerts!)
+                const showVVKTracker = !isKonzert;
                 
-                return `
-                    <div class="upcoming-event ${typeClass}" id="upcoming-${idx}">
-                        <div class="upcoming-event-header" onclick="toggleUpcomingEvent(${idx})">
-                            <div class="upcoming-event-info">
-                                <span class="upcoming-event-date">${dayName} ${dateStr}</span>
-                                <span class="upcoming-event-name ${typeClass}">${escapeHtml(event.name)}</span>
-                                ${techBadge}
+                const vvkTrackerHTML = showVVKTracker ? `
+                    <div class="vvk-event-tracker" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #3d3d4d;">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                            <div>
+                                <label style="font-size: 9px; color: #888; display: block;">VVK aktuell</label>
+                                <input type="number" id="vvk-current-${idx}" value="0" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                    style="width: 60px; background: #1a1a2e; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600;">
                             </div>
-                            <div class="upcoming-event-right">
-                                <span class="upcoming-event-days ${daysUntil <= 2 ? 'urgent' : ''}">${daysText}</span>
-                                <span class="upcoming-event-type ${typeClass}">${typeLabel}</span>
-                                <span class="upcoming-toggle">▼</span>
+                            <div>
+                                <label style="font-size: 9px; color: #888; display: block;">Ziel</label>
+                                <input type="number" id="vvk-goal-${idx}" value="450" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                    style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
+                            </div>
+                            <div>
+                                <label style="font-size: 9px; color: #888; display: block;">Max</label>
+                                <input type="number" id="vvk-max-${idx}" value="550" oninput="calcEventProj(${idx}, '${event.dtstart.toISOString()}')" 
+                                    style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
                             </div>
                         </div>
-                        <div class="upcoming-event-details" id="upcoming-details-${idx}">
-                            ${cvdInfo}
-                            <div class="upcoming-projections">
-                                <div class="proj-item"><span class="proj-label">VVK</span><span class="proj-value blue">${projVVK}</span></div>
-                                <div class="proj-item"><span class="proj-label">FOH</span><span class="proj-value blue">${projFOH}</span></div>
-                                <div class="proj-item"><span class="proj-label">Bar</span><span class="proj-value orange">${projBar}</span></div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: #888;">VVK</div>
+                                <div id="proj-vvk-${idx}" style="font-size: 14px; font-weight: 700; color: #f59e0b;">~450</div>
                             </div>
-                            <button class="upcoming-factsheet-btn" onclick="event.stopPropagation(); openFactsheetForEvent('${escapeHtml(event.name)}', '${eventDate.toISOString()}')">📋 Factsheet</button>
+                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: #888;">FOH</div>
+                                <div id="proj-foh-${idx}" style="font-size: 14px; font-weight: 700; color: #3b82f6;">~350</div>
+                            </div>
+                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: #888;">Bar</div>
+                                <div id="proj-bar-${idx}" style="font-size: 14px; font-weight: 700; color: #22c55e;">~13k</div>
+                            </div>
+                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: #888;">Total</div>
+                                <div id="proj-total-${idx}" style="font-size: 14px; font-weight: 700; color: #8b5cf6;">~28k</div>
+                            </div>
+                        </div>
+                        <div id="vvk-benchmark-${idx}" style="font-size: 9px; color: #888; margin-top: 6px; text-align: center;">Benchmark wird berechnet...</div>
+                    </div>
+                ` : `<div style="margin-top: 8px; padding: 8px; background: #1a1a2e; border-radius: 4px; text-align: center; font-size: 11px; color: #8b5cf6;">Konzert - keine VVK Projektion</div>`;
+                
+                return `
+                    <div class="upcoming-event-card ${typeClass}" style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); border-radius: 10px; padding: 12px; margin-bottom: 12px; border-left: 3px solid ${isEigen ? '#22c55e' : isKonzert ? '#8b5cf6' : '#f59e0b'};">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div style="font-size: 12px; color: #888;">${dayName} ${dateStr}</div>
+                                <div style="font-size: 16px; font-weight: 700; color: white; margin: 4px 0;">${escapeHtml(event.summary)}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="upcoming-event-type ${typeClass}" style="font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 600; background: ${isEigen ? '#22c55e' : isKonzert ? '#8b5cf6' : '#f59e0b'}; color: white;">${typeLabel}</span>
+                                <div style="font-size: 11px; color: ${daysColor}; margin-top: 4px; font-weight: 600;">${daysText}</div>
+                            </div>
+                        </div>
+                        ${vvkTrackerHTML}
+                        <div style="margin-top: 10px; display: flex; gap: 8px;">
+                            <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Factsheet</button>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-        
-        // Find staff data for event by name/date
-        function findStaffDataForEvent(name, date) {
-            const nameLower = name.toLowerCase();
-            const eventDate = date instanceof Date ? date : new Date(date);
             
-            for (const e of Object.values(EVENT_STAFF_DATA)) {
-                if (e.name && e.name.toLowerCase() === nameLower) return e;
-                if (e.date && new Date(e.date).toDateString() === eventDate.toDateString()) return e;
-            }
-            return null;
-        }
-        
-        // Toggle upcoming event details
-        function toggleUpcomingEvent(idx) {
-            const event = document.getElementById(`upcoming-${idx}`);
-            if (event) event.classList.toggle('open');
-        }
-        
-        // Open factsheet for event
-        function openFactsheetForEvent(name, dateStr) {
-            const eventDate = new Date(dateStr);
-            
-            // Find matching event in EVENT_STAFF_DATA
-            const match = Object.entries(EVENT_STAFF_DATA).find(([id, e]) => {
-                return e.name.toLowerCase() === name.toLowerCase() || 
-                       (e.date && new Date(e.date).toDateString() === eventDate.toDateString());
+            // Initialize projections for all club night events
+            upcomingEvents.forEach((event, idx) => {
+                if (event.category !== 'konzert') {
+                    calcEventProj(idx, event.dtstart.toISOString());
+                }
             });
+        }
+        
+        // Calculate projection for a specific event
+        function calcEventProj(idx, dateStr) {
+            const currentVVK = parseInt(document.getElementById('vvk-current-' + idx)?.value) || 0;
+            const vvkGoal = parseInt(document.getElementById('vvk-goal-' + idx)?.value) || 450;
+            const vvkMax = parseInt(document.getElementById('vvk-max-' + idx)?.value) || 550;
             
-            if (match) {
-                document.getElementById('fs-event-select').value = match[0];
-                loadEventData();
-            } else {
-                document.getElementById('fs-event-name').value = name;
-                const dayNames = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
-                const dayName = dayNames[eventDate.getDay()];
-                const dateFormatted = eventDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
-                document.getElementById('fs-datum').value = `${dayName} ${dateFormatted}`;
-                updateFactsheetPreview();
+            const today = new Date(); today.setHours(0,0,0,0);
+            const eventDate = new Date(dateStr); eventDate.setHours(0,0,0,0);
+            const days = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+            
+            // Benchmarks
+            const benchmarks = { 14: 0.35, 10: 0.42, 7: 0.50, 5: 0.55, 3: 0.65, 2: 0.72, 1: 0.80, 0: 0.85 };
+            let pct = 0.5;
+            for (const d of [14, 10, 7, 5, 3, 2, 1, 0]) {
+                if (days >= d) { pct = benchmarks[d]; break; }
             }
-            openModal('factsheet-modal');
+            
+            // Projections
+            let projVVK = currentVVK > 0 ? Math.min(Math.round(currentVVK / pct), vvkMax) : vvkGoal;
+            let projFOH = Math.min(Math.round(projVVK * 0.77), 700);
+            const projBar = (projVVK + projFOH) * 16.5;
+            const projTotal = (projVVK * 18) + (projFOH * 22) + projBar;
+            
+            // Update UI
+            const vvkEl = document.getElementById('proj-vvk-' + idx);
+            const fohEl = document.getElementById('proj-foh-' + idx);
+            const barEl = document.getElementById('proj-bar-' + idx);
+            const totalEl = document.getElementById('proj-total-' + idx);
+            const benchEl = document.getElementById('vvk-benchmark-' + idx);
+            
+            if (vvkEl) vvkEl.textContent = '~' + projVVK;
+            if (fohEl) fohEl.textContent = '~' + projFOH;
+            if (barEl) barEl.textContent = '~' + (projBar / 1000).toFixed(1) + 'k';
+            if (totalEl) totalEl.textContent = '~' + (projTotal / 1000).toFixed(0) + 'k';
+            
+            const expected = Math.round(vvkGoal * pct);
+            const status = currentVVK >= expected ? 'On Track' : 'Behind';
+            if (benchEl) benchEl.textContent = Math.round(pct * 100) + '% Benchmark @ ' + days + 'd = ~' + expected + ' (' + status + ')';
         }
         
         
@@ -5693,7 +5673,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.0 - Factsheet Generator + Projections');
+            console.log('Work Hub v14.9.3 - Dynamic Factsheet Parser + ZIP Support');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -5704,10 +5684,9 @@ Spittelauer Lnde 12/1
             updateFactsheetPreview();
             refreshBMTFromStorage();
             populateFactsheetDropdown();
+            
             initMonthFilter();
             updateUpcomingEvents();
-            // Always render upcoming events (uses EVENT_STAFF_DATA if no BMT)
-            renderUpcomingFromBMT();
             
             // Initialize NYE tools when modals open
             document.getElementById('nye-projector-modal').addEventListener('transitionend', calculateNYE);
