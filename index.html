@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.4</title>
+    <title>Turbo Projects Work Hub v14.9.5</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2939,40 +2939,40 @@
             
             select.innerHTML = '<option value="">-- Event waehlen --</option>';
             
-            const stored = localStorage.getItem('bmtEvents');
-            if (!stored) { 
-                console.log('No bmtEvents in localStorage - load BMT first');
+            // Use global bmtEvents (already has Date objects) instead of re-parsing from localStorage
+            if (!bmtEvents || bmtEvents.length === 0) { 
+                console.log('No bmtEvents loaded - load BMT first');
                 select.innerHTML += '<option disabled>Bitte BMT Events laden</option>';
                 return; 
             }
             
-            let events = [];
-            try { 
-                events = JSON.parse(stored); 
-                console.log('Parsed ' + events.length + ' events from localStorage');
-            } catch(e) { 
-                console.error('Error parsing bmtEvents:', e);
-                return; 
-            }
+            console.log('Using ' + bmtEvents.length + ' events from global bmtEvents');
             
-            const today = new Date(); 
-            today.setHours(0, 0, 0, 0);
+            const now = new Date();
             
-            // Filter: future events, only club nights and concerts (EIGEN, FREMD, KONZERT)
-            const futureEvents = events.filter(e => {
-                const d = new Date(e.dtstart || e.date);
-                if (isNaN(d.getTime())) return false;
+            // Filter: FUTURE events only, no holiday/closed
+            const futureEvents = bmtEvents.filter(e => {
+                const eventDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                if (isNaN(eventDate.getTime())) return false;
                 
                 const summaryLower = (e.summary || e.name || '').toLowerCase();
                 const cat = e.category || '';
                 
                 // Only show EIGEN, FREMD, KONZERT
                 const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
+                const isNotHoliday = cat !== 'holiday' && !summaryLower.includes('holiday');
                 const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
                 const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting');
                 
-                return d >= today && isEvent && isNotClosed && isNotAppointment;
-            }).sort((a, b) => new Date(a.dtstart || a.date) - new Date(b.dtstart || b.date)).slice(0, 6);
+                // CRITICAL: Only future events (eventDate >= now)
+                const isFuture = eventDate >= now;
+                
+                return isFuture && isEvent && isNotHoliday && isNotClosed && isNotAppointment;
+            }).sort((a, b) => {
+                const dateA = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
+                const dateB = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
+                return dateA - dateB;
+            }).slice(0, 4); // Only next 4 events
             
             console.log('Filtered to ' + futureEvents.length + ' future events for dropdown');
             
@@ -2982,7 +2982,7 @@
             }
             
             futureEvents.forEach((e, i) => {
-                const d = new Date(e.dtstart || e.date);
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                 const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
                 const dateKey = d.toISOString().slice(0, 10).replace(/-/g, '');
                 const id = 'bmt_' + i + '_' + dateKey;
@@ -5733,7 +5733,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.4 - Dynamic Factsheet Parser + ZIP Support');
+            console.log('Work Hub v14.9.5 - Factsheet Dropdown Fix (future events only)');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
