@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.8</title>
+    <title>Turbo Projects Work Hub v14.9.9</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2408,7 +2408,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.8 • 31.12.2025 • Upcoming Events Dropdown</div>
+    <div class="version">Work Hub v14.9.9 • 31.12.2025 • Email Draft Fix</div>
 
     <script>
         // 
@@ -4361,6 +4361,33 @@
         }
         
         // Save email as draft in Outlook
+        // Get fresh token with specific scopes
+        async function getMailToken() {
+            if (!msalInstance) return null;
+            const accounts = msalInstance.getAllAccounts();
+            if (accounts.length === 0) return null;
+            
+            try {
+                const response = await msalInstance.acquireTokenSilent({
+                    scopes: ["Mail.ReadWrite", "Mail.Send"],
+                    account: accounts[0]
+                });
+                return response.accessToken;
+            } catch (e) {
+                console.log('Silent token failed, trying popup:', e);
+                try {
+                    const response = await msalInstance.acquireTokenPopup({
+                        scopes: ["Mail.ReadWrite", "Mail.Send"],
+                        account: accounts[0]
+                    });
+                    return response.accessToken;
+                } catch (e2) {
+                    console.error('Token popup failed:', e2);
+                    return null;
+                }
+            }
+        }
+        
         async function saveEmailDraft() {
             const to = document.getElementById('email-to').value;
             const subject = document.getElementById('email-subject').value;
@@ -4368,21 +4395,29 @@
             const status = document.getElementById('email-status');
             
             if (!subject || !body) {
-                status.textContent = ' Bitte mindestens Betreff und Nachricht ausfllen';
+                status.textContent = '⚠️ Bitte mindestens Betreff und Nachricht ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = ' Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = ' Speichere als Entwurf...';
+            status.textContent = '💾 Speichere als Entwurf...';
             status.style.color = '#888';
             
             try {
+                // Get fresh token with mail scopes
+                const mailToken = await getMailToken();
+                if (!mailToken) {
+                    status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.style.color = '#ef4444';
+                    return;
+                }
+                
                 // Build message object
                 const messageData = {
                     subject: subject,
@@ -4400,7 +4435,7 @@
                 const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + accessToken,
+                        'Authorization': 'Bearer ' + mailToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(messageData)
@@ -4409,9 +4444,29 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = ' Entwurf gespeichert!';
+                    status.textContent = '✅ Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast(' Entwurf in Outlook gespeichert!');
+                    showToast('✅ Entwurf in Outlook gespeichert!');
+                    // Clear form after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('email-to').value = '';
+                        document.getElementById('email-subject').value = '';
+                        document.getElementById('email-body').value = '';
+                        status.textContent = '';
+                        closeModal('email-modal');
+                    }, 2000);
+                } else {
+                    const err = await response.json();
+                    console.error('Draft error:', err);
+                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.style.color = '#ef4444';
+                }
+            } catch (e) {
+                console.error('Draft exception:', e);
+                status.textContent = '❌ Fehler: ' + e.message;
+                status.style.color = '#ef4444';
+            }
+        }
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -5506,7 +5561,14 @@ Spittelauer Lnde 12/1
             body += SCHADI_SIGNATURE;
             
             // Save as draft
-            showToast(' Speichere als Entwurf...');
+            showToast('💾 Speichere als Entwurf...');
+            
+            // Get fresh token with mail scopes
+            const mailToken = await getMailToken();
+            if (!mailToken) {
+                showToast('❌ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                return;
+            }
             
             const toRecipients = CLEANING_CONTACTS.map(contact => ({
                 emailAddress: { address: contact.email }
@@ -5516,7 +5578,7 @@ Spittelauer Lnde 12/1
                 const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + accessToken,
+                        'Authorization': 'Bearer ' + mailToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -5527,7 +5589,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast(' Entwurf in Outlook gespeichert!');
+                    showToast('✅ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -5616,19 +5678,27 @@ Spittelauer Lnde 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = ' Bitte alle Felder ausfllen';
+                status.textContent = '⚠️ Bitte alle Felder ausfüllen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = ' Bitte zuerst mit Microsoft anmelden';
+                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = ' Speichere als Entwurf...';
+            status.textContent = '💾 Speichere als Entwurf...';
             status.style.color = '#888';
+            
+            // Get fresh token with mail scopes
+            const mailToken = await getMailToken();
+            if (!mailToken) {
+                status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.style.color = '#ef4444';
+                return;
+            }
             
             // Build recipients array for all 3 contacts
             const toRecipients = CLEANING_CONTACTS.map(contact => ({
@@ -5642,7 +5712,7 @@ Spittelauer Lnde 12/1
                 const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + accessToken,
+                        'Authorization': 'Bearer ' + mailToken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -5941,7 +6011,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.8 - Upcoming Events Dropdown');
+            console.log('Work Hub v14.9.9 - Email Draft Fix');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
