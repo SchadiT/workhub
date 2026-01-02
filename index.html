@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.9</title>
+    <title>Turbo Projects Work Hub v14.9.10</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -2408,7 +2408,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.9 • 31.12.2025 • Email Draft Fix</div>
+    <div class="version">Work Hub v14.9.10 • 02.01.2026 • Syntax Fix</div>
 
     <script>
         // 
@@ -3006,7 +3006,7 @@
         // FACTSHEET GENERATOR
         // 
         
-        // === DYNAMIC FACTSHEET DROPDOWN v14.9.7 ===
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9.10 ===
         function populateFactsheetDropdown() {
             const select = document.getElementById('fs-event-select');
             if (!select) { 
@@ -4464,31 +4464,6 @@
             } catch (e) {
                 console.error('Draft exception:', e);
                 status.textContent = '❌ Fehler: ' + e.message;
-                status.style.color = '#ef4444';
-            }
-        }
-                    // Clear form after 2 seconds
-                    setTimeout(() => {
-                        document.getElementById('email-to').value = '';
-                        document.getElementById('email-subject').value = '';
-                        document.getElementById('email-body').value = '';
-                        status.textContent = '';
-                        closeModal('email-modal');
-                    }, 2000);
-                } else {
-                    const err = await response.json();
-                    console.error('Draft error:', err);
-                    // Check if it's a permission error
-                    if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
-                        status.innerHTML = ' Keine Berechtigung. <a href="#" onclick="handleSignOut(); return false;" style="color: #3b82f6;">Bitte neu anmelden</a>';
-                    } else {
-                        status.textContent = ' Fehler: ' + (err.error?.message || 'Unbekannt');
-                    }
-                    status.style.color = '#ef4444';
-                }
-            } catch (e) {
-                console.error('Draft exception:', e);
-                status.textContent = ' Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -6011,7 +5986,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.9 - Email Draft Fix');
+            console.log('Work Hub v14.9.10 - Syntax Fix');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
