@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v14.9.10</title>
+    <title>Turbo Projects Work Hub v14.9.11</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
@@ -150,8 +150,16 @@
         }
         .tool-btn:hover {
             background: #3d3d4d;
-            border-color: #8b5cf6;
         }
+        /* Colored Border Classes */
+        .tool-btn.border-blue { border: 2px solid #3b82f6; }
+        .tool-btn.border-blue:hover { border-color: #60a5fa; background: #3d3d4d; }
+        .tool-btn.border-white { border: 2px solid #ffffff; }
+        .tool-btn.border-white:hover { border-color: #e5e5e5; background: #3d3d4d; }
+        .tool-btn.border-green { border: 2px solid #22c55e; }
+        .tool-btn.border-green:hover { border-color: #4ade80; background: #3d3d4d; }
+        .tool-btn.border-red { border: 2px solid #ef4444; }
+        .tool-btn.border-red:hover { border-color: #f87171; background: #3d3d4d; }
         .tool-btn .tool-icon {
             display: block;
             font-size: 18px;
@@ -286,7 +294,7 @@
         .upcoming-events-section { margin-bottom: 20px; }
         .upcoming-section-header {
             background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
-            border: 1px solid #3b82f6;
+            border: 2px solid #ef4444;
             border-radius: 15px 15px 0 0;
             padding: 15px 20px;
             display: flex;
@@ -303,7 +311,7 @@
         .upcoming-toggle.open { transform: rotate(180deg); }
         #upcoming-events-container {
             background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
-            border: 1px solid #3b82f6;
+            border: 2px solid #ef4444;
             border-top: none;
             border-radius: 0 0 15px 15px;
             padding: 15px;
@@ -313,7 +321,7 @@
         .upcoming-placeholder { text-align: center; padding: 30px; color: #888; background: rgba(255,255,255,0.02); border-radius: 8px; }
         .upcoming-placeholder p { margin: 0 0 8px 0; font-size: 14px; }
         .upcoming-placeholder small { font-size: 12px; color: #666; }
-        .upcoming-count { background: #3b82f6; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .upcoming-count { background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
         
         /* Individual Event Card - Collapsible */
         .upcoming-event-card {
@@ -574,7 +582,7 @@
         /* BMT Events Section */
         .bmt-section {
             background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
-            border: 1px solid #3b82f6;
+            border: 2px solid #ef4444;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
@@ -594,7 +602,7 @@
             gap: 10px;
         }
         .bmt-badge {
-            background: #3b82f6;
+            background: #ef4444;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
@@ -2089,16 +2097,16 @@
         </button>
         <div class="tools-content" id="apps-content">
             <div class="tools-grid">
-                <button class="tool-btn" onclick="openModal('factsheet-modal')">
+                <button class="tool-btn border-blue" onclick="openModal('factsheet-modal')">
                     <span class="tool-icon"></span>
                     Factsheet
                 </button>
-                <button class="tool-btn" onclick="openModal('email-modal')">
+                <button class="tool-btn border-blue" onclick="openModal('email-modal')">
                     <span class="tool-icon"></span>
                     E-Mail
                 </button>
-                <div class="tool-btn dropdown-container" style="position: relative;">
-                    <button class="tool-btn" onclick="toggleDropdown('social-dropdown')" style="width: 100%; border: none; padding: 0;">
+                <div class="tool-btn border-blue dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-blue" onclick="toggleDropdown('social-dropdown')" style="width: 100%; border: none; padding: 0;">
                         <span class="tool-icon"></span>
                         Social 
                     </button>
@@ -2109,8 +2117,8 @@
                         <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon"></span> BMT Dashboard</a>
                     </div>
                 </div>
-                <div class="tool-btn dropdown-container" style="position: relative;">
-                    <button class="tool-btn" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; border: none; padding: 0;">
+                <div class="tool-btn border-blue dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-blue" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; border: none; padding: 0;">
                         <span class="tool-icon"></span>
                         Sales 
                     </button>
@@ -2118,10 +2126,11 @@
                         <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon"></span> WBV (POS)</a>
                         <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon"></span> Linktree</a>
                         <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon"></span> ntry (Pre-Sale)</a>
+                        <a href="https://oeticket.light.oet.eu/dashboard" class="dropdown-item" target="_blank"><span class="icon"></span> OE TICKET</a>
                     </div>
                 </div>
-                <div class="tool-btn dropdown-container" style="position: relative;">
-                    <button class="tool-btn" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; border: none; padding: 0;">
+                <div class="tool-btn border-blue dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-blue" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; border: none; padding: 0;">
                         <span class="tool-icon"></span>
                         Storage 
                     </button>
@@ -2141,38 +2150,40 @@
         </button>
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
-                <button class="tool-btn" onclick="openCleaningModal()">
+                <button class="tool-btn border-white" onclick="openCleaningModal()">
                     <span class="tool-icon"></span>
                     Reinigung
                 </button>
-                <button class="tool-btn" onclick="openModal('presale-modal')">
+                <button class="tool-btn border-white" onclick="openModal('presale-modal')">
                     <span class="tool-icon"></span>
                     PreSale Calc
                 </button>
-                <button class="tool-btn" onclick="openModal('cost-modal')">
+                <button class="tool-btn border-white" onclick="openModal('cost-modal')">
                     <span class="tool-icon"></span>
                     Cost Calc
                 </button>
-                <button class="tool-btn" onclick="openModal('projector-modal')">
+                <button class="tool-btn border-white" onclick="openModal('projector-modal')">
                     <span class="tool-icon"></span>
                     Projector
                 </button>
-                <button class="tool-btn" onclick="openDeepAnalysis()">
+                <button class="tool-btn border-white" onclick="openDeepAnalysis()">
                     <span class="tool-icon"></span>
                     Deep Analysis
                 </button>
-                <button class="tool-btn" onclick="openModal('nye-projector-modal')" style="border-color: #f59e0b;">
-                    <span class="tool-icon"></span>
-                    NYE Projector
-                </button>
-                <button class="tool-btn" onclick="openModal('peak-grid-modal')" style="border-color: #ef4444;">
-                    <span class="tool-icon"></span>
-                    Peak Grid
-                </button>
-                <button class="tool-btn" onclick="openModal('guestlist-modal')" style="border-color: #22c55e;">
+                <button class="tool-btn border-white" onclick="openModal('guestlist-modal')">
                     <span class="tool-icon"></span>
                     Guest List
                 </button>
+                <div class="tool-btn border-white dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; border: none; padding: 0;">
+                        <span class="tool-icon"></span>
+                        Special 
+                    </button>
+                    <div id="special-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('peak-grid-modal');"><span class="icon"></span> Peak Grid</a>
+                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('nye-projector-modal');"><span class="icon"></span> NYE Projector</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -2184,11 +2195,11 @@
         </button>
         <div class="tools-content" id="finance-content">
             <div class="tools-grid">
-                <button class="tool-btn" onclick="showToast(' Inventory Tool - Coming Soon!');" style="border-color: #059669;">
+                <button class="tool-btn border-green" onclick="showToast(' Inventory Tool - Coming Soon!');">
                     <span class="tool-icon"></span>
                     Inventory & Restock
                 </button>
-                <button class="tool-btn" onclick="showToast(' Financials - Coming Soon!');" style="border-color: #059669;">
+                <button class="tool-btn border-green" onclick="showToast(' Financials - Coming Soon!');">
                     <span class="tool-icon"></span>
                     Financials
                 </button>
@@ -2208,14 +2219,14 @@
     <div class="upcoming-events-section">
         <div class="upcoming-section-header" onclick="toggleUpcomingSection()">
             <div class="upcoming-title-row">
-                <span class="upcoming-title">📅 UPCOMING EVENTS</span>
+                <span class="upcoming-title">UPCOMING EVENTS</span>
                 <span class="upcoming-count" id="upcoming-count">0</span>
             </div>
-            <span class="upcoming-toggle" id="upcoming-toggle">▼</span>
+            <span class="upcoming-toggle" id="upcoming-toggle">v</span>
         </div>
         <div id="upcoming-events-container" class="upcoming-collapsed">
             <div class="upcoming-placeholder" id="upcoming-placeholder">
-                <p>📤 Upload BMT .ics Datei um Events zu sehen</p>
+                <p>Upload BMT .ics Datei um Events zu sehen</p>
                 <small>Events werden automatisch aus BookMeTender geladen</small>
             </div>
         </div>
@@ -2408,7 +2419,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v14.9.10 • 02.01.2026 • Syntax Fix</div>
+    <div class="version">Work Hub v14.9.11 - 03.01.2026 - UI Updates</div>
 
     <script>
         // 
@@ -2534,11 +2545,11 @@
             // Check if MSAL is ready
             if (!msalInstance) {
                 console.error('MSAL not initialized yet');
-                showToast("⏳ Bitte warten, Auth lädt...", true);
+                showToast("Bitte warten, Auth laedt...", true);
                 // Try to initialize again
                 await initMsal();
                 if (!msalInstance) {
-                    showToast("❌ Auth Library nicht geladen. Seite neu laden.", true);
+                    showToast("Auth Library nicht geladen. Seite neu laden.", true);
                     return;
                 }
             }
@@ -2561,10 +2572,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("✅ Verbunden!");
+                    showToast("âœ… Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("❌ Login fehlgeschlagen", true); 
+                    showToast("âŒ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -3006,7 +3017,7 @@
         // FACTSHEET GENERATOR
         // 
         
-        // === DYNAMIC FACTSHEET DROPDOWN v14.9.10 ===
+        // === DYNAMIC FACTSHEET DROPDOWN v14.9.11 ===
         function populateFactsheetDropdown() {
             const select = document.getElementById('fs-event-select');
             if (!select) { 
@@ -3226,10 +3237,10 @@
             `;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs) + Technikerkalender
         // Key: DD.MM.YYYY format for date matching
-        // ═══════════════════════════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         const SHIFTPLAN_DATABASE = {
             // DECEMBER 2025
             '27.12.2025': {
@@ -4307,7 +4318,7 @@
             const status = document.getElementById('email-status');
             
             if (!to || !subject || !body) {
-                status.textContent = ' Bitte alle Felder ausfllen';
+                status.textContent = 'Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
@@ -4395,25 +4406,25 @@
             const status = document.getElementById('email-status');
             
             if (!subject || !body) {
-                status.textContent = '⚠️ Bitte mindestens Betreff und Nachricht ausfüllen';
+                status.textContent = 'Bitte mindestens Betreff und Nachricht ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '💾 Speichere als Entwurf...';
+            status.textContent = 'Speichere als Entwurf...';
             status.style.color = '#888';
             
             try {
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -4444,9 +4455,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = '✅ Entwurf gespeichert!';
+                    status.textContent = 'âœ… Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('✅ Entwurf in Outlook gespeichert!');
+                    showToast('âœ… Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -4458,12 +4469,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = '❌ Fehler: ' + e.message;
+                status.textContent = 'âŒ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -4903,7 +4914,7 @@
             if (!container) return;
             
             if (!bmtEvents || bmtEvents.length === 0) {
-                container.innerHTML = '<div class="upcoming-placeholder"><p>📤 Upload BMT .ics Datei um Events zu sehen</p><small>Events werden automatisch aus BookMeTender geladen</small></div>';
+                container.innerHTML = '<div class="upcoming-placeholder"><p>Upload BMT .ics Datei um Events zu sehen</p><small>Events werden automatisch aus BookMeTender geladen</small></div>';
                 if (countBadge) countBadge.textContent = '0';
                 return;
             }
@@ -4990,7 +5001,7 @@
                         </div>
                         <div id="vvk-benchmark-${idx}" style="font-size: 9px; color: #888; margin-top: 6px; text-align: center;">Benchmark wird berechnet...</div>
                     </div>
-                ` : '<div style="padding-top: 12px; text-align: center; font-size: 11px; color: #8b5cf6;">🎸 Konzert - keine VVK Projektion</div>';
+                ` : '<div style="padding-top: 12px; text-align: center; font-size: 11px; color: #8b5cf6;">Konzert - keine VVK Projektion</div>';
                 
                 return `
                     <div class="upcoming-event-card ${typeClass}" id="upcoming-event-${idx}">
@@ -5002,13 +5013,13 @@
                             <div class="upcoming-event-right">
                                 <span class="upcoming-event-days" style="color: ${daysColor};">${daysText}</span>
                                 <span class="upcoming-event-type ${typeClass}">${typeLabel}</span>
-                                <span class="upcoming-event-toggle">▼</span>
+                                <span class="upcoming-event-toggle">v</span>
                             </div>
                         </div>
                         <div class="upcoming-event-content">
                             ${vvkTrackerHTML}
                             <div style="margin-top: 12px; display: flex; gap: 8px;">
-                                <button onclick="event.stopPropagation(); openFactsheetForEvent(${idx})" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">📋 Factsheet</button>
+                                <button onclick="event.stopPropagation(); openFactsheetForEvent(${idx})" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Factsheet</button>
                             </div>
                         </div>
                     </div>
@@ -5536,12 +5547,12 @@ Spittelauer Lnde 12/1
             body += SCHADI_SIGNATURE;
             
             // Save as draft
-            showToast('💾 Speichere als Entwurf...');
+            showToast('Speichere als Entwurf...');
             
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('❌ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('âŒ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -5564,7 +5575,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('✅ Entwurf in Outlook gespeichert!');
+                    showToast('âœ… Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -5595,7 +5606,7 @@ Spittelauer Lnde 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = ' Bitte alle Felder ausfllen';
+                status.textContent = 'Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
@@ -5653,24 +5664,24 @@ Spittelauer Lnde 12/1
             const status = document.getElementById('cleaning-email-status');
             
             if (!subject || !body) {
-                status.textContent = '⚠️ Bitte alle Felder ausfüllen';
+                status.textContent = 'Bitte alle Felder ausfuellen';
                 status.style.color = '#f59e0b';
                 return;
             }
             
             if (!accessToken) {
-                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
             
-            status.textContent = '💾 Speichere als Entwurf...';
+            status.textContent = 'Speichere als Entwurf...';
             status.style.color = '#888';
             
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5986,7 +5997,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.10 - Syntax Fix');
+            console.log('Work Hub v14.9.11 - UI Updates');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
