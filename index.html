@@ -6,6 +6,8 @@
     <title>Turbo Projects Work Hub v14.9.11</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- SheetJS Library for Excel generation (Bar Staffing) -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -1070,6 +1072,132 @@
                 gap: 20px; 
             }
         }
+        
+        /* BAR STAFFING Styles */
+        .bar-staffing-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3d3d4d;
+            padding-bottom: 10px;
+        }
+        .bar-tab {
+            background: #2d2d3d;
+            border: 1px solid #3d3d4d;
+            border-radius: 8px 8px 0 0;
+            padding: 10px 20px;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .bar-tab:hover { background: #3d3d4d; color: white; }
+        .bar-tab.active { background: #8b5cf6; color: white; border-color: #8b5cf6; }
+        .bar-tab-content { display: none; }
+        .bar-tab-content.active { display: block; }
+        .bar-month-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .bar-month-cb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #2d2d3d;
+            border: 1px solid #3d3d4d;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bar-month-cb:hover { border-color: #8b5cf6; }
+        .bar-month-cb:has(input:checked) { background: #8b5cf6; border-color: #8b5cf6; }
+        .bar-year-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .bar-year-select select {
+            background: #2d2d3d;
+            border: 1px solid #3d3d4d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+        }
+        .bar-preview {
+            background: #1a1a2e;
+            border: 1px solid #3d3d4d;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .bar-preview-event {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #3d3d4d;
+            gap: 10px;
+        }
+        .bar-preview-event:last-child { border-bottom: none; }
+        .bar-preview-event .date { color: #8b5cf6; font-weight: 600; min-width: 90px; }
+        .bar-preview-event .day { color: #6b7280; min-width: 80px; }
+        .bar-preview-event .name { flex: 1; color: white; }
+        .bar-preview-event .type {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .bar-preview-event .type.club { background: #22c55e; color: white; }
+        .bar-preview-event .type.konzert { background: #8b5cf6; color: white; }
+        .bar-preview-event .type.eigen { background: #ef4444; color: white; }
+        .bar-upload-zone {
+            border: 2px dashed #3d3d4d;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bar-upload-zone:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.1); }
+        .bar-upload-zone.dragover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.2); }
+        .bar-upload-icon { font-size: 48px; margin-bottom: 10px; }
+        .bar-status { padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .bar-status.success { background: rgba(34, 197, 94, 0.2); border: 1px solid #22c55e; }
+        .bar-status.error { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; }
+        .bar-roster-table { overflow-x: auto; }
+        .bar-roster-table table { width: 100%; border-collapse: collapse; }
+        .bar-roster-table th, .bar-roster-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #3d3d4d;
+        }
+        .bar-roster-table th { background: #2d2d3d; color: #9ca3af; font-weight: 600; font-size: 12px; }
+        .bar-roster-table td input[type="text"],
+        .bar-roster-table td input[type="number"],
+        .bar-roster-table td select {
+            background: #1a1a2e;
+            border: 1px solid #3d3d4d;
+            border-radius: 4px;
+            padding: 6px 10px;
+            color: white;
+            width: 100%;
+        }
+        .bar-roster-table td input[type="checkbox"] { width: 18px; height: 18px; }
+        .bar-roster-delete {
+            background: #ef4444;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            color: white;
+            cursor: pointer;
+        }
+        .bar-roster-delete:hover { background: #dc2626; }
     </style>
 </head>
 <body>
@@ -1460,6 +1588,113 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schlieen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BAR STAFFING Modal -->
+    <div class="modal-overlay" id="bar-staffing-modal">
+        <div class="modal" style="max-width: 850px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
+                <h3> Bar Staffing Tool</h3>
+                <button class="modal-close" onclick="closeModal('bar-staffing-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Tab Navigation -->
+                <div class="bar-staffing-tabs">
+                    <button class="bar-tab active" onclick="switchBarTab('availability')" id="tab-availability">
+                         Availability Sheet
+                    </button>
+                    <button class="bar-tab" onclick="switchBarTab('shiftplan')" id="tab-shiftplan">
+                         Generate Shiftplan
+                    </button>
+                    <button class="bar-tab" onclick="switchBarTab('roster')" id="tab-roster">
+                         Roster
+                    </button>
+                </div>
+
+                <!-- TAB 1: Availability Sheet Generator -->
+                <div class="bar-tab-content active" id="content-availability">
+                    <h4 style="margin-bottom: 15px;">Select Month(s) to Generate Availability Sheet</h4>
+                    
+                    <div class="bar-month-grid">
+                        <label class="bar-month-cb"><input type="checkbox" value="1" class="bar-month-check" onchange="updateBarEventsPreview()"> Jan</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="2" class="bar-month-check" onchange="updateBarEventsPreview()"> Feb</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="3" class="bar-month-check" onchange="updateBarEventsPreview()"> Mr</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="4" class="bar-month-check" onchange="updateBarEventsPreview()"> Apr</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="5" class="bar-month-check" onchange="updateBarEventsPreview()"> Mai</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="6" class="bar-month-check" onchange="updateBarEventsPreview()"> Jun</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="7" class="bar-month-check" onchange="updateBarEventsPreview()"> Jul</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="8" class="bar-month-check" onchange="updateBarEventsPreview()"> Aug</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="9" class="bar-month-check" onchange="updateBarEventsPreview()"> Sep</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="10" class="bar-month-check" onchange="updateBarEventsPreview()"> Okt</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="11" class="bar-month-check" onchange="updateBarEventsPreview()"> Nov</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="12" class="bar-month-check" onchange="updateBarEventsPreview()"> Dez</label>
+                    </div>
+                    
+                    <div class="bar-year-select">
+                        <label>Jahr:</label>
+                        <select id="bar-year" onchange="updateBarEventsPreview()">
+                            <option value="2025">2025</option>
+                            <option value="2026" selected>2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+
+                    <div id="bar-events-preview" class="bar-preview">
+                        <p style="color: #6b7280;">Whle Monat(e) um Events zu sehen...</p>
+                    </div>
+
+                    <button class="modal-btn primary" onclick="generateAvailabilitySheet()" style="width: 100%; margin-top: 15px;">
+                         Download Availability Sheet (.xlsx)
+                    </button>
+                </div>
+
+                <!-- TAB 2: Shiftplan Generator -->
+                <div class="bar-tab-content" id="content-shiftplan">
+                    <h4 style="margin-bottom: 15px;">Upload Filled Availability Sheet</h4>
+                    
+                    <div class="bar-upload-zone" id="bar-upload-zone" onclick="document.getElementById('bar-availability-upload').click()">
+                        <input type="file" id="bar-availability-upload" accept=".xlsx,.xls" style="display: none;" onchange="handleAvailabilityUpload(event)">
+                        <div class="bar-upload-icon"></div>
+                        <p>Click or drag filled Availability Sheet here</p>
+                        <small>Supports .xlsx files</small>
+                    </div>
+
+                    <div id="bar-availability-status" class="bar-status" style="display: none;"></div>
+                    <div id="bar-shiftplan-preview" class="bar-preview" style="display: none;"></div>
+
+                    <button class="modal-btn primary" onclick="generateShiftplan()" id="btn-generate-shiftplan" style="width: 100%; margin-top: 15px; display: none;">
+                         Generate & Download Shiftplan (.xlsx)
+                    </button>
+                </div>
+
+                <!-- TAB 3: Roster Management -->
+                <div class="bar-tab-content" id="content-roster">
+                    <h4 style="margin-bottom: 15px;">Bar Team Roster</h4>
+                    
+                    <div class="bar-roster-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PRIO</th>
+                                    <th>Name</th>
+                                    <th>Due Shifts</th>
+                                    <th>Weekdays X</th>
+                                    <th>No DS</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bar-roster-body"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="modal-btn" onclick="addRosterMember()"> Add Member</button>
+                        <button class="modal-btn primary" onclick="saveBarRoster()"> Save Roster</button>
+                        <button class="modal-btn" style="background: #6b7280;" onclick="resetBarRoster()"> Reset Default</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -2174,6 +2409,10 @@
                     <span class="tool-icon"></span>
                     Guest List
                 </button>
+                <button class="tool-btn border-white" onclick="openModal('bar-staffing-modal')">
+                    <span class="tool-icon"></span>
+                    Bar Staffing
+                </button>
                 <div class="tool-btn border-white dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; border: none; padding: 0;">
                         <span class="tool-icon"></span>
@@ -2572,10 +2811,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("âœ… Verbunden!");
+                    showToast("Ã¢Å“â€¦ Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("âŒ Login fehlgeschlagen", true); 
+                    showToast("Ã¢ÂÅ’ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -3237,10 +3476,10 @@
             `;
         }
         
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs) + Technikerkalender
         // Key: DD.MM.YYYY format for date matching
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
         const SHIFTPLAN_DATABASE = {
             // DECEMBER 2025
             '27.12.2025': {
@@ -4412,7 +4651,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -4424,7 +4663,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -4455,9 +4694,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = 'âœ… Entwurf gespeichert!';
+                    status.textContent = 'Ã¢Å“â€¦ Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('âœ… Entwurf in Outlook gespeichert!');
+                    showToast('Ã¢Å“â€¦ Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -4469,12 +4708,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -5552,7 +5791,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('âŒ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -5575,7 +5814,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('âœ… Entwurf in Outlook gespeichert!');
+                    showToast('Ã¢Å“â€¦ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -5670,7 +5909,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5681,7 +5920,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5993,11 +6232,407 @@ Spittelauer Lnde 12/1
             console.log('Upcoming Events updated:', visibleCount, 'visible, KW', currentKW);
         }
         
+        // ============================================
+        // BAR STAFFING MODULE
+        // ============================================
+        
+        // Default Roster (saved to localStorage)
+        const DEFAULT_BAR_ROSTER = [
+            { prio: 1, name: "Yohanna", due_shifts: "6-8", weekdays_x: false, no_ds: false },
+            { prio: 1, name: "Ada", due_shifts: "6-8", weekdays_x: false, no_ds: false },
+            { prio: 1, name: "Kamil", due_shifts: "6-8", weekdays_x: true, no_ds: false },
+            { prio: 1, name: "Milos", due_shifts: "6", weekdays_x: false, no_ds: false },
+            { prio: 1, name: "Dora", due_shifts: "4", weekdays_x: true, no_ds: true },
+            { prio: 2, name: "Martina", due_shifts: "4-6", weekdays_x: false, no_ds: false },
+            { prio: 2, name: "Ivo", due_shifts: "4-6", weekdays_x: false, no_ds: true },
+            { prio: 2, name: "Jessi", due_shifts: "4", weekdays_x: false, no_ds: false },
+            { prio: 2, name: "Camillo", due_shifts: "4", weekdays_x: true, no_ds: true },
+            { prio: 2, name: "Lino", due_shifts: "4", weekdays_x: false, no_ds: false }
+        ];
+
+        // Load roster from localStorage or use default
+        let barRoster = JSON.parse(localStorage.getItem('barRoster')) || JSON.parse(JSON.stringify(DEFAULT_BAR_ROSTER));
+
+        // Position definitions
+        const BAR_ALL_POSITIONS = ["TERRASSE", "KITCHEN", "MAIN 1", "MAIN 2", "MAIN 3", "MAIN 4"];
+        const BAR_CONCERT_POSITIONS = ["MAIN 1", "MAIN 2", "MAIN 3", "MAIN 4"];
+
+        // Uploaded availability data
+        let uploadedAvailability = null;
+
+        // Tab switching
+        function switchBarTab(tab) {
+            document.querySelectorAll('.bar-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.querySelectorAll('.bar-tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('content-' + tab).classList.add('active');
+            if (tab === 'roster') renderBarRoster();
+        }
+
+        // Update events preview based on selected months
+        function updateBarEventsPreview() {
+            const selectedMonths = Array.from(document.querySelectorAll('.bar-month-check:checked')).map(cb => parseInt(cb.value));
+            const year = parseInt(document.getElementById('bar-year').value);
+            const previewContainer = document.getElementById('bar-events-preview');
+            
+            if (selectedMonths.length === 0) {
+                previewContainer.innerHTML = '<p style="color: #6b7280;">Whle Monat(e) um Events zu sehen...</p>';
+                return;
+            }
+            
+            if (!bmtEvents || bmtEvents.length === 0) {
+                previewContainer.innerHTML = '<p style="color: #ef4444;"> Bitte zuerst BMT Events laden!</p>';
+                return;
+            }
+            
+            const events = getBarEventsForMonths(selectedMonths, year);
+            
+            if (events.length === 0) {
+                previewContainer.innerHTML = '<p style="color: #f59e0b;">Keine Events fr ausgewhlte Monate gefunden.</p>';
+                return;
+            }
+            
+            let html = `<p style="margin-bottom: 10px; color: #22c55e;"> ${events.length} Events gefunden:</p>`;
+            events.forEach(e => {
+                const typeClass = e.type === 'Konzert' ? 'konzert' : (e.type === 'Eigen' ? 'eigen' : 'club');
+                html += `<div class="bar-preview-event">
+                    <span class="date">${e.date}</span>
+                    <span class="day">${e.day}</span>
+                    <span class="name">${e.event}</span>
+                    <span class="type ${typeClass}">${e.type}</span>
+                </div>`;
+            });
+            previewContainer.innerHTML = html;
+        }
+
+        // Get events for selected months from BMT
+        function getBarEventsForMonths(months, year) {
+            const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            const events = [];
+            
+            bmtEvents.forEach(e => {
+                const eventDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                if (isNaN(eventDate.getTime())) return;
+                
+                const eventMonth = eventDate.getMonth() + 1;
+                const eventYear = eventDate.getFullYear();
+                
+                if (!months.includes(eventMonth) || eventYear !== year) return;
+                
+                const summaryLower = (e.summary || '').toLowerCase();
+                const category = (e.category || '').toLowerCase();
+                
+                // Filter out non-events
+                if (category === 'feiertag' || category === 'holiday' || summaryLower.includes('holiday')) return;
+                if (summaryLower.includes('geschlossen') || summaryLower.includes('closed')) return;
+                if (category === 'specials' && !summaryLower.includes('turbo')) return;
+                
+                // Determine type
+                let type = 'Club';
+                if (category === 'newdealkonzert' || summaryLower.startsWith('c:') || summaryLower.startsWith('o:')) {
+                    type = 'Konzert';
+                } else if (category === 'eigenveranstaltung' || summaryLower.includes('turbo') || summaryLower.includes('halloween') || summaryLower.includes('nye') || summaryLower.includes('selected')) {
+                    type = 'Eigen';
+                } else if (category !== 'fremdveranstaltung' && category !== 'eigenveranstaltung' && !category.includes('fremd') && !category.includes('eigen')) {
+                    return;
+                }
+                
+                events.push({
+                    date: eventDate.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+                    day: dayNames[eventDate.getDay()],
+                    event: e.summary,
+                    type: type,
+                    dateObj: eventDate
+                });
+            });
+            
+            events.sort((a, b) => a.dateObj - b.dateObj);
+            return events;
+        }
+
+        // Generate Availability Sheet Excel
+        function generateAvailabilitySheet() {
+            const selectedMonths = Array.from(document.querySelectorAll('.bar-month-check:checked')).map(cb => parseInt(cb.value));
+            const year = parseInt(document.getElementById('bar-year').value);
+            
+            if (selectedMonths.length === 0) {
+                showToast(' Bitte mindestens einen Monat auswhlen!', true);
+                return;
+            }
+            
+            const events = getBarEventsForMonths(selectedMonths, year);
+            
+            if (events.length === 0) {
+                showToast(' Keine Events fr ausgewhlte Monate!', true);
+                return;
+            }
+            
+            const wb = XLSX.utils.book_new();
+            const monthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            const monthStr = selectedMonths.map(m => monthNames[m]).join('+');
+            
+            const wsData = [
+                [`Availability ${monthStr}/${year}`],
+                ['DATE', 'DAY', 'EVENT', 'TYPE', 'FREI 1', 'FREI 2', 'OPT 1 (NEED CONFIRM)', 'OPT 2 (NEED CONFIRM)']
+            ];
+            
+            events.forEach(e => {
+                wsData.push([e.date, e.day, e.event, e.type, '', '', '', '']);
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            ws['!cols'] = [{ wch: 12 }, { wch: 12 }, { wch: 25 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 22 }, { wch: 22 }];
+            XLSX.utils.book_append_sheet(wb, ws, 'Availability');
+            
+            // Add Roster sheet
+            const rosterData = [['ROSTER - DO NOT EDIT'], ['PRIO', 'NAME', 'DUE_SHIFTS', 'WEEKDAYS_X', 'NO_DS']];
+            barRoster.forEach(r => {
+                rosterData.push([r.prio, r.name, r.due_shifts, r.weekdays_x ? 'x' : '', r.no_ds ? 'x' : '']);
+            });
+            const wsRoster = XLSX.utils.aoa_to_sheet(rosterData);
+            wsRoster['!cols'] = [{ wch: 6 }, { wch: 15 }, { wch: 12 }, { wch: 12 }, { wch: 8 }];
+            XLSX.utils.book_append_sheet(wb, wsRoster, 'Roster');
+            
+            const fileName = `Bar_Availability_${monthStr}_${year}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            showToast(` ${fileName} downloaded!`);
+        }
+
+        // Handle availability upload
+        function handleAvailabilityUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    const ws = workbook.Sheets['Availability'];
+                    if (!ws) throw new Error('Availability sheet not found!');
+                    
+                    const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                    uploadedAvailability = parseBarAvailabilityData(jsonData);
+                    
+                    const statusDiv = document.getElementById('bar-availability-status');
+                    statusDiv.className = 'bar-status success';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `<p> <strong>${file.name}</strong> erfolgreich geladen!</p>
+                        <p>${uploadedAvailability.events.length} Events gefunden</p>
+                        <p>${uploadedAvailability.unavailable.length} Abwesenheiten eingetragen</p>`;
+                    
+                    showBarShiftplanPreview();
+                    document.getElementById('btn-generate-shiftplan').style.display = 'block';
+                    
+                } catch (err) {
+                    console.error('Error parsing file:', err);
+                    const statusDiv = document.getElementById('bar-availability-status');
+                    statusDiv.className = 'bar-status error';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `<p> Fehler: ${err.message}</p>`;
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Parse availability data from Excel
+        function parseBarAvailabilityData(jsonData) {
+            const events = [];
+            const unavailable = [];
+            
+            for (let i = 2; i < jsonData.length; i++) {
+                const row = jsonData[i];
+                if (!row || !row[0]) continue;
+                
+                events.push({ date: row[0], day: row[1], event: row[2], type: row[3] || 'Club' });
+                
+                const frei1 = row[4] ? row[4].toString().trim() : '';
+                const frei2 = row[5] ? row[5].toString().trim() : '';
+                const opt1 = row[6] ? row[6].toString().trim() : '';
+                const opt2 = row[7] ? row[7].toString().trim() : '';
+                
+                if (frei1) unavailable.push({ date: row[0], name: frei1, type: 'FREI' });
+                if (frei2) unavailable.push({ date: row[0], name: frei2, type: 'FREI' });
+                if (opt1) unavailable.push({ date: row[0], name: opt1, type: 'OPT' });
+                if (opt2) unavailable.push({ date: row[0], name: opt2, type: 'OPT' });
+            }
+            
+            return { events, unavailable };
+        }
+
+        // Show shiftplan preview
+        function showBarShiftplanPreview() {
+            const previewDiv = document.getElementById('bar-shiftplan-preview');
+            previewDiv.style.display = 'block';
+            
+            let html = '<h4 style="margin-bottom: 10px;">Preview:</h4><div style="max-height: 200px; overflow-y: auto;">';
+            uploadedAvailability.events.forEach(e => {
+                const typeClass = e.type === 'Konzert' ? 'konzert' : (e.type === 'Eigen' ? 'eigen' : 'club');
+                html += `<div class="bar-preview-event">
+                    <span class="date">${e.date}</span>
+                    <span class="day">${e.day}</span>
+                    <span class="name">${e.event}</span>
+                    <span class="type ${typeClass}">${e.type}</span>
+                </div>`;
+            });
+            html += '</div>';
+            
+            if (uploadedAvailability.unavailable.length > 0) {
+                html += '<h4 style="margin: 15px 0 10px;">Abwesenheiten:</h4><div style="display: flex; flex-wrap: wrap; gap: 5px;">';
+                uploadedAvailability.unavailable.forEach(u => {
+                    const color = u.type === 'FREI' ? '#ef4444' : '#f59e0b';
+                    html += `<span style="background: ${color}; padding: 2px 8px; border-radius: 4px; font-size: 11px;">${u.name} (${u.date})</span>`;
+                });
+                html += '</div>';
+            }
+            previewDiv.innerHTML = html;
+        }
+
+        // Generate Shiftplan
+        function generateShiftplan() {
+            if (!uploadedAvailability) {
+                showToast(' Bitte zuerst Availability Sheet hochladen!', true);
+                return;
+            }
+            
+            const events = uploadedAvailability.events;
+            const unavailable = uploadedAvailability.unavailable;
+            
+            // Tracking
+            const shiftsTotal = {}, shiftsClub = {}, shiftsConcert = {}, positionsWorked = {}, lastWorked = {};
+            barRoster.forEach(r => {
+                shiftsTotal[r.name] = 0;
+                shiftsClub[r.name] = 0;
+                shiftsConcert[r.name] = 0;
+                positionsWorked[r.name] = {};
+                BAR_ALL_POSITIONS.forEach(p => positionsWorked[r.name][p] = 0);
+                lastWorked[r.name] = null;
+            });
+            
+            function isWeekend(day) { return day === 'Freitag' || day === 'Samstag'; }
+            function isUnavailable(name, date) {
+                return unavailable.some(u => u.name.toLowerCase() === name.toLowerCase() && u.date === date && u.type === 'FREI');
+            }
+            function canWorkHardRules(person, day, date) {
+                if (isUnavailable(person.name, date)) return false;
+                if (person.weekdays_x && !isWeekend(day)) return false;
+                return true;
+            }
+            function sortCandidates(candidates, position) {
+                return candidates.sort((a, b) => {
+                    const rotA = positionsWorked[a.name][position] || 0;
+                    const rotB = positionsWorked[b.name][position] || 0;
+                    if (rotA !== rotB) return rotA - rotB;
+                    const totalA = shiftsTotal[a.name], totalB = shiftsTotal[b.name];
+                    if (totalA !== totalB) return totalA - totalB;
+                    return a.prio - b.prio;
+                });
+            }
+            
+            const assignments = [];
+            
+            events.forEach((event, eventIdx) => {
+                const isConcert = event.type === 'Konzert';
+                const positions = isConcert ? BAR_CONCERT_POSITIONS : BAR_ALL_POSITIONS;
+                const assignment = { date: event.date, day: event.day, event: event.event, type: event.type, positions: {} };
+                
+                BAR_ALL_POSITIONS.forEach(p => assignment.positions[p] = isConcert && !BAR_CONCERT_POSITIONS.includes(p) ? '-' : '');
+                
+                const assignedThisEvent = [];
+                
+                positions.forEach(position => {
+                    let candidates = barRoster.filter(p => !assignedThisEvent.includes(p.name) && canWorkHardRules(p, event.day, event.date));
+                    if (candidates.length === 0) {
+                        candidates = barRoster.filter(p => !assignedThisEvent.includes(p.name) && !isUnavailable(p.name, event.date));
+                    }
+                    candidates = sortCandidates(candidates, position);
+                    
+                    if (candidates.length > 0) {
+                        const person = candidates[0];
+                        assignment.positions[position] = person.name;
+                        shiftsTotal[person.name]++;
+                        if (isConcert) shiftsConcert[person.name]++; else shiftsClub[person.name]++;
+                        positionsWorked[person.name][position]++;
+                        lastWorked[person.name] = eventIdx;
+                        assignedThisEvent.push(person.name);
+                    } else {
+                        assignment.positions[position] = '???';
+                    }
+                });
+                assignments.push(assignment);
+            });
+            
+            // Create Excel
+            const wb = XLSX.utils.book_new();
+            
+            const wsData = [['BAR SHIFTPLAN'], ['DATUM', 'TAG', 'EVENT', 'TERRASSE', 'KITCHEN', 'MAIN 1', 'MAIN 2', 'MAIN 3', 'MAIN 4']];
+            assignments.forEach(a => {
+                wsData.push([a.date, a.day, a.event, a.positions['TERRASSE'], a.positions['KITCHEN'], a.positions['MAIN 1'], a.positions['MAIN 2'], a.positions['MAIN 3'], a.positions['MAIN 4']]);
+            });
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            ws['!cols'] = [{ wch: 12 }, { wch: 12 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }];
+            XLSX.utils.book_append_sheet(wb, ws, 'Shiftplan');
+            
+            const summaryData = [['SHIFT SUMMARY'], ['NAME', 'PRIO', 'DUE', 'CLUB', 'CONCERT', 'TOTAL', 'TERRASSE', 'KITCHEN', 'MAIN 1', 'MAIN 2', 'MAIN 3', 'MAIN 4']];
+            barRoster.forEach(r => {
+                summaryData.push([r.name, r.prio, r.due_shifts, shiftsClub[r.name], shiftsConcert[r.name], shiftsTotal[r.name],
+                    positionsWorked[r.name]['TERRASSE'], positionsWorked[r.name]['KITCHEN'], positionsWorked[r.name]['MAIN 1'],
+                    positionsWorked[r.name]['MAIN 2'], positionsWorked[r.name]['MAIN 3'], positionsWorked[r.name]['MAIN 4']]);
+            });
+            const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+            
+            const fileName = `Bar_Shiftplan_${events[0].date.split('.')[1]}_${events[0].date.split('.')[2]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            showToast(` ${fileName} downloaded!`);
+        }
+
+        // Render roster table
+        function renderBarRoster() {
+            const tbody = document.getElementById('bar-roster-body');
+            tbody.innerHTML = '';
+            barRoster.forEach((r, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td><select onchange="updateBarRoster(${idx}, 'prio', parseInt(this.value))">
+                        <option value="1" ${r.prio === 1 ? 'selected' : ''}>1</option>
+                        <option value="2" ${r.prio === 2 ? 'selected' : ''}>2</option>
+                    </select></td>
+                    <td><input type="text" value="${r.name}" onchange="updateBarRoster(${idx}, 'name', this.value)"></td>
+                    <td><input type="text" value="${r.due_shifts}" onchange="updateBarRoster(${idx}, 'due_shifts', this.value)" style="width: 60px;"></td>
+                    <td><input type="checkbox" ${r.weekdays_x ? 'checked' : ''} onchange="updateBarRoster(${idx}, 'weekdays_x', this.checked)"></td>
+                    <td><input type="checkbox" ${r.no_ds ? 'checked' : ''} onchange="updateBarRoster(${idx}, 'no_ds', this.checked)"></td>
+                    <td><button class="bar-roster-delete" onclick="deleteBarRosterMember(${idx})"></button></td>
+                </tr>`;
+            });
+        }
+
+        function updateBarRoster(idx, field, value) { barRoster[idx][field] = value; }
+        function addRosterMember() { barRoster.push({ prio: 2, name: 'New', due_shifts: '4', weekdays_x: false, no_ds: false }); renderBarRoster(); }
+        function deleteBarRosterMember(idx) { if (confirm(`${barRoster[idx].name} wirklich lschen?`)) { barRoster.splice(idx, 1); renderBarRoster(); } }
+        function saveBarRoster() { localStorage.setItem('barRoster', JSON.stringify(barRoster)); showToast(' Roster gespeichert!'); }
+        function resetBarRoster() { if (confirm('Roster auf Default zurcksetzen?')) { barRoster = JSON.parse(JSON.stringify(DEFAULT_BAR_ROSTER)); renderBarRoster(); saveBarRoster(); } }
+
+        // Drag and drop for upload zone
+        setTimeout(() => {
+            const uploadZone = document.getElementById('bar-upload-zone');
+            if (uploadZone) {
+                uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+                uploadZone.addEventListener('dragleave', () => { uploadZone.classList.remove('dragover'); });
+                uploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file) handleAvailabilityUpload({ target: { files: [file] } });
+                });
+            }
+        }, 1000);
+        
         // INIT
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v14.9.11 - UI Updates');
+            console.log('Work Hub v15.0.0 - BAR STAFFING');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
