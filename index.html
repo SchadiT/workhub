@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.1.6</title>
+    <title>Turbo Projects Work Hub v15.2.2</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -488,6 +488,45 @@
         .calendar-entry.sputnik { background: #ec4899; color: #fff; }
         .calendar-entry.technik { background: #22c55e; color: #fff; }
         .calendar-entry:hover { opacity: 0.8; }
+        
+        /* Native Shiftplan Table */
+        .shiftplan-table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: #1a1a2e;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .shiftplan-table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+            font-size: 12px;
+            color: #fff;
+        }
+        .shiftplan-table th {
+            background: #43A047;
+            color: white;
+            padding: 8px 6px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .shiftplan-table td {
+            padding: 6px;
+            border-bottom: 1px solid #3d3d54;
+            white-space: nowrap;
+        }
+        .shiftplan-table tr:hover { background: rgba(255,255,255,0.05); }
+        .shiftplan-table .date-col { font-weight: 600; color: #43A047; min-width: 70px; }
+        .shiftplan-table .event-col { color: #888; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+        .shiftplan-table .cvd-col { color: #f59e0b; font-weight: 600; }
+        .shiftplan-table .runner-col { color: #fff; }
+        @media (max-width: 600px) {
+            .shiftplan-table { font-size: 10px; }
+            .shiftplan-table th, .shiftplan-table td { padding: 4px 3px; }
+        }
         
         /* VVK Tracker */
         .vvk-tracker {
@@ -2261,7 +2300,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-main1-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-main1-time" value="22:30" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 2</label>
@@ -2269,7 +2308,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-main2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-main2-time" value="22:30" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
@@ -2279,7 +2318,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-main3-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-main3-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>MAIN 4</label>
@@ -2287,7 +2326,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-main4-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-main4-time" value="23:45" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -2588,12 +2627,7 @@
                     Outlook
                 </label>
                 <label class="calendar-filter-item">
-                    <input type="checkbox" id="filter-sputnik" onchange="renderCalendar()">
-                    <span class="filter-dot sputnik"></span>
-                    Sputnik
-                </label>
-                <label class="calendar-filter-item">
-                    <input type="checkbox" id="filter-technik" onchange="renderCalendar()">
+                    <input type="checkbox" id="filter-technik" checked onchange="renderCalendar()">
                     <span class="filter-dot technik"></span>
                     Technikerkalender
                 </label>
@@ -2690,7 +2724,7 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vS-MKRiS_5AX5ZF2Dn-bqCAJZBucpCRvkIXnytU3HjOQu3i5HMym6t1_tOtq9wObzOOqDTKhDQcqvoP/pub?embedded=true"></iframe></div>
+                        <div class="shiftplan-table-container" id="runner-shiftplan-table"></div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
@@ -2785,7 +2819,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.1.6 - 06.01.2026 - Responsive iframe</div>
+    <div class="version">Work Hub v15.2.2 - 06.01.2026 - Correct Bar Times</div>
 
     <script>
         // 
@@ -2849,7 +2883,7 @@
         const TEMPLATES = {
             MAIN_00: {
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
-                doors2_late: "00:00", main1: "23:00", main2: "23:00", main3: "00:00", main4: "00:15",
+                doors2_late: "00:00", main1: "22:30", main2: "22:30", main3: "23:00", main4: "23:45",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
                 gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "1 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
@@ -3517,6 +3551,31 @@
             
             const t = TEMPLATES[template];
             
+            // Auto-update bar times based on template when switching
+            const main1Input = document.getElementById('fs-main1-time');
+            const main2Input = document.getElementById('fs-main2-time');
+            const main3Input = document.getElementById('fs-main3-time');
+            const main4Input = document.getElementById('fs-main4-time');
+            
+            // Only auto-update if current value matches a template default
+            const templateMain1Values = ['22:30', '23:00', '19:00'];
+            const templateMain2Values = ['22:30', '23:00', '19:00'];
+            const templateMain3Values = ['23:00', '23:30', '19:00'];
+            const templateMain4Values = ['23:45', '00:15', '19:00'];
+            
+            if (main1Input && templateMain1Values.includes(main1Input.value)) {
+                main1Input.value = t.main1;
+            }
+            if (main2Input && templateMain2Values.includes(main2Input.value)) {
+                main2Input.value = t.main2;
+            }
+            if (main3Input && templateMain3Values.includes(main3Input.value)) {
+                main3Input.value = t.main3;
+            }
+            if (main4Input && templateMain4Values.includes(main4Input.value)) {
+                main4Input.value = t.main4;
+            }
+            
             // Show/hide KASSA checkboxes based on event type
             const kassaRow = document.getElementById('kassa-row');
             if (kassaRow) {
@@ -3677,6 +3736,93 @@
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             }
         };
+        
+        // Render Runner Shiftplan as native HTML table
+        function renderRunnerShiftplan() {
+            const container = document.getElementById('runner-shiftplan-table');
+            if (!container) return;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            // Get future events sorted by date
+            const futureEvents = [];
+            for (const dateStr in SHIFTPLAN_DATABASE) {
+                const parts = dateStr.split('.');
+                const eventDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                
+                if (eventDate >= today) {
+                    const data = SHIFTPLAN_DATABASE[dateStr];
+                    
+                    // Try to find event name from BMT
+                    let eventName = '-';
+                    if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
+                        const match = bmtEvents.find(e => {
+                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                            return eDate.toDateString() === eventDate.toDateString();
+                        });
+                        if (match) eventName = match.summary || '-';
+                    }
+                    
+                    futureEvents.push({
+                        date: eventDate,
+                        dateStr: dateStr,
+                        day: dayNames[eventDate.getDay()],
+                        eventName: eventName,
+                        cvd: data.cvd || '-',
+                        runner1: data.runner1 || '-',
+                        runner2: data.runner2 || '-',
+                        runner3: data.runner3 || '-',
+                        runner4: data.runner4 || '-',
+                        runner5: data.runner5 || '-',
+                        runner6: data.runner6 || '-'
+                    });
+                }
+            }
+            
+            futureEvents.sort((a, b) => a.date - b.date);
+            
+            if (futureEvents.length === 0) {
+                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Shiftplan-Daten</p>';
+                return;
+            }
+            
+            let html = `<table class="shiftplan-table">
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Event</th>
+                        <th>CVD</th>
+                        <th>R1</th>
+                        <th>R2</th>
+                        <th>R3</th>
+                        <th>R4</th>
+                        <th>R5</th>
+                        <th>R6</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            futureEvents.forEach(e => {
+                const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                html += `<tr>
+                    <td class="date-col">${e.day} ${shortDate}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 15)}${e.eventName.length > 15 ? '...' : ''}</td>
+                    <td class="cvd-col">${e.cvd}</td>
+                    <td class="runner-col">${e.runner1}</td>
+                    <td class="runner-col">${e.runner2}</td>
+                    <td class="runner-col">${e.runner3}</td>
+                    <td class="runner-col">${e.runner4}</td>
+                    <td class="runner-col">${e.runner5}</td>
+                    <td class="runner-col">${e.runner6}</td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
         
         // Get shiftplan data by date (DD.MM.YYYY format)
         function getShiftplanByDate(dateStr) {
@@ -5385,6 +5531,7 @@
             
             // Also update Technikerkalender when BMT events are loaded
             renderTechnikCalendar();
+            renderRunnerShiftplan();
         }
         
         // Render Upcoming Events from BMT data (next 4 events)
@@ -7033,7 +7180,6 @@ Spittelauer Lnde 12/1
             // Get filter states
             const showBmt = document.getElementById('filter-bmt').checked;
             const showOutlook = document.getElementById('filter-outlook').checked;
-            const showSputnik = document.getElementById('filter-sputnik').checked;
             const showTechnik = document.getElementById('filter-technik').checked;
             
             // Build calendar grid
@@ -7068,10 +7214,6 @@ Spittelauer Lnde 12/1
                 if (showOutlook) {
                     calendarEntries.outlook.filter(e => e.date === dateStr)
                         .forEach(e => { entriesHtml += `<div class="calendar-entry outlook" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
-                }
-                if (showSputnik) {
-                    calendarEntries.sputnik.filter(e => e.date === dateStr)
-                        .forEach(e => { entriesHtml += `<div class="calendar-entry sputnik" title="${e.title}">${e.title}</div>`; });
                 }
                 if (showTechnik) {
                     calendarEntries.technik.filter(e => e.date === dateStr)
@@ -7108,7 +7250,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.1.6 - Responsive iframe');
+            console.log('Work Hub v15.2.2 - Correct Bar Times');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -7132,6 +7274,7 @@ Spittelauer Lnde 12/1
                 calculateNYE();
                 renderPeakGrid();
                 renderTechnikCalendar();
+                renderRunnerShiftplan();
             }, 100);
         });
     </script>
