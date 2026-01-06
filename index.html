@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.3.2</title>
+    <title>Turbo Projects Work Hub v15.4.1</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -34,12 +34,17 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.3.2 ===== */
+        /* ===== CSS TOKEN SYSTEM - v15.4.1 ===== */
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
             --surface-2: #1a1a1a;
             --border: #2a2a2a;
+            
+            /* NEW: Dark blue theme colors */
+            --blue-dark: #0d1b2a;
+            --blue-medium: #1b263b;
+            --blue-accent: #1e3a5f;
             
             --text: #ffffff;
             --text-secondary: #888888;
@@ -90,7 +95,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--bg);
+            background: var(--blue-dark);
             border: 1px solid #fff;
             padding: 12px 20px;
             margin-bottom: 16px;
@@ -99,7 +104,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 200px;
+            min-width: 180px;
         }
         .header-center {
             display: flex;
@@ -121,27 +126,30 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            min-width: 200px;
+            min-width: 180px;
             justify-content: flex-end;
         }
         .header-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            color: var(--text-secondary);
+            background: var(--blue-dark);
+            border: 1px solid #fff;
+            padding: 8px 14px;
+            color: #fff;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .header-btn:hover {
+            background: var(--blue-medium);
             border-color: #fff;
             color: #fff;
         }
         .auth-status { display: flex; align-items: center; }
-        .auth-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
+        .auth-status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); }
         .auth-status .dot.connected { background: var(--good); }
-        .auth-user { font-size: 11px; color: var(--text-secondary); }
+        .auth-user { font-size: 12px; color: #fff; font-weight: 500; }
         
         /* Quick Actions */
         .quick-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
@@ -153,17 +161,17 @@
         }
         .tools-toggle {
             width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
+            background: var(--blue-dark);
+            border: 1px solid #fff;
             padding: 12px 16px;
-            color: var(--text-secondary); font-weight: 500; font-size: 11px; cursor: pointer;
+            color: #fff; font-weight: 600; font-size: 11px; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 10px;
             transition: all 0.2s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         .tools-toggle:hover {
-            background: var(--surface);
+            background: var(--blue-medium);
             border-color: #fff;
             color: #fff;
         }
@@ -176,7 +184,7 @@
         }
         .tools-content {
             display: none;
-            background: var(--surface);
+            background: var(--blue-dark);
             padding: 12px;
             margin-top: 0;
             border: 1px solid var(--border);
@@ -184,6 +192,17 @@
         }
         .tools-content.show {
             display: block;
+        }
+        
+        /* Unified Expander Buttons - All three main expanders */
+        .tools-toggle.unified {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: #fff;
+        }
+        .tools-toggle.unified:hover {
+            background: var(--blue-medium);
+            border-color: #fff;
         }
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
@@ -195,12 +214,12 @@
             gap: 8px;
         }
         .tool-btn {
-            background: transparent;
-            border: 1px solid var(--border);
+            background: var(--blue-dark);
+            border: 1px solid #fff;
             padding: 12px 8px;
-            color: var(--text-secondary);
+            color: #fff;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 10px;
             cursor: pointer;
             transition: all 0.2s;
@@ -208,19 +227,19 @@
             letter-spacing: 0.5px;
         }
         .tool-btn:hover {
-            background: var(--surface-2);
+            background: var(--blue-medium);
             border-color: #fff;
             color: #fff;
         }
         /* Colored Border Classes - simplified */
-        .tool-btn.border-blue { border-color: var(--border); }
-        .tool-btn.border-blue:hover { border-color: #fff; }
-        .tool-btn.border-white { border-color: var(--border); }
-        .tool-btn.border-white:hover { border-color: #fff; }
+        .tool-btn.border-blue { border-color: #fff; }
+        .tool-btn.border-blue:hover { border-color: #fff; background: var(--blue-medium); }
+        .tool-btn.border-white { border-color: #fff; }
+        .tool-btn.border-white:hover { border-color: #fff; background: var(--blue-medium); }
         .tool-btn.border-green { border-color: var(--good); }
-        .tool-btn.border-green:hover { border-color: var(--good); }
+        .tool-btn.border-green:hover { border-color: var(--good); background: var(--blue-medium); }
         .tool-btn.border-red { border-color: var(--danger); }
-        .tool-btn.border-red:hover { border-color: var(--danger); }
+        .tool-btn.border-red:hover { border-color: var(--danger); background: var(--blue-medium); }
         .tool-btn .tool-icon {
             display: block;
             font-size: 16px;
@@ -228,17 +247,17 @@
         }
         
         .quick-btn {
-            background: transparent;
-            border: 1px solid var(--border);
+            background: var(--blue-dark);
+            border: 1px solid #fff;
             padding: 12px 8px;
-            color: var(--text-secondary); text-decoration: none; text-align: center;
-            font-weight: 500; font-size: 11px; cursor: pointer;
+            color: #fff; text-decoration: none; text-align: center;
+            font-weight: 600; font-size: 11px; cursor: pointer;
             transition: all 0.2s; display: block;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         .quick-btn:hover { 
-            background: var(--surface); 
+            background: var(--blue-medium); 
             border-color: #fff;
             color: #fff;
         }
@@ -359,7 +378,7 @@
             margin-bottom: 16px;
         }
         .section-header {
-            background: var(--bg);
+            background: var(--blue-dark);
             border: 1px solid #fff;
             padding: 14px 20px;
             display: flex;
@@ -368,7 +387,7 @@
             cursor: pointer;
             user-select: none;
         }
-        .section-header:hover { background: var(--surface); }
+        .section-header:hover { background: var(--blue-medium); }
         .section-header-left { display: flex; align-items: center; gap: 12px; }
         .section-header-title { 
             font-size: 12px; 
@@ -379,13 +398,13 @@
         }
         .section-header-count { 
             background: transparent; 
-            border: 1px solid var(--text-secondary);
-            color: var(--text-secondary); 
+            border: 1px solid var(--danger);
+            color: var(--danger); 
             padding: 2px 8px; 
             font-size: 10px; 
-            font-weight: 500; 
+            font-weight: 600; 
         }
-        .section-header-toggle { font-size: 10px; color: var(--text-secondary); transition: transform 0.3s; }
+        .section-header-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .section-header.open .section-header-toggle { transform: rotate(180deg); }
         .section-content-box {
             background: var(--surface);
@@ -399,7 +418,7 @@
         /* Upcoming Events */
         .upcoming-events-section { margin-bottom: 16px; }
         .upcoming-section-header {
-            background: var(--bg);
+            background: var(--blue-dark);
             border: 1px solid #fff;
             padding: 14px 20px;
             display: flex;
@@ -408,11 +427,11 @@
             cursor: pointer;
             user-select: none;
         }
-        .upcoming-section-header:hover { background: var(--surface); }
+        .upcoming-section-header:hover { background: var(--blue-medium); }
         .upcoming-section-header.collapsed { }
         .upcoming-title-row { display: flex; align-items: center; gap: 12px; }
         .upcoming-title { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
-        .upcoming-toggle { font-size: 10px; color: var(--text-secondary); transition: transform 0.3s; }
+        .upcoming-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .upcoming-toggle.open { transform: rotate(180deg); }
         #upcoming-events-container {
             background: var(--surface);
@@ -425,7 +444,7 @@
         .upcoming-placeholder { text-align: center; padding: 30px; color: var(--text-secondary); background: var(--surface-2); }
         .upcoming-placeholder p { margin: 0 0 8px 0; font-size: 13px; }
         .upcoming-placeholder small { font-size: 11px; color: var(--muted); }
-        .upcoming-count { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 2px 8px; font-size: 10px; font-weight: 500; }
+        .upcoming-count { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 2px 8px; font-size: 10px; font-weight: 600; }
         
         /* Individual Event Card - Collapsible */
         .upcoming-event-card {
@@ -508,7 +527,7 @@
         /* Calendar Section */
         .calendar-section { margin-bottom: 16px; }
         .calendar-section-header {
-            background: var(--bg);
+            background: var(--blue-dark);
             border: 1px solid #fff;
             padding: 14px 20px;
             display: flex;
@@ -517,14 +536,14 @@
             cursor: pointer;
             user-select: none;
         }
-        .calendar-section-header:hover { background: var(--surface); }
+        .calendar-section-header:hover { background: var(--blue-medium); }
         .calendar-section-header.collapsed { }
         .calendar-title-row { display: flex; align-items: center; gap: 12px; }
         .calendar-title { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
-        .calendar-toggle { font-size: 10px; color: var(--text-secondary); transition: transform 0.3s; }
+        .calendar-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .calendar-toggle.open { transform: rotate(180deg); }
         #calendar-container {
-            background: var(--surface);
+            background: var(--blue-dark);
             border: 1px solid var(--border);
             border-top: none;
             padding: 16px;
@@ -537,7 +556,7 @@
         }
         .calendar-filter-item {
             display: flex; align-items: center; gap: 6px;
-            font-size: 11px; color: var(--text-secondary); cursor: pointer;
+            font-size: 11px; color: #fff; cursor: pointer;
         }
         .calendar-filter-item input[type="checkbox"] {
             width: 12px; height: 12px; cursor: pointer;
@@ -557,30 +576,30 @@
             margin-bottom: 12px;
         }
         .calendar-nav-btn {
-            background: transparent; border: 1px solid var(--border); color: var(--text-secondary);
-            padding: 6px 14px; cursor: pointer;
-            font-size: 11px; font-weight: 500;
+            background: var(--blue-dark); border: 1px solid #fff; color: #fff;
+            padding: 8px 16px; cursor: pointer;
+            font-size: 11px; font-weight: 600;
         }
-        .calendar-nav-btn:hover { border-color: #fff; color: #fff; }
-        .calendar-month-title { font-size: 15px; font-weight: 600; color: var(--text); }
+        .calendar-nav-btn:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
+        .calendar-month-title { font-size: 15px; font-weight: 600; color: #fff; }
         .calendar-grid {
             display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
         }
         .calendar-day-header {
             text-align: center; font-size: 10px; font-weight: 600;
-            color: var(--muted); padding: 8px 0; text-transform: uppercase;
+            color: #fff; padding: 8px 0; text-transform: uppercase;
         }
         .calendar-day {
-            min-height: 70px; background: var(--surface-2); border-radius: 0;
+            min-height: 70px; background: #ffffff; border-radius: 0;
             padding: 4px; font-size: 11px; position: relative;
         }
-        .calendar-day.other-month { opacity: 0.3; }
-        .calendar-day.today { border: 1px solid var(--accent); }
+        .calendar-day.other-month { opacity: 0.3; background: #e0e0e0; }
+        .calendar-day.today { border: 2px solid var(--danger); }
         .calendar-day-number {
-            font-weight: 600; color: var(--text-secondary); font-size: 11px;
+            font-weight: 600; color: #333; font-size: 11px;
             position: absolute; top: 4px; right: 6px;
         }
-        .calendar-day.today .calendar-day-number { color: var(--accent); }
+        .calendar-day.today .calendar-day-number { color: var(--danger); font-weight: 700; }
         .calendar-entry {
             font-size: 10px; padding: 2px 4px; border-radius: 3px;
             margin-top: 1px; overflow: hidden; text-overflow: ellipsis;
@@ -703,14 +722,72 @@
             padding: 14px 20px; color: #fff; font-weight: 600; font-size: 12px;
             display: flex; align-items: center; justify-content: space-between;
             letter-spacing: 1px; cursor: pointer;
-            background: var(--bg);
+            background: var(--blue-dark);
             text-transform: uppercase;
+            border-left: 3px solid var(--border);
         }
-        .dept-header:hover { background: var(--surface); }
+        .dept-header:hover { background: var(--blue-medium); }
+        
+        /* Department colored borders */
+        .dept.office .dept-header { border-left-color: #3b82f6; }
+        .dept.bar .dept-header { border-left-color: #f59e0b; }
+        .dept.runner .dept-header { border-left-color: #22c55e; }
+        .dept.technik .dept-header { border-left-color: #a855f7; }
+        .dept.sputnik .dept-header { border-left-color: #ec4899; }
+        .dept.putiny .dept-header { border-left-color: #ef4444; }
+        
+        /* Department Tabs - Visible and prominent */
+        .dept-tabs {
+            display: flex;
+            gap: 0;
+            background: var(--blue-dark);
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            padding: 0;
+        }
+        .dept-tab {
+            padding: 12px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .dept-tab:hover {
+            color: #fff;
+            background: var(--blue-medium);
+        }
+        .dept-tab.active {
+            color: #fff;
+            border-bottom-color: #fff;
+            background: var(--blue-medium);
+        }
+        .dept-tab-content {
+            display: none;
+            padding: 12px;
+            background: var(--surface-2);
+        }
+        .dept-tab-content.active {
+            display: block;
+        }
+        
+        /* Department color accents for tabs */
+        .dept.office .dept-tab.active { border-bottom-color: #3b82f6; }
+        .dept.bar .dept-tab.active { border-bottom-color: #f59e0b; }
+        .dept.runner .dept-tab.active { border-bottom-color: #22c55e; }
+        .dept.technik .dept-tab.active { border-bottom-color: #a855f7; }
+        .dept.sputnik .dept-tab.active { border-bottom-color: #ec4899; }
+        
         .dept-header-left { display: flex; align-items: center; gap: 12px; }
-        .dept-toggle { font-size: 10px; color: var(--text-secondary); transition: transform 0.3s; }
+        .dept-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .dept.open .dept-toggle { transform: rotate(180deg); }
-        .task-count { background: transparent; border: 1px solid var(--text-secondary); color: var(--text-secondary); padding: 2px 8px; font-size: 10px; }
+        .task-count { background: transparent; border: 1px solid #fff; color: #fff; padding: 2px 8px; font-size: 10px; }
         .dept-content { padding: 0; display: none; background: var(--surface); border-top: 1px solid var(--border); }
         .dept-content.open { display: block; }
         
@@ -800,8 +877,8 @@
         .tasks-login-prompt { padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
         .tasks-login-prompt button { margin-top: 10px; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
         
-        .tasks-btn { color: var(--text-secondary); padding: 12px; font-size: 11px; text-align: center; display: block; width: 100%; font-weight: 500; margin-top: 12px; border: 1px solid var(--border); cursor: pointer; background: transparent; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tasks-btn:hover { border-color: #fff; color: #fff; }
+        .tasks-btn { color: #fff; padding: 12px; font-size: 11px; text-align: center; display: block; width: 100%; font-weight: 600; margin-top: 12px; border: 1px solid #fff; cursor: pointer; background: var(--blue-dark); text-transform: uppercase; letter-spacing: 0.5px; }
+        .tasks-btn:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
         
         .reinigung-list { padding: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .reinigung-item { display: flex; padding: 6px 8px; background: #f5f5f5; border-radius: 0; align-items: center; gap: 6px; justify-content: center; }
@@ -855,7 +932,7 @@
             margin-bottom: 16px;
         }
         .bmt-header {
-            background: var(--bg);
+            background: var(--blue-dark);
             border: 1px solid #fff;
             padding: 14px 20px;
             display: flex;
@@ -863,7 +940,7 @@
             align-items: center;
             cursor: pointer;
         }
-        .bmt-header:hover { background: var(--surface); }
+        .bmt-header:hover { background: var(--blue-medium); }
         .bmt-title {
             font-size: 12px;
             font-weight: 600;
@@ -876,32 +953,32 @@
         }
         .bmt-badge {
             background: transparent;
-            border: 1px solid var(--text-secondary);
-            color: var(--text-secondary);
+            border: 1px solid var(--danger);
+            color: var(--danger);
             padding: 2px 8px;
             font-size: 10px;
-            font-weight: 500;
+            font-weight: 600;
         }
-        .bmt-toggle { font-size: 10px; color: var(--text-secondary); transition: transform 0.3s; }
+        .bmt-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .bmt-toggle.open { transform: rotate(180deg); }
         .bmt-actions {
             display: flex;
             gap: 8px;
         }
         .bmt-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            color: var(--text-secondary);
+            background: var(--blue-dark);
+            border: 1px solid #fff;
+            padding: 8px 14px;
+            color: #fff;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
         }
-        .bmt-btn:hover { border-color: #fff; color: #fff; }
-        .bmt-btn.secondary { background: transparent; }
+        .bmt-btn:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
+        .bmt-btn.secondary { background: var(--blue-dark); }
         .bmt-upload-input { display: none; }
         .bmt-content-box {
             background: var(--surface);
@@ -1153,36 +1230,69 @@
         
         /* Quick Notes Add Button */
         .quick-notes-add {
-            background: transparent; border: 1px solid var(--border);
-            padding: 6px 12px; color: var(--text-secondary); font-size: 11px; font-weight: 500;
+            background: var(--blue-dark); border: 1px solid #fff;
+            padding: 8px 14px; color: #fff; font-size: 11px; font-weight: 600;
             cursor: pointer; margin-left: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .quick-notes-add:hover { border-color: #fff; color: #fff; }
+        .quick-notes-add:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
         
         .loading-spinner::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 1px solid var(--border); border-top-color: #fff; animation: spin 1s linear infinite; margin-left: 10px; }
 
         /* Quick Notes */
         .quick-notes {
-            background: var(--bg); padding: 12px 16px; margin-bottom: 16px;
-            border: 1px solid var(--border);
+            background: var(--blue-dark); padding: 14px 16px; margin-bottom: 16px;
+            border: 1px solid #fff;
         }
         .quick-notes-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
         }
-        .quick-notes-header span { font-size: 11px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .quick-notes-header span { font-size: 12px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
         .quick-notes-header .save-indicator { font-size: 10px; color: var(--good); opacity: 0; transition: opacity 0.3s; }
         .quick-notes-header .save-indicator.show { opacity: 1; }
         .quick-notes textarea {
-            width: 100%; min-height: 50px; padding: 10px;
-            border: 1px solid var(--border); background: var(--surface); color: var(--text);
-            font-size: 12px; font-family: inherit; resize: vertical;
+            width: 100%; min-height: 60px; padding: 12px;
+            border: 1px solid #fff; background: var(--blue-medium); color: #fff;
+            font-size: 13px; font-family: inherit; resize: vertical;
         }
-        .quick-notes textarea:focus { outline: none; border-color: #fff; }
-        .quick-notes textarea::placeholder { color: var(--muted); }
+        .quick-notes textarea:focus { outline: none; border-color: #fff; background: var(--blue-accent); }
+        .quick-notes textarea::placeholder { color: #fff; opacity: 0.6; }
         
         /* Deep Analysis Button */
-        .btn-analysis { background: transparent; border: 1px solid var(--border); }
-        .btn-analysis:hover { border-color: #fff; }
+        .btn-analysis { background: var(--blue-dark); border: 1px solid #fff; }
+        .btn-analysis:hover { background: var(--blue-medium); border-color: #fff; }
+        
+        /* Agenda Legend */
+        .agenda-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 12px 16px;
+            background: var(--blue-dark);
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #fff;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        .legend-dot.office { background: #3b82f6; }
+        .legend-dot.bar { background: #f59e0b; }
+        .legend-dot.runner { background: #22c55e; }
+        .legend-dot.technik { background: #a855f7; }
+        .legend-dot.sputnik { background: #ec4899; }
+        .legend-dot.eigen { background: var(--eigen); }
+        .legend-dot.fremd { background: var(--fremd); }
+        .legend-dot.konzert { background: var(--konzert); }
 
         /* =========================================================================== */
         /* RESPONSIVE DESIGN */
@@ -1192,6 +1302,35 @@
         @media screen and (max-width: 768px) {
             body { padding: 12px; }
             .header h1 { font-size: 24px; }
+            
+            /* Mobile Header */
+            .header-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 10px 12px;
+            }
+            .header-left {
+                order: 2;
+                min-width: auto;
+                flex: 1;
+            }
+            .header-center {
+                order: 1;
+                width: 100%;
+                justify-content: center;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .header-right {
+                order: 3;
+                min-width: auto;
+                flex: 1;
+                justify-content: flex-end;
+            }
+            .header-btn {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
             
             .auth-bar { 
                 flex-direction: column; 
@@ -1257,6 +1396,38 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
+            /* Mobile Header - Small screens */
+            .header-bar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px;
+            }
+            .header-left {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+            }
+            .header-center {
+                order: 1;
+                width: 100%;
+                justify-content: center;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .header-right {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .header-btn {
+                padding: 8px 12px;
+                font-size: 10px;
+                flex: 1;
+                min-width: 70px;
+            }
+            .auth-user { font-size: 11px; }
+            
             .quick-actions { 
                 grid-template-columns: repeat(2, 1fr); 
                 gap: 5px;
@@ -1266,30 +1437,47 @@
                 gap: 5px;
             }
             
+            /* Quick Notes mobile */
+            .quick-notes { padding: 10px; }
+            .quick-notes-header { 
+                flex-direction: column; 
+                gap: 8px; 
+                align-items: flex-start; 
+            }
+            .quick-notes-header > div {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .quick-notes-add {
+                padding: 8px 10px;
+                font-size: 10px;
+                flex: 1;
+                min-width: 60px;
+                text-align: center;
+            }
+            
             .tools-toggle {
                 padding: 10px 12px;
-                font-size: 13px;
+                font-size: 12px;
             }
             .tools-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                gap: 6px;
             }
             .tool-btn {
                 padding: 10px 8px;
-                font-size: 11px;
+                font-size: 10px;
             }
             .tool-btn .tool-icon {
-                font-size: 18px;
+                font-size: 16px;
             }
             
             .quick-btn { 
                 padding: 10px 6px; 
-                font-size: 11px;
-                border-radius: 0;
+                font-size: 10px;
             }
-            
-            .quick-notes { padding: 10px; }
-            .quick-notes-header span { font-size: 12px; }
             
             .event-card { margin-bottom: 10px; }
             .event-date { min-width: 60px; font-size: 12px; padding: 4px 8px; }
@@ -1336,6 +1524,33 @@
             
             .footer a { padding: 12px 20px; font-size: 13px; }
             .version { font-size: 10px; }
+            
+            /* Mobile Calendar Improvements */
+            .calendar-grid {
+                gap: 2px;
+            }
+            .calendar-day {
+                min-height: 85px;
+                padding: 3px;
+            }
+            .calendar-day-number {
+                font-size: 10px;
+            }
+            .calendar-entry {
+                font-size: 9px;
+                padding: 2px 3px;
+                white-space: normal;
+                line-height: 1.2;
+                max-height: 28px;
+                overflow: hidden;
+            }
+            .calendar-nav-btn {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+            .calendar-month-title {
+                font-size: 13px;
+            }
             
             .factsheet-preview { padding: 15px; font-size: 12px; }
             .factsheet-preview table { font-size: 11px; }
@@ -1510,7 +1725,7 @@
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
                 <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">Mic</button>
                 <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern"> Task</button>
-                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen lÃ¶schen" style="background: #6b7280;">âœ•</button>
+                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen loeschen">CLEAR</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
@@ -2604,9 +2819,10 @@
     <!-- APPLICATIONS EXPANDER -->
     <!--  -->
     
+    <div class="expander-group">
     <div class="tools-expander">
-        <button class="tools-toggle" id="apps-toggle" onclick="toggleApps()" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-             Applications <span class="arrow"></span>
+        <button class="tools-toggle unified" id="apps-toggle" onclick="toggleApps()">
+             APPLICATIONS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="apps-content">
             <div class="tools-grid">
@@ -2658,8 +2874,8 @@
     
     <!-- Tools Expander -->
     <div class="tools-expander">
-        <button class="tools-toggle" id="tools-toggle" onclick="toggleTools()">
-             Club Tools <span class="arrow"></span>
+        <button class="tools-toggle unified" id="tools-toggle" onclick="toggleTools()">
+             CLUB TOOLS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
@@ -2707,8 +2923,8 @@
     
     <!-- Finance/Controlling/Operations Expander -->
     <div class="tools-expander">
-        <button class="tools-toggle" id="finance-toggle" onclick="toggleFinanceTools()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-             Finance / Controlling / Operations <span class="arrow"></span>
+        <button class="tools-toggle unified" id="finance-toggle" onclick="toggleFinanceTools()">
+             FINANCE / CONTROLLING / OPERATIONS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="finance-content">
             <div class="tools-grid">
@@ -2723,6 +2939,7 @@
             </div>
         </div>
     </div>
+    </div> <!-- End expander-group -->
     
     <!--  -->
     <!-- OUTLOOK SECTION -->
@@ -2812,168 +3029,135 @@
     <div class="departments">
         <!-- OFFICE -->
         <div class="dept office">
-            <div class="dept-header">
+            <div class="dept-header" onclick="toggleDept(this)">
                 <div class="dept-header-left"> OFFICE</div>
-                <span class="task-count" id="office-task-count"></span>
+                <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-content">
-                <div class="tasks-inline" id="office-tasks">
-                    <div class="tasks-header" onclick="toggleTasksSection('office')">
-                        <span> Tasks <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('office')"></button>
-                    </div>
-                    <div class="tasks-list" id="office-tasks-list">
+                <div class="dept-tabs">
+                    <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'office-notes-tab')">Notes</button>
+                </div>
+                <div class="dept-tab-content active" id="office-tasks-tab">
+                    <div class="tasks-list open" id="office-tasks-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your tasks</p>
                             <button onclick="handleAuth()"> Connect</button>
                         </div>
                     </div>
+                    <button class="tasks-btn" onclick="openToDoList('office')"> Open in To Do</button>
                 </div>
-                <div class="tasks-inline" id="office-notes">
-                    <div class="tasks-header" onclick="toggleNotesSection()">
-                        <span> Notes <span class="task-count" id="notes-count"></span> <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); loadNotesList()"></button>
-                    </div>
-                    <div class="tasks-list" id="office-notes-list">
+                <div class="dept-tab-content" id="office-notes-tab">
+                    <div class="tasks-list open" id="office-notes-list">
                         <div class="tasks-login-prompt">
                             <p>Sign in to see your notes</p>
                             <button onclick="handleAuth()"> Connect</button>
                         </div>
                     </div>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('office')"> Open in To Do</button>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar">
-            <div class="dept-header">
+            <div class="dept-header" onclick="toggleDept(this)">
                 <div class="dept-header-left"> BAR</div>
-                <span class="task-count" id="bar-task-count"></span>
+                <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-content">
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span> Shiftplan</span>
-                        <span class="toggle-icon"></span>
-                    </div>
-                    <div class="section-content">
-                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true"></iframe></div>
-                    </div>
+                <div class="dept-tabs">
+                    <button class="dept-tab active" onclick="switchDeptTab(this, 'bar-shiftplan-tab')">Shiftplan</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'bar-tasks-tab')">Tasks</button>
                 </div>
-                <div class="tasks-inline" id="bar-tasks">
-                    <div class="tasks-header" onclick="toggleTasksSection('bar')">
-                        <span> Tasks <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('bar')"></button>
-                    </div>
-                    <div class="tasks-list" id="bar-tasks-list">
+                <div class="dept-tab-content active" id="bar-shiftplan-tab">
+                    <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true"></iframe></div>
+                </div>
+                <div class="dept-tab-content" id="bar-tasks-tab">
+                    <div class="tasks-list open" id="bar-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()"> Connect</button></div>
                     </div>
+                    <button class="tasks-btn" onclick="openToDoList('bar')"> Open in To Do</button>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('bar')"> Open in To Do</button>
             </div>
         </div>
         
         <!-- RUNNER -->
         <div class="dept runner">
-            <div class="dept-header">
+            <div class="dept-header" onclick="toggleDept(this)">
                 <div class="dept-header-left"> RUNNER</div>
-                <span class="task-count" id="runner-task-count"></span>
+                <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-content">
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span> Shiftplan</span>
-                        <span class="toggle-icon"></span>
-                    </div>
-                    <div class="section-content">
-                        <div class="shiftplan-table-container" id="runner-shiftplan-table"></div>
-                    </div>
+                <div class="dept-tabs">
+                    <button class="dept-tab active" onclick="switchDeptTab(this, 'runner-shiftplan-tab')">Shiftplan</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'runner-tasks-tab')">Tasks</button>
                 </div>
-                <div class="tasks-inline" id="runner-tasks">
-                    <div class="tasks-header" onclick="toggleTasksSection('runner')">
-                        <span> Tasks <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('runner')"></button>
-                    </div>
-                    <div class="tasks-list" id="runner-tasks-list">
+                <div class="dept-tab-content active" id="runner-shiftplan-tab">
+                    <div class="shiftplan-table-container" id="runner-shiftplan-table"></div>
+                </div>
+                <div class="dept-tab-content" id="runner-tasks-tab">
+                    <div class="tasks-list open" id="runner-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()"> Connect</button></div>
                     </div>
+                    <button class="tasks-btn" onclick="openToDoList('runner')"> Open in To Do</button>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('runner')"> Open in To Do</button>
             </div>
         </div>
         
         <!-- TECHNIK -->
         <div class="dept technik">
-            <div class="dept-header">
+            <div class="dept-header" onclick="toggleDept(this)">
                 <div class="dept-header-left"> TECHNIK</div>
-                <span class="task-count" id="technik-task-count"></span>
+                <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-content">
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span> Technikerkalender</span>
-                        <span class="toggle-icon"></span>
-                    </div>
-                    <div class="section-content">
-                        <div class="shiftplan-table-container" id="technik-calendar-list">
-                            <!-- Dynamic content loaded by renderTechnikCalendar() -->
-                        </div>
+                <div class="dept-tabs">
+                    <button class="dept-tab active" onclick="switchDeptTab(this, 'technik-calendar-tab')">Kalender</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'technik-tasks-tab')">Tasks</button>
+                </div>
+                <div class="dept-tab-content active" id="technik-calendar-tab">
+                    <div class="shiftplan-table-container" id="technik-calendar-list">
+                        <!-- Dynamic content loaded by renderTechnikCalendar() -->
                     </div>
                 </div>
-                <div class="tasks-inline" id="technik-tasks">
-                    <div class="tasks-header" onclick="toggleTasksSection('technik')">
-                        <span> Tasks <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('technik')"></button>
-                    </div>
-                    <div class="tasks-list" id="technik-tasks-list">
+                <div class="dept-tab-content" id="technik-tasks-tab">
+                    <div class="tasks-list open" id="technik-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()"> Connect</button></div>
                     </div>
+                    <button class="tasks-btn" onclick="openToDoList('technik')"> Open in To Do</button>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('technik')"> Open in To Do</button>
             </div>
         </div>
         
         <!-- SPUTNIK -->
         <div class="dept sputnik">
-            <div class="dept-header">
+            <div class="dept-header" onclick="toggleDept(this)">
                 <div class="dept-header-left"> SPUTNIK BAR</div>
-                <span class="task-count" id="sputnik-task-count"></span>
+                <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-content">
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span> Reservierungen</span>
-                        <span class="toggle-icon"></span>
-                    </div>
-                    <div class="section-content">
-                        <div id="sputnik-reservations-container" style="padding: 10px;">
-                            <div style="text-align: center; color: #888; font-size: 13px;">
-                                <p> Reservierungen aus Google Calendar</p>
-                                <button onclick="loadSputnikReservations()" style="margin-top: 10px; background: #8E24AA; color: white; border: none; padding: 8px 16px; border-radius: 0; cursor: pointer;"> Laden</button>
-                            </div>
+                <div class="dept-tabs">
+                    <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Reservierungen</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-shiftplan-tab')">Shiftplan</button>
+                    <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-tasks-tab')">Tasks</button>
+                </div>
+                <div class="dept-tab-content active" id="sputnik-reservations-tab">
+                    <div id="sputnik-reservations-container" style="padding: 10px;">
+                        <div style="text-align: center; color: #888; font-size: 13px;">
+                            <p> Reservierungen aus Google Calendar</p>
+                            <button onclick="loadSputnikReservations()" style="margin-top: 10px; background: #ec4899; color: white; border: none; padding: 8px 16px; border-radius: 0; cursor: pointer;"> Laden</button>
                         </div>
                     </div>
                 </div>
-                <div class="collapsible-section">
-                    <div class="section-label" onclick="toggleSection(this)">
-                        <span> Shiftplan</span>
-                        <span class="toggle-icon"></span>
-                    </div>
-                    <div class="section-content">
-                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true"></iframe></div>
-                    </div>
+                <div class="dept-tab-content" id="sputnik-shiftplan-tab">
+                    <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true"></iframe></div>
                 </div>
-                <div class="tasks-inline" id="sputnik-tasks">
-                    <div class="tasks-header" onclick="toggleTasksSection('sputnik')">
-                        <span> Tasks <span class="toggle-icon"></span></span>
-                        <button class="refresh-btn" onclick="event.stopPropagation(); refreshTasks('sputnik')"></button>
-                    </div>
-                    <div class="tasks-list" id="sputnik-tasks-list">
+                <div class="dept-tab-content" id="sputnik-tasks-tab">
+                    <div class="tasks-list open" id="sputnik-tasks-list">
                         <div class="tasks-login-prompt"><p>Sign in to see tasks</p><button onclick="handleAuth()"> Connect</button></div>
                     </div>
+                    <button class="tasks-btn" onclick="openToDoList('sputnik')"> Open in To Do</button>
                 </div>
-                <button class="tasks-btn" onclick="openToDoList('sputnik')"> Open in To Do</button>
             </div>
         </div>
     </div>
@@ -2982,7 +3166,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.3.2 - 07.01.2026 - New Design + Auto-refresh</div>
+    <div class="version">Work Hub v15.4.1 - 07.01.2026 - New Design + Auto-refresh</div>
 
     <script>
         // 
@@ -3135,10 +3319,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Verbunden!");
+                    showToast("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Login fehlgeschlagen", true); 
+                    showToast("ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -3825,10 +4009,10 @@
             `;
         }
         
-        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â
         // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs) + Technikerkalender
         // Key: DD.MM.YYYY format for date matching
-        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â
         const SHIFTPLAN_DATABASE = {
             // DECEMBER 2025
             '27.12.2025': {
@@ -4268,6 +4452,25 @@
         
         function toggleSection(label) { label.classList.toggle('open'); label.nextElementSibling.classList.toggle('open'); }
         
+        // Department toggle (expand/collapse)
+        function toggleDept(header) {
+            const dept = header.closest('.dept');
+            dept.classList.toggle('open');
+            const content = dept.querySelector('.dept-content');
+            content.classList.toggle('open');
+        }
+        
+        // Department tab switching
+        function switchDeptTab(button, contentId) {
+            const dept = button.closest('.dept');
+            // Remove active from all tabs in this department
+            dept.querySelectorAll('.dept-tab').forEach(tab => tab.classList.remove('active'));
+            dept.querySelectorAll('.dept-tab-content').forEach(content => content.classList.remove('active'));
+            // Add active to clicked tab and content
+            button.classList.add('active');
+            document.getElementById(contentId).classList.add('active');
+        }
+        
         function toggleTasksSection(dept) {
             const header = document.querySelector(`#${dept}-tasks .tasks-header`);
             const list = document.getElementById(`${dept}-tasks-list`);
@@ -4571,7 +4774,7 @@
                     }
                 } catch (err) { console.log('Could not clear sync task:', err); }
             }
-            showToast(' Notizen gelÃ¶scht');
+            showToast(' Notizen gelÃƒÂ¶scht');
         }
         
         // Deep Analysis Function
@@ -5204,7 +5407,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5216,7 +5419,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -5247,9 +5450,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf gespeichert!';
+                    status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf in Outlook gespeichert!');
+                    showToast('ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -5261,12 +5464,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + e.message;
+                status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -6348,7 +6551,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -6371,7 +6574,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf in Outlook gespeichert!');
+                    showToast('ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -6466,7 +6669,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -6477,7 +6680,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7359,7 +7562,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -7491,7 +7694,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.3.2 - New Design + Auto-refresh');
+            console.log('Work Hub v15.4.1 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
