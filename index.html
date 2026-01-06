@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.2.2</title>
+    <title>Turbo Projects Work Hub v15.2.3</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -445,10 +445,13 @@
         .calendar-filter-item .filter-dot {
             width: 10px; height: 10px; border-radius: 50%;
         }
+        .filter-dot.eigen { background: #22c55e; }
+        .filter-dot.fremd { background: #3b82f6; }
+        .filter-dot.konzert { background: #8b5cf6; }
         .filter-dot.bmt { background: #f59e0b; }
-        .filter-dot.outlook { background: #0078d4; }
-        .filter-dot.sputnik { background: #ec4899; }
-        .filter-dot.technik { background: #22c55e; }
+        .filter-dot.technik { background: #a16207; }
+        .filter-dot.outlook { background: #6b7280; }
+        .filter-dot.feiertag { background: #ef4444; }
         .calendar-nav {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 12px;
@@ -468,25 +471,28 @@
             color: #888; padding: 8px 0;
         }
         .calendar-day {
-            min-height: 50px; background: #252542; border-radius: 4px;
-            padding: 2px; font-size: 10px; position: relative;
+            min-height: 70px; background: #252542; border-radius: 4px;
+            padding: 4px; font-size: 11px; position: relative;
         }
         .calendar-day.other-month { opacity: 0.4; }
         .calendar-day.today { border: 2px solid #3b82f6; }
         .calendar-day-number {
-            font-weight: 600; color: #666; font-size: 10px;
+            font-weight: 600; color: #aaa; font-size: 11px;
             position: absolute; top: 2px; right: 4px;
         }
         .calendar-day.today .calendar-day-number { color: #3b82f6; }
         .calendar-entry {
-            font-size: 8px; padding: 1px 3px; border-radius: 2px;
+            font-size: 10px; padding: 2px 4px; border-radius: 2px;
             margin-top: 1px; overflow: hidden; text-overflow: ellipsis;
-            white-space: nowrap; cursor: pointer; line-height: 1.2;
+            white-space: nowrap; cursor: pointer; line-height: 1.3;
         }
+        .calendar-entry.eigen { background: #22c55e; color: #fff; }
+        .calendar-entry.fremd { background: #3b82f6; color: #fff; }
+        .calendar-entry.konzert { background: #8b5cf6; color: #fff; }
         .calendar-entry.bmt { background: #f59e0b; color: #000; }
-        .calendar-entry.outlook { background: #0078d4; color: #fff; }
-        .calendar-entry.sputnik { background: #ec4899; color: #fff; }
-        .calendar-entry.technik { background: #22c55e; color: #fff; }
+        .calendar-entry.technik { background: #a16207; color: #fff; }
+        .calendar-entry.outlook { background: #6b7280; color: #fff; }
+        .calendar-entry.feiertag { background: #ef4444; color: #fff; }
         .calendar-entry:hover { opacity: 0.8; }
         
         /* Native Shiftplan Table */
@@ -519,13 +525,16 @@
             white-space: nowrap;
         }
         .shiftplan-table tr:hover { background: rgba(255,255,255,0.05); }
-        .shiftplan-table .date-col { font-weight: 600; color: #43A047; min-width: 70px; }
+        .shiftplan-table .date-col { font-weight: 600; color: #43A047; }
         .shiftplan-table .event-col { color: #888; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
         .shiftplan-table .cvd-col { color: #f59e0b; font-weight: 600; }
         .shiftplan-table .runner-col { color: #fff; }
+        .shiftplan-table .technik-col { color: #a78bfa; font-weight: 600; }
         @media (max-width: 600px) {
             .shiftplan-table { font-size: 10px; }
             .shiftplan-table th, .shiftplan-table td { padding: 4px 3px; }
+            .shiftplan-table .date-col { min-width: 55px; }
+            .shiftplan-table .event-col { max-width: 80px; }
         }
         
         /* VVK Tracker */
@@ -1367,7 +1376,7 @@
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
                 <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">Mic</button>
                 <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern"> Task</button>
-                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen löschen" style="background: #6b7280;">✕</button>
+                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen lÃ¶schen" style="background: #6b7280;">âœ•</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
@@ -2610,16 +2619,36 @@
     <div class="calendar-section">
         <div class="calendar-section-header collapsed" onclick="toggleCalendarSection()">
             <div class="calendar-title-row">
-                <span class="calendar-title">📅 Kalender</span>
+                <span class="calendar-title">ðŸ“… Kalender</span>
             </div>
-            <span class="calendar-toggle" id="calendar-toggle">▼</span>
+            <span class="calendar-toggle" id="calendar-toggle">â–¼</span>
         </div>
         <div id="calendar-container" class="calendar-collapsed">
             <div class="calendar-filters">
                 <label class="calendar-filter-item">
+                    <input type="checkbox" id="filter-eigen" checked onchange="renderCalendar()">
+                    <span class="filter-dot eigen"></span>
+                    Eigen
+                </label>
+                <label class="calendar-filter-item">
+                    <input type="checkbox" id="filter-fremd" checked onchange="renderCalendar()">
+                    <span class="filter-dot fremd"></span>
+                    Fremd
+                </label>
+                <label class="calendar-filter-item">
+                    <input type="checkbox" id="filter-konzert" checked onchange="renderCalendar()">
+                    <span class="filter-dot konzert"></span>
+                    Konzert
+                </label>
+                <label class="calendar-filter-item">
                     <input type="checkbox" id="filter-bmt" checked onchange="renderCalendar()">
                     <span class="filter-dot bmt"></span>
-                    BMT Specials
+                    Specials
+                </label>
+                <label class="calendar-filter-item">
+                    <input type="checkbox" id="filter-technik" checked onchange="renderCalendar()">
+                    <span class="filter-dot technik"></span>
+                    Technik
                 </label>
                 <label class="calendar-filter-item">
                     <input type="checkbox" id="filter-outlook" checked onchange="renderCalendar()">
@@ -2627,15 +2656,15 @@
                     Outlook
                 </label>
                 <label class="calendar-filter-item">
-                    <input type="checkbox" id="filter-technik" checked onchange="renderCalendar()">
-                    <span class="filter-dot technik"></span>
-                    Technikerkalender
+                    <input type="checkbox" id="filter-feiertag" checked onchange="renderCalendar()">
+                    <span class="filter-dot feiertag"></span>
+                    Feiertag
                 </label>
             </div>
             <div class="calendar-nav">
-                <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">◀ Zurück</button>
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">â—€ ZurÃ¼ck</button>
                 <span class="calendar-month-title" id="calendar-month-title">Januar 2026</span>
-                <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)">Weiter ▶</button>
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)">Weiter â–¶</button>
             </div>
             <div class="calendar-grid" id="calendar-grid">
                 <!-- Calendar days rendered by JS -->
@@ -2753,7 +2782,7 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <div class="calendar-list" id="technik-calendar-list">
+                        <div class="shiftplan-table-container" id="technik-calendar-list">
                             <!-- Dynamic content loaded by renderTechnikCalendar() -->
                         </div>
                     </div>
@@ -2819,7 +2848,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.2.2 - 06.01.2026 - Correct Bar Times</div>
+    <div class="version">Work Hub v15.2.3 - 07.01.2026 - Calendar Filters + Compact Technik</div>
 
     <script>
         // 
@@ -2972,10 +3001,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Verbunden!");
+                    showToast("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("ÃƒÂ¢Ã‚ÂÃ…â€™ Login fehlgeschlagen", true); 
+                    showToast("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -3662,10 +3691,10 @@
             `;
         }
         
-        // ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â
+        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â
         // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs) + Technikerkalender
         // Key: DD.MM.YYYY format for date matching
-        // ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â
+        // ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â
         const SHIFTPLAN_DATABASE = {
             // DECEMBER 2025
             '27.12.2025': {
@@ -3829,7 +3858,7 @@
             return SHIFTPLAN_DATABASE[dateStr] || null;
         }
         
-        // Render Technikerkalender - shows next 4 upcoming events with technician assignments
+        // Render Technikerkalender - compact table format (like Runner)
         function renderTechnikCalendar() {
             const container = document.getElementById('technik-calendar-list');
             if (!container) return;
@@ -3837,8 +3866,7 @@
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            const dayNames = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
-            const monthNames = ['Jan', 'Feb', 'MÃ¤r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
             
             // Get all future events from SHIFTPLAN_DATABASE
             const futureEvents = [];
@@ -3851,14 +3879,14 @@
                     const data = SHIFTPLAN_DATABASE[dateStr];
                     
                     // Try to find event name from BMT events
-                    let eventName = 'Event';
+                    let eventName = '-';
                     if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
                         const matchingEvent = bmtEvents.find(e => {
                             const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                             return eDate.toDateString() === eventDate.toDateString();
                         });
                         if (matchingEvent) {
-                            eventName = matchingEvent.summary || 'Event';
+                            eventName = matchingEvent.summary || '-';
                         }
                     }
                     
@@ -3866,34 +3894,40 @@
                         date: eventDate,
                         dateStr: dateStr,
                         day: dayNames[eventDate.getDay()],
-                        dateDisplay: eventDate.getDate() + '. ' + monthNames[eventDate.getMonth()],
                         eventName: eventName,
-                        technik: data.technik || 'TBA'
+                        technik: data.technik || '-'
                     });
                 }
             }
             
-            // Sort by date and take first 4
+            // Sort by date
             futureEvents.sort((a, b) => a.date - b.date);
-            const upcoming = futureEvents.slice(0, 4);
             
-            if (upcoming.length === 0) {
-                container.innerHTML = '<div class="calendar-item" style="color: #888; font-style: italic;">Keine kommenden Events</div>';
+            if (futureEvents.length === 0) {
+                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Shiftplan-Daten</p>';
                 return;
             }
             
-            let html = '';
-            upcoming.forEach(e => {
-                html += `
-                    <div class="calendar-item">
-                        <span class="calendar-date">${e.dateDisplay}</span>
-                        <span class="calendar-day">${e.day}</span>
-                        <span class="calendar-event">${e.eventName}<span class="tag-club">Club</span></span>
-                        <span class="calendar-tech">${e.technik}</span>
-                    </div>
-                `;
+            let html = `<table class="shiftplan-table">
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Event</th>
+                        <th>Techniker</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            futureEvents.forEach(e => {
+                const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                html += `<tr>
+                    <td class="date-col">${e.day} ${shortDate}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 15)}${e.eventName.length > 15 ? '...' : ''}</td>
+                    <td class="technik-col">${e.technik}</td>
+                </tr>`;
             });
             
+            html += '</tbody></table>';
             container.innerHTML = html;
         }
         
@@ -4403,7 +4437,7 @@
                     }
                 } catch (err) { console.log('Could not clear sync task:', err); }
             }
-            showToast(' Notizen gelöscht');
+            showToast(' Notizen gelÃ¶scht');
         }
         
         // Deep Analysis Function
@@ -5036,7 +5070,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -5048,7 +5082,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -5079,9 +5113,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = 'ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Entwurf gespeichert!';
+                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Entwurf in Outlook gespeichert!');
+                    showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -5093,12 +5127,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + e.message;
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -6180,7 +6214,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -6203,7 +6237,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Entwurf in Outlook gespeichert!');
+                    showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -6298,7 +6332,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -6309,7 +6343,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7046,7 +7080,7 @@ Spittelauer Lnde 12/1
         // CALENDAR SECTION
         let calendarMonth = new Date().getMonth();
         let calendarYear = new Date().getFullYear();
-        let calendarEntries = { bmt: [], outlook: [], sputnik: [], technik: [] };
+        let calendarEntries = { eigen: [], fremd: [], konzert: [], bmt: [], technik: [], outlook: [], feiertag: [] };
         
         function toggleCalendarSection() {
             const header = document.querySelector('.calendar-section-header');
@@ -7077,24 +7111,44 @@ Spittelauer Lnde 12/1
         }
         
         async function loadCalendarData() {
-            // Load BMT Specials from localStorage (same source as Upcoming Events)
+            // Load BMT from localStorage (same source as Upcoming Events)
             const bmtData = localStorage.getItem('bmtEvents');
             if (bmtData) {
                 try {
                     const parsed = JSON.parse(bmtData);
-                    calendarEntries.bmt = parsed.filter(e => 
-                        e.category === 'special'
-                    ).map(e => {
-                        // dtstart is ISO string like "2026-01-15T22:00:00.000Z"
+                    
+                    // Helper to map event data
+                    const mapEvent = (e) => {
                         const dateObj = new Date(e.dtstart);
-                        const dateStr = dateObj.toISOString().split('T')[0]; // "2026-01-15"
+                        const dateStr = dateObj.toISOString().split('T')[0];
+                        const timeStr = dateObj.toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' });
                         return {
                             title: e.summary || e.title || e.name,
                             date: dateStr,
-                            source: 'bmt'
+                            time: timeStr
                         };
-                    });
-                    console.log('BMT Specials loaded:', calendarEntries.bmt.length, calendarEntries.bmt);
+                    };
+                    
+                    // Eigen events (green)
+                    calendarEntries.eigen = parsed.filter(e => e.category === 'eigen').map(mapEvent);
+                    console.log('Eigen loaded:', calendarEntries.eigen.length);
+                    
+                    // Fremd events (blue)
+                    calendarEntries.fremd = parsed.filter(e => e.category === 'fremd').map(mapEvent);
+                    console.log('Fremd loaded:', calendarEntries.fremd.length);
+                    
+                    // Konzert events (purple)
+                    calendarEntries.konzert = parsed.filter(e => e.category === 'konzert').map(mapEvent);
+                    console.log('Konzert loaded:', calendarEntries.konzert.length);
+                    
+                    // BMT Specials (orange)
+                    calendarEntries.bmt = parsed.filter(e => e.category === 'special').map(mapEvent);
+                    console.log('Specials loaded:', calendarEntries.bmt.length);
+                    
+                    // Feiertag / Holidays (red)
+                    calendarEntries.feiertag = parsed.filter(e => e.category === 'holiday' || e.category === 'feiertag').map(mapEvent);
+                    console.log('Feiertag loaded:', calendarEntries.feiertag.length);
+                    
                 } catch (err) { console.log('BMT parse error:', err); }
             }
             
@@ -7178,9 +7232,13 @@ Spittelauer Lnde 12/1
             titleEl.textContent = `${monthNames[calendarMonth]} ${calendarYear}`;
             
             // Get filter states
+            const showEigen = document.getElementById('filter-eigen').checked;
+            const showFremd = document.getElementById('filter-fremd').checked;
+            const showKonzert = document.getElementById('filter-konzert').checked;
             const showBmt = document.getElementById('filter-bmt').checked;
-            const showOutlook = document.getElementById('filter-outlook').checked;
             const showTechnik = document.getElementById('filter-technik').checked;
+            const showOutlook = document.getElementById('filter-outlook').checked;
+            const showFeiertag = document.getElementById('filter-feiertag').checked;
             
             // Build calendar grid
             let html = dayNames.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
@@ -7207,17 +7265,40 @@ Spittelauer Lnde 12/1
                 // Get entries for this day
                 let entriesHtml = '';
                 
+                // Feiertag (red) - show first
+                if (showFeiertag) {
+                    calendarEntries.feiertag.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry feiertag" title="${e.title}">${e.title}</div>`; });
+                }
+                // Eigen (green)
+                if (showEigen) {
+                    calendarEntries.eigen.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry eigen" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
+                }
+                // Fremd (blue)
+                if (showFremd) {
+                    calendarEntries.fremd.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry fremd" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
+                }
+                // Konzert (purple)
+                if (showKonzert) {
+                    calendarEntries.konzert.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry konzert" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
+                }
+                // Specials (orange)
                 if (showBmt) {
                     calendarEntries.bmt.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
-                        .forEach(e => { entriesHtml += `<div class="calendar-entry bmt" title="${e.title}">${e.title}</div>`; });
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry bmt" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
                 }
-                if (showOutlook) {
-                    calendarEntries.outlook.filter(e => e.date === dateStr)
-                        .forEach(e => { entriesHtml += `<div class="calendar-entry outlook" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
-                }
+                // Technik (brown)
                 if (showTechnik) {
                     calendarEntries.technik.filter(e => e.date === dateStr)
                         .forEach(e => { entriesHtml += `<div class="calendar-entry technik" title="${e.title}">${e.title}</div>`; });
+                }
+                // Outlook (gray)
+                if (showOutlook) {
+                    calendarEntries.outlook.filter(e => e.date === dateStr)
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry outlook" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
                 }
                 
                 html += `<div class="calendar-day${isToday ? ' today' : ''}">
@@ -7250,7 +7331,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.2.2 - Correct Bar Times');
+            console.log('Work Hub v15.2.3 - Calendar Improvements + Compact Technik');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
