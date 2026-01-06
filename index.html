@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.1.2</title>
+    <title>Turbo Projects Work Hub v15.1.4</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -579,9 +579,10 @@
         .runner .section-label { background: #43A047; }
         .sputnik .section-label { background: #8E24AA; }
         .technik .section-label { background: #757575; }
-        .section-content { display: none; background: white; border-radius: 0 0 8px 8px; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+        .section-content { display: none; background: white; border-radius: 0 0 8px 8px; }
         .section-content.open { display: block; }
-        .section-content iframe { width: 100%; min-width: 700px; height: 400px; border: none; }
+        .iframe-wrapper { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+        .iframe-wrapper iframe { width: 800px; height: 400px; border: none; display: block; }
         
         /* Tasks - Collapsible with black border */
         .tasks-inline { background: white; border-radius: 8px; margin-top: 10px; overflow: hidden; border: 2px solid #000; }
@@ -1048,7 +1049,7 @@
             .vvk-input-row input { width: 55px; }
             
             .dept-header { font-size: 16px; padding: 12px 15px; }
-            .section-content iframe { height: 250px; }
+            .iframe-wrapper iframe { height: 250px; }
             
             .result-grid { grid-template-columns: repeat(2, 1fr); }
             
@@ -1126,7 +1127,7 @@
             
             .dept-header { font-size: 14px; padding: 10px 12px; }
             .section-label { padding: 10px 12px; font-size: 13px; }
-            .section-content iframe { height: 200px; }
+            .iframe-wrapper iframe { height: 200px; }
             
             .tasks-header { padding: 10px 12px; font-size: 13px; }
             .task-item { padding: 8px 12px; }
@@ -2652,7 +2653,7 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true" style="height:400px;"></iframe>
+                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true"></iframe></div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="bar-tasks">
@@ -2681,7 +2682,7 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vS-MKRiS_5AX5ZF2Dn-bqCAJZBucpCRvkIXnytU3HjOQu3i5HMym6t1_tOtq9wObzOOqDTKhDQcqvoP/pub?embedded=true" style="height:400px;"></iframe>
+                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vS-MKRiS_5AX5ZF2Dn-bqCAJZBucpCRvkIXnytU3HjOQu3i5HMym6t1_tOtq9wObzOOqDTKhDQcqvoP/pub?embedded=true"></iframe></div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="runner-tasks">
@@ -2755,7 +2756,7 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="height:400px;"></iframe>
+                        <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true"></iframe></div>
                     </div>
                 </div>
                 <div class="tasks-inline" id="sputnik-tasks">
@@ -2776,7 +2777,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.1.2 - 06.01.2026 - Calendar dtstart Fix</div>
+    <div class="version">Work Hub v15.1.4 - 06.01.2026 - Sputnik Calendar</div>
 
     <script>
         // 
@@ -6942,6 +6943,46 @@ Spittelauer Lnde 12/1
                 } catch (err) { console.log('BMT parse error:', err); }
             }
             
+            // Load Technikerkalender from SHIFTPLAN_DATABASE
+            calendarEntries.technik = [];
+            for (const dateStr in SHIFTPLAN_DATABASE) {
+                const data = SHIFTPLAN_DATABASE[dateStr];
+                if (data.technik) {
+                    // Convert DD.MM.YYYY to YYYY-MM-DD
+                    const parts = dateStr.split('.');
+                    const isoDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    calendarEntries.technik.push({
+                        title: `Tech: ${data.technik}`,
+                        date: isoDate,
+                        source: 'technik'
+                    });
+                }
+            }
+            console.log('Technik entries loaded:', calendarEntries.technik.length);
+            
+            // Load Sputnik Reservations from Google Calendar (public iCal)
+            try {
+                const sputnikCalId = '355f939de7df075c2527053dadea64b9ba41a6916d7e1917043623230b6b7451@group.calendar.google.com';
+                const icsUrl = `https://calendar.google.com/calendar/ical/${encodeURIComponent(sputnikCalId)}/public/basic.ics`;
+                
+                const response = await fetch(icsUrl);
+                if (response.ok) {
+                    const icsData = await response.text();
+                    const sputnikEvents = parseICS(icsData);
+                    calendarEntries.sputnik = sputnikEvents.map(e => {
+                        const dateObj = new Date(e.dtstart);
+                        return {
+                            title: e.summary || 'Reservation',
+                            date: dateObj.toISOString().split('T')[0],
+                            source: 'sputnik'
+                        };
+                    });
+                    console.log('Sputnik entries loaded:', calendarEntries.sputnik.length);
+                }
+            } catch (err) {
+                console.log('Sputnik calendar load failed (CORS?):', err);
+            }
+            
             // Load Outlook calendar if logged in (skip for now - needs Calendar.Read scope)
             // TODO: Enable when Calendar.Read permission added
             /*
@@ -7059,7 +7100,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.1.2 - Calendar dtstart fix + iframe responsive');
+            console.log('Work Hub v15.1.4 - Sputnik Calendar');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
