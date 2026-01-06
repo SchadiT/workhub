@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.4.3</title>
+    <title>Turbo Projects Work Hub v15.4.5</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -34,7 +34,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.4.3 ===== */
+        /* ===== CSS TOKEN SYSTEM - v15.4.5 ===== */
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
@@ -590,20 +590,22 @@
             color: #fff; padding: 8px 0; text-transform: uppercase;
         }
         .calendar-day {
-            min-height: 70px; background: #ffffff; border-radius: 0;
-            padding: 4px; font-size: 11px; position: relative;
+            min-height: 80px; background: #ffffff; border-radius: 0;
+            padding: 6px; font-size: 11px; position: relative;
+            border: 1px solid #ddd;
         }
-        .calendar-day.other-month { opacity: 0.3; background: #e0e0e0; }
-        .calendar-day.today { border: 2px solid var(--danger); }
+        .calendar-day.other-month { opacity: 0.3; background: #f0f0f0; }
+        .calendar-day.today { border: 2px solid var(--danger); background: #fff5f5; }
         .calendar-day-number {
-            font-weight: 600; color: #333; font-size: 11px;
+            font-weight: 700; color: #000; font-size: 13px;
             position: absolute; top: 4px; right: 6px;
         }
-        .calendar-day.today .calendar-day-number { color: var(--danger); font-weight: 700; }
+        .calendar-day.today .calendar-day-number { color: var(--danger); font-weight: 800; }
         .calendar-entry {
-            font-size: 10px; padding: 2px 4px; border-radius: 3px;
-            margin-top: 1px; overflow: hidden; text-overflow: ellipsis;
-            white-space: nowrap; cursor: pointer; line-height: 1.3;
+            font-size: 9px; padding: 2px 4px; border-radius: 3px;
+            margin-top: 2px; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; cursor: pointer; line-height: 1.4;
+            font-weight: 600;
         }
         .calendar-entry.eigen { background: var(--eigen); color: #fff; }
         .calendar-entry.fremd { background: var(--fremd); color: #fff; }
@@ -788,6 +790,13 @@
         .dept-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .dept.open .dept-toggle { transform: rotate(180deg); }
         .task-count { background: transparent; border: 1px solid #fff; color: #fff; padding: 2px 8px; font-size: 10px; }
+        
+        /* Tabs always visible under header */
+        .dept-tabs {
+            display: flex !important;
+        }
+        
+        /* Content area collapses */
         .dept-content { padding: 0; display: none; background: var(--surface); border-top: 1px solid var(--border); }
         .dept-content.open { display: block; }
         
@@ -3030,14 +3039,14 @@
         <!-- OFFICE -->
         <div class="dept office">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> OFFICE</div>
+                <div class="dept-header-left"> OFFICE <span class="task-count" id="office-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
-            <div class="dept-content">
-                <div class="dept-tabs">
-                    <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'office-notes-tab')">Notes</button>
-                </div>
+            <div class="dept-tabs">
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'office-notes-tab')">Notes <span class="task-count" id="notes-count"></span></button>
+            </div>
+            <div class="dept-content open">
                 <div class="dept-tab-content active" id="office-tasks-tab">
                     <div class="tasks-list open" id="office-tasks-list">
                         <div class="tasks-login-prompt">
@@ -3061,14 +3070,14 @@
         <!-- BAR -->
         <div class="dept bar">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> BAR</div>
+                <div class="dept-header-left"> BAR <span class="task-count" id="bar-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
+            <div class="dept-tabs">
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'bar-shiftplan-tab')">Shiftplan</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'bar-tasks-tab')">Tasks</button>
+            </div>
             <div class="dept-content">
-                <div class="dept-tabs">
-                    <button class="dept-tab active" onclick="switchDeptTab(this, 'bar-shiftplan-tab')">Shiftplan</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'bar-tasks-tab')">Tasks</button>
-                </div>
                 <div class="dept-tab-content active" id="bar-shiftplan-tab">
                     <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true"></iframe></div>
                 </div>
@@ -3084,14 +3093,14 @@
         <!-- RUNNER -->
         <div class="dept runner">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> RUNNER</div>
+                <div class="dept-header-left"> RUNNER <span class="task-count" id="runner-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
+            <div class="dept-tabs">
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'runner-shiftplan-tab')">Shiftplan</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'runner-tasks-tab')">Tasks</button>
+            </div>
             <div class="dept-content">
-                <div class="dept-tabs">
-                    <button class="dept-tab active" onclick="switchDeptTab(this, 'runner-shiftplan-tab')">Shiftplan</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'runner-tasks-tab')">Tasks</button>
-                </div>
                 <div class="dept-tab-content active" id="runner-shiftplan-tab">
                     <div class="shiftplan-table-container" id="runner-shiftplan-table"></div>
                 </div>
@@ -3107,14 +3116,14 @@
         <!-- TECHNIK -->
         <div class="dept technik">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> TECHNIK</div>
+                <div class="dept-header-left"> TECHNIK <span class="task-count" id="technik-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
+            <div class="dept-tabs">
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'technik-calendar-tab')">Kalender</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'technik-tasks-tab')">Tasks</button>
+            </div>
             <div class="dept-content">
-                <div class="dept-tabs">
-                    <button class="dept-tab active" onclick="switchDeptTab(this, 'technik-calendar-tab')">Kalender</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'technik-tasks-tab')">Tasks</button>
-                </div>
                 <div class="dept-tab-content active" id="technik-calendar-tab">
                     <div class="shiftplan-table-container" id="technik-calendar-list">
                         <!-- Dynamic content loaded by renderTechnikCalendar() -->
@@ -3132,15 +3141,15 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> SPUTNIK BAR</div>
+                <div class="dept-header-left"> SPUTNIK BAR <span class="task-count" id="sputnik-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
+            <div class="dept-tabs">
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Reservierungen</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-shiftplan-tab')">Shiftplan</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-tasks-tab')">Tasks</button>
+            </div>
             <div class="dept-content">
-                <div class="dept-tabs">
-                    <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Reservierungen</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-shiftplan-tab')">Shiftplan</button>
-                    <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-tasks-tab')">Tasks</button>
-                </div>
                 <div class="dept-tab-content active" id="sputnik-reservations-tab">
                     <div id="sputnik-reservations-container" style="padding: 10px;">
                         <div style="text-align: center; color: #888; font-size: 13px;">
@@ -3166,7 +3175,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.4.3 - 07.01.2026 - New Design + Auto-refresh</div>
+    <div class="version">Work Hub v15.4.5 - 07.01.2026 - New Design + Auto-refresh</div>
 
     <script>
         // 
@@ -3261,7 +3270,6 @@
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
                 console.error('MSAL library not loaded!');
-                document.getElementById('auth-status-text').textContent = ' Auth Library fehlt';
                 return;
             }
             
@@ -3277,7 +3285,7 @@
                     try {
                         const silentResponse = await msalInstance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
                         accessToken = silentResponse.accessToken;
-                        console.log('Silent token scopes:', silentResponse.scopes);
+                        console.log('Silent token acquired, scopes:', silentResponse.scopes);
                         updateAuthUI(accounts[0]);
                         loadAllData();
                     } catch (e) { 
@@ -3312,7 +3320,7 @@
             } else {
                 try {
                     // Use popup (works in iframes)
-                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
+                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'select_account' });
                     accessToken = response.accessToken;
                     console.log('=== LOGIN SUCCESS (POPUP) ===');
                     console.log('Scopes granted:', response.scopes);
@@ -3344,7 +3352,7 @@
             // Small delay then prompt re-login
             setTimeout(async () => {
                 try {
-                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'consent' });
+                    const response = await msalInstance.loginPopup({ ...loginRequest, prompt: 'select_account' });
                     accessToken = response.accessToken;
                     console.log('=== RE-LOGIN SUCCESS ===');
                     console.log('New scopes granted:', response.scopes);
@@ -3424,12 +3432,16 @@
         
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
-                document.getElementById(`${d}-task-count`).textContent = '';
-                document.getElementById(`${d}-tasks-list`).innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()"></button></div>';
+                const countEl = document.getElementById(`${d}-task-count`);
+                const listEl = document.getElementById(`${d}-tasks-list`);
+                if (countEl) countEl.textContent = '';
+                if (listEl) listEl.innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Connect</button></div>';
             });
             // Reset Notes section
-            document.getElementById('notes-count').textContent = '';
-            document.getElementById('office-notes-list').innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()"></button></div>';
+            const notesCountEl = document.getElementById('notes-count');
+            const notesListEl = document.getElementById('office-notes-list');
+            if (notesCountEl) notesCountEl.textContent = '';
+            if (notesListEl) notesListEl.innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Connect</button></div>';
         }
         
         // 
@@ -3446,20 +3458,24 @@
             const listId = TODO_LISTS[dept];
             const countEl = document.getElementById(`${dept}-task-count`);
             const listEl = document.getElementById(`${dept}-tasks-list`);
-            countEl.textContent = '...';
+            if (!listEl) {
+                console.log(`loadTasks: Missing element ${dept}-tasks-list`);
+                return;
+            }
+            if (countEl) countEl.textContent = '...';
             try {
                 const r = await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$orderby=importance desc&$top=10`, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 const data = await r.json();
                 const tasks = data.value || [];
-                countEl.textContent = tasks.length || '';
+                if (countEl) countEl.textContent = tasks.length || '';
                 listEl.innerHTML = tasks.length ? tasks.map(t => {
                     let dueClass = '', dueText = '';
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = 'berfllig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = 'Überfällig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -3468,8 +3484,12 @@
                         <div class="task-info"><div class="task-title">${esc(t.title)}</div>${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
-                }).join('') : '<div class="tasks-empty"> Alles erledigt!</div>';
-            } catch (e) { countEl.textContent = '!'; listEl.innerHTML = '<div class="tasks-empty"></div>'; }
+                }).join('') : '<div class="tasks-empty">Alles erledigt!</div>';
+            } catch (e) { 
+                console.error('loadTasks error:', e);
+                if (countEl) countEl.textContent = '!'; 
+                listEl.innerHTML = '<div class="tasks-empty">Fehler beim Laden</div>'; 
+            }
         }
         
         async function completeTask(taskId, dept) {
@@ -4477,7 +4497,7 @@
             content.classList.toggle('open');
         }
         
-        // Department tab switching
+        // Department tab switching - also expands content if collapsed
         function switchDeptTab(button, contentId) {
             const dept = button.closest('.dept');
             // Remove active from all tabs in this department
@@ -4486,6 +4506,13 @@
             // Add active to clicked tab and content
             button.classList.add('active');
             document.getElementById(contentId).classList.add('active');
+            
+            // Also expand the content area if collapsed
+            const content = dept.querySelector('.dept-content');
+            if (!content.classList.contains('open')) {
+                content.classList.add('open');
+                dept.classList.add('open');
+            }
         }
         
         function toggleTasksSection(dept) {
@@ -7711,7 +7738,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.4.3 - New Design + Auto-refresh');
+            console.log('Work Hub v15.4.5 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
