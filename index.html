@@ -2581,19 +2581,8 @@
                         <span class="toggle-icon"></span>
                     </div>
                     <div class="section-content">
-                        <div class="calendar-list">
-                            <div class="calendar-item">
-                                <span class="calendar-date">27. Dez</span>
-                                <span class="calendar-day">SA</span>
-                                <span class="calendar-event">TURBO<span class="tag-club">Club</span></span>
-                                <span class="calendar-tech">Simon</span>
-                            </div>
-                            <div class="calendar-item">
-                                <span class="calendar-date">31. Dez</span>
-                                <span class="calendar-day">DI</span>
-                                <span class="calendar-event">Silvester<span class="tag-club">Club</span></span>
-                                <span class="calendar-tech">Jan</span>
-                            </div>
+                        <div class="calendar-list" id="technik-calendar-list">
+                            <!-- Dynamic content loaded by renderTechnikCalendar() -->
                         </div>
                     </div>
                 </div>
@@ -3556,6 +3545,74 @@
             return SHIFTPLAN_DATABASE[dateStr] || null;
         }
         
+        // Render Technikerkalender - shows next 4 upcoming events with technician assignments
+        function renderTechnikCalendar() {
+            const container = document.getElementById('technik-calendar-list');
+            if (!container) return;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const dayNames = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
+            const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            
+            // Get all future events from SHIFTPLAN_DATABASE
+            const futureEvents = [];
+            
+            for (const dateStr in SHIFTPLAN_DATABASE) {
+                const parts = dateStr.split('.');
+                const eventDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                
+                if (eventDate >= today) {
+                    const data = SHIFTPLAN_DATABASE[dateStr];
+                    
+                    // Try to find event name from BMT events
+                    let eventName = 'Event';
+                    if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
+                        const matchingEvent = bmtEvents.find(e => {
+                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                            return eDate.toDateString() === eventDate.toDateString();
+                        });
+                        if (matchingEvent) {
+                            eventName = matchingEvent.summary || 'Event';
+                        }
+                    }
+                    
+                    futureEvents.push({
+                        date: eventDate,
+                        dateStr: dateStr,
+                        day: dayNames[eventDate.getDay()],
+                        dateDisplay: eventDate.getDate() + '. ' + monthNames[eventDate.getMonth()],
+                        eventName: eventName,
+                        technik: data.technik || 'TBA'
+                    });
+                }
+            }
+            
+            // Sort by date and take first 4
+            futureEvents.sort((a, b) => a.date - b.date);
+            const upcoming = futureEvents.slice(0, 4);
+            
+            if (upcoming.length === 0) {
+                container.innerHTML = '<div class="calendar-item" style="color: #888; font-style: italic;">Keine kommenden Events</div>';
+                return;
+            }
+            
+            let html = '';
+            upcoming.forEach(e => {
+                html += `
+                    <div class="calendar-item">
+                        <span class="calendar-date">${e.dateDisplay}</span>
+                        <span class="calendar-day">${e.day}</span>
+                        <span class="calendar-event">${e.eventName}<span class="tag-club">Club</span></span>
+                        <span class="calendar-tech">${e.technik}</span>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
         // Event data storage (legacy + dynamic from BMT)
         const EVENT_STAFF_DATA = {
             'turbo': { 
@@ -3982,6 +4039,13 @@
         }
         
         async function loadQuickNotesFromToDo() {
+            // Don't reload if notes were just saved as task
+            if (localStorage.getItem('workhub-notes-task-created') === 'true') {
+                localStorage.removeItem('workhub-notes-task-created');
+                document.getElementById('quick-notes-text').value = '';
+                return;
+            }
+            
             if (!accessToken) {
                 loadQuickNotes();
                 return;
@@ -4015,6 +4079,12 @@
         }
         
         function loadQuickNotes() {
+            // Don't reload if notes were just saved as task
+            if (localStorage.getItem('workhub-notes-task-created') === 'true') {
+                localStorage.removeItem('workhub-notes-task-created');
+                document.getElementById('quick-notes-text').value = '';
+                return;
+            }
             const saved = localStorage.getItem('workhub-quick-notes');
             if (saved) {
                 document.getElementById('quick-notes-text').value = saved;
@@ -5143,6 +5213,9 @@
                         </div>
                     `;
                 }).join('') + '</div>';
+            
+            // Also update Technikerkalender when BMT events are loaded
+            renderTechnikCalendar();
         }
         
         // Render Upcoming Events from BMT data (next 4 events)
@@ -6155,6 +6228,7 @@ Spittelauer Lnde 12/1
                     showToast(' Task erstellt!');
                     document.getElementById('quick-notes-text').value = '';
                     localStorage.removeItem('workhub-quick-notes');
+                    localStorage.setItem('workhub-notes-task-created', 'true');
                 } else {
                     showToast(' Fehler beim Erstellen', true);
                 }
@@ -6632,7 +6706,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.0.0 - BAR STAFFING');
+            console.log('Work Hub v15.0.1 - Quick Notes + Technik Fix');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -6655,6 +6729,7 @@ Spittelauer Lnde 12/1
             setTimeout(() => {
                 calculateNYE();
                 renderPeakGrid();
+                renderTechnikCalendar();
             }, 100);
         });
     </script>
