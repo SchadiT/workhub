@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.4.1</title>
+    <title>Turbo Projects Work Hub v15.4.3</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -34,7 +34,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.4.1 ===== */
+        /* ===== CSS TOKEN SYSTEM - v15.4.3 ===== */
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
@@ -3166,7 +3166,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.4.1 - 07.01.2026 - New Design + Auto-refresh</div>
+    <div class="version">Work Hub v15.4.3 - 07.01.2026 - New Design + Auto-refresh</div>
 
     <script>
         // 
@@ -3389,21 +3389,22 @@
         
         function updateAuthUI(account) {
             const dot = document.getElementById('auth-dot');
-            const statusText = document.getElementById('auth-status-text');
             const userText = document.getElementById('auth-user');
             const authBtn = document.getElementById('auth-btn');
             if (account) {
-                dot.classList.add('connected');
-                statusText.textContent = 'Connected';
-                userText.textContent = account.username || '';
-                authBtn.innerHTML = ' Sign out';
-                authBtn.classList.add('logout');
+                if (dot) dot.classList.add('connected');
+                if (userText) userText.textContent = account.username || 'Connected';
+                if (authBtn) {
+                    authBtn.innerHTML = 'Sign out';
+                    authBtn.classList.add('logout');
+                }
             } else {
-                dot.classList.remove('connected');
-                statusText.textContent = 'Not connected';
-                userText.textContent = '';
-                authBtn.innerHTML = ' Sign in';
-                authBtn.classList.remove('logout');
+                if (dot) dot.classList.remove('connected');
+                if (userText) userText.textContent = 'Not signed in';
+                if (authBtn) {
+                    authBtn.innerHTML = 'Sign in';
+                    authBtn.classList.remove('logout');
+                }
             }
         }
         
@@ -4395,16 +4396,22 @@
         }
         
         function updateProjection(id) {
+            // Check if elements exist before proceeding
+            const vvkInput = document.getElementById(`${id}-vvk-input`);
+            if (!vvkInput) return; // Element doesn't exist yet, skip
+            
             const cfg = EVENT_CONFIG[id];
+            if (!cfg) return;
+            
             const s = SERIE_STATS[cfg.serie];
             const k = KW_STATS[cfg.kw] || { barPP: 16.5 };
             const days = getDaysUntil(id);
             
-            const currentVVK = parseInt(document.getElementById(`${id}-vvk-input`).value) || 0;
-            const vvkZiel = parseInt(document.getElementById(`${id}-ziel-input`).value) || 450;
-            const maxVVKInput = parseInt(document.getElementById(`${id}-max-input`).value) || 600;
-            const vvkPrice = parseFloat(document.getElementById(`${id}-vvk-price`).value) || 18;
-            const fohPrice = parseFloat(document.getElementById(`${id}-foh-price`).value) || 22;
+            const currentVVK = parseInt(vvkInput.value) || 0;
+            const vvkZiel = parseInt(document.getElementById(`${id}-ziel-input`)?.value) || 450;
+            const maxVVKInput = parseInt(document.getElementById(`${id}-max-input`)?.value) || 600;
+            const vvkPrice = parseFloat(document.getElementById(`${id}-vvk-price`)?.value) || 18;
+            const fohPrice = parseFloat(document.getElementById(`${id}-foh-price`)?.value) || 22;
             
             // Apply historical capacity caps
             const maxVVK = Math.min(maxVVKInput, CAPACITY_CAPS.MAX_VVK);
@@ -4428,19 +4435,29 @@
             const projBar = (projVVK + projFOH) * k.barPP;
             const projTotal = projBar + (projVVK * vvkPrice) + (projFOH * fohPrice);
             
-            document.getElementById(`${id}-days`).textContent = `${days} Tage`;
-            document.getElementById(`${id}-vvk-proj`).textContent = `~${projVVK}`;
-            document.getElementById(`${id}-foh-proj`).textContent = `~${projFOH}`;
-            document.getElementById(`${id}-bar-proj`).textContent = `~${(projBar/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-total-proj`).textContent = `~${(projTotal/1000).toFixed(1)}k`;
-            document.getElementById(`${id}-tickets-quick`).textContent = ` ~${projVVK + projFOH}`;
-            document.getElementById(`${id}-bar-quick`).textContent = ` ~${(projBar/1000).toFixed(1)}k`;
+            // Update elements with null checks
+            const daysEl = document.getElementById(`${id}-days`);
+            if (daysEl) daysEl.textContent = `${days} Tage`;
+            const vvkProjEl = document.getElementById(`${id}-vvk-proj`);
+            if (vvkProjEl) vvkProjEl.textContent = `~${projVVK}`;
+            const fohProjEl = document.getElementById(`${id}-foh-proj`);
+            if (fohProjEl) fohProjEl.textContent = `~${projFOH}`;
+            const barProjEl = document.getElementById(`${id}-bar-proj`);
+            if (barProjEl) barProjEl.textContent = `~${(projBar/1000).toFixed(1)}k`;
+            const totalProjEl = document.getElementById(`${id}-total-proj`);
+            if (totalProjEl) totalProjEl.textContent = `~${(projTotal/1000).toFixed(1)}k`;
+            const ticketsQuickEl = document.getElementById(`${id}-tickets-quick`);
+            if (ticketsQuickEl) ticketsQuickEl.textContent = ` ~${projVVK + projFOH}`;
+            const barQuickEl = document.getElementById(`${id}-bar-quick`);
+            if (barQuickEl) barQuickEl.textContent = ` ~${(projBar/1000).toFixed(1)}k`;
             
             const progress = Math.min(100, (currentVVK / vvkZiel) * 100);
-            document.getElementById(`${id}-progress`).style.width = `${progress}%`;
+            const progressEl = document.getElementById(`${id}-progress`);
+            if (progressEl) progressEl.style.width = `${progress}%`;
             
             const expected = Math.round(vvkZiel * pct);
-            document.getElementById(`${id}-benchmark`).textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d  Soll ~${expected}`;
+            const benchmarkEl = document.getElementById(`${id}-benchmark`);
+            if (benchmarkEl) benchmarkEl.textContent = `Ziel: ${vvkZiel} | ${Math.round(pct*100)}% bei ${days}d  Soll ~${expected}`;
         }
         
         // 
@@ -7694,7 +7711,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.4.1 - New Design + Auto-refresh');
+            console.log('Work Hub v15.4.3 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
