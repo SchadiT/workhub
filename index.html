@@ -579,7 +579,8 @@
         .runner .section-label { background: #43A047; }
         .sputnik .section-label { background: #8E24AA; }
         .technik .section-label { background: #757575; }
-        .section-content { display: none; background: white; border-radius: 0 0 8px 8px; overflow: hidden; }
+        .section-content { display: none; background: white; border-radius: 0 0 8px 8px; overflow-x: auto; overflow-y: hidden; }
+        .section-content iframe { width: 100%; min-width: 600px; border: none; }
         .section-content.open { display: block; }
         .section-content iframe { width: 100%; height: 300px; border: none; }
         
@@ -1319,6 +1320,7 @@
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
                 <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">Mic</button>
                 <button class="quick-notes-add" onclick="createNewTask()" title="Als neue Task speichern"> Task</button>
+                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen löschen" style="background: #6b7280;">✕</button>
             </div>
         </div>
         <textarea id="quick-notes-text" placeholder="Schnelle Notizen hier eingeben..." oninput="saveQuickNotes()"></textarea>
@@ -4219,6 +4221,37 @@
             }
         }
         
+        async function clearQuickNotes() {
+            document.getElementById('quick-notes-text').value = '';
+            localStorage.removeItem('workhub-quick-notes');
+            clearTimeout(notesTimeout);
+            
+            // Also clear sync task in To Do if logged in
+            if (accessToken) {
+                try {
+                    const listId = await getOrCreateNotesList();
+                    if (listId) {
+                        const response = await fetch(
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=title eq 'Work Hub Quick Notes'`,
+                            { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                        );
+                        const data = await response.json();
+                        if (data.value && data.value.length > 0) {
+                            await fetch(
+                                `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${data.value[0].id}`,
+                                {
+                                    method: 'PATCH',
+                                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ body: { content: '', contentType: 'text' } })
+                                }
+                            );
+                        }
+                    }
+                } catch (err) { console.log('Could not clear sync task:', err); }
+            }
+            showToast(' Notizen gelöscht');
+        }
+        
         // Deep Analysis Function
         function openDeepAnalysis() {
             // Opens the Grelle Forelle Analysis Project in Claude
@@ -6358,6 +6391,30 @@ Spittelauer Lnde 12/1
                     document.getElementById('quick-notes-text').value = '';
                     localStorage.removeItem('workhub-quick-notes');
                     localStorage.setItem('workhub-notes-task-created', 'true');
+                    
+                    // Also clear the sync task "Work Hub Quick Notes" in To Do
+                    try {
+                        const syncTaskResponse = await fetch(
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=title eq 'Work Hub Quick Notes'`,
+                            { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                        );
+                        const syncTaskData = await syncTaskResponse.json();
+                        if (syncTaskData.value && syncTaskData.value.length > 0) {
+                            const syncTaskId = syncTaskData.value[0].id;
+                            await fetch(
+                                `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${syncTaskId}`,
+                                {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + accessToken,
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ body: { content: '', contentType: 'text' } })
+                                }
+                            );
+                            console.log('Sync task cleared');
+                        }
+                    } catch (syncErr) { console.log('Could not clear sync task:', syncErr); }
                 } else {
                     showToast(' Fehler beim Erstellen', true);
                 }
@@ -6865,22 +6922,25 @@ Spittelauer Lnde 12/1
         }
         
         async function loadCalendarData() {
-            // Load BMT Specials from localStorage
-            const bmtData = localStorage.getItem('bmt-events-data');
+            // Load BMT Specials from localStorage (same source as Upcoming Events)
+            const bmtData = localStorage.getItem('bmtEvents');
             if (bmtData) {
                 try {
                     const parsed = JSON.parse(bmtData);
-                    calendarEntries.bmt = (parsed.events || []).filter(e => 
-                        e.category && e.category.toLowerCase().includes('special')
+                    calendarEntries.bmt = parsed.filter(e => 
+                        e.category === 'special'
                     ).map(e => ({
-                        title: e.title || e.name,
+                        title: e.summary || e.title || e.name,
                         date: e.date,
                         source: 'bmt'
                     }));
+                    console.log('BMT Specials loaded:', calendarEntries.bmt.length);
                 } catch (err) { console.log('BMT parse error:', err); }
             }
             
-            // Load Outlook calendar if logged in
+            // Load Outlook calendar if logged in (skip for now - needs Calendar.Read scope)
+            // TODO: Enable when Calendar.Read permission added
+            /*
             if (accessToken) {
                 try {
                     const startDate = new Date(calendarYear, calendarMonth, 1).toISOString();
@@ -6902,6 +6962,7 @@ Spittelauer Lnde 12/1
                     }
                 } catch (err) { console.log('Outlook calendar error:', err); }
             }
+            */
             
             renderCalendar();
         }
@@ -6994,7 +7055,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.1.0 - Calendar View + Quick Notes Fix');
+            console.log('Work Hub v15.1.1 - BMT Calendar Fix + Quick Notes Sync Fix + Responsive iframes');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
