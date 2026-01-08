@@ -210,9 +210,9 @@
         }
         .tools-grid {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             gap: 8px;
-            overflow-x: auto;
+            justify-content: flex-start;
         }
         .tool-btn {
             background: var(--blue-dark);
@@ -227,7 +227,8 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             min-width: 90px;
-            flex-shrink: 0;
+            flex: 1 1 auto;
+            max-width: 140px;
         }
         .tool-btn:hover {
             background: var(--blue-medium);
@@ -1368,7 +1369,13 @@
                 font-size: 14px;
             }
             .tools-grid {
-                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .tool-btn {
+                min-width: 80px;
+                max-width: 120px;
+                padding: 10px 6px;
+                font-size: 9px;
             }
             
             .quick-btn { 
@@ -1478,15 +1485,17 @@
                 font-size: 12px;
             }
             .tools-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
+                gap: 5px;
             }
             .tool-btn {
-                padding: 10px 8px;
-                font-size: 10px;
+                padding: 10px 6px;
+                font-size: 9px;
+                min-width: 70px;
+                max-width: none;
+                flex: 1 1 calc(33% - 5px);
             }
             .tool-btn .tool-icon {
-                font-size: 16px;
+                font-size: 14px;
             }
             
             .quick-btn { 
@@ -1579,6 +1588,23 @@
                 display: grid; 
                 grid-template-columns: repeat(2, 1fr); 
                 gap: 20px; 
+            }
+            .tools-grid {
+                justify-content: flex-start;
+            }
+            .tool-btn {
+                min-width: 100px;
+                max-width: 130px;
+            }
+        }
+        
+        /* Extra Large Desktop (min 1600px) */
+        @media screen and (min-width: 1600px) {
+            .tool-btn {
+                min-width: 110px;
+                max-width: 150px;
+                padding: 14px 10px;
+                font-size: 11px;
             }
         }
         
@@ -2894,6 +2920,125 @@
         </div>
     </div>
 
+    <!-- BRIEFING MODAL -->
+    <div class="modal-overlay" id="briefing-modal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3>📋 Briefing Generator</h3>
+                <button class="modal-close" onclick="closeModal('briefing-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Mode Selection -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="modal-btn" id="briefing-mode-general" onclick="setBriefingMode('general')" style="flex: 1; background: var(--blue-accent);">General Briefing</button>
+                    <button class="modal-btn" id="briefing-mode-weekend" onclick="setBriefingMode('weekend')" style="flex: 1; background: var(--blue-dark);">Weekend Briefing</button>
+                </div>
+                
+                <!-- Department Selection -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select id="briefing-dept" onchange="updateBriefingPreview()">
+                            <option value="OFFICE">OFFICE</option>
+                            <option value="BAR">BAR</option>
+                            <option value="RUNNER">RUNNER</option>
+                            <option value="TECH">TECH</option>
+                            <option value="SPUTNIK">SPUTNIK</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="briefing-date-single">
+                        <label>Date</label>
+                        <input type="date" id="briefing-date" onchange="updateBriefingPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="briefing-subject" placeholder="e.g. Weekly Update, Event Prep..." oninput="updateBriefingPreview()">
+                    </div>
+                </div>
+                
+                <!-- Weekend Date Row (hidden by default) -->
+                <div class="form-row" id="briefing-weekend-dates" style="display: none;">
+                    <div class="form-group">
+                        <label>Friday Date</label>
+                        <input type="date" id="briefing-date-fri" onchange="updateBriefingPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Saturday Date</label>
+                        <input type="date" id="briefing-date-sat" onchange="updateBriefingPreview()">
+                    </div>
+                </div>
+                
+                <!-- GENERAL MODE CONTENT -->
+                <div id="briefing-general-content">
+                    <div class="form-group">
+                        <label>General Info / Notes</label>
+                        <textarea id="briefing-general-text" rows="8" placeholder="Enter briefing content here...&#10;&#10;Use bullet points:&#10;• Point 1&#10;• Point 2&#10;• Point 3" oninput="updateBriefingPreview()"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📎 Attachments (optional)</label>
+                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
+                            <input type="file" id="briefing-files" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files').click()" style="background: var(--blue-dark);">📷 Add Images</button>
+                            <div id="briefing-file-preview" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WEEKEND MODE CONTENT -->
+                <div id="briefing-weekend-content" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <!-- Friday Column -->
+                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
+                            <h4 style="color: #3b82f6; margin-bottom: 10px;">🗓️ FRIDAY</h4>
+                            <div class="form-group">
+                                <label>Event Name</label>
+                                <input type="text" id="briefing-fri-event" placeholder="Event name..." oninput="updateBriefingPreview()">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes / Instructions</label>
+                                <textarea id="briefing-fri-text" rows="6" placeholder="Friday briefing...&#10;• Point 1&#10;• Point 2" oninput="updateBriefingPreview()"></textarea>
+                            </div>
+                        </div>
+                        <!-- Saturday Column -->
+                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
+                            <h4 style="color: #f59e0b; margin-bottom: 10px;">🗓️ SATURDAY</h4>
+                            <div class="form-group">
+                                <label>Event Name</label>
+                                <input type="text" id="briefing-sat-event" placeholder="Event name..." oninput="updateBriefingPreview()">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes / Instructions</label>
+                                <textarea id="briefing-sat-text" rows="6" placeholder="Saturday briefing...&#10;• Point 1&#10;• Point 2" oninput="updateBriefingPreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>📎 Attachments (optional)</label>
+                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
+                            <input type="file" id="briefing-files-weekend" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files-weekend').click()" style="background: var(--blue-dark);">📷 Add Images</button>
+                            <div id="briefing-file-preview-weekend" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div style="margin-top: 20px; padding: 15px; background: var(--bg); border: 1px solid var(--border);">
+                    <h4 style="margin-bottom: 10px;">📄 Preview</h4>
+                    <div id="briefing-preview" style="font-family: monospace; font-size: 13px; white-space: pre-wrap;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('briefing-modal')">Close</button>
+                <button class="modal-btn" onclick="clearBriefing()" style="background: #dc2626;">🗑️ Clear</button>
+                <button class="modal-btn primary" onclick="copyBriefing()">📋 Copy</button>
+                <button class="modal-btn success" onclick="downloadBriefingPDF()">📄 PDF</button>
+            </div>
+        </div>
+    </div>
+
     
     
     <!--  -->
@@ -2991,6 +3136,10 @@
                 <button class="tool-btn border-white" onclick="openModal('bar-staffing-modal')">
                     <span class="tool-icon"></span>
                     Bar Staffing
+                </button>
+                <button class="tool-btn border-white" onclick="openModal('briefing-modal')">
+                    <span class="tool-icon">📋</span>
+                    Briefing
                 </button>
                 <div class="tool-btn border-white dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; border: none; padding: 0;">
@@ -4122,70 +4271,147 @@
         const SHIFTPLAN_DATABASE = {
             // DECEMBER 2025
             '27.12.2025': {
+                event: 'TURBO',
                 technik: 'Simon',
                 terrasse: '-', kitchen: 'Dhanna', main1: 'Ada', main2: 'Lino', main3: 'Milos', main4: 'Dora',
-                cvd: 'Alain', runner1: 'Jakob', runner2: 'Kaan', runner3: '', runner4: 'Peter', runner5: 'Aziz', runner6: '',
+                cvd: 'Alain',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Kaan', runner2_time: '21:00',
+                runner3: '', runner3_time: '',
+                runner4: 'Peter', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:00',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '31.12.2025': {
+                event: 'NYE',
                 technik: 'Jan',
                 terrasse: 'Milos', kitchen: 'Kamil', main1: 'Dora', main2: 'Lino', main3: 'Ada', main4: 'Camillo',
-                cvd: 'Alain / Niat', runner1: 'Patrick', runner2: 'Gordan', runner3: 'Peter', runner4: 'Zuzu', runner5: 'Kaan', runner6: 'Aziz',
+                cvd: 'Alain / Niat',
+                runner1: 'Patrick', runner1_time: '21:00',
+                runner2: 'Gordan', runner2_time: '21:00',
+                runner3: 'Peter', runner3_time: '21:00',
+                runner4: 'Zuzu', runner4_time: '22:00',
+                runner5: 'Kaan', runner5_time: '23:00',
+                runner6: 'Aziz', runner6_time: '00:00',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
-            // JANUARY 2026
+            // JANUARY 2026 - FROM RUNNER-CVD SHIFTPLAN DOC
             '05.01.2026': {
+                event: 'Impulse',
                 technik: 'Elias',
                 terrasse: 'Kamil', kitchen: 'Martina', main1: 'Ada', main2: 'Yohanna', main3: 'Lino', main4: 'Milos',
-                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Gordan', runner4: 'Peter', runner5: 'Zuzu', runner6: '',
+                cvd: 'Niat',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Zuzu', runner2_time: '21:00',
+                runner3: 'Gordan', runner3_time: '21:00',
+                runner4: 'Peter', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:00',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '09.01.2026': {
+                event: 'Zuckerwatt',
                 technik: 'Simon',
                 terrasse: 'Milos', kitchen: 'Dora', main1: 'Lino', main2: 'Martina', main3: 'Yohanna', main4: 'Kamil',
-                cvd: 'Alain', runner1: 'Jakob', runner2: 'Gordan', runner3: 'Peter', runner4: 'Kaan', runner5: 'Aziz', runner6: '',
+                cvd: 'Alain',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Gordan', runner2_time: '21:00',
+                runner3: 'Zuzu', runner3_time: '21:00',
+                runner4: 'Kaan', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:30',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '10.01.2026': {
+                event: 'Impulse',
                 technik: 'Elias',
                 terrasse: 'Camillo', kitchen: 'Milos', main1: 'Kamil', main2: 'Lino', main3: 'Martina', main4: 'TBA',
-                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Gordan', runner4: 'Patrick', runner5: 'Zuzu', runner6: '',
+                cvd: 'Niat',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Patrick', runner2_time: '21:00',
+                runner3: 'Gordan', runner3_time: '21:00',
+                runner4: 'Kaan', runner4_time: '22:00',
+                runner5: 'Hasib', runner5_time: '23:00',
+                runner6: 'Aziz', runner6_time: '00:00',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '16.01.2026': {
+                event: 'Fish Market',
                 technik: 'Elias',
                 terrasse: 'Lino', kitchen: 'Milos', main1: 'Kamil', main2: 'Dora', main3: 'Camillo', main4: 'Martina',
-                cvd: 'Niat', runner1: 'Jakob', runner2: 'Zuzu', runner3: 'Gordan', runner4: '', runner5: '', runner6: '',
+                cvd: 'Alain',
+                runner1: 'Zuzu', runner1_time: '21:00',
+                runner2: 'Jakob', runner2_time: '21:00',
+                runner3: 'Gordan', runner3_time: '21:00',
+                runner4: 'Peter', runner4_time: '22:00',
+                runner5: 'Hasib', runner5_time: '23:00',
+                runner6: 'Aziz', runner6_time: '00:30',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '17.01.2026': {
+                event: 'Contrast',
                 technik: 'Jan',
                 terrasse: 'TBA', kitchen: 'Kamil', main1: 'Milos', main2: 'Lino', main3: 'Yohanna', main4: 'Dora',
-                cvd: 'Alain', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Peter', runner4: 'Hasib', runner5: 'Aziz', runner6: '',
+                cvd: 'Niat',
+                runner1: 'Gordan', runner1_time: '21:00',
+                runner2: 'Patrick', runner2_time: '21:00',
+                runner3: 'Peter', runner3_time: '21:00',
+                runner4: 'Kaan', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:30',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '23.01.2026': {
+                event: 'Selected',
                 technik: 'Jan',
                 terrasse: 'Dora', kitchen: 'Yohanna', main1: 'Camillo', main2: 'Dora', main3: 'Kamil', main4: 'Milos',
-                cvd: 'Niat', runner1: 'Zuzu', runner2: 'Gordan', runner3: 'Peter', runner4: 'Hasib', runner5: 'Aziz', runner6: '',
+                cvd: 'Alain',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Gordan', runner2_time: '21:00',
+                runner3: 'Peter', runner3_time: '21:00',
+                runner4: 'Hasib', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:30',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '24.01.2026': {
+                event: 'Purradox',
                 technik: 'Simon',
                 terrasse: 'TBA', kitchen: 'Dora', main1: 'Kamil', main2: 'Milos', main3: 'Camillo', main4: 'Martina',
-                cvd: 'Niat', runner1: 'Kaan', runner2: 'Patrick', runner3: 'Zuzu', runner4: 'Hasib', runner5: '', runner6: '',
+                cvd: 'Niat',
+                runner1: 'Gordan', runner1_time: '21:00',
+                runner2: 'Patrick', runner2_time: '21:00',
+                runner3: 'Zuzu', runner3_time: '21:00',
+                runner4: 'Hasib', runner4_time: '22:00',
+                runner5: 'Aziz', runner5_time: '00:30',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '30.01.2026': {
+                event: 'Mahlwerk',
                 technik: 'Elias',
                 terrasse: 'Martina', kitchen: 'Lino', main1: 'Ada', main2: 'Yohanna', main3: 'Milos', main4: 'Kamil',
-                cvd: 'Alain', runner1: 'Jakob', runner2: 'Zuzu', runner3: 'Gordan', runner4: 'Kaan', runner5: '', runner6: '',
+                cvd: 'Niat',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Hasib', runner2_time: '21:00',
+                runner3: 'Gordan', runner3_time: '21:00',
+                runner4: 'Kaan', runner4_time: '22:00',
+                runner5: 'Zuzu', runner5_time: '23:00',
+                runner6: '', runner6_time: '',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             },
             '31.01.2026': {
+                event: 'Flashback',
                 technik: 'Simon',
                 terrasse: 'Kamil', kitchen: 'Dora', main1: 'Milos', main2: 'Martina', main3: 'Camillo', main4: 'Ada',
-                cvd: 'Niat', runner1: 'Jakob', runner2: 'Patrick', runner3: 'Peter', runner4: 'Gordan', runner5: 'Aziz', runner6: '',
+                cvd: 'Alain',
+                runner1: 'Jakob', runner1_time: '21:00',
+                runner2: 'Patrick', runner2_time: '21:00',
+                runner3: 'Peter', runner3_time: '21:00',
+                runner4: 'Zuzu', runner4_time: '22:00',
+                runner5: 'Hasib', runner5_time: '23:00',
+                runner6: 'Aziz', runner6_time: '00:30',
                 gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
             }
         };
@@ -4412,8 +4638,44 @@
             
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
+                // Check if we have shiftplan data for this date
+                const dateStr = e.datum; // Format: DD.MM.YYYY
+                const shiftData = SHIFTPLAN_DATABASE[dateStr];
+                
+                if (shiftData) {
+                    // Merge shiftplan data into event data
+                    e.cvd = shiftData.cvd || e.cvd;
+                    e.technik = shiftData.technik || e.technik;
+                    e.terrasse = shiftData.terrasse || e.terrasse;
+                    e.kitchen = shiftData.kitchen || e.kitchen;
+                    e.main1 = shiftData.main1 || e.main1;
+                    e.main2 = shiftData.main2 || e.main2;
+                    e.main3 = shiftData.main3 || e.main3;
+                    e.main4 = shiftData.main4 || e.main4;
+                    e.runner1 = shiftData.runner1 || e.runner1;
+                    e.runner2 = shiftData.runner2 || e.runner2;
+                    e.runner3 = shiftData.runner3 || e.runner3;
+                    e.runner4 = shiftData.runner4 || e.runner4;
+                    e.runner5 = shiftData.runner5 || e.runner5;
+                    e.runner6 = shiftData.runner6 || e.runner6;
+                    e.runner1_time = shiftData.runner1_time || '';
+                    e.runner2_time = shiftData.runner2_time || '';
+                    e.runner3_time = shiftData.runner3_time || '';
+                    e.runner4_time = shiftData.runner4_time || '';
+                    e.runner5_time = shiftData.runner5_time || '';
+                    e.runner6_time = shiftData.runner6_time || '';
+                    e.gard1 = shiftData.gard1 || e.gard1;
+                    e.gard2 = shiftData.gard2 || e.gard2;
+                    e.gard3 = shiftData.gard3 || e.gard3;
+                }
+                
                 fillFactsheetForm(e);
             }
+        }
+        
+        // Get shiftplan data by date string (DD.MM.YYYY)
+        function getShiftplanByDate(dateStr) {
+            return SHIFTPLAN_DATABASE[dateStr] || null;
         }
         
         // Fill all factsheet form fields
@@ -4446,12 +4708,15 @@
             document.getElementById('fs-main2').value = e.main2 || '';
             document.getElementById('fs-main3').value = e.main3 || '';
             document.getElementById('fs-main4').value = e.main4 || '';
-            document.getElementById('fs-runner1').value = e.runner1 || '';
-            document.getElementById('fs-runner2').value = e.runner2 || '';
-            document.getElementById('fs-runner3').value = e.runner3 || '';
-            document.getElementById('fs-runner4').value = e.runner4 || '';
-            document.getElementById('fs-runner5').value = e.runner5 || '';
-            document.getElementById('fs-runner6').value = e.runner6 || '';
+            
+            // Runner fields with times
+            document.getElementById('fs-runner1').value = formatRunnerWithTime(e.runner1, e.runner1_time);
+            document.getElementById('fs-runner2').value = formatRunnerWithTime(e.runner2, e.runner2_time);
+            document.getElementById('fs-runner3').value = formatRunnerWithTime(e.runner3, e.runner3_time);
+            document.getElementById('fs-runner4').value = formatRunnerWithTime(e.runner4, e.runner4_time);
+            document.getElementById('fs-runner5').value = formatRunnerWithTime(e.runner5, e.runner5_time);
+            document.getElementById('fs-runner6').value = formatRunnerWithTime(e.runner6, e.runner6_time);
+            
             document.getElementById('fs-gard1').value = e.gard1 || '';
             document.getElementById('fs-gard2').value = e.gard2 || '';
             document.getElementById('fs-gard3').value = e.gard3 || '';
@@ -4459,15 +4724,53 @@
             updateFactsheetPreview();
         }
         
+        // Format runner name with time
+        function formatRunnerWithTime(name, time) {
+            if (!name) return '';
+            if (!time) return name;
+            return `${name} (${time})`;
+        }
+        
         // Quick factsheet for specific event from dashboard
         function autoFactsheetForEvent(eventId) {
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
+                // Check if we have shiftplan data for this date
+                const dateStr = e.datum;
+                const shiftData = SHIFTPLAN_DATABASE[dateStr];
+                
+                if (shiftData) {
+                    // Merge shiftplan data
+                    e.cvd = shiftData.cvd || e.cvd;
+                    e.technik = shiftData.technik || e.technik;
+                    e.terrasse = shiftData.terrasse || e.terrasse;
+                    e.kitchen = shiftData.kitchen || e.kitchen;
+                    e.main1 = shiftData.main1 || e.main1;
+                    e.main2 = shiftData.main2 || e.main2;
+                    e.main3 = shiftData.main3 || e.main3;
+                    e.main4 = shiftData.main4 || e.main4;
+                    e.runner1 = shiftData.runner1 || e.runner1;
+                    e.runner2 = shiftData.runner2 || e.runner2;
+                    e.runner3 = shiftData.runner3 || e.runner3;
+                    e.runner4 = shiftData.runner4 || e.runner4;
+                    e.runner5 = shiftData.runner5 || e.runner5;
+                    e.runner6 = shiftData.runner6 || e.runner6;
+                    e.runner1_time = shiftData.runner1_time || '';
+                    e.runner2_time = shiftData.runner2_time || '';
+                    e.runner3_time = shiftData.runner3_time || '';
+                    e.runner4_time = shiftData.runner4_time || '';
+                    e.runner5_time = shiftData.runner5_time || '';
+                    e.runner6_time = shiftData.runner6_time || '';
+                    e.gard1 = shiftData.gard1 || e.gard1;
+                    e.gard2 = shiftData.gard2 || e.gard2;
+                    e.gard3 = shiftData.gard3 || e.gard3;
+                }
+                
                 // Set dropdown
                 document.getElementById('fs-event-select').value = eventId;
                 fillFactsheetForm(e);
                 openModal('factsheet-modal');
-                showToast(` ${e.name} Factsheet geladen!`);
+                showToast(`📋 ${e.name} Factsheet geladen!`);
             }
         }
         
@@ -8189,6 +8492,210 @@ Spittelauer Lnde 12/1
             
             alert('✅ Factsheet als Word-Dokument heruntergeladen!');
         }
+        
+        // =========================================
+        // BRIEFING GENERATOR FUNCTIONS
+        // =========================================
+        
+        let briefingMode = 'general';
+        let briefingFiles = [];
+        
+        function setBriefingMode(mode) {
+            briefingMode = mode;
+            
+            // Update button styles
+            document.getElementById('briefing-mode-general').style.background = mode === 'general' ? 'var(--blue-accent)' : 'var(--blue-dark)';
+            document.getElementById('briefing-mode-weekend').style.background = mode === 'weekend' ? 'var(--blue-accent)' : 'var(--blue-dark)';
+            
+            // Toggle content visibility
+            document.getElementById('briefing-general-content').style.display = mode === 'general' ? 'block' : 'none';
+            document.getElementById('briefing-weekend-content').style.display = mode === 'weekend' ? 'grid' : 'none';
+            
+            // Toggle date fields
+            document.getElementById('briefing-date-single').style.display = mode === 'general' ? 'block' : 'none';
+            document.getElementById('briefing-weekend-dates').style.display = mode === 'weekend' ? 'flex' : 'none';
+            
+            updateBriefingPreview();
+        }
+        
+        function formatBriefingText(text) {
+            if (!text) return '';
+            
+            // Convert lines starting with • or - or * to proper list items
+            const lines = text.split('\n');
+            let inList = false;
+            let result = [];
+            
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (trimmed.match(/^[•\-\*]\s*/)) {
+                    if (!inList) {
+                        result.push('<ul style="margin: 10px 0; padding-left: 20px;">');
+                        inList = true;
+                    }
+                    result.push('<li>' + trimmed.replace(/^[•\-\*]\s*/, '') + '</li>');
+                } else {
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    if (trimmed) {
+                        result.push('<p style="margin: 5px 0;">' + trimmed + '</p>');
+                    }
+                }
+            });
+            
+            if (inList) result.push('</ul>');
+            return result.join('\n');
+        }
+        
+        function updateBriefingPreview() {
+            const dept = document.getElementById('briefing-dept').value;
+            const subject = document.getElementById('briefing-subject').value || 'Briefing';
+            const preview = document.getElementById('briefing-preview');
+            
+            let html = '';
+            
+            if (briefingMode === 'general') {
+                const date = document.getElementById('briefing-date').value;
+                const formattedDate = date ? new Date(date).toLocaleDateString('de-AT', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) : 'TBD';
+                const text = document.getElementById('briefing-general-text').value;
+                
+                html = `
+<div style="border: 2px solid #fff; padding: 20px;">
+    <div style="background: var(--blue-accent); padding: 15px; margin: -20px -20px 15px -20px; border-bottom: 2px solid #fff;">
+        <h2 style="margin: 0; color: #fff;">📋 ${dept} BRIEFING</h2>
+        <div style="color: #aaa; font-size: 12px; margin-top: 5px;">${formattedDate} | ${subject}</div>
+    </div>
+    <div style="color: #fff;">
+        ${formatBriefingText(text) || '<span style="color: #666;">No content yet...</span>'}
+    </div>
+</div>`;
+            } else {
+                // Weekend mode
+                const dateFri = document.getElementById('briefing-date-fri').value;
+                const dateSat = document.getElementById('briefing-date-sat').value;
+                const formattedFri = dateFri ? new Date(dateFri).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit' }) : 'FR';
+                const formattedSat = dateSat ? new Date(dateSat).toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit' }) : 'SA';
+                
+                const friEvent = document.getElementById('briefing-fri-event').value || '';
+                const satEvent = document.getElementById('briefing-sat-event').value || '';
+                const friText = document.getElementById('briefing-fri-text').value;
+                const satText = document.getElementById('briefing-sat-text').value;
+                
+                html = `
+<div style="border: 2px solid #fff; padding: 20px;">
+    <div style="background: var(--blue-accent); padding: 15px; margin: -20px -20px 15px -20px; border-bottom: 2px solid #fff;">
+        <h2 style="margin: 0; color: #fff;">📋 ${dept} WEEKEND BRIEFING</h2>
+        <div style="color: #aaa; font-size: 12px; margin-top: 5px;">${subject}</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 3px solid #3b82f6;">
+            <h3 style="color: #3b82f6; margin: 0 0 5px 0;">🗓️ FRIDAY ${formattedFri}</h3>
+            ${friEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + friEvent + '</div>' : ''}
+            <div style="color: #fff; font-size: 13px;">
+                ${formatBriefingText(friText) || '<span style="color: #666;">...</span>'}
+            </div>
+        </div>
+        <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-left: 3px solid #f59e0b;">
+            <h3 style="color: #f59e0b; margin: 0 0 5px 0;">🗓️ SATURDAY ${formattedSat}</h3>
+            ${satEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + satEvent + '</div>' : ''}
+            <div style="color: #fff; font-size: 13px;">
+                ${formatBriefingText(satText) || '<span style="color: #666;">...</span>'}
+            </div>
+        </div>
+    </div>
+</div>`;
+            }
+            
+            preview.innerHTML = html;
+        }
+        
+        function handleBriefingFiles(event) {
+            const files = event.target.files;
+            const previewContainer = briefingMode === 'general' 
+                ? document.getElementById('briefing-file-preview')
+                : document.getElementById('briefing-file-preview-weekend');
+            
+            previewContainer.innerHTML = '';
+            briefingFiles = [];
+            
+            Array.from(files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        briefingFiles.push({ name: file.name, data: e.target.result });
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.cssText = 'max-width: 80px; max-height: 80px; object-fit: cover; border: 1px solid var(--border);';
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        function clearBriefing() {
+            document.getElementById('briefing-subject').value = '';
+            document.getElementById('briefing-date').value = '';
+            document.getElementById('briefing-general-text').value = '';
+            document.getElementById('briefing-date-fri').value = '';
+            document.getElementById('briefing-date-sat').value = '';
+            document.getElementById('briefing-fri-event').value = '';
+            document.getElementById('briefing-sat-event').value = '';
+            document.getElementById('briefing-fri-text').value = '';
+            document.getElementById('briefing-sat-text').value = '';
+            document.getElementById('briefing-file-preview').innerHTML = '';
+            document.getElementById('briefing-file-preview-weekend').innerHTML = '';
+            briefingFiles = [];
+            updateBriefingPreview();
+        }
+        
+        function copyBriefing() {
+            const preview = document.getElementById('briefing-preview');
+            const text = preview.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Briefing copied!');
+            });
+        }
+        
+        function downloadBriefingPDF() {
+            const preview = document.getElementById('briefing-preview');
+            const dept = document.getElementById('briefing-dept').value;
+            const subject = document.getElementById('briefing-subject').value || 'Briefing';
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${dept} Briefing - ${subject}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; background: #fff; color: #000; }
+                        h2, h3 { margin: 0; }
+                        ul { margin: 10px 0; padding-left: 25px; }
+                        li { margin: 5px 0; }
+                        .header { background: #1b263b; color: #fff; padding: 15px; margin-bottom: 15px; }
+                        .header h2 { color: #fff; }
+                        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+                        .friday { border-left: 4px solid #3b82f6; padding-left: 15px; }
+                        .saturday { border-left: 4px solid #f59e0b; padding-left: 15px; }
+                    </style>
+                </head>
+                <body>
+                    ${preview.innerHTML.replace(/var\(--[^)]+\)/g, '#1b263b').replace(/#fff/g, '#000').replace(/color: #aaa/g, 'color: #666')}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // Initialize briefing on modal open
+        document.getElementById('briefing-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeModal('briefing-modal');
+        });
     </script>
 </body>
 </html>
