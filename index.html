@@ -5815,6 +5815,12 @@
                         status: (currentEvent.STATUS || 'CONFIRMED').toUpperCase()
                     };
                     
+                    // Check for BMT "Event State: Cancelled" in description
+                    const isCancelledInDesc = event.description.toLowerCase().includes('event state: cancelled');
+                    if (isCancelledInDesc) {
+                        event.status = 'CANCELLED';
+                    }
+                    
                     // Only include future events and recent past, EXCLUDE CANCELLED
                     const now = new Date();
                     now.setDate(now.getDate() - 7); // Include events from 7 days ago
