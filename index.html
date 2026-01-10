@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.5.0</title>
+    <title>Turbo Projects Work Hub v15.5.1</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -34,7 +34,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.5.0 ===== */
+        /* ===== CSS TOKEN SYSTEM - v15.5.1 ===== */
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
@@ -3068,389 +3068,6 @@
         </div>
     </div>
     
-    <!-- DEBRIEF MODAL -->
-    <div class="modal-overlay" id="debrief-modal">
-        <div class="modal" style="max-width: 950px;">
-            <div class="modal-header">
-                <h3>📝 Event Debrief</h3>
-                <button class="modal-close" onclick="closeModal('debrief-modal')">&times;</button>
-            </div>
-            <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
-                
-                <!-- GENERAL INFO SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: var(--blue-accent); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">📋 GENERAL INFO</span>
-                        <span class="debrief-arrow">▼</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: block;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Event</label>
-                                <select id="debrief-event" onchange="loadDebriefEvent()">
-                                    <option value="">-- Select Event --</option>
-                                    <optgroup label="🗓️ Januar 2026">
-                                        <option value="2026-01-09_zuckerwatt">09.01 - Zuckerwatt</option>
-                                        <option value="2026-01-10_impulse">10.01 - Impulse</option>
-                                        <option value="2026-01-13_eddin">13.01 - Eddin</option>
-                                        <option value="2026-01-16_fishmarket">16.01 - Fish Market</option>
-                                        <option value="2026-01-17_contrast">17.01 - Contrast</option>
-                                        <option value="2026-01-23_selected">23.01 - Selected</option>
-                                        <option value="2026-01-24_purradox">24.01 - Purradox</option>
-                                        <option value="2026-01-30_mahlwerk">30.01 - Mahlwerk</option>
-                                        <option value="2026-01-31_flashback">31.01 - Flashback</option>
-                                    </optgroup>
-                                    <optgroup label="🗓️ Februar 2026">
-                                        <option value="2026-02-07_impulse">07.02 - Impulse</option>
-                                        <option value="2026-02-13_zuckerwatt">13.02 - Zuckerwatt</option>
-                                        <option value="2026-02-14_tattutatta">14.02 - Tattu Tatta Glub</option>
-                                        <option value="2026-02-20_fishmarket">20.02 - Fish Market</option>
-                                        <option value="2026-02-21_contrast">21.02 - Contrast</option>
-                                        <option value="2026-02-27_turbo">27.02 - TURBO</option>
-                                    </optgroup>
-                                    <optgroup label="➕ Other">
-                                        <option value="other">Other Event...</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Date</label>
-                                <input type="date" id="debrief-date">
-                            </div>
-                            <div class="form-group">
-                                <label>CVD on Duty</label>
-                                <select id="debrief-cvd">
-                                    <option value="">-- Select --</option>
-                                    <option value="Niat">Niat</option>
-                                    <option value="Alain">Alain</option>
-                                    <option value="Both">Both</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; margin-top: 10px;">
-                            <div class="form-group">
-                                <label>PAX (Attendance)</label>
-                                <input type="number" id="debrief-pax" placeholder="e.g. 850">
-                            </div>
-                            <div class="form-group">
-                                <label>VVK Sold</label>
-                                <input type="number" id="debrief-vvk" placeholder="e.g. 450">
-                            </div>
-                            <div class="form-group">
-                                <label>FOH Sold</label>
-                                <input type="number" id="debrief-foh" placeholder="e.g. 400">
-                            </div>
-                            <div class="form-group">
-                                <label>Overall Rating</label>
-                                <select id="debrief-rating">
-                                    <option value="">-- Rate --</option>
-                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Average</option>
-                                    <option value="2">⭐⭐ Below Average</option>
-                                    <option value="1">⭐ Poor</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- BAR SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #059669; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🍸 BAR</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Estimated Bar Revenue</label>
-                                <input type="number" id="debrief-bar-revenue" placeholder="e.g. 12000">
-                            </div>
-                            <div class="form-group">
-                                <label>Bar Rating</label>
-                                <select id="debrief-bar-rating">
-                                    <option value="">-- Rate --</option>
-                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Average</option>
-                                    <option value="2">⭐⭐ Issues</option>
-                                    <option value="1">⭐ Major Problems</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Stock Shortages</label>
-                            <textarea id="debrief-bar-stock" rows="2" placeholder="List any items that ran out..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Equipment Issues</label>
-                            <textarea id="debrief-bar-equipment" rows="2" placeholder="Broken taps, ice machine, etc..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Staff Issues / Notes</label>
-                            <textarea id="debrief-bar-notes" rows="3" placeholder="Any staff issues, highlights, or notes..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- TECH SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #7c3aed; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🔊 TECH</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Technician on Duty</label>
-                                <select id="debrief-tech-name">
-                                    <option value="">-- Select --</option>
-                                    <option value="Jan">Jan</option>
-                                    <option value="Elias">Elias</option>
-                                    <option value="Simon">Simon</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Tech Rating</label>
-                                <select id="debrief-tech-rating">
-                                    <option value="">-- Rate --</option>
-                                    <option value="5">⭐⭐⭐⭐⭐ Perfect</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Minor Issues</option>
-                                    <option value="2">⭐⭐ Problems</option>
-                                    <option value="1">⭐ Major Failures</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Sound Issues</label>
-                            <textarea id="debrief-tech-sound" rows="2" placeholder="Any sound problems, feedback, etc..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Lighting Issues</label>
-                            <textarea id="debrief-tech-lights" rows="2" placeholder="Broken lights, programming issues..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Equipment Failures</label>
-                            <textarea id="debrief-tech-equipment" rows="2" placeholder="Any equipment that failed or needs repair..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- RUNNER SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #0891b2; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🏃 RUNNER</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-group">
-                            <label>Runners on Duty</label>
-                            <input type="text" id="debrief-runner-names" placeholder="e.g. Jakob, Gordan, Peter, Kaan, Aziz">
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Runner Rating</label>
-                            <select id="debrief-runner-rating">
-                                <option value="">-- Rate --</option>
-                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                <option value="4">⭐⭐⭐⭐ Good</option>
-                                <option value="3">⭐⭐⭐ Average</option>
-                                <option value="2">⭐⭐ Issues</option>
-                                <option value="1">⭐ Problems</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Issues Reported</label>
-                            <textarea id="debrief-runner-issues" rows="3" placeholder="Any issues, guest complaints, problem areas..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- SECURITY SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #dc2626; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🛡️ SECURITY</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Security Count</label>
-                                <input type="number" id="debrief-security-count" placeholder="e.g. 7">
-                            </div>
-                            <div class="form-group">
-                                <label>Ejections</label>
-                                <input type="number" id="debrief-security-ejections" placeholder="e.g. 2">
-                            </div>
-                            <div class="form-group">
-                                <label>Security Rating</label>
-                                <select id="debrief-security-rating">
-                                    <option value="">-- Rate --</option>
-                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Average</option>
-                                    <option value="2">⭐⭐ Issues</option>
-                                    <option value="1">⭐ Problems</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Incidents</label>
-                            <textarea id="debrief-security-incidents" rows="3" placeholder="Fights, theft, drug issues, etc..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Police Involvement</label>
-                            <select id="debrief-security-police">
-                                <option value="no">No</option>
-                                <option value="yes">Yes - Called</option>
-                                <option value="visit">Yes - Routine Visit</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Notes</label>
-                            <textarea id="debrief-security-notes" rows="2" placeholder="Any other security notes..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- PROMOTER SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #d97706; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🎤 PROMOTER / ARTIST</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Promoter / Booker</label>
-                                <input type="text" id="debrief-promoter-name" placeholder="Name or company...">
-                            </div>
-                            <div class="form-group">
-                                <label>Communication Rating</label>
-                                <select id="debrief-promoter-rating">
-                                    <option value="">-- Rate --</option>
-                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                                    <option value="4">⭐⭐⭐⭐ Good</option>
-                                    <option value="3">⭐⭐⭐ Average</option>
-                                    <option value="2">⭐⭐ Difficult</option>
-                                    <option value="1">⭐ Problematic</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Artist Issues</label>
-                            <textarea id="debrief-promoter-artist" rows="2" placeholder="Late arrival, rider issues, demands..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Communication Issues</label>
-                            <textarea id="debrief-promoter-comm" rows="2" placeholder="Any communication problems..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- INFRASTRUCTURE SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #475569; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">🏢 INFRASTRUCTURE</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Toilets</label>
-                                <select id="debrief-infra-toilets">
-                                    <option value="">-- Rate --</option>
-                                    <option value="ok">✅ OK</option>
-                                    <option value="issues">⚠️ Minor Issues</option>
-                                    <option value="problems">❌ Problems</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>HVAC / Temperature</label>
-                                <select id="debrief-infra-hvac">
-                                    <option value="">-- Rate --</option>
-                                    <option value="ok">✅ OK</option>
-                                    <option value="hot">🔥 Too Hot</option>
-                                    <option value="cold">❄️ Too Cold</option>
-                                    <option value="broken">❌ Not Working</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Cleaning</label>
-                                <select id="debrief-infra-cleaning">
-                                    <option value="">-- Rate --</option>
-                                    <option value="ok">✅ Good</option>
-                                    <option value="issues">⚠️ Issues</option>
-                                    <option value="poor">❌ Poor</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Building Issues</label>
-                            <textarea id="debrief-infra-building" rows="2" placeholder="Leaks, broken doors, structural issues..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Damage Reported</label>
-                            <textarea id="debrief-infra-damage" rows="2" placeholder="Any damage to furniture, equipment, walls..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- FOLLOW-UP SECTION -->
-                <div class="debrief-section" style="margin-bottom: 15px;">
-                    <div class="debrief-section-header" onclick="toggleDebriefSection(this)" style="background: #0ea5e9; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <span style="font-weight: 600;">📌 FOLLOW-UP & ACTIONS</span>
-                        <span class="debrief-arrow">▶</span>
-                    </div>
-                    <div class="debrief-section-content" style="padding: 15px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; display: none;">
-                        <div class="form-group">
-                            <label>Key Highlights</label>
-                            <textarea id="debrief-highlights" rows="2" placeholder="What went well..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Key Problems</label>
-                            <textarea id="debrief-problems" rows="2" placeholder="What needs improvement..."></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Action Items (Tasks to Create)</label>
-                            <textarea id="debrief-actions" rows="3" placeholder="List specific follow-up tasks...&#10;• Fix XYZ&#10;• Order ABC&#10;• Talk to DEF"></textarea>
-                        </div>
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label>Notes for Next Event</label>
-                            <textarea id="debrief-next-notes" rows="2" placeholder="Things to remember for next time..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Submitted By -->
-                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
-                    <div class="form-group">
-                        <label>Submitted By</label>
-                        <select id="debrief-submitted-by">
-                            <option value="">-- Select --</option>
-                            <option value="Schadi">Schadi</option>
-                            <option value="Niat">Niat</option>
-                            <option value="Alain">Alain</option>
-                            <option value="Matthäus">Matthäus</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Submission Time</label>
-                        <input type="text" id="debrief-timestamp" readonly style="background: var(--surface);">
-                    </div>
-                </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('debrief-modal')">Close</button>
-                <button class="modal-btn" onclick="clearDebrief()" style="background: #dc2626;">🗑️ Clear</button>
-                <button class="modal-btn primary" onclick="copyDebrief()">📋 Copy</button>
-                <button class="modal-btn success" onclick="saveDebrief()">💾 Save</button>
-                <button class="modal-btn" onclick="downloadDebriefPDF()" style="background: #7c3aed;">📄 PDF</button>
-            </div>
-        </div>
-    </div>
 
     
     
@@ -3553,10 +3170,6 @@
                 <button class="tool-btn border-white" onclick="openModal('briefing-modal')">
                     <span class="tool-icon">📋</span>
                     Briefing
-                </button>
-                <button class="tool-btn border-white" onclick="openDebriefModal()">
-                    <span class="tool-icon">📝</span>
-                    Debrief
                 </button>
                 <div class="dropdown-container" style="position: relative; flex: 1 1 auto; min-width: 100px; max-width: 140px;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
@@ -3824,7 +3437,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.5.0 - 08.01.2026 - New Design + Auto-refresh</div>
+    <div class="version">Work Hub v15.5.1 - 08.01.2026 - New Design + Auto-refresh</div>
 
     <script>
         // 
@@ -3915,10 +3528,20 @@
         // MSAL AUTH
         // 
         
-        async function initMsal() {
+        async function initMsal(retryCount = 0) {
+            const maxRetries = 5;
+            const retryDelay = 500; // ms
+            
             // Check if MSAL library loaded
             if (typeof msal === 'undefined') {
-                console.error('MSAL library not loaded!');
+                if (retryCount < maxRetries) {
+                    console.log(`MSAL not ready, retry ${retryCount + 1}/${maxRetries} in ${retryDelay}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, retryDelay));
+                    return initMsal(retryCount + 1);
+                }
+                console.error('MSAL library not loaded after ' + maxRetries + ' retries!');
+                const authStatus = document.getElementById('auth-status-text');
+                if (authStatus) authStatus.textContent = 'Auth failed - reload page';
                 return;
             }
             
@@ -8636,7 +8259,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.5.0 - New Design + Auto-refresh');
+            console.log('Work Hub v15.5.1 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
             updateProjection('turbo');
@@ -8680,7 +8303,7 @@ Spittelauer Lnde 12/1
         });
 
         // ================================================================
-        // SECURITY ORDERS SYSTEM - v15.5.0
+        // SECURITY ORDERS SYSTEM - v15.5.1
         // ================================================================
         
         // Initialize security orders storage
@@ -8928,7 +8551,7 @@ Spittelauer Lnde 12/1
         }
         
         // ================================================================
-        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.5.0
+        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.5.1
         // ================================================================
         
         // Download as PDF
@@ -9198,267 +8821,6 @@ Spittelauer Lnde 12/1
             if (e.target === this) closeModal('briefing-modal');
         });
         
-        // ==========================================
-        // DEBRIEF TOOL FUNCTIONS
-        // ==========================================
-        
-        function openDebriefModal() {
-            // Set current timestamp
-            const now = new Date();
-            document.getElementById('debrief-timestamp').value = now.toLocaleString('de-DE');
-            // Set today's date as default
-            document.getElementById('debrief-date').value = now.toISOString().split('T')[0];
-            openModal('debrief-modal');
-        }
-        
-        function toggleDebriefSection(header) {
-            const content = header.nextElementSibling;
-            const arrow = header.querySelector('.debrief-arrow');
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                arrow.textContent = '▼';
-            } else {
-                content.style.display = 'none';
-                arrow.textContent = '▶';
-            }
-        }
-        
-        function loadDebriefEvent() {
-            const eventId = document.getElementById('debrief-event').value;
-            if (!eventId || eventId === 'other') return;
-            
-            // Extract date from event ID (format: 2026-01-09_eventname)
-            const parts = eventId.split('_');
-            if (parts.length >= 1 && parts[0].match(/^\d{4}-\d{2}-\d{2}$/)) {
-                document.getElementById('debrief-date').value = parts[0];
-            }
-            console.log('Loading event:', eventId);
-        }
-        
-        function clearDebrief() {
-            if (!confirm('Clear all debrief fields?')) return;
-            
-            // Clear all inputs
-            document.querySelectorAll('#debrief-modal input[type="text"], #debrief-modal input[type="number"], #debrief-modal textarea').forEach(el => {
-                el.value = '';
-            });
-            document.querySelectorAll('#debrief-modal select').forEach(el => {
-                el.selectedIndex = 0;
-            });
-            
-            // Reset date to today
-            document.getElementById('debrief-date').value = new Date().toISOString().split('T')[0];
-            document.getElementById('debrief-timestamp').value = new Date().toLocaleString('de-DE');
-            
-            showToast('🗑️ Debrief cleared!');
-        }
-        
-        function getDebriefData() {
-            return {
-                // General
-                event: document.getElementById('debrief-event').value,
-                date: document.getElementById('debrief-date').value,
-                cvd: document.getElementById('debrief-cvd').value,
-                pax: document.getElementById('debrief-pax').value,
-                vvk: document.getElementById('debrief-vvk').value,
-                foh: document.getElementById('debrief-foh').value,
-                rating: document.getElementById('debrief-rating').value,
-                
-                // Bar
-                barRevenue: document.getElementById('debrief-bar-revenue').value,
-                barRating: document.getElementById('debrief-bar-rating').value,
-                barStock: document.getElementById('debrief-bar-stock').value,
-                barEquipment: document.getElementById('debrief-bar-equipment').value,
-                barNotes: document.getElementById('debrief-bar-notes').value,
-                
-                // Tech
-                techName: document.getElementById('debrief-tech-name').value,
-                techRating: document.getElementById('debrief-tech-rating').value,
-                techSound: document.getElementById('debrief-tech-sound').value,
-                techLights: document.getElementById('debrief-tech-lights').value,
-                techEquipment: document.getElementById('debrief-tech-equipment').value,
-                
-                // Runner
-                runnerNames: document.getElementById('debrief-runner-names').value,
-                runnerRating: document.getElementById('debrief-runner-rating').value,
-                runnerIssues: document.getElementById('debrief-runner-issues').value,
-                
-                // Security
-                securityCount: document.getElementById('debrief-security-count').value,
-                securityEjections: document.getElementById('debrief-security-ejections').value,
-                securityRating: document.getElementById('debrief-security-rating').value,
-                securityIncidents: document.getElementById('debrief-security-incidents').value,
-                securityPolice: document.getElementById('debrief-security-police').value,
-                securityNotes: document.getElementById('debrief-security-notes').value,
-                
-                // Promoter
-                promoterName: document.getElementById('debrief-promoter-name').value,
-                promoterRating: document.getElementById('debrief-promoter-rating').value,
-                promoterArtist: document.getElementById('debrief-promoter-artist').value,
-                promoterComm: document.getElementById('debrief-promoter-comm').value,
-                
-                // Infrastructure
-                infraToilets: document.getElementById('debrief-infra-toilets').value,
-                infraHvac: document.getElementById('debrief-infra-hvac').value,
-                infraCleaning: document.getElementById('debrief-infra-cleaning').value,
-                infraBuilding: document.getElementById('debrief-infra-building').value,
-                infraDamage: document.getElementById('debrief-infra-damage').value,
-                
-                // Follow-up
-                highlights: document.getElementById('debrief-highlights').value,
-                problems: document.getElementById('debrief-problems').value,
-                actions: document.getElementById('debrief-actions').value,
-                nextNotes: document.getElementById('debrief-next-notes').value,
-                
-                // Meta
-                submittedBy: document.getElementById('debrief-submitted-by').value,
-                timestamp: document.getElementById('debrief-timestamp').value
-            };
-        }
-        
-        function formatDebriefText(data) {
-            const formatDate = (d) => {
-                if (!d) return '';
-                const date = new Date(d);
-                return date.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
-            };
-            
-            const stars = (rating) => {
-                const n = parseInt(rating) || 0;
-                return '⭐'.repeat(n);
-            };
-            
-            let text = `
-═══════════════════════════════════════════════
-📝 EVENT DEBRIEF
-═══════════════════════════════════════════════
-
-📋 GENERAL INFO
-───────────────────────────────────────────────
-Event: ${data.event || '-'}
-Date: ${formatDate(data.date)}
-CVD: ${data.cvd || '-'}
-PAX: ${data.pax || '-'} (VVK: ${data.vvk || '-'} | FOH: ${data.foh || '-'})
-Overall Rating: ${stars(data.rating)}
-
-🍸 BAR
-───────────────────────────────────────────────
-Estimated Revenue: €${data.barRevenue || '-'}
-Rating: ${stars(data.barRating)}
-Stock Shortages: ${data.barStock || '-'}
-Equipment Issues: ${data.barEquipment || '-'}
-Notes: ${data.barNotes || '-'}
-
-🔊 TECH
-───────────────────────────────────────────────
-Technician: ${data.techName || '-'}
-Rating: ${stars(data.techRating)}
-Sound Issues: ${data.techSound || '-'}
-Lighting Issues: ${data.techLights || '-'}
-Equipment: ${data.techEquipment || '-'}
-
-🏃 RUNNER
-───────────────────────────────────────────────
-On Duty: ${data.runnerNames || '-'}
-Rating: ${stars(data.runnerRating)}
-Issues: ${data.runnerIssues || '-'}
-
-🛡️ SECURITY
-───────────────────────────────────────────────
-Count: ${data.securityCount || '-'} | Ejections: ${data.securityEjections || '-'}
-Rating: ${stars(data.securityRating)}
-Police: ${data.securityPolice || 'No'}
-Incidents: ${data.securityIncidents || '-'}
-Notes: ${data.securityNotes || '-'}
-
-🎤 PROMOTER / ARTIST
-───────────────────────────────────────────────
-Name: ${data.promoterName || '-'}
-Rating: ${stars(data.promoterRating)}
-Artist Issues: ${data.promoterArtist || '-'}
-Communication: ${data.promoterComm || '-'}
-
-🏢 INFRASTRUCTURE
-───────────────────────────────────────────────
-Toilets: ${data.infraToilets || '-'}
-HVAC: ${data.infraHvac || '-'}
-Cleaning: ${data.infraCleaning || '-'}
-Building Issues: ${data.infraBuilding || '-'}
-Damage: ${data.infraDamage || '-'}
-
-📌 FOLLOW-UP
-───────────────────────────────────────────────
-Highlights: ${data.highlights || '-'}
-Problems: ${data.problems || '-'}
-Action Items: ${data.actions || '-'}
-Notes for Next Event: ${data.nextNotes || '-'}
-
-═══════════════════════════════════════════════
-Submitted by: ${data.submittedBy || '-'}
-Time: ${data.timestamp || '-'}
-═══════════════════════════════════════════════
-`;
-            return text;
-        }
-        
-        function copyDebrief() {
-            const data = getDebriefData();
-            const text = formatDebriefText(data);
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('📋 Debrief copied to clipboard!');
-            }).catch(err => {
-                console.error('Copy failed:', err);
-                showToast('❌ Copy failed');
-            });
-        }
-        
-        function saveDebrief() {
-            const data = getDebriefData();
-            
-            if (!data.event || !data.date) {
-                showToast('⚠️ Please select event and date');
-                return;
-            }
-            
-            // Save to localStorage
-            const key = `debrief_${data.date}_${data.event}`;
-            const debriefs = JSON.parse(localStorage.getItem('debriefs') || '{}');
-            debriefs[key] = data;
-            localStorage.setItem('debriefs', JSON.stringify(debriefs));
-            
-            showToast('💾 Debrief saved!');
-        }
-        
-        function downloadDebriefPDF() {
-            const data = getDebriefData();
-            const text = formatDebriefText(data);
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Debrief - ${data.event || 'Event'} - ${data.date || ''}</title>
-                    <style>
-                        body { font-family: 'Courier New', monospace; padding: 30px; background: #fff; color: #000; font-size: 12px; line-height: 1.5; }
-                        pre { white-space: pre-wrap; word-wrap: break-word; }
-                    </style>
-                </head>
-                <body>
-                    <pre>${text}</pre>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        }
-        
-        // Debrief modal click outside to close
-        document.getElementById('debrief-modal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeModal('debrief-modal');
-        });
     </script>
 </body>
 </html>
