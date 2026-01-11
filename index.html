@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.5.1</title>
+    <title>Turbo Projects Work Hub v15.5.2</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -34,7 +34,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.5.1 ===== */
+        /* ===== CSS TOKEN SYSTEM - v15.5.2 ===== */
         :root {
             --bg: #0a0a0a;
             --surface: #141414;
@@ -3437,7 +3437,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.5.1 - 08.01.2026 - New Design + Auto-refresh</div>
+    <div class="version">Work Hub v15.5.2 - 08.01.2026 - New Design + Auto-refresh</div>
 
     <script>
         // 
@@ -4290,7 +4290,7 @@
                     <tr><td>RUNNER 3:</td><td>${runner3Time}</td><td>${runner3}</td></tr>
                     <tr><td>RUNNER 4:</td><td>${runner4Time}</td><td>${runner4}</td></tr>
                     <tr><td>RUNNER 5:</td><td>${runner5Time}</td><td>${runner5}</td></tr>
-                    ${runner6 ? `<tr><td>RUNNER 6:</td><td>${runner6Time}</td><td>${runner6}</td></tr>` : ''}
+                    <tr><td>RUNNER 6:</td><td>${runner6Time}</td><td>${runner6}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     <tr><td>GARDEROBE 1</td><td>${gard1Time}</td><td>${gard1}</td></tr>
                     <tr><td>GARDEROBE 2</td><td>${gard2Time}</td><td>${gard2}</td></tr>
@@ -4304,235 +4304,116 @@
         }
         
         // ═══════════════════════════════════════════════════════════════════════════
-        // SHIFTPLAN DATABASE - From Master Shiftplans (Google Docs) + Techercalendar
-        // Key: DD.MM.YYYY format for date matching
+        // SHIFTPLAN DATABASE - LIVE from Google Sheets
+        // CSV URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
         // ═══════════════════════════════════════════════════════════════════════════
-        const SHIFTPLAN_DATABASE = {
-            // DECEMBER 2025
-            '27.12.2025': {
-                event: 'TURBO',
-                technik: 'Simon',
-                terrasse: '-', kitchen: 'Dhanna', main1: 'Ada', main2: 'Lino', main3: 'Milos', main4: 'Dora',
-                cvd: 'Alain',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Kaan', runner2_time: '21:00',
-                runner3: '', runner3_time: '',
-                runner4: 'Peter', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:00',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '31.12.2025': {
-                event: 'NYE',
-                technik: 'Jan',
-                terrasse: 'Milos', kitchen: 'Kamil', main1: 'Dora', main2: 'Lino', main3: 'Ada', main4: 'Camillo',
-                cvd: 'Alain / Niat',
-                runner1: 'Patrick', runner1_time: '21:00',
-                runner2: 'Gordan', runner2_time: '21:00',
-                runner3: 'Peter', runner3_time: '21:00',
-                runner4: 'Zuzu', runner4_time: '22:00',
-                runner5: 'Kaan', runner5_time: '23:00',
-                runner6: 'Aziz', runner6_time: '00:00',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            // JANUARY 2026 - FROM RUNNER-CVD SHIFTPLAN DOC
-            '05.01.2026': {
-                event: 'Impulse',
-                technik: 'Elias',
-                terrasse: 'Kamil', kitchen: 'Martina', main1: 'Ada', main2: 'Yohanna', main3: 'Lino', main4: 'Milos',
-                cvd: 'Niat',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Zuzu', runner2_time: '21:00',
-                runner3: 'Gordan', runner3_time: '21:00',
-                runner4: 'Peter', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:00',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '09.01.2026': {
-                event: 'Zuckerwatt',
-                technik: 'Simon',
-                terrasse: 'Milos', kitchen: 'Dora', main1: 'Lino', main2: 'Martina', main3: 'Yohanna', main4: 'Kamil',
-                cvd: 'Alain',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Gordan', runner2_time: '21:00',
-                runner3: 'Zuzu', runner3_time: '21:00',
-                runner4: 'Kaan', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:30',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '10.01.2026': {
-                event: 'Impulse',
-                technik: 'Elias',
-                terrasse: 'Camillo', kitchen: 'Milos', main1: 'Kamil', main2: 'Lino', main3: 'Martina', main4: 'TBA',
-                cvd: 'Niat',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Patrick', runner2_time: '21:00',
-                runner3: 'Gordan', runner3_time: '21:00',
-                runner4: 'Kaan', runner4_time: '22:00',
-                runner5: 'Hasib', runner5_time: '23:00',
-                runner6: 'Aziz', runner6_time: '00:00',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '16.01.2026': {
-                event: 'Fish Market',
-                technik: 'Elias',
-                terrasse: 'Lino', kitchen: 'Milos', main1: 'Kamil', main2: 'Dora', main3: 'Camillo', main4: 'Martina',
-                cvd: 'Alain',
-                runner1: 'Zuzu', runner1_time: '21:00',
-                runner2: 'Jakob', runner2_time: '21:00',
-                runner3: 'Gordan', runner3_time: '21:00',
-                runner4: 'Peter', runner4_time: '22:00',
-                runner5: 'Hasib', runner5_time: '23:00',
-                runner6: 'Aziz', runner6_time: '00:30',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '17.01.2026': {
-                event: 'Contrast',
-                technik: 'Jan',
-                terrasse: 'TBA', kitchen: 'Kamil', main1: 'Milos', main2: 'Lino', main3: 'Yohanna', main4: 'Dora',
-                cvd: 'Niat',
-                runner1: 'Gordan', runner1_time: '21:00',
-                runner2: 'Patrick', runner2_time: '21:00',
-                runner3: 'Peter', runner3_time: '21:00',
-                runner4: 'Kaan', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:30',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '23.01.2026': {
-                event: 'Selected',
-                technik: 'Jan',
-                terrasse: 'Dora', kitchen: 'Yohanna', main1: 'Camillo', main2: 'Dora', main3: 'Kamil', main4: 'Milos',
-                cvd: 'Alain',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Gordan', runner2_time: '21:00',
-                runner3: 'Peter', runner3_time: '21:00',
-                runner4: 'Hasib', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:30',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '24.01.2026': {
-                event: 'Purradox',
-                technik: 'Simon',
-                terrasse: 'TBA', kitchen: 'Dora', main1: 'Kamil', main2: 'Milos', main3: 'Camillo', main4: 'Martina',
-                cvd: 'Niat',
-                runner1: 'Gordan', runner1_time: '21:00',
-                runner2: 'Patrick', runner2_time: '21:00',
-                runner3: 'Zuzu', runner3_time: '21:00',
-                runner4: 'Hasib', runner4_time: '22:00',
-                runner5: 'Aziz', runner5_time: '00:30',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '30.01.2026': {
-                event: 'Mahlwerk',
-                technik: 'Elias',
-                terrasse: 'Martina', kitchen: 'Lino', main1: 'Ada', main2: 'Yohanna', main3: 'Milos', main4: 'Kamil',
-                cvd: 'Niat',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Hasib', runner2_time: '21:00',
-                runner3: 'Gordan', runner3_time: '21:00',
-                runner4: 'Kaan', runner4_time: '22:00',
-                runner5: 'Zuzu', runner5_time: '23:00',
-                runner6: '', runner6_time: '',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            '31.01.2026': {
-                event: 'Flashback',
-                technik: 'Simon',
-                terrasse: 'Kamil', kitchen: 'Dora', main1: 'Milos', main2: 'Martina', main3: 'Camillo', main4: 'Ada',
-                cvd: 'Alain',
-                runner1: 'Jakob', runner1_time: '21:00',
-                runner2: 'Patrick', runner2_time: '21:00',
-                runner3: 'Peter', runner3_time: '21:00',
-                runner4: 'Zuzu', runner4_time: '22:00',
-                runner5: 'Hasib', runner5_time: '23:00',
-                runner6: 'Aziz', runner6_time: '00:30',
-                gard1: 'Sofia', gard2: 'Fayez', gard3: 'Nico'
-            },
-            // FEBRUARY 2026 - FROM DEBRIEF PREVIEW
-            '07.02.2026': {
-                event: 'Impulse',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
-            },
-            '13.02.2026': {
-                event: 'Zuckerwatt',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
-            },
-            '14.02.2026': {
-                event: 'Tattu Tatta Glub',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
-            },
-            '20.02.2026': {
-                event: 'Fish Market',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
-            },
-            '21.02.2026': {
-                event: 'Contrast',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
-            },
-            '27.02.2026': {
-                event: 'TURBO',
-                technik: 'TBA',
-                terrasse: 'TBA', kitchen: 'TBA', main1: 'TBA', main2: 'TBA', main3: 'TBA', main4: 'TBA',
-                cvd: 'TBA',
-                runner1: '', runner1_time: '',
-                runner2: '', runner2_time: '',
-                runner3: '', runner3_time: '',
-                runner4: '', runner4_time: '',
-                runner5: '', runner5_time: '',
-                runner6: '', runner6_time: '',
-                gard1: '', gard2: '', gard3: ''
+        
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
+        
+        let SHIFTPLAN_DATABASE = {};
+        let shiftplanLoaded = false;
+        
+        // Fetch and parse Google Sheet CSV
+        async function loadShiftplanFromGoogleSheet() {
+            try {
+                console.log('Loading shiftplan from Google Sheets...');
+                const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                if (!response.ok) throw new Error('Failed to fetch CSV');
+                
+                const csvText = await response.text();
+                const lines = csvText.split('\n').filter(line => line.trim());
+                
+                if (lines.length < 2) {
+                    console.warn('CSV has no data rows');
+                    return;
+                }
+                
+                // Parse header (first line)
+                // Expected: Datum,Event,CVD,R1_Zeit,Runner1,R2_Zeit,Runner2,R3_Zeit,Runner3,R4_Zeit,Runner4,R5_Zeit,Runner5,R6_Zeit,Runner6
+                const headers = lines[0].split(',').map(h => h.trim());
+                console.log('CSV Headers:', headers);
+                
+                // Find column indices
+                const colIndex = {
+                    datum: headers.findIndex(h => h.toLowerCase().includes('datum')),
+                    event: headers.findIndex(h => h.toLowerCase() === 'event'),
+                    cvd: headers.findIndex(h => h.toLowerCase() === 'cvd'),
+                    r1_zeit: headers.findIndex(h => h.toLowerCase() === 'r1_zeit'),
+                    runner1: headers.findIndex(h => h.toLowerCase() === 'runner1'),
+                    r2_zeit: headers.findIndex(h => h.toLowerCase() === 'r2_zeit'),
+                    runner2: headers.findIndex(h => h.toLowerCase() === 'runner2'),
+                    r3_zeit: headers.findIndex(h => h.toLowerCase() === 'r3_zeit'),
+                    runner3: headers.findIndex(h => h.toLowerCase() === 'runner3'),
+                    r4_zeit: headers.findIndex(h => h.toLowerCase() === 'r4_zeit'),
+                    runner4: headers.findIndex(h => h.toLowerCase() === 'runner4'),
+                    r5_zeit: headers.findIndex(h => h.toLowerCase() === 'r5_zeit'),
+                    runner5: headers.findIndex(h => h.toLowerCase() === 'runner5'),
+                    r6_zeit: headers.findIndex(h => h.toLowerCase() === 'r6_zeit'),
+                    runner6: headers.findIndex(h => h.toLowerCase() === 'runner6')
+                };
+                
+                // Parse data rows
+                let loadedCount = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const values = parseCSVLine(lines[i]);
+                    if (!values || values.length < 3) continue;
+                    
+                    const datum = values[colIndex.datum]?.trim();
+                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue; // Skip empty/invalid rows
+                    
+                    SHIFTPLAN_DATABASE[datum] = {
+                        event: values[colIndex.event]?.trim() || '',
+                        cvd: values[colIndex.cvd]?.trim() || '',
+                        runner1: values[colIndex.runner1]?.trim() || '',
+                        runner1_time: values[colIndex.r1_zeit]?.trim() || '',
+                        runner2: values[colIndex.runner2]?.trim() || '',
+                        runner2_time: values[colIndex.r2_zeit]?.trim() || '',
+                        runner3: values[colIndex.runner3]?.trim() || '',
+                        runner3_time: values[colIndex.r3_zeit]?.trim() || '',
+                        runner4: values[colIndex.runner4]?.trim() || '',
+                        runner4_time: values[colIndex.r4_zeit]?.trim() || '',
+                        runner5: values[colIndex.runner5]?.trim() || '',
+                        runner5_time: values[colIndex.r5_zeit]?.trim() || '',
+                        runner6: values[colIndex.runner6]?.trim() || '',
+                        runner6_time: values[colIndex.r6_zeit]?.trim() || ''
+                    };
+                    loadedCount++;
+                }
+                
+                shiftplanLoaded = true;
+                console.log(`✅ Shiftplan loaded: ${loadedCount} events from Google Sheets`);
+                
+                // Re-render shiftplan table
+                renderRunnerShiftplan();
+                
+            } catch (error) {
+                console.error('❌ Failed to load shiftplan from Google Sheets:', error);
+                showToast('⚠️ Shiftplan konnte nicht geladen werden', true);
             }
-        };
+        }
+        
+        // Parse CSV line handling quoted values
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+        
+        // No fallback needed - data loaded from Google Sheets
         
         // Render Runner Shiftplan as native HTML table
         function renderRunnerShiftplan() {
@@ -8259,9 +8140,10 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.5.1 - New Design + Auto-refresh');
+            console.log('Work Hub v15.5.2 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
+            loadShiftplanFromGoogleSheet(); // Load Runner/CVD data from Google Sheets
             updateProjection('turbo');
             updateProjection('nye');
             calculatePreSale();
@@ -8303,7 +8185,7 @@ Spittelauer Lnde 12/1
         });
 
         // ================================================================
-        // SECURITY ORDERS SYSTEM - v15.5.1
+        // SECURITY ORDERS SYSTEM - v15.5.2
         // ================================================================
         
         // Initialize security orders storage
@@ -8551,7 +8433,7 @@ Spittelauer Lnde 12/1
         }
         
         // ================================================================
-        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.5.1
+        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.5.2
         // ================================================================
         
         // Download as PDF
