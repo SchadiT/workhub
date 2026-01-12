@@ -634,6 +634,8 @@
         /* Native Shiftplan Table */
         .shiftplan-table-container {
             overflow-x: auto;
+            overflow-y: auto;
+            max-height: 350px; /* ~4 weeks visible */
             -webkit-overflow-scrolling: touch;
             background: var(--bg);
             padding: 8px;
@@ -2816,7 +2818,7 @@
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 1</label>
-                        <input type="text" id="fs-gard1" value="" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard1" value="Sofia" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
@@ -2824,19 +2826,19 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 2</label>
-                        <input type="text" id="fs-gard2" value="" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard2" value="Fayez" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-gard2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard2-time" value="23:15" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 3</label>
-                        <input type="text" id="fs-gard3" value="" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard3" value="Nico" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-gard3-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard3-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -4791,6 +4793,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -4814,6 +4817,8 @@
                     futureEvents.push({
                         date: eventDate,
                         dateStr: dateStr,
+                        month: eventDate.getMonth(),
+                        year: eventDate.getFullYear(),
                         day: dayNames[eventDate.getDay()],
                         eventName: eventName,
                         cvd: data.cvd || '-',
@@ -4850,7 +4855,14 @@
                 </thead>
                 <tbody>`;
             
+            let lastMonth = null;
             futureEvents.forEach(e => {
+                // Add month separator if month changed
+                if (lastMonth !== null && (e.month !== lastMonth)) {
+                    html += `<tr class="month-separator"><td colspan="9" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
+                }
+                lastMonth = e.month;
+                
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
@@ -4891,6 +4903,7 @@
                     futureEvents.push({
                         date: eventDate,
                         dateStr: dateStr,
+                        month: eventDate.getMonth(),
                         day: dayNames[eventDate.getDay()],
                         eventName: data.event || '-',
                         terrasse: data.terrasse || '-',
@@ -4925,7 +4938,14 @@
                 </thead>
                 <tbody>`;
             
+            let lastMonth = null;
             futureEvents.forEach(e => {
+                // Add month separator if month changed
+                if (lastMonth !== null && (e.month !== lastMonth)) {
+                    html += `<tr class="month-separator"><td colspan="8" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
+                }
+                lastMonth = e.month;
+                
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
@@ -4971,6 +4991,7 @@
                     futureEvents.push({
                         date: eventDate,
                         dateStr: dateStr,
+                        month: eventDate.getMonth(),
                         day: dayNames[eventDate.getDay()],
                         eventName: data.event || '-',
                         technik: data.techniker || '-'
@@ -4981,10 +5002,7 @@
             // Sort by date
             futureEvents.sort((a, b) => a.date - b.date);
             
-            // Limit to next 20 events
-            const displayEvents = futureEvents.slice(0, 20);
-            
-            if (displayEvents.length === 0) {
+            if (futureEvents.length === 0) {
                 container.innerHTML = '<p style="color: #888; padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke 🔄 Refresh oder lade eine ICS-Datei hoch.</p>';
                 return;
             }
@@ -4999,7 +5017,14 @@
                 </thead>
                 <tbody>`;
             
-            displayEvents.forEach(e => {
+            let lastMonth = null;
+            futureEvents.forEach(e => {
+                // Add month separator if month changed
+                if (lastMonth !== null && (e.month !== lastMonth)) {
+                    html += `<tr class="month-separator"><td colspan="3" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
+                }
+                lastMonth = e.month;
+                
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
@@ -5157,22 +5182,30 @@
             document.getElementById('fs-main3').value = e.main3 || '';
             document.getElementById('fs-main4').value = e.main4 || '';
             
-            // Runner fields with times
-            document.getElementById('fs-runner1').value = formatRunnerWithTime(e.runner1, e.runner1_time);
-            document.getElementById('fs-runner2').value = formatRunnerWithTime(e.runner2, e.runner2_time);
-            document.getElementById('fs-runner3').value = formatRunnerWithTime(e.runner3, e.runner3_time);
-            document.getElementById('fs-runner4').value = formatRunnerWithTime(e.runner4, e.runner4_time);
-            document.getElementById('fs-runner5').value = formatRunnerWithTime(e.runner5, e.runner5_time);
-            document.getElementById('fs-runner6').value = formatRunnerWithTime(e.runner6, e.runner6_time);
+            // Runner fields - name only (time goes in separate field)
+            document.getElementById('fs-runner1').value = e.runner1 || '';
+            document.getElementById('fs-runner2').value = e.runner2 || '';
+            document.getElementById('fs-runner3').value = e.runner3 || '';
+            document.getElementById('fs-runner4').value = e.runner4 || '';
+            document.getElementById('fs-runner5').value = e.runner5 || '';
+            document.getElementById('fs-runner6').value = e.runner6 || '';
             
-            document.getElementById('fs-gard1').value = e.gard1 || '';
-            document.getElementById('fs-gard2').value = e.gard2 || '';
-            document.getElementById('fs-gard3').value = e.gard3 || '';
+            // Runner times in separate fields
+            if (e.runner1_time) document.getElementById('fs-runner1-time').value = e.runner1_time;
+            if (e.runner2_time) document.getElementById('fs-runner2-time').value = e.runner2_time;
+            if (e.runner3_time) document.getElementById('fs-runner3-time').value = e.runner3_time;
+            if (e.runner4_time) document.getElementById('fs-runner4-time').value = e.runner4_time;
+            if (e.runner5_time) document.getElementById('fs-runner5-time').value = e.runner5_time;
+            if (e.runner6_time) document.getElementById('fs-runner6-time').value = e.runner6_time;
+            
+            document.getElementById('fs-gard1').value = e.gard1 || 'Sofia';
+            document.getElementById('fs-gard2').value = e.gard2 || 'Fayez';
+            document.getElementById('fs-gard3').value = e.gard3 || 'Nico';
             
             updateFactsheetPreview();
         }
         
-        // Format runner name with time
+        // Format runner name with time (legacy - kept for compatibility)
         function formatRunnerWithTime(name, time) {
             if (!name) return '';
             if (!time) return name;
