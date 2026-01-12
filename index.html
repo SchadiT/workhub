@@ -3399,6 +3399,13 @@
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="technik-calendar-tab">
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                        <button onclick="loadTechnikerFromGoogleCalendar()" style="background: #3d2d4a; border: 1px solid #7c4a7a; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; color: #fff;">🔄 Refresh</button>
+                        <label style="background: #3d2d4a; border: 1px solid #7c4a7a; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                            📤 ICS Upload
+                            <input type="file" accept=".ics" onchange="handleTechnikerICSUpload(event)" style="display: none;">
+                        </label>
+                    </div>
                     <div class="shiftplan-table-container" id="technik-calendar-list">
                         <!-- Dynamic content loaded by renderTechCalendar() -->
                     </div>
@@ -4324,7 +4331,7 @@
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
         const TECHNIKER_CALENDAR_ID = 'ebak75bbsf3ac62j0jpd5del7k@group.calendar.google.com';
-        const TECHNIKER_ICS_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(TECHNIKER_CALENDAR_ID)}/public/basic.ics`;
+        const TECHNIKER_ICS_URL = 'https://calendar.google.com/calendar/ical/ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com/public/basic.ics';
         
         let SHIFTPLAN_DATABASE = {};
         let BAR_DATABASE = {};
@@ -4338,27 +4345,68 @@
             try {
                 console.log('Loading Techniker from Google Calendar...');
                 
-                // Try with CORS proxy
-                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(TECHNIKER_ICS_URL);
-                const response = await fetch(proxyUrl);
+                let icsText = null;
                 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch calendar');
+                // Try direct fetch first
+                try {
+                    console.log('Trying direct fetch...');
+                    const directResponse = await fetch(TECHNIKER_ICS_URL, {
+                        signal: AbortSignal.timeout(6000)
+                    });
+                    if (directResponse.ok) {
+                        icsText = await directResponse.text();
+                        if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
+                            console.log('✅ Direct fetch worked! Length:', icsText.length);
+                        } else {
+                            icsText = null;
+                        }
+                    }
+                } catch (e) {
+                    console.log('Direct fetch failed:', e.message);
                 }
                 
-                const icsText = await response.text();
-                console.log('Techniker ICS loaded, length:', icsText.length);
+                // If direct failed, try CORS proxies
+                if (!icsText) {
+                    const proxies = [
+                        'https://api.allorigins.win/raw?url=',
+                        'https://corsproxy.io/?'
+                    ];
+                    
+                    for (const proxy of proxies) {
+                        try {
+                            const proxyUrl = proxy + encodeURIComponent(TECHNIKER_ICS_URL);
+                            console.log('Trying proxy:', proxy.substring(8, 28));
+                            
+                            const response = await fetch(proxyUrl, { 
+                                signal: AbortSignal.timeout(8000)
+                            });
+                            
+                            if (response.ok) {
+                                icsText = await response.text();
+                                if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
+                                    console.log('✅ Proxy worked! Length:', icsText.length);
+                                    break;
+                                } else {
+                                    icsText = null;
+                                }
+                            }
+                        } catch (proxyError) {
+                            console.log('Proxy failed:', proxyError.message);
+                        }
+                    }
+                }
                 
                 if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
                     parseTechnikerICS(icsText);
+                    showToast('✅ Techniker geladen!');
                 } else {
-                    console.warn('Invalid ICS data received');
-                    loadTechnikerFromStorage(); // Fallback to localStorage
+                    console.warn('Could not load from Google Calendar');
+                    loadTechnikerFromStorage();
                 }
                 
             } catch (error) {
-                console.error('Failed to load Techniker from Google Calendar:', error);
-                loadTechnikerFromStorage(); // Fallback to localStorage
+                console.error('Failed to load Techniker:', error);
+                loadTechnikerFromStorage();
             }
         }
         
@@ -4529,17 +4577,18 @@
                 const lines = csvText.split('\n').filter(line => line.trim());
                 if (lines.length < 2) return;
                 
-                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                // Trim and normalize headers
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, ' '));
                 console.log('Bar CSV Headers:', headers);
                 
                 // Flexible column detection - tries exact match first
                 const findCol = (patterns) => {
                     for (const p of patterns) {
-                        const idx = headers.findIndex(h => h === p);
+                        const idx = headers.findIndex(h => h === p || h.replace(/\s/g, '') === p.replace(/\s/g, ''));
                         if (idx !== -1) return idx;
                     }
                     for (const p of patterns) {
-                        if (p.length >= 4) {
+                        if (p.length >= 3) {
                             const idx = headers.findIndex(h => h.includes(p));
                             if (idx !== -1) return idx;
                         }
@@ -4552,10 +4601,10 @@
                     event: findCol(['event name', 'eventname', 'event']),
                     terrasse: findCol(['terrasse', 'terr']),
                     kitchen: findCol(['kitchen', 'kit', 'küche']),
-                    main1: findCol(['main1', 'main 1', 'm1']),
-                    main2: findCol(['main2', 'main 2', 'm2']),
-                    main3: findCol(['main3', 'main 3', 'm3']),
-                    main4: findCol(['main4', 'main 4', 'm4'])
+                    main1: findCol(['main 1', 'main1', 'm1']),
+                    main2: findCol(['main 2', 'main2', 'm2']),
+                    main3: findCol(['main 3', 'main3', 'm3']),
+                    main4: findCol(['main 4', 'main4', 'm4'])
                 };
                 
                 console.log('Bar Column indices:', colIndex);
@@ -4936,7 +4985,7 @@
             const displayEvents = futureEvents.slice(0, 20);
             
             if (displayEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px;">Lädt von Google Calendar...</p>';
+                container.innerHTML = '<p style="color: #888; padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke 🔄 Refresh oder lade eine ICS-Datei hoch.</p>';
                 return;
             }
             
@@ -5020,11 +5069,21 @@
             
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
-                // Check if we have shiftplan data for this date
-                const dateStr = e.datum; // Format: DD.MM.YYYY
-                const shiftData = SHIFTPLAN_DATABASE[dateStr];
-                const barData = BAR_DATABASE[dateStr];
-                const techData = TECHNIKER_DATABASE[dateStr];
+                // Extract DD.MM.YYYY from various formats like "Samstag, 27.12.2025" or "27.12.2025"
+                const extractDate = (str) => {
+                    if (!str) return null;
+                    const match = str.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+                    return match ? match[0] : null;
+                };
+                
+                const dateStr = extractDate(e.datum);
+                console.log('Factsheet lookup date:', dateStr, 'from:', e.datum);
+                
+                const shiftData = dateStr ? SHIFTPLAN_DATABASE[dateStr] : null;
+                const barData = dateStr ? BAR_DATABASE[dateStr] : null;
+                const techData = dateStr ? TECHNIKER_DATABASE[dateStr] : null;
+                
+                console.log('Found data - Runner:', !!shiftData, 'Bar:', !!barData, 'Tech:', !!techData);
                 
                 if (shiftData) {
                     // Merge Runner/CVD data from Runner sheet
@@ -5124,11 +5183,17 @@
         function autoFactsheetForEvent(eventId) {
             const e = EVENT_STAFF_DATA[eventId];
             if (e) {
-                // Check if we have shiftplan data for this date
-                const dateStr = e.datum;
-                const shiftData = SHIFTPLAN_DATABASE[dateStr];
-                const barData = BAR_DATABASE[dateStr];
-                const techData = TECHNIKER_DATABASE[dateStr];
+                // Extract DD.MM.YYYY from various formats
+                const extractDate = (str) => {
+                    if (!str) return null;
+                    const match = str.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+                    return match ? match[0] : null;
+                };
+                
+                const dateStr = extractDate(e.datum);
+                const shiftData = dateStr ? SHIFTPLAN_DATABASE[dateStr] : null;
+                const barData = dateStr ? BAR_DATABASE[dateStr] : null;
+                const techData = dateStr ? TECHNIKER_DATABASE[dateStr] : null;
                 
                 if (shiftData) {
                     // Merge Runner/CVD data from Runner sheet
@@ -5284,15 +5349,23 @@
         // Department tab switching - also expands content if collapsed
         function switchDeptTab(button, contentId) {
             const dept = button.closest('.dept');
+            const content = dept.querySelector('.dept-content');
+            
+            // If clicking the already active tab, toggle the department closed
+            if (button.classList.contains('active')) {
+                content.classList.toggle('open');
+                dept.classList.toggle('open');
+                return;
+            }
+            
             // Remove active from all tabs in this department
             dept.querySelectorAll('.dept-tab').forEach(tab => tab.classList.remove('active'));
-            dept.querySelectorAll('.dept-tab-content').forEach(content => content.classList.remove('active'));
+            dept.querySelectorAll('.dept-tab-content').forEach(c => c.classList.remove('active'));
             // Add active to clicked tab and content
             button.classList.add('active');
             document.getElementById(contentId).classList.add('active');
             
             // Also expand the content area if collapsed
-            const content = dept.querySelector('.dept-content');
             if (!content.classList.contains('open')) {
                 content.classList.add('open');
                 dept.classList.add('open');
