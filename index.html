@@ -4305,23 +4305,48 @@
         
         // ═══════════════════════════════════════════════════════════════════════════
         // SHIFTPLAN DATABASE - LIVE from Google Sheets
-        // CSV URL: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
+        // Runner/CVD: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
+        // Bar: https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv
         // ═══════════════════════════════════════════════════════════════════════════
         
-        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
+        const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
+        const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
+        
+        // CORS Proxy for Google Sheets access
+        const CORS_PROXY = 'https://corsproxy.io/?';
+        
+        function getProxiedUrl(url) {
+            return CORS_PROXY + encodeURIComponent(url);
+        }
         
         let SHIFTPLAN_DATABASE = {};
+        let BAR_DATABASE = {};
         let shiftplanLoaded = false;
+        let barLoaded = false;
         
-        // Fetch and parse Google Sheet CSV
+        // Fetch and parse Runner/CVD Google Sheet CSV
         async function loadShiftplanFromGoogleSheet() {
             try {
-                console.log('Loading shiftplan from Google Sheets...');
-                const response = await fetch(GOOGLE_SHEET_CSV_URL);
-                if (!response.ok) throw new Error('Failed to fetch CSV');
+                console.log('Loading Runner/CVD shiftplan from Google Sheets...');
+                const response = await fetch(getProxiedUrl(RUNNER_CSV_URL), {
+                    method: 'GET'
+                });
+                
+                if (!response.ok) {
+                    console.error('Response not OK:', response.status, response.statusText);
+                    throw new Error(`Failed to fetch CSV: ${response.status}`);
+                }
                 
                 const csvText = await response.text();
+                console.log('CSV loaded, length:', csvText.length);
+                
+                if (!csvText || csvText.length < 10) {
+                    console.warn('CSV appears empty');
+                    return;
+                }
+                
                 const lines = csvText.split('\n').filter(line => line.trim());
+                console.log('CSV lines:', lines.length);
                 
                 if (lines.length < 2) {
                     console.warn('CSV has no data rows');
@@ -4388,7 +4413,7 @@
                 
             } catch (error) {
                 console.error('❌ Failed to load shiftplan from Google Sheets:', error);
-                showToast('⚠️ Shiftplan konnte nicht geladen werden', true);
+                // Silent fail - don't show toast, data will just not be available
             }
         }
         
@@ -4411,6 +4436,74 @@
             }
             result.push(current);
             return result;
+        }
+        
+        // Fetch and parse Bar Google Sheet CSV
+        async function loadBarFromGoogleSheet() {
+            try {
+                console.log('Loading Bar shiftplan from Google Sheets...');
+                const response = await fetch(getProxiedUrl(BAR_CSV_URL), {
+                    method: 'GET'
+                });
+                
+                if (!response.ok) {
+                    console.error('Bar Response not OK:', response.status);
+                    throw new Error('Failed to fetch Bar CSV');
+                }
+                
+                const csvText = await response.text();
+                console.log('Bar CSV loaded, length:', csvText.length);
+                
+                const lines = csvText.split('\n').filter(line => line.trim());
+                
+                if (lines.length < 2) {
+                    console.warn('Bar CSV has no data rows');
+                    return;
+                }
+                
+                // Parse header
+                // Expected: Datum,Event,Terrasse,Kitchen,Main1,Main2,Main3,Main4
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                console.log('Bar CSV Headers:', headers);
+                
+                const colIndex = {
+                    datum: headers.findIndex(h => h.includes('datum')),
+                    event: headers.findIndex(h => h === 'event'),
+                    terrasse: headers.findIndex(h => h.includes('terrasse')),
+                    kitchen: headers.findIndex(h => h.includes('kitchen')),
+                    main1: headers.findIndex(h => h === 'main1'),
+                    main2: headers.findIndex(h => h === 'main2'),
+                    main3: headers.findIndex(h => h === 'main3'),
+                    main4: headers.findIndex(h => h === 'main4')
+                };
+                
+                // Parse data rows
+                let loadedCount = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const values = parseCSVLine(lines[i]);
+                    if (!values || values.length < 3) continue;
+                    
+                    const datum = values[colIndex.datum]?.trim();
+                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
+                    
+                    BAR_DATABASE[datum] = {
+                        event: values[colIndex.event]?.trim() || '',
+                        terrasse: values[colIndex.terrasse]?.trim() || '',
+                        kitchen: values[colIndex.kitchen]?.trim() || '',
+                        main1: values[colIndex.main1]?.trim() || '',
+                        main2: values[colIndex.main2]?.trim() || '',
+                        main3: values[colIndex.main3]?.trim() || '',
+                        main4: values[colIndex.main4]?.trim() || ''
+                    };
+                    loadedCount++;
+                }
+                
+                barLoaded = true;
+                console.log(`✅ Bar loaded: ${loadedCount} events from Google Sheets`);
+                
+            } catch (error) {
+                console.error('❌ Failed to load Bar from Google Sheets:', error);
+            }
         }
         
         // No fallback needed - data loaded from Google Sheets
@@ -4640,17 +4733,11 @@
                 // Check if we have shiftplan data for this date
                 const dateStr = e.datum; // Format: DD.MM.YYYY
                 const shiftData = SHIFTPLAN_DATABASE[dateStr];
+                const barData = BAR_DATABASE[dateStr];
                 
                 if (shiftData) {
-                    // Merge shiftplan data into event data
+                    // Merge Runner/CVD data from Runner sheet
                     e.cvd = shiftData.cvd || e.cvd;
-                    e.technik = shiftData.technik || e.technik;
-                    e.terrasse = shiftData.terrasse || e.terrasse;
-                    e.kitchen = shiftData.kitchen || e.kitchen;
-                    e.main1 = shiftData.main1 || e.main1;
-                    e.main2 = shiftData.main2 || e.main2;
-                    e.main3 = shiftData.main3 || e.main3;
-                    e.main4 = shiftData.main4 || e.main4;
                     e.runner1 = shiftData.runner1 || e.runner1;
                     e.runner2 = shiftData.runner2 || e.runner2;
                     e.runner3 = shiftData.runner3 || e.runner3;
@@ -4663,9 +4750,16 @@
                     e.runner4_time = shiftData.runner4_time || '';
                     e.runner5_time = shiftData.runner5_time || '';
                     e.runner6_time = shiftData.runner6_time || '';
-                    e.gard1 = shiftData.gard1 || e.gard1;
-                    e.gard2 = shiftData.gard2 || e.gard2;
-                    e.gard3 = shiftData.gard3 || e.gard3;
+                }
+                
+                if (barData) {
+                    // Merge Bar data from Bar sheet
+                    e.terrasse = barData.terrasse || e.terrasse;
+                    e.kitchen = barData.kitchen || e.kitchen;
+                    e.main1 = barData.main1 || e.main1;
+                    e.main2 = barData.main2 || e.main2;
+                    e.main3 = barData.main3 || e.main3;
+                    e.main4 = barData.main4 || e.main4;
                 }
                 
                 fillFactsheetForm(e);
@@ -4737,17 +4831,11 @@
                 // Check if we have shiftplan data for this date
                 const dateStr = e.datum;
                 const shiftData = SHIFTPLAN_DATABASE[dateStr];
+                const barData = BAR_DATABASE[dateStr];
                 
                 if (shiftData) {
-                    // Merge shiftplan data
+                    // Merge Runner/CVD data from Runner sheet
                     e.cvd = shiftData.cvd || e.cvd;
-                    e.technik = shiftData.technik || e.technik;
-                    e.terrasse = shiftData.terrasse || e.terrasse;
-                    e.kitchen = shiftData.kitchen || e.kitchen;
-                    e.main1 = shiftData.main1 || e.main1;
-                    e.main2 = shiftData.main2 || e.main2;
-                    e.main3 = shiftData.main3 || e.main3;
-                    e.main4 = shiftData.main4 || e.main4;
                     e.runner1 = shiftData.runner1 || e.runner1;
                     e.runner2 = shiftData.runner2 || e.runner2;
                     e.runner3 = shiftData.runner3 || e.runner3;
@@ -4760,9 +4848,16 @@
                     e.runner4_time = shiftData.runner4_time || '';
                     e.runner5_time = shiftData.runner5_time || '';
                     e.runner6_time = shiftData.runner6_time || '';
-                    e.gard1 = shiftData.gard1 || e.gard1;
-                    e.gard2 = shiftData.gard2 || e.gard2;
-                    e.gard3 = shiftData.gard3 || e.gard3;
+                }
+                
+                if (barData) {
+                    // Merge Bar data from Bar sheet
+                    e.terrasse = barData.terrasse || e.terrasse;
+                    e.kitchen = barData.kitchen || e.kitchen;
+                    e.main1 = barData.main1 || e.main1;
+                    e.main2 = barData.main2 || e.main2;
+                    e.main3 = barData.main3 || e.main3;
+                    e.main4 = barData.main4 || e.main4;
                 }
                 
                 // Set dropdown
@@ -8144,6 +8239,7 @@ Spittelauer Lnde 12/1
             loadQuickNotes();
             initMsal();
             loadShiftplanFromGoogleSheet(); // Load Runner/CVD data from Google Sheets
+            loadBarFromGoogleSheet(); // Load Bar data from Google Sheets
             updateProjection('turbo');
             updateProjection('nye');
             calculatePreSale();
