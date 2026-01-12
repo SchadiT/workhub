@@ -4428,23 +4428,42 @@
                 const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
                 console.log('Runner CSV Headers:', headers);
                 
-                const colIndex = {
-                    datum: headers.findIndex(h => h.includes('datum')),
-                    event: headers.findIndex(h => h === 'event'),
-                    cvd: headers.findIndex(h => h === 'cvd'),
-                    r1_zeit: headers.findIndex(h => h === 'r1_zeit'),
-                    runner1: headers.findIndex(h => h === 'runner1'),
-                    r2_zeit: headers.findIndex(h => h === 'r2_zeit'),
-                    runner2: headers.findIndex(h => h === 'runner2'),
-                    r3_zeit: headers.findIndex(h => h === 'r3_zeit'),
-                    runner3: headers.findIndex(h => h === 'runner3'),
-                    r4_zeit: headers.findIndex(h => h === 'r4_zeit'),
-                    runner4: headers.findIndex(h => h === 'runner4'),
-                    r5_zeit: headers.findIndex(h => h === 'r5_zeit'),
-                    runner5: headers.findIndex(h => h === 'runner5'),
-                    r6_zeit: headers.findIndex(h => h === 'r6_zeit'),
-                    runner6: headers.findIndex(h => h === 'runner6')
+                // Flexible column detection - tries exact match first, then includes
+                const findCol = (patterns) => {
+                    // First try exact matches
+                    for (const p of patterns) {
+                        const idx = headers.findIndex(h => h === p);
+                        if (idx !== -1) return idx;
+                    }
+                    // Then try includes (but be careful with short patterns)
+                    for (const p of patterns) {
+                        if (p.length >= 4) { // Only use includes for longer patterns
+                            const idx = headers.findIndex(h => h.includes(p));
+                            if (idx !== -1) return idx;
+                        }
+                    }
+                    return -1;
                 };
+                
+                const colIndex = {
+                    datum: findCol(['date', 'datum']),
+                    event: findCol(['event name', 'eventname', 'event']),
+                    cvd: findCol(['cvd']),
+                    r1_zeit: findCol(['time 1', 'zeit 1', 'r1_zeit', 'time1']),
+                    runner1: findCol(['runner 1', 'runner1']),
+                    r2_zeit: findCol(['time 2', 'zeit 2', 'r2_zeit', 'time2']),
+                    runner2: findCol(['runner 2', 'runner2']),
+                    r3_zeit: findCol(['time 3', 'zeit 3', 'r3_zeit', 'time3']),
+                    runner3: findCol(['runner 3', 'runner3']),
+                    r4_zeit: findCol(['time 4', 'zeit 4', 'r4_zeit', 'time4']),
+                    runner4: findCol(['runner 4', 'runner4']),
+                    r5_zeit: findCol(['time 5', 'zeit 5', 'r5_zeit', 'time5']),
+                    runner5: findCol(['runner 5', 'runner5']),
+                    r6_zeit: findCol(['time 6', 'zeit 6', 'r6_zeit', 'time6']),
+                    runner6: findCol(['runner 6', 'runner6'])
+                };
+                
+                console.log('Column indices:', colIndex);
                 
                 SHIFTPLAN_DATABASE = {};
                 let loadedCount = 0;
@@ -4454,9 +4473,25 @@
                     if (!values || values.length < 3) continue;
                     
                     const datum = values[colIndex.datum]?.trim();
-                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
+                    // Accept both DD.MM.YYYY and other date formats
+                    if (!datum) continue;
                     
-                    SHIFTPLAN_DATABASE[datum] = {
+                    // Convert date format if needed (e.g., "6 Jan 2..." -> "06.01.2026")
+                    let formattedDate = datum;
+                    if (!datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
+                        // Try to parse various date formats
+                        const dateObj = new Date(datum);
+                        if (!isNaN(dateObj)) {
+                            const d = String(dateObj.getDate()).padStart(2, '0');
+                            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                            const y = dateObj.getFullYear();
+                            formattedDate = `${d}.${m}.${y}`;
+                        } else {
+                            continue; // Skip invalid dates
+                        }
+                    }
+                    
+                    SHIFTPLAN_DATABASE[formattedDate] = {
                         event: values[colIndex.event]?.trim() || '',
                         cvd: values[colIndex.cvd]?.trim() || '',
                         runner1: values[colIndex.runner1]?.trim() || '',
@@ -4497,16 +4532,33 @@
                 const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
                 console.log('Bar CSV Headers:', headers);
                 
-                const colIndex = {
-                    datum: headers.findIndex(h => h.includes('datum')),
-                    event: headers.findIndex(h => h === 'event'),
-                    terrasse: headers.findIndex(h => h.includes('terrasse')),
-                    kitchen: headers.findIndex(h => h.includes('kitchen')),
-                    main1: headers.findIndex(h => h === 'main1'),
-                    main2: headers.findIndex(h => h === 'main2'),
-                    main3: headers.findIndex(h => h === 'main3'),
-                    main4: headers.findIndex(h => h === 'main4')
+                // Flexible column detection - tries exact match first
+                const findCol = (patterns) => {
+                    for (const p of patterns) {
+                        const idx = headers.findIndex(h => h === p);
+                        if (idx !== -1) return idx;
+                    }
+                    for (const p of patterns) {
+                        if (p.length >= 4) {
+                            const idx = headers.findIndex(h => h.includes(p));
+                            if (idx !== -1) return idx;
+                        }
+                    }
+                    return -1;
                 };
+                
+                const colIndex = {
+                    datum: findCol(['date', 'datum']),
+                    event: findCol(['event name', 'eventname', 'event']),
+                    terrasse: findCol(['terrasse', 'terr']),
+                    kitchen: findCol(['kitchen', 'kit', 'küche']),
+                    main1: findCol(['main1', 'main 1', 'm1']),
+                    main2: findCol(['main2', 'main 2', 'm2']),
+                    main3: findCol(['main3', 'main 3', 'm3']),
+                    main4: findCol(['main4', 'main 4', 'm4'])
+                };
+                
+                console.log('Bar Column indices:', colIndex);
                 
                 BAR_DATABASE = {};
                 let loadedCount = 0;
@@ -4516,9 +4568,23 @@
                     if (!values || values.length < 3) continue;
                     
                     const datum = values[colIndex.datum]?.trim();
-                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
+                    if (!datum) continue;
                     
-                    BAR_DATABASE[datum] = {
+                    // Convert date format if needed
+                    let formattedDate = datum;
+                    if (!datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
+                        const dateObj = new Date(datum);
+                        if (!isNaN(dateObj)) {
+                            const d = String(dateObj.getDate()).padStart(2, '0');
+                            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                            const y = dateObj.getFullYear();
+                            formattedDate = `${d}.${m}.${y}`;
+                        } else {
+                            continue;
+                        }
+                    }
+                    
+                    BAR_DATABASE[formattedDate] = {
                         event: values[colIndex.event]?.trim() || '',
                         terrasse: values[colIndex.terrasse]?.trim() || '',
                         kitchen: values[colIndex.kitchen]?.trim() || '',
