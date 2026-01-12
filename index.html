@@ -3332,7 +3332,7 @@
         <!-- BAR -->
         <div class="dept bar grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> BAR <span class="task-count" id="bar-task-count"></span></div>
+                <div class="dept-header-left">🍸 BAR <span class="task-count" id="bar-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
@@ -3341,7 +3341,13 @@
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="bar-shiftplan-tab">
-                    <div class="iframe-wrapper"><iframe src="https://docs.google.com/document/d/e/2PACX-1vQLF5-vQFf1CZ2tEyVyVdD7uO088yl8CWDlQdWa61m0uhEbOB9FWuDU2wVBkJH_XxJMW_B01QOKFyAr/pub?embedded=true"></iframe></div>
+                    <div style="margin-bottom: 10px;">
+                        <label class="upload-btn" style="background: #4a3d2d; border: 1px solid #7c6a4a; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                            📤 Bar CSV laden
+                            <input type="file" accept=".csv" onchange="handleBarCSVUpload(event)" style="display: none;">
+                        </label>
+                    </div>
+                    <div class="shiftplan-table-container" id="bar-shiftplan-table"></div>
                 </div>
                 <div class="dept-tab-content" id="bar-tasks-tab">
                     <div class="tasks-list open" id="bar-tasks-list">
@@ -3355,7 +3361,7 @@
         <!-- RUNNER -->
         <div class="dept runner grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> RUNNER <span class="task-count" id="runner-task-count"></span></div>
+                <div class="dept-header-left">🏃 RUNNER <span class="task-count" id="runner-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
@@ -3364,6 +3370,12 @@
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="runner-shiftplan-tab">
+                    <div style="margin-bottom: 10px;">
+                        <label class="upload-btn" style="background: #2d4a3e; border: 1px solid #4a7c59; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                            📤 Runner CSV laden
+                            <input type="file" accept=".csv" onchange="handleRunnerCSVUpload(event)" style="display: none;">
+                        </label>
+                    </div>
                     <div class="shiftplan-table-container" id="runner-shiftplan-table"></div>
                 </div>
                 <div class="dept-tab-content" id="runner-tasks-tab">
@@ -3378,7 +3390,7 @@
         <!-- TECH -->
         <div class="dept technik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> TECH <span class="task-count" id="technik-task-count"></span></div>
+                <div class="dept-header-left">🔧 TECH <span class="task-count" id="technik-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
@@ -4311,80 +4323,138 @@
         
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
-        
-        // CORS Proxy for Google Sheets access
-        const CORS_PROXY = 'https://corsproxy.io/?';
-        
-        function getProxiedUrl(url) {
-            return CORS_PROXY + encodeURIComponent(url);
-        }
+        const TECHNIKER_CALENDAR_ID = 'ebak75bbsf3ac62j0jpd5del7k@group.calendar.google.com';
+        const TECHNIKER_ICS_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(TECHNIKER_CALENDAR_ID)}/public/basic.ics`;
         
         let SHIFTPLAN_DATABASE = {};
         let BAR_DATABASE = {};
+        let TECHNIKER_DATABASE = {};
         let shiftplanLoaded = false;
         let barLoaded = false;
+        let technikerLoaded = false;
         
-        // Fetch and parse Runner/CVD Google Sheet CSV
-        async function loadShiftplanFromGoogleSheet() {
+        // Fetch Techniker calendar from Google Calendar ICS
+        async function loadTechnikerFromGoogleCalendar() {
             try {
-                console.log('Loading Runner/CVD shiftplan from Google Sheets...');
-                const response = await fetch(getProxiedUrl(RUNNER_CSV_URL), {
-                    method: 'GET'
-                });
+                console.log('Loading Techniker from Google Calendar...');
+                
+                // Try with CORS proxy
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(TECHNIKER_ICS_URL);
+                const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
-                    console.error('Response not OK:', response.status, response.statusText);
-                    throw new Error(`Failed to fetch CSV: ${response.status}`);
+                    throw new Error('Failed to fetch calendar');
                 }
                 
-                const csvText = await response.text();
-                console.log('CSV loaded, length:', csvText.length);
+                const icsText = await response.text();
+                console.log('Techniker ICS loaded, length:', icsText.length);
                 
-                if (!csvText || csvText.length < 10) {
-                    console.warn('CSV appears empty');
-                    return;
+                if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
+                    parseTechnikerICS(icsText);
+                } else {
+                    console.warn('Invalid ICS data received');
+                    loadTechnikerFromStorage(); // Fallback to localStorage
                 }
                 
+            } catch (error) {
+                console.error('Failed to load Techniker from Google Calendar:', error);
+                loadTechnikerFromStorage(); // Fallback to localStorage
+            }
+        }
+        
+        // Load from localStorage on startup
+        function loadShiftplanFromStorage() {
+            try {
+                const saved = localStorage.getItem('shiftplan_data');
+                if (saved) {
+                    SHIFTPLAN_DATABASE = JSON.parse(saved);
+                    shiftplanLoaded = true;
+                    console.log('✅ Shiftplan loaded from storage:', Object.keys(SHIFTPLAN_DATABASE).length, 'events');
+                    renderRunnerShiftplan();
+                }
+            } catch (e) {
+                console.error('Failed to load shiftplan from storage:', e);
+            }
+        }
+        
+        function loadBarFromStorage() {
+            try {
+                const saved = localStorage.getItem('bar_data');
+                if (saved) {
+                    BAR_DATABASE = JSON.parse(saved);
+                    barLoaded = true;
+                    console.log('✅ Bar loaded from storage:', Object.keys(BAR_DATABASE).length, 'events');
+                    renderBarShiftplan();
+                }
+            } catch (e) {
+                console.error('Failed to load bar from storage:', e);
+            }
+        }
+        
+        // Handle CSV file upload for Runner
+        function handleRunnerCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvText = e.target.result;
+                parseRunnerCSV(csvText);
+                showToast('✅ Runner Shiftplan geladen!');
+            };
+            reader.readAsText(file);
+        }
+        
+        // Handle CSV file upload for Bar
+        function handleBarCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvText = e.target.result;
+                parseBarCSV(csvText);
+                showToast('✅ Bar Dienstplan geladen!');
+            };
+            reader.readAsText(file);
+        }
+        
+        // Parse Runner CSV
+        function parseRunnerCSV(csvText) {
+            try {
                 const lines = csvText.split('\n').filter(line => line.trim());
-                console.log('CSV lines:', lines.length);
+                if (lines.length < 2) return;
                 
-                if (lines.length < 2) {
-                    console.warn('CSV has no data rows');
-                    return;
-                }
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                console.log('Runner CSV Headers:', headers);
                 
-                // Parse header (first line)
-                // Expected: Datum,Event,CVD,R1_Zeit,Runner1,R2_Zeit,Runner2,R3_Zeit,Runner3,R4_Zeit,Runner4,R5_Zeit,Runner5,R6_Zeit,Runner6
-                const headers = lines[0].split(',').map(h => h.trim());
-                console.log('CSV Headers:', headers);
-                
-                // Find column indices
                 const colIndex = {
-                    datum: headers.findIndex(h => h.toLowerCase().includes('datum')),
-                    event: headers.findIndex(h => h.toLowerCase() === 'event'),
-                    cvd: headers.findIndex(h => h.toLowerCase() === 'cvd'),
-                    r1_zeit: headers.findIndex(h => h.toLowerCase() === 'r1_zeit'),
-                    runner1: headers.findIndex(h => h.toLowerCase() === 'runner1'),
-                    r2_zeit: headers.findIndex(h => h.toLowerCase() === 'r2_zeit'),
-                    runner2: headers.findIndex(h => h.toLowerCase() === 'runner2'),
-                    r3_zeit: headers.findIndex(h => h.toLowerCase() === 'r3_zeit'),
-                    runner3: headers.findIndex(h => h.toLowerCase() === 'runner3'),
-                    r4_zeit: headers.findIndex(h => h.toLowerCase() === 'r4_zeit'),
-                    runner4: headers.findIndex(h => h.toLowerCase() === 'runner4'),
-                    r5_zeit: headers.findIndex(h => h.toLowerCase() === 'r5_zeit'),
-                    runner5: headers.findIndex(h => h.toLowerCase() === 'runner5'),
-                    r6_zeit: headers.findIndex(h => h.toLowerCase() === 'r6_zeit'),
-                    runner6: headers.findIndex(h => h.toLowerCase() === 'runner6')
+                    datum: headers.findIndex(h => h.includes('datum')),
+                    event: headers.findIndex(h => h === 'event'),
+                    cvd: headers.findIndex(h => h === 'cvd'),
+                    r1_zeit: headers.findIndex(h => h === 'r1_zeit'),
+                    runner1: headers.findIndex(h => h === 'runner1'),
+                    r2_zeit: headers.findIndex(h => h === 'r2_zeit'),
+                    runner2: headers.findIndex(h => h === 'runner2'),
+                    r3_zeit: headers.findIndex(h => h === 'r3_zeit'),
+                    runner3: headers.findIndex(h => h === 'runner3'),
+                    r4_zeit: headers.findIndex(h => h === 'r4_zeit'),
+                    runner4: headers.findIndex(h => h === 'runner4'),
+                    r5_zeit: headers.findIndex(h => h === 'r5_zeit'),
+                    runner5: headers.findIndex(h => h === 'runner5'),
+                    r6_zeit: headers.findIndex(h => h === 'r6_zeit'),
+                    runner6: headers.findIndex(h => h === 'runner6')
                 };
                 
-                // Parse data rows
+                SHIFTPLAN_DATABASE = {};
                 let loadedCount = 0;
+                
                 for (let i = 1; i < lines.length; i++) {
                     const values = parseCSVLine(lines[i]);
                     if (!values || values.length < 3) continue;
                     
                     const datum = values[colIndex.datum]?.trim();
-                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue; // Skip empty/invalid rows
+                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
                     
                     SHIFTPLAN_DATABASE[datum] = {
                         event: values[colIndex.event]?.trim() || '',
@@ -4405,15 +4475,171 @@
                     loadedCount++;
                 }
                 
+                // Save to localStorage
+                localStorage.setItem('shiftplan_data', JSON.stringify(SHIFTPLAN_DATABASE));
                 shiftplanLoaded = true;
-                console.log(`✅ Shiftplan loaded: ${loadedCount} events from Google Sheets`);
+                console.log(`✅ Runner Shiftplan: ${loadedCount} events loaded and saved`);
                 
-                // Re-render shiftplan table
                 renderRunnerShiftplan();
                 
             } catch (error) {
-                console.error('❌ Failed to load shiftplan from Google Sheets:', error);
-                // Silent fail - don't show toast, data will just not be available
+                console.error('Failed to parse Runner CSV:', error);
+                showToast('❌ Fehler beim Laden der CSV', true);
+            }
+        }
+        
+        // Parse Bar CSV
+        function parseBarCSV(csvText) {
+            try {
+                const lines = csvText.split('\n').filter(line => line.trim());
+                if (lines.length < 2) return;
+                
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                console.log('Bar CSV Headers:', headers);
+                
+                const colIndex = {
+                    datum: headers.findIndex(h => h.includes('datum')),
+                    event: headers.findIndex(h => h === 'event'),
+                    terrasse: headers.findIndex(h => h.includes('terrasse')),
+                    kitchen: headers.findIndex(h => h.includes('kitchen')),
+                    main1: headers.findIndex(h => h === 'main1'),
+                    main2: headers.findIndex(h => h === 'main2'),
+                    main3: headers.findIndex(h => h === 'main3'),
+                    main4: headers.findIndex(h => h === 'main4')
+                };
+                
+                BAR_DATABASE = {};
+                let loadedCount = 0;
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const values = parseCSVLine(lines[i]);
+                    if (!values || values.length < 3) continue;
+                    
+                    const datum = values[colIndex.datum]?.trim();
+                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
+                    
+                    BAR_DATABASE[datum] = {
+                        event: values[colIndex.event]?.trim() || '',
+                        terrasse: values[colIndex.terrasse]?.trim() || '',
+                        kitchen: values[colIndex.kitchen]?.trim() || '',
+                        main1: values[colIndex.main1]?.trim() || '',
+                        main2: values[colIndex.main2]?.trim() || '',
+                        main3: values[colIndex.main3]?.trim() || '',
+                        main4: values[colIndex.main4]?.trim() || ''
+                    };
+                    loadedCount++;
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('bar_data', JSON.stringify(BAR_DATABASE));
+                barLoaded = true;
+                console.log(`✅ Bar Dienstplan: ${loadedCount} events loaded and saved`);
+                
+                renderBarShiftplan();
+                
+            } catch (error) {
+                console.error('Failed to parse Bar CSV:', error);
+                showToast('❌ Fehler beim Laden der Bar CSV', true);
+            }
+        }
+        
+        // Load Techniker from localStorage
+        function loadTechnikerFromStorage() {
+            try {
+                const saved = localStorage.getItem('techniker_data');
+                if (saved) {
+                    TECHNIKER_DATABASE = JSON.parse(saved);
+                    technikerLoaded = true;
+                    console.log('✅ Techniker loaded from storage:', Object.keys(TECHNIKER_DATABASE).length, 'events');
+                    renderTechCalendar();
+                }
+            } catch (e) {
+                console.error('Failed to load techniker from storage:', e);
+            }
+        }
+        
+        // Handle ICS file upload for Techniker
+        function handleTechnikerICSUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const icsText = e.target.result;
+                parseTechnikerICS(icsText);
+                showToast('✅ Techniker Kalender geladen!');
+            };
+            reader.readAsText(file);
+        }
+        
+        // Parse Techniker ICS calendar
+        // Format: "Club: [Event Name] I [Techniker Name]"
+        function parseTechnikerICS(icsText) {
+            try {
+                TECHNIKER_DATABASE = {};
+                let loadedCount = 0;
+                
+                // Split into events
+                const eventBlocks = icsText.split('BEGIN:VEVENT');
+                
+                for (let i = 1; i < eventBlocks.length; i++) {
+                    const block = eventBlocks[i];
+                    
+                    // Extract date (DTSTART) - handle multiple formats
+                    let dateMatch = block.match(/DTSTART[^:]*:(\d{8})/);
+                    if (!dateMatch) {
+                        // Try datetime format
+                        dateMatch = block.match(/DTSTART[^:]*:(\d{8})T/);
+                    }
+                    if (!dateMatch) continue;
+                    
+                    const dateStr = dateMatch[1];
+                    const year = dateStr.substring(0, 4);
+                    const month = dateStr.substring(4, 6);
+                    const day = dateStr.substring(6, 8);
+                    const formattedDate = `${day}.${month}.${year}`;
+                    
+                    // Extract summary - handle multiline
+                    let summary = '';
+                    const summaryMatch = block.match(/SUMMARY:(.+?)(?:\r?\n(?! ))/s);
+                    if (summaryMatch) {
+                        summary = summaryMatch[1].replace(/\r?\n /g, '').trim();
+                    }
+                    if (!summary) continue;
+                    
+                    // Parse format: "Club: [Event] I [Techniker]"
+                    let technikName = '';
+                    let eventName = '';
+                    
+                    if (summary.includes(' I ')) {
+                        const parts = summary.split(' I ');
+                        eventName = parts[0].replace(/^Club:\s*/i, '').trim();
+                        technikName = parts[1]?.trim() || '';
+                    } else if (summary.toLowerCase().startsWith('club:')) {
+                        eventName = summary.replace(/^Club:\s*/i, '').trim();
+                        technikName = ''; // No techniker assigned yet
+                    } else {
+                        eventName = summary;
+                    }
+                    
+                    // Store even if no techniker (shows event exists)
+                    TECHNIKER_DATABASE[formattedDate] = {
+                        event: eventName,
+                        techniker: technikName || '-'
+                    };
+                    loadedCount++;
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('techniker_data', JSON.stringify(TECHNIKER_DATABASE));
+                technikerLoaded = true;
+                console.log(`✅ Techniker: ${loadedCount} events loaded and saved`);
+                
+                renderTechCalendar();
+                renderCalendar(); // Update main calendar too
+                
+            } catch (error) {
+                console.error('Failed to parse Techniker ICS:', error);
             }
         }
         
@@ -4439,74 +4665,7 @@
         }
         
         // Fetch and parse Bar Google Sheet CSV
-        async function loadBarFromGoogleSheet() {
-            try {
-                console.log('Loading Bar shiftplan from Google Sheets...');
-                const response = await fetch(getProxiedUrl(BAR_CSV_URL), {
-                    method: 'GET'
-                });
-                
-                if (!response.ok) {
-                    console.error('Bar Response not OK:', response.status);
-                    throw new Error('Failed to fetch Bar CSV');
-                }
-                
-                const csvText = await response.text();
-                console.log('Bar CSV loaded, length:', csvText.length);
-                
-                const lines = csvText.split('\n').filter(line => line.trim());
-                
-                if (lines.length < 2) {
-                    console.warn('Bar CSV has no data rows');
-                    return;
-                }
-                
-                // Parse header
-                // Expected: Datum,Event,Terrasse,Kitchen,Main1,Main2,Main3,Main4
-                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-                console.log('Bar CSV Headers:', headers);
-                
-                const colIndex = {
-                    datum: headers.findIndex(h => h.includes('datum')),
-                    event: headers.findIndex(h => h === 'event'),
-                    terrasse: headers.findIndex(h => h.includes('terrasse')),
-                    kitchen: headers.findIndex(h => h.includes('kitchen')),
-                    main1: headers.findIndex(h => h === 'main1'),
-                    main2: headers.findIndex(h => h === 'main2'),
-                    main3: headers.findIndex(h => h === 'main3'),
-                    main4: headers.findIndex(h => h === 'main4')
-                };
-                
-                // Parse data rows
-                let loadedCount = 0;
-                for (let i = 1; i < lines.length; i++) {
-                    const values = parseCSVLine(lines[i]);
-                    if (!values || values.length < 3) continue;
-                    
-                    const datum = values[colIndex.datum]?.trim();
-                    if (!datum || !datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) continue;
-                    
-                    BAR_DATABASE[datum] = {
-                        event: values[colIndex.event]?.trim() || '',
-                        terrasse: values[colIndex.terrasse]?.trim() || '',
-                        kitchen: values[colIndex.kitchen]?.trim() || '',
-                        main1: values[colIndex.main1]?.trim() || '',
-                        main2: values[colIndex.main2]?.trim() || '',
-                        main3: values[colIndex.main3]?.trim() || '',
-                        main4: values[colIndex.main4]?.trim() || ''
-                    };
-                    loadedCount++;
-                }
-                
-                barLoaded = true;
-                console.log(`✅ Bar loaded: ${loadedCount} events from Google Sheets`);
-                
-            } catch (error) {
-                console.error('❌ Failed to load Bar from Google Sheets:', error);
-            }
-        }
-        
-        // No fallback needed - data loaded from Google Sheets
+        // No fallback needed - data loaded from localStorage via CSV upload
         
         // Render Runner Shiftplan as native HTML table
         function renderRunnerShiftplan() {
@@ -4595,6 +4754,80 @@
             container.innerHTML = html;
         }
         
+        // Render Bar Shiftplan table
+        function renderBarShiftplan() {
+            const container = document.getElementById('bar-shiftplan-table');
+            if (!container) return;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            
+            // Get future events sorted by date
+            const futureEvents = [];
+            for (const dateStr in BAR_DATABASE) {
+                const parts = dateStr.split('.');
+                const eventDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                
+                if (eventDate >= today) {
+                    const data = BAR_DATABASE[dateStr];
+                    
+                    futureEvents.push({
+                        date: eventDate,
+                        dateStr: dateStr,
+                        day: dayNames[eventDate.getDay()],
+                        eventName: data.event || '-',
+                        terrasse: data.terrasse || '-',
+                        kitchen: data.kitchen || '-',
+                        main1: data.main1 || '-',
+                        main2: data.main2 || '-',
+                        main3: data.main3 || '-',
+                        main4: data.main4 || '-'
+                    });
+                }
+            }
+            
+            futureEvents.sort((a, b) => a.date - b.date);
+            
+            if (futureEvents.length === 0) {
+                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Bar-Daten</p>';
+                return;
+            }
+            
+            let html = `<table class="shiftplan-table">
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Event</th>
+                        <th>Terr</th>
+                        <th>Kit</th>
+                        <th>M1</th>
+                        <th>M2</th>
+                        <th>M3</th>
+                        <th>M4</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+            
+            futureEvents.forEach(e => {
+                const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                html += `<tr>
+                    <td class="date-col">${e.day} ${shortDate}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 12)}${e.eventName.length > 12 ? '...' : ''}</td>
+                    <td>${e.terrasse}</td>
+                    <td>${e.kitchen}</td>
+                    <td>${e.main1}</td>
+                    <td>${e.main2}</td>
+                    <td>${e.main3}</td>
+                    <td>${e.main4}</td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
         // Get shiftplan data by date (DD.MM.YYYY format)
         function getShiftplanByDate(dateStr) {
             return SHIFTPLAN_DATABASE[dateStr] || null;
@@ -4610,34 +4843,22 @@
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
             
-            // Get all future events from SHIFTPLAN_DATABASE
+            // Get all future events from TECHNIKER_DATABASE
             const futureEvents = [];
             
-            for (const dateStr in SHIFTPLAN_DATABASE) {
+            for (const dateStr in TECHNIKER_DATABASE) {
                 const parts = dateStr.split('.');
                 const eventDate = new Date(parts[2], parts[1] - 1, parts[0]);
                 
                 if (eventDate >= today) {
-                    const data = SHIFTPLAN_DATABASE[dateStr];
-                    
-                    // Try to find event name from BMT events
-                    let eventName = '-';
-                    if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
-                        const matchingEvent = bmtEvents.find(e => {
-                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                            return eDate.toDateString() === eventDate.toDateString();
-                        });
-                        if (matchingEvent) {
-                            eventName = matchingEvent.summary || '-';
-                        }
-                    }
+                    const data = TECHNIKER_DATABASE[dateStr];
                     
                     futureEvents.push({
                         date: eventDate,
                         dateStr: dateStr,
                         day: dayNames[eventDate.getDay()],
-                        eventName: eventName,
-                        technik: data.technik || '-'
+                        eventName: data.event || '-',
+                        technik: data.techniker || '-'
                     });
                 }
             }
@@ -4645,8 +4866,11 @@
             // Sort by date
             futureEvents.sort((a, b) => a.date - b.date);
             
-            if (futureEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Shiftplan-Daten</p>';
+            // Limit to next 20 events
+            const displayEvents = futureEvents.slice(0, 20);
+            
+            if (displayEvents.length === 0) {
+                container.innerHTML = '<p style="color: #888; padding: 15px;">Lädt von Google Calendar...</p>';
                 return;
             }
             
@@ -4655,12 +4879,12 @@
                     <tr>
                         <th>Tag</th>
                         <th>Event</th>
-                        <th>Techer</th>
+                        <th>Techniker</th>
                     </tr>
                 </thead>
                 <tbody>`;
             
-            futureEvents.forEach(e => {
+            displayEvents.forEach(e => {
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
@@ -4734,6 +4958,7 @@
                 const dateStr = e.datum; // Format: DD.MM.YYYY
                 const shiftData = SHIFTPLAN_DATABASE[dateStr];
                 const barData = BAR_DATABASE[dateStr];
+                const techData = TECHNIKER_DATABASE[dateStr];
                 
                 if (shiftData) {
                     // Merge Runner/CVD data from Runner sheet
@@ -4760,6 +4985,11 @@
                     e.main2 = barData.main2 || e.main2;
                     e.main3 = barData.main3 || e.main3;
                     e.main4 = barData.main4 || e.main4;
+                }
+                
+                if (techData) {
+                    // Merge Techniker data from Google Calendar
+                    e.technik = techData.techniker || e.technik;
                 }
                 
                 fillFactsheetForm(e);
@@ -4832,6 +5062,7 @@
                 const dateStr = e.datum;
                 const shiftData = SHIFTPLAN_DATABASE[dateStr];
                 const barData = BAR_DATABASE[dateStr];
+                const techData = TECHNIKER_DATABASE[dateStr];
                 
                 if (shiftData) {
                     // Merge Runner/CVD data from Runner sheet
@@ -4858,6 +5089,11 @@
                     e.main2 = barData.main2 || e.main2;
                     e.main3 = barData.main3 || e.main3;
                     e.main4 = barData.main4 || e.main4;
+                }
+                
+                if (techData) {
+                    // Merge Techniker data from Google Calendar
+                    e.technik = techData.techniker || e.technik;
                 }
                 
                 // Set dropdown
@@ -8030,16 +8266,16 @@ Spittelauer Lnde 12/1
                 } catch (err) { console.log('BMT parse error:', err); }
             }
             
-            // Load Techercalendar from SHIFTPLAN_DATABASE
+            // Load Techniker calendar from TECHNIKER_DATABASE
             calendarEntries.technik = [];
-            for (const dateStr in SHIFTPLAN_DATABASE) {
-                const data = SHIFTPLAN_DATABASE[dateStr];
-                if (data.technik) {
+            for (const dateStr in TECHNIKER_DATABASE) {
+                const data = TECHNIKER_DATABASE[dateStr];
+                if (data.techniker) {
                     // Convert DD.MM.YYYY to YYYY-MM-DD
                     const parts = dateStr.split('.');
                     const isoDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
                     calendarEntries.technik.push({
-                        title: data.technik,
+                        title: data.techniker,
                         date: isoDate,
                         source: 'technik'
                     });
@@ -8238,8 +8474,9 @@ Spittelauer Lnde 12/1
             console.log('Work Hub v15.5.2 - New Design + Auto-refresh');
             loadQuickNotes();
             initMsal();
-            loadShiftplanFromGoogleSheet(); // Load Runner/CVD data from Google Sheets
-            loadBarFromGoogleSheet(); // Load Bar data from Google Sheets
+            loadShiftplanFromStorage(); // Load Runner/CVD data from localStorage
+            loadBarFromStorage(); // Load Bar data from localStorage
+            loadTechnikerFromGoogleCalendar(); // Load Techniker from Google Calendar
             updateProjection('turbo');
             updateProjection('nye');
             calculatePreSale();
