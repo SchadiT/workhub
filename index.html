@@ -643,40 +643,51 @@
         }
         .shiftplan-table {
             width: 100%;
-            min-width: 500px;
             border-collapse: collapse;
             font-size: 12px;
             color: var(--text);
+            table-layout: fixed;
         }
         .shiftplan-table th {
             background: var(--surface-2);
             color: var(--muted);
-            padding: 10px 8px;
+            padding: 8px 4px;
             text-align: left;
             font-weight: 600;
-            font-size: 11px;
+            font-size: 10px;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             border-bottom: 1px solid var(--border);
         }
         .shiftplan-table td {
-            padding: 10px 8px;
+            padding: 8px 4px;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            font-size: 11px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .shiftplan-table tr:last-child td { border-bottom: none; }
         .shiftplan-table tr:hover { background: var(--surface-2); }
-        .shiftplan-table .date-col { font-weight: 500; color: var(--text-secondary); }
-        .shiftplan-table .event-col { color: var(--text); max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+        .shiftplan-table .date-col { font-weight: 500; color: var(--text-secondary); width: 55px; }
+        .shiftplan-table .event-col { color: var(--text); width: 70px; overflow: hidden; text-overflow: ellipsis; }
         .shiftplan-table .cvd-col { color: var(--warn); font-weight: 600; }
         .shiftplan-table .runner-col { color: var(--text); }
         .shiftplan-table .technik-col { color: var(--konzert); font-weight: 600; }
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .shiftplan-table { font-size: 10px; }
-            .shiftplan-table th, .shiftplan-table td { padding: 6px 4px; }
-            .shiftplan-table .date-col { min-width: 55px; }
-            .shiftplan-table .event-col { max-width: 80px; }
+            .shiftplan-table th { font-size: 8px; padding: 5px 2px; }
+            .shiftplan-table td { padding: 5px 2px; font-size: 9px; }
+            .shiftplan-table .date-col { width: 45px; }
+            .shiftplan-table .event-col { width: 55px; }
+        }
+        @media (max-width: 480px) {
+            .shiftplan-table { font-size: 8px; }
+            .shiftplan-table th { font-size: 7px; padding: 4px 1px; letter-spacing: 0; }
+            .shiftplan-table td { padding: 4px 1px; font-size: 8px; }
+            .shiftplan-table .date-col { width: 38px; }
+            .shiftplan-table .event-col { width: 45px; }
         }
         
         /* VVK Tracker */
@@ -4864,16 +4875,18 @@
                 lastMonth = e.month;
                 
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                // Shorten names for compact display (max 3 chars)
+                const sn = (name) => name && name !== '-' ? name.substring(0, 3).toUpperCase() : '-';
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
-                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 15)}${e.eventName.length > 15 ? '...' : ''}</td>
-                    <td class="cvd-col">${e.cvd}</td>
-                    <td class="runner-col">${e.runner1}</td>
-                    <td class="runner-col">${e.runner2}</td>
-                    <td class="runner-col">${e.runner3}</td>
-                    <td class="runner-col">${e.runner4}</td>
-                    <td class="runner-col">${e.runner5}</td>
-                    <td class="runner-col">${e.runner6}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 8)}${e.eventName.length > 8 ? '..' : ''}</td>
+                    <td class="cvd-col" title="${e.cvd}">${sn(e.cvd)}</td>
+                    <td class="runner-col" title="${e.runner1}">${sn(e.runner1)}</td>
+                    <td class="runner-col" title="${e.runner2}">${sn(e.runner2)}</td>
+                    <td class="runner-col" title="${e.runner3}">${sn(e.runner3)}</td>
+                    <td class="runner-col" title="${e.runner4}">${sn(e.runner4)}</td>
+                    <td class="runner-col" title="${e.runner5}">${sn(e.runner5)}</td>
+                    <td class="runner-col" title="${e.runner6}">${sn(e.runner6)}</td>
                 </tr>`;
             });
             
@@ -4947,15 +4960,17 @@
                 lastMonth = e.month;
                 
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                // Shorten names for compact display (max 3 chars)
+                const sn = (name) => name && name !== '-' ? name.substring(0, 3).toUpperCase() : '-';
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
-                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 12)}${e.eventName.length > 12 ? '...' : ''}</td>
-                    <td>${e.terrasse}</td>
-                    <td>${e.kitchen}</td>
-                    <td>${e.main1}</td>
-                    <td>${e.main2}</td>
-                    <td>${e.main3}</td>
-                    <td>${e.main4}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 8)}${e.eventName.length > 8 ? '..' : ''}</td>
+                    <td title="${e.terrasse}">${sn(e.terrasse)}</td>
+                    <td title="${e.kitchen}">${sn(e.kitchen)}</td>
+                    <td title="${e.main1}">${sn(e.main1)}</td>
+                    <td title="${e.main2}">${sn(e.main2)}</td>
+                    <td title="${e.main3}">${sn(e.main3)}</td>
+                    <td title="${e.main4}">${sn(e.main4)}</td>
                 </tr>`;
             });
             
@@ -5026,10 +5041,12 @@
                 lastMonth = e.month;
                 
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
+                // Shorten name for compact display
+                const techShort = e.technik && e.technik !== '-' ? e.technik.substring(0, 4) : '-';
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
-                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 15)}${e.eventName.length > 15 ? '...' : ''}</td>
-                    <td class="technik-col">${e.technik}</td>
+                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 10)}${e.eventName.length > 10 ? '..' : ''}</td>
+                    <td class="technik-col" title="${e.technik}">${techShort}</td>
                 </tr>`;
             });
             
