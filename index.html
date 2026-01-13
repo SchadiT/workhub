@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.5.6</title>
+    <title>Turbo Projects Work Hub v15.6.7</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -70,15 +70,160 @@
         
         /* Light Theme */
         [data-theme="light"] {
-            --bg: #ffffff;
-            --surface: #f5f5f5;
-            --surface-2: #e5e5e5;
-            --border: #d4d4d4;
+            /* High Contrast Black/Gray/White Theme */
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --surface-2: #e8e8e8;
+            --border: #333333;
             
-            --text: #1A1D24;
-            --text-secondary: #4A5568;
-            --muted: #718096;
+            --text: #000000;
+            --text-secondary: #333333;
+            --muted: #666666;
+            
+            /* Override blues with grays */
+            --blue-dark: #1a1a1a;
+            --blue-medium: #333333;
+            --blue-light: #4a4a4a;
+            --blue-accent: #2a2a2a;
+            
+            /* Accents - keep some color for important items */
+            --good: #22c55e;
+            --warn: #f59e0b;
+            --danger: #ef4444;
+            --konzert: #8b5cf6;
         }
+        
+        /* Light Theme Specific Overrides - High Contrast */
+        [data-theme="light"] .header-bar { background: #1a1a1a; border-color: #000; }
+        [data-theme="light"] .header-logo { color: #fff; }
+        [data-theme="light"] .header-btn { background: #333; border-color: #555; color: #fff; }
+        [data-theme="light"] .header-btn:hover { background: #555; }
+        [data-theme="light"] .bmt-header { background: #1a1a1a; border-color: #000; }
+        [data-theme="light"] .bmt-title { color: #fff; }
+        [data-theme="light"] .bmt-link { color: #fff; }
+        [data-theme="light"] .bmt-badge { border-color: #ef4444; color: #ef4444; }
+        [data-theme="light"] .bmt-btn { background: #333; border-color: #555; color: #fff; }
+        [data-theme="light"] .bmt-btn:hover { background: #555; }
+        [data-theme="light"] .bmt-month-btn { background: #333; border-color: #555; color: #fff; }
+        
+        /* Tools Toggle Buttons - CRITICAL FIX */
+        [data-theme="light"] .tools-toggle { background: #1a1a1a !important; border: 2px solid #333 !important; color: #fff !important; }
+        [data-theme="light"] .tools-toggle:hover { background: #333 !important; border-color: #555 !important; }
+        [data-theme="light"] .tools-toggle.unified { background: #1a1a1a !important; border: 2px solid #333 !important; }
+        [data-theme="light"] .tools-toggle span { color: #fff !important; }
+        [data-theme="light"] .tools-toggle .arrow { color: #fff !important; }
+        [data-theme="light"] .tools-section { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .tools-grid { background: #fff; }
+        
+        [data-theme="light"] .tool-btn { background: #fff; border: 2px solid #333; color: #000; }
+        [data-theme="light"] .tool-btn:hover { background: #333; color: #fff; }
+        [data-theme="light"] .tool-btn .tool-icon { filter: none; }
+        [data-theme="light"] .dept { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .dept-header { background: #1a1a1a; }
+        [data-theme="light"] .dept-header-left { color: #fff; }
+        [data-theme="light"] .dept-toggle { color: #fff; }
+        [data-theme="light"] .task-count { border-color: #fff; color: #fff; background: transparent; }
+        [data-theme="light"] .projects-count { border-color: #f59e0b; color: #f59e0b; background: transparent; }
+        [data-theme="light"] .notes-count { border-color: #3b82f6; color: #3b82f6; background: transparent; }
+        [data-theme="light"] .dept-tabs { background: #e8e8e8; }
+        [data-theme="light"] .dept-tab { background: #ddd; color: #333; border: 1px solid #999; }
+        [data-theme="light"] .dept-tab.active { background: #333; color: #fff; border-color: #333; }
+        [data-theme="light"] .dept-tab:hover { background: #444; color: #fff; }
+        [data-theme="light"] .tab-count { background: rgba(0,0,0,0.15); color: inherit; }
+        [data-theme="light"] .dept-content { background: #fff; }
+        [data-theme="light"] .tasks-btn { background: #333; color: #fff; border: none; }
+        [data-theme="light"] .tasks-btn:hover { background: #555; }
+        [data-theme="light"] .task-item { background: #f8f8f8; border-bottom: 1px solid #ddd; }
+        [data-theme="light"] .task-checkbox { border-color: #333; background: #fff; }
+        [data-theme="light"] .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
+        [data-theme="light"] .task-title { color: #000; }
+        [data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.7); }
+        [data-theme="light"] .modal-content { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .modal-header { background: #1a1a1a; border-bottom: none; }
+        [data-theme="light"] .modal-header h3 { color: #fff; }
+        [data-theme="light"] .modal-close { color: #fff; }
+        [data-theme="light"] .modal-close:hover { color: #ccc; }
+        [data-theme="light"] .modal-body { background: #fff; color: #000; }
+        [data-theme="light"] .modal-footer { background: #f5f5f5; border-top: 1px solid #ddd; }
+        [data-theme="light"] .modal-btn { background: #333; color: #fff; border: none; }
+        [data-theme="light"] .modal-btn:hover { background: #555; }
+        [data-theme="light"] .modal-btn.cancel { background: #666; }
+        [data-theme="light"] .modal-btn.success { background: #22c55e; }
+        [data-theme="light"] .modal-btn.primary { background: #333; border: 1px solid #000; }
+        [data-theme="light"] .calendar-box { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .calendar-header { color: #000; background: #f5f5f5; }
+        [data-theme="light"] .calendar-day { color: #333; }
+        [data-theme="light"] .calendar-day.today { background: #333; color: #fff; }
+        [data-theme="light"] .calendar-day.has-event { background: #1a1a1a; color: #fff; }
+        [data-theme="light"] .calendar-day.has-event::after { background: #22c55e; }
+        [data-theme="light"] .event-card { background: #f8f8f8; border: 1px solid #ddd; border-left: 4px solid #333; }
+        [data-theme="light"] .event-date { color: #333; font-weight: 700; }
+        [data-theme="light"] .event-name { color: #000; }
+        [data-theme="light"] .quick-notes { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .quick-notes textarea { background: #e8e8e8; color: #000; border: 1px solid #999; }
+        [data-theme="light"] .quick-notes textarea:focus { background: #f5f5f5; border-color: #333; }
+        [data-theme="light"] .quick-notes textarea::placeholder { color: #666; }
+        [data-theme="light"] .quick-notes-header { background: #1a1a1a; color: #fff; }
+        [data-theme="light"] .quick-btn { background: #333; color: #fff; border: none; }
+        [data-theme="light"] .quick-btn:hover { background: #555; }
+        [data-theme="light"] .footer a { background: #333; color: #fff; }
+        [data-theme="light"] .footer a:hover { background: #555; }
+        [data-theme="light"] .metrics-btn { background: #333; border-color: #555; color: #fff; }
+        [data-theme="light"] .metrics-btn:hover { background: #555; }
+        [data-theme="light"] .metrics-card { background: #f8f8f8; border: 1px solid #ddd; }
+        [data-theme="light"] .metrics-card-header { color: #000; border-bottom-color: #ddd; }
+        [data-theme="light"] .metrics-row { color: #333; }
+        [data-theme="light"] .metrics-value { color: #000; }
+        [data-theme="light"] .metrics-value.good { color: #22c55e; }
+        [data-theme="light"] .metrics-app { background: #e8e8e8; }
+        [data-theme="light"] .metrics-app span:first-child { color: #666; }
+        [data-theme="light"] .metrics-app span:last-child { color: #000; }
+        [data-theme="light"] .upcoming-section-header { background: #1a1a1a; border-color: #000; }
+        [data-theme="light"] .upcoming-title { color: #fff; }
+        [data-theme="light"] .upcoming-count { border-color: #ef4444; color: #ef4444; }
+        [data-theme="light"] .upcoming-toggle { color: #fff; }
+        [data-theme="light"] .shiftplan-table { background: #fff; }
+        [data-theme="light"] .shiftplan-table th { background: #333; color: #fff; }
+        [data-theme="light"] .shiftplan-table td { color: #000; border-color: #ddd; }
+        [data-theme="light"] .shiftplan-table tr:hover { background: #f0f0f0; }
+        [data-theme="light"] .cvd-col { color: #f59e0b !important; }
+        [data-theme="light"] .dropdown-content { background: #fff; border: 1px solid #333; }
+        [data-theme="light"] .dropdown-item { color: #000; }
+        [data-theme="light"] .dropdown-item:hover { background: #333; color: #fff; }
+        [data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea { 
+            background: #fff; color: #000; border: 1px solid #999; 
+        }
+        [data-theme="light"] input:focus, [data-theme="light"] select:focus, [data-theme="light"] textarea:focus { 
+            border-color: #333; outline: 2px solid #333; 
+        }
+        [data-theme="light"] .dept-notes { background: #e8e8e8; color: #000; border: 1px solid #999; }
+        [data-theme="light"] .dept-notes:focus { background: #f5f5f5; border-color: #333; }
+        [data-theme="light"] .form-group label { color: #000; }
+        [data-theme="light"] .version { color: #666; }
+        [data-theme="light"] .upload-btn { background: #333 !important; border-color: #555 !important; color: #fff !important; }
+        
+        /* Projects in light theme */
+        [data-theme="light"] .projects-add-btn { background: #333; color: #fff; border-color: #333; }
+        [data-theme="light"] .projects-add-btn:hover { background: #555; }
+        [data-theme="light"] .project-card { background: #f8f8f8; border-color: #ccc; }
+        [data-theme="light"] .project-card:hover { background: #e8e8e8; border-color: #333; }
+        [data-theme="light"] .project-card-title { color: #000; }
+        [data-theme="light"] .project-card-notes { color: #333; }
+        [data-theme="light"] .project-attachment-badge { background: #333; color: #fff; }
+        
+        /* Metrics charts in light theme */
+        [data-theme="light"] .metrics-summary-card { background: #f8f8f8; border-color: #ccc; }
+        [data-theme="light"] .metrics-summary-value { color: #000; }
+        [data-theme="light"] .metrics-summary-label { color: #666; }
+        [data-theme="light"] .chart-bar { background: linear-gradient(180deg, #333 0%, #555 100%); }
+        [data-theme="light"] .chart-bar.today { background: linear-gradient(180deg, #22c55e 0%, #15803d 100%); }
+        [data-theme="light"] .chart-label { color: #666; }
+        [data-theme="light"] .tool-bar { background: linear-gradient(90deg, #333 0%, #555 100%); }
+        [data-theme="light"] .tool-bar-bg { background: #e0e0e0; }
+        [data-theme="light"] .tool-name { color: #333; }
+        [data-theme="light"] .tool-count { color: #000; }
+        [data-theme="light"] .metrics-table th { background: #333; color: #fff; }
+        [data-theme="light"] .metrics-table td { color: #000; border-color: #ddd; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -844,19 +989,81 @@
             padding: 12px;
             font-size: 13px;
             font-family: inherit;
-            background: var(--blue-dark);
-            border: 1px solid var(--border);
-            color: var(--text);
+            background: #2a2a2a;
+            border: 1px solid #555;
+            color: #fff;
             resize: vertical;
         }
         .dept-notes:focus {
             outline: none;
             border-color: #fff;
-            background: var(--blue-accent);
+            background: #333;
         }
         .dept-notes::placeholder {
             color: #888;
         }
+        
+        /* Projects System */
+        .projects-container { padding: 10px; }
+        .projects-header { margin-bottom: 12px; }
+        .projects-add-btn { 
+            background: var(--blue-dark); border: 1px solid #fff; color: #fff; 
+            padding: 8px 16px; cursor: pointer; font-size: 12px; 
+        }
+        .projects-add-btn:hover { background: var(--blue-medium); }
+        .projects-list { display: flex; flex-direction: column; gap: 10px; }
+        .project-card {
+            background: var(--surface-2); border: 1px solid var(--border); padding: 12px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .project-card:hover { background: var(--blue-medium); border-color: #fff; }
+        .project-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .project-card-title { font-weight: 600; font-size: 14px; color: #fff; }
+        .project-card-dates { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .project-created-date { font-size: 11px; color: #3b82f6; }
+        .project-due-date { font-size: 11px; color: #ef4444; font-weight: 600; }
+        .project-due-date.overdue { color: #ef4444; }
+        .project-due-date.soon { color: #f59e0b; }
+        .project-card-notes { font-size: 12px; color: var(--text-secondary); line-height: 1.4; 
+            max-height: 40px; overflow: hidden; text-overflow: ellipsis; }
+        .project-card-attachments { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+        .project-attachment-badge { 
+            background: var(--blue-dark); padding: 2px 8px; font-size: 10px; 
+            color: #fff; border: 1px solid var(--border); 
+        }
+        .project-empty { text-align: center; color: #888; padding: 30px; font-size: 13px; }
+        
+        /* Project Modal Specific */
+        .project-form { display: flex; flex-direction: column; gap: 15px; }
+        .project-form-row { display: flex; gap: 15px; }
+        .project-form-group { display: flex; flex-direction: column; gap: 6px; }
+        .project-form-group label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        .project-form-group input, .project-form-group textarea, .project-form-group select {
+            background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+            padding: 10px; font-size: 13px; font-family: inherit;
+        }
+        .project-form-group select { cursor: pointer; }
+        .project-form-group textarea { min-height: 100px; resize: vertical; }
+        .project-attachments-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+        .project-attachment-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--surface-2); padding: 8px 12px; font-size: 12px;
+        }
+        .project-attachment-remove { 
+            background: var(--danger); color: #fff; border: none; 
+            padding: 2px 8px; cursor: pointer; font-size: 11px; 
+        }
+        .project-card-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+        .project-dept-badge { 
+            font-size: 10px; padding: 2px 8px; border-radius: 2px;
+            background: var(--surface-2); border: 1px solid var(--border);
+        }
+        .project-dept-badge.office { border-color: #3b82f6; color: #3b82f6; }
+        .project-dept-badge.bar { border-color: #f59e0b; color: #f59e0b; }
+        .project-dept-badge.runner { border-color: #22c55e; color: #22c55e; }
+        .project-dept-badge.tech { border-color: #a855f7; color: #a855f7; }
+        .project-dept-badge.sputnik { border-color: #06b6d4; color: #06b6d4; }
+        .modal-btn.danger { background: var(--danger) !important; cursor: pointer; }
         
         /* Department color accents for tabs */
         .dept.office .dept-tab.active { border-bottom-color: #3b82f6; }
@@ -869,6 +1076,9 @@
         .dept-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .dept.open .dept-toggle { transform: rotate(180deg); }
         .task-count { background: transparent; border: 1px solid #fff; color: #fff; padding: 2px 8px; font-size: 10px; }
+        .projects-count { background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 2px 8px; font-size: 10px; }
+        .notes-count { background: transparent; border: 1px solid #3b82f6; color: #3b82f6; padding: 2px 8px; font-size: 10px; }
+        .tab-count { background: rgba(255,255,255,0.2); color: #fff; padding: 1px 6px; font-size: 9px; border-radius: 3px; margin-left: 4px; }
         
         /* Tabs always visible under header */
         .dept-tabs {
@@ -1049,6 +1259,8 @@
         }
         .bmt-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .bmt-toggle.open { transform: rotate(180deg); }
+        .bmt-link { color: #fff; text-decoration: none; }
+        .bmt-link:hover { color: #3b82f6; text-decoration: underline; }
         .bmt-actions {
             display: flex;
             gap: 8px;
@@ -1241,6 +1453,69 @@
         .footer a { background: #2d2d44; color: white; padding: 15px 30px; border-radius: 0; text-decoration: none; display: inline-block; }
         .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
         
+        /* Metrics Button */
+        .metrics-button-container { text-align: center; margin: 20px 0; }
+        .metrics-btn { 
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+            border: 1px solid #3b82f6; color: #fff; padding: 12px 30px; 
+            font-size: 14px; font-weight: 600; cursor: pointer; 
+            transition: all 0.3s;
+        }
+        .metrics-btn:hover { background: linear-gradient(135deg, #2d4a6f 0%, #3d5a7f 100%); transform: translateY(-2px); }
+        
+        /* Metrics Modal */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+        .metrics-card { background: var(--blue-dark); border: 1px solid var(--border); padding: 15px; }
+        .metrics-card.wide { grid-column: span 2; }
+        .metrics-card-header { color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .metrics-card-body { display: flex; flex-direction: column; gap: 8px; }
+        .metrics-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-secondary); }
+        .metrics-row.dimmed { opacity: 0.5; }
+        .metrics-value { font-weight: 700; color: #fff; font-size: 16px; }
+        .metrics-value.good { color: #22c55e; }
+        
+        /* Metrics Summary Row */
+        .metrics-summary-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .metrics-summary-card { 
+            flex: 1; min-width: 120px; background: var(--blue-dark); border: 1px solid var(--border);
+            padding: 15px; text-align: center;
+        }
+        .metrics-summary-card.good { border-color: #22c55e; }
+        .metrics-summary-value { font-size: 32px; font-weight: 800; color: #fff; }
+        .metrics-summary-card.good .metrics-summary-value { color: #22c55e; }
+        .metrics-summary-label { font-size: 11px; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Bar Chart */
+        .metrics-chart-container { padding: 10px 0; }
+        .metrics-bar-chart { 
+            display: flex; justify-content: space-between; align-items: flex-end; 
+            height: 120px; gap: 8px; padding: 0 10px;
+        }
+        .chart-bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; }
+        .chart-bar { 
+            width: 100%; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%); 
+            border-radius: 2px 2px 0 0; transition: height 0.3s; min-height: 4px;
+            margin-top: auto;
+        }
+        .chart-bar.today { background: linear-gradient(180deg, #22c55e 0%, #15803d 100%); }
+        .chart-label { font-size: 10px; color: var(--text-secondary); margin-top: 6px; }
+        
+        /* Tools Usage Chart */
+        .metrics-tools-chart { display: flex; flex-direction: column; gap: 10px; }
+        .tool-usage-row { display: flex; align-items: center; gap: 10px; }
+        .tool-name { width: 80px; font-size: 12px; color: var(--text-secondary); }
+        .tool-bar-bg { flex: 1; height: 20px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+        .tool-bar { height: 100%; background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%); transition: width 0.3s; }
+        .tool-count { width: 30px; text-align: right; font-weight: 700; color: #fff; font-size: 14px; }
+        
+        /* Metrics Tables */
+        .metrics-table { overflow-x: auto; }
+        .metrics-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .metrics-table th { background: var(--surface-2); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+        .metrics-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+        .metrics-table tr:last-child td { border-bottom: none; }
+        .metrics-table td:last-child { text-align: right; font-weight: 700; color: #fff; }
+        
         .loading-spinner { text-align: center; padding: 40px; color: #888; }
 
         /* Month Filter Dropdown */
@@ -1341,11 +1616,11 @@
         .quick-notes-header .save-indicator.show { opacity: 1; }
         .quick-notes textarea {
             width: 100%; min-height: 60px; padding: 12px;
-            border: 1px solid #fff; background: var(--blue-medium); color: #fff;
+            border: 1px solid #555; background: #2a2a2a; color: #fff;
             font-size: 13px; font-family: inherit; resize: vertical;
         }
-        .quick-notes textarea:focus { outline: none; border-color: #fff; background: var(--blue-accent); }
-        .quick-notes textarea::placeholder { color: #fff; opacity: 0.6; }
+        .quick-notes textarea:focus { outline: none; border-color: #fff; background: #333; }
+        .quick-notes textarea::placeholder { color: #999; }
         
         /* Deep Analysis Button */
         .btn-analysis { background: var(--blue-dark); border: 1px solid #fff; }
@@ -1847,9 +2122,9 @@
     <!--  -->
     
     <div class="bmt-section">
-        <div class="bmt-header" style="cursor: pointer;">
-            <div class="bmt-title" onclick="toggleBMTSection()">
-                 BMT Events
+        <div class="bmt-header" onclick="toggleBMTSection()" style="cursor: pointer;">
+            <div class="bmt-title">
+                <a href="https://club.bookmetender.com/dashboards" target="_blank" onclick="event.stopPropagation();" class="bmt-link">BMT EVENTS</a>
                 <span class="bmt-badge" id="bmt-event-count">0</span>
                 <span class="bmt-toggle" id="bmt-toggle"></span>
             </div>
@@ -3341,12 +3616,13 @@
         <!-- OFFICE -->
         <div class="dept office grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🏢 OFFICE <span class="task-count" id="office-task-count"></span></div>
+                <div class="dept-header-left">🏢 OFFICE <span class="task-count" id="office-task-count">0</span> <span class="notes-count" id="office-notes-count">0</span> <span class="projects-count" id="office-projects-count">0</span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
-                <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'office-notes-tab')">Notes <span class="task-count" id="notes-count"></span></button>
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks <span class="tab-count" id="office-tasks-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'office-notes-tab')">Notes <span class="tab-count" id="office-notes-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'office-projects-tab')">Projects <span class="tab-count" id="office-projects-tab-count">0</span></button>
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="office-tasks-tab">
@@ -3361,19 +3637,29 @@
                 <div class="dept-tab-content" id="office-notes-tab">
                     <textarea class="dept-notes" id="office-notes" placeholder="Office Notizen..." oninput="saveDeptNotes('office')"></textarea>
                 </div>
+                <div class="dept-tab-content" id="office-projects-tab">
+                    <div class="projects-container">
+                        <div class="projects-header">
+                            <button class="projects-add-btn" onclick="openProjectModal()">+ New Project</button>
+                        </div>
+                        <div class="projects-list" id="projects-list">
+                            <!-- Projects will be rendered here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
         <!-- BAR -->
         <div class="dept bar grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🍸 BAR <span class="task-count" id="bar-task-count"></span></div>
+                <div class="dept-header-left">🍸 BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'bar-shiftplan-tab')">Shiftplan</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'bar-tasks-tab')">Tasks</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'bar-notes-tab')">Notes</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'bar-tasks-tab')">Tasks <span class="tab-count" id="bar-tasks-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'bar-notes-tab')">Notes <span class="tab-count" id="bar-notes-tab-count">0</span></button>
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="bar-shiftplan-tab">
@@ -3400,13 +3686,13 @@
         <!-- RUNNER -->
         <div class="dept runner grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🏃 RUNNER <span class="task-count" id="runner-task-count"></span></div>
+                <div class="dept-header-left">🏃 RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'runner-shiftplan-tab')">Shiftplan</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'runner-tasks-tab')">Tasks</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'runner-notes-tab')">Notes</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'runner-tasks-tab')">Tasks <span class="tab-count" id="runner-tasks-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'runner-notes-tab')">Notes <span class="tab-count" id="runner-notes-tab-count">0</span></button>
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="runner-shiftplan-tab">
@@ -3433,13 +3719,13 @@
         <!-- TECH -->
         <div class="dept technik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🔧 TECH <span class="task-count" id="technik-task-count"></span></div>
+                <div class="dept-header-left">🔧 TECH <span class="task-count" id="technik-task-count">0</span> <span class="notes-count" id="technik-notes-count">0</span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'technik-calendar-tab')">Calendar</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'technik-tasks-tab')">Tasks</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'technik-notes-tab')">Notes</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'technik-tasks-tab')">Tasks <span class="tab-count" id="technik-tasks-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'technik-notes-tab')">Notes <span class="tab-count" id="technik-notes-tab-count">0</span></button>
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="technik-calendar-tab">
@@ -3469,14 +3755,14 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🚀 SPUTNIK BAR <span class="task-count" id="sputnik-task-count"></span></div>
+                <div class="dept-header-left">🚀 SPUTNIK BAR <span class="task-count" id="sputnik-task-count">0</span> <span class="notes-count" id="sputnik-notes-count">0</span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
-                <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Reservations</button>
+                <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Resv.</button>
                 <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-shiftplan-tab')">Shiftplan</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-tasks-tab')">Tasks</button>
-                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-notes-tab')">Notes</button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-tasks-tab')">Tasks <span class="tab-count" id="sputnik-tasks-tab-count">0</span></button>
+                <button class="dept-tab" onclick="switchDeptTab(this, 'sputnik-notes-tab')">Notes <span class="tab-count" id="sputnik-notes-tab-count">0</span></button>
             </div>
             <div class="dept-content">
                 <div class="dept-tab-content active" id="sputnik-reservations-tab">
@@ -3507,7 +3793,258 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.5.6 - 13.01.2026 - JS Fix + All Emojis</div>
+    <!-- Metrics Button -->
+    <div class="metrics-button-container">
+        <button class="metrics-btn" onclick="openModal('metrics-modal')">📊 Metrics</button>
+    </div>
+    
+    <div class="version">Work Hub v15.6.7 - 13.01.2026 - Delete Confirm + Date UI</div>
+    
+    <!-- Metrics Modal -->
+    <div class="modal-overlay" id="metrics-modal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h3>📊 Work Hub Metrics Dashboard</h3>
+                <button class="modal-close" onclick="closeModal('metrics-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                
+                <!-- Summary Row -->
+                <div class="metrics-summary-row">
+                    <div class="metrics-summary-card">
+                        <div class="metrics-summary-value" id="metrics-tasks-open">0</div>
+                        <div class="metrics-summary-label">Open Tasks</div>
+                    </div>
+                    <div class="metrics-summary-card good">
+                        <div class="metrics-summary-value" id="metrics-tasks-today">0</div>
+                        <div class="metrics-summary-label">Done Today</div>
+                    </div>
+                    <div class="metrics-summary-card">
+                        <div class="metrics-summary-value" id="metrics-tasks-week">0</div>
+                        <div class="metrics-summary-label">Done This Week</div>
+                    </div>
+                    <div class="metrics-summary-card">
+                        <div class="metrics-summary-value" id="metrics-tasks-month">0</div>
+                        <div class="metrics-summary-label">Done This Month</div>
+                    </div>
+                    <div class="metrics-summary-card">
+                        <div class="metrics-summary-value" id="metrics-notes-total">0</div>
+                        <div class="metrics-summary-label">Total Notes</div>
+                    </div>
+                    <div class="metrics-summary-card">
+                        <div class="metrics-summary-value" id="metrics-projects-total">0</div>
+                        <div class="metrics-summary-label">Projects</div>
+                    </div>
+                </div>
+                
+                <div class="metrics-grid">
+                    <!-- Weekly Activity Chart -->
+                    <div class="metrics-card wide">
+                        <div class="metrics-card-header">📈 Weekly Activity (Tasks Completed)</div>
+                        <div class="metrics-chart-container">
+                            <div class="metrics-bar-chart" id="weekly-activity-chart">
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-mon" style="height: 20%;"></div>
+                                    <span class="chart-label">Mon</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-tue" style="height: 40%;"></div>
+                                    <span class="chart-label">Tue</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-wed" style="height: 60%;"></div>
+                                    <span class="chart-label">Wed</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-thu" style="height: 30%;"></div>
+                                    <span class="chart-label">Thu</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-fri" style="height: 80%;"></div>
+                                    <span class="chart-label">Fri</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar" id="chart-sat" style="height: 50%;"></div>
+                                    <span class="chart-label">Sat</span>
+                                </div>
+                                <div class="chart-bar-wrapper">
+                                    <div class="chart-bar today" id="chart-sun" style="height: 10%;"></div>
+                                    <span class="chart-label">Sun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Usage Chart -->
+                    <div class="metrics-card wide">
+                        <div class="metrics-card-header">🛠️ Tools Usage (This Week)</div>
+                        <div class="metrics-tools-chart">
+                            <div class="tool-usage-row">
+                                <span class="tool-name">Factsheet</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-factsheet" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-factsheet-week">0</span>
+                            </div>
+                            <div class="tool-usage-row">
+                                <span class="tool-name">Security</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-security" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-security-week">0</span>
+                            </div>
+                            <div class="tool-usage-row">
+                                <span class="tool-name">Cleaning</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-cleaning" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-cleaning-week">0</span>
+                            </div>
+                            <div class="tool-usage-row">
+                                <span class="tool-name">Email</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-email" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-email-week">0</span>
+                            </div>
+                            <div class="tool-usage-row">
+                                <span class="tool-name">PreSale</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-presale" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-presale-week">0</span>
+                            </div>
+                            <div class="tool-usage-row">
+                                <span class="tool-name">Analysis</span>
+                                <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-analysis" style="width: 0%;"></div></div>
+                                <span class="tool-count" id="app-analysis-week">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notes Distribution -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">📝 Notes by Department</div>
+                        <div class="metrics-table">
+                            <table>
+                                <thead><tr><th>Department</th><th>Count</th></tr></thead>
+                                <tbody>
+                                    <tr><td>🏢 Office</td><td id="metrics-notes-office">0</td></tr>
+                                    <tr><td>🍸 Bar</td><td id="metrics-notes-bar">0</td></tr>
+                                    <tr><td>🏃 Runner</td><td id="metrics-notes-runner">0</td></tr>
+                                    <tr><td>🔧 Tech</td><td id="metrics-notes-tech">0</td></tr>
+                                    <tr><td>🚀 Sputnik</td><td id="metrics-notes-sputnik">0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Generated Summary -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">📋 All-Time Totals</div>
+                        <div class="metrics-table">
+                            <table>
+                                <thead><tr><th>Item</th><th>Total</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Factsheets Generated</td><td id="metrics-factsheets">0</td></tr>
+                                    <tr><td>Security Orders</td><td id="metrics-security">0</td></tr>
+                                    <tr><td>Cleaning Plans</td><td id="metrics-cleaning">0</td></tr>
+                                    <tr><td>Emails Sent</td><td id="metrics-emails">0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Sputnik Stats -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">🚀 Sputnik Reservations</div>
+                        <div class="metrics-card-body">
+                            <div class="metrics-row">
+                                <span>This Week</span>
+                                <span class="metrics-value" id="metrics-sputnik-week">-</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>This Month</span>
+                                <span class="metrics-value" id="metrics-sputnik-month">-</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Total Loaded</span>
+                                <span class="metrics-value" id="metrics-sputnik-total">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Email Stats (Future) -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">📧 Emails (Coming Soon)</div>
+                        <div class="metrics-card-body">
+                            <div class="metrics-row dimmed">
+                                <span>Received This Week</span>
+                                <span class="metrics-value">-</span>
+                            </div>
+                            <div class="metrics-row dimmed">
+                                <span>Answered This Week</span>
+                                <span class="metrics-value">-</span>
+                            </div>
+                            <div class="metrics-row dimmed">
+                                <span>Received This Month</span>
+                                <span class="metrics-value">-</span>
+                            </div>
+                            <div class="metrics-row dimmed">
+                                <span>Answered This Month</span>
+                                <span class="metrics-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="resetMetrics()">🔄 Reset All</button>
+                <button class="modal-btn cancel" onclick="closeModal('metrics-modal')">Schliessen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project Modal -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="project-modal-title">📁 New Project</h3>
+                <button class="modal-close" onclick="closeModal('project-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div class="project-form">
+                    <input type="hidden" id="project-edit-id" value="">
+                    <div class="project-form-group">
+                        <label>Project Name *</label>
+                        <input type="text" id="project-name" placeholder="z.B. NYE Planning, Website Redesign...">
+                    </div>
+                    <div class="project-form-row">
+                        <div class="project-form-group" style="flex:1;">
+                            <label>Due Date</label>
+                            <input type="date" id="project-due-date">
+                        </div>
+                        <div class="project-form-group" style="flex:1;">
+                            <label>Department</label>
+                            <select id="project-department">
+                                <option value="">— None —</option>
+                                <option value="office">🏢 Office</option>
+                                <option value="bar">🍸 Bar</option>
+                                <option value="runner">🏃 Runner</option>
+                                <option value="tech">🔧 Tech</option>
+                                <option value="sputnik">🚀 Sputnik</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="project-form-group">
+                        <label>Notes</label>
+                        <textarea id="project-notes" placeholder="Project details, tasks, ideas..."></textarea>
+                    </div>
+                    <div class="project-form-group">
+                        <label>Attachments</label>
+                        <input type="file" id="project-files" multiple onchange="handleProjectFiles(event)">
+                        <div class="project-attachments-list" id="project-attachments-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn danger" id="project-delete-btn" onclick="deleteProject(event)" style="display: none;">🗑️ Delete</button>
+                <button class="modal-btn" id="project-email-btn" onclick="emailProject()" style="display: none;">📧 Email</button>
+                <button class="modal-btn success" onclick="saveProject()">💾 Save</button>
+                <button class="modal-btn cancel" onclick="closeModal('project-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 
@@ -3775,15 +4312,12 @@
         function resetAllUI() {
             ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(d => {
                 const countEl = document.getElementById(`${d}-task-count`);
+                const tabCountEl = document.getElementById(`${d}-tasks-tab-count`);
                 const listEl = document.getElementById(`${d}-tasks-list`);
-                if (countEl) countEl.textContent = '';
+                if (countEl) countEl.textContent = '0';
+                if (tabCountEl) tabCountEl.textContent = '0';
                 if (listEl) listEl.innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Connect</button></div>';
             });
-            // Reset Notes section
-            const notesCountEl = document.getElementById('notes-count');
-            const notesListEl = document.getElementById('office-notes-list');
-            if (notesCountEl) notesCountEl.textContent = '';
-            if (notesListEl) notesListEl.innerHTML = '<div class="tasks-login-prompt"><p>Sign in</p><button onclick="handleAuth()">Connect</button></div>';
         }
         
         // 
@@ -3811,7 +4345,11 @@
                 });
                 const data = await r.json();
                 const tasks = data.value || [];
-                if (countEl) countEl.textContent = tasks.length || '';
+                const taskCount = tasks.length || 0;
+                if (countEl) countEl.textContent = taskCount;
+                // Also update tab count
+                const tabCountEl = document.getElementById(`${dept}-tasks-tab-count`);
+                if (tabCountEl) tabCountEl.textContent = taskCount;
                 listEl.innerHTML = tasks.length ? tasks.map(t => {
                     let dueClass = '', dueText = '';
                     if (t.dueDateTime) {
@@ -3844,6 +4382,7 @@
                     body: JSON.stringify({ status: 'completed' })
                 });
                 showToast(" Erledigt!");
+                trackTaskCompletion(); // Track metrics
                 setTimeout(() => loadTasks(dept), 500);
             } catch (e) { el.querySelector('.task-checkbox').classList.remove('checked'); }
         }
@@ -5326,6 +5865,7 @@
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
             showToast(" Factsheet kopiert!");
+            trackFactsheet(); // Track metrics
         }
         
         function printFactsheet() {
@@ -5739,6 +6279,7 @@
                 if (textarea) {
                     const text = textarea.value;
                     localStorage.setItem('workhub-' + dept + '-notes', text);
+                    updateDeptNotesCount(dept, text);
                     console.log('Saved notes for ' + dept);
                 }
             }, 500);
@@ -5752,7 +6293,34 @@
                     const saved = localStorage.getItem('workhub-' + dept + '-notes');
                     if (saved) {
                         textarea.value = saved;
+                        updateDeptNotesCount(dept, saved);
                     }
+                }
+            });
+        }
+        
+        // Count notes (non-empty lines) and update display
+        function updateDeptNotesCount(dept, text) {
+            const lines = text.split('\n').filter(line => line.trim().length > 0);
+            const count = lines.length;
+            
+            // Update header notes count
+            const headerCount = document.getElementById(dept + '-notes-count');
+            if (headerCount) headerCount.textContent = count;
+            
+            // Update tab notes count
+            const tabCount = document.getElementById(dept + '-notes-tab-count');
+            if (tabCount) tabCount.textContent = count;
+        }
+        
+        // Update all department counts (tasks + notes)
+        function updateAllDeptCounts() {
+            const depts = ['office', 'bar', 'runner', 'technik', 'sputnik'];
+            depts.forEach(dept => {
+                // Update notes count
+                const textarea = document.getElementById(dept + '-notes');
+                if (textarea) {
+                    updateDeptNotesCount(dept, textarea.value || '');
                 }
             });
         }
@@ -6363,6 +6931,7 @@
                     status.textContent = ' E-Mail gesendet!';
                     status.style.color = '#22c55e';
                     showToast(' E-Mail gesendet!');
+                    trackEmailSent(); // Track metrics
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -7431,6 +8000,7 @@
             
             navigator.clipboard.writeText(text).then(() => {
                 showToast(` ${checkedRows.length} Cleaningen kopiert!`);
+                trackCleaningPlan(); // Track metrics
             }).catch(() => {
                 showToast(' Kopieren fehlgeschlagen', 'error');
             });
@@ -8677,7 +9247,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.5.6 - JS Fix + All Emojis');
+            console.log('Work Hub v15.6.7 - Delete Confirm + Date UI');
             loadQuickNotes();
             loadDeptNotes(); // Load department notes from localStorage
             initMsal();
@@ -8926,6 +9496,7 @@ Spittelauer Lnde 12/1
             const output = document.getElementById('security-order-output').textContent;
             navigator.clipboard.writeText(output).then(() => {
                 alert('… Security Order kopiert!');
+                trackSecurityOrder(); // Track metrics
             });
         }
         
@@ -9242,6 +9813,517 @@ Spittelauer Lnde 12/1
         document.getElementById('briefing-modal')?.addEventListener('click', function(e) {
             if (e.target === this) closeModal('briefing-modal');
         });
+        
+        // ==========================================
+        // METRICS SYSTEM
+        // ==========================================
+        
+        // Get metrics from localStorage
+        function getMetrics() {
+            const defaultMetrics = {
+                tasksCompleted: [],
+                factsheets: 0,
+                securityOrders: 0,
+                cleaningPlans: 0,
+                emailsSent: 0,
+                appUsage: {},
+                sputnikReservations: []
+            };
+            try {
+                const stored = localStorage.getItem('workhub-metrics');
+                return stored ? { ...defaultMetrics, ...JSON.parse(stored) } : defaultMetrics;
+            } catch {
+                return defaultMetrics;
+            }
+        }
+        
+        // Save metrics to localStorage
+        function saveMetrics(metrics) {
+            localStorage.setItem('workhub-metrics', JSON.stringify(metrics));
+        }
+        
+        // Track app usage
+        function trackAppUsage(appName) {
+            const metrics = getMetrics();
+            const today = new Date().toISOString().split('T')[0];
+            if (!metrics.appUsage[today]) metrics.appUsage[today] = {};
+            metrics.appUsage[today][appName] = (metrics.appUsage[today][appName] || 0) + 1;
+            saveMetrics(metrics);
+        }
+        
+        // Track task completion
+        function trackTaskCompletion() {
+            const metrics = getMetrics();
+            metrics.tasksCompleted.push(new Date().toISOString());
+            // Keep only last 90 days
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - 90);
+            metrics.tasksCompleted = metrics.tasksCompleted.filter(d => new Date(d) > cutoff);
+            saveMetrics(metrics);
+        }
+        
+        // Track factsheet generation
+        function trackFactsheet() {
+            const metrics = getMetrics();
+            metrics.factsheets++;
+            saveMetrics(metrics);
+            trackAppUsage('factsheet');
+        }
+        
+        // Track security order
+        function trackSecurityOrder() {
+            const metrics = getMetrics();
+            metrics.securityOrders++;
+            saveMetrics(metrics);
+            trackAppUsage('security');
+        }
+        
+        // Track cleaning plan
+        function trackCleaningPlan() {
+            const metrics = getMetrics();
+            metrics.cleaningPlans++;
+            saveMetrics(metrics);
+            trackAppUsage('cleaning');
+        }
+        
+        // Track email sent
+        function trackEmailSent() {
+            const metrics = getMetrics();
+            metrics.emailsSent++;
+            saveMetrics(metrics);
+            trackAppUsage('email');
+        }
+        
+        // Calculate metrics for display
+        function calculateDisplayMetrics() {
+            const metrics = getMetrics();
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const weekStart = new Date(today);
+            weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Monday
+            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            
+            // Count completed tasks by period
+            const tasksToday = metrics.tasksCompleted.filter(d => new Date(d) >= today).length;
+            const tasksWeek = metrics.tasksCompleted.filter(d => new Date(d) >= weekStart).length;
+            const tasksMonth = metrics.tasksCompleted.filter(d => new Date(d) >= monthStart).length;
+            
+            // Count open tasks from DOM
+            let openTasks = 0;
+            ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(dept => {
+                const countEl = document.getElementById(`${dept}-task-count`);
+                if (countEl && countEl.textContent && !isNaN(parseInt(countEl.textContent))) {
+                    openTasks += parseInt(countEl.textContent);
+                }
+            });
+            
+            // Count notes
+            let totalNotes = 0, officeNotes = 0, otherNotes = 0, sputnikNotes = 0;
+            ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(dept => {
+                const textarea = document.getElementById(`${dept}-notes`);
+                if (textarea && textarea.value) {
+                    const count = textarea.value.split('\n').filter(l => l.trim()).length;
+                    totalNotes += count;
+                    if (dept === 'office') officeNotes = count;
+                    else if (dept === 'sputnik') sputnikNotes = count;
+                    else otherNotes += count;
+                }
+            });
+            
+            // App usage this week
+            const appUsageWeek = {};
+            const appNames = ['factsheet', 'security', 'cleaning', 'email', 'presale', 'cost', 'projector', 'analysis', 'guestlist', 'barstaff'];
+            appNames.forEach(app => appUsageWeek[app] = 0);
+            
+            Object.keys(metrics.appUsage || {}).forEach(date => {
+                if (new Date(date) >= weekStart) {
+                    Object.keys(metrics.appUsage[date]).forEach(app => {
+                        appUsageWeek[app] = (appUsageWeek[app] || 0) + metrics.appUsage[date][app];
+                    });
+                }
+            });
+            
+            // Tasks by weekday
+            const tasksByDay = [0, 0, 0, 0, 0, 0, 0]; // Mon-Sun
+            metrics.tasksCompleted.forEach(d => {
+                const date = new Date(d);
+                if (date >= weekStart) {
+                    let day = date.getDay() - 1;
+                    if (day < 0) day = 6; // Sunday
+                    tasksByDay[day]++;
+                }
+            });
+            
+            // Notes by department
+            const notesByDept = { office: 0, bar: 0, runner: 0, tech: 0, sputnik: 0 };
+            ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(dept => {
+                const textarea = document.getElementById(`${dept}-notes`);
+                if (textarea && textarea.value) {
+                    const count = textarea.value.split('\n').filter(l => l.trim()).length;
+                    const key = dept === 'technik' ? 'tech' : dept;
+                    notesByDept[key] = count;
+                }
+            });
+            
+            return {
+                openTasks,
+                tasksToday,
+                tasksWeek,
+                tasksMonth,
+                totalNotes,
+                officeNotes,
+                otherNotes,
+                sputnikNotes,
+                notesByDept,
+                tasksByDay,
+                factsheets: metrics.factsheets || 0,
+                securityOrders: metrics.securityOrders || 0,
+                cleaningPlans: metrics.cleaningPlans || 0,
+                emailsSent: metrics.emailsSent || 0,
+                appUsageWeek
+            };
+        }
+        
+        // Update metrics display
+        function updateMetricsDisplay() {
+            const data = calculateDisplayMetrics();
+            const projects = getProjects();
+            
+            // Summary cards
+            document.getElementById('metrics-tasks-open').textContent = data.openTasks;
+            document.getElementById('metrics-tasks-today').textContent = data.tasksToday;
+            document.getElementById('metrics-tasks-week').textContent = data.tasksWeek;
+            document.getElementById('metrics-tasks-month').textContent = data.tasksMonth;
+            document.getElementById('metrics-notes-total').textContent = data.totalNotes;
+            
+            const projectsEl = document.getElementById('metrics-projects-total');
+            if (projectsEl) projectsEl.textContent = projects.length;
+            
+            // Notes by department table
+            const notesDepts = ['office', 'bar', 'runner', 'tech', 'sputnik'];
+            notesDepts.forEach(dept => {
+                const el = document.getElementById(`metrics-notes-${dept}`);
+                if (el) el.textContent = data.notesByDept[dept] || 0;
+            });
+            
+            // Tools totals table
+            document.getElementById('metrics-factsheets').textContent = data.factsheets;
+            document.getElementById('metrics-security').textContent = data.securityOrders;
+            document.getElementById('metrics-cleaning').textContent = data.cleaningPlans;
+            document.getElementById('metrics-emails').textContent = data.emailsSent;
+            
+            // Sputnik (placeholder)
+            const sputnikEls = ['metrics-sputnik-week', 'metrics-sputnik-month', 'metrics-sputnik-total'];
+            sputnikEls.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '-';
+            });
+            
+            // Weekly activity chart
+            const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+            const maxTasks = Math.max(...data.tasksByDay, 1);
+            const todayIdx = (new Date().getDay() + 6) % 7; // 0=Mon, 6=Sun
+            days.forEach((day, i) => {
+                const bar = document.getElementById(`chart-${day}`);
+                if (bar) {
+                    const height = Math.max((data.tasksByDay[i] / maxTasks) * 100, 5);
+                    bar.style.height = height + '%';
+                    if (i === todayIdx) bar.classList.add('today');
+                    else bar.classList.remove('today');
+                }
+            });
+            
+            // Tools usage chart
+            const tools = ['factsheet', 'security', 'cleaning', 'email', 'presale', 'analysis'];
+            const maxUsage = Math.max(...tools.map(t => data.appUsageWeek[t] || 0), 1);
+            tools.forEach(tool => {
+                const bar = document.getElementById(`tool-bar-${tool}`);
+                const count = document.getElementById(`app-${tool}-week`);
+                const usage = data.appUsageWeek[tool] || 0;
+                if (bar) bar.style.width = (usage / maxUsage * 100) + '%';
+                if (count) count.textContent = usage;
+            });
+        }
+        
+        // Reset all metrics
+        function resetMetrics() {
+            if (confirm('Alle Metriken zurücksetzen?')) {
+                localStorage.removeItem('workhub-metrics');
+                updateMetricsDisplay();
+                showToast('Metriken zurückgesetzt');
+            }
+        }
+        
+        // ==========================================
+        // PROJECTS SYSTEM
+        // ==========================================
+        
+        let currentProjectAttachments = [];
+        
+        function getProjects() {
+            try {
+                return JSON.parse(localStorage.getItem('workhub-projects') || '[]');
+            } catch {
+                return [];
+            }
+        }
+        
+        function saveProjects(projects) {
+            localStorage.setItem('workhub-projects', JSON.stringify(projects));
+            renderProjects();
+            updateProjectsCount();
+        }
+        
+        function updateProjectsCount() {
+            const projects = getProjects();
+            const count = projects.length;
+            // Update tab count
+            const tabCountEl = document.getElementById('office-projects-tab-count');
+            if (tabCountEl) tabCountEl.textContent = count;
+            // Update header count
+            const headerCountEl = document.getElementById('office-projects-count');
+            if (headerCountEl) headerCountEl.textContent = count;
+        }
+        
+        function renderProjects() {
+            const projects = getProjects();
+            const container = document.getElementById('projects-list');
+            if (!container) return;
+            
+            if (projects.length === 0) {
+                container.innerHTML = '<div class="project-empty">No projects yet. Click "+ New Project" to create one.</div>';
+                return;
+            }
+            
+            const deptLabels = { office: '🏢 Office', bar: '🍸 Bar', runner: '🏃 Runner', tech: '🔧 Tech', sputnik: '🚀 Sputnik' };
+            
+            container.innerHTML = projects.map(p => {
+                let deptBadge = '';
+                if (p.department && deptLabels[p.department]) {
+                    deptBadge = `<span class="project-dept-badge ${p.department}">${deptLabels[p.department]}</span>`;
+                }
+                
+                // Due date display
+                let dueDateHtml = '';
+                if (p.dueDate) {
+                    const due = new Date(p.dueDate);
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+                    let dueClass = 'project-due-date';
+                    if (diffDays < 0) dueClass += ' overdue';
+                    else if (diffDays <= 3) dueClass += ' soon';
+                    dueDateHtml = `<div class="${dueClass}">Due: ${due.toLocaleDateString('de-DE')}</div>`;
+                }
+                
+                return `
+                <div class="project-card" onclick="editProject('${p.id}')">
+                    <div class="project-card-header">
+                        <div class="project-card-title">${escapeHtml(p.name)}</div>
+                        <div class="project-card-dates">
+                            <div class="project-created-date">Created: ${new Date(p.created).toLocaleDateString('de-DE')}</div>
+                            ${dueDateHtml}
+                        </div>
+                    </div>
+                    ${deptBadge ? `<div class="project-card-meta">${deptBadge}</div>` : ''}
+                    ${p.notes ? `<div class="project-card-notes">${escapeHtml(p.notes.substring(0, 100))}${p.notes.length > 100 ? '...' : ''}</div>` : ''}
+                    ${p.attachments && p.attachments.length > 0 ? `
+                        <div class="project-card-attachments">
+                            ${p.attachments.map(a => `<span class="project-attachment-badge">📎 ${escapeHtml(a.name)}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>`;
+            }).join('');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function openProjectModal(projectId = null) {
+            currentProjectAttachments = [];
+            document.getElementById('project-edit-id').value = '';
+            document.getElementById('project-name').value = '';
+            document.getElementById('project-notes').value = '';
+            document.getElementById('project-due-date').value = '';
+            document.getElementById('project-department').value = '';
+            document.getElementById('project-files').value = '';
+            document.getElementById('project-attachments-list').innerHTML = '';
+            document.getElementById('project-delete-btn').style.display = 'none';
+            document.getElementById('project-email-btn').style.display = 'none';
+            document.getElementById('project-modal-title').textContent = '📁 New Project';
+            
+            if (projectId) {
+                const projects = getProjects();
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    document.getElementById('project-edit-id').value = project.id;
+                    document.getElementById('project-name').value = project.name;
+                    document.getElementById('project-notes').value = project.notes || '';
+                    document.getElementById('project-due-date').value = project.dueDate || '';
+                    document.getElementById('project-department').value = project.department || '';
+                    currentProjectAttachments = project.attachments || [];
+                    renderProjectAttachments();
+                    document.getElementById('project-delete-btn').style.display = 'inline-block';
+                    document.getElementById('project-email-btn').style.display = 'inline-block';
+                    document.getElementById('project-modal-title').textContent = '📁 Edit Project';
+                }
+            }
+            
+            openModal('project-modal');
+        }
+        
+        function editProject(projectId) {
+            openProjectModal(projectId);
+        }
+        
+        function handleProjectFiles(event) {
+            const files = event.target.files;
+            for (let file of files) {
+                // Store file info (not actual content for localStorage)
+                currentProjectAttachments.push({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    added: new Date().toISOString()
+                });
+            }
+            renderProjectAttachments();
+        }
+        
+        function renderProjectAttachments() {
+            const container = document.getElementById('project-attachments-list');
+            container.innerHTML = currentProjectAttachments.map((a, i) => `
+                <div class="project-attachment-item">
+                    <span>📎 ${escapeHtml(a.name)}</span>
+                    <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">✕</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeProjectAttachment(index) {
+            currentProjectAttachments.splice(index, 1);
+            renderProjectAttachments();
+        }
+        
+        function saveProject() {
+            const name = document.getElementById('project-name').value.trim();
+            if (!name) {
+                showToast('Please enter a project name', 'error');
+                return;
+            }
+            
+            const editId = document.getElementById('project-edit-id').value;
+            const projects = getProjects();
+            
+            const projectData = {
+                id: editId || Date.now().toString(),
+                name: name,
+                notes: document.getElementById('project-notes').value,
+                dueDate: document.getElementById('project-due-date').value || null,
+                department: document.getElementById('project-department').value || null,
+                attachments: currentProjectAttachments,
+                created: editId ? projects.find(p => p.id === editId)?.created || new Date().toISOString() : new Date().toISOString(),
+                updated: new Date().toISOString()
+            };
+            
+            if (editId) {
+                const idx = projects.findIndex(p => p.id === editId);
+                if (idx !== -1) projects[idx] = projectData;
+            } else {
+                projects.unshift(projectData);
+            }
+            
+            saveProjects(projects);
+            closeModal('project-modal');
+            showToast(editId ? 'Project updated!' : 'Project created!');
+        }
+        
+        function deleteProject(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const editIdEl = document.getElementById('project-edit-id');
+            if (!editIdEl || !editIdEl.value) {
+                showToast('No project selected', 'error');
+                return;
+            }
+            
+            const editId = editIdEl.value;
+            const projectName = document.getElementById('project-name').value || 'this project';
+            
+            // Use custom confirm via prompt
+            const confirmText = prompt(`Type DELETE to confirm deleting "${projectName}":`, '');
+            
+            if (confirmText && confirmText.toUpperCase() === 'DELETE') {
+                try {
+                    const allProjects = getProjects();
+                    const filteredProjects = allProjects.filter(p => String(p.id) !== String(editId));
+                    saveProjects(filteredProjects);
+                    closeModal('project-modal');
+                    showToast('Project deleted');
+                } catch (err) {
+                    console.error('Delete error:', err);
+                    showToast('Error deleting project', 'error');
+                }
+            } else if (confirmText !== null) {
+                showToast('Delete cancelled - type DELETE to confirm', 'error');
+            }
+        }
+        
+        function emailProject() {
+            const name = document.getElementById('project-name').value.trim();
+            const notes = document.getElementById('project-notes').value.trim();
+            const dueDate = document.getElementById('project-due-date').value;
+            const dept = document.getElementById('project-department').value;
+            
+            const deptLabels = { office: 'Office', bar: 'Bar', runner: 'Runner', tech: 'Tech', sputnik: 'Sputnik' };
+            
+            let body = `PROJECT: ${name}\n\n`;
+            if (dept) body += `Department: ${deptLabels[dept] || dept}\n`;
+            if (dueDate) body += `Due Date: ${new Date(dueDate).toLocaleDateString('de-DE')}\n`;
+            if (notes) body += `\nNotes:\n${notes}\n`;
+            if (currentProjectAttachments.length > 0) {
+                body += `\nAttachments:\n`;
+                currentProjectAttachments.forEach(a => body += `- ${a.name}\n`);
+            }
+            
+            const subject = encodeURIComponent(`Project: ${name}`);
+            const encodedBody = encodeURIComponent(body);
+            
+            window.open(`mailto:?subject=${subject}&body=${encodedBody}`, '_blank');
+            showToast('Email client opened');
+        }
+        
+        // Initialize projects on load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+            updateProjectsCount();
+        });
+        
+        // Hook into existing functions to track usage
+        const originalOpenModal = openModal;
+        openModal = function(id) {
+            originalOpenModal(id);
+            if (id === 'metrics-modal') updateMetricsDisplay();
+            // Track app usage
+            const appMap = {
+                'factsheet-modal': 'factsheet',
+                'security-orders-modal': 'security',
+                'cleaning-modal': 'cleaning',
+                'email-modal': 'email',
+                'presale-modal': 'presale',
+                'cost-modal': 'cost',
+                'projector-modal': 'projector',
+                'guestlist-modal': 'guestlist',
+                'bar-staffing-modal': 'barstaff'
+            };
+            if (appMap[id]) trackAppUsage(appMap[id]);
+        };
         
     </script>
 </body>
