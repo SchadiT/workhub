@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.5.4</title>
+    <title>Turbo Projects Work Hub v15.5.6</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -213,28 +213,31 @@
         }
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 120px));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 8px;
             justify-content: center;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         .tool-btn {
             background: var(--blue-dark);
             border: 1px solid #fff;
-            padding: 12px 8px;
+            padding: 12px 6px;
             color: #fff;
             text-align: center;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 9px;
             cursor: pointer;
             transition: all 0.2s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             min-height: 70px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            white-space: nowrap;
         }
         .tool-btn:hover {
             background: var(--blue-medium);
@@ -673,6 +676,9 @@
         .shiftplan-table.bar-table { table-layout: auto; }
         .shiftplan-table.bar-table td { white-space: nowrap; padding: 6px 8px; font-size: 11px; }
         .shiftplan-table.bar-table th { padding: 6px 8px; }
+        .shiftplan-table.runner-table { table-layout: auto; }
+        .shiftplan-table.runner-table td { white-space: nowrap; padding: 6px 6px; font-size: 11px; }
+        .shiftplan-table.runner-table th { padding: 6px 6px; }
         .shiftplan-table .cvd-col { color: var(--warn); font-weight: 600; }
         .shiftplan-table .runner-col { color: var(--text); }
         .shiftplan-table .technik-col { color: var(--konzert); font-weight: 600; }
@@ -3122,7 +3128,7 @@
                 </button>
                 <button class="tool-btn border-yellow" onclick="openModal('security-orders-modal')" style="border-color: #f59e0b;">
                     <span class="tool-icon">🛡️</span>
-                    Security Orders
+                    Security
                 </button>
                 <button class="tool-btn border-blue" onclick="openModal('email-modal')">
                     <span class="tool-icon">✉️</span>
@@ -3191,21 +3197,21 @@
                 </button>
                 <button class="tool-btn border-white" onclick="openDeepAnalysis()">
                     <span class="tool-icon">🔍</span>
-                    Deep Analysis
+                    Analysis
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('guestlist-modal')">
                     <span class="tool-icon">📝</span>
-                    Guest List
+                    Guestlist
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('bar-staffing-modal')">
                     <span class="tool-icon">🍸</span>
-                    Bar Staffing
+                    Bar Staff
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('briefing-modal')">
                     <span class="tool-icon">📋</span>
                     Briefing
                 </button>
-                <div class="dropdown-container" style="position: relative; flex: 1 1 auto; min-width: 100px; max-width: 140px;">
+                <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">⭐</span>
                         Special 
@@ -3228,7 +3234,7 @@
             <div class="tools-grid">
                 <button class="tool-btn border-white" onclick="showToast('📦 Inventory Tool - Coming Soon!');">
                     <span class="tool-icon">📦</span>
-                    Inventory & Restock
+                    Inventory
                 </button>
                 <button class="tool-btn border-white" onclick="showToast('💶 Financials - Coming Soon!');">
                     <span class="tool-icon">💶</span>
@@ -3236,7 +3242,7 @@
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('nye-projector-modal');">
                     <span class="tool-icon">🎆</span>
-                    NYE Projector
+                    NYE Proj.
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('peak-grid-modal'); renderPeakGrid();">
                     <span class="tool-icon">📈</span>
@@ -3335,7 +3341,7 @@
         <!-- OFFICE -->
         <div class="dept office grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> OFFICE <span class="task-count" id="office-task-count"></span></div>
+                <div class="dept-header-left">🏢 OFFICE <span class="task-count" id="office-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
@@ -3463,7 +3469,7 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left"> SPUTNIK BAR <span class="task-count" id="sputnik-task-count"></span></div>
+                <div class="dept-header-left">🚀 SPUTNIK BAR <span class="task-count" id="sputnik-task-count"></span></div>
                 <span class="dept-toggle">▼</span>
             </div>
             <div class="dept-tabs">
@@ -3501,7 +3507,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
     </div>
     
-    <div class="version">Work Hub v15.5.4 - 13.01.2026 - UI Polish + Notes Tab</div>
+    <div class="version">Work Hub v15.5.6 - 13.01.2026 - JS Fix + All Emojis</div>
 
     <script>
         // 
@@ -4882,7 +4888,7 @@
                 return;
             }
             
-            let html = `<table class="shiftplan-table">
+            let html = `<table class="shiftplan-table runner-table">
                 <thead>
                     <tr>
                         <th>Tag</th>
@@ -4907,18 +4913,16 @@
                 lastMonth = e.month;
                 
                 const shortDate = e.dateStr.substring(0, 5); // DD.MM
-                // Shorten names for compact display (max 3 chars)
-                const sn = (name) => name && name !== '-' ? name.substring(0, 3).toUpperCase() : '-';
                 html += `<tr>
                     <td class="date-col">${e.day} ${shortDate}</td>
-                    <td class="event-col" title="${e.eventName}">${e.eventName.substring(0, 8)}${e.eventName.length > 8 ? '..' : ''}</td>
-                    <td class="cvd-col" title="${e.cvd}">${sn(e.cvd)}</td>
-                    <td class="runner-col" title="${e.runner1}">${sn(e.runner1)}</td>
-                    <td class="runner-col" title="${e.runner2}">${sn(e.runner2)}</td>
-                    <td class="runner-col" title="${e.runner3}">${sn(e.runner3)}</td>
-                    <td class="runner-col" title="${e.runner4}">${sn(e.runner4)}</td>
-                    <td class="runner-col" title="${e.runner5}">${sn(e.runner5)}</td>
-                    <td class="runner-col" title="${e.runner6}">${sn(e.runner6)}</td>
+                    <td class="event-col">${e.eventName}</td>
+                    <td class="cvd-col">${e.cvd}</td>
+                    <td>${e.runner1}</td>
+                    <td>${e.runner2}</td>
+                    <td>${e.runner3}</td>
+                    <td>${e.runner4}</td>
+                    <td>${e.runner5}</td>
+                    <td>${e.runner6}</td>
                 </tr>`;
             });
             
@@ -4971,6 +4975,7 @@
             let html = `<table class="shiftplan-table bar-table">
                 <thead>
                     <tr>
+                        <th>Tag</th>
                         <th>Event</th>
                         <th>Terr</th>
                         <th>Kit</th>
@@ -4985,11 +4990,13 @@
             futureEvents.forEach(e => {
                 // Add month separator if month changed
                 if (lastMonth !== null && (e.month !== lastMonth)) {
-                    html += `<tr class="month-separator"><td colspan="6" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
+                    html += `<tr class="month-separator"><td colspan="7" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
                 }
                 lastMonth = e.month;
                 
+                const shortDate = e.dateStr.substring(0, 5); // DD.MM
                 html += `<tr>
+                    <td class="date-col">${e.day} ${shortDate}</td>
                     <td class="event-col">${e.eventName}</td>
                     <td>${e.terrasse}</td>
                     <td>${e.kitchen}</td>
@@ -8670,7 +8677,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.5.4 - UI Polish + Notes Tab');
+            console.log('Work Hub v15.5.6 - JS Fix + All Emojis');
             loadQuickNotes();
             loadDeptNotes(); // Load department notes from localStorage
             initMsal();
