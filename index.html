@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.6.7</title>
+    <title>Turbo Projects Work Hub v15.7.2</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -112,11 +112,15 @@
         [data-theme="light"] .tools-toggle.unified { background: #1a1a1a !important; border: 2px solid #333 !important; }
         [data-theme="light"] .tools-toggle span { color: #fff !important; }
         [data-theme="light"] .tools-toggle .arrow { color: #fff !important; }
-        [data-theme="light"] .tools-section { background: #fff; border: 2px solid #333; }
-        [data-theme="light"] .tools-grid { background: #fff; }
+        [data-theme="light"] .tools-section { background: #fff; border: 2px solid #333; padding: 15px; }
+        [data-theme="light"] .tools-grid { background: #fff; padding: 15px; gap: 10px; }
         
-        [data-theme="light"] .tool-btn { background: #fff; border: 2px solid #333; color: #000; }
-        [data-theme="light"] .tool-btn:hover { background: #333; color: #fff; }
+        [data-theme="light"] .tool-btn { background: #fff !important; border: 2px solid #333 !important; color: #000 !important; }
+        [data-theme="light"] .tool-btn:hover { background: #333 !important; color: #fff !important; border-color: #333 !important; }
+        [data-theme="light"] .tool-btn.border-blue,
+        [data-theme="light"] .tool-btn.border-white,
+        [data-theme="light"] .tool-btn.border-green,
+        [data-theme="light"] .tool-btn.border-red { border-color: #333 !important; }
         [data-theme="light"] .tool-btn .tool-icon { filter: none; }
         [data-theme="light"] .dept { background: #fff; border: 2px solid #333; }
         [data-theme="light"] .dept-header { background: #1a1a1a; }
@@ -233,6 +237,7 @@
             padding: 20px;
             color: var(--text);
             transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
         
         /* Unified Header Bar */
@@ -1034,7 +1039,39 @@
         .project-empty { text-align: center; color: #888; padding: 30px; font-size: 13px; }
         
         /* Project Modal Specific */
+        #project-modal .modal-content {
+            max-width: 700px;
+            background: var(--surface);
+            border: 3px solid var(--text-secondary);
+            overflow: hidden;
+        }
+        #project-modal .modal-header {
+            margin: 0;
+            border-radius: 0;
+            padding: 15px 25px;
+        }
+        #project-modal .modal-body {
+            padding: 25px !important;
+        }
+        #project-modal .modal-footer {
+            padding: 15px 25px;
+            background: var(--surface-2);
+        }
         .project-form { display: flex; flex-direction: column; gap: 15px; }
+        .project-form-group input,
+        .project-form-group textarea,
+        .project-form-group select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* Date picker styling */
+        #project-due-date {
+            cursor: pointer;
+        }
+        #project-due-date::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
         .project-form-row { display: flex; gap: 15px; }
         .project-form-group { display: flex; flex-direction: column; gap: 6px; }
         .project-form-group label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
@@ -1043,7 +1080,7 @@
             padding: 10px; font-size: 13px; font-family: inherit;
         }
         .project-form-group select { cursor: pointer; }
-        .project-form-group textarea { min-height: 100px; resize: vertical; }
+        .project-form-group textarea { min-height: 150px; resize: vertical; }
         .project-attachments-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
         .project-attachment-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -1164,7 +1201,7 @@
         .task-checkbox { width: 18px; height: 18px; border: 2px solid #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; background: transparent; }
         .task-checkbox:hover { border-color: var(--good); }
         .task-checkbox.checked { background: var(--good); border-color: var(--good); }
-        .task-checkbox.checked::after { content: '✓'; color: white; font-size: 12px; }
+        .task-checkbox.checked::after { content: '\2714'; color: white; font-size: 12px; }
         .task-info { flex: 1; }
         .task-title { font-size: 13px; color: var(--text); }
         .task-due { font-size: 11px; color: var(--muted); }
@@ -2108,12 +2145,12 @@
             <span> Quick Notes</span>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
-                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">🎤</button>
+                <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">&#127908;</button>
                 <button class="quick-notes-add" onclick="addToOfficeNotes()" title="Zu Office Notes hinzufuegen">+ Office</button>
-                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen loeschen">✕</button>
+                <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen loeschen">&#10005;</button>
             </div>
         </div>
-        <textarea id="quick-notes-text" placeholder="Notiz eingeben, dann '→ Office' klicken..." oninput="saveQuickNotes()"></textarea>
+        <textarea id="quick-notes-text" placeholder="Notiz eingeben, dann '&#127970; Office' klicken..." oninput="saveQuickNotes()"></textarea>
     </div>
     
 
@@ -2175,7 +2212,7 @@
     <div class="modal-overlay" id="cleaning-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>🧹 Cleaning Schedule</h3>
+                <h3>&#129529; Cleaning Schedule</h3>
                 <button class="modal-close" onclick="closeModal('cleaning-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -2186,9 +2223,9 @@
                         </select>
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
-                        <button class="modal-btn success" onclick="copyCleaningSchedule()" style="white-space: nowrap;">📋 Kopieren</button>
-                        <button class="modal-btn" style="background: var(--blue-medium); color: #fff; white-space: nowrap;" onclick="quickSaveCleaningDraft()">📝 Entwurf</button>
-                        <button class="modal-btn primary" onclick="showCleaningEmail()" style="white-space: nowrap;">✉️ E-Mail</button>
+                        <button class="modal-btn success" onclick="copyCleaningSchedule()" style="white-space: nowrap;">&#128203; Kopieren</button>
+                        <button class="modal-btn" style="background: var(--blue-medium); color: #fff; white-space: nowrap;" onclick="quickSaveCleaningDraft()">&#128157; Entwurf</button>
+                        <button class="modal-btn primary" onclick="showCleaningEmail()" style="white-space: nowrap;">&#9993; E-Mail</button>
                     </div>
                 </div>
                 <div id="cleaning-container">
@@ -2199,7 +2236,7 @@
                 
                 <!-- Email Section (hidden by default) -->
                 <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 0; border: 1px solid #3b82f6;">
-                    <h4 style="color: #3b82f6; margin-bottom: 15px;">✉️ Cleaning Schedule versenden</h4>
+                    <h4 style="color: #3b82f6; margin-bottom: 15px;">&#9993; Cleaning Schedule versenden</h4>
                     <div class="form-group">
                         <label>Empfnger</label>
                         <select id="cleaning-email-to" onchange="updateCleaningEmailTo()">
@@ -2220,8 +2257,8 @@
                     </div>
                     <div style="display: flex; gap: 10px; justify-content: flex-end;">
                         <button class="modal-btn cancel" onclick="hideCleaningEmail()">Abbrechen</button>
-                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: var(--blue-medium); color: #fff;">📝 Als Entwurf</button>
-                        <button class="modal-btn success" onclick="sendCleaningEmail()">📤 Senden</button>
+                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: var(--blue-medium); color: #fff;">&#128157; Als Entwurf</button>
+                        <button class="modal-btn success" onclick="sendCleaningEmail()">&#128228; Senden</button>
                     </div>
                     <div id="cleaning-email-status" style="margin-top: 10px; font-size: 13px;"></div>
                 </div>
@@ -2239,7 +2276,7 @@
     <div class="modal-overlay" id="nye-projector-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>🎆 NYE Projector (3-Jahre Benchmark)</h3>
+                <h3>&#127878; NYE Projector (3-Jahre Benchmark)</h3>
                 <button class="modal-close" onclick="closeModal('nye-projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -2334,7 +2371,7 @@
     <div class="modal-overlay" id="peak-grid-modal">
         <div class="modal" style="max-width: 1000px;">
             <div class="modal-header">
-                <h3>📊 NYE Peak Grid Dashboard</h3>
+                <h3>&#128202; NYE Peak Grid Dashboard</h3>
                 <button class="modal-close" onclick="closeModal('peak-grid-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding: 15px;">
@@ -2423,7 +2460,7 @@
     <div class="modal-overlay" id="guestlist-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>📋 Guest List Parser</h3>
+                <h3>&#128203; Guest List Parser</h3>
                 <button class="modal-close" onclick="closeModal('guestlist-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -2474,7 +2511,7 @@
     <div class="modal-overlay" id="bar-staffing-modal">
         <div class="modal" style="max-width: 850px;">
             <div class="modal-header">
-                <h3>🍸 Bar Staffing Tool</h3>
+                <h3>&#127864; Bar Staffing Tool</h3>
                 <button class="modal-close" onclick="closeModal('bar-staffing-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -2812,7 +2849,7 @@
     <div class="modal-overlay" id="projector-modal">
         <div class="modal">
             <div class="modal-header">
-                <h3>📈 Event Projector</h3>
+                <h3>&#128200; Event Projector</h3>
                 <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -3163,12 +3200,12 @@
             <div class="modal-footer" style="flex-wrap: wrap; gap: 8px;">
                 <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schliessen</button>
                 <div style="display: flex; gap: 8px;">
-                    <button class="modal-btn download" onclick="downloadFactsheetPDF()">← PDF</button>
-                    <button class="modal-btn download" onclick="downloadFactsheetDOCX()">← DOCX</button>
+                    <button class="modal-btn download" onclick="downloadFactsheetPDF()">â† PDF</button>
+                    <button class="modal-btn download" onclick="downloadFactsheetDOCX()">â† DOCX</button>
                 </div>
-                <button class="modal-btn security" onclick="confirmSecurityFromFactsheet()">🔒 Security bestÃ¤tigen</button>
-                <button class="modal-btn primary" onclick="copyFactsheet()">📋 Kopieren</button>
-                <button class="modal-btn success" onclick="printFactsheet()">🖨 Drucken</button>
+                <button class="modal-btn security" onclick="confirmSecurityFromFactsheet()">&#128221; Security best&auml;tigen</button>
+                <button class="modal-btn primary" onclick="copyFactsheet()">&#128203; Kopieren</button>
+                <button class="modal-btn success" onclick="printFactsheet()">&#128424; Drucken</button>
             </div>
         </div>
     </div>
@@ -3177,7 +3214,7 @@
     <div class="modal-overlay" id="email-modal">
         <div class="modal">
             <div class="modal-header">
-                <h3>✉️ E-Mail senden</h3>
+                <h3>&#9993; E-Mail senden</h3>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -3197,8 +3234,8 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
-                <button class="modal-btn" onclick="saveEmailDraft()" style="background: var(--blue-medium); color: #fff;">📝 Als Entwurf</button>
-                <button class="modal-btn success" onclick="sendEmail()">📤 Senden</button>
+                <button class="modal-btn" onclick="saveEmailDraft()" style="background: var(--blue-medium); color: #fff;">&#128157; Als Entwurf</button>
+                <button class="modal-btn success" onclick="sendEmail()">&#128228; Senden</button>
             </div>
         </div>
     </div>
@@ -3207,7 +3244,7 @@
     <div class="modal-overlay" id="security-orders-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>🔒 Security Orders</h3>
+                <h3>&#128221; Security Orders</h3>
                 <button class="modal-close" onclick="closeModal('security-orders-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -3221,9 +3258,9 @@
                 <!-- Pending Tab -->
                 <div id="sec-content-pending">
                     <div id="security-pending-list" style="margin-bottom: 20px;">
-                        <p style="color: var(--text-secondary); text-align: center; padding: 30px;">Keine pending Security Orders.<br><small>Erstelle ein Factsheet und klicke "Security bestÃ¤tigen"</small></p>
+                        <p style="color: var(--text-secondary); text-align: center; padding: 30px;">Keine pending Security Orders.<br><small>Erstelle ein Factsheet und klicke "Security best&auml;tigen"</small></p>
                     </div>
-                    <button class="modal-btn success" onclick="generateCombinedSecurityOrder()" style="width: 100%;">📋 Combined Order generieren</button>
+                    <button class="modal-btn success" onclick="generateCombinedSecurityOrder()" style="width: 100%;">&#128203; Combined Order generieren</button>
                 </div>
                 
                 <!-- Sent Tab -->
@@ -3250,7 +3287,7 @@
     <div class="modal-overlay" id="security-output-modal">
         <div class="modal" style="max-width: 600px;">
             <div class="modal-header">
-                <h3>📋 Security Order Ready</h3>
+                <h3>&#128203; Security Order Ready</h3>
                 <button class="modal-close" onclick="closeModal('security-output-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -3258,8 +3295,8 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('security-output-modal')">Abbrechen</button>
-                <button class="modal-btn primary" onclick="copySecurityOrder()">📋 Kopieren</button>
-                <button class="modal-btn success" onclick="markSecurityOrderSent()">✓ Als gesendet markieren</button>
+                <button class="modal-btn primary" onclick="copySecurityOrder()">&#128203; Kopieren</button>
+                <button class="modal-btn success" onclick="markSecurityOrderSent()">&#10004; Als gesendet markieren</button>
             </div>
         </div>
     </div>
@@ -3268,7 +3305,7 @@
     <div class="modal-overlay" id="briefing-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
-                <h3>📋 Briefing Generator</h3>
+                <h3>&#128203; Briefing Generator</h3>
                 <button class="modal-close" onclick="closeModal('briefing-modal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -3316,14 +3353,14 @@
                 <div id="briefing-general-content">
                     <div class="form-group">
                         <label>General Info / Notes</label>
-                        <textarea id="briefing-general-text" rows="8" placeholder="Enter briefing content here...&#10;&#10;Use bullet points:&#10;• Point 1&#10;• Point 2&#10;• Point 3" oninput="updateBriefingPreview()"></textarea>
+                        <textarea id="briefing-general-text" rows="8" placeholder="Enter briefing content here...&#10;&#10;Use bullet points:&#10;&#8226; Point 1&#10;&#8226; Point 2&#10;&#8226; Point 3" oninput="updateBriefingPreview()"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label>📝 Attachments (optional)</label>
+                        <label>&#128157; Attachments (optional)</label>
                         <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
                             <input type="file" id="briefing-files" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
-                            <button class="modal-btn" onclick="document.getElementById('briefing-files').click()" style="background: var(--blue-dark);">📷 Add Images</button>
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
                             <div id="briefing-file-preview" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                     </div>
@@ -3334,35 +3371,35 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <!-- Friday Column -->
                         <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
-                            <h4 style="color: #3b82f6; margin-bottom: 10px;">🗓️ FRIDAY</h4>
+                            <h4 style="color: #3b82f6; margin-bottom: 10px;">&#128188; FRIDAY</h4>
                             <div class="form-group">
                                 <label>Event Name</label>
                                 <input type="text" id="briefing-fri-event" placeholder="Event name..." oninput="updateBriefingPreview()">
                             </div>
                             <div class="form-group">
                                 <label>Notes / Instructions</label>
-                                <textarea id="briefing-fri-text" rows="6" placeholder="Friday briefing...&#10;• Point 1&#10;• Point 2" oninput="updateBriefingPreview()"></textarea>
+                                <textarea id="briefing-fri-text" rows="6" placeholder="Friday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
                             </div>
                         </div>
                         <!-- Saturday Column -->
                         <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
-                            <h4 style="color: #f59e0b; margin-bottom: 10px;">🗓️ SATURDAY</h4>
+                            <h4 style="color: #f59e0b; margin-bottom: 10px;">&#128188; SATURDAY</h4>
                             <div class="form-group">
                                 <label>Event Name</label>
                                 <input type="text" id="briefing-sat-event" placeholder="Event name..." oninput="updateBriefingPreview()">
                             </div>
                             <div class="form-group">
                                 <label>Notes / Instructions</label>
-                                <textarea id="briefing-sat-text" rows="6" placeholder="Saturday briefing...&#10;• Point 1&#10;• Point 2" oninput="updateBriefingPreview()"></textarea>
+                                <textarea id="briefing-sat-text" rows="6" placeholder="Saturday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
                             </div>
                         </div>
                     </div>
                     
                     <div class="form-group" style="margin-top: 15px;">
-                        <label>📝 Attachments (optional)</label>
+                        <label>&#128157; Attachments (optional)</label>
                         <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
                             <input type="file" id="briefing-files-weekend" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
-                            <button class="modal-btn" onclick="document.getElementById('briefing-files-weekend').click()" style="background: var(--blue-dark);">📷 Add Images</button>
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files-weekend').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
                             <div id="briefing-file-preview-weekend" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
                         </div>
                     </div>
@@ -3370,15 +3407,15 @@
                 
                 <!-- Preview -->
                 <div style="margin-top: 20px; padding: 15px; background: var(--bg); border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 10px;">📞 Preview</h4>
+                    <h4 style="margin-bottom: 10px;">&#128190; Preview</h4>
                     <div id="briefing-preview" style="font-family: monospace; font-size: 13px; white-space: pre-wrap;"></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('briefing-modal')">Close</button>
-                <button class="modal-btn" onclick="clearBriefing()" style="background: #dc2626;">🗘 Clear</button>
-                <button class="modal-btn primary" onclick="copyBriefing()">📋 Copy</button>
-                <button class="modal-btn success" onclick="downloadBriefingPDF()">📞 PDF</button>
+                <button class="modal-btn" onclick="clearBriefing()" style="background: #dc2626;">&#127759; Clear</button>
+                <button class="modal-btn primary" onclick="copyBriefing()">&#128203; Copy</button>
+                <button class="modal-btn success" onclick="downloadBriefingPDF()">&#128190; PDF</button>
             </div>
         </div>
     </div>
@@ -3398,20 +3435,20 @@
         <div class="tools-content" id="apps-content">
             <div class="tools-grid">
                 <button class="tool-btn border-blue" onclick="openModal('factsheet-modal')">
-                    <span class="tool-icon">📋</span>
+                    <span class="tool-icon">&#128203;</span>
                     Factsheet
                 </button>
                 <button class="tool-btn border-yellow" onclick="openModal('security-orders-modal')" style="border-color: #f59e0b;">
-                    <span class="tool-icon">🛡️</span>
+                    <span class="tool-icon">&#128545;</span>
                     Security
                 </button>
                 <button class="tool-btn border-blue" onclick="openModal('email-modal')">
-                    <span class="tool-icon">✉️</span>
+                    <span class="tool-icon">&#9993;</span>
                     E-Mail
                 </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-blue" onclick="toggleDropdown('social-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">📱</span>
+                        <span class="tool-icon">&#128177;</span>
                         Social 
                     </button>
                     <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
@@ -3423,7 +3460,7 @@
                 </div>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-blue" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">🎟️</span>
+                        <span class="tool-icon">&#127908;</span>
                         Sales 
                     </button>
                     <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
@@ -3435,7 +3472,7 @@
                 </div>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-blue" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">📦</span>
+                        <span class="tool-icon">&#128230;</span>
                         Storage 
                     </button>
                     <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
@@ -3455,40 +3492,40 @@
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
                 <button class="tool-btn border-white" onclick="openCleaningModal()">
-                    <span class="tool-icon">🧹</span>
+                    <span class="tool-icon">&#129529;</span>
                     Cleaning
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('presale-modal')">
-                    <span class="tool-icon">🎟️</span>
+                    <span class="tool-icon">&#127908;</span>
                     PreSale C.
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('cost-modal')">
-                    <span class="tool-icon">💰</span>
+                    <span class="tool-icon">&#128176;</span>
                     Cost C.
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('projector-modal')">
-                    <span class="tool-icon">📊</span>
+                    <span class="tool-icon">&#128202;</span>
                     Projector
                 </button>
                 <button class="tool-btn border-white" onclick="openDeepAnalysis()">
-                    <span class="tool-icon">🔍</span>
+                    <span class="tool-icon">&#128221;</span>
                     Analysis
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('guestlist-modal')">
-                    <span class="tool-icon">📝</span>
+                    <span class="tool-icon">&#128157;</span>
                     Guestlist
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('bar-staffing-modal')">
-                    <span class="tool-icon">🍸</span>
+                    <span class="tool-icon">&#127864;</span>
                     Bar Staff
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('briefing-modal')">
-                    <span class="tool-icon">📋</span>
+                    <span class="tool-icon">&#128203;</span>
                     Briefing
                 </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">⭐</span>
+                        <span class="tool-icon">&#11088;</span>
                         Special 
                     </button>
                     <div id="special-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
@@ -3507,20 +3544,20 @@
         </button>
         <div class="tools-content" id="finance-content">
             <div class="tools-grid">
-                <button class="tool-btn border-white" onclick="showToast('📦 Inventory Tool - Coming Soon!');">
-                    <span class="tool-icon">📦</span>
+                <button class="tool-btn border-white" onclick="showToast('&#128230; Inventory Tool - Coming Soon!');">
+                    <span class="tool-icon">&#128230;</span>
                     Inventory
                 </button>
-                <button class="tool-btn border-white" onclick="showToast('💶 Financials - Coming Soon!');">
-                    <span class="tool-icon">💶</span>
+                <button class="tool-btn border-white" onclick="showToast('&#128182; Financials - Coming Soon!');">
+                    <span class="tool-icon">&#128182;</span>
                     Financials
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('nye-projector-modal');">
-                    <span class="tool-icon">🎆</span>
+                    <span class="tool-icon">&#127878;</span>
                     NYE Proj.
                 </button>
                 <button class="tool-btn border-white" onclick="openModal('peak-grid-modal'); renderPeakGrid();">
-                    <span class="tool-icon">📈</span>
+                    <span class="tool-icon">&#128200;</span>
                     Peak Grid
                 </button>
             </div>
@@ -3616,8 +3653,8 @@
         <!-- OFFICE -->
         <div class="dept office grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🏢 OFFICE <span class="task-count" id="office-task-count">0</span> <span class="notes-count" id="office-notes-count">0</span> <span class="projects-count" id="office-projects-count">0</span></div>
-                <span class="dept-toggle">▼</span>
+                <div class="dept-header-left">&#127970; OFFICE <span class="task-count" id="office-task-count">0</span> <span class="notes-count" id="office-notes-count">0</span> <span class="projects-count" id="office-projects-count">0</span></div>
+                <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'office-tasks-tab')">Tasks <span class="tab-count" id="office-tasks-tab-count">0</span></button>
@@ -3653,8 +3690,8 @@
         <!-- BAR -->
         <div class="dept bar grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🍸 BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span></div>
-                <span class="dept-toggle">▼</span>
+                <div class="dept-header-left">&#127864; BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span></div>
+                <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'bar-shiftplan-tab')">Shiftplan</button>
@@ -3665,7 +3702,7 @@
                 <div class="dept-tab-content active" id="bar-shiftplan-tab">
                     <div style="margin-bottom: 10px;">
                         <label class="upload-btn" style="background: #4a3d2d; border: 1px solid #7c6a4a; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
-                            📤 Bar CSV laden
+                            &#127864; Bar CSV laden
                             <input type="file" accept=".csv" onchange="handleBarCSVUpload(event)" style="display: none;">
                         </label>
                     </div>
@@ -3686,8 +3723,8 @@
         <!-- RUNNER -->
         <div class="dept runner grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🏃 RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span></div>
-                <span class="dept-toggle">▼</span>
+                <div class="dept-header-left">&#127939; RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span></div>
+                <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'runner-shiftplan-tab')">Shiftplan</button>
@@ -3698,7 +3735,7 @@
                 <div class="dept-tab-content active" id="runner-shiftplan-tab">
                     <div style="margin-bottom: 10px;">
                         <label class="upload-btn" style="background: #2d4a3e; border: 1px solid #4a7c59; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
-                            📤 Runner CSV laden
+                            &#127939; Runner CSV laden
                             <input type="file" accept=".csv" onchange="handleRunnerCSVUpload(event)" style="display: none;">
                         </label>
                     </div>
@@ -3719,8 +3756,8 @@
         <!-- TECH -->
         <div class="dept technik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🔧 TECH <span class="task-count" id="technik-task-count">0</span> <span class="notes-count" id="technik-notes-count">0</span></div>
-                <span class="dept-toggle">▼</span>
+                <div class="dept-header-left">&#128295; TECH <span class="task-count" id="technik-task-count">0</span> <span class="notes-count" id="technik-notes-count">0</span></div>
+                <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'technik-calendar-tab')">Calendar</button>
@@ -3730,9 +3767,9 @@
             <div class="dept-content">
                 <div class="dept-tab-content active" id="technik-calendar-tab">
                     <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
-                        <button onclick="loadTechnikerFromGoogleCalendar()" style="background: #3d2d4a; border: 1px solid #7c4a7a; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; color: #fff;">📞 Refresh</button>
+                        <button onclick="loadTechnikerFromGoogleCalendar()" style="background: #3d2d4a; border: 1px solid #7c4a7a; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; color: #fff;">&#128190; Refresh</button>
                         <label style="background: #3d2d4a; border: 1px solid #7c4a7a; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;">
-                            📤 ICS Upload
+                            &#128228; ICS Upload
                             <input type="file" accept=".ics" onchange="handleTechnikerICSUpload(event)" style="display: none;">
                         </label>
                     </div>
@@ -3755,8 +3792,8 @@
         <!-- SPUTNIK -->
         <div class="dept sputnik grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">🚀 SPUTNIK BAR <span class="task-count" id="sputnik-task-count">0</span> <span class="notes-count" id="sputnik-notes-count">0</span></div>
-                <span class="dept-toggle">▼</span>
+                <div class="dept-header-left">&#128640; SPUTNIK BAR <span class="task-count" id="sputnik-task-count">0</span> <span class="notes-count" id="sputnik-notes-count">0</span></div>
+                <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
                 <button class="dept-tab active" onclick="switchDeptTab(this, 'sputnik-reservations-tab')">Resv.</button>
@@ -3795,16 +3832,16 @@
     
     <!-- Metrics Button -->
     <div class="metrics-button-container">
-        <button class="metrics-btn" onclick="openModal('metrics-modal')">📊 Metrics</button>
+        <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.6.7 - 13.01.2026 - Delete Confirm + Date UI</div>
+    <div class="version">Work Hub v15.7.2 - 14.01.2026 - Light Theme Gap Fix</div>
     
     <!-- Metrics Modal -->
     <div class="modal-overlay" id="metrics-modal">
         <div class="modal-content" style="max-width: 1000px;">
             <div class="modal-header">
-                <h3>📊 Work Hub Metrics Dashboard</h3>
+                <h3>&#128202; Work Hub Metrics Dashboard</h3>
                 <button class="modal-close" onclick="closeModal('metrics-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
@@ -3840,7 +3877,7 @@
                 <div class="metrics-grid">
                     <!-- Weekly Activity Chart -->
                     <div class="metrics-card wide">
-                        <div class="metrics-card-header">📈 Weekly Activity (Tasks Completed)</div>
+                        <div class="metrics-card-header">&#128200; Weekly Activity (Tasks Completed)</div>
                         <div class="metrics-chart-container">
                             <div class="metrics-bar-chart" id="weekly-activity-chart">
                                 <div class="chart-bar-wrapper">
@@ -3877,7 +3914,7 @@
                     
                     <!-- Tools Usage Chart -->
                     <div class="metrics-card wide">
-                        <div class="metrics-card-header">🛠️ Tools Usage (This Week)</div>
+                        <div class="metrics-card-header">&#128544; Tools Usage (This Week)</div>
                         <div class="metrics-tools-chart">
                             <div class="tool-usage-row">
                                 <span class="tool-name">Factsheet</span>
@@ -3914,16 +3951,16 @@
                     
                     <!-- Notes Distribution -->
                     <div class="metrics-card">
-                        <div class="metrics-card-header">📝 Notes by Department</div>
+                        <div class="metrics-card-header">&#128157; Notes by Department</div>
                         <div class="metrics-table">
                             <table>
                                 <thead><tr><th>Department</th><th>Count</th></tr></thead>
                                 <tbody>
-                                    <tr><td>🏢 Office</td><td id="metrics-notes-office">0</td></tr>
-                                    <tr><td>🍸 Bar</td><td id="metrics-notes-bar">0</td></tr>
-                                    <tr><td>🏃 Runner</td><td id="metrics-notes-runner">0</td></tr>
-                                    <tr><td>🔧 Tech</td><td id="metrics-notes-tech">0</td></tr>
-                                    <tr><td>🚀 Sputnik</td><td id="metrics-notes-sputnik">0</td></tr>
+                                    <tr><td>&#127970; Office</td><td id="metrics-notes-office">0</td></tr>
+                                    <tr><td>&#127864; Bar</td><td id="metrics-notes-bar">0</td></tr>
+                                    <tr><td>&#127939; Runner</td><td id="metrics-notes-runner">0</td></tr>
+                                    <tr><td>&#128295; Tech</td><td id="metrics-notes-tech">0</td></tr>
+                                    <tr><td>&#128640; Sputnik</td><td id="metrics-notes-sputnik">0</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -3931,7 +3968,7 @@
                     
                     <!-- Tools Generated Summary -->
                     <div class="metrics-card">
-                        <div class="metrics-card-header">📋 All-Time Totals</div>
+                        <div class="metrics-card-header">&#128203; All-Time Totals</div>
                         <div class="metrics-table">
                             <table>
                                 <thead><tr><th>Item</th><th>Total</th></tr></thead>
@@ -3947,7 +3984,7 @@
                     
                     <!-- Sputnik Stats -->
                     <div class="metrics-card">
-                        <div class="metrics-card-header">🚀 Sputnik Reservations</div>
+                        <div class="metrics-card-header">&#128640; Sputnik Reservations</div>
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>This Week</span>
@@ -3966,7 +4003,7 @@
                     
                     <!-- Email Stats (Future) -->
                     <div class="metrics-card">
-                        <div class="metrics-card-header">📧 Emails (Coming Soon)</div>
+                        <div class="metrics-card-header">&#128231; Emails (Coming Soon)</div>
                         <div class="metrics-card-body">
                             <div class="metrics-row dimmed">
                                 <span>Received This Week</span>
@@ -3989,7 +4026,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn" onclick="resetMetrics()">🔄 Reset All</button>
+                <button class="modal-btn" onclick="resetMetrics()">&#128221; Reset All</button>
                 <button class="modal-btn cancel" onclick="closeModal('metrics-modal')">Schliessen</button>
             </div>
         </div>
@@ -3997,12 +4034,12 @@
     
     <!-- Project Modal -->
     <div class="modal-overlay" id="project-modal">
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 id="project-modal-title">📁 New Project</h3>
+                <h3 id="project-modal-title">&#128194; New Project</h3>
                 <button class="modal-close" onclick="closeModal('project-modal')">&times;</button>
             </div>
-            <div class="modal-body" style="padding: 20px;">
+            <div class="modal-body">
                 <div class="project-form">
                     <input type="hidden" id="project-edit-id" value="">
                     <div class="project-form-group">
@@ -4017,12 +4054,12 @@
                         <div class="project-form-group" style="flex:1;">
                             <label>Department</label>
                             <select id="project-department">
-                                <option value="">— None —</option>
-                                <option value="office">🏢 Office</option>
-                                <option value="bar">🍸 Bar</option>
-                                <option value="runner">🏃 Runner</option>
-                                <option value="tech">🔧 Tech</option>
-                                <option value="sputnik">🚀 Sputnik</option>
+                                <option value="">&mdash; None &mdash;</option>
+                                <option value="office">&#127970; Office</option>
+                                <option value="bar">&#127864; Bar</option>
+                                <option value="runner">&#127939; Runner</option>
+                                <option value="tech">&#128295; Tech</option>
+                                <option value="sputnik">&#128640; Sputnik</option>
                             </select>
                         </div>
                     </div>
@@ -4038,9 +4075,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn danger" id="project-delete-btn" onclick="deleteProject(event)" style="display: none;">🗑️ Delete</button>
-                <button class="modal-btn" id="project-email-btn" onclick="emailProject()" style="display: none;">📧 Email</button>
-                <button class="modal-btn success" onclick="saveProject()">💾 Save</button>
+                <button class="modal-btn danger" id="project-delete-btn" onclick="deleteProject(event)" style="display: none;">&#128465; Delete</button>
+                <button class="modal-btn" id="project-email-btn" onclick="emailProject()" style="display: none;">&#128231; Email</button>
+                <button class="modal-btn success" onclick="saveProject()">&#128190; Save</button>
                 <button class="modal-btn cancel" onclick="closeModal('project-modal')">Cancel</button>
             </div>
         </div>
@@ -4206,10 +4243,10 @@
                     console.log('Account:', response.account?.username);
                     updateAuthUI(response.account);
                     loadAllData();
-                    showToast("… Verbunden!");
+                    showToast("... Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("❌ Login fehlgeschlagen", true); 
+                    showToast("âŒ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -4355,7 +4392,7 @@
                     if (t.dueDateTime) {
                         const due = new Date(t.dueDateTime.dateTime + 'Z');
                         const today = new Date(); today.setHours(0,0,0,0);
-                        if (due < today) { dueClass = 'overdue'; dueText = 'ÃœberfÃ¤llig'; }
+                        if (due < today) { dueClass = 'overdue'; dueText = 'Ueberfaellig'; }
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
@@ -4912,11 +4949,11 @@
             `;
         }
         
-        // ⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐
+        // â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬
         // SHIFTPLAN DATABASE - LIVE from Google Sheets
         // Runner/CVD: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
         // Bar: https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv
-        // ⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐⬐
+        // â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬
         
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
@@ -4946,7 +4983,7 @@
                     if (directResponse.ok) {
                         icsText = await directResponse.text();
                         if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
-                            console.log('… Direct fetch worked! Length:', icsText.length);
+                            console.log('... Direct fetch worked! Length:', icsText.length);
                         } else {
                             icsText = null;
                         }
@@ -4974,7 +5011,7 @@
                             if (response.ok) {
                                 icsText = await response.text();
                                 if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
-                                    console.log('… Proxy worked! Length:', icsText.length);
+                                    console.log('... Proxy worked! Length:', icsText.length);
                                     break;
                                 } else {
                                     icsText = null;
@@ -4988,7 +5025,7 @@
                 
                 if (icsText && icsText.includes('BEGIN:VCALENDAR')) {
                     parseTechnikerICS(icsText);
-                    showToast('… Techniker geladen!');
+                    showToast('&#128295; Techniker geladen!');
                 } else {
                     console.warn('Could not load from Google Calendar');
                     loadTechnikerFromStorage();
@@ -5007,7 +5044,7 @@
                 if (saved) {
                     SHIFTPLAN_DATABASE = JSON.parse(saved);
                     shiftplanLoaded = true;
-                    console.log('… Shiftplan loaded from storage:', Object.keys(SHIFTPLAN_DATABASE).length, 'events');
+                    console.log('... Shiftplan loaded from storage:', Object.keys(SHIFTPLAN_DATABASE).length, 'events');
                     renderRunnerShiftplan();
                 }
             } catch (e) {
@@ -5021,7 +5058,7 @@
                 if (saved) {
                     BAR_DATABASE = JSON.parse(saved);
                     barLoaded = true;
-                    console.log('… Bar loaded from storage:', Object.keys(BAR_DATABASE).length, 'events');
+                    console.log('&#127864; Bar loaded from storage:', Object.keys(BAR_DATABASE).length, 'events');
                     renderBarShiftplan();
                 }
             } catch (e) {
@@ -5038,7 +5075,7 @@
             reader.onload = function(e) {
                 const csvText = e.target.result;
                 parseRunnerCSV(csvText);
-                showToast('… Runner Shiftplan geladen!');
+                showToast('&#127939; Runner Shiftplan geladen!');
             };
             reader.readAsText(file);
         }
@@ -5052,7 +5089,7 @@
             reader.onload = function(e) {
                 const csvText = e.target.result;
                 parseBarCSV(csvText);
-                showToast('… Bar Dienstplan geladen!');
+                showToast('&#127864; Bar Dienstplan geladen!');
             };
             reader.readAsText(file);
         }
@@ -5151,13 +5188,13 @@
                 // Save to localStorage
                 localStorage.setItem('shiftplan_data', JSON.stringify(SHIFTPLAN_DATABASE));
                 shiftplanLoaded = true;
-                console.log(`… Runner Shiftplan: ${loadedCount} events loaded and saved`);
+                console.log(`&#127939; Runner Shiftplan: ${loadedCount} events loaded and saved`);
                 
                 renderRunnerShiftplan();
                 
             } catch (error) {
                 console.error('Failed to parse Runner CSV:', error);
-                showToast('❌ Fehler beim Laden der CSV', true);
+                showToast('âŒ Fehler beim Laden der CSV', true);
             }
         }
         
@@ -5190,7 +5227,7 @@
                     datum: findCol(['date', 'datum']),
                     event: findCol(['event name', 'eventname', 'event']),
                     terrasse: findCol(['terrasse', 'terr']),
-                    kitchen: findCol(['kitchen', 'kit', 'kÃ¼che']),
+                    kitchen: findCol(['kitchen', 'kit', 'küche']),
                     main1: findCol(['main 1', 'main1', 'm1']),
                     main2: findCol(['main 2', 'main2', 'm2']),
                     main3: findCol(['main 3', 'main3', 'm3']),
@@ -5238,13 +5275,13 @@
                 // Save to localStorage
                 localStorage.setItem('bar_data', JSON.stringify(BAR_DATABASE));
                 barLoaded = true;
-                console.log(`… Bar Dienstplan: ${loadedCount} events loaded and saved`);
+                console.log(`&#127864; Bar Dienstplan: ${loadedCount} events loaded and saved`);
                 
                 renderBarShiftplan();
                 
             } catch (error) {
                 console.error('Failed to parse Bar CSV:', error);
-                showToast('❌ Fehler beim Laden der Bar CSV', true);
+                showToast('âŒ Fehler beim Laden der Bar CSV', true);
             }
         }
         
@@ -5255,7 +5292,7 @@
                 if (saved) {
                     TECHNIKER_DATABASE = JSON.parse(saved);
                     technikerLoaded = true;
-                    console.log('… Techniker loaded from storage:', Object.keys(TECHNIKER_DATABASE).length, 'events');
+                    console.log('&#128295; Techniker loaded from storage:', Object.keys(TECHNIKER_DATABASE).length, 'events');
                     renderTechCalendar();
                 }
             } catch (e) {
@@ -5272,7 +5309,7 @@
             reader.onload = function(e) {
                 const icsText = e.target.result;
                 parseTechnikerICS(icsText);
-                showToast('… Techniker Kalender geladen!');
+                showToast('&#128295; Techniker Kalender geladen!');
             };
             reader.readAsText(file);
         }
@@ -5338,7 +5375,7 @@
                 // Save to localStorage
                 localStorage.setItem('techniker_data', JSON.stringify(TECHNIKER_DATABASE));
                 technikerLoaded = true;
-                console.log(`… Techniker: ${loadedCount} events loaded and saved`);
+                console.log(`&#128295; Techniker: ${loadedCount} events loaded and saved`);
                 
                 renderTechCalendar();
                 renderCalendar(); // Update main calendar too
@@ -5381,7 +5418,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -5589,7 +5626,7 @@
             futureEvents.sort((a, b) => a.date - b.date);
             
             if (futureEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke 📞 Refresh oder lade eine ICS-Datei hoch.</p>';
+                container.innerHTML = '<p style="color: #888; padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke &#128190; Refresh oder lade eine ICS-Datei hoch.</p>';
                 return;
             }
             
@@ -5852,7 +5889,7 @@
                 document.getElementById('fs-event-select').value = eventId;
                 fillFactsheetForm(e);
                 openModal('factsheet-modal');
-                showToast(`📋 ${e.name} Factsheet geladen!`);
+                showToast(`&#128206; ${e.name} Factsheet geladen!`);
             }
         }
         
@@ -6992,7 +7029,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7004,7 +7041,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -7035,9 +7072,9 @@
                 console.log('Draft response status:', response.status);
                 
                 if (response.ok || response.status === 201) {
-                    status.textContent = '… Entwurf gespeichert!';
+                    status.textContent = '... Entwurf gespeichert!';
                     status.style.color = '#22c55e';
-                    showToast('… Entwurf in Outlook gespeichert!');
+                    showToast('... Entwurf in Outlook gespeichert!');
                     // Clear form after 2 seconds
                     setTimeout(() => {
                         document.getElementById('email-to').value = '';
@@ -7049,12 +7086,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = '❌ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = '❌ Fehler: ' + e.message;
+                status.textContent = 'âŒ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -8149,7 +8186,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('❌ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('âŒ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -8172,7 +8209,7 @@ Spittelauer Lnde 12/1
                 });
                 
                 if (response.ok || response.status === 201) {
-                    showToast('… Entwurf in Outlook gespeichert!');
+                    showToast('... Entwurf in Outlook gespeichert!');
                 } else {
                     const err = await response.json();
                     if (err.error?.code === 'ErrorAccessDenied' || response.status === 403) {
@@ -8267,7 +8304,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = '❌ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -8278,7 +8315,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = '❌ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -9115,7 +9152,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -9364,7 +9401,7 @@ Spittelauer Lnde 12/1
             saveSecurityOrders(orders);
             
             renderSecurityPendingList();
-            alert('… Security fÃ¼r ' + eventName + ' (' + datum + ') hinzugefÃ¼gt!\n\nÃ–ffne "Security Orders" um die Bestellung zu generieren.');
+            alert('... Security fuer ' + eventName + ' (' + datum + ') hinzugefuegt!\n\nOeffne "Security Orders" um die Bestellung zu generieren.');
         }
         
         // Tab switching
@@ -9386,7 +9423,7 @@ Spittelauer Lnde 12/1
             const container = document.getElementById('security-pending-list');
             
             if (orders.pending.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 30px;">Keine pending Security Orders.<br><small>Erstelle ein Factsheet und klicke "Security bestÃ¤tigen"</small></p>';
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 30px;">Keine pending Security Orders.<br><small>Erstelle ein Factsheet und klicke "Security best&auml;tigen"</small></p>';
                 return;
             }
             
@@ -9399,7 +9436,7 @@ Spittelauer Lnde 12/1
                             <small style="color: var(--text-secondary);">Main Floor: ${order.mainFloor}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">●</button>
+                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">â—</button>
                         </div>
                     </div>
                 `;
@@ -9423,11 +9460,11 @@ Spittelauer Lnde 12/1
                 html += `
                     <div style="background: var(--surface-2); border: 1px solid var(--good); padding: 15px;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <strong style="color: var(--good);">✓ ${order.label || 'Security Order'}</strong>
+                            <strong style="color: var(--good);">&#128206; ${order.label || 'Security Order'}</strong>
                             <small style="color: var(--text-secondary);">${new Date(order.sentAt).toLocaleDateString('de-AT')}</small>
                         </div>
                         <small style="color: var(--text-secondary); display: block; margin-top: 5px;">${order.events?.join(', ') || ''}</small>
-                        <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="margin-top: 10px; padding: 5px 10px; font-size: 11px; background: var(--surface);">↙ Archivieren</button>
+                        <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="margin-top: 10px; padding: 5px 10px; font-size: 11px; background: var(--surface);">â†™ Archivieren</button>
                     </div>
                 `;
             });
@@ -9473,7 +9510,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let output = 'Hallo!\n\nHier die Bestellung fÃ¼r das Wochenende:\n\n';
+            let output = 'Hallo!\n\nHier die Bestellung für das Wochenende:\n\n';
             
             orders.pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
             
@@ -9495,7 +9532,7 @@ Spittelauer Lnde 12/1
         function copySecurityOrder() {
             const output = document.getElementById('security-order-output').textContent;
             navigator.clipboard.writeText(output).then(() => {
-                alert('… Security Order kopiert!');
+                alert('... Security Order kopiert!');
                 trackSecurityOrder(); // Track metrics
             });
         }
@@ -9519,7 +9556,7 @@ Spittelauer Lnde 12/1
             
             closeModal('security-output-modal');
             renderSecurityPendingList();
-            alert('… Als gesendet markiert und archiviert!');
+            alert('... Als gesendet markiert und archiviert!');
         }
         
         // Archive sent order
@@ -9607,7 +9644,7 @@ Spittelauer Lnde 12/1
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('… Factsheet als Word-Dokument heruntergeladen!');
+            alert('... Factsheet als Word-Dokument heruntergeladen!');
         }
         
         // =========================================
@@ -9638,19 +9675,19 @@ Spittelauer Lnde 12/1
         function formatBriefingText(text) {
             if (!text) return '';
             
-            // Convert lines starting with • or - or * to proper list items
+            // Convert lines starting with &#8226; or - or * to proper list items
             const lines = text.split('\n');
             let inList = false;
             let result = [];
             
             lines.forEach(line => {
                 const trimmed = line.trim();
-                if (trimmed.match(/^[•\-\*]\s*/)) {
+                if (trimmed.match(/^[&#8226;\-\*]\s*/)) {
                     if (!inList) {
                         result.push('<ul style="margin: 10px 0; padding-left: 20px;">');
                         inList = true;
                     }
-                    result.push('<li>' + trimmed.replace(/^[•\-\*]\s*/, '') + '</li>');
+                    result.push('<li>' + trimmed.replace(/^[&#8226;\-\*]\s*/, '') + '</li>');
                 } else {
                     if (inList) {
                         result.push('</ul>');
@@ -9681,7 +9718,7 @@ Spittelauer Lnde 12/1
                 html = `
 <div style="border: 2px solid #fff; padding: 20px;">
     <div style="background: var(--blue-accent); padding: 15px; margin: -20px -20px 15px -20px; border-bottom: 2px solid #fff;">
-        <h2 style="margin: 0; color: #fff;">📋 ${dept} BRIEFING</h2>
+        <h2 style="margin: 0; color: #fff;">&#128206; ${dept} BRIEFING</h2>
         <div style="color: #aaa; font-size: 12px; margin-top: 5px;">${formattedDate} | ${subject}</div>
     </div>
     <div style="color: #fff;">
@@ -9703,19 +9740,19 @@ Spittelauer Lnde 12/1
                 html = `
 <div style="border: 2px solid #fff; padding: 20px;">
     <div style="background: var(--blue-accent); padding: 15px; margin: -20px -20px 15px -20px; border-bottom: 2px solid #fff;">
-        <h2 style="margin: 0; color: #fff;">📋 ${dept} WEEKEND BRIEFING</h2>
+        <h2 style="margin: 0; color: #fff;">&#128206; ${dept} WEEKEND BRIEFING</h2>
         <div style="color: #aaa; font-size: 12px; margin-top: 5px;">${subject}</div>
     </div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
         <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 3px solid #3b82f6;">
-            <h3 style="color: #3b82f6; margin: 0 0 5px 0;">🗓️ FRIDAY ${formattedFri}</h3>
+            <h3 style="color: #3b82f6; margin: 0 0 5px 0;">&#128188; FRIDAY ${formattedFri}</h3>
             ${friEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + friEvent + '</div>' : ''}
             <div style="color: #fff; font-size: 13px;">
                 ${formatBriefingText(friText) || '<span style="color: #666;">...</span>'}
             </div>
         </div>
         <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-left: 3px solid #f59e0b;">
-            <h3 style="color: #f59e0b; margin: 0 0 5px 0;">🗓️ SATURDAY ${formattedSat}</h3>
+            <h3 style="color: #f59e0b; margin: 0 0 5px 0;">&#128188; SATURDAY ${formattedSat}</h3>
             ${satEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + satEvent + '</div>' : ''}
             <div style="color: #fff; font-size: 13px;">
                 ${formatBriefingText(satText) || '<span style="color: #666;">...</span>'}
@@ -9772,7 +9809,7 @@ Spittelauer Lnde 12/1
             const preview = document.getElementById('briefing-preview');
             const text = preview.innerText;
             navigator.clipboard.writeText(text).then(() => {
-                alert('… Briefing copied!');
+                alert('... Briefing copied!');
             });
         }
         
@@ -10047,10 +10084,10 @@ Spittelauer Lnde 12/1
         
         // Reset all metrics
         function resetMetrics() {
-            if (confirm('Alle Metriken zurücksetzen?')) {
+            if (confirm('Alle Metriken zur\u00fccksetzen?')) {
                 localStorage.removeItem('workhub-metrics');
                 updateMetricsDisplay();
-                showToast('Metriken zurückgesetzt');
+                showToast('Metriken zur\u00fcckgesetzt');
             }
         }
         
@@ -10095,7 +10132,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            const deptLabels = { office: '🏢 Office', bar: '🍸 Bar', runner: '🏃 Runner', tech: '🔧 Tech', sputnik: '🚀 Sputnik' };
+            const deptLabels = { office: '&#127970; Office', bar: '&#127864; Bar', runner: '&#127939; Runner', tech: '&#128295; Tech', sputnik: '&#128640; Sputnik' };
             
             container.innerHTML = projects.map(p => {
                 let deptBadge = '';
@@ -10129,7 +10166,7 @@ Spittelauer Lnde 12/1
                     ${p.notes ? `<div class="project-card-notes">${escapeHtml(p.notes.substring(0, 100))}${p.notes.length > 100 ? '...' : ''}</div>` : ''}
                     ${p.attachments && p.attachments.length > 0 ? `
                         <div class="project-card-attachments">
-                            ${p.attachments.map(a => `<span class="project-attachment-badge">📎 ${escapeHtml(a.name)}</span>`).join('')}
+                            ${p.attachments.map(a => `<span class="project-attachment-badge">&#128206; ${escapeHtml(a.name)}</span>`).join('')}
                         </div>
                     ` : ''}
                 </div>`;
@@ -10153,7 +10190,7 @@ Spittelauer Lnde 12/1
             document.getElementById('project-attachments-list').innerHTML = '';
             document.getElementById('project-delete-btn').style.display = 'none';
             document.getElementById('project-email-btn').style.display = 'none';
-            document.getElementById('project-modal-title').textContent = '📁 New Project';
+            document.getElementById('project-modal-title').textContent = '&#128194; New Project';
             
             if (projectId) {
                 const projects = getProjects();
@@ -10168,7 +10205,7 @@ Spittelauer Lnde 12/1
                     renderProjectAttachments();
                     document.getElementById('project-delete-btn').style.display = 'inline-block';
                     document.getElementById('project-email-btn').style.display = 'inline-block';
-                    document.getElementById('project-modal-title').textContent = '📁 Edit Project';
+                    document.getElementById('project-modal-title').textContent = '&#128194; Edit Project';
                 }
             }
             
@@ -10197,8 +10234,8 @@ Spittelauer Lnde 12/1
             const container = document.getElementById('project-attachments-list');
             container.innerHTML = currentProjectAttachments.map((a, i) => `
                 <div class="project-attachment-item">
-                    <span>📎 ${escapeHtml(a.name)}</span>
-                    <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">✕</button>
+                    <span>&#128206; ${escapeHtml(a.name)}</span>
+                    <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">&#10005;</button>
                 </div>
             `).join('');
         }
