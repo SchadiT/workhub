@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.7.4</title>
+    <title>Turbo Projects Work Hub v15.7.6</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3473,6 +3473,10 @@
                     <span class="tool-icon">&#9993;</span>
                     E-Mail
                 </button>
+                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')">
+                    <span class="tool-icon">&#128221;</span>
+                    Notepad
+                </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-blue" onclick="toggleDropdown('social-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">&#128177;</span>
@@ -3862,7 +3866,33 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.7.4 - 14.01.2026 - Clickable Project Links</div>
+    <div class="version">Work Hub v15.7.7 - 15.01.2026 - Notepad Feature</div>
+    
+    <!-- Notepad Modal -->
+    <div class="modal-overlay" id="notepad-modal">
+        <div class="modal" style="max-width: 900px; height: 80vh;">
+            <div class="modal-header">
+                <h3>&#128221; Notepad</h3>
+                <button class="modal-close" onclick="closeModal('notepad-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; height: calc(100% - 130px); padding: 15px;">
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <button class="modal-btn" onclick="copyNotepad()" style="background: var(--blue-accent);">&#128203; Copy</button>
+                    <button class="modal-btn success" onclick="downloadNotepad()">&#128190; Save TXT</button>
+                    <button class="modal-btn" onclick="clearNotepad()" style="background: #dc3545;">&#128465; Clear</button>
+                    <span class="save-indicator" id="notepad-saved" style="margin-left: auto; color: var(--good); font-size: 12px;">&#10004; Auto-saved</span>
+                </div>
+                <textarea id="notepad-text" 
+                    style="flex: 1; width: 100%; resize: none; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 15px; background: var(--blue-dark); color: #fff; border: 1px solid var(--border); tab-size: 4;"
+                    placeholder="Write your notes here...&#10;&#10;&#8226; Use bullet points&#10;   - Indented details&#10;   - More details&#10;&#10;&#8226; Another heading&#10;   - Sub-point&#10;&#10;Press Tab for indentation"
+                    oninput="saveNotepad()"
+                    onkeydown="handleNotepadTab(event)"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('notepad-modal')">Close</button>
+            </div>
+        </div>
+    </div>
     
     <!-- Metrics Modal -->
     <div class="modal-overlay" id="metrics-modal">
@@ -4076,7 +4106,10 @@
                     <div class="project-form-row">
                         <div class="project-form-group" style="flex:1;">
                             <label>Due Date</label>
-                            <input type="date" id="project-due-date">
+                            <div style="display: flex; gap: 5px;">
+                                <input type="text" id="project-due-date-display" placeholder="TT.MM.JJJJ" style="flex: 1;">
+                                <input type="date" id="project-due-date" style="width: 40px; padding: 5px;" onchange="updateDueDateDisplay()">
+                            </div>
                         </div>
                         <div class="project-form-group" style="flex:1;">
                             <label>Department</label>
@@ -4107,6 +4140,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn danger" id="project-delete-btn" onclick="deleteProject(event)" style="display: none;">&#128465; Delete</button>
+                <button class="modal-btn" id="project-done-btn" onclick="markProjectDone(event)" style="display: none; background: #10b981;">&#10004; Done</button>
                 <button class="modal-btn" id="project-email-btn" onclick="emailProject()" style="display: none;">&#128231; Email</button>
                 <button class="modal-btn success" onclick="saveProject()">&#128190; Save</button>
                 <button class="modal-btn cancel" onclick="closeModal('project-modal')">Cancel</button>
@@ -4780,7 +4814,7 @@
                 const dateA = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
                 const dateB = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
                 return dateA - dateB;
-            }).slice(0, 4); // Only next 4 events
+            }); // Show ALL future events
             
             console.log('Filtered to ' + futureEvents.length + ' future events for dropdown');
             
@@ -6173,6 +6207,91 @@
             };
             
             speechRecognition.start();
+        }
+        
+        // Notepad Functions
+        function saveNotepad() {
+            const text = document.getElementById('notepad-text').value;
+            localStorage.setItem('workhub_notepad', text);
+            const indicator = document.getElementById('notepad-saved');
+            if (indicator) {
+                indicator.innerHTML = '&#10004; Saved';
+                indicator.style.color = 'var(--good)';
+            }
+        }
+        
+        function loadNotepad() {
+            const saved = localStorage.getItem('workhub_notepad');
+            const textarea = document.getElementById('notepad-text');
+            if (textarea && saved) {
+                textarea.value = saved;
+            }
+        }
+        
+        function copyNotepad() {
+            const text = document.getElementById('notepad-text').value;
+            if (!text.trim()) {
+                showToast('&#128221; Notepad is empty');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('&#128203; Copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.getElementById('notepad-text');
+                textarea.select();
+                document.execCommand('copy');
+                showToast('&#128203; Copied to clipboard!');
+            });
+        }
+        
+        function downloadNotepad() {
+            const text = document.getElementById('notepad-text').value;
+            if (!text.trim()) {
+                showToast('&#128221; Notepad is empty');
+                return;
+            }
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g, '');
+            a.href = url;
+            a.download = `Notepad_${dateStr}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('&#128190; Downloaded as TXT!');
+        }
+        
+        function clearNotepad() {
+            const text = document.getElementById('notepad-text').value;
+            if (!text.trim()) {
+                showToast('&#128221; Notepad is already empty');
+                return;
+            }
+            const confirm = prompt('Type "DELETE" to clear all notes:');
+            if (confirm === 'DELETE') {
+                document.getElementById('notepad-text').value = '';
+                localStorage.removeItem('workhub_notepad');
+                showToast('&#128465; Notepad cleared');
+            }
+        }
+        
+        function handleNotepadTab(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                const textarea = event.target;
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const value = textarea.value;
+                
+                // Insert tab character (4 spaces for consistency)
+                textarea.value = value.substring(0, start) + '    ' + value.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + 4;
+                saveNotepad();
+            }
         }
         
         // Quick Notes Functions
@@ -7594,7 +7713,10 @@
                             <div class="bmt-event-name" title="${escapeHtml(event.summary)}">${escapeHtml(event.summary)}</div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
                                 <span class="bmt-event-category ${catClass}">${catLabel}</span>
-                                <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;" title="Factsheet erstellen">FS</button>
+                                <div style="display: flex; gap: 4px;">
+                                    <button onclick="event.stopPropagation(); openBMTFactsheet('${eventData}')" style="background: #3b82f6; border: none; color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;" title="Factsheet erstellen">FS</button>
+                                    <button onclick="event.stopPropagation(); window.open('https://club.bookmetender.com/events', '_blank')" style="background: #10b981; border: none; color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;" title="In BMT &ouml;ffnen">BMT</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -7720,6 +7842,7 @@
                             ${vvkTrackerHTML}
                             <div style="margin-top: 12px; display: flex; gap: 8px;">
                                 <button onclick="event.stopPropagation(); openFactsheetForEvent(${idx})" style="flex: 1; background: #3b82f6; border: none; color: white; padding: 8px; border-radius: 0; font-size: 12px; font-weight: 600; cursor: pointer;">Factsheet</button>
+                                <button onclick="event.stopPropagation(); window.open('https://club.bookmetender.com/events', '_blank')" style="flex: 1; background: #10b981; border: none; color: white; padding: 8px; border-radius: 0; font-size: 12px; font-weight: 600; cursor: pointer;">BMT</button>
                             </div>
                         </div>
                     </div>
@@ -9352,8 +9475,9 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.7.4 - Clickable Project Links');
+            console.log('Work Hub v15.7.7 - Notepad Feature');
             loadQuickNotes();
+            loadNotepad(); // Load Notepad content from localStorage
             loadDeptNotes(); // Load department notes from localStorage
             initMsal();
             loadShiftplanFromStorage(); // Load Runner/CVD data from localStorage
@@ -10334,9 +10458,11 @@ Spittelauer Lnde 12/1
             document.getElementById('project-name').value = '';
             document.getElementById('project-notes').value = '';
             document.getElementById('project-due-date').value = '';
+            document.getElementById('project-due-date-display').value = '';
             document.getElementById('project-department').value = '';
             document.getElementById('project-attachments-list').innerHTML = '';
             document.getElementById('project-delete-btn').style.display = 'none';
+            document.getElementById('project-done-btn').style.display = 'none';
             document.getElementById('project-email-btn').style.display = 'none';
             document.getElementById('project-modal-title').innerHTML = '&#128194; New Project';
             
@@ -10347,10 +10473,15 @@ Spittelauer Lnde 12/1
                     document.getElementById('project-name').value = project.name;
                     document.getElementById('project-notes').value = project.notes || '';
                     document.getElementById('project-due-date').value = project.dueDate || '';
+                    if (project.dueDate) {
+                        const date = new Date(project.dueDate);
+                        document.getElementById('project-due-date-display').value = date.toLocaleDateString('de-DE');
+                    }
                     document.getElementById('project-department').value = project.department || '';
                     currentProjectAttachments = project.attachments || [];
                     renderProjectAttachments();
                     document.getElementById('project-delete-btn').style.display = 'inline-block';
+                    document.getElementById('project-done-btn').style.display = 'inline-block';
                     document.getElementById('project-email-btn').style.display = 'inline-block';
                     document.getElementById('project-modal-title').innerHTML = '&#128194; Edit Project';
                 }
@@ -10405,6 +10536,76 @@ Spittelauer Lnde 12/1
             renderProjectAttachments();
         }
         
+        function updateDueDateDisplay() {
+            const dateInput = document.getElementById('project-due-date');
+            const displayInput = document.getElementById('project-due-date-display');
+            if (dateInput.value) {
+                const date = new Date(dateInput.value);
+                displayInput.value = date.toLocaleDateString('de-DE');
+            }
+        }
+        
+        function parseDateDisplay() {
+            const displayInput = document.getElementById('project-due-date-display');
+            const dateInput = document.getElementById('project-due-date');
+            const val = displayInput.value.trim();
+            
+            // If hidden date input has value, use it
+            if (dateInput.value) return dateInput.value;
+            
+            // Try to parse display value (DD.MM.YYYY or YYYY-MM-DD)
+            if (!val) return '';
+            
+            // German format: TT.MM.JJJJ
+            const deMatch = val.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+            if (deMatch) {
+                return `${deMatch[3]}-${deMatch[2].padStart(2,'0')}-${deMatch[1].padStart(2,'0')}`;
+            }
+            
+            // ISO format: YYYY-MM-DD
+            const isoMatch = val.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (isoMatch) return val;
+            
+            return '';
+        }
+        
+        async function markProjectDone(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const editId = document.getElementById('project-edit-id').value;
+            if (!editId || !accessToken) return;
+            
+            try {
+                const listId = await getOrCreateProjectsList();
+                if (!listId) return;
+                
+                // Mark task as completed in To-Do
+                const response = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${editId}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: 'completed' })
+                    }
+                );
+                
+                if (!response.ok) throw new Error('Failed to complete project');
+                
+                closeModal('project-modal');
+                showToast('Project marked as done!');
+                await loadProjects();
+            } catch (err) {
+                console.error('Mark done error:', err);
+                showToast('Error completing project', 'error');
+            }
+        }
+        
         async function saveProject() {
             const name = document.getElementById('project-name').value.trim();
             if (!name) {
@@ -10420,7 +10621,7 @@ Spittelauer Lnde 12/1
             const editId = document.getElementById('project-edit-id').value;
             const dept = document.getElementById('project-department').value;
             const notes = document.getElementById('project-notes').value;
-            const dueDate = document.getElementById('project-due-date').value;
+            const dueDate = parseDateDisplay();
             
             // Build title with department prefix
             const deptLabelsShort = { office: 'OFFICE', bar: 'BAR', runner: 'RUNNER', tech: 'TECH', sputnik: 'SPUTNIK' };
