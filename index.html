@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.8.2</title>
+    <title>Turbo Projects Work Hub v15.8.3</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3875,7 +3875,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.8.2 - 18.01.2026 - UI Fixes</div>
+    <div class="version">Work Hub v15.8.3 - 18.01.2026 - Project File Uploads</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4118,9 +4118,10 @@
                     <div class="project-form-row">
                         <div class="project-form-group" style="flex:1;">
                             <label>Due Date</label>
-                            <div style="display: flex; gap: 5px;">
-                                <input type="text" id="project-due-date-display" placeholder="TT.MM.JJJJ" style="flex: 1;">
-                                <input type="date" id="project-due-date" style="width: 40px; padding: 5px;" onchange="updateDueDateDisplay()">
+                            <div style="position: relative;">
+                                <input type="text" id="project-due-date-display" placeholder="TT.MM.JJJJ" style="width: 100%; padding-right: 35px;">
+                                <input type="date" id="project-due-date" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; opacity: 0; cursor: pointer;" onchange="updateDueDateDisplay()">
+                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #888;">&#128197;</span>
                             </div>
                         </div>
                         <div class="project-form-group" style="flex:1;">
@@ -4147,11 +4148,14 @@
                         <textarea id="project-notes" placeholder="Project details, tasks, ideas..."></textarea>
                     </div>
                     <div class="project-form-group">
-                        <label>Links / Attachments</label>
+                        <label>Attachments</label>
                         <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                            <input type="text" id="project-link-name" placeholder="Name (z.B. Contract PDF)" style="flex: 1;">
-                            <input type="url" id="project-link-url" placeholder="URL (https://...)" style="flex: 2;">
-                            <button type="button" class="modal-btn" onclick="addProjectLink()" style="padding: 8px 12px;">+ Add</button>
+                            <input type="file" id="project-file-upload" style="display: none;" onchange="addProjectFile(this)" multiple>
+                            <button type="button" class="modal-btn" onclick="document.getElementById('project-file-upload').click()" style="padding: 8px 16px; background: #6b7280;">&#128206; Upload File</button>
+                            <span style="color: #888; font-size: 12px; align-self: center;">or add link:</span>
+                            <input type="text" id="project-link-name" placeholder="Name" style="flex: 1;">
+                            <input type="url" id="project-link-url" placeholder="URL" style="flex: 1;">
+                            <button type="button" class="modal-btn" onclick="addProjectLink()" style="padding: 8px 12px;">+ Link</button>
                         </div>
                         <div class="project-attachments-list" id="project-attachments-list"></div>
                     </div>
@@ -9619,7 +9623,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.8.2 - UI Fixes');
+            console.log('Work Hub v15.8.3 - Project File Uploads');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             loadDeptNotes(); // Load department notes from localStorage
@@ -10568,7 +10572,13 @@ Spittelauer Lnde 12/1
                     ${p.notes ? `<div class="project-card-notes">${escapeHtml(p.notes.substring(0, 100))}${p.notes.length > 100 ? '...' : ''}</div>` : ''}
                     ${p.attachments && p.attachments.length > 0 ? `
                         <div class="project-card-attachments">
-                            ${p.attachments.map(a => `<a href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener" class="project-attachment-link" onclick="event.stopPropagation()">&#128206; ${escapeHtml(a.name)}</a>`).join('')}
+                            ${p.attachments.map(a => {
+                                if (a.type === 'file' || a.data) {
+                                    return `<a href="${a.data}" download="${escapeHtml(a.name)}" class="project-attachment-link" onclick="event.stopPropagation()">&#128206; ${escapeHtml(a.name)}</a>`;
+                                } else {
+                                    return `<a href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener" class="project-attachment-link" onclick="event.stopPropagation()">&#128279; ${escapeHtml(a.name)}</a>`;
+                                }
+                            }).join('')}
                         </div>
                     ` : ''}
                 </div>`;
@@ -10766,6 +10776,35 @@ Spittelauer Lnde 12/1
             openProjectModal(projectId);
         }
         
+        function addProjectFile(input) {
+            const files = input.files;
+            if (!files || files.length === 0) return;
+            
+            for (const file of files) {
+                // Check file size (max 5MB per file)
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('File too large: ' + file.name + ' (max 5MB)', 'error');
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentProjectAttachments.push({
+                        name: file.name,
+                        type: 'file',
+                        data: e.target.result,
+                        size: file.size,
+                        mimeType: file.type,
+                        added: new Date().toISOString()
+                    });
+                    renderProjectAttachments();
+                    showToast('File added: ' + file.name, 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+            input.value = ''; // Reset input
+        }
+        
         function addProjectLink() {
             const nameInput = document.getElementById('project-link-name');
             const urlInput = document.getElementById('project-link-url');
@@ -10784,6 +10823,7 @@ Spittelauer Lnde 12/1
             
             currentProjectAttachments.push({
                 name: name,
+                type: 'link',
                 url: url,
                 added: new Date().toISOString()
             });
@@ -10795,12 +10835,24 @@ Spittelauer Lnde 12/1
         
         function renderProjectAttachments() {
             const container = document.getElementById('project-attachments-list');
-            container.innerHTML = currentProjectAttachments.map((a, i) => `
-                <div class="project-attachment-item">
-                    <a href="${escapeHtml(a.url)}" target="_blank" rel="noopener" class="project-attachment-link">&#128279; ${escapeHtml(a.name)}</a>
-                    <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">&#10005;</button>
-                </div>
-            `).join('');
+            container.innerHTML = currentProjectAttachments.map((a, i) => {
+                if (a.type === 'file' || a.data) {
+                    // File attachment
+                    const sizeKB = a.size ? Math.round(a.size / 1024) : '?';
+                    return `
+                        <div class="project-attachment-item">
+                            <a href="${a.data}" download="${escapeHtml(a.name)}" class="project-attachment-link">&#128206; ${escapeHtml(a.name)} <span style="color:#888;font-size:11px;">(${sizeKB}KB)</span></a>
+                            <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">&#10005;</button>
+                        </div>`;
+                } else {
+                    // URL link
+                    return `
+                        <div class="project-attachment-item">
+                            <a href="${escapeHtml(a.url)}" target="_blank" rel="noopener" class="project-attachment-link">&#128279; ${escapeHtml(a.name)}</a>
+                            <button class="project-attachment-remove" onclick="removeProjectAttachment(${i})">&#10005;</button>
+                        </div>`;
+                }
+            }).join('');
         }
         
         function removeProjectAttachment(index) {
