@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.7.6</title>
+    <title>Turbo Projects Work Hub v15.8.2</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -60,7 +60,7 @@
             --fremd: #888888;
             --konzert: #a855f7;
             --special: #eab308;
-            --technik: #a855f7;
+            --technik: #06b6d4;
             --feiertag: #ef4444;
             --outlook: #555555;
             
@@ -1127,6 +1127,12 @@
         .project-dept-badge.runner { border-color: #22c55e; color: #22c55e; }
         .project-dept-badge.tech { border-color: #a855f7; color: #a855f7; }
         .project-dept-badge.sputnik { border-color: #06b6d4; color: #06b6d4; }
+        .project-type-badge {
+            font-size: 10px; padding: 2px 8px; border-radius: 2px;
+            background: var(--surface-2); border: 1px solid var(--border); margin-left: 5px;
+        }
+        .project-type-badge.work { border-color: #3b82f6; color: #3b82f6; }
+        .project-type-badge.private { border-color: #ec4899; color: #ec4899; }
         .modal-btn.danger { background: var(--danger) !important; cursor: pointer; }
         
         /* Department color accents for tabs */
@@ -1715,7 +1721,7 @@
         .legend-dot.office { background: #3b82f6; }
         .legend-dot.bar { background: #f59e0b; }
         .legend-dot.runner { background: #22c55e; }
-        .legend-dot.technik { background: #a855f7; }
+        .legend-dot.technik { background: #06b6d4; }
         .legend-dot.sputnik { background: #ec4899; }
         .legend-dot.eigen { background: var(--eigen); }
         .legend-dot.fremd { background: var(--fremd); }
@@ -2284,7 +2290,7 @@
                     </div>
                     <div style="display: flex; gap: 10px; justify-content: flex-end;">
                         <button class="modal-btn cancel" onclick="hideCleaningEmail()">Abbrechen</button>
-                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: var(--blue-medium); color: #fff;">&#128157; Als Entwurf</button>
+                        <button class="modal-btn" onclick="saveDraftCleaningEmail()" style="background: var(--blue-medium); color: #fff;">Als Entwurf</button>
                         <button class="modal-btn success" onclick="sendCleaningEmail()">&#128228; Senden</button>
                     </div>
                     <div id="cleaning-email-status" style="margin-top: 10px; font-size: 13px;"></div>
@@ -3227,8 +3233,8 @@
             <div class="modal-footer" style="flex-wrap: wrap; gap: 8px;">
                 <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schliessen</button>
                 <div style="display: flex; gap: 8px;">
-                    <button class="modal-btn download" onclick="downloadFactsheetPDF()">â† PDF</button>
-                    <button class="modal-btn download" onclick="downloadFactsheetDOCX()">â† DOCX</button>
+                    <button class="modal-btn download" onclick="downloadFactsheetPDF()">&#8681; Download PDF</button>
+                    <button class="modal-btn download" onclick="downloadFactsheetDOCX()">&#8681; Download DOCX</button>
                 </div>
                 <button class="modal-btn security" onclick="confirmSecurityFromFactsheet()">&#128221; Security best&auml;tigen</button>
                 <button class="modal-btn primary" onclick="copyFactsheet()">&#128203; Kopieren</button>
@@ -3261,7 +3267,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
-                <button class="modal-btn" onclick="saveEmailDraft()" style="background: var(--blue-medium); color: #fff;">&#128157; Als Entwurf</button>
+                <button class="modal-btn" onclick="saveEmailDraft()" style="background: var(--blue-medium); color: #fff;">Als Entwurf</button>
                 <button class="modal-btn success" onclick="sendEmail()">&#128228; Senden</button>
             </div>
         </div>
@@ -3707,8 +3713,11 @@
                 </div>
                 <div class="dept-tab-content" id="office-projects-tab">
                     <div class="projects-container">
-                        <div class="projects-header">
+                        <div class="projects-header" style="display: flex; gap: 8px; flex-wrap: wrap;">
                             <button class="projects-add-btn" onclick="openProjectModal()">+ New Project</button>
+                            <button class="projects-add-btn" onclick="downloadProjects()" style="background: var(--good);">&#128190; Save</button>
+                            <button class="projects-add-btn" onclick="document.getElementById('projects-upload').click()" style="background: #6b7280;">&#128194; Load</button>
+                            <input type="file" id="projects-upload" accept=".json" onchange="loadProjectsFile(event)" style="display: none;">
                         </div>
                         <div class="projects-list" id="projects-list">
                             <!-- Projects will be rendered here -->
@@ -3866,7 +3875,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.7.7 - 15.01.2026 - Notepad Feature</div>
+    <div class="version">Work Hub v15.8.2 - 18.01.2026 - UI Fixes</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -3877,9 +3886,12 @@
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; height: calc(100% - 130px); padding: 15px;">
                 <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <button class="modal-btn" onclick="copyNotepad()" style="background: var(--blue-accent);">&#128203; Copy</button>
-                    <button class="modal-btn success" onclick="downloadNotepad()">&#128190; Save TXT</button>
-                    <button class="modal-btn" onclick="clearNotepad()" style="background: #dc3545;">&#128465; Clear</button>
+                    <button class="modal-btn" onclick="copyNotepad()" style="background: var(--blue-accent); color: #fff;">&#128203; Copy</button>
+                    <button class="modal-btn success" onclick="downloadNotepad()" style="color: #fff;">&#128190; Save TXT</button>
+                    <button class="modal-btn" onclick="document.getElementById('notepad-upload').click()" style="background: #6b7280; color: #fff;">&#128194; Load</button>
+                    <input type="file" id="notepad-upload" accept=".txt" onchange="loadNotepadFile(event)" style="display: none;">
+                    <button class="modal-btn" onclick="emailNotepad()" style="background: var(--blue-medium); color: #fff;">&#9993; Email</button>
+                    <button class="modal-btn" onclick="clearNotepad()" style="background: #dc3545; color: #fff;">&#128465; Clear</button>
                     <span class="save-indicator" id="notepad-saved" style="margin-left: auto; color: var(--good); font-size: 12px;">&#10004; Auto-saved</span>
                 </div>
                 <textarea id="notepad-text" 
@@ -4120,6 +4132,13 @@
                                 <option value="runner">&#127939; Runner</option>
                                 <option value="tech">&#128295; Tech</option>
                                 <option value="sputnik">&#128640; Sputnik</option>
+                            </select>
+                        </div>
+                        <div class="project-form-group" style="flex:1;">
+                            <label>Type</label>
+                            <select id="project-type">
+                                <option value="work">&#128188; Work</option>
+                                <option value="private">&#127968; Private</option>
                             </select>
                         </div>
                     </div>
@@ -6265,6 +6284,46 @@
             showToast('&#128190; Downloaded as TXT!');
         }
         
+        function loadNotepadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.endsWith('.txt')) {
+                showToast('&#10060; Only .txt files supported');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const textarea = document.getElementById('notepad-text');
+                
+                // Check if there's existing content
+                if (textarea.value.trim()) {
+                    const action = prompt('Notepad has content. Type "REPLACE" to overwrite or "APPEND" to add at end:');
+                    if (action === 'REPLACE') {
+                        textarea.value = content;
+                        showToast('&#128194; Loaded: ' + file.name);
+                    } else if (action === 'APPEND') {
+                        textarea.value += '\n\n--- Loaded from ' + file.name + ' ---\n' + content;
+                        showToast('&#128194; Appended: ' + file.name);
+                    } else {
+                        showToast('&#10060; Cancelled');
+                        return;
+                    }
+                } else {
+                    textarea.value = content;
+                    showToast('&#128194; Loaded: ' + file.name);
+                }
+                
+                saveNotepad(); // Auto-save after loading
+            };
+            reader.readAsText(file);
+            
+            // Reset file input so same file can be loaded again
+            event.target.value = '';
+        }
+        
         function clearNotepad() {
             const text = document.getElementById('notepad-text').value;
             if (!text.trim()) {
@@ -6276,6 +6335,91 @@
                 document.getElementById('notepad-text').value = '';
                 localStorage.removeItem('workhub_notepad');
                 showToast('&#128465; Notepad cleared');
+            }
+        }
+        
+        async function emailNotepad() {
+            const text = document.getElementById('notepad-text').value;
+            if (!text.trim()) {
+                showToast('&#128221; Notepad is empty');
+                return;
+            }
+            
+            if (!msalInstance || !msalInstance.getAllAccounts().length) {
+                showToast('&#128274; Please sign in with Microsoft first');
+                return;
+            }
+            
+            const recipient = prompt('Enter recipient email (or leave empty for draft):');
+            const subject = prompt('Enter subject:', 'Notes from Work Hub');
+            
+            if (subject === null) return; // User cancelled
+            
+            try {
+                const tokenResponse = await msalInstance.acquireTokenSilent({
+                    scopes: ['Mail.Send', 'Mail.ReadWrite'],
+                    account: msalInstance.getAllAccounts()[0]
+                });
+                
+                // Format notepad content for email (preserve line breaks)
+                const htmlBody = text.replace(/\n/g, '<br>').replace(/ {4}/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+                
+                const emailData = {
+                    message: {
+                        subject: subject || 'Notes from Work Hub',
+                        body: {
+                            contentType: 'HTML',
+                            content: `<pre style="font-family: Consolas, monospace; white-space: pre-wrap;">${text}</pre>`
+                        },
+                        toRecipients: recipient ? [{ emailAddress: { address: recipient } }] : []
+                    },
+                    saveToSentItems: true
+                };
+                
+                if (recipient) {
+                    // Send email directly
+                    const response = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${tokenResponse.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(emailData)
+                    });
+                    
+                    if (response.ok) {
+                        showToast('&#9993; Email sent to ' + recipient);
+                    } else {
+                        throw new Error('Failed to send');
+                    }
+                } else {
+                    // Create draft
+                    const draftData = {
+                        subject: subject || 'Notes from Work Hub',
+                        body: {
+                            contentType: 'HTML',
+                            content: `<pre style="font-family: Consolas, monospace; white-space: pre-wrap;">${text}</pre>`
+                        }
+                    };
+                    
+                    const response = await fetch('https://graph.microsoft.com/v1.0/me/messages', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${tokenResponse.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(draftData)
+                    });
+                    
+                    if (response.ok) {
+                        showToast('&#128157; Draft saved in Outlook');
+                    } else {
+                        throw new Error('Failed to create draft');
+                    }
+                }
+            } catch (error) {
+                console.error('Email error:', error);
+                showToast('&#10060; Email failed - check console');
             }
         }
         
@@ -9475,7 +9619,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.7.7 - Notepad Feature');
+            console.log('Work Hub v15.8.2 - UI Fixes');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             loadDeptNotes(); // Load department notes from localStorage
@@ -10327,14 +10471,16 @@ Spittelauer Lnde 12/1
                         name = deptMatch[2];
                     }
                     
-                    // Parse body content for notes and attachments
+                    // Parse body content for notes, type and attachments
                     let notes = '';
                     let attachments = [];
+                    let projectType = 'work'; // Default to work
                     if (task.body && task.body.content) {
                         try {
                             const bodyData = JSON.parse(task.body.content);
                             notes = bodyData.notes || '';
                             attachments = bodyData.attachments || [];
+                            projectType = bodyData.type || 'work';
                         } catch {
                             // Body is plain text
                             notes = task.body.content;
@@ -10345,6 +10491,7 @@ Spittelauer Lnde 12/1
                         id: task.id,
                         name: name,
                         department: department,
+                        type: projectType,
                         notes: notes,
                         attachments: attachments,
                         dueDate: task.dueDateTime ? task.dueDateTime.dateTime.split('T')[0] : null,
@@ -10384,12 +10531,17 @@ Spittelauer Lnde 12/1
             }
             
             const deptLabels = { office: '&#127970; Office', bar: '&#127864; Bar', runner: '&#127939; Runner', tech: '&#128295; Tech', sputnik: '&#128640; Sputnik' };
+            const typeLabels = { work: '&#128188; Work', private: '&#127968; Private' };
             
             container.innerHTML = projectsCache.map(p => {
                 let deptBadge = '';
                 if (p.department && deptLabels[p.department]) {
                     deptBadge = `<span class="project-dept-badge ${p.department}">${deptLabels[p.department]}</span>`;
                 }
+                
+                let typeBadge = '';
+                const projectType = p.type || 'work'; // Default to work
+                typeBadge = `<span class="project-type-badge ${projectType}">${typeLabels[projectType]}</span>`;
                 
                 let dueDateHtml = '';
                 if (p.dueDate) {
@@ -10412,7 +10564,7 @@ Spittelauer Lnde 12/1
                             ${dueDateHtml}
                         </div>
                     </div>
-                    ${deptBadge ? `<div class="project-card-meta">${deptBadge}</div>` : ''}
+                    <div class="project-card-meta">${deptBadge}${typeBadge}</div>
                     ${p.notes ? `<div class="project-card-notes">${escapeHtml(p.notes.substring(0, 100))}${p.notes.length > 100 ? '...' : ''}</div>` : ''}
                     ${p.attachments && p.attachments.length > 0 ? `
                         <div class="project-card-attachments">
@@ -10426,6 +10578,124 @@ Spittelauer Lnde 12/1
         // Keep for backwards compatibility
         function getProjects() {
             return projectsCache;
+        }
+        
+        function downloadProjects() {
+            const projects = getProjects();
+            if (!projects || projects.length === 0) {
+                showToast('&#128194; No projects to save');
+                return;
+            }
+            const blob = new Blob([JSON.stringify(projects, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g, '');
+            a.href = url;
+            a.download = `Projects_${dateStr}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('&#128190; Projects saved as JSON!');
+        }
+        
+        async function loadProjectsFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.endsWith('.json')) {
+                showToast('&#10060; Only .json files supported');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    
+                    if (!Array.isArray(imported)) {
+                        showToast('&#10060; Invalid projects file');
+                        return;
+                    }
+                    
+                    const action = prompt(`Found ${imported.length} projects. Type "REPLACE" to overwrite or "MERGE" to add:`);
+                    
+                    if (action === 'REPLACE') {
+                        // Clear existing and import new
+                        projectsCache = imported;
+                        renderProjectsFromCache();
+                        showToast('&#128194; Loaded ' + imported.length + ' projects (replaced)');
+                        
+                        // Sync to To-Do if signed in
+                        if (msalInstance && msalInstance.getAllAccounts().length) {
+                            syncImportedProjects(imported, true);
+                        }
+                    } else if (action === 'MERGE') {
+                        // Add to existing (skip duplicates by name)
+                        const existingNames = projectsCache.map(p => p.name.toLowerCase());
+                        const newProjects = imported.filter(p => !existingNames.includes(p.name.toLowerCase()));
+                        projectsCache = [...projectsCache, ...newProjects];
+                        renderProjectsFromCache();
+                        showToast('&#128194; Added ' + newProjects.length + ' new projects');
+                        
+                        // Sync to To-Do if signed in
+                        if (msalInstance && msalInstance.getAllAccounts().length) {
+                            syncImportedProjects(newProjects, false);
+                        }
+                    } else {
+                        showToast('&#10060; Cancelled');
+                    }
+                } catch (err) {
+                    console.error('Load projects error:', err);
+                    showToast('&#10060; Failed to parse file');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        async function syncImportedProjects(projects, isReplace) {
+            try {
+                const listId = await getOrCreateProjectsList();
+                if (!listId) return;
+                
+                const tokenResponse = await msalInstance.acquireTokenSilent({
+                    scopes: ['Tasks.ReadWrite'],
+                    account: msalInstance.getAllAccounts()[0]
+                });
+                
+                // If replacing, we'd need to delete existing - skip for now, just add
+                for (const project of projects) {
+                    if (!project.todoId) {
+                        // Create in To-Do
+                        const taskData = {
+                            title: project.name,
+                            body: { content: project.notes || '', contentType: 'text' }
+                        };
+                        if (project.dueDate) {
+                            taskData.dueDateTime = {
+                                dateTime: project.dueDate + 'T23:59:59',
+                                timeZone: 'Europe/Vienna'
+                            };
+                        }
+                        
+                        await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${tokenResponse.accessToken}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(taskData)
+                        });
+                    }
+                }
+                
+                // Reload from To-Do to get proper IDs
+                loadProjects();
+            } catch (err) {
+                console.error('Sync imported projects error:', err);
+            }
         }
         
         function renderProjects() {
@@ -10460,6 +10730,7 @@ Spittelauer Lnde 12/1
             document.getElementById('project-due-date').value = '';
             document.getElementById('project-due-date-display').value = '';
             document.getElementById('project-department').value = '';
+            document.getElementById('project-type').value = 'work'; // Default to work
             document.getElementById('project-attachments-list').innerHTML = '';
             document.getElementById('project-delete-btn').style.display = 'none';
             document.getElementById('project-done-btn').style.display = 'none';
@@ -10478,6 +10749,7 @@ Spittelauer Lnde 12/1
                         document.getElementById('project-due-date-display').value = date.toLocaleDateString('de-DE');
                     }
                     document.getElementById('project-department').value = project.department || '';
+                    document.getElementById('project-type').value = project.type || 'work';
                     currentProjectAttachments = project.attachments || [];
                     renderProjectAttachments();
                     document.getElementById('project-delete-btn').style.display = 'inline-block';
@@ -10620,6 +10892,7 @@ Spittelauer Lnde 12/1
             
             const editId = document.getElementById('project-edit-id').value;
             const dept = document.getElementById('project-department').value;
+            const projectType = document.getElementById('project-type').value || 'work';
             const notes = document.getElementById('project-notes').value;
             const dueDate = parseDateDisplay();
             
@@ -10627,9 +10900,10 @@ Spittelauer Lnde 12/1
             const deptLabelsShort = { office: 'OFFICE', bar: 'BAR', runner: 'RUNNER', tech: 'TECH', sputnik: 'SPUTNIK' };
             const title = dept ? `[${deptLabelsShort[dept]}] ${name}` : name;
             
-            // Build body with notes and attachments as JSON
+            // Build body with notes, type and attachments as JSON
             const bodyContent = JSON.stringify({
                 notes: notes,
+                type: projectType,
                 attachments: currentProjectAttachments
             });
             
