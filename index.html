@@ -5522,26 +5522,43 @@
                 if (eventDate >= today) {
                     const data = SHIFTPLAN_DATABASE[dateStr];
                     
-                    // Try to find event name from BMT (excluding Specials/Feiertag)
+                    // Find ALL BMT events on this date
                     let eventName = '-';
-                    let eventCategory = null;
+                    let hasRealEvent = false;
+                    let allEventsAreExcluded = true;
+                    
                     if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
-                        const match = bmtEvents.find(e => {
+                        const matchingEvents = bmtEvents.filter(e => {
                             const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                             return eDate.toDateString() === eventDate.toDateString();
                         });
-                        if (match) {
-                            eventCategory = match.category;
-                            // Only show if it's a real event (not Special/Feiertag)
+                        
+                        // Check all events on this day
+                        for (const match of matchingEvents) {
                             if (shouldShowInShiftplan(match.category)) {
-                                eventName = match.summary || '-';
+                                // Found a real event (not Special/Feiertag)
+                                hasRealEvent = true;
+                                allEventsAreExcluded = false;
+                                eventName = match.summary || eventName;
+                                break; // Use the first real event's name
                             }
+                        }
+                        
+                        // If we found events but none are real events, mark for skipping
+                        if (matchingEvents.length > 0 && !hasRealEvent) {
+                            allEventsAreExcluded = true;
+                        } else if (matchingEvents.length === 0) {
+                            allEventsAreExcluded = false; // No BMT data, show from shiftplan
                         }
                     }
                     
-                    // Skip this date if the only BMT event is a Special/Feiertag
-                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
-                        continue; // Don't add to shiftplan display
+                    // Skip this date ONLY if ALL BMT events are Specials/Feiertag
+                    if (allEventsAreExcluded && !hasRealEvent && typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
+                        const hasAnyBMT = bmtEvents.some(e => {
+                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                            return eDate.toDateString() === eventDate.toDateString();
+                        });
+                        if (hasAnyBMT) continue; // Skip only if we have BMT data and all are excluded
                     }
                     
                     futureEvents.push({
@@ -5630,19 +5647,32 @@
                 if (eventDate >= today) {
                     const data = BAR_DATABASE[dateStr];
                     
-                    // Check BMT category - skip Specials/Feiertag
-                    let eventCategory = null;
+                    // Check BMT - only skip if ALL events on this day are Specials/Feiertag
+                    let hasRealEvent = false;
+                    let allEventsAreExcluded = true;
+                    
                     if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
-                        const match = bmtEvents.find(e => {
+                        const matchingEvents = bmtEvents.filter(e => {
                             const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                             return eDate.toDateString() === eventDate.toDateString();
                         });
-                        if (match) eventCategory = match.category;
-                    }
-                    
-                    // Skip this date if it's a Special/Feiertag
-                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
-                        continue;
+                        
+                        for (const match of matchingEvents) {
+                            if (shouldShowInShiftplan(match.category)) {
+                                hasRealEvent = true;
+                                allEventsAreExcluded = false;
+                                break;
+                            }
+                        }
+                        
+                        if (matchingEvents.length === 0) {
+                            allEventsAreExcluded = false;
+                        }
+                        
+                        // Skip only if we have BMT data and ALL events are excluded types
+                        if (matchingEvents.length > 0 && allEventsAreExcluded && !hasRealEvent) {
+                            continue;
+                        }
                     }
                     
                     // Helper: Only TERRASSE and KITCHEN should show X marks
@@ -5740,19 +5770,32 @@
                 if (eventDate >= today) {
                     const data = TECHNIKER_DATABASE[dateStr];
                     
-                    // Check BMT category - skip Specials/Feiertag
-                    let eventCategory = null;
+                    // Check BMT - only skip if ALL events on this day are Specials/Feiertag
+                    let hasRealEvent = false;
+                    let allEventsAreExcluded = true;
+                    
                     if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
-                        const match = bmtEvents.find(e => {
+                        const matchingEvents = bmtEvents.filter(e => {
                             const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                             return eDate.toDateString() === eventDate.toDateString();
                         });
-                        if (match) eventCategory = match.category;
-                    }
-                    
-                    // Skip this date if it's a Special/Feiertag
-                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
-                        continue;
+                        
+                        for (const match of matchingEvents) {
+                            if (shouldShowInShiftplan(match.category)) {
+                                hasRealEvent = true;
+                                allEventsAreExcluded = false;
+                                break;
+                            }
+                        }
+                        
+                        if (matchingEvents.length === 0) {
+                            allEventsAreExcluded = false;
+                        }
+                        
+                        // Skip only if we have BMT data and ALL events are excluded types
+                        if (matchingEvents.length > 0 && allEventsAreExcluded && !hasRealEvent) {
+                            continue;
+                        }
                     }
                     
                     futureEvents.push({
