@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.8.4</title>
+    <title>Turbo Projects Work Hub v15.8.5</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -782,71 +782,87 @@
         .calendar-entry.feiertag { background: var(--feiertag); color: #fff; }
         .calendar-entry:hover { opacity: 0.8; }
         
-        /* Native Shiftplan Table */
+        /* Native Shiftplan Table - Clean & Responsive */
         .shiftplan-table-container {
             overflow-x: auto;
             overflow-y: auto;
-            max-height: 350px; /* ~4 weeks visible */
+            max-height: 400px;
             -webkit-overflow-scrolling: touch;
             background: var(--bg);
-            padding: 8px;
+            padding: 0;
             border-radius: var(--radius-sm);
-            width: 100%;
-            position: relative;
         }
         .shiftplan-table {
-            width: max-content;
-            min-width: 100%;
+            width: 100%;
             border-collapse: collapse;
             font-size: 12px;
             color: var(--text);
+            table-layout: fixed;
         }
         .shiftplan-table th {
             background: var(--surface-2);
-            color: var(--muted);
-            padding: 8px 4px;
+            color: var(--text-secondary);
+            padding: 10px 8px;
             text-align: left;
-            font-weight: 600;
-            font-size: 10px;
+            font-weight: 700;
+            font-size: 11px;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
         .shiftplan-table td {
-            padding: 8px 4px;
+            padding: 10px 8px;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
-            font-size: 11px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 12px;
         }
         .shiftplan-table tr:last-child td { border-bottom: none; }
         .shiftplan-table tr:hover { background: var(--surface-2); }
-        .shiftplan-table .date-col { font-weight: 500; color: var(--text-secondary); width: 55px; }
-        .shiftplan-table .event-col { color: var(--text); }
-        .shiftplan-table.bar-table { table-layout: auto; min-width: 450px; }
-        .shiftplan-table.bar-table td { white-space: nowrap; padding: 6px 8px; font-size: 11px; }
-        .shiftplan-table.bar-table th { padding: 6px 8px; }
-        .shiftplan-table.runner-table { table-layout: auto; min-width: 550px; }
-        .shiftplan-table.runner-table td { white-space: nowrap; padding: 6px 6px; font-size: 11px; }
-        .shiftplan-table.runner-table th { padding: 6px 6px; }
+        .shiftplan-table .date-col { font-weight: 600; color: var(--text-secondary); min-width: 70px; }
+        .shiftplan-table .event-col { color: var(--text); font-weight: 500; min-width: 90px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
         .shiftplan-table .cvd-col { color: var(--warn); font-weight: 600; }
-        .shiftplan-table .runner-col { color: var(--text); }
         .shiftplan-table .technik-col { color: var(--konzert); font-weight: 600; }
+        
+        /* Bar Table - 8 columns */
+        .shiftplan-table.bar-table { table-layout: auto; min-width: 600px; }
+        .shiftplan-table.bar-table th,
+        .shiftplan-table.bar-table td { padding: 8px 10px; text-align: center; }
+        .shiftplan-table.bar-table th:first-child,
+        .shiftplan-table.bar-table td:first-child { text-align: left; }
+        .shiftplan-table.bar-table th:nth-child(2),
+        .shiftplan-table.bar-table td:nth-child(2) { text-align: left; }
+        
+        /* Runner Table - 9 columns */
+        .shiftplan-table.runner-table { table-layout: auto; min-width: 700px; }
+        .shiftplan-table.runner-table th,
+        .shiftplan-table.runner-table td { padding: 8px 8px; text-align: center; }
+        .shiftplan-table.runner-table th:first-child,
+        .shiftplan-table.runner-table td:first-child { text-align: left; }
+        .shiftplan-table.runner-table th:nth-child(2),
+        .shiftplan-table.runner-table td:nth-child(2) { text-align: left; }
+        
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .shiftplan-table { font-size: 10px; }
-            .shiftplan-table th { font-size: 8px; padding: 5px 2px; }
-            .shiftplan-table td { padding: 5px 2px; font-size: 9px; }
-            .shiftplan-table .date-col { width: 45px; }
-            .shiftplan-table .event-col { width: 55px; }
+            .shiftplan-table { font-size: 11px; }
+            .shiftplan-table th { font-size: 9px; padding: 6px 4px; }
+            .shiftplan-table td { padding: 6px 4px; font-size: 10px; }
+            .shiftplan-table .date-col { min-width: 55px; }
+            .shiftplan-table .event-col { min-width: 70px; max-width: 90px; }
+            .shiftplan-table.bar-table { min-width: 500px; }
+            .shiftplan-table.runner-table { min-width: 600px; }
         }
         @media (max-width: 480px) {
-            .shiftplan-table { font-size: 8px; }
-            .shiftplan-table th { font-size: 7px; padding: 4px 1px; letter-spacing: 0; }
-            .shiftplan-table td { padding: 4px 1px; font-size: 8px; }
-            .shiftplan-table .date-col { width: 38px; }
-            .shiftplan-table .event-col { width: 45px; }
+            .shiftplan-table { font-size: 10px; }
+            .shiftplan-table th { font-size: 8px; padding: 5px 3px; }
+            .shiftplan-table td { padding: 5px 3px; font-size: 9px; }
+            .shiftplan-table .date-col { min-width: 45px; }
+            .shiftplan-table .event-col { min-width: 60px; max-width: 80px; }
+            .shiftplan-table.bar-table { min-width: 420px; }
+            .shiftplan-table.runner-table { min-width: 520px; }
         }
         
         /* VVK Tracker */
@@ -3890,7 +3906,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.8.4 - 19.01.2026 - Shiftplan Category Filter</div>
+    <div class="version">Work Hub v15.8.5 - 19.01.2026 - Shiftplan Category Filter</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5722,13 +5738,14 @@
             let html = `<table class="shiftplan-table bar-table">
                 <thead>
                     <tr>
-                        <th>Tag</th>
-                        <th>Event</th>
-                        <th>Terr</th>
-                        <th>Kit</th>
+                        <th>TAG</th>
+                        <th>EVENT</th>
+                        <th>TERR</th>
+                        <th>KIT</th>
                         <th>M1</th>
                         <th>M2</th>
                         <th>M3</th>
+                        <th>M4</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -5737,7 +5754,7 @@
             futureEvents.forEach(e => {
                 // Add month separator if month changed
                 if (lastMonth !== null && (e.month !== lastMonth)) {
-                    html += `<tr class="month-separator"><td colspan="7" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
+                    html += `<tr class="month-separator"><td colspan="8" style="padding: 8px 0; border-bottom: 1px solid var(--border);"></td></tr>`;
                 }
                 lastMonth = e.month;
                 
@@ -5750,6 +5767,7 @@
                     <td>${e.main1}</td>
                     <td>${e.main2}</td>
                     <td>${e.main3}</td>
+                    <td>${e.main4}</td>
                 </tr>`;
             });
             
@@ -9772,7 +9790,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.8.4 - Project File Uploads');
+            console.log('Work Hub v15.8.5 - Project File Uploads');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             loadDeptNotes(); // Load department notes from localStorage
