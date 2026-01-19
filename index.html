@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.8.3</title>
+    <title>Turbo Projects Work Hub v15.8.4</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2230,6 +2230,9 @@
                 <button class="bmt-btn secondary" onclick="document.getElementById('bmt-upload').click()">
                      .ics
                 </button>
+                <button class="bmt-btn" onclick="refreshBMTCalendar()" title="Cache leeren und neu laden" style="background: var(--warn); color: #000;">
+                    ↻ Refresh
+                </button>
             </div>
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
@@ -3875,7 +3878,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.8.3 - 18.01.2026 - Project File Uploads</div>
+    <div class="version">Work Hub v15.8.4 - 19.01.2026 - Shiftplan Category Filter</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4334,7 +4337,7 @@
                     showToast("... Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("âŒ Login fehlgeschlagen", true); 
+                    showToast("Ã¢ÂÅ’ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -5039,11 +5042,11 @@
             `;
         }
         
-        // â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬
+        // Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬
         // SHIFTPLAN DATABASE - LIVE from Google Sheets
         // Runner/CVD: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
         // Bar: https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv
-        // â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬â¬
+        // Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬
         
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
@@ -5284,7 +5287,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Runner CSV:', error);
-                showToast('âŒ Fehler beim Laden der CSV', true);
+                showToast('Ã¢ÂÅ’ Fehler beim Laden der CSV', true);
             }
         }
         
@@ -5317,7 +5320,7 @@
                     datum: findCol(['date', 'datum']),
                     event: findCol(['event name', 'eventname', 'event']),
                     terrasse: findCol(['terrasse', 'terr']),
-                    kitchen: findCol(['kitchen', 'kit', 'küche']),
+                    kitchen: findCol(['kitchen', 'kit', 'kÃ¼che']),
                     main1: findCol(['main 1', 'main1', 'm1']),
                     main2: findCol(['main 2', 'main2', 'm2']),
                     main3: findCol(['main 3', 'main3', 'm3']),
@@ -5371,7 +5374,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Bar CSV:', error);
-                showToast('âŒ Fehler beim Laden der Bar CSV', true);
+                showToast('Ã¢ÂÅ’ Fehler beim Laden der Bar CSV', true);
             }
         }
         
@@ -5508,7 +5511,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -5519,14 +5522,26 @@
                 if (eventDate >= today) {
                     const data = SHIFTPLAN_DATABASE[dateStr];
                     
-                    // Try to find event name from BMT
+                    // Try to find event name from BMT (excluding Specials/Feiertag)
                     let eventName = '-';
+                    let eventCategory = null;
                     if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
                         const match = bmtEvents.find(e => {
                             const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
                             return eDate.toDateString() === eventDate.toDateString();
                         });
-                        if (match) eventName = match.summary || '-';
+                        if (match) {
+                            eventCategory = match.category;
+                            // Only show if it's a real event (not Special/Feiertag)
+                            if (shouldShowInShiftplan(match.category)) {
+                                eventName = match.summary || '-';
+                            }
+                        }
+                    }
+                    
+                    // Skip this date if the only BMT event is a Special/Feiertag
+                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
+                        continue; // Don't add to shiftplan display
                     }
                     
                     futureEvents.push({
@@ -5615,18 +5630,42 @@
                 if (eventDate >= today) {
                     const data = BAR_DATABASE[dateStr];
                     
+                    // Check BMT category - skip Specials/Feiertag
+                    let eventCategory = null;
+                    if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
+                        const match = bmtEvents.find(e => {
+                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                            return eDate.toDateString() === eventDate.toDateString();
+                        });
+                        if (match) eventCategory = match.category;
+                    }
+                    
+                    // Skip this date if it's a Special/Feiertag
+                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
+                        continue;
+                    }
+                    
+                    // Helper: Only TERRASSE and KITCHEN should show X marks
+                    // For MAIN positions, X should be converted to '-'
+                    const cleanPosition = (val, allowX) => {
+                        if (!val) return '-';
+                        const v = val.trim().toUpperCase();
+                        if (v === 'X' && !allowX) return '-';
+                        return val.trim() || '-';
+                    };
+                    
                     futureEvents.push({
                         date: eventDate,
                         dateStr: dateStr,
                         month: eventDate.getMonth(),
                         day: dayNames[eventDate.getDay()],
                         eventName: data.event || '-',
-                        terrasse: data.terrasse || '-',
-                        kitchen: data.kitchen || '-',
-                        main1: data.main1 || '-',
-                        main2: data.main2 || '-',
-                        main3: data.main3 || '-',
-                        main4: data.main4 || '-'
+                        terrasse: cleanPosition(data.terrasse, true),  // Allow X
+                        kitchen: cleanPosition(data.kitchen, true),    // Allow X
+                        main1: cleanPosition(data.main1, false),       // No X
+                        main2: cleanPosition(data.main2, false),       // No X
+                        main3: cleanPosition(data.main3, false),       // No X
+                        main4: cleanPosition(data.main4, false)        // No X
                     });
                 }
             }
@@ -5700,6 +5739,21 @@
                 
                 if (eventDate >= today) {
                     const data = TECHNIKER_DATABASE[dateStr];
+                    
+                    // Check BMT category - skip Specials/Feiertag
+                    let eventCategory = null;
+                    if (typeof bmtEvents !== 'undefined' && bmtEvents.length > 0) {
+                        const match = bmtEvents.find(e => {
+                            const eDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                            return eDate.toDateString() === eventDate.toDateString();
+                        });
+                        if (match) eventCategory = match.category;
+                    }
+                    
+                    // Skip this date if it's a Special/Feiertag
+                    if (eventCategory && !shouldShowInShiftplan(eventCategory)) {
+                        continue;
+                    }
                     
                     futureEvents.push({
                         date: eventDate,
@@ -7364,7 +7418,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7376,7 +7430,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -7421,12 +7475,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'âŒ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'âŒ Fehler: ' + e.message;
+                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -7491,6 +7545,39 @@
             if (confirm('Auto-Load nicht mglich (CORS).\n\nKlicke OK um die .ics Datei herunterzuladen, dann lade sie mit dem  Button hoch.')) {
                 window.open(BMT_FEED_URL, '_blank');
             }
+        }
+        
+        // Refresh BMT Calendar - clear cache and reload
+        async function refreshBMTCalendar() {
+            showToast('🔄 Clearing cache and reloading...');
+            
+            // Clear all BMT-related localStorage
+            localStorage.removeItem('bmtEvents');
+            localStorage.removeItem('bmtLastUpdate');
+            
+            // Reset global variable
+            bmtEvents = [];
+            
+            // Clear the display
+            const statusDiv = document.getElementById('bmt-status');
+            if (statusDiv) {
+                statusDiv.innerHTML = '⏳ Refreshing...';
+            }
+            
+            // Re-render empty states
+            renderBMTEvents();
+            renderUpcomingFromBMT();
+            renderCalendar();
+            
+            // Re-render shiftplans (they'll now show without the old BMT data)
+            if (typeof renderRunnerShiftplan === 'function') renderRunnerShiftplan();
+            if (typeof renderBarShiftplan === 'function') renderBarShiftplan();
+            if (typeof renderTechCalendar === 'function') renderTechCalendar();
+            
+            // Attempt to auto-load fresh data
+            await autoLoadBMT();
+            
+            showToast('✓ Calendar refreshed!');
         }
         
         // Toggle BMT Section
@@ -7731,6 +7818,13 @@
         function extractLineup(description) {
             const match = description.match(/Lineup:\s*([^\n]+)/i);
             return match ? match[1].trim() : '';
+        }
+        
+        // Helper: Check if event category should appear in shiftplans
+        // Specials (meetings) and Feiertag should NOT appear in staffing shiftplans
+        function shouldShowInShiftplan(category) {
+            const excludedCategories = ['special', 'holiday'];
+            return !excludedCategories.includes(category);
         }
         
         // Handle file upload
@@ -8525,7 +8619,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('âŒ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -8643,7 +8737,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'âŒ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -8654,7 +8748,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'âŒ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -9491,7 +9585,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -9623,7 +9717,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.8.3 - Project File Uploads');
+            console.log('Work Hub v15.8.4 - Project File Uploads');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             loadDeptNotes(); // Load department notes from localStorage
@@ -9776,7 +9870,7 @@ Spittelauer Lnde 12/1
                             <small style="color: var(--text-secondary);">Main Floor: ${order.mainFloor}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">â—</button>
+                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">Ã¢â€”Â</button>
                         </div>
                     </div>
                 `;
@@ -9804,7 +9898,7 @@ Spittelauer Lnde 12/1
                             <small style="color: var(--text-secondary);">${new Date(order.sentAt).toLocaleDateString('de-AT')}</small>
                         </div>
                         <small style="color: var(--text-secondary); display: block; margin-top: 5px;">${order.events?.join(', ') || ''}</small>
-                        <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="margin-top: 10px; padding: 5px 10px; font-size: 11px; background: var(--surface);">â†™ Archivieren</button>
+                        <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="margin-top: 10px; padding: 5px 10px; font-size: 11px; background: var(--surface);">Ã¢â€ â„¢ Archivieren</button>
                     </div>
                 `;
             });
@@ -9850,7 +9944,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let output = 'Hallo!\n\nHier die Bestellung für das Wochenende:\n\n';
+            let output = 'Hallo!\n\nHier die Bestellung fÃ¼r das Wochenende:\n\n';
             
             orders.pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
             
