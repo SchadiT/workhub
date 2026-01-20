@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.8.5</title>
+    <title>Turbo Projects Work Hub v15.8.8</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -254,9 +254,20 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 180px;
+            flex: 1;
         }
         .header-center {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-logo-group {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -276,7 +287,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            min-width: 180px;
+            flex: 1;
             justify-content: flex-end;
         }
         .header-btn {
@@ -295,6 +306,18 @@
             background: var(--blue-medium);
             border-color: #fff;
             color: #fff;
+        }
+        .header-stat {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .header-stat span {
+            font-weight: 700;
+            color: #fff;
+            margin-right: 2px;
+        }
+        .header-stat.urgent span {
+            color: #ef4444;
         }
         .auth-status { display: flex; align-items: center; }
         .auth-status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); }
@@ -1161,12 +1184,14 @@
         .dept.technik .dept-tab.active { border-bottom-color: #a855f7; }
         .dept.sputnik .dept-tab.active { border-bottom-color: #ec4899; }
         
-        .dept-header-left { display: flex; align-items: center; gap: 12px; }
+        .dept-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
         .dept-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .dept.open .dept-toggle { transform: rotate(180deg); }
         .task-count { background: transparent; border: 1px solid #fff; color: #fff; padding: 2px 8px; font-size: 10px; }
         .projects-count { background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 2px 8px; font-size: 10px; }
         .notes-count { background: transparent; border: 1px solid #3b82f6; color: #3b82f6; padding: 2px 8px; font-size: 10px; }
+        .shiftplan-countdown { font-size: 9px; margin-left: 6px; color: #fff; white-space: nowrap; flex-shrink: 0; display: inline-block; }
+        .shiftplan-countdown .days-number { color: #ef4444; font-weight: 700; }
         .tab-count { background: rgba(255,255,255,0.2); color: #fff; padding: 1px 6px; font-size: 9px; border-radius: 3px; margin-left: 4px; }
         
         /* Tabs always visible under header */
@@ -1551,6 +1576,20 @@
         .footer a { background: #2d2d44; color: white; padding: 15px 30px; border-radius: 0; text-decoration: none; display: inline-block; }
         .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
         
+        /* Top Stats Dashboard */
+        .top-stats-dashboard {
+            display: flex; gap: 10px; padding: 10px 15px; background: var(--blue-dark); 
+            border-bottom: 1px solid var(--border); flex-wrap: wrap; justify-content: center;
+        }
+        .top-stat-card {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 8px 20px; background: var(--surface); border: 1px solid var(--border); min-width: 90px;
+        }
+        .top-stat-card.urgent { border-color: #ef4444; }
+        .top-stat-value { font-size: 24px; font-weight: 800; color: #fff; }
+        .top-stat-card.urgent .top-stat-value { color: #ef4444; }
+        .top-stat-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+        
         /* Metrics Button */
         .metrics-button-container { text-align: center; margin: 20px 0; }
         .metrics-btn { 
@@ -1767,24 +1806,39 @@
             /* Mobile Header */
             .header-bar {
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 8px;
                 padding: 10px 12px;
             }
             .header-left {
                 order: 2;
-                min-width: auto;
                 flex: 1;
             }
             .header-center {
                 order: 1;
                 width: 100%;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
                 padding-bottom: 8px;
                 border-bottom: 1px solid var(--border);
             }
+            .header-stats {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+            .header-stat {
+                font-size: 10px;
+            }
+            .header-logo-group {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
             .header-right {
                 order: 3;
-                min-width: auto;
                 flex: 1;
                 justify-content: flex-end;
             }
@@ -1865,34 +1919,59 @@
             /* Mobile Header - Small screens */
             .header-bar {
                 flex-direction: column;
-                gap: 8px;
-                padding: 10px;
+                gap: 6px;
+                padding: 8px;
             }
             .header-left {
-                order: 2;
+                order: 3;
                 width: 100%;
                 justify-content: center;
             }
             .header-center {
                 order: 1;
                 width: 100%;
-                justify-content: center;
-                padding-bottom: 8px;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                padding-bottom: 6px;
                 border-bottom: 1px solid var(--border);
             }
+            .header-stats {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                text-align: center;
+            }
+            .header-stat {
+                font-size: 10px;
+            }
+            .header-logo-group {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            .header-logo {
+                font-size: 12px;
+            }
+            .header-title {
+                font-size: 12px;
+            }
             .header-right {
-                order: 3;
+                order: 2;
                 width: 100%;
                 justify-content: center;
                 flex-wrap: wrap;
+                gap: 4px;
             }
             .header-btn {
-                padding: 8px 12px;
-                font-size: 10px;
+                padding: 6px 10px;
+                font-size: 9px;
                 flex: 1;
-                min-width: 70px;
+                min-width: 60px;
             }
-            .auth-user { font-size: 11px; }
+            .auth-user { font-size: 10px; }
             
             .quick-actions { 
                 grid-template-columns: repeat(2, 1fr); 
@@ -2188,8 +2267,16 @@
             <span class="auth-user" id="auth-user">Not signed in</span>
         </div>
         <div class="header-center">
-            <span class="header-logo">TURBO</span>
-            <span class="header-title">Work Hub</span>
+            <div class="header-stats">
+                <span class="header-stat"><span id="top-stat-tasks">0</span> Tasks</span>
+                <span class="header-stat"><span id="top-stat-projects">0</span> Projects</span>
+                <span class="header-stat"><span id="top-stat-notes">0</span> Notes</span>
+                <span class="header-stat urgent"><span id="top-stat-urgent">0</span> Urgent</span>
+            </div>
+            <div class="header-logo-group">
+                <span class="header-logo">TURBO</span>
+                <span class="header-title">Work Hub</span>
+            </div>
         </div>
         <div class="header-right">
             <button class="header-btn" id="auth-btn" onclick="handleAuth()">Sign in</button>
@@ -2259,7 +2346,7 @@
                      .ics
                 </button>
                 <button class="bmt-btn" onclick="refreshBMTCalendar()" title="Cache leeren und neu laden" style="background: var(--warn); color: #000;">
-                    ↻ Refresh
+                    &#8635; Refresh
                 </button>
             </div>
         </div>
@@ -3336,6 +3423,11 @@
                 
                 <!-- Archive Tab -->
                 <div id="sec-content-archive" style="display: none;">
+                    <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+                        <input type="file" id="security-upload-file" accept=".txt" style="display: none;" onchange="uploadSecurityOrderTXT(event)">
+                        <button class="modal-btn" onclick="document.getElementById('security-upload-file').click()" style="background: var(--blue-medium);">&#128194; Upload TXT</button>
+                        <small style="color: var(--text-secondary);">Upload previously saved Security Orders</small>
+                    </div>
                     <div id="security-archive-list">
                         <p style="color: var(--text-secondary); text-align: center; padding: 30px;">Archiv leer.</p>
                     </div>
@@ -3359,6 +3451,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('security-output-modal')">Abbrechen</button>
+                <button class="modal-btn" onclick="downloadSecurityOrderTXT()" style="background: var(--surface-2);">Download TXT</button>
                 <button class="modal-btn primary" onclick="copySecurityOrder()">&#128203; Kopieren</button>
                 <button class="modal-btn success" onclick="markSecurityOrderSent()">&#10004; Als gesendet markieren</button>
             </div>
@@ -3761,7 +3854,7 @@
         <!-- BAR -->
         <div class="dept bar grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">&#127864; BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span></div>
+                <div class="dept-header-left">&#127864; BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span> <span class="shiftplan-countdown" id="bar-shiftplan-countdown"></span></div>
                 <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
@@ -3794,7 +3887,7 @@
         <!-- RUNNER -->
         <div class="dept runner grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">&#127939; RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span></div>
+                <div class="dept-header-left">&#127939; RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span> <span class="shiftplan-countdown" id="runner-shiftplan-countdown"></span></div>
                 <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
@@ -3906,7 +3999,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.8.5 - 19.01.2026 - Shiftplan Category Filter</div>
+    <div class="version">Work Hub v15.8.8 - 20.01.2026 - Shiftplan Countdown Fix</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4077,8 +4170,36 @@
                                     <tr><td>Security Orders</td><td id="metrics-security">0</td></tr>
                                     <tr><td>Cleaning Plans</td><td id="metrics-cleaning">0</td></tr>
                                     <tr><td>Emails Sent</td><td id="metrics-emails">0</td></tr>
+                                    <tr><td>Notes Processed</td><td id="metrics-notes-processed">0</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Extended KPIs -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">&#128200; Extended KPIs</div>
+                        <div class="metrics-card-body">
+                            <div class="metrics-row">
+                                <span>Task Completion Rate</span>
+                                <span class="metrics-value good" id="metrics-completion-rate">-</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Avg Days to Complete Project</span>
+                                <span class="metrics-value" id="metrics-avg-project-time">-</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Total Projects Completed</span>
+                                <span class="metrics-value" id="metrics-projects-completed">0</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Active Projects</span>
+                                <span class="metrics-value" id="metrics-projects-active">0</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Overdue Projects</span>
+                                <span class="metrics-value" style="color: var(--danger);" id="metrics-projects-overdue">0</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -4365,7 +4486,7 @@
                     showToast("... Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("Ã¢ÂÅ’ Login fehlgeschlagen", true); 
+                    showToast("ÃƒÂ¢Ã‚ÂÃ…â€™ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -5070,11 +5191,11 @@
             `;
         }
         
-        // Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬
+        // ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬
         // SHIFTPLAN DATABASE - LIVE from Google Sheets
         // Runner/CVD: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
         // Bar: https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv
-        // Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬Ã¢Â¬
+        // ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬
         
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
@@ -5315,7 +5436,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Runner CSV:', error);
-                showToast('Ã¢ÂÅ’ Fehler beim Laden der CSV', true);
+                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler beim Laden der CSV', true);
             }
         }
         
@@ -5348,7 +5469,7 @@
                     datum: findCol(['date', 'datum']),
                     event: findCol(['event name', 'eventname', 'event']),
                     terrasse: findCol(['terrasse', 'terr']),
-                    kitchen: findCol(['kitchen', 'kit', 'kÃ¼che']),
+                    kitchen: findCol(['kitchen', 'kit', 'kÃƒÂ¼che']),
                     main1: findCol(['main 1', 'main1', 'm1']),
                     main2: findCol(['main 2', 'main2', 'm2']),
                     main3: findCol(['main 3', 'main3', 'm3']),
@@ -5402,7 +5523,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Bar CSV:', error);
-                showToast('Ã¢ÂÅ’ Fehler beim Laden der Bar CSV', true);
+                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler beim Laden der Bar CSV', true);
             }
         }
         
@@ -5539,7 +5660,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const monthNames = ['Januar', 'Februar', 'MÃƒÂ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -6852,6 +6973,10 @@
                 // Save to localStorage
                 localStorage.setItem('workhub-office-notes', officeNotes.value);
                 
+                // Track note processed
+                trackNoteProcessed();
+                updateTopStatsDashboard();
+                
                 // Clear quick notes
                 document.getElementById('quick-notes-text').value = '';
                 localStorage.removeItem('workhub-quick-notes');
@@ -7491,7 +7616,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7503,7 +7628,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -7548,12 +7673,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'Ã¢ÂÅ’ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'Ã¢ÂÅ’ Fehler: ' + e.message;
+                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -7622,7 +7747,7 @@
         
         // Refresh BMT Calendar - clear cache and reload
         async function refreshBMTCalendar() {
-            showToast('🔄 Clearing cache and reloading...');
+            showToast('ðŸ”„ Clearing cache and reloading...');
             
             // Clear all BMT-related localStorage
             localStorage.removeItem('bmtEvents');
@@ -7634,7 +7759,7 @@
             // Clear the display
             const statusDiv = document.getElementById('bmt-status');
             if (statusDiv) {
-                statusDiv.innerHTML = '⏳ Refreshing...';
+                statusDiv.innerHTML = 'â³ Refreshing...';
             }
             
             // Re-render empty states
@@ -7650,7 +7775,7 @@
             // Attempt to auto-load fresh data
             await autoLoadBMT();
             
-            showToast('✓ Calendar refreshed!');
+            showToast('âœ“ Calendar refreshed!');
         }
         
         // Toggle BMT Section
@@ -8692,7 +8817,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -8810,7 +8935,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'Ã¢ÂÅ’ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -8821,7 +8946,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'Ã¢ÂÅ’ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -9658,7 +9783,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'MÃƒÂ¤rz', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -9943,7 +10068,7 @@ Spittelauer Lnde 12/1
                             <small style="color: var(--text-secondary);">Main Floor: ${order.mainFloor}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">Ã¢â€”Â</button>
+                            <button class="modal-btn cancel" onclick="removeSecurityOrder(${order.id})" style="padding: 6px 12px; font-size: 12px;">&#10005;</button>
                         </div>
                     </div>
                 `;
@@ -9971,7 +10096,9 @@ Spittelauer Lnde 12/1
                             <small style="color: var(--text-secondary);">${new Date(order.sentAt).toLocaleDateString('de-AT')}</small>
                         </div>
                         <small style="color: var(--text-secondary); display: block; margin-top: 5px;">${order.events?.join(', ') || ''}</small>
-                        <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="margin-top: 10px; padding: 5px 10px; font-size: 11px; background: var(--surface);">Ã¢â€ â„¢ Archivieren</button>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <button class="modal-btn primary" onclick="viewSecurityOrderContent('${order.id}', 'sent')" style="padding: 5px 10px; font-size: 11px;">Anzeigen</button>
+                            <button class="modal-btn" onclick="archiveSecurityOrder('${order.id}')" style="padding: 5px 10px; font-size: 11px; background: var(--surface);">&#128230; Archivieren</button>
                     </div>
                 `;
             });
@@ -9990,15 +10117,58 @@ Spittelauer Lnde 12/1
             }
             
             let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
-            orders.archive.slice(0, 10).forEach(order => {
+            orders.archive.slice(0, 20).forEach(order => {
+                // Different border color: purple for uploaded, gray for generated
+                const borderColor = order.isUploaded ? '#a855f7' : 'var(--border)';
+                const sourceLabel = order.isUploaded ? '&#128194; Uploaded' : '&#128230; Generated';
                 html += `
-                    <div style="background: var(--bg); border: 1px solid var(--border); padding: 10px; opacity: 0.7;">
-                        <small>${order.label || 'Order'} - Sent ${new Date(order.sentAt).toLocaleDateString('de-AT')}</small>
+                    <div style="background: var(--bg); border: 2px solid ${borderColor}; padding: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <div style="color: ${order.isUploaded ? '#a855f7' : 'var(--text-secondary)'}; font-size: 10px; margin-bottom: 3px;">${sourceLabel}</div>
+                            <strong style="color: var(--text);">${order.label || 'Order'}</strong>
+                            <small style="color: var(--text-secondary); display: block;">${new Date(order.sentAt).toLocaleDateString('de-AT')}</small>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="modal-btn primary" onclick="viewSecurityOrderContent('${order.id}', 'archive')" style="padding: 4px 10px; font-size: 10px;">Anzeigen</button>
+                            <button class="modal-btn" onclick="downloadArchivedOrder('${order.id}')" style="padding: 4px 10px; font-size: 10px; background: var(--surface-2);">&#8681; TXT</button>
+                            <button class="modal-btn cancel" onclick="deleteArchivedOrder('${order.id}')" style="padding: 4px 10px; font-size: 10px;">&#10005;</button>
+                        </div>
                     </div>
                 `;
             });
             html += '</div>';
             container.innerHTML = html;
+        }
+        
+        // Download archived order as TXT
+        function downloadArchivedOrder(id) {
+            const orders = getSecurityOrders();
+            const order = orders.archive.find(o => o.id == id);
+            if (!order || !order.content) {
+                alert('Inhalt nicht verfügbar');
+                return;
+            }
+            
+            const filename = (order.label || 'Security_Order') + '.txt';
+            const blob = new Blob([order.content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Delete archived order
+        function deleteArchivedOrder(id) {
+            if (!confirm('Order aus Archiv löschen?')) return;
+            const orders = getSecurityOrders();
+            orders.archive = orders.archive.filter(o => o.id != id);
+            saveSecurityOrders(orders);
+            renderSecurityArchiveList();
+            showToast('Order gelöscht');
         }
         
         // Remove pending order
@@ -10017,7 +10187,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let output = 'Hallo!\n\nHier die Bestellung fÃ¼r das Wochenende:\n\n';
+            let output = 'Hallo!\n\nHier die Bestellung für das Wochenende:\n\n';
             
             orders.pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
             
@@ -10042,6 +10212,23 @@ Spittelauer Lnde 12/1
                 alert('... Security Order kopiert!');
                 trackSecurityOrder(); // Track metrics
             });
+        }
+        
+        // Download security order as TXT
+        function downloadSecurityOrderTXT() {
+            const output = document.getElementById('security-order-output').textContent;
+            const weekNum = getWeekNumber(new Date());
+            const filename = 'Security_Order_KW' + weekNum + '_' + new Date().toISOString().slice(0,10) + '.txt';
+            
+            const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
         
         // Mark as sent
@@ -10077,6 +10264,51 @@ Spittelauer Lnde 12/1
                 saveSecurityOrders(orders);
                 renderSecuritySentList();
             }
+        }
+        
+        // View security order content from sent/archive
+        function viewSecurityOrderContent(id, list) {
+            const orders = getSecurityOrders();
+            const order = orders[list].find(o => o.id == id);
+            if (order && order.content) {
+                document.getElementById('security-order-output').textContent = order.content;
+                openModal('security-output-modal');
+            } else {
+                alert('Inhalt nicht verfügbar');
+            }
+        }
+        
+        // Upload Security Order TXT to Archive
+        function uploadSecurityOrderTXT(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const orders = getSecurityOrders();
+                
+                // Create uploaded order
+                const uploadedOrder = {
+                    id: Date.now(),
+                    label: file.name.replace('.txt', ''),
+                    events: ['Uploaded'],
+                    sentAt: new Date().toISOString(),
+                    content: content,
+                    isUploaded: true // Mark as uploaded for different styling
+                };
+                
+                orders.archive.unshift(uploadedOrder);
+                if (orders.archive.length > 30) orders.archive.pop(); // Keep more history
+                saveSecurityOrders(orders);
+                
+                renderSecurityArchiveList();
+                showToast('Security Order hochgeladen!');
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
         }
         
         // Get week number helper
@@ -10556,6 +10788,47 @@ Spittelauer Lnde 12/1
             document.getElementById('metrics-cleaning').textContent = data.cleaningPlans;
             document.getElementById('metrics-emails').textContent = data.emailsSent;
             
+            // Notes processed
+            const metrics = getMetrics();
+            const notesProcessedEl = document.getElementById('metrics-notes-processed');
+            if (notesProcessedEl) notesProcessedEl.textContent = metrics.notesProcessed || 0;
+            
+            // Extended KPIs
+            const totalCompleted = data.tasksMonth;
+            const totalOpen = data.openTasks;
+            const completionRate = totalCompleted + totalOpen > 0 
+                ? Math.round((totalCompleted / (totalCompleted + totalOpen)) * 100) + '%'
+                : '-';
+            
+            const completionRateEl = document.getElementById('metrics-completion-rate');
+            if (completionRateEl) completionRateEl.textContent = completionRate;
+            
+            // Project stats
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let activeProjects = 0;
+            let overdueProjects = 0;
+            
+            projectsCache.forEach(p => {
+                activeProjects++;
+                if (p.dueDate) {
+                    const due = new Date(p.dueDate);
+                    if (due < today) {
+                        overdueProjects++;
+                    }
+                }
+            });
+            
+            const projectsCompletedEl = document.getElementById('metrics-projects-completed');
+            const projectsActiveEl = document.getElementById('metrics-projects-active');
+            const projectsOverdueEl = document.getElementById('metrics-projects-overdue');
+            const avgProjectTimeEl = document.getElementById('metrics-avg-project-time');
+            
+            if (projectsCompletedEl) projectsCompletedEl.textContent = metrics.projectsCompleted || 0;
+            if (projectsActiveEl) projectsActiveEl.textContent = activeProjects;
+            if (projectsOverdueEl) projectsOverdueEl.textContent = overdueProjects;
+            if (avgProjectTimeEl) avgProjectTimeEl.textContent = metrics.avgProjectDays ? metrics.avgProjectDays + ' days' : '-';
+            
             // Sputnik (placeholder)
             const sputnikEls = ['metrics-sputnik-week', 'metrics-sputnik-month', 'metrics-sputnik-total'];
             sputnikEls.forEach(id => {
@@ -10594,8 +10867,122 @@ Spittelauer Lnde 12/1
             if (confirm('Alle Metriken zur\u00fccksetzen?')) {
                 localStorage.removeItem('workhub-metrics');
                 updateMetricsDisplay();
+                updateTopStatsDashboard();
                 showToast('Metriken zur\u00fcckgesetzt');
             }
+        }
+        
+        // Update Top Stats Dashboard (header counters)
+        function updateTopStatsDashboard() {
+            // Count total tasks from all departments
+            let totalTasks = 0;
+            ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(dept => {
+                const countEl = document.getElementById(`${dept}-task-count`);
+                if (countEl && countEl.textContent && !isNaN(parseInt(countEl.textContent))) {
+                    totalTasks += parseInt(countEl.textContent);
+                }
+            });
+            
+            // Count total projects
+            const totalProjects = projectsCache.length;
+            
+            // Count total notes (lines across all department notes)
+            let totalNotes = 0;
+            ['office', 'bar', 'runner', 'technik', 'sputnik'].forEach(dept => {
+                const textarea = document.getElementById(`${dept}-notes`);
+                if (textarea && textarea.value) {
+                    totalNotes += textarea.value.split('\n').filter(l => l.trim()).length;
+                }
+            });
+            
+            // Count time-sensitive items (tasks/projects with deadlines approaching)
+            let timeSensitive = 0;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const threeDaysFromNow = new Date(today);
+            threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+            
+            // Check projects for upcoming deadlines
+            projectsCache.forEach(p => {
+                if (p.dueDate) {
+                    const due = new Date(p.dueDate);
+                    if (due <= threeDaysFromNow) {
+                        timeSensitive++;
+                    }
+                }
+            });
+            
+            // Update DOM
+            const tasksEl = document.getElementById('top-stat-tasks');
+            const projectsEl = document.getElementById('top-stat-projects');
+            const notesEl = document.getElementById('top-stat-notes');
+            const urgentEl = document.getElementById('top-stat-urgent');
+            
+            if (tasksEl) tasksEl.textContent = totalTasks;
+            if (projectsEl) projectsEl.textContent = totalProjects;
+            if (notesEl) notesEl.textContent = totalNotes;
+            if (urgentEl) urgentEl.textContent = timeSensitive;
+            
+            // Update shiftplan countdowns
+            updateShiftplanCountdowns();
+        }
+        
+        // Calculate days until next shiftplan deadline
+        // Shiftplan is due 9 days before first event of next month
+        function updateShiftplanCountdowns() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Get first day of next month
+            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            
+            // Find first event of next month from BMT events
+            let firstEventNextMonth = null;
+            if (window.bmtEvents && window.bmtEvents.length > 0) {
+                const nextMonthEvents = window.bmtEvents.filter(e => {
+                    const eventDate = new Date(e.date);
+                    return eventDate.getMonth() === nextMonth.getMonth() && 
+                           eventDate.getFullYear() === nextMonth.getFullYear();
+                }).sort((a, b) => new Date(a.date) - new Date(b.date));
+                
+                if (nextMonthEvents.length > 0) {
+                    firstEventNextMonth = new Date(nextMonthEvents[0].date);
+                }
+            }
+            
+            // If no events found, use first Friday of next month as default
+            if (!firstEventNextMonth) {
+                firstEventNextMonth = new Date(nextMonth);
+                while (firstEventNextMonth.getDay() !== 5) { // Find first Friday
+                    firstEventNextMonth.setDate(firstEventNextMonth.getDate() + 1);
+                }
+            }
+            
+            // Shiftplan deadline is 9 days before first event
+            const shiftplanDeadline = new Date(firstEventNextMonth);
+            shiftplanDeadline.setDate(shiftplanDeadline.getDate() - 9);
+            
+            // Calculate days remaining
+            const diffTime = shiftplanDeadline - today;
+            const daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Update Bar and Runner countdown displays
+            const barCountdown = document.getElementById('bar-shiftplan-countdown');
+            const runnerCountdown = document.getElementById('runner-shiftplan-countdown');
+            
+            const countdownHTML = `| Shiftplan due in: <span class="days-number">${daysRemaining}</span> days`;
+            
+            if (barCountdown) barCountdown.innerHTML = countdownHTML;
+            if (runnerCountdown) runnerCountdown.innerHTML = countdownHTML;
+        }
+        
+        // Track notes processed (for metrics)
+        let notesProcessedCount = 0;
+        function trackNoteProcessed() {
+            notesProcessedCount++;
+            const metrics = getMetrics();
+            metrics.notesProcessed = (metrics.notesProcessed || 0) + 1;
+            saveMetrics(metrics);
         }
         
         // ==========================================
@@ -10685,6 +11072,8 @@ Spittelauer Lnde 12/1
             if (tabCountEl) tabCountEl.textContent = count;
             const headerCountEl = document.getElementById('office-projects-count');
             if (headerCountEl) headerCountEl.textContent = count;
+            // Update top stats dashboard
+            updateTopStatsDashboard();
         }
         
         function renderProjectsFromCache() {
@@ -11280,6 +11669,8 @@ Spittelauer Lnde 12/1
         document.addEventListener('DOMContentLoaded', () => {
             renderProjects();
             updateProjectsCount();
+            // Initial dashboard update after short delay
+            setTimeout(updateTopStatsDashboard, 500);
         });
         
         // Hook into existing functions to track usage
