@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.8.8</title>
+    <title>Turbo Projects Work Hub v15.9.0</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -318,6 +318,28 @@
         }
         .header-stat.urgent span {
             color: #ef4444;
+        }
+        .header-stat.operative span {
+            color: #ef4444;
+        }
+        .notepad-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+        .notepad-badge.hidden {
+            display: none;
         }
         .auth-status { display: flex; align-items: center; }
         .auth-status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); }
@@ -2268,6 +2290,7 @@
         </div>
         <div class="header-center">
             <div class="header-stats">
+                <span class="header-stat operative"><span id="top-stat-operative">0</span> Operative Notes</span>
                 <span class="header-stat"><span id="top-stat-tasks">0</span> Tasks</span>
                 <span class="header-stat"><span id="top-stat-projects">0</span> Projects</span>
                 <span class="header-stat"><span id="top-stat-notes">0</span> Notes</span>
@@ -3603,7 +3626,8 @@
                     <span class="tool-icon">&#9993;</span>
                     E-Mail
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')">
+                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')" style="position: relative;">
+                    <span class="notepad-badge hidden" id="notepad-badge">0</span>
                     <span class="tool-icon">&#128221;</span>
                     Notepad
                 </button>
@@ -4244,9 +4268,71 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Operative Notes Stats -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">&#128221; Operative Notes</div>
+                        <div class="metrics-card-body">
+                            <div class="metrics-row">
+                                <span>Current Open Notes</span>
+                                <span class="metrics-value" style="color: #ef4444;" id="metrics-operative-current">0</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Notepad Total Lines</span>
+                                <span class="metrics-value" id="metrics-notepad-lines">0</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Notepad Characters</span>
+                                <span class="metrics-value" id="metrics-notepad-chars">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Session Stats -->
+                    <div class="metrics-card">
+                        <div class="metrics-card-header">&#128337; Session Info</div>
+                        <div class="metrics-card-body">
+                            <div class="metrics-row">
+                                <span>Work Hub Version</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.0</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>Last Data Save</span>
+                                <span class="metrics-value" id="metrics-last-save">-</span>
+                            </div>
+                            <div class="metrics-row">
+                                <span>LocalStorage Used</span>
+                                <span class="metrics-value" id="metrics-storage-used">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Weekly Summary -->
+                    <div class="metrics-card wide">
+                        <div class="metrics-card-header">&#128197; This Week Summary</div>
+                        <div class="metrics-card-body" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: #22c55e;" id="metrics-week-tasks">0</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Tasks Done</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: #3b82f6;" id="metrics-week-factsheets">0</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Factsheets</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: #f59e0b;" id="metrics-week-security">0</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Security Orders</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: #8b5cf6;" id="metrics-week-notes">0</div>
+                                <div style="font-size: 10px; color: var(--text-secondary);">Notes Added</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button class="modal-btn" onclick="downloadMetricsPDF()">&#128196; Download PDF</button>
                 <button class="modal-btn" onclick="resetMetrics()">&#128221; Reset All</button>
                 <button class="modal-btn cancel" onclick="closeModal('metrics-modal')">Schliessen</button>
             </div>
@@ -4486,7 +4572,7 @@
                     showToast("... Verbunden!");
                 } catch (error) { 
                     console.error("Login error:", error); 
-                    showToast("ÃƒÂ¢Ã‚ÂÃ…â€™ Login fehlgeschlagen", true); 
+                    showToast("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Login fehlgeschlagen", true); 
                 }
             }
         }
@@ -5191,11 +5277,11 @@
             `;
         }
         
-        // ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬
+        // ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬
         // SHIFTPLAN DATABASE - LIVE from Google Sheets
         // Runner/CVD: https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv
         // Bar: https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv
-        // ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬ÃƒÂ¢Ã‚Â¬
+        // ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬
         
         const RUNNER_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3uC1aM-yZJdcijzQJtkQRP1WK2EJ1x4H1hTnhWH7ztM69SaswbSr-RmNy9b0fm9PMs2On-tsTmNlJ/pub?output=csv';
         const BAR_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7wSEM8YyNSfvX_oxzWVIxr6_pteOW6ja3oAh6tnEhXvrrpfx9cm-tuDEVdOxL60R2jYug7PMpkl_Q/pub?output=csv';
@@ -5436,7 +5522,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Runner CSV:', error);
-                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler beim Laden der CSV', true);
+                showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler beim Laden der CSV', true);
             }
         }
         
@@ -5469,7 +5555,7 @@
                     datum: findCol(['date', 'datum']),
                     event: findCol(['event name', 'eventname', 'event']),
                     terrasse: findCol(['terrasse', 'terr']),
-                    kitchen: findCol(['kitchen', 'kit', 'kÃƒÂ¼che']),
+                    kitchen: findCol(['kitchen', 'kit', 'kÃƒÆ’Ã‚Â¼che']),
                     main1: findCol(['main 1', 'main1', 'm1']),
                     main2: findCol(['main 2', 'main2', 'm2']),
                     main3: findCol(['main 3', 'main3', 'm3']),
@@ -5523,7 +5609,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse Bar CSV:', error);
-                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler beim Laden der Bar CSV', true);
+                showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler beim Laden der Bar CSV', true);
             }
         }
         
@@ -5660,7 +5746,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const monthNames = ['Januar', 'Februar', 'MÃƒÂ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const monthNames = ['Januar', 'Februar', 'MÃƒÆ’Ã‚Â¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -6481,6 +6567,36 @@
         }
         
         // Notepad Functions
+        function updateNotepadCounter() {
+            const text = document.getElementById('notepad-text')?.value || '';
+            const lines = text.split('\n');
+            // Count lines starting with: ● . -- or any special character (non-alphanumeric, non-whitespace)
+            const count = lines.filter(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return false;
+                // Check for specific patterns: ●, ., --, or any line starting with special char
+                if (trimmed.startsWith('●') || trimmed.startsWith('.') || trimmed.startsWith('--')) return true;
+                // Also count lines starting with other common bullet points: -, *, •, >, », →, ▸, ▹, ○, □, ■
+                const firstChar = trimmed.charAt(0);
+                return /^[-*•>»→▸▹○□■►◆◇✓✗✔✘☐☑☒]/.test(trimmed);
+            }).length;
+            
+            // Update header stat
+            const headerStat = document.getElementById('top-stat-operative');
+            if (headerStat) headerStat.textContent = count;
+            
+            // Update button badge
+            const badge = document.getElementById('notepad-badge');
+            if (badge) {
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+        
         function saveNotepad() {
             const text = document.getElementById('notepad-text').value;
             localStorage.setItem('workhub_notepad', text);
@@ -6489,6 +6605,7 @@
                 indicator.innerHTML = '&#10004; Saved';
                 indicator.style.color = 'var(--good)';
             }
+            updateNotepadCounter();
         }
         
         function loadNotepad() {
@@ -7616,7 +7733,7 @@
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -7628,7 +7745,7 @@
                 // Get fresh token with mail scopes
                 const mailToken = await getMailToken();
                 if (!mailToken) {
-                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                     status.style.color = '#ef4444';
                     return;
                 }
@@ -7673,12 +7790,12 @@
                 } else {
                     const err = await response.json();
                     console.error('Draft error:', err);
-                    status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + (err.error?.message || 'Unbekannt');
+                    status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + (err.error?.message || 'Unbekannt');
                     status.style.color = '#ef4444';
                 }
             } catch (e) {
                 console.error('Draft exception:', e);
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Fehler: ' + e.message;
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Fehler: ' + e.message;
                 status.style.color = '#ef4444';
             }
         }
@@ -7747,7 +7864,7 @@
         
         // Refresh BMT Calendar - clear cache and reload
         async function refreshBMTCalendar() {
-            showToast('ðŸ”„ Clearing cache and reloading...');
+            showToast('Ã°Å¸â€â€ž Clearing cache and reloading...');
             
             // Clear all BMT-related localStorage
             localStorage.removeItem('bmtEvents');
@@ -7759,7 +7876,7 @@
             // Clear the display
             const statusDiv = document.getElementById('bmt-status');
             if (statusDiv) {
-                statusDiv.innerHTML = 'â³ Refreshing...';
+                statusDiv.innerHTML = 'Ã¢ÂÂ³ Refreshing...';
             }
             
             // Re-render empty states
@@ -7775,7 +7892,7 @@
             // Attempt to auto-load fresh data
             await autoLoadBMT();
             
-            showToast('âœ“ Calendar refreshed!');
+            showToast('Ã¢Å“â€œ Calendar refreshed!');
         }
         
         // Toggle BMT Section
@@ -8817,7 +8934,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                showToast('ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
+                showToast('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.', true);
                 return;
             }
             
@@ -8935,7 +9052,7 @@ Spittelauer Lnde 12/1
             }
             
             if (!accessToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Bitte zuerst mit Microsoft anmelden';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Bitte zuerst mit Microsoft anmelden';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -8946,7 +9063,7 @@ Spittelauer Lnde 12/1
             // Get fresh token with mail scopes
             const mailToken = await getMailToken();
             if (!mailToken) {
-                status.textContent = 'ÃƒÂ¢Ã‚ÂÃ…â€™ Keine Mail-Berechtigung. Bitte neu anmelden.';
+                status.textContent = 'ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Keine Mail-Berechtigung. Bitte neu anmelden.';
                 status.style.color = '#ef4444';
                 return;
             }
@@ -9783,7 +9900,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'MÃƒÂ¤rz', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'MÃƒÆ’Ã‚Â¤rz', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -9915,9 +10032,10 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.8.5 - Project File Uploads');
+            console.log('Work Hub v15.9.0 - Operative Notes Counter + Factsheet Format');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
+            updateNotepadCounter(); // Update operative notes counter
             loadDeptNotes(); // Load department notes from localStorage
             initMsal();
             loadShiftplanFromStorage(); // Load Runner/CVD data from localStorage
@@ -10145,7 +10263,7 @@ Spittelauer Lnde 12/1
             const orders = getSecurityOrders();
             const order = orders.archive.find(o => o.id == id);
             if (!order || !order.content) {
-                alert('Inhalt nicht verfügbar');
+                alert('Inhalt nicht verfÃ¼gbar');
                 return;
             }
             
@@ -10163,12 +10281,12 @@ Spittelauer Lnde 12/1
         
         // Delete archived order
         function deleteArchivedOrder(id) {
-            if (!confirm('Order aus Archiv löschen?')) return;
+            if (!confirm('Order aus Archiv lÃ¶schen?')) return;
             const orders = getSecurityOrders();
             orders.archive = orders.archive.filter(o => o.id != id);
             saveSecurityOrders(orders);
             renderSecurityArchiveList();
-            showToast('Order gelöscht');
+            showToast('Order gelÃ¶scht');
         }
         
         // Remove pending order
@@ -10187,7 +10305,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let output = 'Hallo!\n\nHier die Bestellung für das Wochenende:\n\n';
+            let output = 'Hallo!\n\nHier die Bestellung fÃ¼r das Wochenende:\n\n';
             
             orders.pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
             
@@ -10274,7 +10392,7 @@ Spittelauer Lnde 12/1
                 document.getElementById('security-order-output').textContent = order.content;
                 openModal('security-output-modal');
             } else {
-                alert('Inhalt nicht verfügbar');
+                alert('Inhalt nicht verfÃ¼gbar');
             }
         }
         
@@ -10320,14 +10438,183 @@ Spittelauer Lnde 12/1
         }
         
         // ================================================================
-        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.5.2
+        // FACTSHEET DOWNLOAD - PDF & DOCX - v15.8.9 - ONE PAGE FIT
         // ================================================================
         
-        // Download as PDF
+        // Helper: Get weekday name in German
+        function getGermanWeekday(dateStr) {
+            const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            // Parse date string (DD.MM.YYYY)
+            const parts = dateStr.split('.');
+            if (parts.length === 3) {
+                const date = new Date(parts[2], parts[1] - 1, parts[0]);
+                return days[date.getDay()];
+            }
+            return '';
+        }
+        
+        // Helper: Build Factsheet table rows for both PDF and DOCX
+        function buildFactsheetRows() {
+            const rows = [];
+            
+            // CVD - time in RED
+            rows.push({
+                pos: 'CVD:',
+                zeit: document.getElementById('fs-cvd-time')?.value || '20:30',
+                name: document.getElementById('fs-cvd')?.value || '',
+                zeitRed: true
+            });
+            
+            // KASSA
+            rows.push({
+                pos: 'KASSA:',
+                zeit: document.getElementById('fs-kassa-time')?.value || '22:30',
+                name: document.getElementById('fs-kassa')?.value || ''
+            });
+            
+            // Empty gray separator
+            rows.push({ pos: '', zeit: '', name: '', isHeader: true });
+            
+            // T. DOORS 1 - time in RED
+            rows.push({
+                pos: 'T. DOORS 1:',
+                zeit: '23:00',
+                name: '',
+                zeitRed: true
+            });
+            
+            // TERRASSE 1
+            rows.push({
+                pos: 'TERRASSE 1',
+                zeit: document.getElementById('fs-terr-time')?.value || '22:00',
+                name: document.getElementById('fs-terr')?.value || ''
+            });
+            
+            // K. DOORS 2 - time in RED
+            rows.push({
+                pos: 'K. DOORS 2:',
+                zeit: '23:00',
+                name: '',
+                zeitRed: true
+            });
+            
+            // KITCHEN
+            rows.push({
+                pos: 'KITCHEN',
+                zeit: document.getElementById('fs-kitch-time')?.value || '22:00',
+                name: document.getElementById('fs-kitch')?.value || ''
+            });
+            
+            // Empty row
+            rows.push({ pos: '', zeit: '', name: '' });
+            
+            // MAIN DOORS 2 - time in RED
+            rows.push({
+                pos: 'MAIN DOORS 2:',
+                zeit: '00:00',
+                name: '',
+                zeitRed: true
+            });
+            
+            // MAIN 1-4
+            rows.push({
+                pos: 'MAIN 1:',
+                zeit: document.getElementById('fs-main1-time')?.value || '22:30',
+                name: document.getElementById('fs-main1')?.value || ''
+            });
+            rows.push({
+                pos: 'MAIN 2:',
+                zeit: document.getElementById('fs-main2-time')?.value || '22:30',
+                name: document.getElementById('fs-main2')?.value || ''
+            });
+            rows.push({
+                pos: 'MAIN 3:',
+                zeit: document.getElementById('fs-main3-time')?.value || '23:00',
+                name: document.getElementById('fs-main3')?.value || ''
+            });
+            rows.push({
+                pos: 'MAIN 4:',
+                zeit: document.getElementById('fs-main4-time')?.value || '23:45',
+                name: document.getElementById('fs-main4')?.value || ''
+            });
+            
+            // Empty row
+            rows.push({ pos: '', zeit: '', name: '' });
+            
+            // RUNNER section header
+            rows.push({ pos: 'RUNNER', zeit: '', name: '', isHeader: true, isBold: true });
+            
+            // RUNNER 1-6 (always show all 6 rows)
+            const runnerTimes = ['21:00', '21:00', '21:00', '22:00', '00:30', ''];
+            for (let i = 1; i <= 6; i++) {
+                const name = document.getElementById('fs-runner' + i)?.value || '';
+                const time = document.getElementById('fs-runner' + i + '-time')?.value || runnerTimes[i-1];
+                // If runner 6 has no name, show empty row
+                if (i === 6 && !name) {
+                    rows.push({ pos: 'RUNNER 6:', zeit: '', name: '' });
+                } else {
+                    rows.push({ pos: 'RUNNER ' + i + ':', zeit: time, name: name });
+                }
+            }
+            
+            // GARDEROBE section header
+            rows.push({ pos: 'GARDEROBE', zeit: '', name: '', isHeader: true, isBold: true });
+            
+            // GARDEROBE 1-3
+            const gardTimes = ['22:45', '23:15', '00:00'];
+            for (let i = 1; i <= 3; i++) {
+                rows.push({
+                    pos: 'GARDEROBE ' + i,
+                    zeit: document.getElementById('fs-gard' + i + '-time')?.value || gardTimes[i-1],
+                    name: document.getElementById('fs-gard' + i)?.value || ''
+                });
+            }
+            
+            // Empty row
+            rows.push({ pos: '', zeit: '', name: '' });
+            
+            // TECHNIK section header
+            rows.push({ pos: 'TECHNIK', zeit: '', name: '', isHeader: true, isBold: true });
+            
+            // TECH
+            rows.push({
+                pos: 'TECH:',
+                zeit: document.getElementById('fs-tech-time')?.value || '21:00',
+                name: document.getElementById('fs-tech')?.value || ''
+            });
+            
+            // SECURITY section header
+            rows.push({ pos: 'SECURITY', zeit: '', name: '', isHeader: true, isBold: true });
+            
+            // Security rows - 00:00 in RED
+            rows.push({ pos: '', zeit: '22:45', name: '1 PAX' });
+            rows.push({ pos: '', zeit: '23:00', name: '3 PAX' });
+            rows.push({ pos: '', zeit: '23:30', name: '1 PAX' });
+            rows.push({ pos: '', zeit: '00:00', name: '3 PAX', zeitRed: true });
+            rows.push({ pos: '', zeit: '01:00', name: '1 PAX (Abruf)' });
+            
+            return rows;
+        }
+        
+        // Download as PDF - A4 one page fit, exact format
         function downloadFactsheetPDF() {
-            const preview = document.getElementById('fs-preview');
             const eventName = document.getElementById('fs-event-name').value || 'Factsheet';
             const datum = document.getElementById('fs-datum').value || new Date().toLocaleDateString('de-AT');
+            const weekday = getGermanWeekday(datum);
+            const rows = buildFactsheetRows();
+            
+            // Build HTML table
+            let tableHtml = '<tr><th>Position</th><th>Zeit</th><th>Name</th></tr>';
+            rows.forEach(r => {
+                const bgClass = r.isHeader ? 'section-header' : '';
+                const boldStyle = r.isBold ? 'font-weight: bold;' : '';
+                const zeitColor = r.zeitRed ? 'color: #FF0000;' : '';
+                tableHtml += `<tr class="${bgClass}">
+                    <td style="${boldStyle}">${r.pos}</td>
+                    <td style="${zeitColor}">${r.zeit}</td>
+                    <td>${r.name}</td>
+                </tr>`;
+            });
             
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
@@ -10336,54 +10623,105 @@ Spittelauer Lnde 12/1
                 <head>
                     <title>Factsheet - ${eventName} - ${datum}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
-                        th { background: #f0f0f0; }
-                        h2 { margin-bottom: 5px; }
-                        .event-name { color: #ef4444; font-weight: bold; }
+                        @page { size: A4 portrait; margin: 10mm; }
+                        @media print { html, body { width: 210mm; height: 297mm; overflow: hidden; } }
+                        * { box-sizing: border-box; }
+                        body { font-family: 'Abadi', Arial, sans-serif; font-size: 9pt; padding: 5mm; margin: 0; }
+                        .event-line { font-size: 14pt; font-weight: bold; margin-bottom: 2mm; }
+                        .event-name { color: #FF0000; }
+                        .datum-line { font-size: 11pt; margin-bottom: 2mm; }
+                        .datum-value { color: #FF0000; }
+                        .aufstellung { font-size: 10pt; font-weight: bold; color: #153D63; margin-bottom: 2mm; }
+                        table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+                        th, td { border: 1px solid #000; padding: 2px 4px; text-align: left; }
+                        th { background: #F0F0F0; font-weight: bold; }
+                        .section-header td { background: #E0E0E0; }
                     </style>
                 </head>
                 <body>
-                    ${preview.innerHTML}
-                    <scr` + `ipt>
-                        window.onload = function() {
-                            window.print();
-                            setTimeout(() => window.close(), 500);
-                        };
-                    </scr` + `ipt>
+                    <div class="event-line">EVENT: <span class="event-name">${eventName}</span></div>
+                    <div class="datum-line">Datum: ${weekday}, <span class="datum-value">${datum}</span></div>
+                    <div class="aufstellung">AUFSTELLUNG:</div>
+                    <table>${tableHtml}</table>
+                    <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
                 </body>
                 </html>
             `);
             printWindow.document.close();
         }
         
-        // Download as DOCX (simple HTML-based approach)
+        // Download as DOCX - exact Word XML format matching template
         function downloadFactsheetDOCX() {
-            const preview = document.getElementById('fs-preview');
             const eventName = document.getElementById('fs-event-name').value || 'Factsheet';
             const datum = document.getElementById('fs-datum').value || new Date().toLocaleDateString('de-AT');
+            const weekday = getGermanWeekday(datum);
+            const rows = buildFactsheetRows();
             
-            const htmlContent = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-                <head><meta charset="utf-8"><title>Factsheet</title></head>
-                <body>
-                    ${preview.innerHTML}
-                </body>
-                </html>
-            `;
+            // Build Word XML table rows
+            let tableRowsXml = '';
+            rows.forEach(r => {
+                const bgColor = r.isHeader ? 'E0E0E0' : 'FFFFFF';
+                const bold = r.isBold ? '<w:b/>' : '';
+                const zeitColor = r.zeitRed ? '<w:color w:val="FF0000"/>' : '';
+                tableRowsXml += `
+                <w:tr>
+                    <w:tc>
+                        <w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="${bgColor}"/><w:tcW w:w="2500" w:type="dxa"/></w:tcPr>
+                        <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/>${bold}<w:sz w:val="18"/></w:rPr><w:t>${r.pos}</w:t></w:r></w:p>
+                    </w:tc>
+                    <w:tc>
+                        <w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="${bgColor}"/><w:tcW w:w="1500" w:type="dxa"/></w:tcPr>
+                        <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/>${zeitColor}<w:sz w:val="18"/></w:rPr><w:t>${r.zeit}</w:t></w:r></w:p>
+                    </w:tc>
+                    <w:tc>
+                        <w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="${bgColor}"/><w:tcW w:w="2500" w:type="dxa"/></w:tcPr>
+                        <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:sz w:val="18"/></w:rPr><w:t>${r.name}</w:t></w:r></w:p>
+                    </w:tc>
+                </w:tr>`;
+            });
             
-            const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+            const wordXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Word.Document"?>
+<w:wordDocument xmlns:w="http://schemas.microsoft.com/office/word/2003/wordml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<o:DocumentProperties><o:Author>Schadi Tayyah</o:Author></o:DocumentProperties>
+<w:body>
+    <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:sz w:val="28"/></w:rPr><w:t>EVENT: </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:color w:val="FF0000"/><w:sz w:val="28"/></w:rPr><w:t>${eventName}</w:t></w:r></w:p>
+    <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/></w:rPr><w:t>Datum: ${weekday}, </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:color w:val="FF0000"/></w:rPr><w:t>${datum}</w:t></w:r></w:p>
+    <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:color w:val="153D63"/></w:rPr><w:t>AUFSTELLUNG:</w:t></w:r></w:p>
+    <w:tbl>
+        <w:tblPr>
+            <w:tblW w:w="6500" w:type="dxa"/>
+            <w:tblInd w:w="10" w:type="dxa"/>
+            <w:tblBorders>
+                <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                <w:left w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                <w:right w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+            </w:tblBorders>
+            <w:tblCellMar><w:left w:w="10" w:type="dxa"/><w:right w:w="10" w:type="dxa"/></w:tblCellMar>
+        </w:tblPr>
+        <w:tblGrid><w:gridCol w:w="2500"/><w:gridCol w:w="1500"/><w:gridCol w:w="2500"/></w:tblGrid>
+        <w:tr>
+            <w:tc><w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="F0F0F0"/></w:tcPr><w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:sz w:val="18"/></w:rPr><w:t>Position</w:t></w:r></w:p></w:tc>
+            <w:tc><w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="F0F0F0"/></w:tcPr><w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:sz w:val="18"/></w:rPr><w:t>Zeit</w:t></w:r></w:p></w:tc>
+            <w:tc><w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="F0F0F0"/></w:tcPr><w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:sz w:val="18"/></w:rPr><w:t>Name</w:t></w:r></w:p></w:tc>
+        </w:tr>
+        ${tableRowsXml}
+    </w:tbl>
+</w:body>
+</w:wordDocument>`;
+            
+            const blob = new Blob([wordXml], { type: 'application/vnd.ms-word' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Factsheet_' + eventName.replace(/[^a-zA-Z0-9]/g, '_') + '_' + datum.replace(/\./g, '-') + '.doc';
+            a.download = 'Factsheet_' + eventName.replace(/[^a-zA-Z0-9]/g, '_') + '_' + weekday + '_' + datum.replace(/\./g, '-') + '.doc';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            alert('... Factsheet als Word-Dokument heruntergeladen!');
         }
         
         // =========================================
@@ -10860,6 +11198,212 @@ Spittelauer Lnde 12/1
                 if (bar) bar.style.width = (usage / maxUsage * 100) + '%';
                 if (count) count.textContent = usage;
             });
+            
+            // Operative Notes stats
+            const operativeEl = document.getElementById('metrics-operative-current');
+            if (operativeEl) operativeEl.textContent = document.getElementById('top-stat-operative')?.textContent || '0';
+            
+            const notepadText = document.getElementById('notepad-textarea')?.value || '';
+            const notepadLinesEl = document.getElementById('metrics-notepad-lines');
+            const notepadCharsEl = document.getElementById('metrics-notepad-chars');
+            if (notepadLinesEl) notepadLinesEl.textContent = notepadText.split('\n').filter(l => l.trim()).length;
+            if (notepadCharsEl) notepadCharsEl.textContent = notepadText.length.toLocaleString();
+            
+            // Session stats
+            const lastSaveEl = document.getElementById('metrics-last-save');
+            if (lastSaveEl) {
+                const lastSave = localStorage.getItem('workhub-last-save');
+                lastSaveEl.textContent = lastSave ? new Date(lastSave).toLocaleTimeString('de-AT') : '-';
+            }
+            
+            const storageEl = document.getElementById('metrics-storage-used');
+            if (storageEl) {
+                let totalSize = 0;
+                for (let key in localStorage) {
+                    if (key.startsWith('workhub')) {
+                        totalSize += (localStorage[key].length * 2); // UTF-16 = 2 bytes per char
+                    }
+                }
+                const kb = (totalSize / 1024).toFixed(1);
+                storageEl.textContent = kb + ' KB';
+            }
+            
+            // Weekly summary
+            const weekTasksEl = document.getElementById('metrics-week-tasks');
+            const weekFactsheetsEl = document.getElementById('metrics-week-factsheets');
+            const weekSecurityEl = document.getElementById('metrics-week-security');
+            const weekNotesEl = document.getElementById('metrics-week-notes');
+            
+            if (weekTasksEl) weekTasksEl.textContent = data.tasksWeek;
+            if (weekFactsheetsEl) weekFactsheetsEl.textContent = data.appUsageWeek.factsheet || 0;
+            if (weekSecurityEl) weekSecurityEl.textContent = data.appUsageWeek.security || 0;
+            if (weekNotesEl) weekNotesEl.textContent = metrics.notesAddedWeek || 0;
+        }
+        
+        // Download Metrics as PDF
+        function downloadMetricsPDF() {
+            const data = calculateDisplayMetrics();
+            const metrics = getMetrics();
+            const projects = getProjects();
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('de-AT');
+            const timeStr = now.toLocaleTimeString('de-AT', {hour: '2-digit', minute: '2-digit'});
+            
+            // Get operative notes count
+            const operativeCount = document.getElementById('top-stat-operative')?.textContent || '0';
+            const notepadText = document.getElementById('notepad-textarea')?.value || '';
+            const notepadLines = notepadText.split('\n').filter(l => l.trim()).length;
+            
+            // Calculate storage
+            let totalStorage = 0;
+            for (let key in localStorage) {
+                if (key.startsWith('workhub')) {
+                    totalStorage += (localStorage[key].length * 2);
+                }
+            }
+            const storageKB = (totalStorage / 1024).toFixed(1);
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Work Hub Metrics Report - ${dateStr}</title>
+                    <style>
+                        @page { size: A4 portrait; margin: 15mm; }
+                        @media print { html, body { width: 210mm; } }
+                        * { box-sizing: border-box; margin: 0; padding: 0; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #333; padding: 10mm; }
+                        .header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #153D63; }
+                        .header h1 { color: #153D63; font-size: 24pt; margin-bottom: 5px; }
+                        .header .subtitle { color: #666; font-size: 10pt; }
+                        .section { margin-bottom: 20px; }
+                        .section-title { background: #153D63; color: #fff; padding: 8px 12px; font-size: 12pt; font-weight: bold; margin-bottom: 10px; }
+                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+                        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+                        .stat-box { background: #f8f8f8; border: 1px solid #ddd; padding: 12px; text-align: center; }
+                        .stat-value { font-size: 24pt; font-weight: 800; color: #153D63; }
+                        .stat-value.good { color: #22c55e; }
+                        .stat-value.warning { color: #f59e0b; }
+                        .stat-value.danger { color: #ef4444; }
+                        .stat-label { font-size: 9pt; color: #666; margin-top: 4px; text-transform: uppercase; }
+                        table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+                        th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
+                        th { background: #f0f0f0; font-weight: 600; }
+                        .text-right { text-align: right; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 9pt; color: #999; border-top: 1px solid #ddd; padding-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>📊 Work Hub Metrics Report</h1>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.0</div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">📋 Task Overview</div>
+                        <div class="grid-4">
+                            <div class="stat-box">
+                                <div class="stat-value">${data.openTasks}</div>
+                                <div class="stat-label">Open Tasks</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value good">${data.tasksToday}</div>
+                                <div class="stat-label">Done Today</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${data.tasksWeek}</div>
+                                <div class="stat-label">Done This Week</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${data.tasksMonth}</div>
+                                <div class="stat-label">Done This Month</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">📊 This Week Summary</div>
+                        <div class="grid-4">
+                            <div class="stat-box">
+                                <div class="stat-value good">${data.tasksWeek}</div>
+                                <div class="stat-label">Tasks Done</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="color: #3b82f6;">${data.appUsageWeek.factsheet || 0}</div>
+                                <div class="stat-label">Factsheets</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value warning">${data.appUsageWeek.security || 0}</div>
+                                <div class="stat-label">Security Orders</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="color: #8b5cf6;">${metrics.notesAddedWeek || 0}</div>
+                                <div class="stat-label">Notes Added</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">📁 Notes by Department</div>
+                        <table>
+                            <tr><th>Department</th><th class="text-right">Count</th></tr>
+                            <tr><td>🏢 Office</td><td class="text-right">${data.notesByDept.office || 0}</td></tr>
+                            <tr><td>🍸 Bar</td><td class="text-right">${data.notesByDept.bar || 0}</td></tr>
+                            <tr><td>🏃 Runner</td><td class="text-right">${data.notesByDept.runner || 0}</td></tr>
+                            <tr><td>🔧 Technik</td><td class="text-right">${data.notesByDept.tech || 0}</td></tr>
+                            <tr><td>🚀 Sputnik</td><td class="text-right">${data.notesByDept.sputnik || 0}</td></tr>
+                            <tr style="font-weight: bold;"><td>Total</td><td class="text-right">${data.totalNotes}</td></tr>
+                        </table>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">🛠 Tools Generated (All-Time)</div>
+                        <table>
+                            <tr><th>Tool</th><th class="text-right">Total</th></tr>
+                            <tr><td>Factsheets</td><td class="text-right">${data.factsheets}</td></tr>
+                            <tr><td>Security Orders</td><td class="text-right">${data.securityOrders}</td></tr>
+                            <tr><td>Cleaning Plans</td><td class="text-right">${data.cleaningPlans}</td></tr>
+                            <tr><td>Emails Sent</td><td class="text-right">${data.emailsSent}</td></tr>
+                            <tr><td>Notes Processed</td><td class="text-right">${metrics.notesProcessed || 0}</td></tr>
+                        </table>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">📈 KPIs & Projects</div>
+                        <div class="grid">
+                            <div class="stat-box">
+                                <div class="stat-value">${projects.length}</div>
+                                <div class="stat-label">Total Projects</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${metrics.projectsCompleted || 0}</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value danger">${operativeCount}</div>
+                                <div class="stat-label">Operative Notes</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">💾 System Info</div>
+                        <table>
+                            <tr><td>Notepad Lines</td><td class="text-right">${notepadLines}</td></tr>
+                            <tr><td>LocalStorage Used</td><td class="text-right">${storageKB} KB</td></tr>
+                        </table>
+                    </div>
+                    
+                    <div class="footer">
+                        Work Hub v15.9.0 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                    </div>
+                    
+                    <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
         
         // Reset all metrics
