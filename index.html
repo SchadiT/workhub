@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.0</title>
+    <title>Turbo Projects Work Hub v15.9.1</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2398,6 +2398,7 @@
                     </div>
                     <div class="form-group" style="display: flex; align-items: flex-end; gap: 10px;">
                         <button class="modal-btn success" onclick="copyCleaningSchedule()" style="white-space: nowrap;">&#128203; Kopieren</button>
+                        <button class="modal-btn" style="background: #059669; color: #fff; white-space: nowrap;" onclick="openCleaningPreview()">&#128196; Preview</button>
                         <button class="modal-btn" style="background: var(--blue-medium); color: #fff; white-space: nowrap;" onclick="quickSaveCleaningDraft()">&#128157; Entwurf</button>
                         <button class="modal-btn primary" onclick="showCleaningEmail()" style="white-space: nowrap;">&#9993; E-Mail</button>
                     </div>
@@ -2439,6 +2440,25 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('cleaning-modal')">Schliessen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cleaning Preview Modal -->
+    <div class="modal-overlay" id="cleaning-preview-modal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3>&#128196; Cleaning Plan Preview</h3>
+                <button class="modal-close" onclick="closeModal('cleaning-preview-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Bearbeite den Text vor dem Download:</p>
+                <textarea id="cleaning-preview-text" style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; background: #0a0a14; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 4px; resize: vertical;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="copyCleaningPreview()">&#128203; Kopieren</button>
+                <button class="modal-btn success" onclick="downloadCleaningTxt()">&#128190; Download .txt</button>
+                <button class="modal-btn cancel" onclick="closeModal('cleaning-preview-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -3631,40 +3651,22 @@
                     <span class="tool-icon">&#128221;</span>
                     Notepad
                 </button>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-blue" onclick="toggleDropdown('social-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#128177;</span>
-                        Social 
-                    </button>
-                    <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Instagram</a>
-                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Facebook</a>
-                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon"></span> WhatsApp</a>
-                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon"></span> BMT Dashboard</a>
-                    </div>
-                </div>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-blue" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#127908;</span>
-                        Sales 
-                    </button>
-                    <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon"></span> WBV (POS)</a>
-                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon"></span> Linktree</a>
-                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon"></span> ntry (Pre-Sale)</a>
-                        <a href="https://oeticket.light.oet.eu/dashboard" class="dropdown-item" target="_blank"><span class="icon"></span> OE TICKET</a>
-                    </div>
-                </div>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-blue" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#128230;</span>
-                        Storage 
-                    </button>
-                    <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon"></span> Google Drive</a>
-                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon"></span> OneDrive</a>
-                    </div>
-                </div>
+                <button class="tool-btn border-blue" onclick="openCleaningModal()">
+                    <span class="tool-icon">&#129529;</span>
+                    Cleaning
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')">
+                    <span class="tool-icon">&#128157;</span>
+                    Guestlist
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('bar-staffing-modal')">
+                    <span class="tool-icon">&#127864;</span>
+                    Bar Staff
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('briefing-modal')">
+                    <span class="tool-icon">&#128203;</span>
+                    Briefing
+                </button>
             </div>
         </div>
     </div>
@@ -3676,10 +3678,6 @@
         </button>
         <div class="tools-content" id="tools-content">
             <div class="tools-grid">
-                <button class="tool-btn border-white" onclick="openCleaningModal()">
-                    <span class="tool-icon">&#129529;</span>
-                    Cleaning
-                </button>
                 <button class="tool-btn border-white" onclick="openModal('presale-modal')">
                     <span class="tool-icon">&#127908;</span>
                     PreSale C.
@@ -3696,18 +3694,6 @@
                     <span class="tool-icon">&#128221;</span>
                     Analysis
                 </button>
-                <button class="tool-btn border-white" onclick="openModal('guestlist-modal')">
-                    <span class="tool-icon">&#128157;</span>
-                    Guestlist
-                </button>
-                <button class="tool-btn border-white" onclick="openModal('bar-staffing-modal')">
-                    <span class="tool-icon">&#127864;</span>
-                    Bar Staff
-                </button>
-                <button class="tool-btn border-white" onclick="openModal('briefing-modal')">
-                    <span class="tool-icon">&#128203;</span>
-                    Briefing
-                </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">&#11088;</span>
@@ -3716,6 +3702,40 @@
                     <div id="special-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
                         <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('peak-grid-modal');"><span class="icon"></span> Peak Grid</a>
                         <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('nye-projector-modal');"><span class="icon"></span> NYE Projector</a>
+                    </div>
+                </div>
+                <div class="dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-white" onclick="toggleDropdown('social-dropdown')" style="width: 100%; height: 100%;">
+                        <span class="tool-icon">&#128177;</span>
+                        Social 
+                    </button>
+                    <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Instagram</a>
+                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Facebook</a>
+                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon"></span> WhatsApp</a>
+                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon"></span> BMT Dashboard</a>
+                    </div>
+                </div>
+                <div class="dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-white" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; height: 100%;">
+                        <span class="tool-icon">&#127908;</span>
+                        Sales 
+                    </button>
+                    <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon"></span> WBV (POS)</a>
+                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon"></span> Linktree</a>
+                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon"></span> ntry (Pre-Sale)</a>
+                        <a href="https://oeticket.light.oet.eu/dashboard" class="dropdown-item" target="_blank"><span class="icon"></span> OE TICKET</a>
+                    </div>
+                </div>
+                <div class="dropdown-container" style="position: relative;">
+                    <button class="tool-btn border-white" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; height: 100%;">
+                        <span class="tool-icon">&#128230;</span>
+                        Storage 
+                    </button>
+                    <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
+                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon"></span> Google Drive</a>
+                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon"></span> OneDrive</a>
                     </div>
                 </div>
             </div>
@@ -4294,7 +4314,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.0</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.1</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -4326,6 +4346,30 @@
                             <div style="text-align: center;">
                                 <div style="font-size: 28px; font-weight: 800; color: #8b5cf6;" id="metrics-week-notes">0</div>
                                 <div style="font-size: 10px; color: var(--text-secondary);">Notes Added</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hub Development Pace -->
+                    <div class="metrics-card wide">
+                        <div class="metrics-card-header">&#128736; Hub Development</div>
+                        <div class="metrics-card-body">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div>
+                                    <span style="font-size: 12px; color: var(--text-secondary);">This Week:</span>
+                                    <span style="font-size: 24px; font-weight: 800; margin-left: 8px;" id="hubdev-points">0</span>
+                                    <span style="font-size: 12px; color: var(--text-secondary);"> pts</span>
+                                </div>
+                                <div id="hubdev-status" style="font-size: 18px; font-weight: 700; padding: 4px 12px; border-radius: 4px; background: #374151;">🐢 Slow</div>
+                            </div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                <button onclick="logHubDev(1)" style="flex: 1; padding: 8px; background: #1e3a5f; border: 1px solid #3b82f6; border-radius: 4px; color: #fff; cursor: pointer; font-size: 11px;">+1 Small</button>
+                                <button onclick="logHubDev(2)" style="flex: 1; padding: 8px; background: #1e3a5f; border: 1px solid #f59e0b; border-radius: 4px; color: #fff; cursor: pointer; font-size: 11px;">+2 Medium</button>
+                                <button onclick="logHubDev(3)" style="flex: 1; padding: 8px; background: #1e3a5f; border: 1px solid #22c55e; border-radius: 4px; color: #fff; cursor: pointer; font-size: 11px;">+3 Big</button>
+                                <button onclick="resetHubDev()" style="padding: 8px 12px; background: #374151; border: 1px solid #6b7280; border-radius: 4px; color: #9ca3af; cursor: pointer; font-size: 11px;">↺</button>
+                            </div>
+                            <div style="font-size: 10px; color: var(--text-secondary); border-top: 1px solid #374151; padding-top: 8px;">
+                                <span id="hubdev-log">No updates logged yet</span>
                             </div>
                         </div>
                     </div>
@@ -8791,6 +8835,99 @@
             });
         }
         
+        // Generate cleaning plan text from table
+        function generateCleaningPlanText() {
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            const monthName = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+            
+            const table = document.getElementById('cleaning-table-data');
+            if (!table) return null;
+            
+            const checkedRows = table.querySelectorAll('tbody tr:has(.cleaning-checkbox:checked)');
+            if (checkedRows.length === 0) return null;
+            
+            let text = `REINIGUNGSPLAN ${monthName.toUpperCase()}\n`;
+            text += `${'='.repeat(50)}\n\n`;
+            
+            // Count types
+            let grossCount = 0;
+            let mittelCount = 0;
+            
+            checkedRows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const date = cells[1].textContent;
+                const day = cells[2].textContent;
+                const type = cells[3].textContent.trim();
+                const event = cells[4].textContent;
+                
+                if (type === 'GROSS') grossCount++;
+                if (type === 'MITTEL') mittelCount++;
+                
+                text += `${date} (${day}) - ${type}\n`;
+                text += `   Nach Event: ${event}\n\n`;
+            });
+            
+            text += `${'='.repeat(50)}\n`;
+            text += `ZUSAMMENFASSUNG\n`;
+            text += `${'='.repeat(50)}\n`;
+            text += `GROSS:  ${grossCount}x\n`;
+            text += `MITTEL: ${mittelCount}x\n`;
+            text += `TOTAL:  ${checkedRows.length}x\n\n`;
+            text += `Grelle Forelle | Turbo Projects GmbH\n`;
+            
+            return { text, monthName, count: checkedRows.length };
+        }
+        
+        // Open cleaning preview modal
+        function openCleaningPreview() {
+            const result = generateCleaningPlanText();
+            if (!result) {
+                showToast('⚠ Keine Cleaningen ausgewählt', 'error');
+                return;
+            }
+            
+            document.getElementById('cleaning-preview-text').value = result.text;
+            openModal('cleaning-preview-modal');
+        }
+        
+        // Copy from preview textarea
+        function copyCleaningPreview() {
+            const text = document.getElementById('cleaning-preview-text').value;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('📋 Plan kopiert!');
+            }).catch(() => {
+                showToast('⚠ Kopieren fehlgeschlagen', 'error');
+            });
+        }
+        
+        // Download as .txt file
+        function downloadCleaningTxt() {
+            const text = document.getElementById('cleaning-preview-text').value;
+            if (!text) {
+                showToast('⚠ Kein Text zum Download', 'error');
+                return;
+            }
+            
+            const monthSelect = document.getElementById('cleaning-month');
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            const monthStr = String(month).padStart(2, '0');
+            const filename = `Reinigungsplan_${year}_${monthStr}.txt`;
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast(`📥 ${filename} heruntergeladen!`);
+            trackCleaningPlan(); // Track metrics
+        }
+        
         // 
         // CLEANING EMAIL FUNCTIONS
         // 
@@ -10032,7 +10169,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.0 - Operative Notes Counter + Factsheet Format');
+            console.log('Work Hub v15.9.1 - UI Reorg + Hub Dev Metrics + Cleaning Preview');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             updateNotepadCounter(); // Update operative notes counter
@@ -11098,6 +11235,86 @@ Spittelauer Lnde 12/1
             };
         }
         
+        // HUB DEVELOPMENT TRACKING
+        function getHubDevData() {
+            const stored = localStorage.getItem('workhub-hubdev');
+            if (!stored) return { points: 0, weekStart: getWeekStart(), log: [] };
+            
+            const data = JSON.parse(stored);
+            const currentWeekStart = getWeekStart();
+            
+            // Auto-reset if new week
+            if (data.weekStart !== currentWeekStart) {
+                return { points: 0, weekStart: currentWeekStart, log: [] };
+            }
+            return data;
+        }
+        
+        function getWeekStart() {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1); // Monday
+            const monday = new Date(now.setDate(diff));
+            return monday.toISOString().split('T')[0];
+        }
+        
+        function saveHubDevData(data) {
+            localStorage.setItem('workhub-hubdev', JSON.stringify(data));
+        }
+        
+        function logHubDev(points) {
+            const data = getHubDevData();
+            const sizeLabel = points === 1 ? 'Small' : points === 2 ? 'Medium' : 'Big';
+            const now = new Date();
+            const timeStr = now.toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit' }) + ' ' + now.toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' });
+            
+            data.points += points;
+            data.log.unshift(`${timeStr}: +${points} (${sizeLabel})`);
+            if (data.log.length > 5) data.log = data.log.slice(0, 5); // Keep last 5
+            
+            saveHubDevData(data);
+            updateHubDevDisplay();
+            showToast(`🔧 +${points} Hub Dev logged!`);
+        }
+        
+        function resetHubDev() {
+            if (confirm('Reset Hub Development counter for this week?')) {
+                const data = { points: 0, weekStart: getWeekStart(), log: [] };
+                saveHubDevData(data);
+                updateHubDevDisplay();
+                showToast('🔄 Hub Dev reset');
+            }
+        }
+        
+        function updateHubDevDisplay() {
+            const data = getHubDevData();
+            const pointsEl = document.getElementById('hubdev-points');
+            const statusEl = document.getElementById('hubdev-status');
+            const logEl = document.getElementById('hubdev-log');
+            
+            if (pointsEl) pointsEl.textContent = data.points;
+            
+            if (statusEl) {
+                if (data.points >= 3) {
+                    statusEl.textContent = '🚀 Quick';
+                    statusEl.style.background = '#065f46';
+                    statusEl.style.color = '#34d399';
+                } else if (data.points >= 1) {
+                    statusEl.textContent = '⚡ Normal';
+                    statusEl.style.background = '#78350f';
+                    statusEl.style.color = '#fbbf24';
+                } else {
+                    statusEl.textContent = '🐢 Slow';
+                    statusEl.style.background = '#374151';
+                    statusEl.style.color = '#9ca3af';
+                }
+            }
+            
+            if (logEl) {
+                logEl.textContent = data.log.length > 0 ? data.log.join(' | ') : 'No updates logged yet';
+            }
+        }
+        
         // Update metrics display
         function updateMetricsDisplay() {
             const data = calculateDisplayMetrics();
@@ -11297,7 +11514,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>📊 Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.0</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.1</div>
                     </div>
                     
                     <div class="section">
@@ -11396,7 +11613,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.0 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.1 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -12221,7 +12438,10 @@ Spittelauer Lnde 12/1
         const originalOpenModal = openModal;
         openModal = function(id) {
             originalOpenModal(id);
-            if (id === 'metrics-modal') updateMetricsDisplay();
+            if (id === 'metrics-modal') {
+                updateMetricsDisplay();
+                updateHubDevDisplay();
+            }
             // Track app usage
             const appMap = {
                 'factsheet-modal': 'factsheet',
