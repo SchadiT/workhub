@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.1</title>
+    <title>Turbo Projects Work Hub v15.9.2</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4314,7 +4314,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.1</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.2</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -10169,7 +10169,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.1 - UI Reorg + Hub Dev Metrics + Cleaning Preview');
+            console.log('Work Hub v15.9.2 - UI Reorg + Hub Dev + Factsheet Download Fix');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             updateNotepadCounter(); // Update operative notes counter
@@ -10623,8 +10623,8 @@ Spittelauer Lnde 12/1
             // TERRASSE 1
             rows.push({
                 pos: 'TERRASSE 1',
-                zeit: document.getElementById('fs-terr-time')?.value || '22:00',
-                name: document.getElementById('fs-terr')?.value || ''
+                zeit: document.getElementById('fs-terrasse-time')?.value || '22:00',
+                name: document.getElementById('fs-terrasse')?.value || ''
             });
             
             // K. DOORS 2 - time in RED
@@ -10638,8 +10638,8 @@ Spittelauer Lnde 12/1
             // KITCHEN
             rows.push({
                 pos: 'KITCHEN',
-                zeit: document.getElementById('fs-kitch-time')?.value || '22:00',
-                name: document.getElementById('fs-kitch')?.value || ''
+                zeit: document.getElementById('fs-kitchen-time')?.value || '22:00',
+                name: document.getElementById('fs-kitchen')?.value || ''
             });
             
             // Empty row
@@ -10716,8 +10716,8 @@ Spittelauer Lnde 12/1
             // TECH
             rows.push({
                 pos: 'TECH:',
-                zeit: document.getElementById('fs-tech-time')?.value || '21:00',
-                name: document.getElementById('fs-tech')?.value || ''
+                zeit: document.getElementById('fs-technik-time')?.value || '21:00',
+                name: document.getElementById('fs-technik')?.value || ''
             });
             
             // SECURITY section header
@@ -11514,7 +11514,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>📊 Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.1</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.2</div>
                     </div>
                     
                     <div class="section">
@@ -11613,7 +11613,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.1 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.2 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
