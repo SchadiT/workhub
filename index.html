@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.2</title>
+    <title>Turbo Projects Work Hub v15.9.3</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4314,7 +4314,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.2</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.3</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5790,7 +5790,7 @@
             today.setHours(0, 0, 0, 0);
             
             const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-            const monthNames = ['Januar', 'Februar', 'MÃƒÆ’Ã‚Â¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             
             // Get future events sorted by date
             const futureEvents = [];
@@ -10037,7 +10037,7 @@ Spittelauer Lnde 12/1
             const grid = document.getElementById('calendar-grid');
             const titleEl = document.getElementById('calendar-month-title');
             
-            const monthNames = ['Januar', 'Februar', 'MÃƒÆ’Ã‚Â¤rz', 'April', 'Mai', 'Juni', 
+            const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
             const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
             
@@ -10169,7 +10169,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.2 - UI Reorg + Hub Dev + Factsheet Download Fix');
+            console.log('Work Hub v15.9.3 - Factsheet Fix + Metrics + Encoding');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             updateNotepadCounter(); // Update operative notes counter
@@ -10400,7 +10400,7 @@ Spittelauer Lnde 12/1
             const orders = getSecurityOrders();
             const order = orders.archive.find(o => o.id == id);
             if (!order || !order.content) {
-                alert('Inhalt nicht verfÃ¼gbar');
+                alert('Inhalt nicht verfügbar');
                 return;
             }
             
@@ -10418,7 +10418,7 @@ Spittelauer Lnde 12/1
         
         // Delete archived order
         function deleteArchivedOrder(id) {
-            if (!confirm('Order aus Archiv lÃ¶schen?')) return;
+            if (!confirm('Order aus Archiv löschen?')) return;
             const orders = getSecurityOrders();
             orders.archive = orders.archive.filter(o => o.id != id);
             saveSecurityOrders(orders);
@@ -10442,7 +10442,7 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let output = 'Hallo!\n\nHier die Bestellung fÃ¼r das Wochenende:\n\n';
+            let output = 'Hallo!\n\nHier die Bestellung für das Wochenende:\n\n';
             
             orders.pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
             
@@ -10529,7 +10529,7 @@ Spittelauer Lnde 12/1
                 document.getElementById('security-order-output').textContent = order.content;
                 openModal('security-output-modal');
             } else {
-                alert('Inhalt nicht verfÃ¼gbar');
+                alert('Inhalt nicht verfügbar');
             }
         }
         
@@ -10785,6 +10785,7 @@ Spittelauer Lnde 12/1
                 </html>
             `);
             printWindow.document.close();
+            trackFactsheet(); // Track metrics
         }
         
         // Download as DOCX - exact Word XML format matching template
@@ -10859,6 +10860,7 @@ Spittelauer Lnde 12/1
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            trackFactsheet(); // Track metrics
         }
         
         // =========================================
@@ -11514,7 +11516,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>📊 Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.2</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.3</div>
                     </div>
                     
                     <div class="section">
@@ -11613,7 +11615,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.2 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.3 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
