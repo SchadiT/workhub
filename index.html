@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.3</title>
+    <title>Turbo Projects Work Hub v15.9.4</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4210,6 +4210,7 @@
                             <table>
                                 <thead><tr><th>Item</th><th>Total</th></tr></thead>
                                 <tbody>
+                                    <tr><td>Tasks Done</td><td id="metrics-tasks-total">0</td></tr>
                                     <tr><td>Factsheets Generated</td><td id="metrics-factsheets">0</td></tr>
                                     <tr><td>Security Orders</td><td id="metrics-security">0</td></tr>
                                     <tr><td>Cleaning Plans</td><td id="metrics-cleaning">0</td></tr>
@@ -4314,7 +4315,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.3</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.4</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -10169,7 +10170,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.3 - Factsheet Fix + Metrics + Encoding');
+            console.log('Work Hub v15.9.4 - Metrics Complete + Task Counter');
             loadQuickNotes();
             loadNotepad(); // Load Notepad content from localStorage
             updateNotepadCounter(); // Update operative notes counter
@@ -11075,6 +11076,7 @@ Spittelauer Lnde 12/1
         function getMetrics() {
             const defaultMetrics = {
                 tasksCompleted: [],
+                tasksTotal: 0,
                 factsheets: 0,
                 securityOrders: 0,
                 cleaningPlans: 0,
@@ -11108,7 +11110,8 @@ Spittelauer Lnde 12/1
         function trackTaskCompletion() {
             const metrics = getMetrics();
             metrics.tasksCompleted.push(new Date().toISOString());
-            // Keep only last 90 days
+            metrics.tasksTotal = (metrics.tasksTotal || 0) + 1;
+            // Keep only last 90 days for weekly/monthly stats
             const cutoff = new Date();
             cutoff.setDate(cutoff.getDate() - 90);
             metrics.tasksCompleted = metrics.tasksCompleted.filter(d => new Date(d) > cutoff);
@@ -11345,8 +11348,10 @@ Spittelauer Lnde 12/1
             document.getElementById('metrics-cleaning').textContent = data.cleaningPlans;
             document.getElementById('metrics-emails').textContent = data.emailsSent;
             
-            // Notes processed
+            // Tasks and Notes processed
             const metrics = getMetrics();
+            const tasksTotalEl = document.getElementById('metrics-tasks-total');
+            if (tasksTotalEl) tasksTotalEl.textContent = metrics.tasksTotal || 0;
             const notesProcessedEl = document.getElementById('metrics-notes-processed');
             if (notesProcessedEl) notesProcessedEl.textContent = metrics.notesProcessed || 0;
             
@@ -11516,7 +11521,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>📊 Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.3</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.4</div>
                     </div>
                     
                     <div class="section">
@@ -11615,7 +11620,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.3 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.4 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
