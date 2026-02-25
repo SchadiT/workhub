@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.4</title>
+    <title>Turbo Projects Work Hub v15.9.5</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3441,31 +3441,32 @@
                 <h3>&#127860; Hospitality Summary Generator</h3>
                 <button class="modal-close" onclick="closeModal('hospitality-modal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Event ausw&auml;hlen</label>
-                        <select id="hosp-event-select" onchange="loadHospEventData()">
+            <div class="modal-body" style="padding: 20px;">
+                <!-- Event Selection Row -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                    <div>
+                        <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 4px;">Event</label>
+                        <select id="hosp-event-select" onchange="loadHospEventData()" style="width: 100%; padding: 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 14px;">
                             <option value="">-- Event w&auml;hlen --</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Datum</label>
-                        <input type="text" id="hosp-datum" value="">
+                    <div>
+                        <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 4px;">Datum</label>
+                        <input type="text" id="hosp-datum" value="" style="width: 100%; padding: 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
                     </div>
                 </div>
 
-                <!-- Artist Sections (up to 5) -->
+                <!-- Artist Sections -->
                 <div id="hosp-artists-container">
-                    <div class="hosp-artist-section" id="hosp-artist-1" style="border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;">
-                        <div class="form-row" style="align-items: center; margin-bottom: 8px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label style="color: #f59e0b; font-weight: bold;">RIDER: Artist 1</label>
-                                <input type="text" id="hosp-artist-name-1" placeholder="Artist Name" oninput="updateHospArtistLabel(1)">
+                    <div class="hosp-artist-section" id="hosp-artist-1" style="border: 1px solid #333; border-radius: 10px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <label style="color: #f59e0b; font-weight: 600; font-size: 13px; display: block; margin-bottom: 4px;">RIDER: Artist 1</label>
+                                <input type="text" id="hosp-artist-name-1" placeholder="Artist Name" oninput="updateHospArtistLabel(1)" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px; box-sizing: border-box;">
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label>Location</label>
-                                <select id="hosp-artist-location-1">
+                            <div>
+                                <label style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Location</label>
+                                <select id="hosp-artist-location-1" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px;">
                                     <option value="DJ BOOTH">DJ BOOTH</option>
                                     <option value="ARTIST ROOM / BACKSTAGE">ARTIST ROOM / BACKSTAGE</option>
                                     <option value="DRESSING ROOM">DRESSING ROOM</option>
@@ -3474,64 +3475,63 @@
                             </div>
                         </div>
                         <div class="hosp-items-list" id="hosp-items-1">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                                 <thead>
-                                    <tr style="background: #1a1a2e; color: #ccc;">
-                                        <th style="padding: 6px; width: 50px;">Menge</th>
-                                        <th style="padding: 6px;">Item</th>
-                                        <th style="padding: 6px; width: 70px;">INHOUSE</th>
-                                        <th style="padding: 6px; width: 70px;">ORDER / BUY</th>
-                                        <th style="padding: 6px; width: 70px;">DELIVERED</th>
-                                        <th style="padding: 6px; width: 50px;">NOTE</th>
-                                        <th style="padding: 6px; width: 70px;">PREPARED</th>
-                                        <th style="padding: 6px; width: 30px;"></th>
+                                    <tr style="background: #0d1117; border-bottom: 2px solid #f59e0b;">
+                                        <th style="padding: 8px 6px; width: 55px; color: #ccc; text-align: center; font-weight: 600;">Menge</th>
+                                        <th style="padding: 8px 6px; color: #ccc; text-align: left; font-weight: 600;">Item</th>
+                                        <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">INHOUSE</th>
+                                        <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">ORDER</th>
+                                        <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">DELIVERED</th>
+                                        <th style="padding: 8px 4px; width: 50px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">NOTE</th>
+                                        <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">PREPARED</th>
+                                        <th style="padding: 8px 2px; width: 28px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="hosp-tbody-1"></tbody>
                             </table>
-                            <button class="modal-btn" onclick="addHospItem(1)" style="background: #333; color: #fff; margin-top: 6px; font-size: 12px;">+ Item</button>
+                            <button onclick="addHospItem(1)" style="background: transparent; color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 6px; padding: 6px 14px; margin-top: 8px; cursor: pointer; font-size: 12px; transition: all 0.2s;">+ Item hinzuf&uuml;gen</button>
                         </div>
                     </div>
                 </div>
 
-                <button class="modal-btn" onclick="addHospArtist()" style="background: #1e3a5f; color: #fff; margin: 10px 0; width: 100%;">+ Artist hinzuf&uuml;gen</button>
+                <button onclick="addHospArtist()" style="width: 100%; background: transparent; color: #3b82f6; border: 1px dashed #3b82f6; border-radius: 8px; padding: 10px; margin-bottom: 16px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;">+ Artist hinzuf&uuml;gen</button>
 
-                <!-- Kitchen Section -->
-                <div style="border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;">
-                    <label style="color: #f59e0b; font-weight: bold; display: block; margin-bottom: 8px;">&#127859; KITCHEN</label>
-                    <textarea id="hosp-kitchen" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 8px; font-size: 13px;" placeholder="Kitchen Artists noch offen. Rider bei Stephan abfragen."></textarea>
+                <!-- Bottom Sections Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
+                        <label style="color: #f59e0b; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#127859; KITCHEN</label>
+                        <textarea id="hosp-kitchen" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Kitchen Artists noch offen. Rider bei Stephan abfragen."></textarea>
+                    </div>
+                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
+                        <label style="color: #f59e0b; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#128101; CREW HOSPITALITY</label>
+                        <textarea id="hosp-crew" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Crew Hospitality Items..."></textarea>
+                    </div>
                 </div>
-
-                <!-- Crew Hospitality -->
-                <div style="border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;">
-                    <label style="color: #f59e0b; font-weight: bold; display: block; margin-bottom: 8px;">&#128101; CREW HOSPITALITY</label>
-                    <textarea id="hosp-crew" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 8px; font-size: 13px;" placeholder="Crew Hospitality Items..."></textarea>
-                </div>
-
-                <!-- On The Night Orders -->
-                <div style="border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;">
-                    <label style="color: #f59e0b; font-weight: bold; display: block; margin-bottom: 8px;">&#9888; ON THE NIGHT ORDERS</label>
-                    <textarea id="hosp-night-orders" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 8px; font-size: 13px;" placeholder="Besondere Anweisungen f&uuml;r den Abend..."></textarea>
-                </div>
-
-                <!-- Weitere Artists Warning -->
-                <div style="border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;">
-                    <label style="color: #f59e0b; font-weight: bold; display: block; margin-bottom: 8px;">&#9888; WEITERE ARTISTS</label>
-                    <textarea id="hosp-weitere" rows="2" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 8px; font-size: 13px;" placeholder="Lineup noch nicht vollst&auml;ndig. Rider von weiteren Artists bei Stephan abfragen."></textarea>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
+                        <label style="color: #e67e22; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#9888; ON THE NIGHT ORDERS</label>
+                        <textarea id="hosp-night-orders" rows="2" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Besondere Anweisungen..."></textarea>
+                    </div>
+                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
+                        <label style="color: #e67e22; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#9888; WEITERE ARTISTS</label>
+                        <textarea id="hosp-weitere" rows="2" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Lineup noch nicht vollst&auml;ndig..."></textarea>
+                    </div>
                 </div>
 
                 <!-- Preview -->
-                <div style="border: 1px solid #3b82f6; border-radius: 8px; padding: 12px; margin: 15px 0; background: #0a0a1a;">
-                    <label style="color: #3b82f6; font-weight: bold; display: block; margin-bottom: 8px;">Preview</label>
-                    <div id="hosp-preview" style="font-family: Arial; font-size: 13px; color: #fff;"></div>
-                </div>
+                <details style="border: 1px solid #3b82f6; border-radius: 10px; margin-bottom: 16px; background: #0a0a1a;">
+                    <summary style="padding: 12px 16px; color: #3b82f6; font-weight: 600; font-size: 13px; cursor: pointer; user-select: none;">Preview anzeigen</summary>
+                    <div id="hosp-preview" style="padding: 16px; font-family: Arial; font-size: 13px; color: #fff; border-top: 1px solid #333;"></div>
+                </details>
 
-                <div class="form-row" style="justify-content: flex-start; gap: 8px; flex-wrap: wrap;">
-                    <button class="modal-btn download" onclick="downloadHospitalityPDF()">&#8681; Download PDF</button>
-                    <button class="modal-btn download" onclick="downloadHospitalityDOCX()">&#8681; Download DOCX</button>
-                    <button class="modal-btn primary" onclick="copyHospitality()">&#128203; Kopieren</button>
-                    <button class="modal-btn" onclick="saveHospitalityDraft()" style="background: var(--blue-medium); color: #fff;">&#128190; Speichern</button>
-                    <button class="modal-btn" onclick="loadHospitalityDraft()" style="background: #444; color: #fff;">&#128194; Laden</button>
+                <!-- Action Buttons -->
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
+                    <button class="modal-btn download" onclick="downloadHospitalityPDF()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#8681; PDF</button>
+                    <button class="modal-btn download" onclick="downloadHospitalityDOCX()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#8681; DOCX</button>
+                    <button class="modal-btn primary" onclick="copyHospitality()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#128203; Kopieren</button>
+                    <button class="modal-btn" onclick="saveHospitalityDraft()" style="background: var(--blue-medium); color: #fff; font-size: 12px; padding: 10px 0; text-align: center;">&#128190; Speichern</button>
+                    <button class="modal-btn" onclick="loadHospitalityDraft()" style="background: #333; color: #fff; font-size: 12px; padding: 10px 0; text-align: center;">&#128194; Laden</button>
                 </div>
             </div>
         </div>
@@ -12641,16 +12641,16 @@ Spittelauer Lnde 12/1
             if (!tbody) return;
             const rowNum = tbody.children.length;
             const row = document.createElement('tr');
-            row.style.borderBottom = '1px solid #333';
+            row.style.cssText = 'border-bottom: 1px solid #1a1a2e; transition: background 0.15s;';
             row.innerHTML = `
-                <td><input type="text" value="1x" style="width: 45px; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; text-align: center; font-size: 12px;" oninput="updateHospPreview()"></td>
-                <td><input type="text" placeholder="Item" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; font-size: 12px;" oninput="updateHospPreview()"></td>
-                <td style="text-align: center;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="inhouse" checked onchange="updateHospDelivered(this); updateHospPreview()"></td>
-                <td style="text-align: center;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="order" onchange="updateHospDelivered(this); updateHospPreview()"></td>
-                <td style="text-align: center;"><input type="checkbox" class="hosp-delivered" onchange="updateHospPreview()"></td>
-                <td><input type="text" placeholder="" style="width: 45px; background: #1a1a2e; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px; font-size: 11px; text-align: center;" oninput="updateHospPreview()"></td>
-                <td style="text-align: center;"><input type="checkbox" class="hosp-prepared" onchange="updateHospPreview()"></td>
-                <td><button onclick="this.closest('tr').remove(); updateHospPreview();" style="background: #dc2626; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; padding: 2px 6px;">&times;</button></td>
+                <td style="padding: 4px 3px; text-align: center;"><input type="text" value="1x" style="width: 45px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 5px 4px; text-align: center; font-size: 12px;" oninput="updateHospPreview()"></td>
+                <td style="padding: 4px 3px;"><input type="text" placeholder="Item" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 5px 6px; font-size: 12px;" oninput="updateHospPreview()"></td>
+                <td style="text-align: center; padding: 4px 2px;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="inhouse" checked onchange="updateHospDelivered(this); updateHospPreview()" style="accent-color: #f59e0b;"></td>
+                <td style="text-align: center; padding: 4px 2px;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="order" onchange="updateHospDelivered(this); updateHospPreview()" style="accent-color: #f59e0b;"></td>
+                <td style="text-align: center; padding: 4px 2px;"><input type="checkbox" class="hosp-delivered" onchange="updateHospPreview()" style="accent-color: #3b82f6;"></td>
+                <td style="padding: 4px 2px; text-align: center;"><input type="text" placeholder="" style="width: 40px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 4px 3px; font-size: 11px; text-align: center;" oninput="updateHospPreview()"></td>
+                <td style="text-align: center; padding: 4px 2px;"><input type="checkbox" class="hosp-prepared" onchange="updateHospPreview()" style="accent-color: #22c55e;"></td>
+                <td style="padding: 4px 2px; text-align: center;"><button onclick="this.closest('tr').remove(); updateHospPreview();" style="background: transparent; color: #666; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; padding: 2px 5px; transition: color 0.15s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#666'">&times;</button></td>
             `;
             tbody.appendChild(row);
             updateHospDeliveredRow(row);
@@ -12685,41 +12685,41 @@ Spittelauer Lnde 12/1
             const section = document.createElement('div');
             section.className = 'hosp-artist-section';
             section.id = `hosp-artist-${idx}`;
-            section.style.cssText = 'border: 1px solid #444; border-radius: 8px; padding: 12px; margin: 10px 0;';
+            section.style.cssText = 'border: 1px solid #333; border-radius: 10px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);';
             section.innerHTML = `
-                <div class="form-row" style="align-items: center; margin-bottom: 8px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label style="color: #f59e0b; font-weight: bold;">RIDER: Artist ${idx}</label>
-                        <input type="text" id="hosp-artist-name-${idx}" placeholder="Artist Name" oninput="updateHospArtistLabel(${idx})">
+                <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 12px;">
+                    <div>
+                        <label style="color: #f59e0b; font-weight: 600; font-size: 13px; display: block; margin-bottom: 4px;">RIDER: Artist ${idx}</label>
+                        <input type="text" id="hosp-artist-name-${idx}" placeholder="Artist Name" oninput="updateHospArtistLabel(${idx})" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px; box-sizing: border-box;">
                     </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Location</label>
-                        <select id="hosp-artist-location-${idx}">
+                    <div>
+                        <label style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Location</label>
+                        <select id="hosp-artist-location-${idx}" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px;">
                             <option value="DJ BOOTH">DJ BOOTH</option>
                             <option value="ARTIST ROOM / BACKSTAGE" ${idx === 2 ? 'selected' : ''}>ARTIST ROOM / BACKSTAGE</option>
                             <option value="DRESSING ROOM" ${idx === 3 ? 'selected' : ''}>DRESSING ROOM</option>
                             <option value="VIP AREA">VIP AREA</option>
                         </select>
                     </div>
-                    <button onclick="removeHospArtist(${idx})" style="background: #dc2626; color: #fff; border: none; border-radius: 4px; cursor: pointer; padding: 4px 10px; font-size: 14px; align-self: flex-end;">&times;</button>
+                    <button onclick="removeHospArtist(${idx})" style="background: #dc2626; color: #fff; border: none; border-radius: 6px; cursor: pointer; padding: 8px 12px; font-size: 14px; height: 38px;">&times;</button>
                 </div>
                 <div class="hosp-items-list" id="hosp-items-${idx}">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                         <thead>
-                            <tr style="background: #1a1a2e; color: #ccc;">
-                                <th style="padding: 6px; width: 50px;">Menge</th>
-                                <th style="padding: 6px;">Item</th>
-                                <th style="padding: 6px; width: 70px;">INHOUSE</th>
-                                <th style="padding: 6px; width: 70px;">ORDER / BUY</th>
-                                <th style="padding: 6px; width: 70px;">DELIVERED</th>
-                                <th style="padding: 6px; width: 50px;">NOTE</th>
-                                <th style="padding: 6px; width: 70px;">PREPARED</th>
-                                <th style="padding: 6px; width: 30px;"></th>
+                            <tr style="background: #0d1117; border-bottom: 2px solid #f59e0b;">
+                                <th style="padding: 8px 6px; width: 55px; color: #ccc; text-align: center; font-weight: 600;">Menge</th>
+                                <th style="padding: 8px 6px; color: #ccc; text-align: left; font-weight: 600;">Item</th>
+                                <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">INHOUSE</th>
+                                <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">ORDER</th>
+                                <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">DELIVERED</th>
+                                <th style="padding: 8px 4px; width: 50px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">NOTE</th>
+                                <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">PREPARED</th>
+                                <th style="padding: 8px 2px; width: 28px;"></th>
                             </tr>
                         </thead>
                         <tbody id="hosp-tbody-${idx}"></tbody>
                     </table>
-                    <button class="modal-btn" onclick="addHospItem(${idx})" style="background: #333; color: #fff; margin-top: 6px; font-size: 12px;">+ Item</button>
+                    <button class="modal-btn" onclick="addHospItem(${idx})" style="background: transparent; color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 6px; padding: 6px 14px; margin-top: 8px; cursor: pointer; font-size: 12px;">+ Item hinzuf\u00fcgen</button>
                 </div>
             `;
             container.appendChild(section);
