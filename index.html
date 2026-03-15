@@ -3241,10 +3241,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Event Name</label>
-                        <div style="position: relative;">
-                            <input type="text" id="fs-event-name" value="" oninput="updateFactsheetPreview(); showArtistSuggestions(this.value)" autocomplete="off" style="width: 100%; box-sizing: border-box;">
-                            <div id="artist-suggestions" style="display:none; position:absolute; top:100%; left:0; right:0; background:#1a1a1a; border:1px solid #333; border-top:none; z-index:1000; max-height:180px; overflow-y:auto;"></div>
-                        </div>
+                        <input type="text" id="fs-event-name" value="" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group">
                         <label>Datum</label>
@@ -8197,10 +8194,7 @@
                     return;
                 } catch(e) { console.log('Cache parse failed:', e); }
             }
-            showToast('❌ Auto-Load fehlgeschlagen. Bitte manuell herunterladen.', true);
-            if (confirm('Auto-Load nicht möglich (alle CORS-Proxies geblockt).\n\nKlicke OK um .ics herunterzuladen, dann mit 📁 hochladen.')) {
-                window.open(BMT_FEED_URL, '_blank');
-            }
+            showToast('❌ BMT: CORS geblockt – .ics manuell mit 📁 hochladen.', true);
         }
         
         // Refresh BMT Calendar - clear cache and reload
