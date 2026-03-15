@@ -3288,7 +3288,7 @@
                                 FREMD
                             </label>
                         </div>
-                        <div id="kassa-eigen-options" style="display: flex; gap: 16px; margin-top: 4px;">
+                        <div id="kassa-eigen-options" style="display: flex; gap: 16px; margin-top: 4px; flex-wrap: wrap; align-items: center;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-matthaeus" checked onchange="updateFactsheetPreview()">
                                 <span>Matthäus</span>
@@ -3300,6 +3300,10 @@
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
                                 <input type="checkbox" id="kassa-isa" checked onchange="updateFactsheetPreview()">
                                 <span>Isa</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff;">
+                                <input type="checkbox" id="kassa-manual-cb" onchange="updateFactsheetPreview()">
+                                <input type="text" id="kassa-manual-name" placeholder="Name..." oninput="if(this.value.trim()){document.getElementById('kassa-manual-cb').checked=true;} updateFactsheetPreview();" style="background:#1a1a1a; color:#fff; border:1px solid #444; padding:4px 8px; font-size:13px; width:100px;">
                             </label>
                         </div>
                         <div id="kassa-fremd-label" style="display: none; color: #888; font-size: 13px; margin-top: 4px;">→ Wird als <strong style="color:#fff">FREMD</strong> eingetragen</div>
@@ -5416,7 +5420,6 @@
         }
 
         function getKassa(name) {
-            // Radio toggle takes priority over name-detection
             const radioEigen = document.getElementById('kassa-radio-eigen');
             const isEigen = radioEigen ? radioEigen.checked : isEigenveranstaltung(name);
             if (!isEigen) return 'FREMD';
@@ -5424,6 +5427,9 @@
             if (document.getElementById('kassa-matthaeus')?.checked) selected.push('Matthäus');
             if (document.getElementById('kassa-schadi')?.checked) selected.push('Schadi');
             if (document.getElementById('kassa-isa')?.checked) selected.push('Isa');
+            const manualCb = document.getElementById('kassa-manual-cb');
+            const manualName = document.getElementById('kassa-manual-name')?.value.trim();
+            if (manualCb?.checked && manualName) selected.push(manualName);
             return selected.length > 0 ? selected.join(' / ') : '';
         }
         
