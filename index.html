@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.6</title>
+    <title>Turbo Projects Work Hub v15.9.7</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -6477,8 +6477,8 @@
                     e.technik = techData.techniker || e.technik;
                 }
                 
-                // v15.9.6: Use resetFactsheetDefaults — preserves manually entered times, only name/datum change
-                resetFactsheetDefaults(e);
+                // v15.9.7: Full reset on event switch — times always return to template defaults
+                fillFactsheetForm(e);
             }
         }
         
@@ -10460,7 +10460,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.6 - Recovery Build');
+            console.log('Work Hub v15.9.7');
             loadQuickNotes();
             loadNotepad();
             updateNotepadCounter();
