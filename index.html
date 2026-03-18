@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.8</title>
+    <title>Turbo Projects Work Hub v15.9.9</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5072,6 +5072,8 @@
             const countEl = document.getElementById('notes-count');
             const listEl = document.getElementById('office-notes-list');
             
+            if (!countEl || !listEl) return;
+            
             try {
                 const listId = await getOrCreateNotesList();
                 if (!listId) {
@@ -8144,13 +8146,13 @@
         let bmtEvents = [];
         let bmtSectionOpen = false;
         
-        // Auto-load BMT — v15.9.6: 4 proxies, 8s timeout, localStorage fallback, all dropdowns
+        // Auto-load BMT — v15.9.9: updated proxy list, better error handling
         async function autoLoadBMT() {
             showToast('⏳ Lade BMT Calendar...');
             const proxies = [
-                'https://api.allorigins.win/raw?url=',
                 'https://corsproxy.io/?',
-                'https://cors-anywhere.herokuapp.com/',
+                'https://api.allorigins.win/raw?url=',
+                'https://proxy.cors.sh/',
                 'https://thingproxy.freeboard.io/fetch/'
             ];
             for (const proxy of proxies) {
@@ -8196,11 +8198,12 @@
                     populateFactsheetDropdown();
                     populateHospEventDropdown();
                     const age = cachedDate ? Math.round((Date.now() - new Date(cachedDate)) / 3600000) + 'h' : '?';
-                    showToast('⚠️ CORS fehlgeschlagen – Cache geladen (' + age + ' alt)', true);
+                    showToast('⚠️ CORS fehlgeschlagen – Cache geladen (' + age + ' alt)');
                     return;
                 } catch(e) { console.log('Cache parse failed:', e); }
             }
-            showToast('❌ BMT: CORS geblockt – .ics manuell mit 📁 hochladen.', true);
+            // No cache either — now show the manual upload message
+            showToast('⚠️ BMT nicht erreichbar – bitte .ics manuell hochladen');
         }
         
         // Refresh BMT Calendar - clear cache and reload
@@ -8753,6 +8756,8 @@
                     calcEventProj(idx);
                 }
             });
+            // v15.9.9: update days-until labels after BMT render
+            updateUpcomingEvents();
         }
         
         // Open factsheet for a specific event by index
@@ -10466,7 +10471,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.8');
+            console.log('Work Hub v15.9.9');
             loadQuickNotes();
             loadNotepad();
             updateNotepadCounter();
@@ -10499,7 +10504,6 @@ Spittelauer Lnde 12/1
             updateKassaUI();
             
             initMonthFilter();
-            updateUpcomingEvents();
             // Initialize NYE tools when modals open
             document.getElementById('nye-projector-modal').addEventListener('transitionend', calculateNYE);
             document.getElementById('peak-grid-modal').addEventListener('transitionend', renderPeakGrid);
