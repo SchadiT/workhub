@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.7</title>
+    <title>Turbo Projects Work Hub v15.9.8</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3217,7 +3217,7 @@
                     </div>
                     <div class="form-group">
                         <label>Event Typ</label>
-                        <select id="fs-template" onchange="updateFactsheetPreview()">
+                        <select id="fs-template" onchange="onTemplateChange()">
                             <option value="CLUB">Club Night</option>
                             <option value="CONCERT">Concert (Early Doors)</option>
                         </select>
@@ -3228,11 +3228,11 @@
                         <label>Main Floor ffnung</label>
                         <div style="display: flex; gap: 15px; margin-top: 8px;">
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
-                                <input type="radio" name="main-floor-time" value="00:00" checked onchange="updateFactsheetPreview()"> 
+                                <input type="radio" name="main-floor-time" value="00:00" checked onchange="onMainFloorRadioChange()"> 
                                 <span>00:00</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #fff;">
-                                <input type="radio" name="main-floor-time" value="00:30" onchange="updateFactsheetPreview()"> 
+                                <input type="radio" name="main-floor-time" value="00:30" onchange="onMainFloorRadioChange()"> 
                                 <span>00:30</span>
                             </label>
                         </div>
@@ -4701,6 +4701,7 @@
         
         const TEMPLATES = {
             MAIN_00: {
+                kassaTime: "22:30", cvd: "20:30",
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:00", main1: "22:30", main2: "22:30", main3: "23:00", main4: "23:45",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
@@ -4708,6 +4709,7 @@
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             MAIN_30: {
+                kassaTime: "22:30", cvd: "20:30",
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:30", main4: "00:15",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
@@ -4715,10 +4717,12 @@
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             CONCERT: {
+                kassaTime: "19:00", cvd: "14:00",
                 doors1: "19:00", terrasse: "18:30", doors2_early: "19:00", kitchen: "18:30",
-                doors2_late: "19:00", main1: "19:00", main2: "19:00", main3: "19:00", main4: "19:00",
-                runner1: "17:00", runner2: "17:00", runner3: "17:00", runner4: "18:00", runner5: "20:00", runner6: "20:00",
-                gard1: "18:45", gard2: "19:15", gard3: "20:00", technik: "16:00",
+                doors2_late: "19:00",
+                main1: "17:30", main2: "17:30", main3: "18:30", main4: "18:45",
+                runner1: "15:00", runner2: "16:00", runner3: "17:00", runner4: "18:00", runner5: "19:00", runner6: "19:00",
+                gard1: "18:45", gard2: "19:00", gard3: "19:15", technik: "14:00",
                 security: [{ time: "18:45", pax: "1 PAX" }, { time: "19:00", pax: "2 PAX" }, { time: "19:30", pax: "1 PAX" }, { time: "19:45", pax: "1 PAX" }, { time: "20:30", pax: "1 PAX (Abruf)" }]
             }
         };
@@ -4762,6 +4766,40 @@
                 if (box) box.style.display = 'none';
             }
         });
+
+        // v15.9.8: Hard reset ALL time inputs to template values
+        function resetAllTimesToTemplate(t) {
+            ['cvd','technik','terrasse','kitchen','main1','main2','main3','main4',
+             'runner1','runner2','runner3','runner4','runner5','runner6',
+             'gard1','gard2','gard3'].forEach(function(k) {
+                const el = document.getElementById('fs-' + k + '-time');
+                if (el && t[k] !== undefined) el.value = t[k];
+            });
+        }
+
+        // v15.9.8: Radio 00:00 / 00:30 onChange — full reset
+        function onMainFloorRadioChange() {
+            const val = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
+            resetAllTimesToTemplate(TEMPLATES[val === '00:30' ? 'MAIN_30' : 'MAIN_00']);
+            updateFactsheetPreview();
+        }
+
+        // v15.9.8: Template select onChange — full reset
+        function onTemplateChange() {
+            const type = document.getElementById('fs-template').value;
+            const row = document.getElementById('main-floor-row');
+            if (type === 'CONCERT') {
+                if (row) row.style.display = 'none';
+                const r = document.getElementById('kassa-radio-fremd');
+                if (r) { r.checked = true; updateKassaUI(); }
+                resetAllTimesToTemplate(TEMPLATES['CONCERT']);
+            } else {
+                if (row) row.style.display = 'flex';
+                const val = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
+                resetAllTimesToTemplate(TEMPLATES[val === '00:30' ? 'MAIN_30' : 'MAIN_00']);
+            }
+            updateFactsheetPreview();
+        }
         
         // 
         // MSAL AUTH
@@ -5448,31 +5486,6 @@
             
             const t = TEMPLATES[template];
             
-            // Auto-update bar times based on template when switching
-            const main1Input = document.getElementById('fs-main1-time');
-            const main2Input = document.getElementById('fs-main2-time');
-            const main3Input = document.getElementById('fs-main3-time');
-            const main4Input = document.getElementById('fs-main4-time');
-            
-            // Only auto-update if current value matches a template default
-            const templateMain1Values = ['22:30', '23:00', '19:00'];
-            const templateMain2Values = ['22:30', '23:00', '19:00'];
-            const templateMain3Values = ['23:00', '23:30', '19:00'];
-            const templateMain4Values = ['23:45', '00:15', '19:00'];
-            
-            if (main1Input && templateMain1Values.includes(main1Input.value)) {
-                main1Input.value = t.main1;
-            }
-            if (main2Input && templateMain2Values.includes(main2Input.value)) {
-                main2Input.value = t.main2;
-            }
-            if (main3Input && templateMain3Values.includes(main3Input.value)) {
-                main3Input.value = t.main3;
-            }
-            if (main4Input && templateMain4Values.includes(main4Input.value)) {
-                main4Input.value = t.main4;
-            }
-            
             // v15.9.6: kassa-row always visible (radio toggle handles EIGEN/FREMD)
             // Auto-set radio based on event name if not manually overridden
             const kassaEigenRadio = document.getElementById('kassa-radio-eigen');
@@ -5505,7 +5518,7 @@
             const gard3 = document.getElementById('fs-gard3').value || '';
             
             // Individual times (read from inputs, fallback to template)
-            const cvdTime = document.getElementById('fs-cvd-time')?.value || '20:30';
+            const cvdTime = document.getElementById('fs-cvd-time')?.value || t.cvd;
             const technikTime = document.getElementById('fs-technik-time')?.value || t.technik;
             const terrasseTime = document.getElementById('fs-terrasse-time')?.value || t.terrasse;
             const kitchenTime = document.getElementById('fs-kitchen-time')?.value || t.kitchen;
@@ -5518,7 +5531,7 @@
             const runner3Time = document.getElementById('fs-runner3-time')?.value || t.runner3;
             const runner4Time = document.getElementById('fs-runner4-time')?.value || t.runner4;
             const runner5Time = document.getElementById('fs-runner5-time')?.value || t.runner5;
-            const runner6Time = document.getElementById('fs-runner6-time')?.value || t.runner5;
+            const runner6Time = document.getElementById('fs-runner6-time')?.value || t.runner6;
             const gard1Time = document.getElementById('fs-gard1-time')?.value || t.gard1;
             const gard2Time = document.getElementById('fs-gard2-time')?.value || t.gard2;
             const gard3Time = document.getElementById('fs-gard3-time')?.value || t.gard3;
@@ -5532,7 +5545,7 @@
                 <table>
                     <tr><td><strong>PAX:</strong></td><td></td><td></td></tr>
                     <tr><td><strong>CVD:</strong></td><td>${cvdTime}</td><td>${cvd}</td></tr>
-                    <tr><td><strong>KASSA:</strong></td><td>22:30</td><td>${kassa}</td></tr>
+                    <tr><td><strong>KASSA:</strong></td><td>${t.kassaTime}</td><td>${kassa}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     <tr><td><strong>DOORS 1:</strong></td><td>${t.doors1}</td><td></td></tr>
                     <tr><td>TERRASSE 1</td><td>${terrasseTime}</td><td>${terrasse}</td></tr>
@@ -5549,8 +5562,8 @@
                     <tr><td>RUNNER 2:</td><td>${runner2Time}</td><td>${runner2}</td></tr>
                     <tr><td>RUNNER 3:</td><td>${runner3Time}</td><td>${runner3}</td></tr>
                     <tr><td>RUNNER 4:</td><td>${runner4Time}</td><td>${runner4}</td></tr>
-                    <tr><td>RUNNER 5:</td><td>${runner5Time}</td><td>${runner5}</td></tr>
-                    <tr><td>RUNNER 6:</td><td>${runner6Time}</td><td>${runner6}</td></tr>
+                    ${runner5Time ? `<tr><td>RUNNER 5:</td><td>${runner5Time}</td><td>${runner5}</td></tr>` : ''}
+                    ${runner6Time ? `<tr><td>RUNNER 6:</td><td>${runner6Time}</td><td>${runner6}</td></tr>` : ''}
                     <tr><td colspan="3"></td></tr>
                     <tr><td>GARDEROBE 1</td><td>${gard1Time}</td><td>${gard1}</td></tr>
                     <tr><td>GARDEROBE 2</td><td>${gard2Time}</td><td>${gard2}</td></tr>
@@ -6538,7 +6551,11 @@
             
             const mainFloorRadio = document.querySelector(`input[name="main-floor-time"][value="${e.mainFloorTime || '00:00'}"]`);
             if (mainFloorRadio) mainFloorRadio.checked = true;
-            
+
+            // v15.9.8: Hard reset all times to template first
+            const templateKey = template === 'CONCERT' ? 'CONCERT' : ((e.mainFloorTime || '00:00') === '00:30' ? 'MAIN_30' : 'MAIN_00');
+            resetAllTimesToTemplate(TEMPLATES[templateKey]);
+
             document.getElementById('fs-technik').value = e.technik || '';
             document.getElementById('fs-cvd').value = e.cvd || '';
             
@@ -7280,11 +7297,6 @@
             if (localStorage.getItem('workhub-notes-task-created') === 'true') {
                 localStorage.removeItem('workhub-notes-task-created');
                 document.getElementById('quick-notes-text').value = '';
-                return;
-            }
-            
-            if (!accessToken) {
-                loadQuickNotes();
                 return;
             }
             
@@ -8055,12 +8067,6 @@
             if (!subject || !body) {
                 status.textContent = 'Bitte mindestens Betreff und Nachricht ausfuellen';
                 status.style.color = '#f59e0b';
-                return;
-            }
-            
-            if (!accessToken) {
-                status.textContent = 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Bitte zuerst mit Microsoft anmelden';
-                status.style.color = '#ef4444';
                 return;
             }
             
@@ -10460,7 +10466,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.7');
+            console.log('Work Hub v15.9.8');
             loadQuickNotes();
             loadNotepad();
             updateNotepadCounter();
