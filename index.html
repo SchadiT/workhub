@@ -3373,7 +3373,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner1-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner1-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 2</label>
@@ -3381,7 +3381,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner2-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner2-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 3</label>
@@ -3389,7 +3389,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner3-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner3-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
@@ -3399,7 +3399,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner4-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner4-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 5</label>
@@ -3407,7 +3407,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner5-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner5-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>RUNNER 6</label>
@@ -3415,7 +3415,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-runner6-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-runner6-time" value="" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -4211,7 +4211,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version">Work Hub v15.8.8 - 20.01.2026 - Shiftplan Countdown Fix</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.10</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5477,7 +5477,8 @@
             
             // Determine template based on event type and main floor time
             let template;
-            if (eventType === 'CONCERT') {
+            const isConcert = eventType === 'CONCERT';
+            if (isConcert) {
                 template = 'CONCERT';
                 document.getElementById('main-floor-row').style.display = 'none';
             } else {
@@ -5549,10 +5550,10 @@
                     <tr><td><strong>CVD:</strong></td><td>${cvdTime}</td><td>${cvd}</td></tr>
                     <tr><td><strong>KASSA:</strong></td><td>${t.kassaTime}</td><td>${kassa}</td></tr>
                     <tr><td colspan="3"></td></tr>
-                    <tr><td><strong>DOORS 1:</strong></td><td>${t.doors1}</td><td></td></tr>
-                    <tr><td>TERRASSE 1</td><td>${terrasseTime}</td><td>${terrasse}</td></tr>
-                    <tr><td><strong>DOORS 2:</strong></td><td>${t.doors2_early}</td><td></td></tr>
-                    <tr><td>KITCHEN:</td><td>${kitchenTime}</td><td>${kitchen}</td></tr>
+                    <tr><td><strong>DOORS 1:</strong></td><td>${isConcert ? '' : t.doors1}</td><td></td></tr>
+                    <tr><td>TERRASSE 1</td><td>${isConcert ? '' : terrasseTime}</td><td>${terrasse}</td></tr>
+                    <tr><td><strong>DOORS 2:</strong></td><td>${isConcert ? '' : t.doors2_early}</td><td></td></tr>
+                    <tr><td>KITCHEN:</td><td>${isConcert ? '' : kitchenTime}</td><td>${kitchen}</td></tr>
                     <tr><td colspan="3"></td></tr>
                     <tr><td><strong>DOORS 2:</strong></td><td>${t.doors2_late}</td><td></td></tr>
                     <tr><td>MAIN 1:</td><td>${main1Time}</td><td>${main1}</td></tr>
@@ -10474,7 +10475,10 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.10');
+            const HUB_VERSION = 'v15.9.10';
+            console.log('Work Hub ' + HUB_VERSION);
+            const versionFooter = document.getElementById('hub-version-footer');
+            if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
             loadQuickNotes();
             loadNotepad();
             updateNotepadCounter();
@@ -10505,6 +10509,7 @@ Spittelauer Lnde 12/1
             
             // v15.9.6: Init Kassa UI
             updateKassaUI();
+            onTemplateChange(); // v15.9.10: ensure template reset on load
             
             initMonthFilter();
             // Initialize NYE tools when modals open
