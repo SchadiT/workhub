@@ -6580,12 +6580,16 @@
             document.getElementById('fs-runner4').value = e.runner4 || '';
             document.getElementById('fs-runner5').value = e.runner5 || '';
             document.getElementById('fs-runner6').value = e.runner6 || '';
-            if (e.runner1_time) document.getElementById('fs-runner1-time').value = e.runner1_time;
-            if (e.runner2_time) document.getElementById('fs-runner2-time').value = e.runner2_time;
-            if (e.runner3_time) document.getElementById('fs-runner3-time').value = e.runner3_time;
-            if (e.runner4_time) document.getElementById('fs-runner4-time').value = e.runner4_time;
-            if (e.runner5_time) document.getElementById('fs-runner5-time').value = e.runner5_time;
-            if (e.runner6_time) document.getElementById('fs-runner6-time').value = e.runner6_time;
+            // v15.9.10: Only apply event-specific runner times for non-concert templates
+            // Concert times come from template only
+            if (templateKey !== 'CONCERT') {
+                if (e.runner1_time) document.getElementById('fs-runner1-time').value = e.runner1_time;
+                if (e.runner2_time) document.getElementById('fs-runner2-time').value = e.runner2_time;
+                if (e.runner3_time) document.getElementById('fs-runner3-time').value = e.runner3_time;
+                if (e.runner4_time) document.getElementById('fs-runner4-time').value = e.runner4_time;
+                if (e.runner5_time) document.getElementById('fs-runner5-time').value = e.runner5_time;
+                if (e.runner6_time) document.getElementById('fs-runner6-time').value = e.runner6_time;
+            }
             document.getElementById('fs-gard1').value = e.gard1 || 'Sofia';
             document.getElementById('fs-gard2').value = e.gard2 || 'Fayez';
             document.getElementById('fs-gard3').value = e.gard3 || 'Nico';
