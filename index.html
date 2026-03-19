@@ -6543,18 +6543,22 @@
             // Extract DD.MM.YYYY
             const extractDate = (str) => {
                 if (!str) return null;
-                const match = str.match(/(\d{2})\.(\d{2})\.(\d{4})/);
-                return match ? match[0] : null;
+                const match = str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+                if (!match) return null;
+                // Ensure leading zeros: DD.MM.YYYY
+                return match[1].padStart(2,'0') + '.' + match[2].padStart(2,'0') + '.' + match[3];
             };
             const dateStr = extractDate(e.datum);
+            console.log('Factsheet lookup dateStr:', dateStr, '| e.datum:', e.datum);
+            console.log('SHIFTPLAN keys:', Object.keys(SHIFTPLAN_DATABASE).slice(0,5));
             const shiftData = dateStr ? SHIFTPLAN_DATABASE[dateStr] : null;
             const barData   = dateStr ? BAR_DATABASE[dateStr] : null;
             const techData  = dateStr ? TECHNIKER_DATABASE[dateStr] : null;
 
             // Collect NAMES only (no times) from shiftplan sources
             const names = {
-                cvd:     shiftData?.cvd || e.cvd || '',
-                technik: techData?.techniker || e.technik || '',
+                cvd:      shiftData?.cvd || e.cvd || '',
+                technik:  techData?.techniker || e.technik || '',
                 terrasse: barData?.terrasse || e.terrasse || '',
                 kitchen:  barData?.kitchen  || e.kitchen  || '',
                 main1: barData?.main1 || e.main1 || '',
@@ -10946,7 +10950,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.16';
+            const HUB_VERSION = 'v15.9.17';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
