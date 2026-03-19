@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.9</title>
+    <title>Turbo Projects Work Hub v15.9.10</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5622,16 +5622,19 @@
                 }
                 
                 // If direct failed, try CORS proxies
+                // v15.9.10: updated proxy list — gcal-specific proxy first
                 if (!icsText) {
                     const proxies = [
+                        'https://gcal-cors-proxy.vercel.app?url=',
                         'https://api.allorigins.win/raw?url=',
-                        'https://corsproxy.io/?'
+                        'https://corsproxy.io/?url=',
+                        'https://api.codetabs.com/v1/proxy?quest='
                     ];
                     
                     for (const proxy of proxies) {
                         try {
                             const proxyUrl = proxy + encodeURIComponent(TECHNIKER_ICS_URL);
-                            console.log('Trying proxy:', proxy.substring(8, 28));
+                            console.log('Trying proxy:', proxy.substring(8, 32));
                             
                             const response = await fetch(proxyUrl, { 
                                 signal: AbortSignal.timeout(8000)
@@ -8146,13 +8149,13 @@
         let bmtEvents = [];
         let bmtSectionOpen = false;
         
-        // Auto-load BMT — v15.9.9: updated proxy list, better error handling
+        // Auto-load BMT — v15.9.10: updated proxy list, corrected URL formats
         async function autoLoadBMT() {
             showToast('⏳ Lade BMT Calendar...');
             const proxies = [
-                'https://corsproxy.io/?',
                 'https://api.allorigins.win/raw?url=',
-                'https://proxy.cors.sh/',
+                'https://corsproxy.io/?url=',
+                'https://api.codetabs.com/v1/proxy?quest=',
                 'https://thingproxy.freeboard.io/fetch/'
             ];
             for (const proxy of proxies) {
@@ -10471,7 +10474,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Work Hub v15.9.9');
+            console.log('Work Hub v15.9.10');
             loadQuickNotes();
             loadNotepad();
             updateNotepadCounter();
