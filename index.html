@@ -10910,143 +10910,128 @@ Spittelauer Lnde 12/1
         // Helper: Build Factsheet table rows for both PDF and DOCX
         function buildFactsheetRows() {
             const rows = [];
-            
+
+            // Determine current template
+            const eventType = document.getElementById('fs-template')?.value || 'CLUB';
+            const isConcert = eventType === 'CONCERT';
+            const mainFloorVal = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
+            const templateKey = isConcert ? 'CONCERT' : (mainFloorVal === '00:30' ? 'MAIN_30' : 'MAIN_00');
+            const t = TEMPLATES[templateKey];
+
             // CVD - time in RED
             rows.push({
                 pos: 'CVD:',
-                zeit: document.getElementById('fs-cvd-time')?.value || '20:30',
+                zeit: document.getElementById('fs-cvd-time')?.value || t.cvd,
                 name: document.getElementById('fs-cvd')?.value || '',
                 zeitRed: true
             });
-            
-            // KASSA
+
+            // KASSA — time from template, name from getKassa()
+            const eventName = document.getElementById('fs-event-name')?.value || '';
             rows.push({
                 pos: 'KASSA:',
-                zeit: document.getElementById('fs-kassa-time')?.value || '22:30',
-                name: document.getElementById('fs-kassa')?.value || ''
+                zeit: t.kassaTime,
+                name: getKassa(eventName)
             });
-            
+
             // Empty gray separator
             rows.push({ pos: '', zeit: '', name: '', isHeader: true });
-            
-            // T. DOORS 1 - time in RED
-            rows.push({
-                pos: 'T. DOORS 1:',
-                zeit: '23:00',
-                name: '',
-                zeitRed: true
-            });
-            
+
+            // T. DOORS 1 — empty for concerts, time in RED for club nights
+            if (isConcert) {
+                rows.push({ pos: 'T. DOORS 1:', zeit: '', name: '', zeitRed: false });
+            } else {
+                rows.push({ pos: 'T. DOORS 1:', zeit: t.doors1, name: '', zeitRed: true });
+            }
+
             // TERRASSE 1
             rows.push({
                 pos: 'TERRASSE 1',
-                zeit: document.getElementById('fs-terrasse-time')?.value || '22:00',
+                zeit: isConcert ? '' : (document.getElementById('fs-terrasse-time')?.value || t.terrasse),
                 name: document.getElementById('fs-terrasse')?.value || ''
             });
-            
-            // K. DOORS 2 - time in RED
-            rows.push({
-                pos: 'K. DOORS 2:',
-                zeit: '23:00',
-                name: '',
-                zeitRed: true
-            });
-            
+
+            // K. DOORS 2 — empty for concerts, time in RED for club nights
+            if (isConcert) {
+                rows.push({ pos: 'K. DOORS 2:', zeit: '', name: '', zeitRed: false });
+            } else {
+                rows.push({ pos: 'K. DOORS 2:', zeit: t.doors2_early, name: '', zeitRed: true });
+            }
+
             // KITCHEN
             rows.push({
                 pos: 'KITCHEN',
-                zeit: document.getElementById('fs-kitchen-time')?.value || '22:00',
+                zeit: isConcert ? '' : (document.getElementById('fs-kitchen-time')?.value || t.kitchen),
                 name: document.getElementById('fs-kitchen')?.value || ''
             });
-            
+
             // Empty row
             rows.push({ pos: '', zeit: '', name: '' });
-            
-            // MAIN DOORS 2 - time in RED
+
+            // MAIN DOORS 2 - time in RED, from template
             rows.push({
                 pos: 'MAIN DOORS 2:',
-                zeit: '00:00',
+                zeit: t.doors2_late,
                 name: '',
                 zeitRed: true
             });
-            
+
             // MAIN 1-4
-            rows.push({
-                pos: 'MAIN 1:',
-                zeit: document.getElementById('fs-main1-time')?.value || '22:30',
-                name: document.getElementById('fs-main1')?.value || ''
-            });
-            rows.push({
-                pos: 'MAIN 2:',
-                zeit: document.getElementById('fs-main2-time')?.value || '22:30',
-                name: document.getElementById('fs-main2')?.value || ''
-            });
-            rows.push({
-                pos: 'MAIN 3:',
-                zeit: document.getElementById('fs-main3-time')?.value || '23:00',
-                name: document.getElementById('fs-main3')?.value || ''
-            });
-            rows.push({
-                pos: 'MAIN 4:',
-                zeit: document.getElementById('fs-main4-time')?.value || '23:45',
-                name: document.getElementById('fs-main4')?.value || ''
-            });
-            
+            rows.push({ pos: 'MAIN 1:', zeit: document.getElementById('fs-main1-time')?.value || t.main1, name: document.getElementById('fs-main1')?.value || '' });
+            rows.push({ pos: 'MAIN 2:', zeit: document.getElementById('fs-main2-time')?.value || t.main2, name: document.getElementById('fs-main2')?.value || '' });
+            rows.push({ pos: 'MAIN 3:', zeit: document.getElementById('fs-main3-time')?.value || t.main3, name: document.getElementById('fs-main3')?.value || '' });
+            rows.push({ pos: 'MAIN 4:', zeit: document.getElementById('fs-main4-time')?.value || t.main4, name: document.getElementById('fs-main4')?.value || '' });
+
             // Empty row
             rows.push({ pos: '', zeit: '', name: '' });
-            
+
             // RUNNER section header
             rows.push({ pos: 'RUNNER', zeit: '', name: '', isHeader: true, isBold: true });
-            
-            // RUNNER 1-6 (always show all 6 rows)
-            const runnerTimes = ['21:00', '21:00', '21:00', '22:00', '00:30', ''];
+
+            // RUNNER 1-6 — from inputs (already set by resetAllTimesToTemplate)
+            const defaultRunnerTimes = [t.runner1, t.runner2, t.runner3, t.runner4, t.runner5, t.runner6];
             for (let i = 1; i <= 6; i++) {
                 const name = document.getElementById('fs-runner' + i)?.value || '';
-                const time = document.getElementById('fs-runner' + i + '-time')?.value || runnerTimes[i-1];
-                // If runner 6 has no name, show empty row
-                if (i === 6 && !name) {
-                    rows.push({ pos: 'RUNNER 6:', zeit: '', name: '' });
-                } else {
-                    rows.push({ pos: 'RUNNER ' + i + ':', zeit: time, name: name });
-                }
+                const time = document.getElementById('fs-runner' + i + '-time')?.value || defaultRunnerTimes[i-1];
+                if (i >= 5 && !time && !name) continue; // skip empty runner 5/6
+                rows.push({ pos: 'RUNNER ' + i + ':', zeit: time, name: name });
             }
-            
+
             // GARDEROBE section header
             rows.push({ pos: 'GARDEROBE', zeit: '', name: '', isHeader: true, isBold: true });
-            
+
             // GARDEROBE 1-3
-            const gardTimes = ['22:45', '23:15', '00:00'];
             for (let i = 1; i <= 3; i++) {
+                const gardKey = 'gard' + i;
                 rows.push({
                     pos: 'GARDEROBE ' + i,
-                    zeit: document.getElementById('fs-gard' + i + '-time')?.value || gardTimes[i-1],
+                    zeit: document.getElementById('fs-gard' + i + '-time')?.value || t[gardKey],
                     name: document.getElementById('fs-gard' + i)?.value || ''
                 });
             }
-            
+
             // Empty row
             rows.push({ pos: '', zeit: '', name: '' });
-            
+
             // TECHNIK section header
             rows.push({ pos: 'TECHNIK', zeit: '', name: '', isHeader: true, isBold: true });
-            
+
             // TECH
             rows.push({
                 pos: 'TECH:',
-                zeit: document.getElementById('fs-technik-time')?.value || '21:00',
+                zeit: document.getElementById('fs-technik-time')?.value || t.technik,
                 name: document.getElementById('fs-technik')?.value || ''
             });
-            
+
             // SECURITY section header
             rows.push({ pos: 'SECURITY', zeit: '', name: '', isHeader: true, isBold: true });
-            
-            // Security rows - 00:00 in RED
-            rows.push({ pos: '', zeit: '22:45', name: '1 PAX' });
-            rows.push({ pos: '', zeit: '23:00', name: '3 PAX' });
-            rows.push({ pos: '', zeit: '23:30', name: '1 PAX' });
-            rows.push({ pos: '', zeit: '00:00', name: '3 PAX', zeitRed: true });
-            rows.push({ pos: '', zeit: '01:00', name: '1 PAX (Abruf)' });
-            
+
+            // Security rows — from template
+            t.security.forEach((s, idx) => {
+                const isRedTime = isConcert ? false : (s.time === '00:00' || s.time === '00:30');
+                rows.push({ pos: '', zeit: s.time, name: s.pax, zeitRed: isRedTime });
+            });
+
             return rows;
         }
         
@@ -11094,7 +11079,7 @@ Spittelauer Lnde 12/1
                 </head>
                 <body>
                     <div class="event-line">EVENT: <span class="event-name">${eventName}</span></div>
-                    <div class="datum-line">Datum: ${weekday}, <span class="datum-value">${datum}</span></div>
+                    <div class="datum-line">Datum: ${weekday ? weekday + ', ' : ''}<span class="datum-value">${datum}</span></div>
                     <div class="aufstellung">AUFSTELLUNG:</div>
                     <table>${tableHtml}</table>
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -11141,7 +11126,7 @@ Spittelauer Lnde 12/1
 <o:DocumentProperties><o:Author>Schadi Tayyah</o:Author></o:DocumentProperties>
 <w:body>
     <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:sz w:val="28"/></w:rPr><w:t>EVENT: </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:color w:val="FF0000"/><w:sz w:val="28"/></w:rPr><w:t>${eventName}</w:t></w:r></w:p>
-    <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/></w:rPr><w:t>Datum: ${weekday}, </w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:color w:val="FF0000"/></w:rPr><w:t>${datum}</w:t></w:r></w:p>
+    <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/></w:rPr><w:t>Datum: ${weekday ? weekday + ', ' : ''}</w:t></w:r><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:color w:val="FF0000"/></w:rPr><w:t>${datum}</w:t></w:r></w:p>
     <w:p><w:r><w:rPr><w:rFonts w:ascii="Abadi" w:h-ansi="Abadi"/><w:b/><w:color w:val="153D63"/></w:rPr><w:t>AUFSTELLUNG:</w:t></w:r></w:p>
     <w:tbl>
         <w:tblPr>
