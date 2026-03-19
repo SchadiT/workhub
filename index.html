@@ -3245,7 +3245,7 @@
                     </div>
                     <div class="form-group">
                         <label>Datum</label>
-                        <input type="text" id="fs-datum" value="" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-datum" value="" oninput="onTemplateChange(); updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -4777,28 +4777,20 @@
             });
         }
 
-        // v15.9.8: Radio 00:00 / 00:30 onChange — full reset
+        // v15.9.11: Radio 00:00 / 00:30 onChange — reset times to new template
         function onMainFloorRadioChange() {
-            const val = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
-            resetAllTimesToTemplate(TEMPLATES[val === '00:30' ? 'MAIN_30' : 'MAIN_00']);
-            updateFactsheetPreview();
+            const name  = document.getElementById('fs-event-name')?.value || '';
+            const datum = document.getElementById('fs-datum')?.value || '';
+            const eventType = document.getElementById('fs-template')?.value === 'CONCERT' ? 'CONCERT' : 'CLUB';
+            applyFactsheet(name, datum, eventType, null);
         }
 
-        // v15.9.8: Template select onChange — full reset
+        // v15.9.11: Template select onChange — reset all times
         function onTemplateChange() {
-            const type = document.getElementById('fs-template').value;
-            const row = document.getElementById('main-floor-row');
-            if (type === 'CONCERT') {
-                if (row) row.style.display = 'none';
-                const r = document.getElementById('kassa-radio-fremd');
-                if (r) { r.checked = true; updateKassaUI(); }
-                resetAllTimesToTemplate(TEMPLATES['CONCERT']);
-            } else {
-                if (row) row.style.display = 'flex';
-                const val = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
-                resetAllTimesToTemplate(TEMPLATES[val === '00:30' ? 'MAIN_30' : 'MAIN_00']);
-            }
-            updateFactsheetPreview();
+            const name  = document.getElementById('fs-event-name')?.value || '';
+            const datum = document.getElementById('fs-datum')?.value || '';
+            const eventType = document.getElementById('fs-template')?.value;
+            applyFactsheet(name, datum, eventType, null);
         }
         
         // 
@@ -6447,58 +6439,110 @@
             if (!eventId) return;
             
             const e = EVENT_STAFF_DATA[eventId];
-            if (e) {
-                // Extract DD.MM.YYYY from various formats like "Samstag, 27.12.2025" or "27.12.2025"
-                const extractDate = (str) => {
-                    if (!str) return null;
-                    const match = str.match(/(\d{2})\.(\d{2})\.(\d{4})/);
-                    return match ? match[0] : null;
-                };
-                
-                const dateStr = extractDate(e.datum);
-                console.log('Factsheet lookup date:', dateStr, 'from:', e.datum);
-                
-                const shiftData = dateStr ? SHIFTPLAN_DATABASE[dateStr] : null;
-                const barData = dateStr ? BAR_DATABASE[dateStr] : null;
-                const techData = dateStr ? TECHNIKER_DATABASE[dateStr] : null;
-                
-                console.log('Found data - Runner:', !!shiftData, 'Bar:', !!barData, 'Tech:', !!techData);
-                
-                if (shiftData) {
-                    // Merge Runner/CVD data from Runner sheet
-                    e.cvd = shiftData.cvd || e.cvd;
-                    e.runner1 = shiftData.runner1 || e.runner1;
-                    e.runner2 = shiftData.runner2 || e.runner2;
-                    e.runner3 = shiftData.runner3 || e.runner3;
-                    e.runner4 = shiftData.runner4 || e.runner4;
-                    e.runner5 = shiftData.runner5 || e.runner5;
-                    e.runner6 = shiftData.runner6 || e.runner6;
-                    e.runner1_time = shiftData.runner1_time || '';
-                    e.runner2_time = shiftData.runner2_time || '';
-                    e.runner3_time = shiftData.runner3_time || '';
-                    e.runner4_time = shiftData.runner4_time || '';
-                    e.runner5_time = shiftData.runner5_time || '';
-                    e.runner6_time = shiftData.runner6_time || '';
-                }
-                
-                if (barData) {
-                    // Merge Bar data from Bar sheet
-                    e.terrasse = barData.terrasse || e.terrasse;
-                    e.kitchen = barData.kitchen || e.kitchen;
-                    e.main1 = barData.main1 || e.main1;
-                    e.main2 = barData.main2 || e.main2;
-                    e.main3 = barData.main3 || e.main3;
-                    e.main4 = barData.main4 || e.main4;
-                }
-                
-                if (techData) {
-                    // Merge Techniker data from Google Calendar
-                    e.technik = techData.techniker || e.technik;
-                }
-                
-                // v15.9.7: Full reset on event switch — times always return to template defaults
-                fillFactsheetForm(e);
+            if (!e) return;
+
+            // Extract DD.MM.YYYY
+            const extractDate = (str) => {
+                if (!str) return null;
+                const match = str.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+                return match ? match[0] : null;
+            };
+            const dateStr = extractDate(e.datum);
+            const shiftData = dateStr ? SHIFTPLAN_DATABASE[dateStr] : null;
+            const barData   = dateStr ? BAR_DATABASE[dateStr] : null;
+            const techData  = dateStr ? TECHNIKER_DATABASE[dateStr] : null;
+
+            // Collect NAMES only (no times) from shiftplan sources
+            const names = {
+                cvd:     techData?.techniker || shiftData?.cvd || e.cvd || '',
+                technik: techData?.techniker || e.technik || '',
+                terrasse: barData?.terrasse || e.terrasse || '',
+                kitchen:  barData?.kitchen  || e.kitchen  || '',
+                main1: barData?.main1 || e.main1 || '',
+                main2: barData?.main2 || e.main2 || '',
+                main3: barData?.main3 || e.main3 || '',
+                main4: barData?.main4 || e.main4 || '',
+                runner1: shiftData?.runner1 || e.runner1 || '',
+                runner2: shiftData?.runner2 || e.runner2 || '',
+                runner3: shiftData?.runner3 || e.runner3 || '',
+                runner4: shiftData?.runner4 || e.runner4 || '',
+                runner5: shiftData?.runner5 || e.runner5 || '',
+                runner6: shiftData?.runner6 || e.runner6 || '',
+                gard1: e.gard1 || 'Sofia',
+                gard2: e.gard2 || 'Fayez',
+                gard3: e.gard3 || 'Nico'
+            };
+
+            applyFactsheet(e.name, e.datum, e.eventType, names);
+        }
+
+        // v15.9.11: Single clean function — template times always win, names from shiftplan
+        function applyFactsheet(name, datum, eventType, names) {
+            // 1. Set name + datum
+            document.getElementById('fs-event-name').value = name || '';
+            document.getElementById('fs-datum').value = datum || '';
+
+            // 2. Determine template key
+            const isConcert = eventType === 'CONCERT';
+            const mainFloorRow = document.getElementById('main-floor-row');
+            if (isConcert) {
+                document.getElementById('fs-template').value = 'CONCERT';
+                if (mainFloorRow) mainFloorRow.style.display = 'none';
+            } else {
+                document.getElementById('fs-template').value = 'CLUB';
+                if (mainFloorRow) mainFloorRow.style.display = 'flex';
             }
+            const mainFloorVal = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
+            const templateKey = isConcert ? 'CONCERT' : (mainFloorVal === '00:30' ? 'MAIN_30' : 'MAIN_00');
+            const t = TEMPLATES[templateKey];
+
+            // 3. Set ALL times from template — no exceptions
+            const timeFields = {
+                'fs-cvd-time':      t.cvd,
+                'fs-technik-time':  t.technik,
+                'fs-terrasse-time': t.terrasse,
+                'fs-kitchen-time':  t.kitchen,
+                'fs-main1-time':    t.main1,
+                'fs-main2-time':    t.main2,
+                'fs-main3-time':    t.main3,
+                'fs-main4-time':    t.main4,
+                'fs-runner1-time':  t.runner1,
+                'fs-runner2-time':  t.runner2,
+                'fs-runner3-time':  t.runner3,
+                'fs-runner4-time':  t.runner4,
+                'fs-runner5-time':  t.runner5,
+                'fs-runner6-time':  t.runner6,
+                'fs-gard1-time':    t.gard1,
+                'fs-gard2-time':    t.gard2,
+                'fs-gard3-time':    t.gard3
+            };
+            Object.entries(timeFields).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            });
+
+            // 4. Set names from shiftplan
+            if (names) {
+                const nameFields = ['cvd','technik','terrasse','kitchen','main1','main2','main3','main4',
+                                    'runner1','runner2','runner3','runner4','runner5','runner6','gard1','gard2','gard3'];
+                nameFields.forEach(k => {
+                    const el = document.getElementById('fs-' + k);
+                    if (el && names[k] !== undefined) el.value = names[k];
+                });
+            }
+
+            // 5. Set Kassa radio
+            const isEigen = isEigenveranstaltung(name || '');
+            const eigenRadio = document.getElementById('kassa-radio-eigen');
+            const fremdRadio = document.getElementById('kassa-radio-fremd');
+            if (eigenRadio && fremdRadio) {
+                eigenRadio.checked = isEigen;
+                fremdRadio.checked = !isEigen;
+                updateKassaUI();
+            }
+
+            // 6. Render preview
+            updateFactsheetPreview();
         }
         
         // Fill all factsheet form fields
@@ -6580,16 +6624,7 @@
             document.getElementById('fs-runner4').value = e.runner4 || '';
             document.getElementById('fs-runner5').value = e.runner5 || '';
             document.getElementById('fs-runner6').value = e.runner6 || '';
-            // v15.9.10: Only apply event-specific runner times for non-concert templates
-            // Concert times come from template only
-            if (templateKey !== 'CONCERT') {
-                if (e.runner1_time) document.getElementById('fs-runner1-time').value = e.runner1_time;
-                if (e.runner2_time) document.getElementById('fs-runner2-time').value = e.runner2_time;
-                if (e.runner3_time) document.getElementById('fs-runner3-time').value = e.runner3_time;
-                if (e.runner4_time) document.getElementById('fs-runner4-time').value = e.runner4_time;
-                if (e.runner5_time) document.getElementById('fs-runner5-time').value = e.runner5_time;
-                if (e.runner6_time) document.getElementById('fs-runner6-time').value = e.runner6_time;
-            }
+            // v15.9.11: runner times always from template — no override
             document.getElementById('fs-gard1').value = e.gard1 || 'Sofia';
             document.getElementById('fs-gard2').value = e.gard2 || 'Fayez';
             document.getElementById('fs-gard3').value = e.gard3 || 'Nico';
@@ -10479,7 +10514,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.10';
+            const HUB_VERSION = 'v15.9.11';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -10513,7 +10548,7 @@ Spittelauer Lnde 12/1
             
             // v15.9.6: Init Kassa UI
             updateKassaUI();
-            onTemplateChange(); // v15.9.10: ensure template reset on load
+            applyFactsheet('', '', 'CLUB', null); // v15.9.11: init with clean template defaults
             
             initMonthFilter();
             // Initialize NYE tools when modals open
