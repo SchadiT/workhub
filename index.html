@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.10</title>
+    <title>Turbo Projects Work Hub v15.9.16</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2808,6 +2808,101 @@
         </div>
     </div>
     
+    <!-- RUNNER STAFFING Modal -->
+    <div class="modal-overlay" id="runner-staffing-modal">
+        <div class="modal" style="max-width: 850px;">
+            <div class="modal-header">
+                <h3>&#127939; Runner Staffing Tool</h3>
+                <button class="modal-close" onclick="closeModal('runner-staffing-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="bar-staffing-tabs">
+                    <button class="bar-tab active" onclick="switchRunnerTab('availability')" id="runner-tab-availability">&#128197; Availability Sheet</button>
+                    <button class="bar-tab" onclick="switchRunnerTab('shiftplan')" id="runner-tab-shiftplan">&#9889; Generate Shiftplan</button>
+                    <button class="bar-tab" onclick="switchRunnerTab('roster')" id="runner-tab-roster">&#128101; Roster</button>
+                </div>
+
+                <!-- TAB 1: Availability Sheet -->
+                <div class="bar-tab-content active" id="runner-content-availability">
+                    <h4 style="margin-bottom: 15px;">Monat(e) wählen für Availability Sheet</h4>
+                    <div class="bar-month-grid">
+                        <label class="bar-month-cb"><input type="checkbox" value="1" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Jan</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="2" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Feb</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="3" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Mär</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="4" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Apr</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="5" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Mai</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="6" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Jun</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="7" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Jul</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="8" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Aug</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="9" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Sep</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="10" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Okt</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="11" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Nov</label>
+                        <label class="bar-month-cb"><input type="checkbox" value="12" class="runner-month-check" onchange="updateRunnerEventsPreview()"> Dez</label>
+                    </div>
+                    <div class="bar-year-select">
+                        <label>Jahr:</label>
+                        <select id="runner-year" onchange="updateRunnerEventsPreview()">
+                            <option value="2025">2025</option>
+                            <option value="2026" selected>2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+                    <div id="runner-events-preview" class="bar-preview">
+                        <p style="color: #6b7280;">Wähle Monat(e) um Events zu sehen...</p>
+                    </div>
+                    <button class="modal-btn primary" onclick="generateRunnerAvailabilitySheet()" style="width: 100%; margin-top: 15px;">
+                        &#8681; Download Availability Sheet (.xlsx)
+                    </button>
+                </div>
+
+                <!-- TAB 2: Shiftplan Generator -->
+                <div class="bar-tab-content" id="runner-content-shiftplan">
+                    <h4 style="margin-bottom: 15px;">Upload Filled Availability Sheet</h4>
+                    <div class="bar-upload-zone" id="runner-upload-zone" onclick="document.getElementById('runner-availability-upload').click()">
+                        <input type="file" id="runner-availability-upload" accept=".xlsx,.xls" style="display: none;" onchange="handleRunnerAvailabilityUpload(event)">
+                        <div class="bar-upload-icon"></div>
+                        <p>Click or drag filled Availability Sheet here</p>
+                        <small>Supports .xlsx files</small>
+                    </div>
+                    <div id="runner-availability-status" class="bar-status" style="display: none;"></div>
+                    <div id="runner-shiftplan-preview" class="bar-preview" style="display: none;"></div>
+                    <button class="modal-btn primary" onclick="generateRunnerShiftplan()" id="btn-generate-runner-shiftplan" style="width: 100%; margin-top: 15px; display: none;">
+                        &#9889; Generate & Download Shiftplan (.xlsx)
+                    </button>
+                </div>
+
+                <!-- TAB 3: Roster -->
+                <div class="bar-tab-content" id="runner-content-roster">
+                    <h4 style="margin-bottom: 15px;">Runner Team Roster</h4>
+                    <div class="bar-roster-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PRIO</th>
+                                    <th>Name</th>
+                                    <th>Due Shifts</th>
+                                    <th>WX (nur SA)</th>
+                                    <th>Late Only</th>
+                                    <th>No DS</th>
+                                    <th>Max 1 WE (soft)</th>
+                                    <th>Kein Mo-Do</th>
+                                    <th>Wochentag OK</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="runner-roster-body"></tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="modal-btn" onclick="addRunnerRosterMember()">&#43; Add Member</button>
+                        <button class="modal-btn primary" onclick="saveRunnerRoster()">&#128190; Save Roster</button>
+                        <button class="modal-btn" style="background: #6b7280;" onclick="resetRunnerRoster()">&#8635; Reset Default</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- PreSale Calculator Modal -->
     <div class="modal-overlay" id="presale-modal">
         <div class="modal">
@@ -3827,6 +3922,10 @@
                     <span class="tool-icon">&#127864;</span>
                     Bar Staff
                 </button>
+                <button class="tool-btn border-blue" onclick="openModal('runner-staffing-modal')">
+                    <span class="tool-icon">&#127939;</span>
+                    Runner Staff
+                </button>
                 <button class="tool-btn border-blue" onclick="openModal('briefing-modal')">
                     <span class="tool-icon">&#128203;</span>
                     Briefing
@@ -4211,7 +4310,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.10</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.16</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -6454,7 +6553,7 @@
 
             // Collect NAMES only (no times) from shiftplan sources
             const names = {
-                cvd:     techData?.techniker || shiftData?.cvd || e.cvd || '',
+                cvd:     shiftData?.cvd || e.cvd || '',
                 technik: techData?.techniker || e.technik || '',
                 terrasse: barData?.terrasse || e.terrasse || '',
                 kitchen:  barData?.kitchen  || e.kitchen  || '',
@@ -10216,6 +10315,339 @@ Spittelauer Lnde 12/1
         function saveBarRoster() { localStorage.setItem('barRoster', JSON.stringify(barRoster)); showToast(' Roster gespeichert!'); }
         function resetBarRoster() { if (confirm('Roster auf Default zurcksetzen?')) { barRoster = JSON.parse(JSON.stringify(DEFAULT_BAR_ROSTER)); renderBarRoster(); saveBarRoster(); } }
 
+        // ============================================
+        // RUNNER STAFFING MODULE
+        // ============================================
+
+        const DEFAULT_RUNNER_ROSTER = [
+            { prio: 1, name: "Runner 1", due_shifts: "6-8", weekdays_x: false, late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 1, name: "Runner 2", due_shifts: "6-8", weekdays_x: false, late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 1, name: "Runner 3", due_shifts: "6-8", weekdays_x: false, late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 2, name: "Runner 4", due_shifts: "4-6", weekdays_x: false, late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 2, name: "Runner 5", due_shifts: "4",   weekdays_x: true,  late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 2, name: "Runner 6", due_shifts: "4",   weekdays_x: false, late_only: true,  no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false },
+            { prio: 3, name: "Runner 7", due_shifts: "4",   weekdays_x: false, late_only: false, no_ds: true,  max_one_we: false, no_weekdays: false, prefers_weekdays: false }
+        ];
+
+        let runnerRoster = JSON.parse(localStorage.getItem('runnerRoster')) || JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER));
+
+        // Runner positions — R1 earliest, R6 latest (00:30 = Late)
+        const RUNNER_POSITIONS = ["R1", "R2", "R3", "R4", "R5", "R6"];
+        const RUNNER_LATE_POSITION = "R6"; // Late-only constraint applies to last position
+
+        let uploadedRunnerAvailability = null;
+
+        function switchRunnerTab(tab) {
+            document.querySelectorAll('.bar-tab', document.getElementById('runner-staffing-modal')).forEach(t => t.classList.remove('active'));
+            document.getElementById('runner-tab-' + tab).classList.add('active');
+            document.querySelectorAll('#runner-staffing-modal .bar-tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('runner-content-' + tab).classList.add('active');
+            if (tab === 'roster') renderRunnerRoster();
+        }
+
+        function getRunnerSelectedEvents() {
+            const year = parseInt(document.getElementById('runner-year').value);
+            const months = Array.from(document.querySelectorAll('.runner-month-check:checked')).map(cb => parseInt(cb.value));
+            if (!bmtEvents || bmtEvents.length === 0 || months.length === 0) return [];
+            return bmtEvents.filter(e => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                const cat = e.category || '';
+                const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
+                const isNotCancelled = e.status !== 'CANCELLED';
+                const summaryLower = (e.summary || '').toLowerCase();
+                const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                return isEvent && isNotCancelled && isNotClosed && months.includes(d.getMonth() + 1) && d.getFullYear() === year;
+            }).sort((a, b) => {
+                const da = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
+                const db = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
+                return da - db;
+            });
+        }
+
+        function updateRunnerEventsPreview() {
+            const events = getRunnerSelectedEvents();
+            const preview = document.getElementById('runner-events-preview');
+            if (events.length === 0) {
+                preview.innerHTML = '<p style="color:#6b7280;">Keine Events gefunden.</p>';
+                return;
+            }
+            const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+            preview.innerHTML = '<table style="width:100%;font-size:12px;border-collapse:collapse;">' +
+                '<tr style="color:#888;"><th style="text-align:left;padding:4px;">Datum</th><th style="text-align:left;padding:4px;">Tag</th><th style="text-align:left;padding:4px;">Event</th><th style="text-align:left;padding:4px;">Typ</th></tr>' +
+                events.map(e => {
+                    const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                    const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
+                    const cat = e.category || 'fremd';
+                    const color = cat === 'eigen' ? '#22c55e' : cat === 'konzert' ? '#a855f7' : '#888';
+                    return `<tr style="border-bottom:1px solid #2a2a2a;">
+                        <td style="padding:4px;">${dateStr}</td>
+                        <td style="padding:4px;">${days[d.getDay()]}</td>
+                        <td style="padding:4px;">${e.summary || ''}</td>
+                        <td style="padding:4px;color:${color};text-transform:uppercase;font-size:10px;">${cat}</td>
+                    </tr>`;
+                }).join('') + '</table>';
+        }
+
+        function generateRunnerAvailabilitySheet() {
+            const events = getRunnerSelectedEvents();
+            if (events.length === 0) { showToast('Keine Events ausgewählt', 'error'); return; }
+
+            const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+            const wb = XLSX.utils.book_new();
+
+            // Availability sheet — one row per person, one column per event
+            const header = ['Name', 'PRIO', 'Due Shifts', 'WX', 'Late Only', 'No DS'];
+            events.forEach(e => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                header.push(days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}));
+            });
+            header.push(''); // event name row
+            events.forEach(e => header.push(e.summary || ''));
+
+            const rows = [header];
+
+            // Add event type row
+            const typeRow = ['', '', '', '', '', ''];
+            events.forEach(e => { typeRow.push(e.category === 'konzert' ? 'Konzert' : 'Club'); });
+            rows.push(typeRow);
+
+            // Add instruction row
+            const instrRow = ['← Bitte ausfüllen', '', '', '', '', ''];
+            events.forEach(() => instrRow.push('FREI / ok'));
+            rows.push(instrRow);
+
+            // One row per runner
+            runnerRoster.forEach(r => {
+                const row = [r.name, r.prio, r.due_shifts, r.weekdays_x ? 'ja' : '', r.late_only ? 'ja' : '', r.no_ds ? 'ja' : ''];
+                events.forEach(() => row.push('ok')); // default = available
+                rows.push(row);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            const colWidths = [{ wch: 16 }, { wch: 5 }, { wch: 10 }, { wch: 5 }, { wch: 9 }, { wch: 7 }];
+            events.forEach(() => colWidths.push({ wch: 12 }));
+            ws['!cols'] = colWidths;
+            XLSX.utils.book_append_sheet(wb, ws, 'Availability');
+
+            const month = document.querySelector('.runner-month-check:checked')?.value || 'XX';
+            const year = document.getElementById('runner-year').value;
+            XLSX.writeFile(wb, `Runner_Availability_${month.padStart(2,'0')}_${year}.xlsx`);
+            showToast('Runner Availability Sheet downloaded!');
+        }
+
+        function handleRunnerAvailabilityUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const wb = XLSX.read(e.target.result, { type: 'array' });
+                    const ws = wb.Sheets[wb.SheetNames[0]];
+                    const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+
+                    // Row 0: headers (Name, PRIO, ..., dates)
+                    // Row 1: type row (Konzert / Club)
+                    // Row 2: instruction row
+                    // Row 3+: runner rows
+                    const headerRow = data[0] || [];
+                    const typeRow   = data[1] || [];
+                    const eventCols = [];
+
+                    for (let c = 6; c < headerRow.length; c++) {
+                        if (headerRow[c]) {
+                            eventCols.push({
+                                col: c,
+                                dateLabel: String(headerRow[c]),
+                                type: String(typeRow[c] || 'Club')
+                            });
+                        }
+                    }
+
+                    const events = eventCols.map(ec => ({ date: ec.dateLabel, type: ec.type, day: '' }));
+                    const unavailable = [];
+
+                    for (let r = 3; r < data.length; r++) {
+                        const row = data[r];
+                        const name = String(row[0] || '').trim();
+                        if (!name) continue;
+                        eventCols.forEach(ec => {
+                            const val = String(row[ec.col] || '').trim().toUpperCase();
+                            if (val === 'FREI') unavailable.push({ name, date: ec.dateLabel });
+                        });
+                    }
+
+                    uploadedRunnerAvailability = { events, unavailable };
+
+                    const statusEl = document.getElementById('runner-availability-status');
+                    statusEl.style.display = 'block';
+                    statusEl.innerHTML = `✅ ${events.length} Events, ${data.length - 3} Runner geladen. ${unavailable.length} FREI Einträge.`;
+                    statusEl.style.color = '#22c55e';
+
+                    document.getElementById('btn-generate-runner-shiftplan').style.display = 'block';
+                    showToast('Runner Availability geladen!');
+                } catch(err) {
+                    console.error('Runner upload error:', err);
+                    showToast('Fehler beim Lesen der Datei', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function generateRunnerShiftplan() {
+            if (!uploadedRunnerAvailability) { showToast('Bitte erst Availability Sheet uploaden', 'error'); return; }
+
+            const { events, unavailable } = uploadedRunnerAvailability;
+
+            const shiftsTotal = {}, positionsWorked = {}, weekendWorked = {};
+            runnerRoster.forEach(r => {
+                shiftsTotal[r.name] = 0;
+                positionsWorked[r.name] = {};
+                weekendWorked[r.name] = {}; // key: "YYYY-WW" → count
+                RUNNER_POSITIONS.forEach(p => positionsWorked[r.name][p] = 0);
+            });
+
+            function getWeekendKey(dateLabel) {
+                // dateLabel is "DD.MM.YYYY" or "DD.MM" — find ISO week
+                const parts = dateLabel.split('.');
+                if (parts.length < 3) return dateLabel;
+                const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                const day = d.getDay(); // 0=Sun,5=Fri,6=Sat
+                // Normalize FR/SA to same weekend key (use Fri date as anchor)
+                const fri = new Date(d);
+                if (day === 6) fri.setDate(d.getDate() - 1); // SA→FR
+                return fri.getFullYear() + '-' + fri.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit'});
+            }
+
+            function isUnavailable(name, date) {
+                return unavailable.some(u => u.name.toLowerCase() === name.toLowerCase() && u.date === date);
+            }
+            function isWeekday(dateLabel) {
+                const parts = dateLabel.split('.');
+                if (parts.length < 3) return false;
+                const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                const day = d.getDay(); // 0=Sun,1=Mon,...,4=Thu,5=Fri,6=Sat
+                return day >= 1 && day <= 4; // Mo-Do
+            }
+            function canWork(person, date, position) {
+                if (isUnavailable(person.name, date)) return false;
+                if (person.late_only && position !== RUNNER_LATE_POSITION) return false;
+                if (person.no_weekdays && isWeekday(date)) return false; // hard: kein Mo-Do
+                return true;
+            }
+            function prefersNotWork(person, date) {
+                if (!person.max_one_we) return false;
+                const weKey = getWeekendKey(date);
+                return (weekendWorked[person.name][weKey] || 0) >= 1;
+            }
+            function sortCandidates(candidates, position, date) {
+                return candidates.sort((a, b) => {
+                    // Soft: prefer runners who haven't worked this weekend yet
+                    const weA = prefersNotWork(a, date) ? 1 : 0;
+                    const weB = prefersNotWork(b, date) ? 1 : 0;
+                    if (weA !== weB) return weA - weB;
+                    // Soft: prefer weekday-affine runners for weekday events
+                    if (isWeekday(date)) {
+                        const wdA = a.prefers_weekdays ? 0 : 1;
+                        const wdB = b.prefers_weekdays ? 0 : 1;
+                        if (wdA !== wdB) return wdA - wdB;
+                    }
+                    const rotA = positionsWorked[a.name][position] || 0;
+                    const rotB = positionsWorked[b.name][position] || 0;
+                    if (rotA !== rotB) return rotA - rotB;
+                    if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
+                    return a.prio - b.prio;
+                });
+            }
+
+            const assignments = [];
+            events.forEach(event => {
+                const assignment = { date: event.date, type: event.type, positions: {} };
+                RUNNER_POSITIONS.forEach(p => assignment.positions[p] = '');
+                const assignedThisEvent = [];
+
+                RUNNER_POSITIONS.forEach(position => {
+                    let candidates = runnerRoster.filter(p =>
+                        !assignedThisEvent.includes(p.name) && canWork(p, event.date, position)
+                    );
+                    // Fallback: ignore late_only constraint
+                    if (candidates.length === 0) {
+                        candidates = runnerRoster.filter(p =>
+                            !assignedThisEvent.includes(p.name) && !isUnavailable(p.name, event.date)
+                        );
+                    }
+                    candidates = sortCandidates(candidates, position, event.date);
+                    if (candidates.length > 0) {
+                        const person = candidates[0];
+                        assignment.positions[position] = person.name;
+                        shiftsTotal[person.name]++;
+                        positionsWorked[person.name][position]++;
+                        // Track weekend usage for max_one_we
+                        const weKey = getWeekendKey(event.date);
+                        weekendWorked[person.name][weKey] = (weekendWorked[person.name][weKey] || 0) + 1;
+                        assignedThisEvent.push(person.name);
+                    } else {
+                        assignment.positions[position] = '???';
+                    }
+                });
+                assignments.push(assignment);
+            });
+
+            // Build Excel
+            const wb = XLSX.utils.book_new();
+            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
+            assignments.forEach(a => {
+                wsData.push([a.date, a.type,
+                    a.positions['R1'], a.positions['R2'], a.positions['R3'],
+                    a.positions['R4'], a.positions['R5'], a.positions['R6']
+                ]);
+            });
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            ws['!cols'] = [{ wch: 12 }, { wch: 10 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 }];
+            XLSX.utils.book_append_sheet(wb, ws, 'Shiftplan');
+
+            const summaryData = [['RUNNER SUMMARY'], ['NAME', 'PRIO', 'DUE', 'TOTAL', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
+            runnerRoster.forEach(r => {
+                summaryData.push([r.name, r.prio, r.due_shifts, shiftsTotal[r.name],
+                    ...RUNNER_POSITIONS.map(p => positionsWorked[r.name][p])
+                ]);
+            });
+            const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary');
+
+            const fileName = `Runner_Shiftplan_${events[0]?.date?.split('.')?.[1] || 'XX'}_${events[0]?.date?.split('.')?.[2] || '2026'}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            showToast(`${fileName} downloaded!`);
+        }
+
+        function renderRunnerRoster() {
+            const tbody = document.getElementById('runner-roster-body');
+            tbody.innerHTML = '';
+            runnerRoster.forEach((r, idx) => {
+                tbody.innerHTML += `<tr>
+                    <td><select onchange="updateRunnerRoster(${idx},'prio',parseInt(this.value))">
+                        <option value="1" ${r.prio===1?'selected':''}>1</option>
+                        <option value="2" ${r.prio===2?'selected':''}>2</option>
+                        <option value="3" ${r.prio===3?'selected':''}>3</option>
+                    </select></td>
+                    <td><input type="text" value="${r.name}" onchange="updateRunnerRoster(${idx},'name',this.value)"></td>
+                    <td><input type="text" value="${r.due_shifts}" onchange="updateRunnerRoster(${idx},'due_shifts',this.value)" style="width:60px;"></td>
+                    <td><input type="checkbox" ${r.weekdays_x?'checked':''} onchange="updateRunnerRoster(${idx},'weekdays_x',this.checked)"></td>
+                    <td><input type="checkbox" ${r.late_only?'checked':''} onchange="updateRunnerRoster(${idx},'late_only',this.checked)"></td>
+                    <td><input type="checkbox" ${r.no_ds?'checked':''} onchange="updateRunnerRoster(${idx},'no_ds',this.checked)"></td>
+                    <td><input type="checkbox" ${r.max_one_we?'checked':''} onchange="updateRunnerRoster(${idx},'max_one_we',this.checked)"></td>
+                    <td><input type="checkbox" ${r.no_weekdays?'checked':''} onchange="updateRunnerRoster(${idx},'no_weekdays',this.checked)"></td>
+                    <td><input type="checkbox" ${r.prefers_weekdays?'checked':''} onchange="updateRunnerRoster(${idx},'prefers_weekdays',this.checked)"></td>
+                    <td><button class="bar-roster-delete" onclick="deleteRunnerRosterMember(${idx})">&#10006;</button></td>
+                </tr>`;
+            });
+        }
+
+        function updateRunnerRoster(idx, field, value) { runnerRoster[idx][field] = value; }
+        function addRunnerRosterMember() { runnerRoster.push({ prio: 2, name: 'New', due_shifts: '4', weekdays_x: false, late_only: false, no_ds: false, max_one_we: false, no_weekdays: false, prefers_weekdays: false }); renderRunnerRoster(); }
+        function deleteRunnerRosterMember(idx) { if (confirm(`${runnerRoster[idx].name} löschen?`)) { runnerRoster.splice(idx, 1); renderRunnerRoster(); } }
+        function saveRunnerRoster() { localStorage.setItem('runnerRoster', JSON.stringify(runnerRoster)); showToast('Runner Roster gespeichert!'); }
+        function resetRunnerRoster() { if (confirm('Roster auf Default zurücksetzen?')) { runnerRoster = JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER)); renderRunnerRoster(); saveRunnerRoster(); } }
+
         // Drag and drop for upload zone
         setTimeout(() => {
             const uploadZone = document.getElementById('bar-upload-zone');
@@ -10514,7 +10946,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.11';
+            const HUB_VERSION = 'v15.9.16';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -12814,6 +13246,7 @@ Spittelauer Lnde 12/1
                 'projector-modal': 'projector',
                 'guestlist-modal': 'guestlist',
                 'bar-staffing-modal': 'barstaff',
+                'runner-staffing-modal': 'runnerstaff',
                 'hospitality-modal': 'hospitality'
             };
             if (appMap[id]) trackAppUsage(appMap[id]);
