@@ -2371,6 +2371,9 @@
                 <button class="bmt-btn" onclick="refreshBMTCalendar()" title="Cache leeren und neu laden" style="background: var(--warn); color: #000;">
                     &#8635; Refresh
                 </button>
+                <button class="bmt-btn" onclick="openBMTApiSettings()" title="BMT API Token konfigurieren" style="background: #1e3a5f; color: #fff;" id="bmt-api-btn">
+                    &#128273; API
+                </button>
             </div>
         </div>
         <div id="bmt-events-container" class="bmt-collapsed">
@@ -2382,6 +2385,26 @@
         </div>
     </div>
     
+    <!-- BMT API Settings Modal -->
+    <div class="modal-overlay" id="bmt-api-modal">
+        <div class="modal" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3>&#128273; BMT API Konfiguration</h3>
+                <button class="modal-close" onclick="closeModal('bmt-api-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="color:#888;font-size:13px;margin-bottom:16px;">API Token wird lokal gespeichert. Events werden 1x täglich gecacht.</p>
+                <label style="font-size:12px;color:#aaa;display:block;margin-bottom:6px;">API TOKEN</label>
+                <input type="password" id="bmt-api-token-input" placeholder="Token eingeben..." style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:6px;font-size:13px;box-sizing:border-box;">
+                <div style="display:flex;gap:8px;margin-top:12px;">
+                    <button class="modal-btn primary" onclick="saveBMTApiToken()" style="flex:1;">Speichern + Laden</button>
+                    <button class="modal-btn" onclick="clearBMTApiToken()" style="flex:0 0 auto;background:#ef4444;color:#fff;">Löschen</button>
+                </div>
+                <div id="bmt-api-status" style="margin-top:12px;font-size:12px;color:#888;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Cleaning Schedule Modal -->
     <div class="modal-overlay" id="cleaning-modal">
         <div class="modal" style="max-width: 900px;">
@@ -3900,22 +3923,9 @@
                     <span class="tool-icon">&#128545;</span>
                     Security
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('email-modal')">
-                    <span class="tool-icon">&#9993;</span>
-                    E-Mail
-                </button>
-                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')" style="position: relative;">
-                    <span class="notepad-badge hidden" id="notepad-badge">0</span>
-                    <span class="tool-icon">&#128221;</span>
-                    Notepad
-                </button>
                 <button class="tool-btn border-blue" onclick="openCleaningModal()">
                     <span class="tool-icon">&#129529;</span>
                     Cleaning
-                </button>
-                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')">
-                    <span class="tool-icon">&#128157;</span>
-                    Guestlist
                 </button>
                 <button class="tool-btn border-blue" onclick="openModal('bar-staffing-modal')">
                     <span class="tool-icon">&#127864;</span>
@@ -3929,7 +3939,22 @@
                     <span class="tool-icon">&#128203;</span>
                     Briefing
                 </button>
-                <button class="tool-btn border-blue" onclick="openHospitalityModal()">
+                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')" style="position: relative;">
+                    <span class="notepad-badge hidden" id="notepad-badge">0</span>
+                    <span class="tool-icon">&#128221;</span>
+                    Notepad
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('email-modal')">
+                    <span class="tool-icon">&#9993;</span>
+                    E-Mail
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')" style="position: relative;">
+                    <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
+                    <span class="tool-icon">&#128157;</span>
+                    Guestlist
+                </button>
+                <button class="tool-btn border-blue" onclick="openHospitalityModal()" style="position: relative;">
+                    <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
                     <span class="tool-icon">&#127860;</span>
                     Hospitality
                 </button>
@@ -8320,15 +8345,213 @@
         // 
 
         // 
-        // BMT CALENDAR INTEGRATION
-        // 
-        
+        // BMT API INTEGRATION
+        // Direct REST API — Token-based, daily cache, takes priority over ICS
+
         const BMT_FEED_URL = 'https://club.bookmetender.com/calendars/xyXNmcPyOjvcBuFs62MvnEq6uF07RAkkOb2oLXTPhDk%3D.ics';
         let bmtEvents = [];
         let bmtSectionOpen = false;
-        
-        // Auto-load BMT — v15.9.10: updated proxy list, corrected URL formats
+
+        const BMT_API_URL = 'https://club.bookmetender.com/api/events';
+        const BMT_API_CACHE_KEY = 'bmtApiEvents';
+        const BMT_API_CACHE_DATE_KEY = 'bmtApiCacheDate';
+        const BMT_API_TOKEN_KEY = 'bmtApiToken';
+
+        function openBMTApiSettings() {
+            const token = localStorage.getItem(BMT_API_TOKEN_KEY) || '';
+            document.getElementById('bmt-api-token-input').value = token ? '••••••••••••' : '';
+            const statusEl = document.getElementById('bmt-api-status');
+            const cacheDate = localStorage.getItem(BMT_API_CACHE_DATE_KEY);
+            if (token && cacheDate) {
+                const age = Math.round((Date.now() - new Date(cacheDate)) / 3600000);
+                statusEl.innerHTML = '✅ Token gespeichert. Cache: ' + age + 'h alt.';
+                statusEl.style.color = '#22c55e';
+            } else if (token) {
+                statusEl.innerHTML = '✅ Token gespeichert. Noch nicht geladen.';
+                statusEl.style.color = '#f59e0b';
+            } else {
+                statusEl.innerHTML = 'Kein Token gespeichert.';
+                statusEl.style.color = '#888';
+            }
+            document.getElementById('bmt-api-modal').classList.add('active');
+        }
+
+        function saveBMTApiToken() {
+            const input = document.getElementById('bmt-api-token-input').value.trim();
+            if (!input || input === '••••••••••••') {
+                // No change — just load with existing token
+                closeModal('bmt-api-modal');
+                loadBMTFromAPI(true);
+                return;
+            }
+            localStorage.setItem(BMT_API_TOKEN_KEY, input);
+            document.getElementById('bmt-api-status').innerHTML = '✅ Token gespeichert. Lade Events...';
+            document.getElementById('bmt-api-status').style.color = '#22c55e';
+            closeModal('bmt-api-modal');
+            loadBMTFromAPI(true);
+        }
+
+        function clearBMTApiToken() {
+            localStorage.removeItem(BMT_API_TOKEN_KEY);
+            localStorage.removeItem(BMT_API_CACHE_KEY);
+            localStorage.removeItem(BMT_API_CACHE_DATE_KEY);
+            document.getElementById('bmt-api-token-input').value = '';
+            document.getElementById('bmt-api-status').innerHTML = 'Token gelöscht.';
+            document.getElementById('bmt-api-status').style.color = '#888';
+            updateBMTApiBtn();
+        }
+
+        function updateBMTApiBtn() {
+            const btn = document.getElementById('bmt-api-btn');
+            if (!btn) return;
+            const token = localStorage.getItem(BMT_API_TOKEN_KEY);
+            btn.style.background = token ? '#22c55e' : '#1e3a5f';
+            btn.style.color = token ? '#000' : '#fff';
+            btn.title = token ? 'BMT API aktiv (Token gespeichert)' : 'BMT API Token konfigurieren';
+        }
+
+        async function loadBMTFromAPI(forceRefresh) {
+            const token = localStorage.getItem(BMT_API_TOKEN_KEY);
+            if (!token) return false;
+
+            // Check cache — skip if less than 24h old and not forced
+            if (!forceRefresh) {
+                const cacheDate = localStorage.getItem(BMT_API_CACHE_DATE_KEY);
+                if (cacheDate) {
+                    const ageHours = (Date.now() - new Date(cacheDate)) / 3600000;
+                    if (ageHours < 24) {
+                        const cached = localStorage.getItem(BMT_API_CACHE_KEY);
+                        if (cached) {
+                            try {
+                                bmtEvents = JSON.parse(cached);
+                                afterBMTLoad('API Cache (' + Math.round(ageHours) + 'h alt)');
+                                return true;
+                            } catch(e) {}
+                        }
+                    }
+                }
+            }
+
+            showToast('⏳ Lade BMT Events via API...');
+            try {
+                const today = new Date();
+                const from = new Date(today);
+                from.setDate(from.getDate() - 14);
+                const fromStr = from.toISOString().split('T')[0];
+                const until = new Date(today);
+                until.setDate(until.getDate() + 90);
+                const untilStr = until.toISOString().split('T')[0];
+
+                const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=15';
+                // Use CORS proxy since browser can't hit BMT API directly
+                const proxies = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://corsproxy.io/?url=',
+                    'https://api.codetabs.com/v1/proxy?quest='
+                ];
+                let data = null;
+                for (const proxy of proxies) {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 8000);
+                        const resp = await fetch(proxy + encodeURIComponent(url), {
+                            headers: { 'Authorization': 'Token token="' + token + '"' },
+                            signal: controller.signal
+                        });
+                        clearTimeout(timeoutId);
+                        if (resp.ok) {
+                            const text = await resp.text();
+                            data = JSON.parse(text);
+                            break;
+                        }
+                    } catch(e) {
+                        console.log('BMT API proxy failed:', proxy, e.message);
+                    }
+                }
+
+                if (!data || !Array.isArray(data)) throw new Error('Keine Daten erhalten');
+
+                bmtEvents = data.map(ev => mapBMTApiEvent(ev));
+                localStorage.setItem(BMT_API_CACHE_KEY, JSON.stringify(bmtEvents));
+                localStorage.setItem(BMT_API_CACHE_DATE_KEY, new Date().toISOString());
+                // Also sync to ICS cache key so all tools that use bmtEvents work
+                localStorage.setItem('bmtEvents', JSON.stringify(bmtEvents));
+                localStorage.setItem('bmtLastUpdate', new Date().toISOString());
+                afterBMTLoad('API (' + data.length + ' Events)');
+                return true;
+            } catch(err) {
+                console.error('BMT API load failed:', err);
+                showToast('⚠️ BMT API Fehler: ' + err.message, true);
+                return false;
+            }
+        }
+
+        function mapBMTApiEvent(ev) {
+            // Map BMT API event to same structure as ICS parser output
+            const dateStr = ev.date || '';
+            const dtstart = dateStr ? new Date(dateStr + 'T' + (ev.start_time || '23:00') + ':00') : new Date();
+            const doorsTime = ev.doors_open_time || '23:00';
+            const cat = (ev.category || '').toLowerCase();
+            const category = cat.includes('konzert') || cat.includes('concert') ? 'konzert' :
+                             cat.includes('eigen') || cat.includes('turbo') || cat.includes('selected') ? 'eigen' : 'fremd';
+
+            // Build summary from title + headliner
+            let summary = ev.title || '';
+            const headliners = (ev.bookings || [])
+                .filter(b => b.performance_type === 'headliner' || b.performance_type === 'main')
+                .map(b => b.name || (b.names || []).join(' b2b '));
+            if (headliners.length > 0 && !summary) summary = headliners.join(', ');
+
+            // Artist list for Factsheet/Hospitality
+            const artists = (ev.bookings || []).map(b => ({
+                name: b.name || (b.names || []).join(' b2b '),
+                performance_type: b.performance_type || 'support',
+                floor: b.floor || '',
+                start_time: b.start_time || '',
+                end_time: b.end_time || '',
+                label: b.label || ''
+            }));
+
+            return {
+                summary,
+                dtstart,
+                dtend: ev.end_time ? new Date(dateStr + 'T' + ev.end_time + ':00') : null,
+                category,
+                status: 'CONFIRMED',
+                description: ev.presstext || ev.api_notes || '',
+                doors_open_time: doorsTime,
+                admission: ev.admission || '',
+                currency: ev.currency || 'EUR',
+                artists,
+                bookings: ev.bookings || [],
+                floors: ev.floors || [],
+                source: 'api',
+                raw: ev
+            };
+        }
+
+        function afterBMTLoad(source) {
+            renderBMTEvents();
+            renderUpcomingFromBMT();
+            populateFactsheetDropdown();
+            populateHospEventDropdown();
+            if (typeof renderCalendar === 'function') renderCalendar();
+            if (typeof renderRunnerShiftplan === 'function') renderRunnerShiftplan();
+            if (typeof renderBarShiftplan === 'function') renderBarShiftplan();
+            if (typeof renderTechCalendar === 'function') renderTechCalendar();
+            updateBMTApiBtn();
+            showToast('✅ ' + bmtEvents.length + ' BMT Events geladen (' + source + ')');
+        }
+
+        // Auto-load BMT — v15.9.22: API first, ICS fallback
         async function autoLoadBMT() {
+            // Try API first if token exists
+            const token = localStorage.getItem(BMT_API_TOKEN_KEY);
+            if (token) {
+                const ok = await loadBMTFromAPI(false);
+                if (ok) return;
+            }
+            // ICS fallback
             showToast('⏳ Lade BMT Calendar...');
             const proxies = [
                 'https://api.allorigins.win/raw?url=',
@@ -8389,11 +8612,13 @@
         
         // Refresh BMT Calendar - clear cache and reload
         async function refreshBMTCalendar() {
-            showToast('ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ Clearing cache and reloading...');
+            showToast('&#128260; Clearing cache and reloading...');
             
             // Clear all BMT-related localStorage
             localStorage.removeItem('bmtEvents');
             localStorage.removeItem('bmtLastUpdate');
+            localStorage.removeItem(BMT_API_CACHE_KEY);
+            localStorage.removeItem(BMT_API_CACHE_DATE_KEY);
             
             // Reset global variable
             bmtEvents = [];
@@ -13373,8 +13598,8 @@ Spittelauer Lnde 12/1
         document.addEventListener('DOMContentLoaded', () => {
             renderProjects();
             updateProjectsCount();
-            // Initial dashboard update after short delay
             setTimeout(updateTopStatsDashboard, 500);
+            updateBMTApiBtn();
         });
         
         // Hook into existing functions to track usage
