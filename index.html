@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.23</title>
+    <title>Turbo Projects Work Hub v15.9.24</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4334,7 +4334,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.23</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.24</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -8535,7 +8535,7 @@
             showToast('✅ ' + bmtEvents.length + ' BMT Events geladen (' + source + ')');
         }
 
-        // Auto-load BMT — v15.9.23: API first, ICS fallback
+        // Auto-load BMT — v15.9.24: API first, ICS fallback
         async function autoLoadBMT() {
             // Try API first if token exists
             const token = localStorage.getItem(BMT_API_TOKEN_KEY);
@@ -10938,6 +10938,12 @@ Spittelauer Lnde 12/1
                 return (weShifts[person.name][weKey] || 0) >= 1;
             }
 
+            // Random rotation seed — shuffled once per run, used as tiebreaker
+            const rotationOrder = runnerRoster.map(r => r.name).sort(() => Math.random() - 0.5);
+            function rotationTiebreak(a, b) {
+                return rotationOrder.indexOf(a.name) - rotationOrder.indexOf(b.name);
+            }
+
             function sortCandidates(candidates, position, event) {
                 return candidates.sort((a, b) => {
                     const weA = prefersNotWork(a, event.date) ? 1 : 0;
@@ -10947,7 +10953,7 @@ Spittelauer Lnde 12/1
                     const rotB = positionsWorked[b.name][position] || 0;
                     if (rotA !== rotB) return rotA - rotB;
                     if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
-                    return a.prio - b.prio;
+                    return rotationTiebreak(a, b);
                 });
             }
 
@@ -10970,6 +10976,9 @@ Spittelauer Lnde 12/1
                 RUNNER_POSITIONS.forEach(p => assignment.positions[p] = '');
                 const assignedThisEvent = [];
 
+                // Max positions: Konzert = 4, Club = 5
+                const eventActivePositions = isConcert ? ["R1","R2","R3","R4"] : ACTIVE_POSITIONS;
+
                 // Step 1: Place prio_early runners into R1-R4 first (Jakob, Kaan, Gordan, Zuzu) — with rotation
                 const earlyPositions = ["R1", "R2", "R3", "R4"];
                 const earlyRunners = runnerRoster.filter(r => r.prio_early);
@@ -10986,7 +10995,7 @@ Spittelauer Lnde 12/1
                         const posB = positionsWorked[b.name][pos] || 0;
                         if (posA !== posB) return posA - posB;
                         if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
-                        return a.prio - b.prio;
+                        return rotationTiebreak(a, b);
                     });
                     const person = candidates[0];
                     assignment.positions[pos] = person.name;
@@ -10994,8 +11003,8 @@ Spittelauer Lnde 12/1
                     assignedThisEvent.push(person.name);
                 });
 
-                // Step 2: Fill remaining active positions R1-R5 (max 5 runners per event)
-                ACTIVE_POSITIONS.forEach(position => {
+                // Step 2: Fill remaining active positions (Konzert: R1-R4, Club: R1-R5)
+                eventActivePositions.forEach(position => {
                     if (assignment.positions[position]) return; // already filled
                     let candidates = runnerRoster.filter(p =>
                         !assignedThisEvent.includes(p.name) && canWork(p, event, position)
@@ -11022,10 +11031,10 @@ Spittelauer Lnde 12/1
                 // Step 2.5: Place immer_letzt runner (Aziz) on the next position after the last filled one (within R1-R5)
                 const letzteRunner = runnerRoster.filter(r => r.immer_letzt && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date) && (!r.nur_samstag || isSaturday(event.date)) && !hasConsecutiveConflict(r.name, event.date));
                 letzteRunner.forEach(person => {
-                    const lastFilledIdx = ACTIVE_POSITIONS.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
+                    const lastFilledIdx = eventActivePositions.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
                     const targetIdx = lastFilledIdx + 1;
-                    if (targetIdx < ACTIVE_POSITIONS.length) {
-                        const targetPos = ACTIVE_POSITIONS[targetIdx];
+                    if (targetIdx < eventActivePositions.length) {
+                        const targetPos = eventActivePositions[targetIdx];
                         assignment.positions[targetPos] = person.name;
                         assign(person, event, targetPos);
                         assignedThisEvent.push(person.name);
@@ -11033,7 +11042,7 @@ Spittelauer Lnde 12/1
                 });
 
                 // Step 3: Min 4 positions check
-                const filledCount = ACTIVE_POSITIONS.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
+                const filledCount = eventActivePositions.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
                 if (filledCount < 4) {
                     assignment.warning = `⚠ Nur ${filledCount} Runner — min. 4 benötigt`;
                 }
@@ -11401,7 +11410,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.23';
+            const HUB_VERSION = 'v15.9.24';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
