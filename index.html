@@ -8465,7 +8465,8 @@
                     }
                 }
 
-                if (!data || !Array.isArray(data)) throw new Error('Keine Daten erhalten');
+                if (!data || !Array.isArray(data)) throw new Error('Keine Daten erhalten — Response: ' + JSON.stringify(data).substring(0, 200));
+                console.log('BMT API raw data:', data.length, 'events', data[0] ? JSON.stringify(data[0]).substring(0, 200) : 'empty');
 
                 bmtEvents = data.map(ev => mapBMTApiEvent(ev));
                 localStorage.setItem(BMT_API_CACHE_KEY, JSON.stringify(bmtEvents));
