@@ -10572,7 +10572,7 @@ Spittelauer Lnde 12/1
                         events.push({ date, type: typ, eventName });
                         runnerCols.forEach(rc => {
                             const val = String(row[rc.col] || '').trim().toUpperCase();
-                            if (val === 'FREI') unavailable.push({ name: rc.name, date });
+                            if (val === 'FREI' || val === 'X') unavailable.push({ name: rc.name, date });
                         });
                     }
 
