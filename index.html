@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.22</title>
+    <title>Turbo Projects Work Hub v15.9.23</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4334,7 +4334,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.22</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.23</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -8535,7 +8535,7 @@
             showToast('✅ ' + bmtEvents.length + ' BMT Events geladen (' + source + ')');
         }
 
-        // Auto-load BMT — v15.9.22: API first, ICS fallback
+        // Auto-load BMT — v15.9.23: API first, ICS fallback
         async function autoLoadBMT() {
             // Try API first if token exists
             const token = localStorage.getItem(BMT_API_TOKEN_KEY);
@@ -10852,13 +10852,17 @@ Spittelauer Lnde 12/1
 
             const { events, unavailable } = uploadedRunnerAvailability;
 
-            const shiftsTotal = {}, positionsWorked = {}, weShifts = {};
+            const shiftsTotal = {}, positionsWorked = {}, weShifts = {}, recentShiftDates = {};
             runnerRoster.forEach(r => {
                 shiftsTotal[r.name] = 0;
                 positionsWorked[r.name] = {};
-                weShifts[r.name] = {}; // weekendKey → count
+                weShifts[r.name] = {};
+                recentShiftDates[r.name] = []; // list of Date objects worked
                 RUNNER_POSITIONS.forEach(p => positionsWorked[r.name][p] = 0);
             });
+
+            // Max 5 runners per event — only fill R1-R5
+            const ACTIVE_POSITIONS = ["R1", "R2", "R3", "R4", "R5"];
 
             function getWeekendKey(dateLabel) {
                 const parts = dateLabel.split('.');
@@ -10893,6 +10897,19 @@ Spittelauer Lnde 12/1
                 return h < 12 ? h * 60 + m + 1440 : h * 60 + m; // treat 00-05 as next day
             }
 
+            // Check if person has worked 2 consecutive days immediately before this event date
+            function hasConsecutiveConflict(personName, dateLabel) {
+                const parts = dateLabel.split('.');
+                if (parts.length < 3) return false;
+                const eventDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                const prev1 = new Date(eventDate); prev1.setDate(eventDate.getDate() - 1);
+                const prev2 = new Date(eventDate); prev2.setDate(eventDate.getDate() - 2);
+                const worked = recentShiftDates[personName] || [];
+                const hasPrev1 = worked.some(d => d.getTime() === prev1.getTime());
+                const hasPrev2 = worked.some(d => d.getTime() === prev2.getTime());
+                return hasPrev1 && hasPrev2; // would be 3rd consecutive day
+            }
+
             function canWork(person, event, position) {
                 const date = event.date;
                 const eventType = event.type;
@@ -10904,6 +10921,9 @@ Spittelauer Lnde 12/1
 
                 // Immer letzte Position — hard: kann nicht in R1-R5 eingeplant werden (wird separat nach Fill gesetzt)
                 if (person.immer_letzt) return false;
+
+                // 3 consecutive days — hard block
+                if (hasConsecutiveConflict(person.name, date)) return false;
 
                 // Feiertag OK check — if next day IS a holiday and person does NOT have feiertag_ok, they cannot work
                 const nextDay = getNextDayLabel(date);
@@ -10936,6 +10956,11 @@ Spittelauer Lnde 12/1
                 positionsWorked[person.name][position]++;
                 const weKey = getWeekendKey(event.date);
                 weShifts[person.name][weKey] = (weShifts[person.name][weKey] || 0) + 1;
+                // Track date for consecutive-days check
+                const parts = event.date.split('.');
+                if (parts.length === 3) {
+                    recentShiftDates[person.name].push(new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])));
+                }
             }
 
             const assignments = [];
@@ -10945,36 +10970,42 @@ Spittelauer Lnde 12/1
                 RUNNER_POSITIONS.forEach(p => assignment.positions[p] = '');
                 const assignedThisEvent = [];
 
-                // Step 1: Place prio_early runners into R1-R4 first (Jakob, Kaan, Gordan, Zuzu)
+                // Step 1: Place prio_early runners into R1-R4 first (Jakob, Kaan, Gordan, Zuzu) — with rotation
                 const earlyPositions = ["R1", "R2", "R3", "R4"];
                 const earlyRunners = runnerRoster.filter(r => r.prio_early);
-                // Sort early runners by prio, then shift balance
-                const sortedEarly = earlyRunners.slice().sort((a, b) => {
-                    if (a.prio !== b.prio) return a.prio - b.prio;
-                    return shiftsTotal[a.name] - shiftsTotal[b.name];
-                });
-                sortedEarly.forEach(person => {
-                    if (assignedThisEvent.includes(person.name)) return;
-                    for (const pos of earlyPositions) {
-                        if (!assignment.positions[pos] && canWork(person, event, pos)) {
-                            assignment.positions[pos] = person.name;
-                            assign(person, event, pos);
-                            assignedThisEvent.push(person.name);
-                            break;
-                        }
-                    }
+                earlyPositions.forEach(pos => {
+                    if (assignment.positions[pos]) return;
+                    // Candidates: prio_early, available, not yet assigned this event
+                    let candidates = earlyRunners.filter(r =>
+                        !assignedThisEvent.includes(r.name) && canWork(r, event, pos)
+                    );
+                    if (candidates.length === 0) return;
+                    // Sort: fewest times at THIS position → then fewest total shifts → then prio
+                    candidates.sort((a, b) => {
+                        const posA = positionsWorked[a.name][pos] || 0;
+                        const posB = positionsWorked[b.name][pos] || 0;
+                        if (posA !== posB) return posA - posB;
+                        if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
+                        return a.prio - b.prio;
+                    });
+                    const person = candidates[0];
+                    assignment.positions[pos] = person.name;
+                    assign(person, event, pos);
+                    assignedThisEvent.push(person.name);
                 });
 
-                // Step 2: Fill all remaining positions (including R5/R6 and any unfilled R1-R4)
-                RUNNER_POSITIONS.forEach(position => {
+                // Step 2: Fill remaining active positions R1-R5 (max 5 runners per event)
+                ACTIVE_POSITIONS.forEach(position => {
                     if (assignment.positions[position]) return; // already filled
                     let candidates = runnerRoster.filter(p =>
                         !assignedThisEvent.includes(p.name) && canWork(p, event, position)
                     );
-                    // Fallback: relax nur_spaet and feiertag constraints
+                    // Fallback: relax feiertag constraint only (keep consecutive-days hard)
                     if (candidates.length === 0) {
                         candidates = runnerRoster.filter(p =>
-                            !assignedThisEvent.includes(p.name) && !isUnavailable(p.name, event.date) && (!p.nur_samstag || isSaturday(event.date))
+                            !assignedThisEvent.includes(p.name) && !isUnavailable(p.name, event.date) &&
+                            (!p.nur_samstag || isSaturday(event.date)) && !p.immer_letzt &&
+                            !hasConsecutiveConflict(p.name, event.date)
                         );
                     }
                     candidates = sortCandidates(candidates, position, event);
@@ -10988,14 +11019,13 @@ Spittelauer Lnde 12/1
                     }
                 });
 
-                // Step 2.5: Place immer_letzt runner (Aziz) on the next position after the last filled one
-                const letzteRunner = runnerRoster.filter(r => r.immer_letzt && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date) && (!r.nur_samstag || isSaturday(event.date)));
+                // Step 2.5: Place immer_letzt runner (Aziz) on the next position after the last filled one (within R1-R5)
+                const letzteRunner = runnerRoster.filter(r => r.immer_letzt && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date) && (!r.nur_samstag || isSaturday(event.date)) && !hasConsecutiveConflict(r.name, event.date));
                 letzteRunner.forEach(person => {
-                    // Find first empty position after all already-filled positions
-                    const lastFilledIdx = RUNNER_POSITIONS.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
+                    const lastFilledIdx = ACTIVE_POSITIONS.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
                     const targetIdx = lastFilledIdx + 1;
-                    if (targetIdx < RUNNER_POSITIONS.length) {
-                        const targetPos = RUNNER_POSITIONS[targetIdx];
+                    if (targetIdx < ACTIVE_POSITIONS.length) {
+                        const targetPos = ACTIVE_POSITIONS[targetIdx];
                         assignment.positions[targetPos] = person.name;
                         assign(person, event, targetPos);
                         assignedThisEvent.push(person.name);
@@ -11003,7 +11033,7 @@ Spittelauer Lnde 12/1
                 });
 
                 // Step 3: Min 4 positions check
-                const filledCount = RUNNER_POSITIONS.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
+                const filledCount = ACTIVE_POSITIONS.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
                 if (filledCount < 4) {
                     assignment.warning = `⚠ Nur ${filledCount} Runner — min. 4 benötigt`;
                 }
@@ -11013,16 +11043,16 @@ Spittelauer Lnde 12/1
 
             // Build Excel
             const wb = XLSX.utils.book_new();
-            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'INFO']];
+            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'INFO']];
             assignments.forEach(a => {
                 wsData.push([a.date, a.event, a.type,
                     a.positions['R1'], a.positions['R2'], a.positions['R3'],
-                    a.positions['R4'], a.positions['R5'], a.positions['R6'],
+                    a.positions['R4'], a.positions['R5'],
                     a.warning || ''
                 ]);
             });
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:30}];
+            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:30}];
             XLSX.utils.book_append_sheet(wb, ws, 'Shiftplan');
 
             const summaryData = [['RUNNER SUMMARY'], ['NAME', 'PRIO', 'DUE', 'TOTAL', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
@@ -11371,7 +11401,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.22';
+            const HUB_VERSION = 'v15.9.23';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
