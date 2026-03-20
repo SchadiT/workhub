@@ -8434,7 +8434,7 @@
 
             showToast('⏳ Lade BMT Events via API...');
             try {
-                const url = BMT_API_URL + '?include_past_days=14&days=31';
+                const url = BMT_API_URL + '?include_past_days=14&count=15';
                 // Try direct fetch first (BMT may allow CORS), then proxies
                 const attempts = [
                     { type: 'direct', url: url, headers: { 'Authorization': 'Token token="' + token + '"' } },
@@ -8454,6 +8454,7 @@
                         clearTimeout(timeoutId);
                         if (resp.ok) {
                             const text = await resp.text();
+                            console.log('BMT API raw response:', text.substring(0, 500));
                             if (text && text.trim().startsWith('[')) {
                                 data = JSON.parse(text);
                                 console.log('BMT API loaded via', attempt.type);
