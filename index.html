@@ -2904,11 +2904,11 @@
                                     <th>Name</th>
                                     <th>Due Shifts</th>
                                     <th>Immer Konzert</th>
-                                    <th>Pos 1-3</th>
+                                    <th>Prio R1-4</th>
                                     <th>Nur Samstag</th>
                                     <th>Max 1 DS/Mo</th>
                                     <th>Feiertag OK</th>
-                                    <th>Nur ab 00:30</th>
+                                    <th>Immer Letzt</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -8373,7 +8373,7 @@
                 statusEl.innerHTML = 'Kein Token gespeichert.';
                 statusEl.style.color = '#888';
             }
-            document.getElementById('bmt-api-modal').classList.add('show');
+            document.getElementById('bmt-api-modal').classList.add('active');
         }
 
         function saveBMTApiToken() {
@@ -8434,40 +8434,42 @@
 
             showToast('⏳ Lade BMT Events via API...');
             try {
-                const url = BMT_API_URL + '?include_past_days=14&count=15';
-                // Try direct fetch first (BMT may allow CORS), then proxies
-                const attempts = [
-                    { type: 'direct', url: url, headers: { 'Authorization': 'Token token="' + token + '"' } },
-                    { type: 'proxy', url: 'https://corsproxy.io/?url=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"', 'x-cors-api-key': 'temp' } },
-                    { type: 'proxy', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"' } },
-                    { type: 'proxy', url: 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"' } }
+                const today = new Date();
+                const from = new Date(today);
+                from.setDate(from.getDate() - 14);
+                const fromStr = from.toISOString().split('T')[0];
+                const until = new Date(today);
+                until.setDate(until.getDate() + 90);
+                const untilStr = until.toISOString().split('T')[0];
+
+                const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=15';
+                // Use CORS proxy since browser can't hit BMT API directly
+                const proxies = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://corsproxy.io/?url=',
+                    'https://api.codetabs.com/v1/proxy?quest='
                 ];
                 let data = null;
-                for (const attempt of attempts) {
+                for (const proxy of proxies) {
                     try {
                         const controller = new AbortController();
                         const timeoutId = setTimeout(() => controller.abort(), 8000);
-                        const resp = await fetch(attempt.url, {
-                            headers: attempt.headers,
+                        const resp = await fetch(proxy + encodeURIComponent(url), {
+                            headers: { 'Authorization': 'Token token="' + token + '"' },
                             signal: controller.signal
                         });
                         clearTimeout(timeoutId);
                         if (resp.ok) {
                             const text = await resp.text();
-                            console.log('BMT API raw response:', text.substring(0, 500));
-                            if (text && text.trim().startsWith('[')) {
-                                data = JSON.parse(text);
-                                console.log('BMT API loaded via', attempt.type);
-                                break;
-                            }
+                            data = JSON.parse(text);
+                            break;
                         }
                     } catch(e) {
-                        console.log('BMT API attempt failed:', attempt.type, e.message);
+                        console.log('BMT API proxy failed:', proxy, e.message);
                     }
                 }
 
-                if (!data || !Array.isArray(data)) throw new Error('Keine Daten erhalten — Response: ' + JSON.stringify(data).substring(0, 200));
-                console.log('BMT API raw data:', data.length, 'events', data[0] ? JSON.stringify(data[0]).substring(0, 200) : 'empty');
+                if (!data || !Array.isArray(data)) throw new Error('Keine Daten erhalten');
 
                 bmtEvents = data.map(ev => mapBMTApiEvent(ev));
                 localStorage.setItem(BMT_API_CACHE_KEY, JSON.stringify(bmtEvents));
@@ -10582,17 +10584,25 @@ Spittelauer Lnde 12/1
         // ============================================
 
         const DEFAULT_RUNNER_ROSTER = [
-            { prio: 1, name: "Jakob",   due_shifts: "6-8", nur_samstag: false, pos_1_3: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Kann",    due_shifts: "6-8", nur_samstag: false, pos_1_3: true,  always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, pos_1_3: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  pos_1_3: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  pos_1_3: false, always_concert: false, max_ds_month: false, feiertag_ok: true,  nur_spaet: false },
-            { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, pos_1_3: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, pos_1_3: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, pos_1_3: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: true  }
+            { prio: 1, name: "Jakob",   due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 1, name: "Kaan",    due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: true,  nur_spaet: false },
+            { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
+            { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, immer_letzt: true  }
         ];
 
         let runnerRoster = JSON.parse(localStorage.getItem('runnerRoster2')) || JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER));
+        // Migrate old fields
+        runnerRoster = runnerRoster.map(r => {
+            if (r.prio_early === undefined) r.prio_early = r.pos_1_3 || false;
+            if (r.immer_letzt === undefined) r.immer_letzt = r.nur_spaet || false;
+            delete r.pos_1_3;
+            delete r.nur_spaet;
+            return r;
+        });
 
         const RUNNER_POSITIONS = ["R1", "R2", "R3", "R4", "R5", "R6"];
 
@@ -10630,6 +10640,22 @@ Spittelauer Lnde 12/1
 
         // Runner availability grid state
         let runnerAvailState = {};
+        let runnerExcludedEvents = new Set();
+
+        function getRunnerEventKey(dateStr, summary) {
+            return dateStr + '|' + (summary || '');
+        }
+
+        function toggleRunnerEventExclusion(dateStr, summary) {
+            const key = getRunnerEventKey(dateStr, summary);
+            if (runnerExcludedEvents.has(key)) runnerExcludedEvents.delete(key);
+            else runnerExcludedEvents.add(key);
+            updateRunnerAvailGrid();
+        }
+
+        function isRunnerEventExcluded(dateStr, summary) {
+            return runnerExcludedEvents.has(getRunnerEventKey(dateStr, summary));
+        }
 
         function updateRunnerAvailGrid() {
             const events = getRunnerSelectedEvents();
@@ -10644,10 +10670,12 @@ Spittelauer Lnde 12/1
             const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
             const names = runnerRoster.map(r => r.name);
             let html = '<table style="border-collapse:collapse;font-size:11px;min-width:100%;">';
-            html += '<tr><th style="padding:4px 8px;text-align:left;border:1px solid #333;background:#1a1a1a;white-space:nowrap;">Datum</th>';
+            html += '<tr>';
+            html += '<th style="padding:4px 6px;text-align:center;border:1px solid #333;background:#1a1a1a;">&#10003;</th>';
+            html += '<th style="padding:4px 8px;text-align:left;border:1px solid #333;background:#1a1a1a;white-space:nowrap;">Datum</th>';
             html += '<th style="padding:4px 8px;text-align:left;border:1px solid #333;background:#1a1a1a;">Event</th>';
             names.forEach(name => {
-                html += `<th style="padding:4px 8px;text-align:center;border:1px solid #333;background:#1a1a1a;white-space:nowrap;">${name}</th>`;
+                html += '<th style="padding:4px 8px;text-align:center;border:1px solid #333;background:#1a1a1a;white-space:nowrap;">' + name + '</th>';
             });
             html += '</tr>';
             events.forEach(e => {
@@ -10656,17 +10684,24 @@ Spittelauer Lnde 12/1
                 const shortDate = days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit'});
                 const cat = e.category || 'fremd';
                 const color = cat === 'konzert' ? '#a855f7' : cat === 'eigen' ? '#22c55e' : '#888';
-                html += `<tr>`;
-                html += `<td style="padding:4px 8px;border:1px solid #333;white-space:nowrap;color:${color};">${shortDate}</td>`;
-                html += `<td style="padding:4px 8px;border:1px solid #333;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.summary||''}</td>`;
+                const excluded = isRunnerEventExcluded(dateStr, e.summary);
+                const rowOpacity = excluded ? 'opacity:0.35;' : '';
+                const summaryEsc = (e.summary||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+                html += '<tr style="' + rowOpacity + '">';
+                html += '<td style="padding:3px 6px;border:1px solid #333;text-align:center;">' +
+                    '<button onclick="toggleRunnerEventExclusion(\'' + dateStr + '\',\'' + summaryEsc + '\')"' +
+                    ' style="background:' + (excluded?'#4b5563':'#22c55e') + ';color:#fff;border:none;width:22px;height:22px;cursor:pointer;font-size:12px;font-weight:700;border-radius:3px;">' +
+                    (excluded?'&ndash;':'&#10003;') + '</button></td>';
+                html += '<td style="padding:4px 8px;border:1px solid #333;white-space:nowrap;color:' + (excluded?'#555':color) + ';">' + shortDate + '</td>';
+                html += '<td style="padding:4px 8px;border:1px solid #333;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (e.summary||'') + '</td>';
                 names.forEach(name => {
                     const key = dateStr + '_' + name;
                     const isFrei = runnerAvailState[key] || false;
-                    html += `<td style="padding:3px;border:1px solid #333;text-align:center;">
-                        <button onclick="toggleRunnerAvail('${dateStr}','${name.replace(/'/g,"\\'")}')"
-                            style="background:${isFrei?'#ef4444':'#22c55e'};color:#fff;border:none;padding:2px 8px;cursor:pointer;font-size:10px;font-weight:600;width:42px;">
-                            ${isFrei?'FREI':'ok'}
-                        </button></td>`;
+                    html += '<td style="padding:3px;border:1px solid #333;text-align:center;">' +
+                        '<button onclick="' + (excluded?'':("toggleRunnerAvail('" + dateStr + "','" + name.replace(/'/g,"\\'") + "')")) + '"' +
+                        ' style="background:' + (excluded?'#2a2a2a':isFrei?'#ef4444':'#22c55e') + ';color:' + (excluded?'#444':'#fff') + ';border:none;padding:2px 8px;cursor:' + (excluded?'default':'pointer') + ';font-size:10px;font-weight:600;width:42px;"' +
+                        (excluded?' disabled':'') + '>' +
+                        (isFrei?'FREI':'ok') + '</button></td>';
                 });
                 html += '</tr>';
             });
@@ -10682,7 +10717,12 @@ Spittelauer Lnde 12/1
         }
 
         function downloadRunnerAvailSheet() {
-            const events = getRunnerSelectedEvents();
+            const allEvents = getRunnerSelectedEvents();
+            const events = allEvents.filter(e => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
+                return !isRunnerEventExcluded(dateStr, e.summary);
+            });
             if (events.length === 0) { showToast('Keine Events ausgewählt', 'error'); return; }
             const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
             const months = document.querySelectorAll('.runner-month-check:checked');
@@ -10870,16 +10910,8 @@ Spittelauer Lnde 12/1
                 // Nur Samstag — hard
                 if (person.nur_samstag && !isSaturday(date)) return false;
 
-                // Pos 1-3 only — hard
-                if (person.pos_1_3 && posIndex(position) > 2) return false;
-
-                // Nur Spätschicht — hard: position start time must be >= 00:30
-                if (person.nur_spaet) {
-                    const posTime = getPositionTime(position, eventType);
-                    const posMin = timeToMinutes(posTime);
-                    const cutoff = timeToMinutes('00:30');
-                    if (posMin < cutoff) return false;
-                }
+                // Immer letzte Position — hard: kann nicht in R1-R5 eingeplant werden (wird separat nach Fill gesetzt)
+                if (person.immer_letzt) return false;
 
                 // Feiertag OK check — if next day IS a holiday and person does NOT have feiertag_ok, they cannot work
                 const nextDay = getNextDayLabel(date);
@@ -10921,25 +10953,27 @@ Spittelauer Lnde 12/1
                 RUNNER_POSITIONS.forEach(p => assignment.positions[p] = '');
                 const assignedThisEvent = [];
 
-                // Step 1: Place always_concert runners first for concerts
-                if (isConcert) {
-                    const alwaysRunners = runnerRoster.filter(r =>
-                        r.always_concert && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date)
-                    );
-                    alwaysRunners.forEach(person => {
-                        // Find first available position they can work
-                        for (const pos of RUNNER_POSITIONS) {
-                            if (!assignment.positions[pos] && canWork(person, event, pos)) {
-                                assignment.positions[pos] = person.name;
-                                assign(person, event, pos);
-                                assignedThisEvent.push(person.name);
-                                break;
-                            }
+                // Step 1: Place prio_early runners into R1-R4 first (Jakob, Kaan, Gordan, Zuzu)
+                const earlyPositions = ["R1", "R2", "R3", "R4"];
+                const earlyRunners = runnerRoster.filter(r => r.prio_early);
+                // Sort early runners by prio, then shift balance
+                const sortedEarly = earlyRunners.slice().sort((a, b) => {
+                    if (a.prio !== b.prio) return a.prio - b.prio;
+                    return shiftsTotal[a.name] - shiftsTotal[b.name];
+                });
+                sortedEarly.forEach(person => {
+                    if (assignedThisEvent.includes(person.name)) return;
+                    for (const pos of earlyPositions) {
+                        if (!assignment.positions[pos] && canWork(person, event, pos)) {
+                            assignment.positions[pos] = person.name;
+                            assign(person, event, pos);
+                            assignedThisEvent.push(person.name);
+                            break;
                         }
-                    });
-                }
+                    }
+                });
 
-                // Step 2: Fill remaining positions
+                // Step 2: Fill all remaining positions (including R5/R6 and any unfilled R1-R4)
                 RUNNER_POSITIONS.forEach(position => {
                     if (assignment.positions[position]) return; // already filled
                     let candidates = runnerRoster.filter(p =>
@@ -10958,24 +10992,45 @@ Spittelauer Lnde 12/1
                         assign(person, event, position);
                         assignedThisEvent.push(person.name);
                     } else {
-                        assignment.positions[position] = '???';
+                        assignment.positions[position] = '';
                     }
                 });
+
+                // Step 2.5: Place immer_letzt runner (Aziz) on the next position after the last filled one
+                const letzteRunner = runnerRoster.filter(r => r.immer_letzt && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date) && (!r.nur_samstag || isSaturday(event.date)));
+                letzteRunner.forEach(person => {
+                    // Find first empty position after all already-filled positions
+                    const lastFilledIdx = RUNNER_POSITIONS.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
+                    const targetIdx = lastFilledIdx + 1;
+                    if (targetIdx < RUNNER_POSITIONS.length) {
+                        const targetPos = RUNNER_POSITIONS[targetIdx];
+                        assignment.positions[targetPos] = person.name;
+                        assign(person, event, targetPos);
+                        assignedThisEvent.push(person.name);
+                    }
+                });
+
+                // Step 3: Min 4 positions check
+                const filledCount = RUNNER_POSITIONS.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
+                if (filledCount < 4) {
+                    assignment.warning = `⚠ Nur ${filledCount} Runner — min. 4 benötigt`;
+                }
 
                 assignments.push(assignment);
             });
 
             // Build Excel
             const wb = XLSX.utils.book_new();
-            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
+            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'INFO']];
             assignments.forEach(a => {
                 wsData.push([a.date, a.event, a.type,
                     a.positions['R1'], a.positions['R2'], a.positions['R3'],
-                    a.positions['R4'], a.positions['R5'], a.positions['R6']
+                    a.positions['R4'], a.positions['R5'], a.positions['R6'],
+                    a.warning || ''
                 ]);
             });
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12}];
+            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:30}];
             XLSX.utils.book_append_sheet(wb, ws, 'Shiftplan');
 
             const summaryData = [['RUNNER SUMMARY'], ['NAME', 'PRIO', 'DUE', 'TOTAL', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
@@ -10989,7 +11044,12 @@ Spittelauer Lnde 12/1
 
             const fileName = `Runner_Shiftplan_${events[0]?.date?.split('.')?.[1] || 'XX'}_${events[0]?.date?.split('.')?.[2] || '2026'}.xlsx`;
             XLSX.writeFile(wb, fileName);
-            showToast(`${fileName} downloaded!`);
+            const warningEvents = assignments.filter(a => a.warning);
+            if (warningEvents.length > 0) {
+                showToast(`${fileName} downloaded — ⚠ ${warningEvents.length} Event(s) mit unter 4 Runnern!`, 'warning');
+            } else {
+                showToast(`${fileName} downloaded!`);
+            }
         }
 
         function renderRunnerRoster() {
@@ -11005,18 +11065,18 @@ Spittelauer Lnde 12/1
                     <td><input type="text" value="${r.name}" onchange="updateRunnerRoster(${idx},'name',this.value)"></td>
                     <td><input type="text" value="${r.due_shifts}" onchange="updateRunnerRoster(${idx},'due_shifts',this.value)" style="width:55px;"></td>
                     <td><input type="checkbox" ${r.always_concert?'checked':''} onchange="updateRunnerRoster(${idx},'always_concert',this.checked)"></td>
-                    <td><input type="checkbox" ${r.pos_1_3?'checked':''} onchange="updateRunnerRoster(${idx},'pos_1_3',this.checked)"></td>
+                    <td><input type="checkbox" ${r.prio_early?'checked':''} onchange="updateRunnerRoster(${idx},'prio_early',this.checked)"></td>
                     <td><input type="checkbox" ${r.nur_samstag?'checked':''} onchange="updateRunnerRoster(${idx},'nur_samstag',this.checked)"></td>
                     <td><input type="checkbox" ${r.max_ds_month?'checked':''} onchange="updateRunnerRoster(${idx},'max_ds_month',this.checked)"></td>
                     <td><input type="checkbox" ${r.feiertag_ok?'checked':''} onchange="updateRunnerRoster(${idx},'feiertag_ok',this.checked)"></td>
-                    <td><input type="checkbox" ${r.nur_spaet?'checked':''} onchange="updateRunnerRoster(${idx},'nur_spaet',this.checked)"></td>
+                    <td><input type="checkbox" ${r.immer_letzt?'checked':''} onchange="updateRunnerRoster(${idx},'immer_letzt',this.checked)"></td>
                     <td><button class="bar-roster-delete" onclick="deleteRunnerRosterMember(${idx})">&#10006;</button></td>
                 </tr>`;
             });
         }
 
         function updateRunnerRoster(idx, field, value) { runnerRoster[idx][field] = value; }
-        function addRunnerRosterMember() { runnerRoster.push({ prio: 2, name: 'New', due_shifts: '4', nur_samstag: false, pos_1_3: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false }); renderRunnerRoster(); }
+        function addRunnerRosterMember() { runnerRoster.push({ prio: 2, name: 'New', due_shifts: '4', nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, immer_letzt: false }); renderRunnerRoster(); }
         function deleteRunnerRosterMember(idx) { if (confirm(`${runnerRoster[idx].name} löschen?`)) { runnerRoster.splice(idx, 1); renderRunnerRoster(); } }
         function saveRunnerRoster() { localStorage.setItem('runnerRoster2', JSON.stringify(runnerRoster)); showToast('Runner Roster gespeichert!'); }
         function resetRunnerRoster() { if (confirm('Roster auf Default zurücksetzen?')) { runnerRoster = JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER)); renderRunnerRoster(); saveRunnerRoster(); } }
