@@ -6684,24 +6684,16 @@
             const mainFloorRow = document.getElementById('main-floor-row');
             if (mainFloorRow) mainFloorRow.style.display = template === 'CLUB' ? 'flex' : 'none';
             
-            // Fill staff names from shiftplan (not times — those are preserved)
-            if (e.technik) document.getElementById('fs-technik').value = e.technik;
-            if (e.cvd) document.getElementById('fs-cvd').value = e.cvd;
-            if (e.terrasse) { const el = document.getElementById('fs-terrasse'); if (el) el.value = e.terrasse; }
-            if (e.kitchen) { const el = document.getElementById('fs-kitchen'); if (el) el.value = e.kitchen; }
-            if (e.main1) document.getElementById('fs-main1').value = e.main1;
-            if (e.main2) document.getElementById('fs-main2').value = e.main2;
-            if (e.main3) document.getElementById('fs-main3').value = e.main3;
-            if (e.main4) document.getElementById('fs-main4').value = e.main4;
-            if (e.runner1) document.getElementById('fs-runner1').value = e.runner1;
-            if (e.runner2) document.getElementById('fs-runner2').value = e.runner2;
-            if (e.runner3) document.getElementById('fs-runner3').value = e.runner3;
-            if (e.runner4) document.getElementById('fs-runner4').value = e.runner4;
-            if (e.runner5) document.getElementById('fs-runner5').value = e.runner5;
-            if (e.runner6) document.getElementById('fs-runner6').value = e.runner6;
-            if (!document.getElementById('fs-gard1').value) document.getElementById('fs-gard1').value = e.gard1 || 'Sofia';
-            if (!document.getElementById('fs-gard2').value) document.getElementById('fs-gard2').value = e.gard2 || 'Fayez';
-            if (!document.getElementById('fs-gard3').value) document.getElementById('fs-gard3').value = e.gard3 || 'Nico';
+            // Fill staff names from shiftplan — always set, even if empty (prevents stale values from previous event)
+            const nameFields = ['technik','cvd','terrasse','kitchen','main1','main2','main3','main4',
+                                'runner1','runner2','runner3','runner4','runner5','runner6'];
+            nameFields.forEach(k => {
+                const el = document.getElementById('fs-' + k);
+                if (el) el.value = e[k] || '';
+            });
+            document.getElementById('fs-gard1').value = e.gard1 || 'Sofia';
+            document.getElementById('fs-gard2').value = e.gard2 || 'Fayez';
+            document.getElementById('fs-gard3').value = e.gard3 || 'Nico';
             
             // Update Kassa radio based on event type
             const isEigen = isEigenveranstaltung(e.name || '');
