@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.21</title>
+    <title>Turbo Projects Work Hub v15.9.22</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4309,7 +4309,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.21</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.22</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -10462,37 +10462,28 @@ Spittelauer Lnde 12/1
             const events = getRunnerSelectedEvents();
             if (events.length === 0) { showToast('Keine Events ausgewählt', 'error'); return; }
             const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+            const months = document.querySelectorAll('.runner-month-check:checked');
+            const monthNames = ['','Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+            const monthStr = Array.from(months).map(cb => monthNames[parseInt(cb.value)]).join('+');
+            const year = document.getElementById('runner-year')?.value || '2026';
             const wb = XLSX.utils.book_new();
-            const headerRow = ['Name','PRIO','Due'];
-            const dateRow = ['','',''];
-            const eventNameRow = ['','',''];
-            const typeRow = ['Typ','',''];
+            const runnerNames = runnerRoster.map(r => r.name);
+            const titleRow = [`Availability ${monthStr}/${year}`];
+            const headerRow = ['DATE', 'DAY', 'EVENT', 'TYPE', ...runnerNames];
+            const wsData = [titleRow, headerRow];
             events.forEach(e => {
                 const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                const dateStr = d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
-                headerRow.push(days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}));
-                dateRow.push(dateStr);
-                eventNameRow.push(e.summary||'');
-                typeRow.push(e.category==='konzert'?'Konzert':'Club');
+                const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
+                const dayStr = days[d.getDay()];
+                const typ = e.category === 'konzert' ? 'Konzert' : 'Club';
+                wsData.push([dateStr, dayStr, e.summary || '', typ, ...runnerNames.map(() => '')]);
             });
-            const rows = [headerRow, dateRow, eventNameRow, typeRow];
-            runnerRoster.forEach(r => {
-                const row = [r.name, r.prio, r.due_shifts];
-                events.forEach(e => {
-                    const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                    const dateStr = d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
-                    row.push(runnerAvailState[dateStr+'_'+r.name] ? 'FREI' : 'ok');
-                });
-                rows.push(row);
-            });
-            const ws = XLSX.utils.aoa_to_sheet(rows);
-            const colWidths = [{wch:14},{wch:5},{wch:10}];
-            events.forEach(() => colWidths.push({wch:12}));
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            const colWidths = [{wch:13},{wch:13},{wch:26},{wch:10}];
+            runnerNames.forEach(() => colWidths.push({wch:10}));
             ws['!cols'] = colWidths;
             XLSX.utils.book_append_sheet(wb, ws, 'Availability');
-            const month = document.querySelector('.runner-month-check:checked')?.value || 'XX';
-            const year = document.getElementById('runner-year')?.value || '2026';
-            XLSX.writeFile(wb, `Runner_Availability_${String(month).padStart(2,'0')}_${year}.xlsx`);
+            XLSX.writeFile(wb, `Runner_Availability_${monthStr}_${year}.xlsx`);
             showToast('Runner Availability Sheet downloaded!');
         }
 
@@ -10548,43 +10539,7 @@ Spittelauer Lnde 12/1
         }
 
         function generateRunnerAvailabilitySheet() {
-            const events = getRunnerSelectedEvents();
-            if (events.length === 0) { showToast('Keine Events ausgewählt', 'error'); return; }
-
-            const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-            const wb = XLSX.utils.book_new();
-
-            const header = ['Name', 'PRIO', 'Due Shifts'];
-            const typeRow  = ['', '', ''];
-            const nameRow  = ['', '', ''];
-            const instrRow = ['← Bitte ausfüllen', '', ''];
-
-            events.forEach(e => {
-                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
-                header.push(days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'}));
-                typeRow.push(e.category === 'konzert' ? 'Konzert' : 'Club');
-                nameRow.push(e.summary || '');
-                instrRow.push('ok');
-            });
-
-            const rows = [header, typeRow, nameRow, instrRow];
-            runnerRoster.forEach(r => {
-                const row = [r.name, r.prio, r.due_shifts];
-                events.forEach(() => row.push('ok'));
-                rows.push(row);
-            });
-
-            const ws = XLSX.utils.aoa_to_sheet(rows);
-            const colWidths = [{wch:14},{wch:5},{wch:10}];
-            events.forEach(() => colWidths.push({wch:12}));
-            ws['!cols'] = colWidths;
-            XLSX.utils.book_append_sheet(wb, ws, 'Availability');
-
-            const month = document.querySelector('.runner-month-check:checked')?.value || 'XX';
-            const year = document.getElementById('runner-year').value;
-            XLSX.writeFile(wb, `Runner_Availability_${month.padStart(2,'0')}_${year}.xlsx`);
-            showToast('Runner Availability Sheet downloaded!');
+            downloadRunnerAvailSheet();
         }
 
         function handleRunnerAvailabilityUpload(event) {
@@ -10597,27 +10552,27 @@ Spittelauer Lnde 12/1
                     const ws = wb.Sheets[wb.SheetNames[0]];
                     const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
 
-                    const headerRow = data[0] || [];
-                    const typeRow   = data[1] || [];
-                    const nameRow   = data[2] || [];
-                    const eventCols = [];
-
-                    for (let c = 3; c < headerRow.length; c++) {
-                        if (headerRow[c]) {
-                            eventCols.push({ col: c, dateLabel: String(headerRow[c]), type: String(typeRow[c] || 'Club'), name: String(nameRow[c] || '') });
-                        }
+                    // Row 0 = title, Row 1 = headers (DATE,DAY,EVENT,TYPE,Name1,Name2,...)
+                    const headerRow = data[1] || [];
+                    const runnerCols = [];
+                    for (let c = 4; c < headerRow.length; c++) {
+                        const name = String(headerRow[c] || '').trim();
+                        if (name) runnerCols.push({ col: c, name });
                     }
 
-                    const events = eventCols.map(ec => ({ date: ec.dateLabel, type: ec.type, eventName: ec.name }));
+                    const events = [];
                     const unavailable = [];
 
-                    for (let r = 4; r < data.length; r++) {
+                    for (let r = 2; r < data.length; r++) {
                         const row = data[r];
-                        const name = String(row[0] || '').trim();
-                        if (!name) continue;
-                        eventCols.forEach(ec => {
-                            const val = String(row[ec.col] || '').trim().toUpperCase();
-                            if (val === 'FREI') unavailable.push({ name, date: ec.dateLabel });
+                        const date = String(row[0] || '').trim();
+                        if (!date) continue;
+                        const typ = String(row[3] || 'Club').trim();
+                        const eventName = String(row[2] || '').trim();
+                        events.push({ date, type: typ, eventName });
+                        runnerCols.forEach(rc => {
+                            const val = String(row[rc.col] || '').trim().toUpperCase();
+                            if (val === 'FREI') unavailable.push({ name: rc.name, date });
                         });
                     }
 
@@ -10625,7 +10580,7 @@ Spittelauer Lnde 12/1
 
                     const statusEl = document.getElementById('runner-availability-status');
                     statusEl.style.display = 'block';
-                    statusEl.innerHTML = `✅ ${events.length} Events, ${data.length - 4} Runner geladen. ${unavailable.length} FREI Einträge.`;
+                    statusEl.innerHTML = `✅ ${events.length} Events, ${runnerCols.length} Runner geladen. ${unavailable.length} FREI Einträge.`;
                     statusEl.style.color = '#22c55e';
                     document.getElementById('btn-generate-runner-shiftplan').style.display = 'block';
                     showToast('Runner Availability geladen!');
@@ -11141,7 +11096,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.21';
+            const HUB_VERSION = 'v15.9.22';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
