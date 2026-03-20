@@ -8434,38 +8434,34 @@
 
             showToast('⏳ Lade BMT Events via API...');
             try {
-                const today = new Date();
-                const from = new Date(today);
-                from.setDate(from.getDate() - 14);
-                const fromStr = from.toISOString().split('T')[0];
-                const until = new Date(today);
-                until.setDate(until.getDate() + 90);
-                const untilStr = until.toISOString().split('T')[0];
-
-                const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=15';
-                // Use CORS proxy since browser can't hit BMT API directly
-                const proxies = [
-                    'https://api.allorigins.win/raw?url=',
-                    'https://corsproxy.io/?url=',
-                    'https://api.codetabs.com/v1/proxy?quest='
+                const url = BMT_API_URL + '?include_past_days=14&days=31';
+                // Try direct fetch first (BMT may allow CORS), then proxies
+                const attempts = [
+                    { type: 'direct', url: url, headers: { 'Authorization': 'Token token="' + token + '"' } },
+                    { type: 'proxy', url: 'https://corsproxy.io/?url=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"', 'x-cors-api-key': 'temp' } },
+                    { type: 'proxy', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"' } },
+                    { type: 'proxy', url: 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url), headers: { 'Authorization': 'Token token="' + token + '"' } }
                 ];
                 let data = null;
-                for (const proxy of proxies) {
+                for (const attempt of attempts) {
                     try {
                         const controller = new AbortController();
                         const timeoutId = setTimeout(() => controller.abort(), 8000);
-                        const resp = await fetch(proxy + encodeURIComponent(url), {
-                            headers: { 'Authorization': 'Token token="' + token + '"' },
+                        const resp = await fetch(attempt.url, {
+                            headers: attempt.headers,
                             signal: controller.signal
                         });
                         clearTimeout(timeoutId);
                         if (resp.ok) {
                             const text = await resp.text();
-                            data = JSON.parse(text);
-                            break;
+                            if (text && text.trim().startsWith('[')) {
+                                data = JSON.parse(text);
+                                console.log('BMT API loaded via', attempt.type);
+                                break;
+                            }
                         }
                     } catch(e) {
-                        console.log('BMT API proxy failed:', proxy, e.message);
+                        console.log('BMT API attempt failed:', attempt.type, e.message);
                     }
                 }
 
