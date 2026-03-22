@@ -2847,7 +2847,6 @@
                             <option value="">Alle</option>
                             <option value="EIGEN">EIGEN</option>
                             <option value="FREMD">FREMD</option>
-                            <option value="CON">CON</option>
                         </select>
                     </div>
                     <div style="display:flex;flex-direction:column;gap:3px;">
@@ -14125,21 +14124,37 @@ Spittelauer Lnde 12/1
         let dbvData = [], dbvFiltered = [], dbvLoaded = false, dbvSortCol = 'Datum', dbvSortDir = -1;
 
         function dbvParseCSV(text) {
-            const lines = text.split('\n').filter(l => l.trim());
+            const lines = text.split(/\r?\n/);
             if (lines.length < 2) return [];
-            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-            return lines.slice(1).map(line => {
+            
+            function parseLine(line) {
                 const vals = []; let cur = '', inQ = false;
                 for (let i = 0; i < line.length; i++) {
-                    if (line[i] === '"') { inQ = !inQ; }
-                    else if (line[i] === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
-                    else cur += line[i];
+                    const c = line[i];
+                    if (c === '"') {
+                        if (inQ && line[i+1] === '"') { cur += '"'; i++; } // escaped quote
+                        else inQ = !inQ;
+                    } else if (c === ',' && !inQ) { vals.push(cur); cur = ''; }
+                    else cur += c;
                 }
-                vals.push(cur.trim());
+                vals.push(cur);
+                return vals.map(v => v.trim().replace(/^"|"$/g, ''));
+            }
+            
+            const headers = parseLine(lines[0]);
+            // Find valid header indices (non-empty headers only)
+            const validIdx = headers.map((h,i) => h ? i : -1).filter(i => i >= 0);
+            const validHeaders = validIdx.map(i => headers[i]);
+            
+            return lines.slice(1).map(line => {
+                if (!line.trim()) return null;
+                const vals = parseLine(line);
                 const obj = {};
-                headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/^"|"$/g, ''));
+                validIdx.forEach((srcIdx, destIdx) => {
+                    obj[validHeaders[destIdx]] = vals[srcIdx] || '';
+                });
                 return obj;
-            });
+            }).filter(r => r && r['Event_ID'] && r['Event_ID'].trim() !== '' && r['Event_ID'] !== 'Event_ID');
         }
 
         async function dbvLoad() {
@@ -14208,7 +14223,15 @@ Spittelauer Lnde 12/1
             dbvSort(); dbvRenderTable();
         }
 
-        function dbvFmtN(v) { const n = parseFloat(String(v||'').replace(',','.')); return isNaN(n) ? 0 : n; }
+        function dbvFmtN(v) { 
+            if (v === null || v === undefined || v === '') return 0;
+            const s = String(v).trim().replace(/[€\s]/g,'');
+            // Handle European format (1.234,56) and standard (1234.56)
+            const n = s.includes(',') && s.includes('.') 
+                ? parseFloat(s.replace(/\./g,'').replace(',','.'))
+                : parseFloat(s.replace(',','.'));
+            return isNaN(n) ? 0 : n;
+        }
         function dbvFmtEur(v) { const n = dbvFmtN(v); return n > 0 ? '€' + Math.round(n).toLocaleString('de-AT') : ''; }
 
         function dbvRenderStats() {
