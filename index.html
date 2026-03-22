@@ -4006,7 +4006,7 @@
                     <span class="tool-icon">&#9993;</span>
                     E-Mail
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('db-viewer-modal')" style="border-color:#a855f7;">
+                <button class="tool-btn border-blue" onclick="openModal('db-viewer-modal');dbvLoad();" style="border-color:#a855f7;">
                     <span class="tool-icon">&#128202;</span>
                     Database
                 </button>
@@ -14275,13 +14275,6 @@ Spittelauer Lnde 12/1
             document.getElementById('dbv-search').value = '';
             dbvApplyFilters();
         }
-
-        // Load DB when modal opens
-        const _origOpenModal = window.openModal;
-        window.openModal = function(id) {
-            _origOpenModal(id);
-            if (id === 'db-viewer-modal') dbvLoad();
-        };
 
     </script>
 </body>
