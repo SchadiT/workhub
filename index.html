@@ -14162,7 +14162,10 @@ Spittelauer Lnde 12/1
             try {
                 const res = await fetch(DBV_CSV_URL);
                 const text = await res.text();
-                dbvData = dbvParseCSV(text).filter(r => r['Event_ID'] && r['Event_ID'] !== 'Event_ID');
+                const parsed = dbvParseCSV(text);
+                // Debug: log first row to verify column mapping
+                if (parsed.length > 0) console.log('DBV first row:', parsed[0]);
+                dbvData = parsed;
                 dbvLoaded = true;
                 document.getElementById('dbv-status-dot').style.background = '#22c55e';
                 document.getElementById('dbv-status').textContent = dbvData.length + ' Events geladen';
@@ -14206,15 +14209,17 @@ Spittelauer Lnde 12/1
         }
 
         function dbvSort() {
+            function parseDate(s) {
+                if (!s) return new Date(0);
+                const p = String(s).split('.');
+                return p.length === 3 ? new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0])) : new Date(0);
+            }
             dbvFiltered.sort((a, b) => {
                 let av = a[dbvSortCol] || '', bv = b[dbvSortCol] || '';
+                if (dbvSortCol === 'Datum') return (parseDate(av) - parseDate(bv)) * dbvSortDir;
                 const an = parseFloat(String(av).replace(',','.')), bn = parseFloat(String(bv).replace(',','.'));
                 if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dbvSortDir;
-                if (dbvSortCol === 'Datum') {
-                    const dp = s => { const p = s.split('.'); return p.length===3 ? new Date(p[2],p[1]-1,p[0]) : new Date(0); };
-                    return (dp(av) - dp(bv)) * dbvSortDir;
-                }
-                return av.localeCompare(bv) * dbvSortDir;
+                return String(av).localeCompare(String(bv)) * dbvSortDir;
             });
         }
 
