@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.26</title>
+    <title>Turbo Projects Work Hub v15.9.29</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4395,7 +4395,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.26</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.29</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -10896,9 +10896,30 @@ Spittelauer Lnde 12/1
                     const events = [];
                     const unavailable = [];
 
+                    function parseExcelDate(val) {
+                        if (!val && val !== 0) return '';
+                        // Excel serial number (e.g. 46954)
+                        if (typeof val === 'number') {
+                            const d = new Date(Math.round((val - 25569) * 86400 * 1000));
+                            const day   = String(d.getUTCDate()).padStart(2, '0');
+                            const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+                            const year  = d.getUTCFullYear();
+                            return `${day}.${month}.${year}`;
+                        }
+                        const s = String(val).trim();
+                        // Already DD.MM.YYYY
+                        if (/^\d{2}\.\d{2}\.\d{4}$/.test(s)) return s;
+                        // YYYY-MM-DD
+                        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+                            const [y,m,d] = s.split('-');
+                            return `${d}.${m}.${y}`;
+                        }
+                        return s;
+                    }
+
                     for (let r = 2; r < data.length; r++) {
                         const row = data[r];
-                        const date = String(row[0] || '').trim();
+                        const date = parseExcelDate(row[0]);
                         if (!date) continue;
                         const typ = String(row[3] || 'Club').trim();
                         const eventName = String(row[2] || '').trim();
@@ -11079,7 +11100,11 @@ Spittelauer Lnde 12/1
                 }
 
                 function prefersSkip(person) {
-                    if (person.skip_weekend_soft && (isSaturday(event.date) || isFriday(event.date))) return true;
+                    // skip_weekend_soft: only deprioritize if person already has a shift this weekend
+                    if (person.skip_weekend_soft && (isSaturday(event.date) || isFriday(event.date))) {
+                        const weKey = getWeekendKey(event.date);
+                        return (weShifts[person.name][weKey] || 0) >= 1;
+                    }
                     if (person.max_ds_month) {
                         const weKey = getWeekendKey(event.date);
                         return (weShifts[person.name][weKey] || 0) >= 1;
@@ -11088,11 +11113,15 @@ Spittelauer Lnde 12/1
                 }
 
                 function sortCandidatesExt(candidates, position) {
+                    // Only apply soft-skip deprioritization if there are enough non-skip candidates
+                    const nonSkip = candidates.filter(c => !prefersSkip(c));
+                    const applySkip = nonSkip.length > 0; // if everyone prefers-skip, ignore it
                     return candidates.sort((a, b) => {
-                        // soft skip last
-                        const skipA = prefersSkip(a) ? 1 : 0;
-                        const skipB = prefersSkip(b) ? 1 : 0;
-                        if (skipA !== skipB) return skipA - skipB;
+                        if (applySkip) {
+                            const skipA = prefersSkip(a) ? 1 : 0;
+                            const skipB = prefersSkip(b) ? 1 : 0;
+                            if (skipA !== skipB) return skipA - skipB;
+                        }
                         const rotA = positionsWorked[a.name][position] || 0;
                         const rotB = positionsWorked[b.name][position] || 0;
                         if (rotA !== rotB) return rotA - rotB;
@@ -11116,6 +11145,12 @@ Spittelauer Lnde 12/1
                         posNum <= (r.prio_max_pos || 4)
                     );
                     candidates.sort((a, b) => {
+                        const nonSkipCount = candidates.filter(c => !prefersSkip(c)).length;
+                        if (nonSkipCount > 0) {
+                            const skipA = prefersSkip(a) ? 1 : 0;
+                            const skipB = prefersSkip(b) ? 1 : 0;
+                            if (skipA !== skipB) return skipA - skipB;
+                        }
                         const posA = positionsWorked[a.name][pos] || 0;
                         const posB = positionsWorked[b.name][pos] || 0;
                         if (posA !== posB) return posA - posB;
@@ -11546,7 +11581,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.26';
+            const HUB_VERSION = 'v15.9.29';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
