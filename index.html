@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.37</title>
+    <title>Turbo Projects Work Hub v15.9.38</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3060,15 +3060,15 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>PRIO</th>
                                     <th>Name</th>
                                     <th>Due Shifts</th>
-                                    <th>Immer Konzert</th>
-                                    <th>Prio R1-4</th>
-                                    <th>Nur Samstag</th>
-                                    <th>Max 1 DS/Mo</th>
-                                    <th>Feiertag OK</th>
-                                    <th>Immer Letzt</th>
+                                    <th>Pref POS</th>
+                                    <th>No Fridays</th>
+                                    <th>WD Last Pos</th>
+                                    <th>1 WE Free</th>
+                                    <th>No Weekdays</th>
+                                    <th>Always Last</th>
+                                    <th>Konzert Last</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -4502,7 +4502,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.37</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.38</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -10744,19 +10744,19 @@ Spittelauer Lnde 12/1
         // ============================================
 
         const DEFAULT_RUNNER_ROSTER = [
-            // prio_early: placed in R1-R3 (Kaan/Gordan) or R2-R4 (Zuzu) or R1-R4 (Jakob)
-            // immer_letzt: always placed at last position after others are filled
-            // konzert_letzt: like immer_letzt but ONLY at Konzert events
-            // skip_weekend_soft: avoid scheduling on weekends if possible (soft rule)
-            // no_konzert: never schedule at Konzert events
-            { prio: 1, name: "Jakob",   due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: true,  no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 1, name: "Kaan",    due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  prio_early: true,  prio_max_pos: 4, prio_min_pos: 2, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, prio_max_pos: 6, prio_min_pos: 3, skip_weekend_soft: false, no_konzert: false, konzert_letzt: true,  immer_letzt: false, max_ds_month: false, feiertag_ok: true  },
-            { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: true,  konzert_letzt: false, immer_letzt: true,  max_ds_month: false, feiertag_ok: false }
+            // Fields: prio_min_pos/prio_max_pos = preferred position range
+            // no_fridays: never schedule on Fridays (hard)
+            // weekdays_last_pos: on weekdays, only assign as last position (hard)
+            // we_free_soft: try to give one full weekend free per month (soft)
+            // no_weekdays: never schedule on weekdays (hard)
+            { prio: 1, name: "Jakob",   due_shifts: "6",   nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: true,  no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Kaan",    due_shifts: "6",   nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Gordan",  due_shifts: "6",   nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Zuzu",    due_shifts: "6",   nur_samstag: false, prio_early: true,  prio_max_pos: 4, prio_min_pos: 2, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 4, skip_weekend_soft: false, no_konzert: false, konzert_letzt: true,  immer_letzt: false, no_fridays: true,  weekdays_last_pos: true,  we_free_soft: true,  no_weekdays: false, max_ds_month: false, feiertag_ok: true  },
+            { prio: 2, name: "Hasib",   due_shifts: "6",   nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 3, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 3, name: "Peter",   due_shifts: "6",   nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 3, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 2, name: "Aziz",    due_shifts: "6",   nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 4, skip_weekend_soft: false, no_konzert: true,  konzert_letzt: false, immer_letzt: true,  no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: true,  max_ds_month: false, feiertag_ok: false }
         ];
 
         let runnerRoster = JSON.parse(localStorage.getItem('runnerRoster2')) || JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER));
@@ -10769,6 +10769,10 @@ Spittelauer Lnde 12/1
             if (r.skip_weekend_soft === undefined) r.skip_weekend_soft = false;
             if (r.prio_min_pos === undefined) r.prio_min_pos = 1;
             if (r.prio_max_pos === undefined) r.prio_max_pos = 6;
+            if (r.no_fridays === undefined) r.no_fridays = false;
+            if (r.weekdays_last_pos === undefined) r.weekdays_last_pos = false;
+            if (r.we_free_soft === undefined) r.we_free_soft = false;
+            if (r.no_weekdays === undefined) r.no_weekdays = false;
             delete r.pos_1_3;
             delete r.nur_spaet;
             return r;
@@ -11191,15 +11195,18 @@ Spittelauer Lnde 12/1
                 function isLetzterForEvent(person) {
                     if (person.immer_letzt) return true;
                     if (person.konzert_letzt && isConcert) return true;
+                    if (person.weekdays_last_pos && !isFriday(event.date) && !isSaturday(event.date)) return true;
                     return false;
                 }
 
-                // Extended canWork — also blocks no_konzert at concerts, skip_weekend_soft handled separately
+                // Extended canWork — hard rules only
                 function canWorkEvent(person, pos) {
                     if (isUnavailable(person.name, event.date)) return false;
                     if (person.nur_samstag && !isSaturday(event.date)) return false;
-                    if (isLetzterForEvent(person)) return false; // handled separately
+                    if (isLetzterForEvent(person)) return false;
                     if (person.no_konzert && isConcert) return false;
+                    if (person.no_fridays && isFriday(event.date)) return false;
+                    if (person.no_weekdays && (isFriday(event.date) || isSaturday(event.date))) return false;
                     if (hasConsecutiveConflict(person.name, event.date)) return false;
                     const nextDay = getNextDayLabel(event.date);
                     if (isHoliday(nextDay) && !person.feiertag_ok) return false;
@@ -11207,7 +11214,10 @@ Spittelauer Lnde 12/1
                 }
 
                 function prefersSkip(person) {
-                    // skip_weekend_soft: only deprioritize if person already has a shift this weekend
+                    if (person.we_free_soft && (isSaturday(event.date) || isFriday(event.date))) {
+                        const weKey = getWeekendKey(event.date);
+                        return (weShifts[person.name][weKey] || 0) >= 1;
+                    }
                     if (person.skip_weekend_soft && (isSaturday(event.date) || isFriday(event.date))) {
                         const weKey = getWeekendKey(event.date);
                         return (weShifts[person.name][weKey] || 0) >= 1;
@@ -11323,10 +11333,29 @@ Spittelauer Lnde 12/1
                     }
                 });
 
-                // Step 4: Warning if min not reached
+                // Step 4: Warning if min not reached — try rule-break fallback and flag it
                 const filledCount = activePositions.filter(p => assignment.positions[p]).length;
                 if (filledCount < minRunners) {
-                    assignment.warning = `⚠ Nur ${filledCount}/${minRunners} Runner (${event.type})`;
+                    // Fallback: ignore no_fridays / no_weekdays to fill positions, but FLAG it
+                    activePositions.forEach(pos => {
+                        if (assignment.positions[pos]) return;
+                        const ruleBreakCandidates = runnerRoster.filter(p =>
+                            !assignedThisEvent.includes(p.name) &&
+                            !isUnavailable(p.name, event.date) &&
+                            !isLetzterForEvent(p) &&
+                            !(p.no_konzert && isConcert) &&
+                            !hasConsecutiveConflict(p.name, event.date)
+                        );
+                        if (ruleBreakCandidates.length > 0) {
+                            const person = sortCandidatesExt(ruleBreakCandidates, pos)[0];
+                            assignment.positions[pos] = '⚠ ' + person.name;
+                            assign(person, event, pos);
+                            assignedThisEvent.push(person.name);
+                            assignment.ruleBreak = (assignment.ruleBreak || '') + person.name + ' (Regel gebrochen); ';
+                        }
+                    });
+                    const filledNow = activePositions.filter(p => assignment.positions[p]).length;
+                    assignment.warning = '⚠ ' + (assignment.ruleBreak ? 'REGELBRUCH: ' + assignment.ruleBreak : 'Nur ' + filledNow + '/' + minRunners + ' Runner (' + event.type + ')');
                 }
 
                 assignments.push(assignment);
@@ -11369,28 +11398,28 @@ Spittelauer Lnde 12/1
             const tbody = document.getElementById('runner-roster-body');
             tbody.innerHTML = '';
             runnerRoster.forEach((r, idx) => {
-                tbody.innerHTML += `<tr>
-                    <td><select onchange="updateRunnerRoster(${idx},'prio',parseInt(this.value))">
-                        <option value="1" ${r.prio===1?'selected':''}>1</option>
-                        <option value="2" ${r.prio===2?'selected':''}>2</option>
-                        <option value="3" ${r.prio===3?'selected':''}>3</option>
-                    </select></td>
-                    <td><input type="text" value="${r.name}" onchange="updateRunnerRoster(${idx},'name',this.value)"></td>
-                    <td><input type="text" value="${r.due_shifts}" onchange="updateRunnerRoster(${idx},'due_shifts',this.value)" style="width:55px;"></td>
-                    <td><input type="checkbox" ${r.always_concert?'checked':''} onchange="updateRunnerRoster(${idx},'always_concert',this.checked)"></td>
-                    <td><input type="checkbox" ${r.prio_early?'checked':''} onchange="updateRunnerRoster(${idx},'prio_early',this.checked)"></td>
-                    <td><input type="checkbox" ${r.nur_samstag?'checked':''} onchange="updateRunnerRoster(${idx},'nur_samstag',this.checked)"></td>
-                    <td><input type="checkbox" ${r.max_ds_month?'checked':''} onchange="updateRunnerRoster(${idx},'max_ds_month',this.checked)"></td>
-                    <td><input type="checkbox" ${r.feiertag_ok?'checked':''} onchange="updateRunnerRoster(${idx},'feiertag_ok',this.checked)"></td>
-                    <td><input type="checkbox" ${r.immer_letzt?'checked':''} onchange="updateRunnerRoster(${idx},'immer_letzt',this.checked)"></td>
-                    <td><button class="bar-roster-delete" onclick="deleteRunnerRosterMember(${idx})">&#10006;</button></td>
-                </tr>`;
+                const posLabel = (r.prio_min_pos||1) + '-' + (r.prio_max_pos||6);
+                tbody.innerHTML += '<tr>' +
+                    '<td><input type="text" value="' + r.name + '" onchange="updateRunnerRoster(' + idx + ',\'name\',this.value)" style="width:60px;"></td>' +
+                    '<td><input type="text" value="' + r.due_shifts + '" onchange="updateRunnerRoster(' + idx + ',\'due_shifts\',this.value)" style="width:40px;"></td>' +
+                    '<td style="text-align:center;font-size:11px;">' + posLabel + '</td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.no_fridays?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'no_fridays\',this.checked)" title="Hard: Nie Freitag"></td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.weekdays_last_pos?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'weekdays_last_pos\',this.checked)" title="Hard: An Werktagen nur letzte Position"></td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.we_free_soft?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'we_free_soft\',this.checked)" title="Soft: 1 freies Wochenende/Monat wenn möglich"></td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.no_weekdays?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'no_weekdays\',this.checked)" title="Hard: Nie Wochenende (FR/SA)"></td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.immer_letzt?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'immer_letzt\',this.checked)" title="Hard: Immer letzte Position"></td>' +
+                    '<td style="text-align:center;"><input type="checkbox" ' + (r.konzert_letzt?'checked':'') + ' onchange="updateRunnerRoster(' + idx + ',\'konzert_letzt\',this.checked)" title="Hard: Bei Konzert letzte Position"></td>' +
+                    '<td><button class="bar-roster-delete" onclick="deleteRunnerRosterMember(' + idx + ')">&#10006;</button></td>' +
+                    '</tr>';
             });
         }
 
         function updateRunnerRoster(idx, field, value) { runnerRoster[idx][field] = value; }
-        function addRunnerRosterMember() { runnerRoster.push({ prio: 2, name: 'New', due_shifts: '4', nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, immer_letzt: false }); renderRunnerRoster(); }
-        function deleteRunnerRosterMember(idx) { if (confirm(`${runnerRoster[idx].name} löschen?`)) { runnerRoster.splice(idx, 1); renderRunnerRoster(); } }
+        function addRunnerRosterMember() {
+            runnerRoster.push({ prio: 2, name: 'New', due_shifts: '6', nur_samstag: false, prio_early: false, prio_min_pos: 1, prio_max_pos: 6, no_fridays: false, weekdays_last_pos: false, we_free_soft: false, no_weekdays: false, immer_letzt: false, konzert_letzt: false, no_konzert: false, max_ds_month: false, feiertag_ok: false });
+            renderRunnerRoster();
+        }
+        function deleteRunnerRosterMember(idx) { if (confirm(runnerRoster[idx].name + ' löschen?')) { runnerRoster.splice(idx, 1); renderRunnerRoster(); } }
         function saveRunnerRoster() { localStorage.setItem('runnerRoster2', JSON.stringify(runnerRoster)); showToast('Runner Roster gespeichert!'); }
         function resetRunnerRoster() { if (confirm('Roster auf Default zurücksetzen?')) { runnerRoster = JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER)); renderRunnerRoster(); saveRunnerRoster(); } }
 
@@ -11692,7 +11721,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.37';
+            const HUB_VERSION = 'v15.9.38';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
