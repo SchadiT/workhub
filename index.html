@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.35</title>
+    <title>Turbo Projects Work Hub v15.9.37</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4502,7 +4502,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.35</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.37</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -11692,7 +11692,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.35';
+            const HUB_VERSION = 'v15.9.37';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -14620,7 +14620,6 @@ Spittelauer Lnde 12/1
                 d.setMonth(d.getMonth() + i);
                 futureLabels.push('+' + i + 'M (' + fmtFutureLabel(d) + ')');
             }
-            }
             const allLabels = [...sortedDates, ...futureLabels];
 
             // Chart datasets
@@ -14743,11 +14742,10 @@ Spittelauer Lnde 12/1
                         
                         <div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Prognose</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-                            ${[['Nächster\nMonat', proj[0]], ['3 Monate', proj[1]], ['6 Monate', proj[2]]].map(([label,val]) => `
-                            <div style="background:var(--surface-2);border-radius:4px;padding:8px;text-align:center;">
-                                <div style="font-size:9px;color:#555;margin-bottom:3px;white-space:pre-line;">${label}</div>
-                                <div style="font-size:12px;font-weight:700;color:${pr.color};">${fmt(val)}</div>
-                            </div>`).join('')}
+                            ${(function(){
+                                const boxes = [['Naechster Monat', proj[0]], ['3 Monate', proj[1]], ['6 Monate', proj[2]]];
+                                return boxes.map(function(b){ return '<div style="background:var(--surface-2);border-radius:4px;padding:8px;text-align:center;"><div style="font-size:9px;color:#555;margin-bottom:3px;">' + b[0] + '</div><div style="font-size:12px;font-weight:700;color:' + pr.color + ';">' + fmt(b[1]) + '</div></div>'; }).join('');
+                            })()}
                         </div>
 
                         <div style="margin-top:10px;font-size:10px;color:#444;line-height:1.5;">
