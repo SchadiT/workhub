@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.30</title>
+    <title>Turbo Projects Work Hub v15.9.34</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <!-- Chart.js for Promoter Analysis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -2888,6 +2890,107 @@
         </div>
     </div>
 
+    <!-- PROMOTER ANALYSIS Modal -->
+    <div class="modal-overlay" id="promoter-analysis-modal">
+        <div class="modal" style="max-width:1200px;width:96vw;max-height:92vh;">
+            <div class="modal-header" style="background:linear-gradient(135deg,#0c1a2e,#0e2340);">
+                <h3>&#128200; Promoter Analysis</h3>
+                <button class="modal-close" onclick="closeModal('promoter-analysis-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:0;display:flex;flex-direction:column;max-height:calc(92vh - 60px);overflow:hidden;">
+
+                <!-- TOP BAR: Promoter Multi-Select + Controls -->
+                <div style="padding:12px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
+                    <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:200px;">
+                        <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Promoter auswählen</label>
+                        <div id="pa-promoter-wrap" style="display:flex;flex-wrap:wrap;gap:6px;background:#0a0a0a;border:1px solid var(--border);border-radius:4px;padding:6px 8px;min-height:36px;cursor:pointer;" onclick="togglePaDropdown()">
+                            <span id="pa-selected-label" style="font-size:12px;color:#888;">Alle Promoter</span>
+                        </div>
+                        <div id="pa-dropdown" style="display:none;position:absolute;z-index:999;background:#1a1a1a;border:1px solid var(--border);border-radius:4px;max-height:220px;overflow-y:auto;min-width:220px;margin-top:2px;box-shadow:0 8px 24px rgba(0,0,0,.6);">
+                            <div style="padding:6px 10px;border-bottom:1px solid var(--border);display:flex;gap:8px;">
+                                <button onclick="paSelectAll()" style="background:none;border:1px solid #333;color:#888;padding:2px 8px;border-radius:3px;cursor:pointer;font-size:11px;">Alle</button>
+                                <button onclick="paSelectNone()" style="background:none;border:1px solid #333;color:#888;padding:2px 8px;border-radius:3px;cursor:pointer;font-size:11px;">Keine</button>
+                                <input type="text" id="pa-search-promoter" placeholder="Suchen..." oninput="paFilterDropdown()" style="background:#0a0a0a;border:1px solid #333;color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;flex:1;">
+                            </div>
+                            <div id="pa-dropdown-list"></div>
+                        </div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:3px;">
+                        <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Metrik</label>
+                        <select id="pa-metric" onchange="paRender()" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:5px 8px;border-radius:4px;font-size:12px;">
+                            <option value="Bar_Revenue">Bar Revenue</option>
+                            <option value="Total_Revenue">Total Revenue</option>
+                            <option value="Total_PAX">PAX</option>
+                            <option value="Bar_Per_Person">Bar / Person</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:3px;">
+                        <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Trend nach</label>
+                        <select id="pa-trend" onchange="paRender()" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:5px 8px;border-radius:4px;font-size:12px;">
+                            <option value="date">Datum (chronologisch)</option>
+                            <option value="month">Monat aggregiert</option>
+                            <option value="year">Jahr aggregiert</option>
+                            <option value="weekday">Wochentag</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:3px;">
+                        <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Typ</label>
+                        <select id="pa-type" onchange="paRender()" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:5px 8px;border-radius:4px;font-size:12px;">
+                            <option value="">Alle</option>
+                            <option value="EIGEN">EIGEN</option>
+                            <option value="FREMD">FREMD</option>
+                        </select>
+                    </div>
+                    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+                        <div id="pa-status-dot" style="width:7px;height:7px;border-radius:50%;background:#444;"></div>
+                        <span id="pa-status" style="font-size:11px;color:#888;">—</span>
+                    </div>
+                </div>
+
+                <!-- KPI STRIP -->
+                <div id="pa-kpi-strip" style="display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border-bottom:1px solid var(--border);flex-shrink:0;"></div>
+
+                <!-- TABS -->
+                <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--surface-2);flex-shrink:0;">
+                    <button id="pa-tab-analyse" onclick="paSwitchTab('analyse')" style="padding:10px 20px;font-size:12px;font-weight:600;border:none;border-bottom:2px solid #06b6d4;background:none;color:#fff;cursor:pointer;">📊 Analyse</button>
+                    <button id="pa-tab-prognose" onclick="paSwitchTab('prognose')" style="padding:10px 20px;font-size:12px;font-weight:600;border:none;border-bottom:2px solid transparent;background:none;color:#666;cursor:pointer;">📈 Prognose</button>
+                </div>
+
+                <!-- ANALYSE TAB -->
+                <div id="pa-tab-content-analyse" style="display:flex;flex:1;overflow:hidden;min-height:0;">
+                    <!-- LEFT: Chart + Comparison table -->
+                    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;padding:16px;gap:16px;overflow-y:auto;">
+                        <!-- Trend Chart -->
+                        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;">
+                            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;" id="pa-chart-title">Trend</div>
+                            <div style="position:relative;height:220px;">
+                                <canvas id="pa-trend-chart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Promoter Comparison Table -->
+                        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;">
+                            <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Promoter Vergleich</div>
+                            <div id="pa-comparison-table"></div>
+                        </div>
+                    </div>
+                    <!-- RIGHT: Event List -->
+                    <div style="width:340px;border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0;">
+                        <div style="padding:10px 14px;font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:var(--surface-2);">Events</div>
+                        <div id="pa-event-list" style="font-size:11px;"></div>
+                    </div>
+                </div>
+
+                <!-- PROGNOSE TAB -->
+                <div id="pa-tab-content-prognose" style="display:none;flex:1;overflow-y:auto;padding:20px;gap:16px;flex-direction:column;">
+                    <div id="pa-prognose-content">
+                        <div style="text-align:center;padding:60px;color:#555;">Promoter auswählen und Analyse starten</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- RUNNER STAFFING Modal -->
     <div class="modal-overlay" id="runner-staffing-modal">
         <div class="modal" style="max-width: 850px;">
@@ -4009,6 +4112,10 @@
                     <span class="tool-icon">&#128202;</span>
                     Database
                 </button>
+                <button class="tool-btn border-blue" onclick="openModal('promoter-analysis-modal');paLoad();" style="border-color:#06b6d4;">
+                    <span class="tool-icon">&#128200;</span>
+                    Promoter
+                </button>
                 <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')" style="position: relative;">
                     <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
                     <span class="tool-icon">&#128157;</span>
@@ -4395,7 +4502,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.30</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.34</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -11585,7 +11692,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.30';
+            const HUB_VERSION = 'v15.9.34';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -14427,10 +14534,604 @@ Spittelauer Lnde 12/1
             wrap.innerHTML = html;
         }
 
-        function dbvReset() {
+        function paSwitchTab(tab) {
+            document.getElementById('pa-tab-content-analyse').style.display = tab === 'analyse' ? 'flex' : 'none';
+            document.getElementById('pa-tab-content-prognose').style.display = tab === 'prognose' ? 'flex' : 'none';
+            document.getElementById('pa-tab-analyse').style.borderBottomColor = tab === 'analyse' ? '#06b6d4' : 'transparent';
+            document.getElementById('pa-tab-analyse').style.color = tab === 'analyse' ? '#fff' : '#666';
+            document.getElementById('pa-tab-prognose').style.borderBottomColor = tab === 'prognose' ? '#06b6d4' : 'transparent';
+            document.getElementById('pa-tab-prognose').style.color = tab === 'prognose' ? '#fff' : '#666';
+            if (tab === 'prognose') paRenderPrognose();
+        }
+
+        // ── LINEAR REGRESSION ──────────────────────────────────────────────
+        function linReg(points) {
+            // points: [{x: timestamp, y: value}]
+            const n = points.length;
+            if (n < 2) return null;
+            const sumX  = points.reduce((s,p) => s + p.x, 0);
+            const sumY  = points.reduce((s,p) => s + p.y, 0);
+            const sumXY = points.reduce((s,p) => s + p.x * p.y, 0);
+            const sumX2 = points.reduce((s,p) => s + p.x * p.x, 0);
+            const denom = n * sumX2 - sumX * sumX;
+            if (denom === 0) return null;
+            const slope     = (n * sumXY - sumX * sumY) / denom;
+            const intercept = (sumY - slope * sumX) / n;
+            // R² 
+            const yMean = sumY / n;
+            const ssTot = points.reduce((s,p) => s + Math.pow(p.y - yMean, 2), 0);
+            const ssRes = points.reduce((s,p) => s + Math.pow(p.y - (slope * p.x + intercept), 2), 0);
+            const r2 = ssTot > 0 ? 1 - ssRes / ssTot : 0;
+            return { slope, intercept, r2 };
+        }
+
+        let paProgChart = null;
+
+        function paRenderPrognose() {
+            const wrap = document.getElementById('pa-prognose-content');
+            const selected = [...paSelected];
+            const metric = document.getElementById('pa-metric').value;
+            const metricLabel = paGetMetricLabel(metric);
+            const isEur = metric !== 'Total_PAX';
+            const fmt = v => v > 0 ? (isEur ? paEur(v) : paNum(v)) : '—';
+
+            if (selected.length === 0) {
+                wrap.innerHTML = '<div style="text-align:center;padding:60px;color:#555;">Kein Promoter ausgewählt</div>';
+                return;
+            }
+
+            // Build per-promoter regression
+            const promoResults = selected.map((promoter, idx) => {
+                const rows = paData.filter(r =>
+                    r['Promoter'] === promoter && paFmtN(r[metric]) > 0
+                ).sort((a,b) => {
+                    const da = paParseDate(a['Datum']), db = paParseDate(b['Datum']);
+                    return (da||0) - (db||0);
+                });
+
+                if (rows.length < 2) return { promoter, rows, reg: null, color: PA_COLORS[idx % PA_COLORS.length] };
+
+                const points = rows.map(r => ({
+                    x: (paParseDate(r['Datum'])?.getTime() || 0) / (1000 * 60 * 60 * 24 * 30), // months since epoch
+                    y: paFmtN(r[metric])
+                }));
+
+                const reg = linReg(points);
+                return { promoter, rows, points, reg, color: PA_COLORS[idx % PA_COLORS.length] };
+            });
+
+            // Next event projections: +1, +3, +6 months from last event
+            const now = Date.now() / (1000 * 60 * 60 * 24 * 30);
+
+            // Build chart: historical + regression line + future projection
+            const allDates = new Set();
+            promoResults.forEach(pr => pr.rows?.forEach(r => allDates.add(r['Datum'])));
+            const sortedDates = [...allDates].sort((a,b) => {
+                const pa = a.split('.'), pb = b.split('.');
+                return new Date(pa[2],pa[1]-1,pa[0]) - new Date(pb[2],pb[1]-1,pb[0]);
+            });
+
+            // Future labels: next 6 months
+            const lastDate = new Date();
+            const futureLabels = [];
+            const fmtFutureLabel = d => d.toLocaleDateString('de-AT', {month:'short', year:'2-digit'});
+            for (let i = 1; i <= 6; i++) {
+                const d = new Date(lastDate);
+                d.setMonth(d.getMonth() + i);
+                futureLabels.push('+' + i + 'M (' + fmtFutureLabel(d) + ')');
+            }
+            }
+            const allLabels = [...sortedDates, ...futureLabels];
+
+            // Chart datasets
+            const chartDatasets = [];
+            promoResults.forEach(pr => {
+                if (!pr.reg) return;
+                const color = pr.color;
+
+                // Historical actuals
+                const histData = allLabels.map(l => {
+                    if (futureLabels.includes(l)) return null;
+                    const row = pr.rows.find(r => r['Datum'] === l);
+                    return row ? paFmtN(row[metric]) : null;
+                });
+
+                // Regression + future projection
+                const regData = allLabels.map((l, i) => {
+                    let xVal;
+                    if (futureLabels.includes(l)) {
+                        const fi = futureLabels.indexOf(l);
+                        xVal = now + fi + 1;
+                    } else {
+                        const p = l.split('.');
+                        xVal = (new Date(p[2],p[1]-1,p[0]).getTime()) / (1000*60*60*24*30);
+                    }
+                    const val = pr.reg.slope * xVal + pr.reg.intercept;
+                    return Math.max(0, Math.round(val));
+                });
+
+                chartDatasets.push({
+                    label: `${pr.promoter} (Actual)`,
+                    data: histData,
+                    borderColor: color,
+                    backgroundColor: color + '33',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    tension: 0.2,
+                    fill: false,
+                    spanGaps: false,
+                });
+                chartDatasets.push({
+                    label: `${pr.promoter} (Trend)`,
+                    data: regData,
+                    borderColor: color,
+                    borderDash: [6, 3],
+                    pointRadius: allLabels.map(l => futureLabels.includes(l) ? 5 : 0),
+                    pointStyle: allLabels.map(l => futureLabels.includes(l) ? 'triangle' : 'circle'),
+                    pointBackgroundColor: color,
+                    tension: 0,
+                    fill: false,
+                    spanGaps: true,
+                });
+            });
+
+            // Render
+            wrap.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <!-- Trend Chart -->
+                <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                        <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">📈 ${metricLabel} Trend + Prognose (nächste 6 Monate)</div>
+                        <div style="font-size:10px;color:#555;">— — Trendlinie &nbsp; ▲ Prognose</div>
+                    </div>
+                    <div style="position:relative;height:260px;"><canvas id="pa-prog-chart"></canvas></div>
+                </div>
+
+                <!-- Per-Promoter Prognose Cards -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
+                ${promoResults.map(pr => {
+                    if (!pr.reg) return `
+                        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:${pr.color};display:inline-block;"></span>
+                                <strong>${pr.promoter}</strong>
+                            </div>
+                            <div style="color:#555;font-size:12px;">Zu wenig Daten für Prognose (min. 2 Events benötigt)</div>
+                        </div>`;
+
+                    const trend = pr.reg.slope;
+                    const trendDir = trend > 50 ? '↑' : trend < -50 ? '↓' : '→';
+                    const trendColor = trend > 50 ? '#22c55e' : trend < -50 ? '#ef4444' : '#f59e0b';
+                    const r2pct = Math.round(pr.reg.r2 * 100);
+                    const r2color = r2pct >= 60 ? '#22c55e' : r2pct >= 30 ? '#f59e0b' : '#ef4444';
+                    const r2label = r2pct >= 60 ? 'Verlässlich' : r2pct >= 30 ? 'Mittel' : 'Niedrig';
+
+                    const last3 = pr.rows.slice(-3).map(r => paFmtN(r[metric]));
+                    const avgLast3 = last3.length ? last3.reduce((a,b)=>a+b,0)/last3.length : 0;
+
+                    // Projections
+                    const proj = [1,3,6].map(m => {
+                        const xVal = now + m;
+                        return Math.max(0, Math.round(pr.reg.slope * xVal + pr.reg.intercept));
+                    });
+
+                    return `
+                    <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid ${pr.color};border-radius:6px;padding:16px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:${pr.color};display:inline-block;"></span>
+                                <strong style="font-size:13px;">${pr.promoter}</strong>
+                            </div>
+                            <span style="font-size:18px;font-weight:700;color:${trendColor};">${trendDir}</span>
+                        </div>
+
+                        
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span style="font-size:11px;color:#888;">Trend/Monat</span>
+                            <span style="font-size:11px;font-weight:700;color:${trendColor};">${trend >= 0 ? '+' : ''}${isEur ? paEur(trend*3) : paNum(trend*3)} / Quartal</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span style="font-size:11px;color:#888;">Ø letzte 3 Events</span>
+                            <span style="font-size:11px;font-weight:600;">${fmt(avgLast3)}</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+                            <span style="font-size:11px;color:#888;">Modell-Güte (R²)</span>
+                            <span style="font-size:11px;font-weight:600;color:${r2color};">${r2pct}% — ${r2label}</span>
+                        </div>
+
+                        
+                        <div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Prognose</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                            ${[['Nächster\nMonat', proj[0]], ['3 Monate', proj[1]], ['6 Monate', proj[2]]].map(([label,val]) => `
+                            <div style="background:var(--surface-2);border-radius:4px;padding:8px;text-align:center;">
+                                <div style="font-size:9px;color:#555;margin-bottom:3px;white-space:pre-line;">${label}</div>
+                                <div style="font-size:12px;font-weight:700;color:${pr.color};">${fmt(val)}</div>
+                            </div>`).join('')}
+                        </div>
+
+                        <div style="margin-top:10px;font-size:10px;color:#444;line-height:1.5;">
+                            Basiert auf ${pr.rows.length} Events · Lineare Regression
+                            ${r2pct < 30 ? '<br><span style="color:#ef4444">⚠ Wenig Datenpunkte — Prognose unzuverlässig</span>' : ''}
+                        </div>
+                    </div>`;
+                }).join('')}
+                </div>
+            </div>`;
+
+            // Render chart
+            if (paProgChart) { paProgChart.destroy(); paProgChart = null; }
+            const ctx = document.getElementById('pa-prog-chart');
+            if (ctx && chartDatasets.length) {
+                paProgChart = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: allLabels, datasets: chartDatasets },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: { labels: { color: '#666', font: { size: 10 }, boxWidth: 10, padding: 12, filter: item => !item.text.includes('Trend') || selected.length <= 3 } },
+                            tooltip: {
+                                backgroundColor: '#1a1a1a', borderColor: '#333', borderWidth: 1,
+                                titleColor: '#888', bodyColor: '#ccc',
+                                callbacks: {
+                                    label: ctx => {
+                                        if (ctx.raw === null) return null;
+                                        const suffix = isEur ? '€' + ctx.raw.toLocaleString('de-AT') : ctx.raw.toLocaleString('de-AT');
+                                        return ` ${ctx.dataset.label}: ${suffix}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { ticks: { color: '#444', font: { size: 9 }, maxTicksLimit: 14, maxRotation: 45 }, grid: { color: '#151515' } },
+                            y: {
+                                ticks: { color: '#555', font: { size: 10 }, callback: v => isEur ? '€' + Math.round(v/1000) + 'k' : paNum(v) },
+                                grid: { color: '#151515' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
             ['dbv-type','dbv-promoter','dbv-mainact','dbv-year'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('dbv-search').value = '';
             dbvApplyFilters();
+        }
+
+        function dbvReset() {
+
+        // ===== PROMOTER ANALYSIS =====
+        let paLoaded = false, paData = [], paSelected = new Set(), paChart = null;
+        const PA_COLORS = ['#06b6d4','#a855f7','#22c55e','#f59e0b','#ef4444','#3b82f6','#ec4899','#84cc16','#f97316','#8b5cf6'];
+
+        function paFmtN(v) {
+            if (!v && v !== 0) return 0;
+            const s = String(v).trim().replace(/[€\s]/g,'');
+            let n;
+            if (s.includes(',') && s.includes('.')) {
+                n = s.lastIndexOf('.') > s.lastIndexOf(',') ? parseFloat(s.replace(/,/g,'')) : parseFloat(s.replace(/\./g,'').replace(',','.'));
+            } else if (s.includes(',')) { n = parseFloat(s.replace(',','.')); }
+            else { n = parseFloat(s); }
+            return isNaN(n) ? 0 : n;
+        }
+        function paEur(n) { return '€' + Math.round(n).toLocaleString('de-AT'); }
+        function paNum(n) { return Math.round(n).toLocaleString('de-AT'); }
+
+        function paParseDate(s) {
+            if (!s) return null;
+            const p = s.split('.');
+            if (p.length === 3) return new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+            return new Date(s);
+        }
+
+        async function paLoad() {
+            if (paLoaded) { paRender(); return; }
+            // Reuse dbvData if already loaded
+            if (dbvData && dbvData.length > 0) {
+                paData = dbvData;
+                paLoaded = true;
+                paInit();
+                return;
+            }
+            document.getElementById('pa-status').textContent = 'Wird geladen...';
+            const proxies = ['', 'https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy?quest='];
+            for (const proxy of proxies) {
+                try {
+                    const url = proxy ? proxy + encodeURIComponent(DBV_CSV_URL) : DBV_CSV_URL;
+                    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+                    if (!res.ok) continue;
+                    const text = await res.text();
+                    // Reuse dbvParseCSV
+                    paData = dbvParseCSV(text);
+                    if (!paData.length) continue;
+                    paLoaded = true;
+                    paInit();
+                    return;
+                } catch(e) { console.log('PA load failed:', e.message); }
+            }
+            document.getElementById('pa-status').textContent = 'Ladefehler';
+            document.getElementById('pa-status-dot').style.background = '#ef4444';
+        }
+
+        function paInit() {
+            document.getElementById('pa-status-dot').style.background = '#22c55e';
+            document.getElementById('pa-status').textContent = paData.length + ' Events';
+            // Build promoter list
+            const promoters = [...new Set(paData.map(r => r['Promoter']).filter(Boolean))].sort();
+            // Default: top 5 by event count
+            const counts = {};
+            promoters.forEach(p => counts[p] = paData.filter(r => r['Promoter'] === p).length);
+            const top5 = promoters.sort((a,b) => counts[b]-counts[a]).slice(0,5);
+            paSelected = new Set(top5);
+            paBuildDropdown(promoters);
+            paRender();
+        }
+
+        function paBuildDropdown(promoters) {
+            const list = document.getElementById('pa-dropdown-list');
+            list.innerHTML = promoters.map((p,i) => `
+                <label style="display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;border-bottom:1px solid #1a1a1a;" class="pa-prom-item">
+                    <input type="checkbox" value="${p}" ${paSelected.has(p)?'checked':''} onchange="paTogglePromoter('${p}',this.checked)" style="accent-color:#06b6d4;">
+                    <span style="font-size:12px;">${p}</span>
+                </label>`).join('');
+            paUpdateSelectedLabel();
+        }
+
+        function paFilterDropdown() {
+            const q = document.getElementById('pa-search-promoter').value.toLowerCase();
+            document.querySelectorAll('.pa-prom-item').forEach(el => {
+                el.style.display = el.querySelector('span').textContent.toLowerCase().includes(q) ? '' : 'none';
+            });
+        }
+
+        function togglePaDropdown() {
+            const dd = document.getElementById('pa-dropdown');
+            const wrap = document.getElementById('pa-promoter-wrap');
+            const rect = wrap.getBoundingClientRect();
+            dd.style.top = (rect.bottom + 4) + 'px';
+            dd.style.left = rect.left + 'px';
+            dd.style.width = Math.max(rect.width, 260) + 'px';
+            dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('click', e => {
+            if (!e.target.closest('#pa-promoter-wrap') && !e.target.closest('#pa-dropdown')) {
+                const dd = document.getElementById('pa-dropdown');
+                if (dd) dd.style.display = 'none';
+            }
+        });
+
+        function paTogglePromoter(p, checked) {
+            if (checked) paSelected.add(p); else paSelected.delete(p);
+            paUpdateSelectedLabel();
+            paRender();
+        }
+        function paSelectAll() {
+            document.querySelectorAll('#pa-dropdown-list input[type=checkbox]').forEach(cb => { cb.checked = true; paSelected.add(cb.value); });
+            paUpdateSelectedLabel(); paRender();
+        }
+        function paSelectNone() {
+            document.querySelectorAll('#pa-dropdown-list input[type=checkbox]').forEach(cb => { cb.checked = false; paSelected.delete(cb.value); });
+            paUpdateSelectedLabel(); paRender();
+        }
+        function paUpdateSelectedLabel() {
+            const el = document.getElementById('pa-selected-label');
+            if (paSelected.size === 0) el.textContent = 'Kein Promoter gewählt';
+            else if (paSelected.size <= 3) el.textContent = [...paSelected].join(', ');
+            else el.textContent = `${paSelected.size} Promoter ausgewählt`;
+        }
+
+        function paGetFiltered() {
+            const type = document.getElementById('pa-type').value;
+            return paData.filter(r => {
+                if (!r['Promoter'] || !paSelected.has(r['Promoter'])) return false;
+                if (type && r['Type'] !== type) return false;
+                return true;
+            });
+        }
+
+        function paRender() {
+            if (!paLoaded) return;
+            const metric = document.getElementById('pa-metric').value;
+            const trendBy = document.getElementById('pa-trend').value;
+            const filtered = paGetFiltered();
+            const selected = [...paSelected];
+
+            // KPI strip
+            paRenderKPIs(filtered, metric);
+            // Trend chart
+            paRenderChart(selected, metric, trendBy);
+            // Comparison table
+            paRenderComparison(selected, metric);
+            // Event list
+            paRenderEvents(filtered, metric);
+        }
+
+        function paRenderKPIs(filtered, metric) {
+            const strip = document.getElementById('pa-kpi-strip');
+            const barVals = filtered.map(r => paFmtN(r['Bar_Revenue'])).filter(v=>v>0);
+            const revVals = filtered.map(r => paFmtN(r['Total_Revenue'])).filter(v=>v>0);
+            const paxVals = filtered.map(r => paFmtN(r['Total_PAX'])).filter(v=>v>0);
+            const bppVals = filtered.map(r => paFmtN(r['Bar_Per_Person'])).filter(v=>v>0);
+            const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+            const kpis = [
+                { label:'Events', val: filtered.length, fmt: v => v, color:'#fff' },
+                { label:'Bar Total', val: barVals.reduce((a,b)=>a+b,0), fmt: paEur, color:'#22c55e' },
+                { label:'Avg Bar', val: avg(barVals), fmt: paEur, color:'#22c55e' },
+                { label:'Total Revenue', val: revVals.reduce((a,b)=>a+b,0), fmt: paEur, color:'#f59e0b' },
+                { label:'Avg PAX', val: avg(paxVals), fmt: v => v>0?paNum(v):'—', color:'#3b82f6' },
+                { label:'Avg Bar/PAX', val: avg(bppVals), fmt: v => v>0?'€'+v.toFixed(2).replace('.',','):'—', color:'#f59e0b' },
+            ];
+            strip.innerHTML = kpis.map(k => `
+                <div style="background:var(--surface);padding:8px 16px;flex:1;min-width:90px;">
+                    <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">${k.label}</div>
+                    <div style="font-size:15px;font-weight:700;color:${k.color};">${k.fmt(k.val)}</div>
+                </div>`).join('');
+        }
+
+        function paGetMetricLabel(metric) {
+            return { Bar_Revenue:'Bar Revenue', Total_Revenue:'Total Revenue', Total_PAX:'PAX', Bar_Per_Person:'Bar/Person' }[metric] || metric;
+        }
+
+        function paRenderChart(selected, metric, trendBy) {
+            const ctx = document.getElementById('pa-trend-chart');
+            if (!ctx) return;
+            if (paChart) { paChart.destroy(); paChart = null; }
+
+            const MONTH_NAMES = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+            const WEEKDAY_NAMES = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+            const datasets = [];
+            const allLabels = new Set();
+
+            selected.forEach((promoter, idx) => {
+                const rows = paData.filter(r => r['Promoter'] === promoter && paFmtN(r[metric]) > 0);
+                const color = PA_COLORS[idx % PA_COLORS.length];
+
+                let points = {};
+                rows.forEach(r => {
+                    const d = paParseDate(r['Datum']);
+                    if (!d) return;
+                    let key;
+                    if (trendBy === 'date') key = r['Datum'];
+                    else if (trendBy === 'month') key = MONTH_NAMES[d.getMonth()];
+                    else if (trendBy === 'year') key = String(d.getFullYear());
+                    else if (trendBy === 'weekday') key = WEEKDAY_NAMES[d.getDay()];
+                    if (!points[key]) points[key] = [];
+                    points[key].push(paFmtN(r[metric]));
+                });
+
+                Object.keys(points).forEach(k => allLabels.add(k));
+
+                const aggPoints = {};
+                Object.entries(points).forEach(([k,vals]) => {
+                    aggPoints[k] = vals.reduce((a,b)=>a+b,0) / vals.length;
+                });
+
+                datasets.push({ label: promoter, data: aggPoints, color });
+            });
+
+            // Sort labels
+            let labels = [...allLabels];
+            if (trendBy === 'date') {
+                labels.sort((a,b) => {
+                    const pa = a.split('.'), pb = b.split('.');
+                    return new Date(pa[2],pa[1]-1,pa[0]) - new Date(pb[2],pb[1]-1,pb[0]);
+                });
+            } else if (trendBy === 'month') {
+                labels.sort((a,b) => MONTH_NAMES.indexOf(a) - MONTH_NAMES.indexOf(b));
+            } else if (trendBy === 'weekday') {
+                labels.sort((a,b) => WEEKDAY_NAMES.indexOf(a) - WEEKDAY_NAMES.indexOf(b));
+            } else {
+                labels.sort();
+            }
+
+            document.getElementById('pa-chart-title').textContent = `${paGetMetricLabel(metric)} Trend — ${trendBy === 'date' ? 'Chronologisch' : trendBy === 'month' ? 'Nach Monat' : trendBy === 'year' ? 'Nach Jahr' : 'Nach Wochentag'}`;
+
+            const chartDatasets = datasets.map(ds => ({
+                label: ds.label,
+                data: labels.map(l => ds.data[l] !== undefined ? Math.round(ds.data[l]) : null),
+                borderColor: ds.color,
+                backgroundColor: ds.color + '22',
+                pointBackgroundColor: ds.color,
+                pointRadius: trendBy === 'date' ? 3 : 5,
+                pointHoverRadius: 7,
+                tension: 0.3,
+                fill: false,
+                spanGaps: true,
+            }));
+
+            paChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: chartDatasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { labels: { color: '#888', font: { size: 11 }, boxWidth: 12, padding: 16 } },
+                        tooltip: {
+                            backgroundColor: '#1a1a1a', borderColor: '#333', borderWidth: 1,
+                            titleColor: '#fff', bodyColor: '#ccc',
+                            callbacks: {
+                                label: ctx => ` ${ctx.dataset.label}: ${metric.includes('Revenue') || metric.includes('Person') ? '€' + ctx.raw?.toLocaleString('de-AT') : ctx.raw?.toLocaleString('de-AT')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#666', font: { size: 10 }, maxTicksLimit: 16 }, grid: { color: '#1a1a1a' } },
+                        y: {
+                            ticks: { color: '#666', font: { size: 10 }, callback: v => metric === 'Total_PAX' ? paNum(v) : '€' + Math.round(v/1000) + 'k' },
+                            grid: { color: '#1a1a1a' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function paRenderComparison(selected, metric) {
+            const wrap = document.getElementById('pa-comparison-table');
+            const type = document.getElementById('pa-type').value;
+            const isEur = metric !== 'Total_PAX';
+            const fmt = v => v > 0 ? (isEur ? paEur(v) : paNum(v)) : '—';
+            const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+
+            const rows = selected.map((p, idx) => {
+                const events = paData.filter(r => r['Promoter'] === p && (!type || r['Type'] === type));
+                const vals = events.map(r => paFmtN(r[metric])).filter(v=>v>0);
+                const bars = events.map(r => paFmtN(r['Bar_Revenue'])).filter(v=>v>0);
+                return {
+                    promoter: p, color: PA_COLORS[idx % PA_COLORS.length],
+                    n: events.length, avg: avg(vals), total: vals.reduce((a,b)=>a+b,0),
+                    avgBar: avg(bars), best: vals.length ? Math.max(...vals) : 0,
+                    worst: vals.length ? Math.min(...vals) : 0,
+                };
+            }).sort((a,b) => b.avg - a.avg);
+
+            const maxAvg = Math.max(...rows.map(r => r.avg), 1);
+
+            wrap.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
+                <thead><tr style="border-bottom:1px solid var(--border);">
+                    <th style="text-align:left;padding:5px 8px;font-size:10px;color:#666;font-weight:600;text-transform:uppercase;">Promoter</th>
+                    <th style="text-align:right;padding:5px 8px;font-size:10px;color:#666;font-weight:600;text-transform:uppercase;">Events</th>
+                    <th style="text-align:right;padding:5px 8px;font-size:10px;color:#666;font-weight:600;text-transform:uppercase;">Avg ${paGetMetricLabel(metric)}</th>
+                    <th style="text-align:right;padding:5px 8px;font-size:10px;color:#666;font-weight:600;text-transform:uppercase;">Best</th>
+                    <th style="text-align:right;padding:5px 8px;font-size:10px;color:#666;font-weight:600;text-transform:uppercase;">Total</th>
+                    <th style="padding:5px 8px;min-width:80px;"></th>
+                </tr></thead><tbody>
+                ${rows.map(r => `<tr style="border-bottom:1px solid #161616;">
+                    <td style="padding:6px 8px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${r.color};margin-right:6px;"></span>${r.promoter}</td>
+                    <td style="text-align:right;padding:6px 8px;color:#888;">${r.n}</td>
+                    <td style="text-align:right;padding:6px 8px;font-weight:700;color:#22c55e;">${fmt(r.avg)}</td>
+                    <td style="text-align:right;padding:6px 8px;color:#f59e0b;">${fmt(r.best)}</td>
+                    <td style="text-align:right;padding:6px 8px;color:#888;">${fmt(r.total)}</td>
+                    <td style="padding:6px 8px;">
+                        <div style="background:#1a1a1a;border-radius:2px;height:4px;">
+                            <div style="background:${r.color};height:4px;border-radius:2px;width:${Math.round(r.avg/maxAvg*100)}%;"></div>
+                        </div>
+                    </td>
+                </tr>`).join('')}
+                </tbody></table>`;
+        }
+
+        function paRenderEvents(filtered, metric) {
+            const list = document.getElementById('pa-event-list');
+            const isEur = metric !== 'Total_PAX';
+            const sorted = [...filtered].filter(r => paFmtN(r[metric]) > 0)
+                .sort((a,b) => paFmtN(b[metric]) - paFmtN(a[metric]));
+
+            list.innerHTML = sorted.slice(0, 80).map(r => {
+                const val = paFmtN(r[metric]);
+                const fmt = isEur ? paEur(val) : paNum(val);
+                const pIdx = [...paSelected].indexOf(r['Promoter']);
+                const color = PA_COLORS[pIdx >= 0 ? pIdx % PA_COLORS.length : 0];
+                return `<div style="padding:8px 14px;border-bottom:1px solid #161616;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-weight:600;font-size:12px;">${r['Event Name']||'—'}</div>
+                        <div style="font-size:10px;color:#555;margin-top:1px;">${r['Datum']} · <span style="color:${color}">${r['Promoter']}</span></div>
+                    </div>
+                    <div style="font-weight:700;font-size:12px;color:#22c55e;white-space:nowrap;">${fmt}</div>
+                </div>`;
+            }).join('');
         }
 
     </script>
