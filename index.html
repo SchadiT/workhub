@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.29</title>
+    <title>Turbo Projects Work Hub v15.9.30</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4395,7 +4395,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.29</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.30</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -10646,7 +10646,7 @@ Spittelauer Lnde 12/1
             { prio: 1, name: "Kaan",    due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
             { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
             { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  prio_early: true,  prio_max_pos: 4, prio_min_pos: 2, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
-            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: true,  immer_letzt: false, max_ds_month: false, feiertag_ok: true  },
+            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, prio_max_pos: 6, prio_min_pos: 3, skip_weekend_soft: false, no_konzert: false, konzert_letzt: true,  immer_letzt: false, max_ds_month: false, feiertag_ok: true  },
             { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
             { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
             { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: true,  konzert_letzt: false, immer_letzt: true,  max_ds_month: false, feiertag_ok: false }
@@ -11166,12 +11166,15 @@ Spittelauer Lnde 12/1
                 });
 
                 // Step 2: Fill remaining positions with non-prio_early, non-letzt runners
-                activePositions.forEach(pos => {
+                activePositions.forEach((pos, posIdx) => {
                     if (assignment.positions[pos]) return;
+                    const posNum = posIdx + 1;
                     let candidates = runnerRoster.filter(p =>
-                        !assignedThisEvent.includes(p.name) && canWorkEvent(p, pos)
+                        !assignedThisEvent.includes(p.name) &&
+                        canWorkEvent(p, pos) &&
+                        posNum >= (p.prio_min_pos || 1)
                     );
-                    // Fallback: relax feiertag
+                    // Fallback: relax feiertag but keep prio_min_pos hard
                     if (candidates.length === 0) {
                         candidates = runnerRoster.filter(p =>
                             !assignedThisEvent.includes(p.name) &&
@@ -11179,7 +11182,8 @@ Spittelauer Lnde 12/1
                             (!p.nur_samstag || isSaturday(event.date)) &&
                             !isLetzterForEvent(p) &&
                             !(p.no_konzert && isConcert) &&
-                            !hasConsecutiveConflict(p.name, event.date)
+                            !hasConsecutiveConflict(p.name, event.date) &&
+                            posNum >= (p.prio_min_pos || 1)
                         );
                     }
                     candidates = sortCandidatesExt(candidates, pos);
@@ -11581,7 +11585,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.29';
+            const HUB_VERSION = 'v15.9.30';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
