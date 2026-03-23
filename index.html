@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.34</title>
+    <title>Turbo Projects Work Hub v15.9.35</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4502,7 +4502,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.34</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.35</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -11692,7 +11692,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.34';
+            const HUB_VERSION = 'v15.9.35';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -14794,12 +14794,12 @@ Spittelauer Lnde 12/1
                 });
             }
         }
+
+        function dbvReset() {
             ['dbv-type','dbv-promoter','dbv-mainact','dbv-year'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('dbv-search').value = '';
             dbvApplyFilters();
         }
-
-        function dbvReset() {
 
         // ===== PROMOTER ANALYSIS =====
         let paLoaded = false, paData = [], paSelected = new Set(), paChart = null;
