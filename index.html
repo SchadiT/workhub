@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.25</title>
+    <title>Turbo Projects Work Hub v15.9.26</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4395,7 +4395,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.24</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.26</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -10637,14 +10637,19 @@ Spittelauer Lnde 12/1
         // ============================================
 
         const DEFAULT_RUNNER_ROSTER = [
-            { prio: 1, name: "Jakob",   due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Kaan",    due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  prio_early: true,  always_concert: true,  max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: true,  nur_spaet: false },
-            { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, nur_spaet: false },
-            { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, prio_early: false, always_concert: false, max_ds_month: false, feiertag_ok: false, immer_letzt: true  }
+            // prio_early: placed in R1-R3 (Kaan/Gordan) or R2-R4 (Zuzu) or R1-R4 (Jakob)
+            // immer_letzt: always placed at last position after others are filled
+            // konzert_letzt: like immer_letzt but ONLY at Konzert events
+            // skip_weekend_soft: avoid scheduling on weekends if possible (soft rule)
+            // no_konzert: never schedule at Konzert events
+            { prio: 1, name: "Jakob",   due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: true,  no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Kaan",    due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Gordan",  due_shifts: "6-8", nur_samstag: false, prio_early: true,  prio_max_pos: 3, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 1, name: "Zuzu",    due_shifts: "6-8", nur_samstag: true,  prio_early: true,  prio_max_pos: 4, prio_min_pos: 2, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 2, name: "Patrick", due_shifts: "4-6", nur_samstag: true,  prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: true,  immer_letzt: false, max_ds_month: false, feiertag_ok: true  },
+            { prio: 2, name: "Hasib",   due_shifts: "4-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 3, name: "Peter",   due_shifts: "4-6", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: false, konzert_letzt: false, immer_letzt: false, max_ds_month: false, feiertag_ok: false },
+            { prio: 2, name: "Aziz",    due_shifts: "5-7", nur_samstag: false, prio_early: false, prio_max_pos: 6, prio_min_pos: 1, skip_weekend_soft: false, no_konzert: true,  konzert_letzt: false, immer_letzt: true,  max_ds_month: false, feiertag_ok: false }
         ];
 
         let runnerRoster = JSON.parse(localStorage.getItem('runnerRoster2')) || JSON.parse(JSON.stringify(DEFAULT_RUNNER_ROSTER));
@@ -10652,6 +10657,11 @@ Spittelauer Lnde 12/1
         runnerRoster = runnerRoster.map(r => {
             if (r.prio_early === undefined) r.prio_early = r.pos_1_3 || false;
             if (r.immer_letzt === undefined) r.immer_letzt = r.nur_spaet || false;
+            if (r.konzert_letzt === undefined) r.konzert_letzt = false;
+            if (r.no_konzert === undefined) r.no_konzert = false;
+            if (r.skip_weekend_soft === undefined) r.skip_weekend_soft = false;
+            if (r.prio_min_pos === undefined) r.prio_min_pos = 1;
+            if (r.prio_max_pos === undefined) r.prio_max_pos = 6;
             delete r.pos_1_3;
             delete r.nur_spaet;
             return r;
@@ -10689,6 +10699,13 @@ Spittelauer Lnde 12/1
             if (parts.length < 3) return false;
             const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
             return d.getDay() === 6;
+        }
+
+        function isFriday(dateLabel) {
+            const parts = dateLabel.split('.');
+            if (parts.length < 3) return false;
+            const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            return d.getDay() === 5;
         }
 
         // Runner availability grid state
@@ -11033,24 +11050,71 @@ Spittelauer Lnde 12/1
             const assignments = [];
             events.forEach(event => {
                 const isConcert = event.type === 'Konzert';
+                const isEigen   = !isConcert && (event.type === 'Eigen' || EIGENVERANSTALTUNGEN.some(e => event.eventName.toLowerCase().includes(e)));
+                // Min runners: Konzert=4, Club FREMD=5, Club EIGEN=6
+                const minRunners = isConcert ? 4 : (isEigen ? 6 : 5);
+                const activePositions = ["R1","R2","R3","R4","R5","R6"].slice(0, minRunners);
+
                 const assignment = { date: event.date, event: event.eventName, type: event.type, positions: {} };
                 RUNNER_POSITIONS.forEach(p => assignment.positions[p] = '');
                 const assignedThisEvent = [];
 
-                // Max positions: Konzert = 4, Club = 5
-                const eventActivePositions = isConcert ? ["R1","R2","R3","R4"] : ACTIVE_POSITIONS;
+                // Helper: is this person an immer_letzt or konzert_letzt (treated as last) for this event?
+                function isLetzterForEvent(person) {
+                    if (person.immer_letzt) return true;
+                    if (person.konzert_letzt && isConcert) return true;
+                    return false;
+                }
 
-                // Step 1: Place prio_early runners into R1-R4 first (Jakob, Kaan, Gordan, Zuzu) — with rotation
-                const earlyPositions = ["R1", "R2", "R3", "R4"];
+                // Extended canWork — also blocks no_konzert at concerts, skip_weekend_soft handled separately
+                function canWorkEvent(person, pos) {
+                    if (isUnavailable(person.name, event.date)) return false;
+                    if (person.nur_samstag && !isSaturday(event.date)) return false;
+                    if (isLetzterForEvent(person)) return false; // handled separately
+                    if (person.no_konzert && isConcert) return false;
+                    if (hasConsecutiveConflict(person.name, event.date)) return false;
+                    const nextDay = getNextDayLabel(event.date);
+                    if (isHoliday(nextDay) && !person.feiertag_ok) return false;
+                    return true;
+                }
+
+                function prefersSkip(person) {
+                    if (person.skip_weekend_soft && (isSaturday(event.date) || isFriday(event.date))) return true;
+                    if (person.max_ds_month) {
+                        const weKey = getWeekendKey(event.date);
+                        return (weShifts[person.name][weKey] || 0) >= 1;
+                    }
+                    return false;
+                }
+
+                function sortCandidatesExt(candidates, position) {
+                    return candidates.sort((a, b) => {
+                        // soft skip last
+                        const skipA = prefersSkip(a) ? 1 : 0;
+                        const skipB = prefersSkip(b) ? 1 : 0;
+                        if (skipA !== skipB) return skipA - skipB;
+                        const rotA = positionsWorked[a.name][position] || 0;
+                        const rotB = positionsWorked[b.name][position] || 0;
+                        if (rotA !== rotB) return rotA - rotB;
+                        if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
+                        return rotationTiebreak(a, b);
+                    });
+                }
+
+                // Step 1: Place prio_early runners into their allowed position range
+                // Kaan/Gordan: R1-R3 (prio_min=1, prio_max=3)
+                // Zuzu: R2-R4 (prio_min=2, prio_max=4)
+                // Jakob: R1-R4 (prio_min=1, prio_max=4)
                 const earlyRunners = runnerRoster.filter(r => r.prio_early);
-                earlyPositions.forEach(pos => {
+                activePositions.forEach((pos, posIdx) => {
+                    const posNum = posIdx + 1; // 1-based
                     if (assignment.positions[pos]) return;
-                    // Candidates: prio_early, available, not yet assigned this event
                     let candidates = earlyRunners.filter(r =>
-                        !assignedThisEvent.includes(r.name) && canWork(r, event, pos)
+                        !assignedThisEvent.includes(r.name) &&
+                        canWorkEvent(r, pos) &&
+                        posNum >= (r.prio_min_pos || 1) &&
+                        posNum <= (r.prio_max_pos || 4)
                     );
-                    if (candidates.length === 0) return;
-                    // Sort: fewest times at THIS position → then fewest total shifts → then prio
                     candidates.sort((a, b) => {
                         const posA = positionsWorked[a.name][pos] || 0;
                         const posB = positionsWorked[b.name][pos] || 0;
@@ -11058,54 +11122,65 @@ Spittelauer Lnde 12/1
                         if (shiftsTotal[a.name] !== shiftsTotal[b.name]) return shiftsTotal[a.name] - shiftsTotal[b.name];
                         return rotationTiebreak(a, b);
                     });
-                    const person = candidates[0];
-                    assignment.positions[pos] = person.name;
-                    assign(person, event, pos);
-                    assignedThisEvent.push(person.name);
+                    if (candidates.length > 0) {
+                        const person = candidates[0];
+                        assignment.positions[pos] = person.name;
+                        assign(person, event, pos);
+                        assignedThisEvent.push(person.name);
+                    }
                 });
 
-                // Step 2: Fill remaining active positions (Konzert: R1-R4, Club: R1-R5)
-                eventActivePositions.forEach(position => {
-                    if (assignment.positions[position]) return; // already filled
+                // Step 2: Fill remaining positions with non-prio_early, non-letzt runners
+                activePositions.forEach(pos => {
+                    if (assignment.positions[pos]) return;
                     let candidates = runnerRoster.filter(p =>
-                        !assignedThisEvent.includes(p.name) && canWork(p, event, position)
+                        !assignedThisEvent.includes(p.name) && canWorkEvent(p, pos)
                     );
-                    // Fallback: relax feiertag constraint only (keep consecutive-days hard)
+                    // Fallback: relax feiertag
                     if (candidates.length === 0) {
                         candidates = runnerRoster.filter(p =>
-                            !assignedThisEvent.includes(p.name) && !isUnavailable(p.name, event.date) &&
-                            (!p.nur_samstag || isSaturday(event.date)) && !p.immer_letzt &&
+                            !assignedThisEvent.includes(p.name) &&
+                            !isUnavailable(p.name, event.date) &&
+                            (!p.nur_samstag || isSaturday(event.date)) &&
+                            !isLetzterForEvent(p) &&
+                            !(p.no_konzert && isConcert) &&
                             !hasConsecutiveConflict(p.name, event.date)
                         );
                     }
-                    candidates = sortCandidates(candidates, position, event);
+                    candidates = sortCandidatesExt(candidates, pos);
                     if (candidates.length > 0) {
                         const person = candidates[0];
-                        assignment.positions[position] = person.name;
-                        assign(person, event, position);
+                        assignment.positions[pos] = person.name;
+                        assign(person, event, pos);
                         assignedThisEvent.push(person.name);
-                    } else {
-                        assignment.positions[position] = '';
                     }
                 });
 
-                // Step 2.5: Place immer_letzt runner (Aziz) on the next position after the last filled one (within R1-R5)
-                const letzteRunner = runnerRoster.filter(r => r.immer_letzt && !assignedThisEvent.includes(r.name) && !isUnavailable(r.name, event.date) && (!r.nur_samstag || isSaturday(event.date)) && !hasConsecutiveConflict(r.name, event.date));
-                letzteRunner.forEach(person => {
-                    const lastFilledIdx = eventActivePositions.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
+                // Step 3: Place immer_letzt / konzert_letzt runners at next open position after filled ones
+                const letzteRunners = runnerRoster.filter(r =>
+                    isLetzterForEvent(r) &&
+                    !assignedThisEvent.includes(r.name) &&
+                    !isUnavailable(r.name, event.date) &&
+                    (!r.nur_samstag || isSaturday(event.date)) &&
+                    !(r.no_konzert && isConcert) &&
+                    !hasConsecutiveConflict(r.name, event.date)
+                );
+                letzteRunners.forEach(person => {
+                    // Find last filled position index within activePositions
+                    const lastFilledIdx = activePositions.reduce((last, pos, i) => assignment.positions[pos] ? i : last, -1);
                     const targetIdx = lastFilledIdx + 1;
-                    if (targetIdx < eventActivePositions.length) {
-                        const targetPos = eventActivePositions[targetIdx];
+                    if (targetIdx < activePositions.length) {
+                        const targetPos = activePositions[targetIdx];
                         assignment.positions[targetPos] = person.name;
                         assign(person, event, targetPos);
                         assignedThisEvent.push(person.name);
                     }
                 });
 
-                // Step 3: Min 4 positions check
-                const filledCount = eventActivePositions.filter(p => assignment.positions[p] && assignment.positions[p] !== '').length;
-                if (filledCount < 4) {
-                    assignment.warning = `⚠ Nur ${filledCount} Runner — min. 4 benötigt`;
+                // Step 4: Warning if min not reached
+                const filledCount = activePositions.filter(p => assignment.positions[p]).length;
+                if (filledCount < minRunners) {
+                    assignment.warning = `⚠ Nur ${filledCount}/${minRunners} Runner (${event.type})`;
                 }
 
                 assignments.push(assignment);
@@ -11113,16 +11188,16 @@ Spittelauer Lnde 12/1
 
             // Build Excel
             const wb = XLSX.utils.book_new();
-            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'INFO']];
+            const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'INFO']];
             assignments.forEach(a => {
                 wsData.push([a.date, a.event, a.type,
                     a.positions['R1'], a.positions['R2'], a.positions['R3'],
-                    a.positions['R4'], a.positions['R5'],
+                    a.positions['R4'], a.positions['R5'], a.positions['R6'],
                     a.warning || ''
                 ]);
             });
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:30}];
+            ws['!cols'] = [{wch:12},{wch:22},{wch:10},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:12},{wch:30}];
             XLSX.utils.book_append_sheet(wb, ws, 'Shiftplan');
 
             const summaryData = [['RUNNER SUMMARY'], ['NAME', 'PRIO', 'DUE', 'TOTAL', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
@@ -11471,7 +11546,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.24';
+            const HUB_VERSION = 'v15.9.26';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
