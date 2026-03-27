@@ -15264,7 +15264,7 @@ Spittelauer Lnde 12/1
                 const d = new Date(ev.dtstart);
                 return d.getFullYear() === year &&
                        d.getMonth() === month &&
-                       ev.category !== 'konzert';
+                       (ev.category === 'eigen' || ev.category === 'fremd');
             }).sort((a, b) => new Date(a.dtstart) - new Date(b.dtstart));
 
             const statusEl = document.getElementById('mp-status');
@@ -15299,7 +15299,11 @@ Spittelauer Lnde 12/1
                     const day = String(d.getDate()).padStart(2, '0');
                     const mon = String(d.getMonth() + 1).padStart(2, '0');
                     const dateStr = day + '.' + mon;
-                    const name = ev.summary || '—';
+                    const firstArtist = (ev.artists && ev.artists.length > 0)
+                        ? (ev.artists[0].name || '')
+                        : '';
+                    const title = ev.summary || '—';
+                    const name = firstArtist ? title + ' w/ ' + firstArtist : title;
                     lines.push(dateStr + ' ' + name);
                 });
                 // Blank line between weeks (not after last)
