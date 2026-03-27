@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.40</title>
+    <title>Turbo Projects Work Hub v15.9.41</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2867,7 +2867,8 @@
                         <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Suche</label>
                         <input type="text" id="dbv-search" placeholder="Event / Promoter..." oninput="dbvApplyFilters()" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:5px 8px;border-radius:4px;font-size:12px;min-width:150px;">
                     </div>
-                    <button onclick="dbvReset()" style="background:var(--surface);border:1px solid var(--border);color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">↺ Reset</button>
+                    <button onclick="dbvReset()" style="background:var(--surface);border:1px solid var(--border);color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">↺ Filter</button>
+                    <button onclick="dbvRefresh()" style="background:var(--surface);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">⟳ Reload DB</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
                         <div id="dbv-status-dot" style="width:7px;height:7px;border-radius:50%;background:#444;"></div>
                         <span id="dbv-status" style="font-size:11px;color:#888;">Lädt...</span>
@@ -2987,6 +2988,31 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- MONATSPROGRAMM Modal -->
+    <div class="modal-overlay" id="monatsprogramm-modal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <div class="modal-title">&#128240; Monatsprogramm Post</div>
+                <button class="modal-close" onclick="closeModal('monatsprogramm-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+                <!-- Controls -->
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <select id="mp-month" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:13px;flex:1;min-width:120px;"></select>
+                    <select id="mp-year" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:13px;width:90px;"></select>
+                    <button onclick="mpGenerate()" style="background:#f472b6;color:#000;border:none;padding:6px 16px;font-size:13px;font-weight:700;cursor:pointer;">GENERIEREN</button>
+                    <button onclick="mpCopy()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:13px;cursor:pointer;">📋 COPY</button>
+                </div>
+                <!-- Status -->
+                <div id="mp-status" style="font-size:12px;color:var(--text-secondary);"></div>
+                <!-- Editable text output -->
+                <textarea id="mp-output" rows="20" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:12px;font-size:13px;font-family:monospace;line-height:1.6;resize:vertical;box-sizing:border-box;" placeholder="Monat wählen → GENERIEREN klicken..."></textarea>
+                <!-- Info -->
+                <div style="font-size:11px;color:var(--text-secondary);">Events aus BMT (EIGEN + FREMD, kein Konzert). Text direkt editierbar vor dem Kopieren.</div>
             </div>
         </div>
     </div>
@@ -4116,6 +4142,10 @@
                     <span class="tool-icon">&#128200;</span>
                     Promoter
                 </button>
+                <button class="tool-btn border-blue" onclick="openModal('monatsprogramm-modal');mpLoad();" style="border-color:#f472b6;">
+                    <span class="tool-icon">&#128240;</span>
+                    Monatsprog.
+                </button>
                 <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')" style="position: relative;">
                     <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
                     <span class="tool-icon">&#128157;</span>
@@ -4502,7 +4532,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.40</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.41</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -8699,6 +8729,10 @@
             if (typeof renderRunnerShiftplan === 'function') renderRunnerShiftplan();
             if (typeof renderBarShiftplan === 'function') renderBarShiftplan();
             if (typeof renderTechCalendar === 'function') renderTechCalendar();
+            // Re-render cleaning plan if modal is open
+            if (document.getElementById('cleaning-modal').classList.contains('show')) {
+                generateCleaningSchedule();
+            }
             updateBMTApiBtn();
             showToast('✅ ' + bmtEvents.length + ' BMT Events geladen (' + source + ')');
         }
@@ -11736,7 +11770,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.40';
+            const HUB_VERSION = 'v15.9.41';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -14843,6 +14877,22 @@ Spittelauer Lnde 12/1
             dbvApplyFilters();
         }
 
+        async function dbvRefresh() {
+            dbvLoaded = false;
+            dbvData = [];
+            dbvFiltered = [];
+            ['dbv-promoter','dbv-mainact','dbv-year'].forEach(id => {
+                const el = document.getElementById(id);
+                while (el.options.length > 1) el.remove(1);
+                el.value = '';
+            });
+            document.getElementById('dbv-search').value = '';
+            document.getElementById('dbv-type').value = '';
+            document.getElementById('dbv-status').textContent = 'Lade...';
+            document.getElementById('dbv-status-dot').style.background = '#eab308';
+            await dbvLoad();
+        }
+
         // ===== PROMOTER ANALYSIS =====
         let paLoaded = false, paData = [], paSelected = new Set(), paChart = null;
         const PA_COLORS = ['#06b6d4','#a855f7','#22c55e','#f59e0b','#ef4444','#3b82f6','#ec4899','#84cc16','#f97316','#8b5cf6'];
@@ -15174,6 +15224,121 @@ Spittelauer Lnde 12/1
                     <div style="font-weight:700;font-size:12px;color:#22c55e;white-space:nowrap;">${fmt}</div>
                 </div>`;
             }).join('');
+        }
+
+        // ===== MONATSPROGRAMM =====
+        const MP_MONTHS = ['JÄNNER','FEBRUAR','MÄRZ','APRIL','MAI','JUNI','JULI','AUGUST','SEPTEMBER','OKTOBER','NOVEMBER','DEZEMBER'];
+
+        function mpLoad() {
+            const now = new Date();
+            // Populate month select
+            const mSel = document.getElementById('mp-month');
+            const ySel = document.getElementById('mp-year');
+            if (!mSel.options.length) {
+                MP_MONTHS.forEach((m, i) => {
+                    const o = document.createElement('option');
+                    o.value = i;
+                    o.textContent = m;
+                    mSel.appendChild(o);
+                });
+                mSel.value = now.getMonth();
+                // Year select: current ±1
+                for (let y = now.getFullYear() - 1; y <= now.getFullYear() + 2; y++) {
+                    const o = document.createElement('option');
+                    o.value = y;
+                    o.textContent = y;
+                    ySel.appendChild(o);
+                }
+                ySel.value = now.getFullYear();
+            }
+            document.getElementById('mp-status').textContent = '';
+        }
+
+        function mpGenerate() {
+            const month = parseInt(document.getElementById('mp-month').value);
+            const year = parseInt(document.getElementById('mp-year').value);
+            const monthName = MP_MONTHS[month];
+
+            // Filter BMT events: target month, EIGEN + FREMD only (no konzert)
+            const events = (bmtEvents || []).filter(ev => {
+                const d = new Date(ev.dtstart);
+                return d.getFullYear() === year &&
+                       d.getMonth() === month &&
+                       ev.category !== 'konzert';
+            }).sort((a, b) => new Date(a.dtstart) - new Date(b.dtstart));
+
+            const statusEl = document.getElementById('mp-status');
+
+            if (!events.length) {
+                statusEl.textContent = '⚠ Keine Events für ' + monthName + ' ' + year + ' in BMT gefunden. Prüfe ob BMT geladen ist.';
+                statusEl.style.color = '#eab308';
+                return;
+            }
+
+            statusEl.textContent = '✅ ' + events.length + ' Events geladen.';
+            statusEl.style.color = '#22c55e';
+
+            // Group by ISO week
+            const weeks = {};
+            events.forEach(ev => {
+                const d = new Date(ev.dtstart);
+                const weekKey = mpGetWeekKey(d);
+                if (!weeks[weekKey]) weeks[weekKey] = [];
+                weeks[weekKey].push(ev);
+            });
+
+            // Build text
+            let lines = [];
+            lines.push('<>< ' + monthName + ' <><');
+            lines.push('');
+
+            const sortedWeeks = Object.keys(weeks).sort();
+            sortedWeeks.forEach((wk, idx) => {
+                weeks[wk].forEach(ev => {
+                    const d = new Date(ev.dtstart);
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const mon = String(d.getMonth() + 1).padStart(2, '0');
+                    const dateStr = day + '.' + mon;
+                    const name = ev.summary || '—';
+                    lines.push(dateStr + ' ' + name);
+                });
+                // Blank line between weeks (not after last)
+                if (idx < sortedWeeks.length - 1) lines.push('');
+            });
+
+            lines.push('');
+            lines.push('TICKET LINKS:');
+            lines.push('https://linktr.ee/grelletickets');
+
+            document.getElementById('mp-output').value = lines.join('\n');
+        }
+
+        function mpGetWeekKey(date) {
+            // Returns ISO week number as zero-padded string for sorting
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            return d.getUTCFullYear() + '-' + String(weekNo).padStart(2, '0');
+        }
+
+        function mpCopy() {
+            const ta = document.getElementById('mp-output');
+            if (!ta.value.trim()) return;
+            ta.select();
+            ta.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(ta.value).then(() => {
+                    showToast('✅ Text kopiert!');
+                }).catch(() => {
+                    document.execCommand('copy');
+                    showToast('✅ Text kopiert!');
+                });
+            } catch(e) {
+                document.execCommand('copy');
+                showToast('✅ Text kopiert!');
+            }
         }
 
     </script>
