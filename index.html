@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.38</title>
+    <title>Turbo Projects Work Hub v15.9.40</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4502,7 +4502,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.38</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.40</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -11206,7 +11206,8 @@ Spittelauer Lnde 12/1
                     if (isLetzterForEvent(person)) return false;
                     if (person.no_konzert && isConcert) return false;
                     if (person.no_fridays && isFriday(event.date)) return false;
-                    if (person.no_weekdays && (isFriday(event.date) || isSaturday(event.date))) return false;
+                    // no_weekdays = only works FR/SA (blocks Mon-Thu events)
+                    if (person.no_weekdays && !isFriday(event.date) && !isSaturday(event.date)) return false;
                     if (hasConsecutiveConflict(person.name, event.date)) return false;
                     const nextDay = getNextDayLabel(event.date);
                     if (isHoliday(nextDay) && !person.feiertag_ok) return false;
@@ -11282,9 +11283,22 @@ Spittelauer Lnde 12/1
                     }
                 });
 
+                // Count how many "letzte" runners will be available for this event
+                const letzteCount = runnerRoster.filter(r =>
+                    isLetzterForEvent(r) &&
+                    !isUnavailable(r.name, event.date) &&
+                    !(r.no_konzert && isConcert) &&
+                    !(r.no_fridays && isFriday(event.date)) &&
+                    !(r.no_weekdays && !isFriday(event.date) && !isSaturday(event.date)) &&
+                    !hasConsecutiveConflict(r.name, event.date)
+                ).length;
+                // Reserve last N positions for letzte runners
+                const fillUpTo = activePositions.length - letzteCount;
+
                 // Step 2: Fill remaining positions with non-prio_early, non-letzt runners
                 activePositions.forEach((pos, posIdx) => {
                     if (assignment.positions[pos]) return;
+                    if (posIdx >= fillUpTo) return; // reserve for letzte runners
                     const posNum = posIdx + 1;
                     let candidates = runnerRoster.filter(p =>
                         !assignedThisEvent.includes(p.name) &&
@@ -11312,13 +11326,14 @@ Spittelauer Lnde 12/1
                     }
                 });
 
-                // Step 3: Place immer_letzt / konzert_letzt runners at next open position after filled ones
+                // Step 3: Place immer_letzt / konzert_letzt / weekdays_last_pos runners at last position
                 const letzteRunners = runnerRoster.filter(r =>
                     isLetzterForEvent(r) &&
                     !assignedThisEvent.includes(r.name) &&
                     !isUnavailable(r.name, event.date) &&
-                    (!r.nur_samstag || isSaturday(event.date)) &&
                     !(r.no_konzert && isConcert) &&
+                    !(r.no_fridays && isFriday(event.date)) &&
+                    !(r.no_weekdays && !isFriday(event.date) && !isSaturday(event.date)) &&
                     !hasConsecutiveConflict(r.name, event.date)
                 );
                 letzteRunners.forEach(person => {
@@ -11721,7 +11736,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.38';
+            const HUB_VERSION = 'v15.9.40';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
