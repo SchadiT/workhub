@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.41</title>
+    <title>Turbo Projects Work Hub v15.9.42</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3342,18 +3342,38 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal -->
+    <!-- Event Projector Modal — v15.9.42 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
-        <div class="modal">
+        <div class="modal" style="max-width:700px">
             <div class="modal-header">
                 <h3>&#128200; Event Projector</h3>
                 <button class="modal-close" onclick="closeModal('projector-modal')">&times;</button>
             </div>
             <div class="modal-body">
+
+                <!-- Mode Toggle -->
+                <div style="display:flex;gap:6px;margin-bottom:14px;">
+                    <button id="ep-btn-fremd" onclick="epSetMode('fremd')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #7c3aed;background:#7c3aed;color:#fff;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">FREMD Promoter</button>
+                    <button id="ep-btn-eigen" onclick="epSetMode('eigen')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #3d3d54;background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">EIGEN Serie</button>
+                    <button id="ep-btn-freitext" onclick="epSetMode('freitext')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #3d3d54;background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">Freitext</button>
+                </div>
+
+                <!-- DB Status line -->
+                <div id="ep-db-status" style="font-size:11px;min-height:15px;margin-bottom:10px;color:#888;"></div>
+
+                <!-- Top row: mode-specific input + shared KW -->
                 <div class="form-row">
-                    <div class="form-group">
+                    <!-- FREMD: Promoter dropdown -->
+                    <div class="form-group" id="ep-section-fremd" style="flex:2;">
+                        <label>Promoter</label>
+                        <select id="ep-promoter" onchange="epUpdateFremdStats()" style="width:100%">
+                            <option value="">DB wird geladen...</option>
+                        </select>
+                    </div>
+                    <!-- EIGEN: Serie dropdown -->
+                    <div class="form-group" id="ep-section-eigen" style="flex:2;display:none;">
                         <label>Event Serie</label>
-                        <select id="ep-serie" onchange="updateProjectorData()">
+                        <select id="ep-serie" onchange="updateProjectorData()" style="width:100%">
                             <option value="turbo">TURBO</option>
                             <option value="selected">Selected</option>
                             <option value="halloween">Halloween</option>
@@ -3362,142 +3382,115 @@
                             <option value="special">Special Events</option>
                         </select>
                     </div>
+                    <!-- Freitext: description -->
+                    <div class="form-group" id="ep-section-freitext" style="flex:2;display:none;">
+                        <label>Event-Beschreibung</label>
+                        <input type="text" id="ep-freitext-desc" placeholder="z.B. Techno, lokaler Promoter, erwartet 400 G&#228;ste..." style="width:100%">
+                    </div>
+                    <!-- Shared KW (all modes) -->
                     <div class="form-group">
                         <label>Calendar Week</label>
-                        <select id="ep-kw" onchange="updateProjectorData()">
-                            <option value="1">KW 01</option>
-                            <option value="2">KW 02</option>
-                            <option value="3">KW 03</option>
-                            <option value="4">KW 04</option>
-                            <option value="5">KW 05</option>
-                            <option value="6">KW 06</option>
-                            <option value="7">KW 07</option>
-                            <option value="8">KW 08</option>
-                            <option value="9">KW 09</option>
-                            <option value="10">KW 10</option>
-                            <option value="11">KW 11</option>
-                            <option value="12">KW 12</option>
-                            <option value="13">KW 13</option>
-                            <option value="14">KW 14</option>
-                            <option value="15">KW 15</option>
-                            <option value="16">KW 16</option>
-                            <option value="17">KW 17</option>
-                            <option value="18">KW 18</option>
-                            <option value="19">KW 19</option>
-                            <option value="20">KW 20</option>
-                            <option value="21">KW 21</option>
-                            <option value="22">KW 22</option>
-                            <option value="23">KW 23</option>
-                            <option value="24">KW 24</option>
-                            <option value="25">KW 25</option>
-                            <option value="26">KW 26</option>
-                            <option value="27">KW 27</option>
-                            <option value="28">KW 28</option>
-                            <option value="29">KW 29</option>
-                            <option value="30">KW 30</option>
-                            <option value="31">KW 31</option>
-                            <option value="32">KW 32</option>
-                            <option value="33">KW 33</option>
-                            <option value="34">KW 34</option>
-                            <option value="35">KW 35</option>
-                            <option value="36">KW 36</option>
-                            <option value="37">KW 37</option>
-                            <option value="38">KW 38</option>
-                            <option value="39">KW 39</option>
-                            <option value="40">KW 40</option>
-                            <option value="41">KW 41</option>
-                            <option value="42">KW 42</option>
-                            <option value="43">KW 43</option>
-                            <option value="44">KW 44</option>
-                            <option value="45">KW 45</option>
-                            <option value="46">KW 46</option>
-                            <option value="47">KW 47</option>
-                            <option value="48">KW 48</option>
-                            <option value="49">KW 49</option>
-                            <option value="50">KW 50</option>
-                            <option value="51">KW 51</option>
-                            <option value="52">KW 52</option>
-                            <option value="53">KW 53</option>
+                        <select id="ep-kw" onchange="epOnKWChange()">
+                            <option value="1">KW 01</option><option value="2">KW 02</option><option value="3">KW 03</option>
+                            <option value="4">KW 04</option><option value="5">KW 05</option><option value="6">KW 06</option>
+                            <option value="7">KW 07</option><option value="8">KW 08</option><option value="9">KW 09</option>
+                            <option value="10">KW 10</option><option value="11">KW 11</option><option value="12">KW 12</option>
+                            <option value="13">KW 13</option><option value="14">KW 14</option><option value="15">KW 15</option>
+                            <option value="16">KW 16</option><option value="17">KW 17</option><option value="18">KW 18</option>
+                            <option value="19">KW 19</option><option value="20">KW 20</option><option value="21">KW 21</option>
+                            <option value="22">KW 22</option><option value="23">KW 23</option><option value="24">KW 24</option>
+                            <option value="25">KW 25</option><option value="26">KW 26</option><option value="27">KW 27</option>
+                            <option value="28">KW 28</option><option value="29">KW 29</option><option value="30">KW 30</option>
+                            <option value="31">KW 31</option><option value="32">KW 32</option><option value="33">KW 33</option>
+                            <option value="34">KW 34</option><option value="35">KW 35</option><option value="36">KW 36</option>
+                            <option value="37">KW 37</option><option value="38">KW 38</option><option value="39">KW 39</option>
+                            <option value="40">KW 40</option><option value="41">KW 41</option><option value="42">KW 42</option>
+                            <option value="43">KW 43</option><option value="44">KW 44</option><option value="45">KW 45</option>
+                            <option value="46">KW 46</option><option value="47">KW 47</option><option value="48">KW 48</option>
+                            <option value="49">KW 49</option><option value="50">KW 50</option><option value="51">KW 51</option>
+                            <option value="52">KW 52</option><option value="53">KW 53</option>
                         </select>
                     </div>
                 </div>
-                
-                <div class="result-card">
-                    <h4> Serie Durchschnitt</h4>
+
+                <!-- FREMD: Mainact optional -->
+                <div class="form-group" id="ep-mainact-row" style="margin-bottom:12px;">
+                    <label>Mainact (optional)</label>
+                    <input type="text" id="ep-mainact" placeholder="DJ / Artist Name..." style="width:100%">
+                </div>
+
+                <!-- FREMD: Historische Basis -->
+                <div class="result-card" id="ep-basis-card" style="display:none;">
+                    <h4>&#128202; Historische Basis</h4>
                     <div class="result-grid">
-                        <div class="result-item">
-                            <div class="label"> VVK</div>
-                            <div class="value blue" id="ep-avg-vvk">436</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="label"> FOH</div>
-                            <div class="value blue" id="ep-avg-foh">336</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="label"> Total</div>
-                            <div class="value blue" id="ep-avg-total">772</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="label">Events</div>
-                            <div class="value orange" id="ep-events">25</div>
-                        </div>
+                        <div class="result-item"><div class="label">&#216; Bar Revenue</div><div class="value orange" id="ep-avg-bar">&#8212;</div></div>
+                        <div class="result-item"><div class="label">&#216; PAX (est.)</div><div class="value blue" id="ep-avg-pax-est">&#8212;</div></div>
+                        <div class="result-item"><div class="label">Events</div><div class="value" id="ep-basis-events">&#8212;</div></div>
+                        <div class="result-item"><div class="label">Zeitraum</div><div class="value" id="ep-basis-range">&#8212;</div></div>
                     </div>
                 </div>
-                
-                <div class="result-card">
-                    <h4> KW Bar-Statistik</h4>
+
+                <!-- EIGEN: Serie Stats -->
+                <div class="result-card" id="ep-eigen-stats-card" style="display:none;">
+                    <h4>&#128202; Serie Durchschnitt</h4>
                     <div class="result-grid">
-                        <div class="result-item">
-                            <div class="label">/Person</div>
-                            <div class="value orange" id="ep-bar-pp">16.3</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="label"> Bar Revenue</div>
-                            <div class="value" id="ep-bar-rev">12.584</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="label"> Total Gste</div>
-                            <div class="value blue" id="ep-bar-guests">772</div>
-                        </div>
+                        <div class="result-item"><div class="label">&#216; VVK</div><div class="value blue" id="ep-avg-vvk">436</div></div>
+                        <div class="result-item"><div class="label">&#216; FOH</div><div class="value blue" id="ep-avg-foh">336</div></div>
+                        <div class="result-item"><div class="label">&#216; Total</div><div class="value blue" id="ep-avg-total">772</div></div>
+                        <div class="result-item"><div class="label">Events</div><div class="value orange" id="ep-events">25</div></div>
                     </div>
                 </div>
-                
-                <h4 style="color: #22c55e; margin: 20px 0 10px;"> Projektion mit aktuellem VVK</h4>
+
+                <!-- EIGEN: KW Bar Stats -->
+                <div class="result-card" id="ep-kw-stats-card" style="display:none;">
+                    <h4>&#128202; KW Bar-Statistik</h4>
+                    <div class="result-grid">
+                        <div class="result-item"><div class="label">&#8364;/Person</div><div class="value orange" id="ep-bar-pp">16.4</div></div>
+                        <div class="result-item"><div class="label">&#216; Bar Revenue</div><div class="value" id="ep-bar-rev">12.584</div></div>
+                        <div class="result-item"><div class="label">&#216; G&#228;ste</div><div class="value blue" id="ep-bar-guests">772</div></div>
+                    </div>
+                </div>
+
+                <!-- Shared: VVK Projection Inputs -->
+                <h4 style="color:#22c55e;margin:18px 0 10px;">&#127919; Projektion mit aktuellem VVK</h4>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Aktueller VVK Stand</label>
-                        <input type="number" id="ep-current-vvk" value="0" oninput="updateProjectorProjection()">
+                        <input type="number" id="ep-current-vvk" value="0" oninput="epCalculateProjection()">
                     </div>
                     <div class="form-group">
                         <label>Tage bis Event</label>
-                        <input type="number" id="ep-days" value="7" oninput="updateProjectorProjection()">
+                        <input type="number" id="ep-days" value="7" oninput="epCalculateProjection()">
                     </div>
                 </div>
-                
+
+                <!-- Output -->
                 <div class="result-card">
-                    <h4> Projektion</h4>
+                    <h4>&#127919; Projektion</h4>
                     <div class="result-grid">
                         <div class="result-item">
-                            <div class="label">VVK Projektion</div>
-                            <div class="value blue" id="ep-proj-vvk">~436</div>
+                            <div class="label" id="ep-lbl-bar">Bar Revenue</div>
+                            <div class="value orange" id="ep-proj-bar">&#8212;</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">FOH Projektion</div>
-                            <div class="value blue" id="ep-proj-foh">~336</div>
+                            <div class="label" id="ep-lbl-vvk">PAX (est.)</div>
+                            <div class="value blue" id="ep-proj-vvk">&#8212;</div>
                         </div>
                         <div class="result-item">
-                            <div class="label">Bar Projektion</div>
-                            <div class="value orange" id="ep-proj-bar">~12.6k</div>
+                            <div class="label" id="ep-lbl-foh">VVK est.</div>
+                            <div class="value blue" id="ep-proj-foh">&#8212;</div>
                         </div>
                         <div class="result-item">
                             <div class="label">Total Revenue</div>
-                            <div class="value" id="ep-proj-total">~28k</div>
+                            <div class="value" id="ep-proj-total">&#8212;</div>
                         </div>
                     </div>
+                    <div class="projection-basis" id="ep-proj-basis">Basis: Promoter w&#228;hlen</div>
                 </div>
+
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schlieen</button>
+                <button class="modal-btn cancel" onclick="closeModal('projector-modal')">Schlie&#223;en</button>
             </div>
         </div>
     </div>
@@ -4532,7 +4525,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.41</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.42</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5608,45 +5601,290 @@
         // EVENT PROJECTOR
         // 
         
+        // ========================================
+        // EVENT PROJECTOR — v15.9.42 C17
+        // EIGEN: hardcoded SERIE_STATS (unchanged)
+        // FREMD: live DB load via CSV, per-Promoter stats
+        // Freitext: global KW benchmark
+        // ========================================
+
+        let epMode = 'fremd';
+        let epPromoterStats = {};   // { name: { totalBar, count, minYear, maxYear } }
+        let epGlobalAvgBar = 11800; // computed from DB when loaded
+        let epDbReady = false;      // true once promoter stats built
+
+        const EP_GLOBAL_BAR_PP = 16.4;   // €/PAX global average
+        const EP_FOH_VVK_RATIO = 0.77;   // FOH ≈ 77% of VVK (proxy from EIGEN)
+
+        // ---- Mode Switch ----
+        function epSetMode(mode) {
+            epMode = mode;
+            ['fremd','eigen','freitext'].forEach(m => {
+                const btn = document.getElementById('ep-btn-' + m);
+                if (!btn) return;
+                const active = m === mode;
+                btn.style.background = active ? '#7c3aed' : 'transparent';
+                btn.style.borderColor = active ? '#7c3aed' : '#3d3d54';
+                btn.style.color = active ? '#fff' : '#999';
+            });
+            // sections
+            const show = (id, vis) => { const el = document.getElementById(id); if (el) el.style.display = vis ? '' : 'none'; };
+            show('ep-section-fremd',   mode === 'fremd');
+            show('ep-section-eigen',   mode === 'eigen');
+            show('ep-section-freitext',mode === 'freitext');
+            show('ep-mainact-row',     mode === 'fremd');
+            show('ep-db-status',       mode === 'fremd');
+            show('ep-basis-card',      false); // shown after promoter selected
+            show('ep-eigen-stats-card',mode === 'eigen');
+            show('ep-kw-stats-card',   mode === 'eigen');
+            // output labels
+            if (mode === 'eigen') {
+                const lv = document.getElementById('ep-lbl-vvk'); if (lv) lv.textContent = 'VVK Proj.';
+                const lf = document.getElementById('ep-lbl-foh'); if (lf) lf.textContent = 'FOH Proj.';
+                updateProjectorData();
+            } else {
+                const lv = document.getElementById('ep-lbl-vvk'); if (lv) lv.textContent = 'PAX (est.)';
+                const lf = document.getElementById('ep-lbl-foh'); if (lf) lf.textContent = 'VVK (est.)';
+                if (mode === 'fremd') epLoadDB();
+                else epCalculateProjection();
+            }
+        }
+
+        // ---- Modal open hook ----
+        function epOnModalOpen() {
+            // Set current KW
+            const d = new Date();
+            const startOfYear = new Date(d.getFullYear(), 0, 1);
+            const weekNum = Math.ceil(((d - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+            const kwSel = document.getElementById('ep-kw');
+            if (kwSel) kwSel.value = weekNum;
+            // Default to FREMD mode
+            epSetMode(epMode || 'fremd');
+        }
+
+        // ---- KW change (shared select) ----
+        function epOnKWChange() {
+            if (epMode === 'eigen') updateProjectorData();
+            else epCalculateProjection();
+        }
+
+        // ---- DB Load ----
+        async function epLoadDB() {
+            const statusEl = document.getElementById('ep-db-status');
+            if (!statusEl) return;
+
+            // Reuse dbvData if DB Viewer already loaded it
+            if (typeof dbvData !== 'undefined' && dbvData.length > 0) {
+                if (!epDbReady) epBuildPromoterStats(dbvData);
+                statusEl.textContent = '✓ DB: ' + dbvData.length + ' Events (aus Cache)';
+                statusEl.style.color = '#22c55e';
+                return;
+            }
+
+            if (epDbReady) return; // already loaded standalone
+
+            statusEl.textContent = '⟳ Lade Datenbank...';
+            statusEl.style.color = '#f59e0b';
+
+            try {
+                const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0z7hOhXnYPX_8AZf8TdPZvjaL7ITeob5BOxpKJvV4iaa_RzBOVjs47W62Io0kA/pub?gid=184884796&single=true&output=csv';
+                const res = await fetch(CSV_URL);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const text = await res.text();
+                const data = dbvParseCSV(text);
+                epBuildPromoterStats(data);
+                statusEl.textContent = '✓ DB: ' + data.length + ' Events geladen';
+                statusEl.style.color = '#22c55e';
+            } catch(e) {
+                statusEl.textContent = '✗ Ladefehler: ' + e.message;
+                statusEl.style.color = '#ef4444';
+            }
+        }
+
+        // ---- Build promoter stats from raw data ----
+        function epBuildPromoterStats(data) {
+            epPromoterStats = {};
+            let globalBarSum = 0, globalBarCount = 0;
+
+            data.forEach(r => {
+                const bar = dbvFmtN(r['Bar_Revenue']);
+                const promoter = (r['Promoter'] || '').trim();
+                const year = parseInt(r['Year']) || 0;
+
+                if (bar > 0) { globalBarSum += bar; globalBarCount++; }
+                if (!promoter || bar <= 0) return;
+
+                if (!epPromoterStats[promoter]) {
+                    epPromoterStats[promoter] = { totalBar: 0, count: 0, minYear: 9999, maxYear: 0 };
+                }
+                epPromoterStats[promoter].totalBar += bar;
+                epPromoterStats[promoter].count++;
+                epPromoterStats[promoter].minYear = Math.min(epPromoterStats[promoter].minYear, year);
+                epPromoterStats[promoter].maxYear = Math.max(epPromoterStats[promoter].maxYear, year);
+            });
+
+            epGlobalAvgBar = globalBarCount > 0 ? Math.round(globalBarSum / globalBarCount) : 11800;
+            epDbReady = true;
+
+            // Populate dropdown sorted by avg bar desc
+            const sel = document.getElementById('ep-promoter');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">-- Promoter w\u00e4hlen --</option>';
+            Object.entries(epPromoterStats)
+                .sort((a,b) => (b[1].totalBar / b[1].count) - (a[1].totalBar / a[1].count))
+                .forEach(([name, s]) => {
+                    const avg = Math.round(s.totalBar / s.count);
+                    const o = document.createElement('option');
+                    o.value = name;
+                    o.textContent = name + ' (\u00d8 \u20ac' + avg.toLocaleString('de-AT') + ', ' + s.count + 'x)';
+                    sel.appendChild(o);
+                });
+
+            epUpdateFremdStats();
+        }
+
+        // ---- Update basis card when promoter selected ----
+        function epUpdateFremdStats() {
+            const promoter = document.getElementById('ep-promoter')?.value;
+            const basisCard = document.getElementById('ep-basis-card');
+            if (!basisCard) return;
+
+            if (!promoter || !epPromoterStats[promoter]) {
+                basisCard.style.display = 'none';
+                const basisEl = document.getElementById('ep-proj-basis');
+                if (basisEl) basisEl.textContent = 'Basis: Promoter w\u00e4hlen';
+                return;
+            }
+
+            const s = epPromoterStats[promoter];
+            const avgBar = s.totalBar / s.count;
+            const estPAX = Math.round(avgBar / EP_GLOBAL_BAR_PP);
+            const yearRange = s.minYear === s.maxYear ? String(s.minYear) : s.minYear + '\u2013' + s.maxYear;
+
+            basisCard.style.display = '';
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('ep-avg-bar',     '\u20ac' + Math.round(avgBar).toLocaleString('de-AT'));
+            set('ep-avg-pax-est', '~' + estPAX);
+            set('ep-basis-events', s.count + 'x');
+            set('ep-basis-range',  yearRange);
+
+            epCalculateProjection();
+        }
+
+        // ---- EIGEN: unchanged core logic ----
         function updateProjectorData() {
-            const serie = document.getElementById('ep-serie').value;
-            const kw = document.getElementById('ep-kw').value;
+            const serie = document.getElementById('ep-serie')?.value || 'turbo';
+            const kw = document.getElementById('ep-kw')?.value || '14';
             const s = SERIE_STATS[serie];
             const k = KW_STATS[kw] || { barPP: 16.5 };
-            
-            document.getElementById('ep-avg-vvk').textContent = s.avgVVK;
-            document.getElementById('ep-avg-foh').textContent = s.avgFOH;
-            document.getElementById('ep-avg-total').textContent = s.avgTotal;
-            document.getElementById('ep-events').textContent = s.events;
-            document.getElementById('ep-bar-pp').textContent = `${k.barPP}`;
-            document.getElementById('ep-bar-rev').textContent = `${Math.round(s.avgTotal * k.barPP).toLocaleString()}`;
-            document.getElementById('ep-bar-guests').textContent = s.avgTotal;
-            
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('ep-avg-vvk',    s.avgVVK);
+            set('ep-avg-foh',    s.avgFOH);
+            set('ep-avg-total',  s.avgTotal);
+            set('ep-events',     s.events);
+            set('ep-bar-pp',     k.barPP);
+            set('ep-bar-rev',    Math.round(s.avgTotal * k.barPP).toLocaleString('de-AT'));
+            set('ep-bar-guests', s.avgTotal);
             updateProjectorProjection();
         }
-        
+
         function updateProjectorProjection() {
-            const serie = document.getElementById('ep-serie').value;
-            const kw = document.getElementById('ep-kw').value;
-            const currentVVK = parseInt(document.getElementById('ep-current-vvk').value) || 0;
-            const days = parseInt(document.getElementById('ep-days').value) || 7;
-            
+            const serie = document.getElementById('ep-serie')?.value || 'turbo';
+            const kw = document.getElementById('ep-kw')?.value || '14';
+            const currentVVK = parseInt(document.getElementById('ep-current-vvk')?.value) || 0;
+            const days = parseInt(document.getElementById('ep-days')?.value) || 7;
             const s = SERIE_STATS[serie];
             const k = KW_STATS[kw] || { barPP: 16.5 };
             const fohRatio = s.avgFOH / s.avgVVK;
-            
             let pct = 0.5;
             for (const d of [14, 10, 7, 5, 3, 2, 1, 0]) { if (days >= d) { pct = VVK_BENCHMARKS[d]; break; } }
-            
             const projVVK = currentVVK > 0 ? Math.round(currentVVK / pct) : s.avgVVK;
             const projFOH = Math.round(projVVK * fohRatio);
             const projBar = (projVVK + projFOH) * k.barPP;
             const projTotal = projBar + (projVVK * 18) + (projFOH * 22);
-            
-            document.getElementById('ep-proj-vvk').textContent = `~${projVVK}`;
-            document.getElementById('ep-proj-foh').textContent = `~${projFOH}`;
-            document.getElementById('ep-proj-bar').textContent = `~${(projBar/1000).toFixed(1)}k`;
-            document.getElementById('ep-proj-total').textContent = `~${(projTotal/1000).toFixed(0)}k`;
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('ep-proj-vvk',   '~' + projVVK);
+            set('ep-proj-foh',   '~' + projFOH);
+            set('ep-proj-bar',   '~\u20ac' + Math.round(projBar).toLocaleString('de-AT'));
+            set('ep-proj-total', '~\u20ac' + Math.round(projTotal).toLocaleString('de-AT'));
+            set('ep-proj-basis', 'Basis: EIGEN ' + serie + ' (' + s.events + ' Events) \u00b7 KW' + String(kw).padStart(2,'0') + ' \u20ac' + k.barPP + '/P');
+        }
+
+        // ---- Master projection (FREMD + Freitext) ----
+        function epCalculateProjection() {
+            if (epMode === 'eigen') { updateProjectorData(); return; }
+
+            const currentVVK = parseInt(document.getElementById('ep-current-vvk')?.value) || 0;
+            const days       = parseInt(document.getElementById('ep-days')?.value) || 7;
+            const kw         = parseInt(document.getElementById('ep-kw')?.value) || 14;
+            const kwBarPP    = (KW_STATS[kw] || { barPP: EP_GLOBAL_BAR_PP }).barPP;
+
+            // VVK pct at this many days out
+            let vvkPct = 0.50;
+            for (const d of [14, 10, 7, 5, 3, 2, 1, 0]) { if (days >= d) { vvkPct = VVK_BENCHMARKS[d]; break; } }
+
+            let projBar, projPAX, projVVK, projFOH, projTotal, basisText;
+            const kwStr = 'KW' + String(kw).padStart(2,'0');
+
+            if (epMode === 'fremd') {
+                const promoter = document.getElementById('ep-promoter')?.value;
+                if (!promoter || !epPromoterStats[promoter]) return;
+
+                const s = epPromoterStats[promoter];
+                const avgBar = s.totalBar / s.count;
+                const kwFactor = kwBarPP / EP_GLOBAL_BAR_PP;
+
+                if (currentVVK > 0) {
+                    // VVK-based: current tickets → implied total VVK → PAX → bar
+                    projVVK  = Math.round(currentVVK / vvkPct);
+                    projFOH  = Math.round(projVVK * EP_FOH_VVK_RATIO);
+                    projPAX  = projVVK + projFOH;
+                    projBar  = Math.round(projPAX * kwBarPP);
+                    projTotal = projBar + (projVVK * 18) + (projFOH * 22);
+                    basisText = 'VVK-basiert: ' + currentVVK + ' Tickets @ ' + days + 'd \u2192 ' + Math.round(vvkPct*100) + '% Quote \u2192 ~' + projVVK + ' VVK total | ' + kwStr + ' \u20ac' + kwBarPP + '/P | Confidence: MEDIUM';
+                } else {
+                    // Historical avg, KW-adjusted
+                    projBar  = Math.round(avgBar * kwFactor);
+                    projPAX  = Math.round(projBar / kwBarPP);
+                    projVVK  = Math.round(projPAX * 0.56);
+                    projFOH  = projPAX - projVVK;
+                    projTotal = projBar + (projVVK * 18) + (projFOH * 22);
+                    const kwFStr = (kwFactor >= 1 ? '+' : '') + Math.round((kwFactor - 1) * 100) + '%';
+                    basisText = 'Historisch ' + s.count + 'x | \u00d8\u20ac' + Math.round(avgBar).toLocaleString('de-AT') + ' \u00d7 ' + kwStr + ' ' + kwFStr + ' | Confidence: LOW';
+                }
+
+            } else { // freitext
+                const kwFactor = kwBarPP / EP_GLOBAL_BAR_PP;
+                if (currentVVK > 0) {
+                    projVVK  = Math.round(currentVVK / vvkPct);
+                    projFOH  = Math.round(projVVK * EP_FOH_VVK_RATIO);
+                    projPAX  = projVVK + projFOH;
+                    projBar  = Math.round(projPAX * kwBarPP);
+                    projTotal = projBar + (projVVK * 18) + (projFOH * 22);
+                    basisText = 'VVK-basiert + ' + kwStr + ' Benchmark | Confidence: LOW';
+                } else {
+                    projBar  = Math.round(epGlobalAvgBar * kwFactor);
+                    projPAX  = Math.round(projBar / kwBarPP);
+                    projVVK  = Math.round(projPAX * 0.56);
+                    projFOH  = projPAX - projVVK;
+                    projTotal = projBar + (projVVK * 18) + (projFOH * 22);
+                    basisText = 'Globaler Benchmark \u00d8\u20ac' + epGlobalAvgBar.toLocaleString('de-AT') + ' \u00d7 ' + kwStr + ' | Confidence: SEHR NIEDRIG';
+                }
+            }
+
+            // Safety caps
+            projPAX  = Math.min(projPAX  || 0, 1400);
+            projBar  = Math.min(projBar  || 0, 32000);
+            projVVK  = Math.min(projVVK  || 0, 800);
+            projFOH  = Math.min(projFOH  || 0, 800);
+            projTotal = Math.min(projTotal || 0, 55000);
+
+            const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            set('ep-proj-bar',   '~\u20ac' + projBar.toLocaleString('de-AT'));
+            set('ep-proj-vvk',   '~' + projPAX);       // repurposed: PAX for FREMD/Freitext
+            set('ep-proj-foh',   '~' + projVVK);       // repurposed: VVK est for FREMD/Freitext
+            set('ep-proj-total', '~\u20ac' + Math.round(projTotal / 1000) + 'k');
+            set('ep-proj-basis', 'Basis: ' + basisText);
         }
         
         // 
@@ -7123,9 +7361,9 @@
         
         function openModal(id) {
             document.getElementById(id).classList.add('show');
-            // Disable past months when opening staffing modals
             if (id === 'bar-staffing-modal') disablePastMonths('bar-month-check', 'bar-year');
             if (id === 'runner-staffing-modal') disablePastMonths('runner-month-check', 'runner-year');
+            if (id === 'projector-modal') epOnModalOpen();
         }
 
         function disablePastMonths(checkClass, yearSelectId) {
@@ -11770,7 +12008,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.41';
+            const HUB_VERSION = 'v15.9.42';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
