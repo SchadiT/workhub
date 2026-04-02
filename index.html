@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.44</title>
+    <title>Turbo Projects Work Hub v15.9.48</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2278,7 +2279,27 @@
             cursor: pointer;
         }
         .bar-roster-delete:hover { background: #dc2626; }
-    </style>
+    
+        /* Mini Inbox Widget */
+        .mini-email-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.1s;
+            cursor: default;
+        }
+        .mini-email-row:last-child { border-bottom: none; }
+        .mini-email-row.mini-unread { border-left: 3px solid #3b82f6; }
+        .mini-email-row.mini-overdue { border-left: 3px solid #ef4444; }
+        .mini-email-row.mini-flagged { border-left: 3px solid #f59e0b; }
+        .mini-email-sender { font-weight: 600; font-size: 12px; min-width: 110px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .mini-email-subject { font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); }
+        .mini-email-subject.bold { font-weight: 600; color: var(--text); }
+        .mini-email-date { font-size: 10px; color: var(--text-muted); min-width: 45px; text-align: right; }
+
+        </style>
 </head>
 <body>
 
@@ -2312,18 +2333,37 @@
     
     <div class="toast" id="toast"></div>
     
-    <!-- Quick Notes -->
-    <div class="quick-notes">
-        <div class="quick-notes-header">
+    <!-- Mini Inbox Widget -->
+    <div class="quick-notes" id="mini-inbox-widget" style="margin-bottom:8px;">
+        <div class="quick-notes-header" onclick="toggleMiniInbox()" style="cursor:pointer;">
+            <span>&#9993; Inbox <span id="mini-inbox-badge" style="display:none;background:#ef4444;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:6px;"></span></span>
+            <div style="display:flex;align-items:center;gap:8px;" onclick="event.stopPropagation()">
+                <span id="mini-inbox-status" style="font-size:10px;color:#888;"></span>
+                <button class="quick-notes-add" onclick="miniInboxLoad()" title="Refresh">&#8635;</button>
+                <button class="quick-notes-add" onclick="openInbox()" title="Vollansicht öffnen">&#8599;</button>
+                <button class="quick-notes-add" id="mini-inbox-toggle-btn" onclick="toggleMiniInbox()" title="Einklappen">&#9650;</button>
+            </div>
+        </div>
+        <div id="mini-inbox-body" style="max-height:220px;overflow-y:auto;">
+            <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:10px 14px;">Lädt…</div>
+        </div>
+    </div>
+
+    <!-- Quick Notes (collapsible) -->
+    <div class="quick-notes" id="quick-notes-widget">
+        <div class="quick-notes-header" onclick="toggleQuickNotes()" style="cursor:pointer;">
             <span> Quick Notes</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;" onclick="event.stopPropagation()">
                 <span class="save-indicator" id="notes-saved"> Gespeichert</span>
                 <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">&#127908;</button>
                 <button class="quick-notes-add" onclick="addToOfficeNotes()" title="Zu Office Notes hinzufuegen">+ Office</button>
                 <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen loeschen">&#10005;</button>
+                <button class="quick-notes-add" id="qn-toggle-btn" title="Einklappen">&#9650;</button>
             </div>
         </div>
-        <textarea id="quick-notes-text" placeholder="Notiz eingeben, dann '&#127970; Office' klicken..." oninput="saveQuickNotes()"></textarea>
+        <div id="quick-notes-body">
+            <textarea id="quick-notes-text" placeholder="Notiz eingeben, dann '&#127970; Office' klicken..." oninput="saveQuickNotes()"></textarea>
+        </div>
     </div>
     
 
@@ -2993,29 +3033,192 @@
     </div>
 
     <!-- MONATSPROGRAMM Modal -->
+    <!-- C20 Promo Manager Modal -->
     <div class="modal-overlay" id="monatsprogramm-modal">
-        <div class="modal" style="max-width: 700px;">
-            <div class="modal-header">
-                <div class="modal-title">&#128240; Monatsprogramm Post</div>
+        <div class="modal-content" style="max-width:760px;height:88vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h2>&#127757; Promo Manager</h2>
                 <button class="modal-close" onclick="closeModal('monatsprogramm-modal')">&times;</button>
             </div>
-            <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
-                <!-- Controls -->
+            <!-- Tab Bar -->
+            <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface,#12122a);">
+                <button class="pm-tab active" id="pm-tab-monthly" onclick="pmSwitchTab('monthly')">&#128240; Monatsprogramm</button>
+                <button class="pm-tab" id="pm-tab-assets" onclick="pmSwitchTab('assets')">&#128279; Event Assets</button>
+                <button class="pm-tab" id="pm-tab-checklist" onclick="pmSwitchTab('checklist')">&#9989; Promo Checklist</button>
+            </div>
+
+            <!-- TAB 1: MONATSPROGRAMM (existing) -->
+            <div id="pm-content-monthly" class="pm-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;">
                 <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
                     <select id="mp-month" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:13px;flex:1;min-width:120px;"></select>
                     <select id="mp-year" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:13px;width:90px;"></select>
                     <button onclick="mpGenerate()" style="background:#f472b6;color:#000;border:none;padding:6px 16px;font-size:13px;font-weight:700;cursor:pointer;">GENERIEREN</button>
-                    <button onclick="mpCopy()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:13px;cursor:pointer;">📋 COPY</button>
+                    <button onclick="mpCopy()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:13px;cursor:pointer;">&#128203; COPY</button>
                 </div>
-                <!-- Status -->
                 <div id="mp-status" style="font-size:12px;color:var(--text-secondary);"></div>
-                <!-- Editable text output -->
                 <textarea id="mp-output" rows="20" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:12px;font-size:13px;font-family:monospace;line-height:1.6;resize:vertical;box-sizing:border-box;" placeholder="Monat wählen → GENERIEREN klicken..."></textarea>
-                <!-- Info -->
                 <div style="font-size:11px;color:var(--text-secondary);">Events aus BMT (EIGEN + FREMD, kein Konzert). Text direkt editierbar vor dem Kopieren.</div>
+            </div>
+
+            <!-- TAB 2: EVENT ASSETS -->
+            <div id="pm-content-assets" class="pm-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
+                <!-- Event Selector -->
+                <div style="margin-bottom:14px;">
+                    <select id="pm-event-select" onchange="pmAssetsLoad()" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:8px 10px;font-size:13px;border-radius:4px;">
+                        <option value="">-- Event wählen --</option>
+                    </select>
+                </div>
+
+                <div id="pm-assets-body" style="display:none;flex-direction:column;gap:12px;">
+                    <!-- Flags -->
+                    <div id="pm-flags" style="display:flex;flex-direction:column;gap:6px;"></div>
+
+                    <!-- FB Event -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">FB EVENT URL</div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="url" id="pm-fb-url" placeholder="https://facebook.com/events/..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-fb-url')" title="Kopieren">&#128203;</button>
+                            <button class="pm-open-btn" onclick="pmOpenField('pm-fb-url')" title="Öffnen">&#8599;</button>
+                        </div>
+                    </div>
+
+                    <!-- VVK Link -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">VVK TICKET LINK</div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="url" id="pm-vvk-url" placeholder="https://..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-vvk-url')" title="Kopieren">&#128203;</button>
+                            <button class="pm-open-btn" onclick="pmOpenField('pm-vvk-url')" title="Öffnen">&#8599;</button>
+                        </div>
+                    </div>
+
+                    <!-- Grafik -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">GRAFIK</div>
+                        <div style="display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="promoter" onchange="pmAssetsSave()"> Von Promoter erhalten</label>
+                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="fb" onchange="pmAssetsSave()"> FB Download</label>
+                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="fehlt" onchange="pmAssetsSave()"> &#128308; Fehlt</label>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="url" id="pm-grafik-url" placeholder="Google Drive Link..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-grafik-url')" title="Kopieren">&#128203;</button>
+                        </div>
+                    </div>
+
+                    <!-- Pressekit -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">PRESSEKIT</div>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                            <label class="pm-radio"><input type="radio" name="pm-press" value="ja" onchange="pmAssetsSave()"> Erhalten</label>
+                            <label class="pm-radio"><input type="radio" name="pm-press" value="nein" onchange="pmAssetsSave()"> Nicht benötigt</label>
+                            <label class="pm-radio"><input type="radio" name="pm-press" value="ausstehend" onchange="pmAssetsSave()"> &#128308; Ausstehend</label>
+                        </div>
+                    </div>
+
+                    <!-- Linktree -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">LINKTREE</div>
+                        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+                            <input type="url" id="pm-lt-url" placeholder="Ticket Link für dieses Event..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-lt-url')" title="Kopieren">&#128203;</button>
+                            <button class="pm-open-btn" onclick="pmOpenField('pm-lt-url')" title="Öffnen">&#8599;</button>
+                        </div>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <label class="pm-check-label">
+                                <input type="checkbox" id="pm-linktree" onchange="pmAssetsSave()">
+                                <span>Linktree gesetzt</span>
+                            </label>
+                            <a href="https://linktr.ee/admin" target="_blank" style="font-size:12px;color:#a78bfa;text-decoration:none;">Linktree Admin &#8599;</a>
+                            <a href="https://linktr.ee/grelletickets" target="_blank" style="font-size:12px;color:#a78bfa;text-decoration:none;">Live ansehen &#8599;</a>
+                        </div>
+                    </div>
+
+                    <!-- Checkboxes -->
+                    <div class="pm-field-group" style="display:flex;gap:20px;flex-wrap:wrap;">
+                        <label class="pm-check-label">
+                            <input type="checkbox" id="pm-sofie" onchange="pmAssetsSave()">
+                            <span>Sofie informiert</span>
+                        </label>
+                        <label class="pm-check-label">
+                            <input type="checkbox" id="pm-fb-cohost" onchange="pmAssetsSave()">
+                            <span>Co-Host angenommen</span>
+                        </label>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">NOTIZEN</div>
+                        <textarea id="pm-notes" rows="3" placeholder="Interne Notizen..." onchange="pmAssetsSave()" class="pm-input" style="resize:vertical;"></textarea>
+                    </div>
+
+                    <div style="font-size:11px;color:var(--text-muted);">Automatisch gespeichert pro Event (localStorage)</div>
+                </div>
+
+                <div id="pm-assets-empty" style="padding:30px;text-align:center;color:var(--text-muted);">Event oben wählen um Assets zu bearbeiten</div>
+            </div>
+
+            <!-- TAB 3: PROMO CHECKLIST -->
+            <div id="pm-content-checklist" class="pm-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
+                <!-- Event Selector (synced) -->
+                <div style="margin-bottom:14px;">
+                    <select id="pm-cl-event-select" onchange="pmChecklistLoad()" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:8px 10px;font-size:13px;border-radius:4px;">
+                        <option value="">-- Event wählen --</option>
+                    </select>
+                </div>
+
+                <div id="pm-checklist-body" style="display:none;">
+                    <div id="pm-cl-event-info" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;padding:8px 12px;background:var(--surface-alt);border-radius:4px;"></div>
+
+                    <!-- Milestones Table -->
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pm-cl-table">
+                        <thead>
+                            <tr style="background:var(--surface-alt);">
+                                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);">Milestone</th>
+                                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);">Fällig</th>
+                                <th style="padding:8px 10px;text-align:center;border-bottom:1px solid var(--border);">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pm-cl-milestones"></tbody>
+                    </table>
+
+                    <!-- Posts Counter -->
+                    <div style="margin-top:16px;padding:12px 14px;background:var(--surface-alt);border-radius:4px;display:flex;align-items:center;gap:16px;">
+                        <span style="font-size:13px;font-weight:600;">Posts diese Woche</span>
+                        <button onclick="pmClPostsAdj(-1)" style="background:transparent;border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;">−</button>
+                        <span id="pm-cl-posts-count" style="font-size:18px;font-weight:700;min-width:24px;text-align:center;">0</span>
+                        <button onclick="pmClPostsAdj(1)" style="background:transparent;border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;">+</button>
+                        <span style="font-size:12px;color:var(--text-muted);">/ Ziel: 7</span>
+                    </div>
+                </div>
+
+                <div id="pm-checklist-empty" style="padding:30px;text-align:center;color:var(--text-muted);">Event oben wählen um Checklist zu sehen</div>
             </div>
         </div>
     </div>
+
+    <style>
+        .pm-tab { padding:10px 18px;background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;border-bottom:2px solid transparent;transition:all 0.15s; }
+        .pm-tab.active { color:var(--text);border-bottom-color:#f472b6;font-weight:600; }
+        .pm-tab:hover { color:var(--text); }
+        .pm-tab-content { display:flex;flex-direction:column; }
+        .pm-field-group { background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);border-radius:6px;padding:12px 14px; }
+        .pm-field-label { font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase; }
+        .pm-input { width:100%;background:var(--bg,#0f0f1a);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:4px;font-size:13px;font-family:inherit;box-sizing:border-box; }
+        .pm-copy-btn,.pm-open-btn { background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:5px 9px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;transition:all 0.1s; }
+        .pm-copy-btn:hover,.pm-open-btn:hover { color:var(--text);border-color:var(--text); }
+        .pm-radio { display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer; }
+        .pm-check-label { display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:6px 10px;background:var(--surface-alt);border:1px solid var(--border);border-radius:4px; }
+        .pm-flag { padding:7px 12px;border-radius:4px;font-size:12px;font-weight:600; }
+        .pm-flag-red { background:#7f1d1d;color:#fca5a5; }
+        .pm-flag-yellow { background:#78350f;color:#fcd34d; }
+        .pm-cl-row { border-bottom:1px solid var(--border); }
+        .pm-cl-row:last-child { border-bottom:none; }
+        .pm-cl-row td { padding:9px 10px; }
+        .pm-cl-overdue { background:#1f0a0a; }
+        .pm-cl-overdue td:first-child { color:#ef4444;font-weight:600; }
+    </style>
 
     <!-- RUNNER STAFFING Modal -->
     <div class="modal-overlay" id="runner-staffing-modal">
@@ -3342,7 +3545,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.44 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.48 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4228,9 +4431,9 @@
                     <span class="tool-icon">&#128200;</span>
                     Promoter
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('monatsprogramm-modal');mpLoad();" style="border-color:#f472b6;">
-                    <span class="tool-icon">&#128240;</span>
-                    Monatsprog.
+                <button class="tool-btn border-blue" onclick="openPromoManager();" style="border-color:#f472b6;">
+                    <span class="tool-icon">&#127757;</span>
+                    Promo Mgr.
                 </button>
                 <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')" style="position: relative;">
                     <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
@@ -4622,7 +4825,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.44</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.48</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4895,7 +5098,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.44</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.48</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5700,7 +5903,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.44 C17
+        // EVENT PROJECTOR — v15.9.48 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -12190,7 +12393,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.44';
+            const HUB_VERSION = 'v15.9.48';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13551,7 +13754,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.44</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.48</div>
                     </div>
                     
                     <div class="section">
@@ -13650,7 +13853,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.44 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.48 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -15969,7 +16172,7 @@ Spittelauer Lnde 12/1
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade Emails…</div>';
 
             try {
-                const filter = unreadOnly ? "&$filter=isRead eq false" : "";
+                const filter = unreadOnly ? "&$filter=isRead eq false" : "&$filter=isDraft eq false";
                 const res = await fetch(
                     `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
                     { headers: { 'Authorization': 'Bearer ' + accessToken } }
@@ -15984,7 +16187,7 @@ Spittelauer Lnde 12/1
                 if (status) status.textContent = `${emails.length} Email${emails.length !== 1 ? 's' : ''}`;
 
                 if (emails.length === 0) {
-                    list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">&#10003; Keine ungelesenen Emails</div>';
+                    list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">&#10003; ' + (unreadOnly ? 'Keine ungelesenen Emails' : 'Keine Emails gefunden') + '</div>';
                     return;
                 }
 
@@ -16184,8 +16387,474 @@ Spittelauer Lnde 12/1
         // Auto-check unread count every 5 min after login
         function inboxStartPolling() {
             inboxCheckUnread();
-            setInterval(inboxCheckUnread, 5 * 60 * 1000);
+            miniInboxLoad();
+            setInterval(() => { inboxCheckUnread(); miniInboxLoad(); }, 5 * 60 * 1000);
         }
+        // ═══════════════════════════════════════════════════════
+
+        
+        // ═══════════════════════════════════════════════════════
+        // MINI INBOX WIDGET
+        // ═══════════════════════════════════════════════════════
+
+        let miniInboxCollapsed = localStorage.getItem('miniInboxCollapsed') === 'true';
+        let quickNotesCollapsed = localStorage.getItem('quickNotesCollapsed') === 'true';
+
+        function toggleMiniInbox() {
+            miniInboxCollapsed = !miniInboxCollapsed;
+            localStorage.setItem('miniInboxCollapsed', miniInboxCollapsed);
+            _applyMiniInboxState();
+        }
+
+        function _applyMiniInboxState() {
+            const body = document.getElementById('mini-inbox-body');
+            const btn = document.getElementById('mini-inbox-toggle-btn');
+            if (!body) return;
+            body.style.display = miniInboxCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = miniInboxCollapsed ? '▼' : '▲';
+        }
+
+        function toggleQuickNotes() {
+            quickNotesCollapsed = !quickNotesCollapsed;
+            localStorage.setItem('quickNotesCollapsed', quickNotesCollapsed);
+            _applyQuickNotesState();
+        }
+
+        function _applyQuickNotesState() {
+            const body = document.getElementById('quick-notes-body');
+            const btn = document.getElementById('qn-toggle-btn');
+            if (!body) return;
+            body.style.display = quickNotesCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = quickNotesCollapsed ? '▼' : '▲';
+        }
+
+        async function miniInboxLoad() {
+            const list = document.getElementById('mini-inbox-list');
+            const status = document.getElementById('mini-inbox-status');
+            if (!list) return;
+            if (!accessToken) {
+                list.innerHTML = '<span style="color:#888;">Login erforderlich</span>';
+                return;
+            }
+            if (status) status.textContent = '⏳';
+            try {
+                const res = await fetch(
+                    'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=5&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag',
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                const emails = data.value || [];
+                const unread = emails.filter(e => !e.isRead).length;
+
+                // Update badges
+                const badge = document.getElementById('mini-inbox-badge');
+                if (badge) {
+                    badge.textContent = unread;
+                    badge.style.display = unread > 0 ? 'inline' : 'none';
+                }
+                if (status) status.textContent = unread > 0 ? unread + ' ungelesen' : '✓ alles gelesen';
+
+                if (emails.length === 0) {
+                    list.innerHTML = '<div style="padding:8px;color:#888;text-align:center;">Keine Emails</div>';
+                    return;
+                }
+
+                const now = new Date();
+                list.innerHTML = '';
+                emails.forEach(email => {
+                    const received = new Date(email.receivedDateTime);
+                    const daysDiff = (now - received) / (1000*60*60*24);
+                    const isOverdue = !email.isRead && daysDiff >= 3;
+                    const isFlagged = email.flag?.flagStatus === 'flagged';
+                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
+                    let cls = 'mini-email-row';
+                    if (isOverdue) cls += ' mini-overdue';
+                    else if (isFlagged) cls += ' mini-flagged';
+                    else if (!email.isRead) cls += ' mini-unread';
+
+                    const row = document.createElement('div');
+                    row.className = cls;
+                    row.title = email.subject || '';
+                    row.innerHTML = `
+                        <span class="mini-email-sender">${escHtml(senderName)}</span>
+                        <span class="mini-email-subject ${!email.isRead ? 'bold' : ''}">${escHtml(email.subject || '(kein Betreff)')}</span>
+                        <span class="mini-email-date">${inboxFormatDate(received)}</span>
+                    `;
+                    row.onclick = () => { openInbox(); };
+                    list.appendChild(row);
+                });
+            } catch(err) {
+                list.innerHTML = `<span style="color:#ef4444;font-size:12px;padding:8px;">Fehler: ${err.message}</span>`;
+                if (status) status.textContent = 'Fehler';
+            }
+        }
+
+        // Init widget states on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            _applyMiniInboxState();
+            _applyQuickNotesState();
+        });
+        // ═══════════════════════════════════════════════════════
+
+        
+        // ═══════════════════════════════════════════════════════
+        // C20 — PROMO MANAGER
+        // ═══════════════════════════════════════════════════════
+
+        const PM_MILESTONES = [
+            { key: 'm28', label: '−28d Announce',        offset: -28 },
+            { key: 'm14', label: '−14d Push',             offset: -14 },
+            { key: 'm7',  label: '−7d Start täglich',     offset: -7  },
+            { key: 'm6',  label: '−6d Post',              offset: -6  },
+            { key: 'm5',  label: '−5d Post',              offset: -5  },
+            { key: 'm4',  label: '−4d Post',              offset: -4  },
+            { key: 'm3',  label: '−3d Post',              offset: -3  },
+            { key: 'm2',  label: '−2d Post',              offset: -2  },
+            { key: 'm1',  label: '−1d Final Push',        offset: -1  },
+            { key: 'p1',  label: '+1d Recap',             offset: +1  },
+        ];
+
+        let pmCurrentEventId = null;
+        let pmCurrentEventDate = null;
+
+        function openPromoManager() {
+            openModal('monatsprogramm-modal');
+            mpLoad();
+            pmPopulateDropdowns();
+        }
+
+        function pmSwitchTab(tab) {
+            ['monthly','assets','checklist'].forEach(t => {
+                document.getElementById('pm-content-' + t).style.display = t === tab ? 'flex' : 'none';
+                document.getElementById('pm-tab-' + t).classList.toggle('active', t === tab);
+            });
+        }
+
+        function pmPopulateDropdowns() {
+            const sel1 = document.getElementById('pm-event-select');
+            const sel2 = document.getElementById('pm-cl-event-select');
+            if (!sel1 || !sel2) return;
+
+            if (!bmtEvents || bmtEvents.length === 0) {
+                sel1.innerHTML = '<option value="">Bitte BMT Events laden</option>';
+                sel2.innerHTML = '<option value="">Bitte BMT Events laden</option>';
+                return;
+            }
+
+            const now = new Date();
+            const future = bmtEvents.filter(e => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                const cat = e.category || '';
+                const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
+                return d >= now && isEvent && e.status !== 'CANCELLED';
+            }).sort((a,b) => {
+                const da = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
+                const db = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
+                return da - db;
+            });
+
+            const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+            const opts = '<option value="">-- Event wählen --</option>' + future.map((e, i) => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                const key = 'pm_' + i + '_' + d.toISOString().slice(0,10).replace(/-/g,'');
+                const label = (e.summary || e.name || 'Event') + ' — ' + days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE');
+                return `<option value="${key}" data-date="${d.toISOString()}" data-name="${(e.summary||e.name||'Event').replace(/"/g,'&quot;')}">${label}</option>`;
+            }).join('');
+
+            sel1.innerHTML = opts;
+            sel2.innerHTML = opts;
+        }
+
+        function pmAssetsLoad() {
+            const sel = document.getElementById('pm-event-select');
+            const opt = sel.options[sel.selectedIndex];
+            const id = sel.value;
+
+            // Sync to checklist dropdown
+            const cl = document.getElementById('pm-cl-event-select');
+            if (cl) cl.value = id;
+
+            if (!id) {
+                document.getElementById('pm-assets-body').style.display = 'none';
+                document.getElementById('pm-assets-empty').style.display = 'block';
+                pmCurrentEventId = null;
+                return;
+            }
+
+            pmCurrentEventId = id;
+            pmCurrentEventDate = opt.dataset.date ? new Date(opt.dataset.date) : null;
+
+            document.getElementById('pm-assets-empty').style.display = 'none';
+            document.getElementById('pm-assets-body').style.display = 'flex';
+
+            // Load from localStorage
+            const saved = JSON.parse(localStorage.getItem('promo_assets_' + id) || '{}');
+            document.getElementById('pm-fb-url').value = saved.fbUrl || '';
+            document.getElementById('pm-lt-url').value = saved.ltUrl || '';
+            document.getElementById('pm-vvk-url').value = saved.vvkUrl || '';
+            document.getElementById('pm-grafik-url').value = saved.grafikUrl || '';
+            document.getElementById('pm-notes').value = saved.notes || '';
+            document.getElementById('pm-sofie').checked = !!saved.sofie;
+            document.getElementById('pm-linktree').checked = !!saved.linktree;
+            document.getElementById('pm-fb-cohost').checked = !!saved.fbCohost;
+
+            // Radio buttons
+            if (saved.grafik) {
+                const r = document.querySelector(`input[name="pm-grafik"][value="${saved.grafik}"]`);
+                if (r) r.checked = true;
+            }
+            if (saved.press) {
+                const r = document.querySelector(`input[name="pm-press"][value="${saved.press}"]`);
+                if (r) r.checked = true;
+            }
+
+            pmUpdateFlags();
+        }
+
+        function pmAssetsSave() {
+            if (!pmCurrentEventId) return;
+            const grafik = document.querySelector('input[name="pm-grafik"]:checked')?.value || '';
+            const press = document.querySelector('input[name="pm-press"]:checked')?.value || '';
+            const data = {
+                fbUrl: document.getElementById('pm-fb-url').value,
+                ltUrl: document.getElementById('pm-lt-url').value,
+                vvkUrl: document.getElementById('pm-vvk-url').value,
+                grafikUrl: document.getElementById('pm-grafik-url').value,
+                notes: document.getElementById('pm-notes').value,
+                sofie: document.getElementById('pm-sofie').checked,
+                linktree: document.getElementById('pm-linktree').checked,
+                fbCohost: document.getElementById('pm-fb-cohost').checked,
+                grafik, press
+            };
+            localStorage.setItem('promo_assets_' + pmCurrentEventId, JSON.stringify(data));
+            pmUpdateFlags();
+        }
+
+        function pmUpdateFlags() {
+            const flags = document.getElementById('pm-flags');
+            if (!flags) return;
+            const fbUrl = document.getElementById('pm-fb-url').value.trim();
+            const vvkUrl = document.getElementById('pm-vvk-url').value.trim();
+            const grafik = document.querySelector('input[name="pm-grafik"]:checked')?.value || '';
+            const arr = [];
+            if (!fbUrl) arr.push({ cls:'pm-flag-red', msg:'⚠ Kein FB Event → Manuelle Kommunikation an Sofie nötig' });
+            if (!vvkUrl) arr.push({ cls:'pm-flag-red', msg:'⚠ VVK Link fehlt → Linktree kann nicht gesetzt werden' });
+            if (grafik === 'fehlt') arr.push({ cls:'pm-flag-yellow', msg:'⚠ Grafik fehlt → Posting eingeschränkt' });
+            flags.innerHTML = arr.map(f => `<div class="pm-flag ${f.cls}">${f.msg}</div>`).join('');
+        }
+
+        function pmCopyField(id) {
+            const val = document.getElementById(id)?.value;
+            if (!val) { showToast('Nichts zum Kopieren', true); return; }
+            navigator.clipboard.writeText(val).then(() => showToast('✓ Kopiert')).catch(() => showToast('Fehler', true));
+        }
+
+        function pmOpenField(id) {
+            const val = document.getElementById(id)?.value;
+            if (!val) { showToast('Kein Link eingetragen', true); return; }
+            window.open(val, '_blank');
+        }
+
+        function pmChecklistLoad() {
+            const sel = document.getElementById('pm-cl-event-select');
+            const opt = sel.options[sel.selectedIndex];
+            const id = sel.value;
+
+            // Sync to assets dropdown
+            const as = document.getElementById('pm-event-select');
+            if (as) as.value = id;
+
+            if (!id) {
+                document.getElementById('pm-checklist-body').style.display = 'none';
+                document.getElementById('pm-checklist-empty').style.display = 'block';
+                return;
+            }
+
+            pmCurrentEventId = id;
+            const eventDate = opt.dataset.date ? new Date(opt.dataset.date) : null;
+            const eventName = opt.dataset.name || opt.text.split(' — ')[0];
+            pmCurrentEventDate = eventDate;
+
+            document.getElementById('pm-checklist-empty').style.display = 'none';
+            document.getElementById('pm-checklist-body').style.display = 'block';
+            document.getElementById('pm-cl-event-info').textContent = eventName + (eventDate ? ' · ' + eventDate.toLocaleDateString('de-AT', {weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}) : '');
+
+            const saved = JSON.parse(localStorage.getItem('promo_cl_' + id) || '{}');
+            const now = new Date(); now.setHours(0,0,0,0);
+            const tbody = document.getElementById('pm-cl-milestones');
+            tbody.innerHTML = '';
+
+            PM_MILESTONES.forEach(ms => {
+                let dueDate = null;
+                if (eventDate) {
+                    dueDate = new Date(eventDate);
+                    dueDate.setDate(dueDate.getDate() + ms.offset);
+                    dueDate.setHours(0,0,0,0);
+                }
+                const checked = !!saved[ms.key];
+                const isOverdue = dueDate && dueDate < now && !checked;
+                const dueDateStr = dueDate ? dueDate.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'}) : '—';
+
+                const tr = document.createElement('tr');
+                tr.className = 'pm-cl-row' + (isOverdue ? ' pm-cl-overdue' : '');
+                tr.innerHTML = `
+                    <td>${ms.label}${isOverdue ? ' <span style="color:#ef4444;font-size:11px;">ÜBERFÄLLIG</span>' : ''}</td>
+                    <td style="color:var(--text-muted);">${dueDateStr}</td>
+                    <td style="text-align:center;">
+                        <input type="checkbox" ${checked ? 'checked' : ''} onchange="pmClSave('${id}','${ms.key}',this.checked,this.closest('tr'))" style="width:16px;height:16px;cursor:pointer;">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Posts counter
+            document.getElementById('pm-cl-posts-count').textContent = saved._posts || 0;
+        }
+
+        function pmClSave(id, key, val, rowEl) {
+            const saved = JSON.parse(localStorage.getItem('promo_cl_' + id) || '{}');
+            saved[key] = val;
+            localStorage.setItem('promo_cl_' + id, JSON.stringify(saved));
+            // Update row styling
+            if (rowEl) {
+                const now = new Date(); now.setHours(0,0,0,0);
+                rowEl.classList.toggle('pm-cl-overdue', !val && rowEl.classList.contains('pm-cl-overdue'));
+            }
+        }
+
+        function pmClPostsAdj(delta) {
+            if (!pmCurrentEventId) return;
+            const el = document.getElementById('pm-cl-posts-count');
+            const saved = JSON.parse(localStorage.getItem('promo_cl_' + pmCurrentEventId) || '{}');
+            const count = Math.max(0, (saved._posts || 0) + delta);
+            saved._posts = count;
+            localStorage.setItem('promo_cl_' + pmCurrentEventId, JSON.stringify(saved));
+            el.textContent = count;
+        }
+        // ═══════════════════════════════════════════════════════
+
+        
+        // ═══════════════════════════════════════════════════════
+        // D13 — LINKTREE QUICK-PANEL
+        // ═══════════════════════════════════════════════════════
+
+        const LT_STORAGE_KEY = 'linktree_links_v1';
+        let ltCollapsed = localStorage.getItem('ltCollapsed') === 'true';
+
+        const LT_DEFAULT_LINKS = [
+            { label: 'grelletickets — Hauptseite', url: 'https://linktr.ee/grelletickets' },
+            { label: '🎟 Tickets — ntry (Pre-Sale)', url: 'https://ntry.at/my/events?l=de' },
+            { label: '🎟 Tickets — OE Ticket', url: 'https://oeticket.light.oet.eu/dashboard' },
+        ];
+
+        function ltGetLinks() {
+            const saved = localStorage.getItem(LT_STORAGE_KEY);
+            if (saved) return JSON.parse(saved);
+            localStorage.setItem(LT_STORAGE_KEY, JSON.stringify(LT_DEFAULT_LINKS));
+            return LT_DEFAULT_LINKS;
+        }
+
+        function ltSaveLinks(links) {
+            localStorage.setItem(LT_STORAGE_KEY, JSON.stringify(links));
+        }
+
+        function ltRender() {
+            const links = ltGetLinks();
+            const list = document.getElementById('lt-list');
+            const empty = document.getElementById('lt-empty');
+            const count = document.getElementById('lt-link-count');
+            if (!list) return;
+
+            if (count) count.textContent = links.length + ' Links';
+
+            if (links.length === 0) {
+                list.innerHTML = '';
+                if (empty) empty.style.display = 'block';
+                return;
+            }
+            if (empty) empty.style.display = 'none';
+
+            list.innerHTML = '';
+            links.forEach((link, i) => {
+                const row = document.createElement('div');
+                row.style.cssText = 'display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border);';
+                row.innerHTML = `
+                    <span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(link.url)}">${escHtml(link.label)}</span>
+                    <button class="quick-notes-add" onclick="ltCopy(${i})" title="Kopieren" style="font-size:11px;">&#128203;</button>
+                    <button class="quick-notes-add" onclick="ltOpen(${i})" title="Öffnen" style="font-size:11px;">&#8599;</button>
+                    <button class="quick-notes-add" onclick="ltEdit(${i})" title="Bearbeiten" style="font-size:11px;">&#9998;</button>
+                    <button class="quick-notes-add" onclick="ltDelete(${i})" title="Löschen" style="font-size:11px;color:#ef4444;">&#10005;</button>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function ltCopy(i) {
+            const links = ltGetLinks();
+            if (!links[i]) return;
+            navigator.clipboard.writeText(links[i].url).then(() => showToast('✓ Link kopiert')).catch(() => showToast('Fehler', true));
+        }
+
+        function ltOpen(i) {
+            const links = ltGetLinks();
+            if (!links[i]) return;
+            window.open(links[i].url, '_blank');
+        }
+
+        function ltEdit(i) {
+            const links = ltGetLinks();
+            if (!links[i]) return;
+            const newLabel = prompt('Label:', links[i].label);
+            if (newLabel === null) return;
+            const newUrl = prompt('URL:', links[i].url);
+            if (newUrl === null) return;
+            links[i] = { label: newLabel.trim() || links[i].label, url: newUrl.trim() || links[i].url };
+            ltSaveLinks(links);
+            ltRender();
+        }
+
+        function ltDelete(i) {
+            const links = ltGetLinks();
+            if (!confirm('Link "' + links[i]?.label + '" löschen?')) return;
+            links.splice(i, 1);
+            ltSaveLinks(links);
+            ltRender();
+        }
+
+        function ltAddLink() {
+            const label = prompt('Label (z.B. "11.04 Boiler Room Tickets"):');
+            if (!label) return;
+            const url = prompt('URL:');
+            if (!url) return;
+            const links = ltGetLinks();
+            links.unshift({ label: label.trim(), url: url.trim() });
+            ltSaveLinks(links);
+            ltRender();
+            // Auto-expand if collapsed
+            if (ltCollapsed) toggleLinktree();
+        }
+
+        function toggleLinktree() {
+            ltCollapsed = !ltCollapsed;
+            localStorage.setItem('ltCollapsed', ltCollapsed);
+            const body = document.getElementById('lt-body');
+            const btn = document.getElementById('lt-toggle-btn');
+            if (body) body.style.display = ltCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = ltCollapsed ? '▼' : '▲';
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', function() {
+            // Apply saved collapse state
+            if (ltCollapsed) {
+                const body = document.getElementById('lt-body');
+                const btn = document.getElementById('lt-toggle-btn');
+                if (body) body.style.display = 'none';
+                if (btn) btn.textContent = '▼';
+            }
+            ltRender();
+        });
         // ═══════════════════════════════════════════════════════
 
         </script>
