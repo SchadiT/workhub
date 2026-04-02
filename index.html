@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.42</title>
+    <title>Turbo Projects Work Hub v15.9.43</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3342,7 +3342,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.42 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.43 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4176,6 +4176,10 @@
                     <span class="tool-icon">&#128221;</span>
                     Analysis
                 </button>
+                <button class="tool-btn border-white" onclick="openModal('g3-todo-modal')" style="border-color:#22c55e;">
+                    <span class="tool-icon">&#9989;</span>
+                    To-Do Setup
+                </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">&#11088;</span>
@@ -4525,7 +4529,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.42</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.43</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4798,7 +4802,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.4</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.43</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5602,7 +5606,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.42 C17
+        // EVENT PROJECTOR — v15.9.43 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -7275,7 +7279,91 @@
         function printFactsheet() {
             const preview = document.getElementById('fs-preview').innerHTML;
             const w = window.open('', '_blank');
-            w.document.write(`<html><head><title>Factsheet</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:8px;text-align:left;}.event-name{color:red;}</style></head><body>${preview}</body></html>`);
+            w.document.write(`<html><head><title>Factsheet</title><style>body{font-family:Arial;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:8px;text-align:left;}.event-name{color:red;}</style></head><body>${preview}
+    <!-- G3 Microsoft To-Do Setup Modal -->
+    <div class="modal-overlay" id="g3-todo-modal">
+        <div class="modal-content" style="max-width:620px;">
+            <div class="modal-header">
+                <h2>&#9989; Microsoft To-Do Setup — G3</h2>
+                <button class="modal-close" onclick="closeModal('g3-todo-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:20px;">
+                <!-- Status Banner -->
+                <div id="g3-auth-banner" style="display:none;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-size:13px;"></div>
+
+                <!-- Lists Overview -->
+                <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                    Erstellt 5 Listen + wiederkehrende Tasks in Microsoft To-Do via Graph API.
+                    Bereits existierende Listen werden <strong>nicht</strong> überschrieben.
+                </div>
+                <div id="g3-lists-preview" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+                    <div class="g3-list-row" data-list="daily">
+                        <span class="g3-list-icon">&#128308;</span>
+                        <span class="g3-list-name">DAILY</span>
+                        <span class="g3-list-tasks">0 Tasks (manuell befüllen)</span>
+                        <span class="g3-list-status" id="g3-status-daily"></span>
+                    </div>
+                    <div class="g3-list-row" data-list="weekly">
+                        <span class="g3-list-icon">&#128197;</span>
+                        <span class="g3-list-name">WÖCHENTLICH</span>
+                        <span class="g3-list-tasks">2 Tasks (DI Jour Fixe · DO Security)</span>
+                        <span class="g3-list-status" id="g3-status-weekly"></span>
+                    </div>
+                    <div class="g3-list-row" data-list="monthly">
+                        <span class="g3-list-icon">&#128197;</span>
+                        <span class="g3-list-name">MONATLICH</span>
+                        <span class="g3-list-tasks">4 Tasks (Reinigung · Dienstpläne · Programm · Löhne)</span>
+                        <span class="g3-list-status" id="g3-status-monthly"></span>
+                    </div>
+                    <div class="g3-list-row" data-list="event">
+                        <span class="g3-list-icon">&#127919;</span>
+                        <span class="g3-list-name">PRO EVENT</span>
+                        <span class="g3-list-tasks">4 Tasks (−28d · −7d · −1d · +1d)</span>
+                        <span class="g3-list-status" id="g3-status-event"></span>
+                    </div>
+                    <div class="g3-list-row" data-list="overdue">
+                        <span class="g3-list-icon">&#9889;</span>
+                        <span class="g3-list-name">ÜBERFÄLLIG</span>
+                        <span class="g3-list-tasks">Leer anlegen (auto-populated)</span>
+                        <span class="g3-list-status" id="g3-status-overdue"></span>
+                    </div>
+                </div>
+
+                <!-- Progress Log -->
+                <div id="g3-log" style="display:none;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);border-radius:6px;padding:12px;max-height:180px;overflow-y:auto;font-size:12px;font-family:monospace;line-height:1.6;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('g3-todo-modal')">Schließen</button>
+                <button class="modal-btn primary" id="g3-run-btn" onclick="g3SetupToDo()" style="background:#22c55e;border-color:#22c55e;">
+                    &#9989; Listen erstellen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .g3-list-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--surface-alt, #1a1a2e);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .g3-list-icon { font-size: 16px; flex-shrink: 0; }
+        .g3-list-name { font-weight: 600; min-width: 130px; }
+        .g3-list-tasks { color: var(--text-muted); flex: 1; font-size: 12px; }
+        .g3-list-status { font-size: 18px; flex-shrink: 0; min-width: 24px; text-align: center; }
+        .g3-log-line { margin: 0; }
+        .g3-log-ok { color: #22c55e; }
+        .g3-log-skip { color: #f59e0b; }
+        .g3-log-err { color: #ef4444; }
+        .g3-log-info { color: #94a3b8; }
+    </style>
+
+</body></html>`);
             w.document.close();
             w.print();
         }
@@ -12008,7 +12096,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.42';
+            const HUB_VERSION = 'v15.9.43';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13369,7 +13457,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.4</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.43</div>
                     </div>
                     
                     <div class="section">
@@ -13468,7 +13556,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.4 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.43 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -15583,6 +15671,176 @@ Spittelauer Lnde 12/1
             }
         }
 
-    </script>
+    
+        // ═══════════════════════════════════════════════════════
+        // G3 — MICROSOFT TO-DO SETUP
+        // ═══════════════════════════════════════════════════════
+
+        const G3_LISTS = {
+            daily:   { name: '🔴 DAILY',        tasks: [] },
+            weekly:  { name: '📅 WÖCHENTLICH',  tasks: [
+                {
+                    title: 'DI — Jour Fixe (Debrief + Factsheets + Security + Wochenplanung)',
+                    importance: 'high',
+                    recurrence: { pattern: { type: 'weekly', interval: 1, daysOfWeek: ['tuesday'] }, range: { type: 'noEnd', startDate: '2026-04-07' } }
+                },
+                {
+                    title: 'DO — Security Orders Wochenende versenden',
+                    importance: 'high',
+                    recurrence: { pattern: { type: 'weekly', interval: 1, daysOfWeek: ['thursday'] }, range: { type: 'noEnd', startDate: '2026-04-09' } }
+                }
+            ]},
+            monthly: { name: '📅 MONATLICH',    tasks: [
+                { title: 'Reinigungsplan erstellen + verschicken',       importance: 'normal', recurrence: { pattern: { type: 'absoluteMonthly', interval: 1, dayOfMonth: 20 }, range: { type: 'noEnd', startDate: '2026-04-20' } } },
+                { title: 'Dienstpläne Runner + Bar erstellen',           importance: 'normal', recurrence: { pattern: { type: 'absoluteMonthly', interval: 1, dayOfMonth: 22 }, range: { type: 'noEnd', startDate: '2026-04-22' } } },
+                { title: 'Monatsprogramm finalisieren + posten',         importance: 'normal', recurrence: { pattern: { type: 'absoluteMonthly', interval: 1, dayOfMonth: 25 }, range: { type: 'noEnd', startDate: '2026-04-25' } } },
+                { title: 'Löhne vorbereiten + an Matthäus übergeben',    importance: 'normal', recurrence: { pattern: { type: 'absoluteMonthly', interval: 1, dayOfMonth: 28 }, range: { type: 'noEnd', startDate: '2026-04-28' } } }
+            ]},
+            event:   { name: '🎯 PRO EVENT',    tasks: [
+                { title: '−28d | Event ankündigen (FB Event + IG Post erstellen)',  importance: 'high',   body: 'FB Event anlegen · Grafik bei Sofie bestellen · BMT veröffentlichen · Linktree updaten' },
+                { title: '−7d | Tägliche Posts starten (7 Tage Countdown)',         importance: 'high',   body: 'Story-Serie starten · Ticket-Link in Bio · Reminder-Posts planen' },
+                { title: '−1d | Factsheet + Security Order fertigstellen',           importance: 'high',   body: 'Factsheet generieren · Security Order versenden · Team briefen' },
+                { title: '+1d | Debrief + Recap erstellen',                          importance: 'normal', body: 'Debrief Tool ausfüllen · PAX + Revenue eintragen · IG Recap posten' }
+            ]},
+            overdue: { name: '⚡ ÜBERFÄLLIG',   tasks: [] }
+        };
+
+        async function g3GetOrCreateList(token, listName, statusId) {
+            const st = document.getElementById(statusId);
+            if (st) st.textContent = '⏳';
+
+            // Fetch existing lists
+            const listRes = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!listRes.ok) throw new Error('Fehler beim Abrufen der Listen: ' + listRes.status);
+            const listData = await listRes.json();
+            const existing = (listData.value || []).find(l => l.displayName === listName);
+            if (existing) {
+                g3Log('skip', `⟳ Liste existiert bereits: ${listName}`);
+                if (st) st.textContent = '⚠️';
+                return { id: existing.id, existed: true };
+            }
+
+            // Create list
+            const createRes = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ displayName: listName })
+            });
+            if (!createRes.ok) throw new Error('Liste erstellen fehlgeschlagen: ' + createRes.status);
+            const created = await createRes.json();
+            g3Log('ok', `✓ Liste erstellt: ${listName}`);
+            if (st) st.textContent = '✅';
+            return { id: created.id, existed: false };
+        }
+
+        async function g3CreateTask(token, listId, task) {
+            const body = {
+                title: task.title,
+                importance: task.importance || 'normal',
+                status: 'notStarted'
+            };
+            if (task.recurrence) body.recurrence = task.recurrence;
+            if (task.body) body.body = { content: task.body, contentType: 'text' };
+
+            const res = await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks`, {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`Task fehlgeschlagen (${res.status}): ${errText}`);
+            }
+            g3Log('ok', `  ✓ Task: ${task.title.substring(0, 60)}${task.title.length > 60 ? '…' : ''}`);
+        }
+
+        function g3Log(type, msg) {
+            const log = document.getElementById('g3-log');
+            if (!log) return;
+            log.style.display = 'block';
+            const p = document.createElement('p');
+            p.className = `g3-log-line g3-log-${type}`;
+            p.textContent = msg;
+            log.appendChild(p);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function g3SetupToDo() {
+            const btn = document.getElementById('g3-run-btn');
+            const banner = document.getElementById('g3-auth-banner');
+            const log = document.getElementById('g3-log');
+
+            // Check auth
+            if (!accessToken) {
+                banner.style.display = 'block';
+                banner.style.background = '#7f1d1d';
+                banner.style.color = '#fca5a5';
+                banner.textContent = '⚠ Nicht eingeloggt — bitte zuerst Microsoft Login oben rechts.';
+                return;
+            }
+
+            banner.style.display = 'none';
+            log.innerHTML = '';
+            log.style.display = 'block';
+            btn.disabled = true;
+            btn.textContent = '⏳ Erstelle Listen…';
+
+            // Reset status icons
+            ['daily','weekly','monthly','event','overdue'].forEach(k => {
+                const el = document.getElementById('g3-status-' + k);
+                if (el) el.textContent = '';
+            });
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const [key, cfg] of Object.entries(G3_LISTS)) {
+                try {
+                    g3Log('info', `── ${cfg.name}`);
+                    const { id: listId, existed } = await g3GetOrCreateList(accessToken, cfg.name, 'g3-status-' + key);
+
+                    if (cfg.tasks.length === 0) {
+                        g3Log('info', '  (keine Tasks — Liste leer)');
+                        document.getElementById('g3-status-' + key).textContent = existed ? '⚠️' : '✅';
+                        successCount++;
+                        continue;
+                    }
+
+                    // If list already existed, skip task creation to avoid duplicates
+                    if (existed) {
+                        g3Log('skip', '  ⟳ Tasks übersprungen (Liste existiert bereits)');
+                        successCount++;
+                        continue;
+                    }
+
+                    for (const task of cfg.tasks) {
+                        await g3CreateTask(accessToken, listId, task);
+                        await new Promise(r => setTimeout(r, 200)); // rate limit safety
+                    }
+                    document.getElementById('g3-status-' + key).textContent = '✅';
+                    successCount++;
+                } catch (err) {
+                    g3Log('err', `✗ Fehler bei ${cfg.name}: ${err.message}`);
+                    document.getElementById('g3-status-' + key).textContent = '❌';
+                    errorCount++;
+                }
+            }
+
+            g3Log('info', '──────────────────────────────');
+            if (errorCount === 0) {
+                g3Log('ok', `✓ Setup abgeschlossen — ${successCount} Listen verarbeitet.`);
+                btn.textContent = '✅ Fertig';
+                btn.style.background = '#16a34a';
+            } else {
+                g3Log('err', `⚠ ${errorCount} Fehler · ${successCount} erfolgreich`);
+                btn.disabled = false;
+                btn.textContent = '↺ Erneut versuchen';
+            }
+        }
+        // ═══════════════════════════════════════════════════════
+
+        </script>
 </body>
 </html>
