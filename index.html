@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.43</title>
+    <title>Turbo Projects Work Hub v15.9.44</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3342,7 +3342,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.43 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.44 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -3762,34 +3762,126 @@
     </div>
 
     <!-- Email Composer Modal -->
+    <!-- G9 Email Hub Modal -->
     <div class="modal-overlay" id="email-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>&#9993; E-Mail senden</h3>
+        <div class="modal-content" style="max-width:780px;height:85vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h2>&#9993; E-Mail Hub <span id="inbox-header-badge" style="display:none;background:#ef4444;color:#fff;border-radius:12px;padding:2px 8px;font-size:12px;font-weight:700;margin-left:8px;"></span></h2>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label>An (E-Mail)</label>
-                    <input type="email" id="email-to" placeholder="empfaenger@example.com">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label>Betreff</label>
-                    <input type="text" id="email-subject" placeholder="Betreff eingeben...">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label>Nachricht</label>
-                    <textarea id="email-body" rows="8" placeholder="Nachricht eingeben..." style="width: 100%; padding: 10px; border-radius: 0; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: inherit; resize: vertical;"></textarea>
-                </div>
-                <p class="form-hint" id="email-status" style="color: #888; font-size: 12px;"></p>
+
+            <!-- Tab Bar -->
+            <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;">
+                <button class="inbox-tab active" id="tab-inbox" onclick="inboxSwitchTab('inbox')">📥 Inbox</button>
+                <button class="inbox-tab" id="tab-flagged" onclick="inboxSwitchTab('flagged')">&#127988; Flagged</button>
+                <button class="inbox-tab" id="tab-compose" onclick="inboxSwitchTab('compose')">&#9998; Compose</button>
             </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('email-modal')">Abbrechen</button>
-                <button class="modal-btn" onclick="saveEmailDraft()" style="background: var(--blue-medium); color: #fff;">Als Entwurf</button>
-                <button class="modal-btn success" onclick="sendEmail()">&#128228; Senden</button>
+
+            <!-- INBOX TAB -->
+            <div id="inbox-tab-inbox" class="inbox-tab-content" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+                    <button onclick="inboxLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">&#8635; Refresh</button>
+                    <span id="inbox-load-status" style="font-size:12px;color:var(--text-muted);"></span>
+                    <label style="margin-left:auto;font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+                        <input type="checkbox" id="inbox-unread-only" onchange="inboxLoad()" checked> Nur ungelesen
+                    </label>
+                </div>
+                <div id="inbox-list" style="flex:1;overflow-y:auto;padding:0;"></div>
+            </div>
+
+            <!-- FLAGGED TAB -->
+            <div id="inbox-tab-flagged" class="inbox-tab-content" style="flex:1;overflow:hidden;display:flex;flex-direction:column;display:none;">
+                <div style="padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
+                    <button onclick="inboxLoadFlagged()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">&#8635; Refresh</button>
+                </div>
+                <div id="flagged-list" style="flex:1;overflow-y:auto;padding:0;"></div>
+            </div>
+
+            <!-- COMPOSE TAB -->
+            <div id="inbox-tab-compose" class="inbox-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-size:12px;color:var(--text-muted);">AN</label>
+                    <input type="email" id="email-to" placeholder="empfaenger@example.com" style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-size:12px;color:var(--text-muted);">BETREFF</label>
+                    <input type="text" id="email-subject" placeholder="Betreff" style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-size:12px;color:var(--text-muted);">NACHRICHT</label>
+                    <textarea id="email-body" rows="10" placeholder="Nachricht..." style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit;font-size:13px;resize:vertical;"></textarea>
+                </div>
+                <p id="email-status" style="color:#888;font-size:12px;margin-bottom:10px;"></p>
+                <div style="display:flex;gap:8px;">
+                    <button class="modal-btn" onclick="saveEmailDraft()" style="background:var(--blue-medium,#3b82f6);color:#fff;">Als Entwurf</button>
+                    <button class="modal-btn success" onclick="sendEmail()">&#128228; Senden</button>
+                </div>
+            </div>
+
+            <!-- REPLY PANEL (slides in) -->
+            <div id="inbox-reply-panel" style="display:none;flex-shrink:0;border-top:1px solid var(--border);padding:12px 16px;background:var(--surface-alt,#1a1a2e);">
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Antwort an: <span id="reply-to-label" style="color:var(--text);"></span></div>
+                <textarea id="reply-body" rows="3" placeholder="Antwort..." style="width:100%;padding:8px;background:var(--bg,#0f0f1a);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit;font-size:13px;resize:none;"></textarea>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                    <button onclick="inboxSendReply()" style="background:#22c55e;color:#fff;border:none;padding:6px 16px;border-radius:4px;cursor:pointer;font-size:13px;">&#128228; Senden</button>
+                    <button onclick="inboxCloseReply()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:6px 16px;border-radius:4px;cursor:pointer;font-size:13px;">Abbrechen</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .inbox-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 13px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .inbox-tab.active {
+            color: var(--text);
+            border-bottom-color: #3b82f6;
+            font-weight: 600;
+        }
+        .inbox-tab:hover { color: var(--text); }
+        .inbox-tab-content { display: flex; flex-direction: column; }
+
+        .email-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .email-row:hover { background: var(--surface-alt, #1a1a2e); }
+        .email-row.unread { border-left: 3px solid #3b82f6; }
+        .email-row.overdue { border-left: 3px solid #ef4444; }
+        .email-row.flagged-row { border-left: 3px solid #f59e0b; }
+
+        .email-sender { font-weight: 600; font-size: 13px; min-width: 160px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .email-subject { font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .email-subject.unread-text { font-weight: 600; }
+        .email-date { font-size: 11px; color: var(--text-muted); min-width: 80px; text-align: right; }
+        .email-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .email-action-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 2px 7px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.1s;
+        }
+        .email-action-btn:hover { color: var(--text); border-color: var(--text); }
+        .email-overdue-tag { background: #7f1d1d; color: #fca5a5; font-size: 10px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+        .email-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    </style>
 
     <!-- Hospitality Summary Modal -->
     <div class="modal-overlay" id="hospitality-modal">
@@ -4123,9 +4215,10 @@
                     <span class="tool-icon">&#128221;</span>
                     Notepad
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('email-modal')">
+                <button class="tool-btn border-blue" onclick="openInbox()" style="position:relative;">
                     <span class="tool-icon">&#9993;</span>
                     E-Mail
+                    <span id="inbox-unread-badge" style="display:none;position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;line-height:18px;text-align:center;"></span>
                 </button>
                 <button class="tool-btn border-blue" onclick="openModal('db-viewer-modal');dbvLoad();" style="border-color:#a855f7;">
                     <span class="tool-icon">&#128202;</span>
@@ -4529,7 +4622,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.43</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.44</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -4802,7 +4895,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.43</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.44</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5275,7 +5368,8 @@
             }
         }
         
-        function loadAllData() { 
+        function loadAllData() {
+            inboxStartPolling(); 
             console.log('loadAllData: Starting with token:', accessToken ? 'YES' : 'NO');
             if (!accessToken) {
                 console.log('loadAllData: No token, skipping');
@@ -5606,7 +5700,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.43 C17
+        // EVENT PROJECTOR — v15.9.44 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -12096,7 +12190,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.43';
+            const HUB_VERSION = 'v15.9.44';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13457,7 +13551,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.43</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.44</div>
                     </div>
                     
                     <div class="section">
@@ -13556,7 +13650,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.43 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.44 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -15838,6 +15932,259 @@ Spittelauer Lnde 12/1
                 btn.disabled = false;
                 btn.textContent = '↺ Erneut versuchen';
             }
+        }
+        // ═══════════════════════════════════════════════════════
+
+        
+        // ═══════════════════════════════════════════════════════
+        // G9 — EMAIL HUB
+        // ═══════════════════════════════════════════════════════
+
+        let inboxCurrentReplyId = null;
+        let inboxCurrentReplyTo = null;
+
+        function openInbox() {
+            openModal('email-modal');
+            if (accessToken) inboxLoad();
+        }
+
+        function inboxSwitchTab(tab) {
+            ['inbox','flagged','compose'].forEach(t => {
+                document.getElementById('inbox-tab-' + t).style.display = t === tab ? 'flex' : 'none';
+                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+            });
+            inboxCloseReply();
+            if (tab === 'flagged') inboxLoadFlagged();
+        }
+
+        async function inboxLoad() {
+            if (!accessToken) {
+                document.getElementById('inbox-list').innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">Bitte zuerst Microsoft einloggen.</div>';
+                return;
+            }
+            const unreadOnly = document.getElementById('inbox-unread-only')?.checked;
+            const status = document.getElementById('inbox-load-status');
+            if (status) status.textContent = 'Lädt…';
+            const list = document.getElementById('inbox-list');
+            list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade Emails…</div>';
+
+            try {
+                const filter = unreadOnly ? "&$filter=isRead eq false" : "";
+                const res = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                const emails = data.value || [];
+
+                // Update badge
+                const unreadCount = emails.filter(e => !e.isRead).length;
+                inboxUpdateBadge(unreadCount);
+                if (status) status.textContent = `${emails.length} Email${emails.length !== 1 ? 's' : ''}`;
+
+                if (emails.length === 0) {
+                    list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">&#10003; Keine ungelesenen Emails</div>';
+                    return;
+                }
+
+                const now = new Date();
+                list.innerHTML = '';
+                emails.forEach(email => {
+                    const received = new Date(email.receivedDateTime);
+                    const daysDiff = (now - received) / (1000 * 60 * 60 * 24);
+                    const isOverdue = !email.isRead && daysDiff >= 3;
+                    const isFlagged = email.flag?.flagStatus === 'flagged';
+                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
+                    const dateStr = inboxFormatDate(received);
+
+                    const row = document.createElement('div');
+                    row.className = 'email-row' + (isOverdue ? ' overdue' : (isFlagged ? ' flagged-row' : (!email.isRead ? ' unread' : '')));
+                    row.innerHTML = `
+                        <div style="flex:1;min-width:0;">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                                <span class="email-sender">${escHtml(senderName)}</span>
+                                ${isOverdue ? '<span class="email-overdue-tag">&#9888; ' + Math.floor(daysDiff) + 'd ungelesen</span>' : ''}
+                                ${isFlagged ? '<span style="color:#f59e0b;font-size:12px;">&#127988;</span>' : ''}
+                                <span class="email-date">${dateStr}</span>
+                            </div>
+                            <div class="email-subject ${!email.isRead ? 'unread-text' : ''}">${escHtml(email.subject || '(kein Betreff)')}</div>
+                            <div class="email-preview">${escHtml(email.bodyPreview || '')}</div>
+                        </div>
+                        <div class="email-actions" onclick="event.stopPropagation()">
+                            <button class="email-action-btn" onclick="inboxOpenReply('${email.id}','${escAttr(senderName)}','${escAttr(email.from?.emailAddress?.address||'')}')" title="Antworten">&#8617;</button>
+                            <button class="email-action-btn" onclick="inboxToggleFlag('${email.id}',${isFlagged},this)" title="${isFlagged ? 'Flag entfernen' : 'Flaggen'}" style="${isFlagged ? 'color:#f59e0b;' : ''}">&#127988;</button>
+                            ${!email.isRead ? `<button class="email-action-btn" onclick="inboxMarkRead('${email.id}',this.closest('.email-row'))" title="Als gelesen markieren">&#10003;</button>` : ''}
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+            } catch (err) {
+                list.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center;">Fehler: ${err.message}</div>`;
+                if (status) status.textContent = 'Fehler';
+            }
+        }
+
+        async function inboxLoadFlagged() {
+            if (!accessToken) return;
+            const list = document.getElementById('flagged-list');
+            list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade geflaggte Emails…</div>';
+            try {
+                const res = await fetch(
+                    `https://graph.microsoft.com/v1.0/me/messages?$filter=flag/flagStatus eq 'flagged'&$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview`,
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                const emails = data.value || [];
+
+                if (emails.length === 0) {
+                    list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">Keine geflaggten Emails</div>';
+                    return;
+                }
+                list.innerHTML = '';
+                emails.forEach(email => {
+                    const received = new Date(email.receivedDateTime);
+                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
+                    const row = document.createElement('div');
+                    row.className = 'email-row flagged-row';
+                    row.innerHTML = `
+                        <div style="flex:1;min-width:0;">
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+                                <span class="email-sender">${escHtml(senderName)}</span>
+                                <span style="color:#f59e0b;font-size:12px;">&#127988; Flagged</span>
+                                <span class="email-date">${inboxFormatDate(received)}</span>
+                            </div>
+                            <div class="email-subject ${!email.isRead ? 'unread-text' : ''}">${escHtml(email.subject || '(kein Betreff)')}</div>
+                            <div class="email-preview">${escHtml(email.bodyPreview || '')}</div>
+                        </div>
+                        <div class="email-actions" onclick="event.stopPropagation()">
+                            <button class="email-action-btn" onclick="inboxOpenReply('${email.id}','${escAttr(senderName)}','${escAttr(email.from?.emailAddress?.address||'')}')" title="Antworten">&#8617;</button>
+                            <button class="email-action-btn" onclick="inboxToggleFlag('${email.id}',true,this)" title="Flag entfernen" style="color:#f59e0b;">&#127988;</button>
+                        </div>
+                    `;
+                    list.appendChild(row);
+                });
+            } catch(err) {
+                list.innerHTML = `<div style="padding:20px;color:#ef4444;">Fehler: ${err.message}</div>`;
+            }
+        }
+
+        async function inboxMarkRead(id, rowEl) {
+            if (!accessToken) return;
+            try {
+                await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isRead: true })
+                });
+                if (rowEl) {
+                    rowEl.classList.remove('unread','overdue');
+                    const btn = rowEl.querySelector('[title="Als gelesen markieren"]');
+                    if (btn) btn.remove();
+                    // Update badge
+                    const badge = document.getElementById('inbox-unread-badge');
+                    if (badge && badge.style.display !== 'none') {
+                        const count = parseInt(badge.textContent) - 1;
+                        inboxUpdateBadge(count);
+                    }
+                }
+            } catch(e) { showToast('Fehler: ' + e.message, true); }
+        }
+
+        async function inboxToggleFlag(id, currentlyFlagged, btn) {
+            if (!accessToken) return;
+            const newStatus = currentlyFlagged ? 'notFlagged' : 'flagged';
+            try {
+                await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ flag: { flagStatus: newStatus } })
+                });
+                if (btn) {
+                    btn.style.color = newStatus === 'flagged' ? '#f59e0b' : '';
+                    btn.title = newStatus === 'flagged' ? 'Flag entfernen' : 'Flaggen';
+                }
+                showToast(newStatus === 'flagged' ? '🚩 Geflaggt' : '✓ Flag entfernt');
+            } catch(e) { showToast('Fehler: ' + e.message, true); }
+        }
+
+        function inboxOpenReply(id, senderName, senderEmail) {
+            inboxCurrentReplyId = id;
+            inboxCurrentReplyTo = senderEmail;
+            document.getElementById('reply-to-label').textContent = senderName + ' <' + senderEmail + '>';
+            document.getElementById('reply-body').value = '';
+            document.getElementById('inbox-reply-panel').style.display = 'block';
+            document.getElementById('reply-body').focus();
+        }
+
+        function inboxCloseReply() {
+            inboxCurrentReplyId = null;
+            document.getElementById('inbox-reply-panel').style.display = 'none';
+        }
+
+        async function inboxSendReply() {
+            if (!accessToken || !inboxCurrentReplyId) return;
+            const body = document.getElementById('reply-body').value.trim();
+            if (!body) { showToast('Nachricht ist leer', true); return; }
+            try {
+                const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${inboxCurrentReplyId}/reply`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ comment: body })
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                showToast('✓ Antwort gesendet');
+                inboxCloseReply();
+            } catch(e) { showToast('Fehler: ' + e.message, true); }
+        }
+
+        async function inboxCheckUnread() {
+            if (!accessToken) return;
+            try {
+                const res = await fetch(
+                    'https://graph.microsoft.com/v1.0/me/mailFolders/inbox',
+                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                );
+                if (!res.ok) return;
+                const data = await res.json();
+                inboxUpdateBadge(data.unreadItemCount || 0);
+            } catch(e) {}
+        }
+
+        function inboxUpdateBadge(count) {
+            const badge = document.getElementById('inbox-unread-badge');
+            const headerBadge = document.getElementById('inbox-header-badge');
+            if (badge) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.style.display = count > 0 ? 'block' : 'none';
+            }
+            if (headerBadge) {
+                headerBadge.textContent = count + ' ungelesen';
+                headerBadge.style.display = count > 0 ? 'inline' : 'none';
+            }
+        }
+
+        function inboxFormatDate(date) {
+            const now = new Date();
+            const diff = now - date;
+            const days = diff / (1000*60*60*24);
+            if (days < 1) return date.toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'});
+            if (days < 7) return date.toLocaleDateString('de-AT', {weekday:'short'});
+            return date.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
+        }
+
+        function escHtml(str) {
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function escAttr(str) {
+            return String(str).replace(/'/g,"\'").replace(/"/g,'&quot;');
+        }
+
+        // Auto-check unread count every 5 min after login
+        function inboxStartPolling() {
+            inboxCheckUnread();
+            setInterval(inboxCheckUnread, 5 * 60 * 1000);
         }
         // ═══════════════════════════════════════════════════════
 
