@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.50</title>
+    <title>Turbo Projects Work Hub v15.9.51</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3577,7 +3577,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.50 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.51 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4857,7 +4857,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.50</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.51</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5130,7 +5130,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.50</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.51</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5935,7 +5935,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.50 C17
+        // EVENT PROJECTOR — v15.9.51 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -9616,14 +9616,32 @@
         function populateMonthSelect() {
             const select = document.getElementById('cleaning-month');
             const now = new Date();
+            const currentVal = select.value;
             select.innerHTML = '';
             
-            // Add current month + next 3 months
-            for (let i = 0; i < 4; i++) {
-                const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
-                const monthName = d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
-                const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-                select.innerHTML += `<option value="${value}">${monthName}</option>`;
+            // Current month through end of next year
+            const startYear = now.getFullYear();
+            const startMonth = now.getMonth(); // 0-indexed
+            const endYear = startYear + 1;
+            
+            for (let y = startYear; y <= endYear; y++) {
+                const mStart = (y === startYear) ? startMonth : 0;
+                const mEnd = 11;
+                for (let m = mStart; m <= mEnd; m++) {
+                    const d = new Date(y, m, 1);
+                    const monthName = d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+                    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                    const opt = document.createElement('option');
+                    opt.value = value;
+                    opt.textContent = monthName;
+                    if (value === currentVal) opt.selected = true;
+                    select.appendChild(opt);
+                }
+            }
+            // Restore selection or default to current month
+            if (!select.value) {
+                const defaultVal = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                select.value = defaultVal;
             }
         }
         
@@ -10181,8 +10199,13 @@
         }
         
         function getCleaningDate(eventDate) {
-            const dayOfWeek = eventDate.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
-            const cleaningDate = new Date(eventDate);
+            // Events starting 00:00-04:00 are after-midnight = previous day's event
+            const adjustedDate = new Date(eventDate);
+            if (adjustedDate.getHours() <= 4) {
+                adjustedDate.setDate(adjustedDate.getDate() - 1);
+            }
+            const dayOfWeek = adjustedDate.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+            const cleaningDate = new Date(adjustedDate);
             
             if (dayOfWeek === 5) {
                 // FRIDAY event  Cleaning on SATURDAY (next day, so club is ready for Sat event)
@@ -12426,7 +12449,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.50';
+            const HUB_VERSION = 'v15.9.51';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13787,7 +13810,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.50</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.51</div>
                     </div>
                     
                     <div class="section">
@@ -13886,7 +13909,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.50 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.51 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -16208,7 +16231,7 @@ Spittelauer Lnde 12/1
                 const filter = unreadOnly ? "&$filter=isRead eq false" : "&$filter=isDraft eq false";
                 const res = await fetch(
                     `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
-                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
@@ -16262,13 +16285,14 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxLoadFlagged() {
-            if (!accessToken) return;
+            const mailToken = await getMailToken();
+            if (!mailToken) return;
             const list = document.getElementById('flagged-list');
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade geflaggte Emails…</div>';
             try {
                 const res = await fetch(
                     `https://graph.microsoft.com/v1.0/me/messages?$filter=flag/flagStatus eq 'flagged'&$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview`,
-                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
@@ -16307,11 +16331,12 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxMarkRead(id, rowEl) {
-            if (!accessToken) return;
+            const mailToken = await getMailToken();
+            if (!mailToken) return;
             try {
                 await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
                     method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ isRead: true })
                 });
                 if (rowEl) {
@@ -16329,12 +16354,13 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxToggleFlag(id, currentlyFlagged, btn) {
-            if (!accessToken) return;
+            const mailToken = await getMailToken();
+            if (!mailToken) return;
             const newStatus = currentlyFlagged ? 'notFlagged' : 'flagged';
             try {
                 await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
                     method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ flag: { flagStatus: newStatus } })
                 });
                 if (btn) {
@@ -16360,13 +16386,14 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxSendReply() {
-            if (!accessToken || !inboxCurrentReplyId) return;
+            const mailToken = await getMailToken();
+            if (!mailToken || !inboxCurrentReplyId) return;
             const body = document.getElementById('reply-body').value.trim();
             if (!body) { showToast('Nachricht ist leer', true); return; }
             try {
                 const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${inboxCurrentReplyId}/reply`, {
                     method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ comment: body })
                 });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -16376,11 +16403,12 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxCheckUnread() {
-            if (!accessToken) return;
+            const mailToken = await getMailToken();
+            if (!mailToken) return;
             try {
                 const res = await fetch(
                     'https://graph.microsoft.com/v1.0/me/mailFolders/inbox',
-                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) return;
                 const data = await res.json();
@@ -16899,39 +16927,50 @@ Spittelauer Lnde 12/1
         let pwCollapsed = localStorage.getItem('pwCollapsed') === 'true';
 
         const TP_WEEKS = [
-            { label: 'KW14 — Heute', color: '#3c3489',
+            { label: 'ERLEDIGT ✓', color: '#14532d',
               tasks: [
-                { id:'d1', text:'D1–D3 Meta Cleanup: Hypehunters, Johannes, John William + Sputnik', owner:'Schadi' },
+                { id:'done_c17', text:'C17 Event Projector DB-Anbindung', owner:'Claude' },
+                { id:'done_g9', text:'G9 Email Hub (Inbox/Flagged/Compose)', owner:'Claude' },
+                { id:'done_c20', text:'C20 Promo Manager (3 Tabs)', owner:'Claude' },
+                { id:'done_d13', text:'D13 Linktree Widget', owner:'Claude' },
+                { id:'done_g3', text:'G3 Microsoft To-Do Integration', owner:'Claude' },
+                { id:'done_bugs', text:'B10–B15 Bug Fixes (Buttons, Email, Cleaning, Notes)', owner:'Claude' },
+              ]
+            },
+            { label: 'ÜBERFÄLLIG 🔴 — Schadi sofort', color: '#7f1d1d',
+              tasks: [
+                { id:'d1', text:'D1–D4 Meta Cleanup (Hypehunters, Johannes, John William, Sputnik Payment)', owner:'Schadi' },
+                { id:'g8', text:'G8 BMT API Email senden', owner:'Schadi' },
                 { id:'e2', text:'E2/E3 Fix- + variable Kosten eintragen', owner:'Schadi' },
-                { id:'d5', text:'D5/D6 Meta Pixel + CAPI', owner:'Schadi+Claude' },
-                { id:'d7', text:'D7 UTM Tracking System', owner:'Claude' },
-                { id:'c19', text:'C19 Guestlist Tool neu', owner:'Claude' },
               ]
             },
             { label: 'KW15 — 07.04', color: '#185fa5',
               tasks: [
-                { id:'g8', text:'G8 BMT API Email senden', owner:'Schadi' },
+                { id:'d7', text:'D7 UTM Tracking System', owner:'Claude' },
+                { id:'d5', text:'D5/D6 Meta Pixel + CAPI Setup', owner:'Schadi+Claude' },
+                { id:'c19', text:'C19 Guestlist Tool neu', owner:'Claude' },
                 { id:'d14', text:'D14 Instagram Verifizierung', owner:'Schadi' },
-                { id:'h1', text:'H1/H2 Julius.ai + Metricool', owner:'Schadi' },
-                { id:'c21', text:'C21 QR Code Generator', owner:'Claude' },
-                { id:'c23', text:'C23 Linktree Auto-Fetch', owner:'Claude' },
-                { id:'g10', text:'G10/G11 Reminder + Push System', owner:'Claude' },
+                { id:'h1', text:'H1/H2 Julius.ai + Metricool Setup', owner:'Schadi' },
                 { id:'f2', text:'F2/F3 FOH + VVK Daten eintragen', owner:'Schadi' },
               ]
             },
             { label: 'KW16 — 14.04', color: '#3b6d11',
               tasks: [
-                { id:'c20t4', text:'C20 Tab 4 Kanal-Stats (Meta live)', owner:'Claude' },
+                { id:'c21', text:'C21 QR Code Generator', owner:'Claude' },
+                { id:'c23', text:'C23 Linktree Auto-Fetch', owner:'Claude' },
+                { id:'c24', text:'C24 Standalone Roadmap Page', owner:'Claude' },
+                { id:'g10', text:'G10/G11 Reminder + Push System', owner:'Claude' },
+                { id:'c20t4', text:'C20 Tab 4 Kanal-Stats (nach Meta live)', owner:'Claude' },
                 { id:'e4', text:'E4 Pricing Engine', owner:'Claude' },
-                { id:'e8', text:'E8/E9 PreSale + Cost Calculator', owner:'Claude' },
-                { id:'d15', text:'D15 Marketing Analyse Dashboard', owner:'Claude' },
               ]
             },
             { label: 'KW17 — 21.04', color: '#85501b',
               tasks: [
-                { id:'test1', text:'Alle Features testen + Finetuning', owner:'Schadi+Claude' },
+                { id:'e8', text:'E8/E9 PreSale + Cost Calculator Update', owner:'Claude' },
+                { id:'d15', text:'D15 Marketing Analyse Dashboard', owner:'Claude' },
                 { id:'c15', text:'C15 Mobile Optimierung', owner:'Claude' },
                 { id:'e12', text:'E12 Financial Dashboard', owner:'Claude' },
+                { id:'test1', text:'Alle Features testen + Finetuning', owner:'Schadi+Claude' },
                 { id:'drive', text:'Drive Cleanup + Backup', owner:'Claude' },
               ]
             },
@@ -16941,17 +16980,19 @@ Spittelauer Lnde 12/1
                 { id:'deadline', text:'Hub v1.0 LIVE ✓', owner:'Schadi+Claude' },
               ]
             },
-            { label: 'KW19–20 — Extra 🚀', color: '#0f6e56',
-              tasks: [
-                { id:'i1', text:'Talent Scout Phase 1', owner:'Claude' },
-                { id:'onboard', text:'Meta/Linktree/Website Onboarding', owner:'Schadi+Claude' },
-                { id:'launch3', text:'Full Club OS Launch 🚀', owner:'Schadi+Claude' },
-              ]
-            },
         ];
 
         function tpGetState() { try { return JSON.parse(localStorage.getItem(TP_STORE)||'{}'); } catch(e){return{};} }
         function tpSetState(s) { localStorage.setItem(TP_STORE, JSON.stringify(s)); }
+
+        // Auto-check completed tasks on first load
+        function tpMigrate() {
+            const done = ['done_c17','done_g9','done_c20','done_d13','done_g3','done_bugs'];
+            const s = tpGetState();
+            let changed = false;
+            done.forEach(id => { if (!s[id]) { s[id] = true; changed = true; } });
+            if (changed) tpSetState(s);
+        }
 
         function tpCount() {
             const s = tpGetState(); let total=0,done=0;
@@ -17056,6 +17097,7 @@ Spittelauer Lnde 12/1
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            tpMigrate();
             tpRenderWidget();
         });
         // ═══════════════════════════════════════════════════════
