@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.48</title>
+    <title>Turbo Projects Work Hub v15.9.49</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2349,6 +2348,39 @@
         </div>
     </div>
 
+    <!-- TURBO Progress Tracker Widget -->
+    <div id="progress-widget" style="margin-bottom:8px;border:1px solid var(--border);border-radius:0;overflow:hidden;">
+        <div style="background:#1a1a2e;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="toggleProgressWidget()">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#fff;text-transform:uppercase;">&#127919; Turbo Roadmap</span>
+            <div style="flex:1;height:4px;background:#2d2d44;border-radius:2px;overflow:hidden;">
+                <div id="pw-bar" style="height:100%;background:#22c55e;border-radius:2px;width:0%;transition:width 0.4s;"></div>
+            </div>
+            <span id="pw-pct" style="font-size:12px;font-weight:700;color:#22c55e;min-width:36px;text-align:right;">0%</span>
+            <span id="pw-fraction" style="font-size:11px;color:#888;">0/0</span>
+            <span id="pw-toggle-btn" style="font-size:10px;color:#888;">&#9650;</span>
+        </div>
+        <div id="pw-body">
+            <!-- Week rows -->
+            <div id="pw-weeks" style="padding:4px 0;"></div>
+            <!-- Footer -->
+            <div style="padding:8px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                <span id="pw-deadline" style="font-size:11px;color:#888;"></span>
+                <button onclick="openModal('roadmap-modal')" style="margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;border-radius:0;">&#128203; Full Checklist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roadmap Full Modal -->
+    <div class="modal-overlay" id="roadmap-modal">
+        <div class="modal-content" style="max-width:700px;height:88vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h2>&#127919; Turbo Roadmap — Daily Checklist</h2>
+                <button class="modal-close" onclick="closeModal('roadmap-modal')">&times;</button>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:16px;" id="roadmap-full-list"></div>
+        </div>
+    </div>
+
     <!-- Quick Notes (collapsible) -->
     <div class="quick-notes" id="quick-notes-widget">
         <div class="quick-notes-header" onclick="toggleQuickNotes()" style="cursor:pointer;">
@@ -3545,7 +3577,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.48 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.49 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4825,7 +4857,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.48</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.49</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5098,7 +5130,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.48</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.49</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5903,7 +5935,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.48 C17
+        // EVENT PROJECTOR — v15.9.49 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -12393,7 +12425,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.48';
+            const HUB_VERSION = 'v15.9.49';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13754,7 +13786,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.48</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.49</div>
                     </div>
                     
                     <div class="section">
@@ -13853,7 +13885,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.48 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.49 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -16854,6 +16886,183 @@ Spittelauer Lnde 12/1
                 if (btn) btn.textContent = '▼';
             }
             ltRender();
+        });
+        // ═══════════════════════════════════════════════════════
+
+        
+        // ═══════════════════════════════════════════════════════
+        // TURBO PROGRESS TRACKER
+        // ═══════════════════════════════════════════════════════
+
+        const TP_STORE = 'turbo_plan_v1';
+        let pwCollapsed = localStorage.getItem('pwCollapsed') === 'true';
+
+        const TP_WEEKS = [
+            { label: 'KW14 — Heute', color: '#3c3489',
+              tasks: [
+                { id:'d1', text:'D1–D3 Meta Cleanup: Hypehunters, Johannes, John William + Sputnik', owner:'Schadi' },
+                { id:'e2', text:'E2/E3 Fix- + variable Kosten eintragen', owner:'Schadi' },
+                { id:'d5', text:'D5/D6 Meta Pixel + CAPI', owner:'Schadi+Claude' },
+                { id:'d7', text:'D7 UTM Tracking System', owner:'Claude' },
+                { id:'c19', text:'C19 Guestlist Tool neu', owner:'Claude' },
+              ]
+            },
+            { label: 'KW15 — 07.04', color: '#185fa5',
+              tasks: [
+                { id:'g8', text:'G8 BMT API Email senden', owner:'Schadi' },
+                { id:'d14', text:'D14 Instagram Verifizierung', owner:'Schadi' },
+                { id:'h1', text:'H1/H2 Julius.ai + Metricool', owner:'Schadi' },
+                { id:'c21', text:'C21 QR Code Generator', owner:'Claude' },
+                { id:'c23', text:'C23 Linktree Auto-Fetch', owner:'Claude' },
+                { id:'g10', text:'G10/G11 Reminder + Push System', owner:'Claude' },
+                { id:'f2', text:'F2/F3 FOH + VVK Daten eintragen', owner:'Schadi' },
+              ]
+            },
+            { label: 'KW16 — 14.04', color: '#3b6d11',
+              tasks: [
+                { id:'c20t4', text:'C20 Tab 4 Kanal-Stats (Meta live)', owner:'Claude' },
+                { id:'e4', text:'E4 Pricing Engine', owner:'Claude' },
+                { id:'e8', text:'E8/E9 PreSale + Cost Calculator', owner:'Claude' },
+                { id:'d15', text:'D15 Marketing Analyse Dashboard', owner:'Claude' },
+              ]
+            },
+            { label: 'KW17 — 21.04', color: '#85501b',
+              tasks: [
+                { id:'test1', text:'Alle Features testen + Finetuning', owner:'Schadi+Claude' },
+                { id:'c15', text:'C15 Mobile Optimierung', owner:'Claude' },
+                { id:'e12', text:'E12 Financial Dashboard', owner:'Claude' },
+                { id:'drive', text:'Drive Cleanup + Backup', owner:'Claude' },
+              ]
+            },
+            { label: 'KW18 — 30.04 🎯', color: '#8b1c1c',
+              tasks: [
+                { id:'launch1', text:'Final Bug Fix + Launch Check', owner:'Schadi+Claude' },
+                { id:'deadline', text:'Hub v1.0 LIVE ✓', owner:'Schadi+Claude' },
+              ]
+            },
+            { label: 'KW19–20 — Extra 🚀', color: '#0f6e56',
+              tasks: [
+                { id:'i1', text:'Talent Scout Phase 1', owner:'Claude' },
+                { id:'onboard', text:'Meta/Linktree/Website Onboarding', owner:'Schadi+Claude' },
+                { id:'launch3', text:'Full Club OS Launch 🚀', owner:'Schadi+Claude' },
+              ]
+            },
+        ];
+
+        function tpGetState() { try { return JSON.parse(localStorage.getItem(TP_STORE)||'{}'); } catch(e){return{};} }
+        function tpSetState(s) { localStorage.setItem(TP_STORE, JSON.stringify(s)); }
+
+        function tpCount() {
+            const s = tpGetState(); let total=0,done=0;
+            TP_WEEKS.forEach(w => w.tasks.forEach(t => { total++; if(s[t.id]) done++; }));
+            return {total,done};
+        }
+
+        function toggleProgressWidget() {
+            pwCollapsed = !pwCollapsed;
+            localStorage.setItem('pwCollapsed', pwCollapsed);
+            const body = document.getElementById('pw-body');
+            const btn = document.getElementById('pw-toggle-btn');
+            if(body) body.style.display = pwCollapsed ? 'none' : 'block';
+            if(btn) btn.textContent = pwCollapsed ? '▼' : '▲';
+        }
+
+        function tpRenderWidget() {
+            const {total,done} = tpCount();
+            const pct = total ? Math.round(done/total*100) : 0;
+            const bar = document.getElementById('pw-bar');
+            const pctEl = document.getElementById('pw-pct');
+            const frac = document.getElementById('pw-fraction');
+            const dl = document.getElementById('pw-deadline');
+            if(bar) bar.style.width = pct+'%';
+            if(pctEl) pctEl.textContent = pct+'%';
+            if(frac) frac.textContent = done+'/'+total;
+            if(dl) {
+                const days = Math.ceil((new Date('2026-04-30') - new Date())/(1000*60*60*24));
+                dl.textContent = days > 0 ? days+' Tage bis 30.04 Deadline' : '🎯 Deadline erreicht';
+            }
+
+            // Week rows
+            const weeksEl = document.getElementById('pw-weeks');
+            if(!weeksEl) return;
+            const s = tpGetState();
+            weeksEl.innerHTML = '';
+            TP_WEEKS.forEach(w => {
+                let wDone=0, wTotal=w.tasks.length;
+                w.tasks.forEach(t => { if(s[t.id]) wDone++; });
+                const wPct = wTotal ? Math.round(wDone/wTotal*100) : 0;
+                const row = document.createElement('div');
+                row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:6px 14px;border-bottom:1px solid var(--border);font-size:12px;';
+                row.innerHTML = `
+                    <span style="width:8px;height:8px;border-radius:50%;background:${w.color};flex-shrink:0;"></span>
+                    <span style="flex:1;color:var(--text);">${w.label}</span>
+                    <div style="width:80px;height:3px;background:#2d2d44;border-radius:2px;overflow:hidden;">
+                        <div style="height:100%;width:${wPct}%;background:${wPct===100?'#22c55e':'#3b82f6'};border-radius:2px;"></div>
+                    </div>
+                    <span style="min-width:36px;text-align:right;color:${wDone===wTotal?'#22c55e':'#888'};">${wDone}/${wTotal}</span>
+                `;
+                weeksEl.appendChild(row);
+            });
+
+            // Apply collapse state
+            const body = document.getElementById('pw-body');
+            const btn = document.getElementById('pw-toggle-btn');
+            if(body) body.style.display = pwCollapsed ? 'none' : 'block';
+            if(btn) btn.textContent = pwCollapsed ? '▼' : '▲';
+        }
+
+        function tpRenderFullModal() {
+            const container = document.getElementById('roadmap-full-list');
+            if(!container) return;
+            const s = tpGetState();
+            container.innerHTML = '';
+
+            TP_WEEKS.forEach(w => {
+                let wDone=0;
+                w.tasks.forEach(t => { if(s[t.id]) wDone++; });
+
+                const wDiv = document.createElement('div');
+                wDiv.style.marginBottom = '16px';
+                wDiv.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">
+                    <span style="width:10px;height:10px;border-radius:50%;background:${w.color};"></span>
+                    <span style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:var(--text);">${w.label}</span>
+                    <span style="margin-left:auto;font-size:11px;color:#888;">${wDone}/${w.tasks.length}</span>
+                </div>`;
+
+                w.tasks.forEach(t => {
+                    const checked = !!s[t.id];
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:7px 8px;border-radius:4px;cursor:pointer;transition:background 0.1s;';
+                    row.innerHTML = `
+                        <input type="checkbox" ${checked?'checked':''} style="margin-top:2px;width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#22c55e;">
+                        <span style="font-size:13px;flex:1;color:${checked?'#888':'var(--text)'};${checked?'text-decoration:line-through;':''}">${t.text}</span>
+                        <span style="font-size:10px;color:#888;flex-shrink:0;">${t.owner}</span>
+                    `;
+                    row.querySelector('input').onchange = (e) => {
+                        const s2=tpGetState(); s2[t.id]=e.target.checked; tpSetState(s2);
+                        tpRenderWidget(); tpRenderFullModal();
+                    };
+                    row.onclick = (e) => {
+                        if(e.target.tagName==='INPUT') return;
+                        const cb=row.querySelector('input'); cb.checked=!cb.checked;
+                        const s2=tpGetState(); s2[t.id]=cb.checked; tpSetState(s2);
+                        tpRenderWidget(); tpRenderFullModal();
+                    };
+                    wDiv.appendChild(row);
+                });
+                container.appendChild(wDiv);
+            });
+        }
+
+        // Hook into modal open
+        const _origOpenModal = openModal;
+        function openModal(id) {
+            _origOpenModal(id);
+            if(id === 'roadmap-modal') tpRenderFullModal();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            tpRenderWidget();
         });
         // ═══════════════════════════════════════════════════════
 
