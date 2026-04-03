@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.49</title>
+    <title>Turbo Projects Work Hub v15.9.50</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2390,7 +2390,7 @@
                 <button class="quick-notes-add" onclick="toggleSpeechToText()" title="Spracheingabe" id="speech-btn">&#127908;</button>
                 <button class="quick-notes-add" onclick="addToOfficeNotes()" title="Zu Office Notes hinzufuegen">+ Office</button>
                 <button class="quick-notes-add" onclick="clearQuickNotes()" title="Notizen loeschen">&#10005;</button>
-                <button class="quick-notes-add" id="qn-toggle-btn" title="Einklappen">&#9650;</button>
+                <button class="quick-notes-add" id="qn-toggle-btn" onclick="toggleQuickNotes()" title="Einklappen">&#9650;</button>
             </div>
         </div>
         <div id="quick-notes-body">
@@ -3577,7 +3577,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.49 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.50 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4712,7 +4712,7 @@
         <!-- BAR -->
         <div class="dept bar grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">&#127864; BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span> <span class="shiftplan-countdown" id="bar-shiftplan-countdown"></span></div>
+                <div class="dept-header-left">&#127864; BAR <span class="task-count" id="bar-task-count">0</span> <span class="notes-count" id="bar-notes-count">0</span></div>
                 <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
@@ -4745,7 +4745,7 @@
         <!-- RUNNER -->
         <div class="dept runner grid-item">
             <div class="dept-header" onclick="toggleDept(this)">
-                <div class="dept-header-left">&#127939; RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span> <span class="shiftplan-countdown" id="runner-shiftplan-countdown"></span></div>
+                <div class="dept-header-left">&#127939; RUNNER <span class="task-count" id="runner-task-count">0</span> <span class="notes-count" id="runner-notes-count">0</span></div>
                 <span class="dept-toggle">&#9660;</span>
             </div>
             <div class="dept-tabs">
@@ -4857,7 +4857,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.49</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.50</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5130,7 +5130,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.49</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.50</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5935,7 +5935,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.49 C17
+        // EVENT PROJECTOR — v15.9.50 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -7781,6 +7781,7 @@
             if (id === 'bar-staffing-modal') disablePastMonths('bar-month-check', 'bar-year');
             if (id === 'runner-staffing-modal') disablePastMonths('runner-month-check', 'runner-year');
             if (id === 'projector-modal') epOnModalOpen();
+            if (id === 'roadmap-modal' && typeof tpRenderFullModal === 'function') tpRenderFullModal();
         }
 
         function disablePastMonths(checkClass, yearSelectId) {
@@ -10235,7 +10236,7 @@
                 const eventMonth = e.dtstart.getMonth() + 1;
                 const eventYear = e.dtstart.getFullYear();
                 const isInMonth = eventYear === year && eventMonth === month;
-                const isActualEvent = e.dtstart.getHours() >= 18 || e.dtstart.getHours() === 19; // Events 18:00+
+                const isActualEvent = e.dtstart.getHours() >= 18 || e.dtstart.getHours() <= 4; // Events 18:00+ or after midnight (00:00–04:00)
                 const isNotMeeting = !e.summary.toLowerCase().includes('meeting') && 
                                      !e.summary.toLowerCase().includes('treffen') &&
                                      !e.summary.toLowerCase().includes('holiday');
@@ -12425,7 +12426,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.49';
+            const HUB_VERSION = 'v15.9.50';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13786,7 +13787,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.49</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.50</div>
                     </div>
                     
                     <div class="section">
@@ -13885,7 +13886,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.49 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.50 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17052,13 +17053,6 @@ Spittelauer Lnde 12/1
                 });
                 container.appendChild(wDiv);
             });
-        }
-
-        // Hook into modal open
-        const _origOpenModal = openModal;
-        function openModal(id) {
-            _origOpenModal(id);
-            if(id === 'roadmap-modal') tpRenderFullModal();
         }
 
         document.addEventListener('DOMContentLoaded', function() {
