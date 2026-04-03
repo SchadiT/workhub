@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.51</title>
+    <title>Turbo Projects Work Hub v15.9.52</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3577,7 +3577,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.51 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.52 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4018,7 +4018,7 @@
                     <button onclick="inboxLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">&#8635; Refresh</button>
                     <span id="inbox-load-status" style="font-size:12px;color:var(--text-muted);"></span>
                     <label style="margin-left:auto;font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;">
-                        <input type="checkbox" id="inbox-unread-only" onchange="inboxLoad()" checked> Nur ungelesen
+                        <input type="checkbox" id="inbox-unread-only" onchange="inboxLoad()"> Nur ungelesen
                     </label>
                 </div>
                 <div id="inbox-list" style="flex:1;overflow-y:auto;padding:0;"></div>
@@ -4857,7 +4857,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.51</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.52</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5130,7 +5130,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.51</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.52</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5935,7 +5935,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.51 C17
+        // EVENT PROJECTOR — v15.9.52 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -12449,7 +12449,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.51';
+            const HUB_VERSION = 'v15.9.52';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13810,7 +13810,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.51</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.52</div>
                     </div>
                     
                     <div class="section">
@@ -13909,7 +13909,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.51 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.52 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -16494,7 +16494,8 @@ Spittelauer Lnde 12/1
             const list = document.getElementById('mini-inbox-list');
             const status = document.getElementById('mini-inbox-status');
             if (!list) return;
-            if (!accessToken) {
+            const mailToken = await getMailToken();
+            if (!mailToken) {
                 list.innerHTML = '<span style="color:#888;">Login erforderlich</span>';
                 return;
             }
@@ -16502,7 +16503,7 @@ Spittelauer Lnde 12/1
             try {
                 const res = await fetch(
                     'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=5&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag',
-                    { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
