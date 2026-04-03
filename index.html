@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.53</title>
+    <title>Turbo Projects Work Hub v15.9.55</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2749,55 +2749,89 @@
     
     <!-- Guest List Parser Modal -->
     <div class="modal-overlay" id="guestlist-modal">
-        <div class="modal" style="max-width: 900px;">
-            <div class="modal-header">
-                <h3>&#128203; Guest List Parser</h3>
+        <div class="modal" style="max-width:920px;height:88vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h3>&#128157; Guestlist Tool</h3>
                 <button class="modal-close" onclick="closeModal('guestlist-modal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div class="modal-body" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;">
+
+                <!-- Event Info -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                     <div class="form-group">
-                        <label> Event Datum (z.B. 27.12.25)</label>
-                        <input type="text" id="gl-date" placeholder="27.12.25" style="font-size: 16px; font-weight: 600;">
+                        <label style="font-size:11px;color:#888;">EVENT DATUM</label>
+                        <input type="text" id="gl-date" placeholder="03.04.26" class="pm-input" style="font-size:14px;font-weight:600;">
                     </div>
                     <div class="form-group">
-                        <label> Event Name (optional)</label>
-                        <input type="text" id="gl-event-name" placeholder="TURBO">
+                        <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
+                        <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label> WhatsApp Chat Export (.zip oder .txt)</label>
-                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="file" id="gl-file-upload" accept=".txt,.zip" onchange="handleGuestListFile(event)" style="display: none;">
-                        <button class="modal-btn primary" onclick="document.getElementById('gl-file-upload').click()"> Datei hochladen</button>
-                        <button class="modal-btn" style="background: #3d3d54;" onclick="clearGuestListInput()"> Leeren</button>
+
+                <!-- Input: Paste or Upload -->
+                <div>
+                    <label style="font-size:11px;color:#888;display:block;margin-bottom:6px;">WHATSAPP CHAT EINFÜGEN</label>
+                    <textarea id="gl-chat-input" rows="7" placeholder="Chat-Verlauf hier einkopieren..." style="width:100%;padding:10px;background:#0f0f1a;border:1px solid var(--border);color:#fff;font-family:monospace;font-size:12px;resize:vertical;box-sizing:border-box;"></textarea>
+                    <div style="display:flex;gap:8px;margin-top:8px;">
+                        <input type="file" id="gl-xlsx-upload" accept=".xlsx,.xls" onchange="glMergeXlsx(event)" style="display:none;">
+                        <button class="modal-btn" onclick="document.getElementById('gl-xlsx-upload').click()" style="background:#3b82f6;color:#fff;font-size:12px;">&#128196; .xlsx zusammenführen</button>
+                        <button class="modal-btn" onclick="document.getElementById('gl-chat-input').value=''" style="background:#3d3d54;font-size:12px;">Leeren</button>
+                        <button class="modal-btn success" onclick="glExtract()" style="flex:1;font-weight:700;">&#129302; Namen extrahieren</button>
                     </div>
-                    <textarea id="gl-chat-input" rows="8" placeholder="WhatsApp Chat Export hier einfgen oder .zip/.txt Datei hochladen..." style="width: 100%; padding: 10px; border-radius: 0; border: 1px solid #3d3d54; background: #1a1a2e; color: #fff; font-family: monospace; font-size: 12px; resize: vertical;"></textarea>
                 </div>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <button class="modal-btn success" onclick="parseGuestList()" style="flex: 1; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);"> Guest List extrahieren</button>
-                </div>
-                
-                <div id="gl-results" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h4 style="color: #22c55e; margin: 0;"> Ergebnis</h4>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="modal-btn" style="background: #3b82f6; padding: 6px 12px; font-size: 12px;" onclick="copyGuestList()"> Kopieren</button>
-                            <button class="modal-btn" style="background: #8b5cf6; padding: 6px 12px; font-size: 12px;" onclick="downloadGuestListCSV()"> CSV</button>
+
+                <!-- Status -->
+                <div id="gl-status" style="font-size:12px;color:#888;display:none;"></div>
+
+                <!-- Results -->
+                <div id="gl-results" style="display:none;flex-direction:column;gap:12px;">
+                    <!-- Summary -->
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                        <div style="background:#1a1a2e;border:1px solid #22c55e;padding:12px;text-align:center;">
+                            <div id="gl-count-gl" style="font-size:24px;font-weight:700;color:#22c55e;">0</div>
+                            <div style="font-size:11px;color:#888;">GÄSTELISTE</div>
+                        </div>
+                        <div style="background:#1a1a2e;border:1px solid #3b82f6;padding:12px;text-align:center;">
+                            <div id="gl-count-fl" style="font-size:24px;font-weight:700;color:#3b82f6;">0</div>
+                            <div style="font-size:11px;color:#888;">FRIENDS LIST</div>
+                        </div>
+                        <div style="background:#1a1a2e;border:1px solid #f59e0b;padding:12px;text-align:center;">
+                            <div id="gl-count-sl" style="font-size:24px;font-weight:700;color:#f59e0b;">0</div>
+                            <div style="font-size:11px;color:#888;">SPECIAL LIST</div>
                         </div>
                     </div>
-                    <div id="gl-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;"></div>
-                    <div id="gl-output" style="background: #1a1a2e; border-radius: 0; padding: 15px; max-height: 400px; overflow-y: auto;"></div>
+
+                    <!-- Actions -->
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="modal-btn" onclick="glCopyList('gl')" style="background:#22c55e;color:#000;font-size:12px;">&#128203; GÄSTELISTE kopieren</button>
+                        <button class="modal-btn" onclick="glCopyList('fl')" style="background:#3b82f6;color:#fff;font-size:12px;">&#128203; FRIENDS LIST kopieren</button>
+                        <button class="modal-btn" onclick="glCopyList('sl')" style="background:#f59e0b;color:#000;font-size:12px;">&#128203; SPECIAL LIST kopieren</button>
+                        <button class="modal-btn" onclick="glDownloadXlsx()" style="background:#8b5cf6;color:#fff;font-size:12px;margin-left:auto;">&#128190; Download .xlsx</button>
+                    </div>
+
+                    <!-- 3 Lists side by side -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                        <div>
+                            <div style="font-size:11px;font-weight:700;color:#22c55e;margin-bottom:8px;letter-spacing:1px;">GÄSTELISTE</div>
+                            <div id="gl-list-gl" style="background:#0f0f1a;border:1px solid #22c55e33;padding:10px;max-height:300px;overflow-y:auto;font-size:13px;"></div>
+                        </div>
+                        <div>
+                            <div style="font-size:11px;font-weight:700;color:#3b82f6;margin-bottom:8px;letter-spacing:1px;">FRIENDS LIST</div>
+                            <div id="gl-list-fl" style="background:#0f0f1a;border:1px solid #3b82f633;padding:10px;max-height:300px;overflow-y:auto;font-size:13px;"></div>
+                        </div>
+                        <div>
+                            <div style="font-size:11px;font-weight:700;color:#f59e0b;margin-bottom:8px;letter-spacing:1px;">SPECIAL LIST</div>
+                            <div id="gl-list-sl" style="background:#0f0f1a;border:1px solid #f59e0b33;padding:10px;max-height:300px;overflow-y:auto;font-size:13px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schlieen</button>
+            <div class="modal-footer" style="flex-shrink:0;">
+                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schliessen</button>
             </div>
         </div>
     </div>
-    
+
     <!-- BAR STAFFING Modal -->
     <div class="modal-overlay" id="bar-staffing-modal">
         <div class="modal" style="max-width: 850px;">
@@ -3146,6 +3180,26 @@
                             <label class="pm-radio"><input type="radio" name="pm-press" value="ja" onchange="pmAssetsSave()"> Erhalten</label>
                             <label class="pm-radio"><input type="radio" name="pm-press" value="nein" onchange="pmAssetsSave()"> Nicht benötigt</label>
                             <label class="pm-radio"><input type="radio" name="pm-press" value="ausstehend" onchange="pmAssetsSave()"> &#128308; Ausstehend</label>
+                        </div>
+                    </div>
+
+                    <!-- Short Link -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">SHORT LINK</div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="url" id="pm-short-url" placeholder="https://..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-short-url')" title="Kopieren">&#128203;</button>
+                            <button class="pm-open-btn" onclick="pmOpenField('pm-short-url')" title="Öffnen">&#8599;</button>
+                        </div>
+                    </div>
+
+                    <!-- Promo Material / Press Kit -->
+                    <div class="pm-field-group">
+                        <div class="pm-field-label">&#128193; PROMO MATERIAL / PRESS KIT</div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="url" id="pm-promo-folder" placeholder="Google Drive Ordner Link..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
+                            <button class="pm-copy-btn" onclick="pmCopyField('pm-promo-folder')" title="Kopieren">&#128203;</button>
+                            <button class="pm-open-btn" onclick="pmOpenField('pm-promo-folder')" title="Ordner öffnen">&#128193;</button>
                         </div>
                     </div>
 
@@ -3577,7 +3631,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.53 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.55 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4857,7 +4911,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.53</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.55</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5130,7 +5184,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.53</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.55</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5935,7 +5989,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.53 C17
+        // EVENT PROJECTOR — v15.9.55 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -8721,299 +8775,166 @@
         
         let parsedGuestList = [];
         
-        async function handleGuestListFile(event) {
+        // ═══════════════════════════════════════════════════════
+        // C19 GUESTLIST TOOL v2
+        // ═══════════════════════════════════════════════════════
+        let glData = { gl: [], fl: [], sl: [] };
+
+        async function glExtract() {
+            const chatText = document.getElementById('gl-chat-input').value.trim();
+            if (!chatText) { showToast('Bitte Chat einkopieren', true); return; }
+
+            const status = document.getElementById('gl-status');
+            status.style.display = 'block';
+            status.innerHTML = '⏳ Claude analysiert den Chat…';
+            document.getElementById('gl-results').style.display = 'none';
+
+            try {
+                const resp = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        system: `Du bist ein Assistent der aus WhatsApp Gruppen-Nachrichten Gästelisten extrahiert.
+Extrahiere alle Personennamen die als Gäste genannt werden.
+Klassifiziere jeden Namen in eine der drei Listen basierend auf Kürzeln:
+- "FL" im Kontext → FRIENDLIST
+- "SL" oder "SPECIAL" im Kontext → SPECIALLIST  
+- "GL", kein Kürzel, oder unklar → GUESTLIST
+Behalte "+1", "+2" etc. beim Namen.
+Ignoriere: Datum, Event-Namen, Grußformeln, Wörter wie "danke", "ok", "hi", Absendernamen der Chat-Nachrichten.
+Antworte NUR mit einem JSON-Objekt ohne Markdown, exakt in diesem Format:
+{"gl":["Name1","Name2 +1"],"fl":["Name3"],"sl":["Name4"]}`,
+                        messages: [{ role: 'user', content: chatText }]
+                    })
+                });
+                const data = await resp.json();
+                const text = data.content?.[0]?.text || '{}';
+                const clean = text.replace(/```json|```/g, '').trim();
+                const parsed = JSON.parse(clean);
+
+                // Merge with existing (no duplicates, case-insensitive)
+                ['gl','fl','sl'].forEach(list => {
+                    const incoming = parsed[list] || [];
+                    incoming.forEach(name => {
+                        const norm = name.trim();
+                        if (!norm || norm.length < 2) return;
+                        const exists = glData[list].some(n => n.toLowerCase() === norm.toLowerCase());
+                        if (!exists) glData[list].push(norm);
+                    });
+                    glData[list].sort((a, b) => a.localeCompare(b));
+                });
+
+                glRender();
+                status.innerHTML = `✓ Fertig — ${glData.gl.length + glData.fl.length + glData.sl.length} Namen total`;
+            } catch(err) {
+                status.innerHTML = `❌ Fehler: ${err.message}`;
+            }
+        }
+
+        async function glMergeXlsx(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
-            const fileName = file.name.toLowerCase();
-            
-            if (fileName.endsWith('.zip') || file.type === 'application/zip') {
-                try {
-                    showToast(' ZIP wird entpackt...');
-                    const zip = await JSZip.loadAsync(file);
-                    
-                    let txtFile = null;
-                    for (const [name, zipEntry] of Object.entries(zip.files)) {
-                        if (name.endsWith('.txt') && !zipEntry.dir) {
-                            txtFile = zipEntry;
-                            break;
-                        }
-                    }
-                    
-                    if (txtFile) {
-                        const content = await txtFile.async('string');
-                        document.getElementById('gl-chat-input').value = content;
-                        showToast(' WhatsApp Export aus ZIP geladen!');
-                    } else {
-                        showToast(' Keine .txt Datei im ZIP gefunden', true);
-                    }
-                } catch (e) {
-                    console.error('ZIP error:', e);
-                    showToast(' ZIP konnte nicht gelesen werden', true);
-                }
-            } else {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('gl-chat-input').value = e.target.result;
-                    showToast(' WhatsApp Export geladen!');
-                };
-                reader.readAsText(file);
-            }
-        }
-        
-        function clearGuestListInput() {
-            document.getElementById('gl-chat-input').value = '';
-            document.getElementById('gl-results').style.display = 'none';
-            parsedGuestList = [];
-        }
-        
-        function parseGuestList() {
-            const dateInput = document.getElementById('gl-date').value.trim();
-            const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
-            const chatText = document.getElementById('gl-chat-input').value;
-            
-            if (!dateInput) {
-                showToast(' Bitte Datum eingeben (z.B. 27.12.25)', true);
-                return;
-            }
-            
-            if (!chatText) {
-                showToast(' Bitte WhatsApp Chat einfgen', true);
-                return;
-            }
-            
-            const dateVariants = generateDateVariants(dateInput);
-            const lines = chatText.split('\n');
-            const guests = [];
-            let currentSender = '';
-            let currentTimestamp = '';
-            let collectingNames = false;
-            let currentMessage = '';
-            
-            const headerPatterns = [
-                /^(\d{1,2}\/\d{1,2}\/\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\s*[-]\s*([^:]+):\s*(.*)$/,
-                /^\[?(\d{1,2}[\./]\d{1,2}[\./]\d{2,4}),?\s*(\d{1,2}:\d{2}(?::\d{2})?)\]?\s*[-]?\s*([^:]+):\s*(.*)$/
-            ];
-            
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                let headerMatch = null;
-                
-                for (const pattern of headerPatterns) {
-                    headerMatch = line.match(pattern);
-                    if (headerMatch) break;
-                }
-                
-                if (headerMatch) {
-                    if (collectingNames && currentMessage) {
-                        const names = extractNamesFromMessage(currentMessage, dateVariants);
-                        names.forEach(name => {
-                            guests.push({ name, submittedBy: currentSender, timestamp: currentTimestamp });
-                        });
-                    }
-                    
-                    currentTimestamp = headerMatch[1] + ' ' + headerMatch[2];
-                    currentSender = headerMatch[3].trim();
-                    currentMessage = headerMatch[4];
-                    collectingNames = dateVariants.some(d => currentMessage.toLowerCase().includes(d.toLowerCase()));
-                } else if (line.trim() && collectingNames) {
-                    currentMessage += '\n' + line;
-                } else if (line.trim()) {
-                    if (dateVariants.some(d => line.toLowerCase().includes(d.toLowerCase()))) {
-                        const names = extractNamesFromMessage(line, dateVariants);
-                        names.forEach(name => {
-                            guests.push({ name, submittedBy: 'Unknown', timestamp: '' });
-                        });
-                    }
-                }
-            }
-            
-            if (collectingNames && currentMessage) {
-                const names = extractNamesFromMessage(currentMessage, dateVariants);
-                names.forEach(name => {
-                    guests.push({ name, submittedBy: currentSender, timestamp: currentTimestamp });
+            const status = document.getElementById('gl-status');
+            status.style.display = 'block';
+            status.innerHTML = '⏳ Lade .xlsx…';
+            try {
+                const ab = await file.arrayBuffer();
+                const wb = XLSX.read(ab, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+                // Detect columns: A=GUESTLIST(0), C=FRIENDLIST(2), E=SPECIALLIST(4)
+                const colMap = { 0: 'gl', 2: 'fl', 4: 'sl' };
+                let added = 0;
+                rows.forEach((row, ri) => {
+                    if (ri === 0) return; // skip header
+                    Object.entries(colMap).forEach(([col, list]) => {
+                        const val = (row[col] || '').toString().trim();
+                        if (!val || val.length < 2) return;
+                        const exists = glData[list].some(n => n.toLowerCase() === val.toLowerCase());
+                        if (!exists) { glData[list].push(val); added++; }
+                    });
                 });
+                ['gl','fl','sl'].forEach(l => glData[l].sort((a,b) => a.localeCompare(b)));
+                glRender();
+                status.innerHTML = `✓ ${added} neue Namen aus .xlsx hinzugefügt`;
+            } catch(err) {
+                status.innerHTML = `❌ Fehler: ${err.message}`;
             }
-            
-            const uniqueGuests = [];
-            const seen = new Set();
-            guests.forEach(g => {
-                const key = g.name.toLowerCase();
-                if (!seen.has(key) && g.name.length > 1) {
-                    seen.add(key);
-                    uniqueGuests.push(g);
+            event.target.value = '';
+        }
+
+        function glRender() {
+            document.getElementById('gl-results').style.display = 'flex';
+            ['gl','fl','sl'].forEach(list => {
+                document.getElementById('gl-count-' + list).textContent = glData[list].length;
+                const container = document.getElementById('gl-list-' + list);
+                if (glData[list].length === 0) {
+                    container.innerHTML = '<span style="color:#555;font-size:12px;">—</span>';
+                } else {
+                    container.innerHTML = glData[list].map((n,i) =>
+                        `<div style="padding:3px 0;border-bottom:1px solid #1a1a2e;">${i+1}. ${escapeHtml(n)}</div>`
+                    ).join('');
                 }
             });
-            
-            parsedGuestList = uniqueGuests;
-            displayGuestList(uniqueGuests, eventName, dateInput);
         }
-        
-        function generateDateVariants(dateInput) {
-            const variants = [dateInput];
-            const parts = dateInput.split(/[\./]/);
-            if (parts.length >= 2) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                let year = parts[2] || new Date().getFullYear().toString().slice(-2);
-                const year2 = year.length === 4 ? year.slice(-2) : year;
-                const year4 = year.length === 2 ? '20' + year : year;
-                
-                variants.push(`${day}.${month}.${year2}`, `${day}.${month}.${year4}`);
-                variants.push(`${day}/${month}/${year2}`, `${day}/${month}/${year4}`);
-                variants.push(`${parseInt(day)}.${parseInt(month)}.${year2}`);
-                variants.push(`${parseInt(day)}/${parseInt(month)}/${year4}`);
-            }
-            return [...new Set(variants)];
-        }
-        
-        function extractNamesFromMessage(message, dateVariants) {
-            const names = [];
-            let cleanMessage = message;
-            
-            dateVariants.forEach(d => {
-                cleanMessage = cleanMessage.replace(new RegExp(d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '');
-            });
-            
-            const keywords = ['GL', 'GUESTLIST', 'GUEST LIST', 'GSTE', 'TURBO', 'SELECTED', 'NYE', 
-                'SILVESTER', 'HALLOWEEN', 'GRELLE', 'FORELLE', 'VIP', 'FREE', 'ENTRY', 'EINTRITT', '+1', '+2', '+3'];
-            keywords.forEach(kw => {
-                cleanMessage = cleanMessage.replace(new RegExp('\\*?' + kw + '\\*?', 'gi'), '');
-            });
-            
-            const lines = cleanMessage.split(/[\n,;\/\\|]+/);
-            
-            lines.forEach(line => {
-                let name = line.trim();
-                name = name.replace(/^[\s\-*#\d.\)]+/, '').trim();
-                name = name.replace(/[.,;:!?]+$/, '').trim();
-                
-                const subNames = name.split(/,\s*/);
-                subNames.forEach(subName => {
-                    subName = subName.trim();
-                    if (subName.length < 2) return;
-                    if (/^\d+$/.test(subName)) return;
-                    if (/^[^a-zA-Z]+$/.test(subName)) return;
-                    if (/^(ja|nein|ok|yes|no|danke|bitte|hi|hey|hallo|hello|thx|thanks)$/i.test(subName)) return;
-                    
-                    if (/[a-zA-Z]/.test(subName)) {
-                        subName = subName.split(' ').map(word => 
-                            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-                        ).join(' ');
-                        names.push(subName);
-                    }
-                });
-            });
-            
-            return names;
-        }
-        
-        function displayGuestList(guests, eventName, date) {
-            const resultsDiv = document.getElementById('gl-results');
-            const summaryDiv = document.getElementById('gl-summary');
-            const outputDiv = document.getElementById('gl-output');
-            
-            resultsDiv.style.display = 'block';
-            
-            const submitters = [...new Set(guests.map(g => g.submittedBy))].filter(s => s !== 'Unknown');
-            
-            summaryDiv.innerHTML = `
-                <div style="background: #252542; padding: 15px; border-radius: 0; text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #22c55e;">${guests.length}</div>
-                    <div style="font-size: 12px; color: #888;">Gste</div>
-                </div>
-                <div style="background: #252542; padding: 15px; border-radius: 0; text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #3b82f6;">${submitters.length}</div>
-                    <div style="font-size: 12px; color: #888;">Submitter</div>
-                </div>
-                <div style="background: #252542; padding: 15px; border-radius: 0; text-align: center;">
-                    <div style="font-size: 18px; font-weight: 700; color: #f59e0b;">${eventName}</div>
-                    <div style="font-size: 12px; color: #888;">${date}</div>
-                </div>
-            `;
-            
-            let html = `<div style="font-weight: 700; font-size: 16px; margin-bottom: 15px; color: #fff;">
-                GUEST LIST  ${eventName.toUpperCase()} ${date}
-            </div>`;
-            
-            html += `<table style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="border-bottom: 2px solid #3d3d54;">
-                        <th style="text-align: left; padding: 8px; color: #888; font-size: 12px;">#</th>
-                        <th style="text-align: left; padding: 8px; color: #888; font-size: 12px;">NAME</th>
-                        <th style="text-align: left; padding: 8px; color: #888; font-size: 12px;">SUBMITTED BY</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-            
-            guests.forEach((g, i) => {
-                html += `<tr style="border-bottom: 1px solid #3d3d54;">
-                    <td style="padding: 8px; color: #666; font-size: 12px;">${i + 1}</td>
-                    <td style="padding: 8px; font-weight: 600;">${escapeHtml(g.name)}</td>
-                    <td style="padding: 8px; color: #888; font-size: 13px;">${escapeHtml(g.submittedBy)}</td>
-                </tr>`;
-            });
-            
-            html += `</tbody></table>`;
-            outputDiv.innerHTML = html;
-            
-            showToast(` ${guests.length} Gste gefunden!`);
-        }
-        
-        function copyGuestList() {
-            if (parsedGuestList.length === 0) {
-                showToast(' Keine Gste zum Kopieren', true);
-                return;
-            }
-            
-            const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
+
+        function glCopyList(list) {
+            const names = glData[list];
+            if (!names.length) { showToast('Liste ist leer', true); return; }
+            const labels = { gl: 'GÄSTELISTE', fl: 'FRIENDS LIST', sl: 'SPECIAL LIST' };
+            const eventName = document.getElementById('gl-event-name').value.trim();
             const date = document.getElementById('gl-date').value.trim();
-            
-            let text = `GUEST LIST  ${eventName.toUpperCase()} ${date}\n`;
-            text += ''.repeat(40) + '\n\n';
-            
-            parsedGuestList.forEach((g, i) => {
-                text += `${i + 1}. ${g.name}`;
-                if (g.submittedBy && g.submittedBy !== 'Unknown') {
-                    text += ` (via ${g.submittedBy})`;
-                }
-                text += '\n';
-            });
-            
-            text += '\n' + ''.repeat(40);
-            text += `\nTotal: ${parsedGuestList.length} Gste`;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(' Guest List kopiert!');
-            }).catch(() => {
-                showToast(' Kopieren fehlgeschlagen', true);
-            });
+            let text = `${labels[list]}${eventName ? ' — ' + eventName : ''}${date ? ' ' + date : ''}\n`;
+            text += '='.repeat(40) + '\n';
+            names.forEach((n, i) => text += `${i+1}. ${n}\n`);
+            navigator.clipboard.writeText(text).then(() => showToast('✓ ' + labels[list] + ' kopiert')).catch(() => showToast('Fehler', true));
         }
-        
-        function downloadGuestListCSV() {
-            if (parsedGuestList.length === 0) {
-                showToast(' Keine Gste zum Exportieren', true);
-                return;
+
+        function glDownloadXlsx() {
+            const total = glData.gl.length + glData.fl.length + glData.sl.length;
+            if (!total) { showToast('Keine Namen vorhanden', true); return; }
+
+            const maxRows = Math.max(glData.gl.length, glData.fl.length, glData.sl.length);
+            const wsData = [['GUESTLIST', '', 'FRIENDLIST', '', 'SPECIALLIST']];
+            for (let i = 0; i < maxRows; i++) {
+                wsData.push([
+                    glData.gl[i] || '',
+                    '',
+                    glData.fl[i] || '',
+                    '',
+                    glData.sl[i] || ''
+                ]);
             }
-            
-            const eventName = document.getElementById('gl-event-name').value.trim() || 'EVENT';
-            const date = document.getElementById('gl-date').value.trim().replace(/[\./]/g, '-');
-            
-            let csv = 'Nr,Name,Submitted By\n';
-            parsedGuestList.forEach((g, i) => {
-                csv += `${i + 1},"${g.name}","${g.submittedBy}"\n`;
+
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Column widths
+            ws['!cols'] = [{wch:30},{wch:4},{wch:30},{wch:4},{wch:30}];
+
+            // Bold headers
+            ['A1','C1','E1'].forEach(cell => {
+                if (ws[cell]) ws[cell].s = { font: { bold: true } };
             });
-            
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `GuestList_${eventName}_${date}.csv`;
-            link.click();
-            
-            showToast(' CSV heruntergeladen!');
+
+            const wb = XLSX.utils.book_new();
+            const eventName = document.getElementById('gl-event-name').value.trim() || 'Event';
+            const date = document.getElementById('gl-date').value.trim().replace(/[.\/]/g,'-') || 'datum';
+            XLSX.utils.book_append_sheet(wb, ws, 'Guestlist');
+            XLSX.writeFile(wb, `Guestlist_${eventName}_${date}.xlsx`);
+            showToast('✓ .xlsx heruntergeladen!');
         }
-        
-        function escapeHtml(str) {
+
+        // Legacy - kept for backward compat
+        function parseGuestList() { glExtract(); }
+        function copyGuestList() { glCopyList('gl'); }
+        function downloadGuestListCSV() { glDownloadXlsx(); }
+        function clearGuestListInput() { document.getElementById('gl-chat-input').value = ''; }
+        async function handleGuestListFile(e) { glMergeXlsx(e); }
+
+                function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
@@ -10173,14 +10094,17 @@
             '2025-01-01', '2025-01-06', '2025-04-21', '2025-05-01', '2025-05-29',
             '2025-06-09', '2025-06-19', '2025-08-15', '2025-10-26', '2025-11-01',
             '2025-12-08', '2025-12-25', '2025-12-26',
-            '2026-01-01', '2026-01-06', '2026-04-06', '2026-05-01', '2026-05-14',
+            '2026-01-01', '2026-01-06', '2026-04-03', '2026-04-05', '2026-04-06', '2026-05-01', '2026-05-14',
             '2026-05-25', '2026-06-04', '2026-08-15', '2026-10-26', '2026-11-01',
             '2026-12-08', '2026-12-25', '2026-12-26'
         ];
         
         function isHoliday(date) {
-            const dateStr = date.toISOString().split('T')[0];
-            return HOLIDAYS.includes(dateStr);
+            // Use local date parts to avoid UTC timezone shift (Vienna = UTC+2)
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return HOLIDAYS.includes(`${y}-${m}-${d}`);
         }
         
         function isWeekend(date) {
@@ -12493,7 +12417,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.53';
+            const HUB_VERSION = 'v15.9.55';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13854,7 +13778,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.53</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.55</div>
                     </div>
                     
                     <div class="section">
@@ -13953,7 +13877,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.53 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.55 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -16701,6 +16625,8 @@ Spittelauer Lnde 12/1
             document.getElementById('pm-lt-url').value = saved.ltUrl || '';
             document.getElementById('pm-vvk-url').value = saved.vvkUrl || '';
             document.getElementById('pm-grafik-url').value = saved.grafikUrl || '';
+            document.getElementById('pm-short-url').value = saved.shortUrl || '';
+            document.getElementById('pm-promo-folder').value = saved.promoFolder || '';
             document.getElementById('pm-notes').value = saved.notes || '';
             document.getElementById('pm-sofie').checked = !!saved.sofie;
             document.getElementById('pm-linktree').checked = !!saved.linktree;
@@ -16728,6 +16654,8 @@ Spittelauer Lnde 12/1
                 ltUrl: document.getElementById('pm-lt-url').value,
                 vvkUrl: document.getElementById('pm-vvk-url').value,
                 grafikUrl: document.getElementById('pm-grafik-url').value,
+                shortUrl: document.getElementById('pm-short-url').value,
+                promoFolder: document.getElementById('pm-promo-folder').value,
                 notes: document.getElementById('pm-notes').value,
                 sofie: document.getElementById('pm-sofie').checked,
                 linktree: document.getElementById('pm-linktree').checked,
