@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.52</title>
+    <title>Turbo Projects Work Hub v15.9.53</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3577,7 +3577,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.52 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.53 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4857,7 +4857,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.52</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.53</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5130,7 +5130,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.52</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.53</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5935,7 +5935,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.52 C17
+        // EVENT PROJECTOR — v15.9.53 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -10270,19 +10270,63 @@
             // Generate cleaning entries
             const cleaningDates = [];
             const dayNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            
+
+            // Build map of adjusted event dates (after-midnight events count as previous day)
+            const eventDateMap = {};
             eventsNeedingCleaning.forEach(event => {
-                const cleaningDate = getCleaningDate(event.dtstart);
-                
-                // Determine cleaning type: GROSS for club nights (23:00), MITTEL for concerts (19:00)
-                let cleaningType = 'mittel'; // Default
-                const eventHour = event.dtstart.getHours();
-                if (eventHour >= 23 || eventHour <= 4) {
-                    cleaningType = 'gross'; // Club night (23:00) = GROSS
-                } else if (eventHour === 19 || event.category === 'konzert') {
-                    cleaningType = 'mittel'; // Concert (19:00) = MITTEL
+                const adj = new Date(event.dtstart);
+                if (adj.getHours() <= 4) adj.setDate(adj.getDate() - 1);
+                adj.setHours(0,0,0,0);
+                const key = adj.toDateString();
+                if (!eventDateMap[key]) eventDateMap[key] = [];
+                eventDateMap[key].push(event);
+            });
+
+            eventsNeedingCleaning.forEach(event => {
+                // Adjust after-midnight events to previous day
+                const adjDate = new Date(event.dtstart);
+                if (adjDate.getHours() <= 4) adjDate.setDate(adjDate.getDate() - 1);
+                adjDate.setHours(0,0,0,0);
+
+                const dow = adjDate.getDay(); // 0=Sun,1=Mon,...,5=Fri,6=Sat
+                const cleaningDate = new Date(adjDate);
+
+                if (dow === 5) {
+                    // FRIDAY → clean Saturday (club ready for SA event, regardless of whether SA has event)
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                } else if (dow === 6) {
+                    // SATURDAY → check if Sunday also has an event
+                    const nextDay = new Date(adjDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    const hasSundayEvent = !!eventDateMap[nextDay.toDateString()];
+                    if (hasSundayEvent) {
+                        // Clean Sunday morning (before Sunday event)
+                        cleaningDate.setDate(cleaningDate.getDate() + 1);
+                    } else {
+                        // No Sunday event → next weekday
+                        cleaningDate.setDate(cleaningDate.getDate() + 2); // Monday
+                        while (isHoliday(cleaningDate)) cleaningDate.setDate(cleaningDate.getDate() + 1);
+                    }
+                } else if (dow === 0) {
+                    // SUNDAY → next weekday (skip holidays)
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                    while (cleaningDate.getDay() === 0 || isHoliday(cleaningDate))
+                        cleaningDate.setDate(cleaningDate.getDate() + 1);
+                } else {
+                    // MON–THU → next workday
+                    cleaningDate.setDate(cleaningDate.getDate() + 1);
+                    while (cleaningDate.getDay() === 0 || isHoliday(cleaningDate))
+                        cleaningDate.setDate(cleaningDate.getDate() + 1);
                 }
-                
+
+                cleaningDate.setHours(8, 0, 0, 0);
+
+                // Determine cleaning type
+                const eventHour = event.dtstart.getHours();
+                let cleaningType = 'mittel';
+                if (eventHour >= 23 || eventHour <= 4) cleaningType = 'gross';
+                else if (eventHour === 19 || event.category === 'konzert') cleaningType = 'mittel';
+
                 cleaningDates.push({
                     date: cleaningDate,
                     type: cleaningType,
@@ -12449,7 +12493,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.52';
+            const HUB_VERSION = 'v15.9.53';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13810,7 +13854,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.52</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.53</div>
                     </div>
                     
                     <div class="section">
@@ -13909,7 +13953,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.52 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.53 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -16231,7 +16275,7 @@ Spittelauer Lnde 12/1
             try {
                 const filter = unreadOnly ? "&$filter=isRead eq false" : "&$filter=isDraft eq false";
                 const res = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
+                    `https://graph.microsoft.com/v1.0/me/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
                     { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -16502,7 +16546,7 @@ Spittelauer Lnde 12/1
             if (status) status.textContent = '⏳';
             try {
                 const res = await fetch(
-                    'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=5&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag',
+                    'https://graph.microsoft.com/v1.0/me/messages?$top=5&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag&$filter=isDraft eq false',
                     { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
