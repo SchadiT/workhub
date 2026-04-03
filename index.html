@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.57</title>
+    <title>Turbo Projects Work Hub v15.9.60</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2298,7 +2298,46 @@
         .mini-email-subject.bold { font-weight: 600; color: var(--text); }
         .mini-email-date { font-size: 10px; color: var(--text-muted); min-width: 45px; text-align: right; }
 
-        </style>
+        
+
+        /* ===== COCKPIT WIDGET ===== */
+        #cockpit-widget {
+            border: 1px solid var(--border);
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        #cockpit-header {
+            background: #0d1b2a;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .cp-group-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .cp-group-row:hover { background: var(--surface-2, #1a1a1a); }
+        .cp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .cp-mini-bar { width: 80px; height: 3px; background: #2d2d44; border-radius: 2px; overflow: hidden; }
+        .cp-mini-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+        .cockpit-task-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .cockpit-task-row:last-child { border-bottom: none; }
+</style>
 </head>
 <body>
 
@@ -2331,7 +2370,7 @@
     </div>
     
     <div class="toast" id="toast"></div>
-    
+
     <!-- Mini Inbox Widget -->
     <div class="quick-notes" id="mini-inbox-widget" style="margin-bottom:8px;">
         <div class="quick-notes-header" onclick="toggleMiniInbox()" style="cursor:pointer;">
@@ -2379,6 +2418,37 @@
             </div>
             <div style="flex:1;overflow-y:auto;padding:16px;" id="roadmap-full-list"></div>
         </div>
+
+    </div>
+
+    <!-- COCKPIT Widget -->
+    <div id="cockpit-widget" style="margin-bottom:8px;">
+        <!-- Header -->
+        <div id="cockpit-header" onclick="cockpitToggleCollapse()">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#fff;text-transform:uppercase;">🎯 COCKPIT</span>
+            <div style="flex:1;height:4px;background:#2d2d44;border-radius:2px;overflow:hidden;">
+                <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:2px;width:0%;transition:width 0.4s;"></div>
+            </div>
+            <span id="cp-pct" style="font-size:12px;font-weight:700;color:#3b82f6;min-width:36px;text-align:right;">—</span>
+            <span id="cp-fraction" style="font-size:11px;color:#888;">0/0</span>
+            <span id="cp-toggle-btn" style="font-size:10px;color:#888;">▲</span>
+        </div>
+        <!-- Group Rows -->
+        <div id="cp-body">
+            <div id="cp-groups" style="padding:4px 0;">
+                <div style="padding:14px;color:#555;font-size:12px;text-align:center;">Lädt…</div>
+            </div>
+            <div style="padding:8px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                <span id="cp-status" style="font-size:11px;color:#888;"></span>
+                <div style="margin-left:auto;display:flex;gap:8px;">
+                    <button onclick="cockpitLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;border-radius:0;">↺ Refresh</button>
+                    <button onclick="cockpitOpenFullModal()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;border-radius:0;">📋 Full Checklist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:#888;">
+        ⚠️ Bitte einloggen (Microsoft) um COCKPIT zu aktivieren.
     </div>
 
     <!-- Quick Notes (collapsible) -->
@@ -3631,7 +3701,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.57 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.60 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4562,6 +4632,10 @@
                     <span class="tool-icon">&#9989;</span>
                     To-Do Setup
                 </button>
+                <button class="tool-btn border-white" onclick="scrollToQuickNotes()" style="border-color:#f59e0b;">
+                    <span class="tool-icon">&#128221;</span>
+                    Quick Notes
+                </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">&#11088;</span>
@@ -4911,7 +4985,21 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.57</div>
+
+    <!-- COCKPIT Full Checklist Modal -->
+    <div class="modal-overlay" id="cockpit-modal">
+        <div class="modal-content" style="max-width:700px;height:88vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h2>🎯 COCKPIT — Full Checklist</h2>
+                <button class="modal-close" onclick="closeModal('cockpit-modal')">&times;</button>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:16px;" id="cockpit-modal-list">
+                <div style="color:#555;font-size:13px;text-align:center;padding:20px;">Lädt…</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="version" id="hub-version-footer">Work Hub v15.9.60</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5184,7 +5272,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.57</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.60</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5989,7 +6077,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.57 C17
+        // EVENT PROJECTOR — v15.9.60 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -8789,78 +8877,122 @@
             status.innerHTML = '⏳ Analysiere…';
             document.getElementById('gl-results').style.display = 'none';
 
-            // Stop words to ignore
-            const STOPWORDS = new Set(['gl','fl','sl','danke','bitte','ok','ja','nein','hi','hey','hallo','hello',
-                'thx','thanks','thnx','love','und','and','the','for','mit','von','from','merci','grazie',
-                'gerne','super','nice','cool','gut','great','perfect','noted','noted!','done','check']);
+            // C19 v3 — Absender-Filter: nur echte Gäste aus GL/FL/SL-Nachrichten
+            const STOPWORDS = new Set(['gl','fl','sl','danke','bitte','ok','ja','nein','hi','hey','hallo',
+                'hello','thx','thanks','thnx','love','und','and','the','for','mit','von','from','merci',
+                'grazie','gerne','super','nice','cool','gut','great','perfect','noted','done','check',
+                'ich','bin','wir','sie','er','es','du','ihr','uns','das','der','die','ein','eine',
+                'ist','war','hat','auf','bei','bis','wie','was','wer','wo','kann','klar','sure',
+                'yep','nope','alles','okay','passt','top','nice!','👍','🙌']);
 
-            // WhatsApp message pattern: [DD.MM.YY, HH:MM] or DD.MM.YY, HH:MM -
+            // WhatsApp timestamp pattern: [DD.MM.YY, HH:MM] or DD.MM.YY, HH:MM -
             const msgPattern = /^\[?(\d{1,2}[./]\d{1,2}[./]\d{2,4}),?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]+):\s*(.*)$/;
 
             const lines = chatText.split(/\n/);
+            const hasWhatsAppFormat = lines.some(l => msgPattern.test(l.trim()));
             let added = 0;
 
-            lines.forEach(line => {
-                line = line.trim();
-                if (!line) return;
-
-                // Try to parse as WhatsApp message header
-                const msgMatch = line.match(msgPattern);
-                const messageBody = msgMatch ? msgMatch[3] : line;
-
-                // Determine list type from message body
-                let listType = 'gl'; // default
-                const bodyUpper = messageBody.toUpperCase();
-                // Check for FL/SL keywords
-                if (/\bFL\b/.test(bodyUpper)) listType = 'fl';
-                else if (/\bSL\b|\bSPECIAL\b/.test(bodyUpper)) listType = 'sl';
-                // GL or nothing → gl (default)
-
-                // Extract names: split by newlines within message, commas, semicolons
-                // Remove keywords and date patterns
-                let cleaned = messageBody
+            // Core name extractor — reusable
+            function processNameText(text, listType) {
+                let cleaned = text
                     .replace(/\b(GL|FL|SL|SPECIAL\s*LIST|GUEST\s*LIST|FRIEND\s*LIST)\b/gi, '')
-                    .replace(/\b\d{1,2}[./]\d{1,2}([./]\d{2,4})?\b/g, '') // dates
+                    .replace(/\b\d{1,2}[./]\d{1,2}([./]\d{2,4})?\b/g, '')
                     .replace(/\b(Mixed\s*Vienna|MixedVienna|Grelle|Forelle|Turbo|Selected|NYE|Halloween|Silvester)\b/gi, '')
                     .trim();
 
-                // Split by common separators
-                const nameCandidates = cleaned.split(/[,;|\n]+/);
-
-                nameCandidates.forEach(candidate => {
-                    let name = candidate.trim();
-                    // Remove leading numbers, dashes, bullets
-                    name = name.replace(/^[\s\-*#•\d.\)]+/, '').trim();
-                    // Remove trailing punctuation
-                    name = name.replace(/[.,;:!?🙏❤️💙🧡]+$/g, '').trim();
+                cleaned.split(/[,;|\n]+/).forEach(candidate => {
+                    let name = candidate.trim()
+                        .replace(/^[\s\-*#•\d.\)]+/, '').trim()
+                        .replace(/[.,;:!?🙏❤️💙🧡]+$/g, '').trim();
 
                     if (!name || name.length < 2) return;
 
-                    // Check for +1/+2 suffix and preserve it
-                    const plusMatch = name.match(/^(.+?)\s*(\+\d)\s*$/);
-                    let baseName = plusMatch ? plusMatch[1].trim() : name;
+                    const plusMatch = name.match(/^(.+?)\s*(\+\d+)\s*$/);
+                    const baseName = plusMatch ? plusMatch[1].trim() : name;
                     const plusSuffix = plusMatch ? ' ' + plusMatch[2] : '';
 
-                    // Validate: must contain at least one letter, not all digits
                     if (!/[a-zA-ZäöüÄÖÜß]/.test(baseName)) return;
                     if (/^\d+$/.test(baseName)) return;
 
-                    // Skip single words that are stopwords
                     const words = baseName.toLowerCase().split(/\s+/);
                     if (words.length === 1 && STOPWORDS.has(words[0])) return;
-                    // Skip very short single words
                     if (words.length === 1 && baseName.length < 3) return;
+                    if (words.length > 4) return; // skip sentences
 
-                    // Capitalize properly
                     const formatted = baseName.split(' ').map(w =>
                         w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
                     ).join(' ') + plusSuffix;
 
-                    // Add if not duplicate
                     const exists = glData[listType].some(n => n.toLowerCase() === formatted.toLowerCase());
                     if (!exists) { glData[listType].push(formatted); added++; }
                 });
-            });
+            }
+
+            function detectListType(text) {
+                const u = text.toUpperCase();
+                if (/\bFL\b|\bFRIEND\s*LIST\b/.test(u)) return 'fl';
+                if (/\bSL\b|\bSPECIAL\b/.test(u)) return 'sl';
+                if (/\bGL\b|\bGUEST\s*LIST\b/.test(u)) return 'gl';
+                return null;
+            }
+
+            // Strip "SenderName: " prefix from non-timestamped lines (e.g. "Klaus: GL")
+            function stripSenderPrefix(line) {
+                const ci = line.indexOf(':');
+                if (ci > 1 && ci < 35) {
+                    const prefix = line.substring(0, ci).trim();
+                    if (/^[a-zA-ZäöüÄÖÜß\s]{2,30}$/.test(prefix))
+                        return line.substring(ci + 1).trim();
+                }
+                return line;
+            }
+
+            if (!hasWhatsAppFormat) {
+                // Raw list mode — no timestamps, process every line directly
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line) return;
+                    const lt = detectListType(line) || 'gl';
+                    processNameText(line, lt);
+                });
+            } else {
+                // WhatsApp mode — only GL/FL/SL messages; sender names never added
+                let activeListType = null;
+
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line) return;
+
+                    const msgMatch = line.match(msgPattern);
+
+                    if (msgMatch) {
+                        // Timestamped message — sender (msgMatch[2]) always ignored
+                        const body = msgMatch[3].trim();
+                        const detectedList = detectListType(body);
+                        if (detectedList) {
+                            activeListType = detectedList;
+                            if (body.length > 0) processNameText(body, activeListType);
+                        } else if (body.length === 0) {
+                            // Keep context — sender hit enter after GL keyword
+                        } else {
+                            activeListType = null; // Different topic
+                        }
+                    } else {
+                        // Non-timestamped line — could be "Klaus: GL", name list, or noise
+                        const stripped = stripSenderPrefix(line);
+                        const lineLt = detectListType(stripped) || detectListType(line);
+                        if (lineLt) {
+                            // Has GL/FL/SL keyword (possibly after sender prefix)
+                            activeListType = lineLt;
+                            processNameText(stripped, activeListType);
+                        } else if (activeListType) {
+                            // No keyword but active context → continuation name line
+                            processNameText(line, activeListType);
+                        }
+                        // No keyword + no context → skip (system msg / noise)
+                    }
+                });
+            }
 
             ['gl','fl','sl'].forEach(l => glData[l].sort((a,b) => a.localeCompare(b)));
             glRender();
@@ -10134,12 +10266,44 @@
             '2026-12-08', '2026-12-25', '2026-12-26'
         ];
         
-        function isHoliday(date) {
-            // Use local date parts to avoid UTC timezone shift (Vienna = UTC+2)
-            const y = date.getFullYear();
-            const m = String(date.getMonth() + 1).padStart(2, '0');
-            const d = String(date.getDate()).padStart(2, '0');
-            return HOLIDAYS.includes(`${y}-${m}-${d}`);
+        // B17 FIX: Unified isHoliday — works with Date objects AND "DD.MM.YYYY" label strings
+        // Checks both hardcoded HOLIDAYS array AND BMT feiertag events
+        function isHoliday(input) {
+            let y, m, d;
+            if (input instanceof Date) {
+                y = input.getFullYear();
+                m = String(input.getMonth() + 1).padStart(2, '0');
+                d = String(input.getDate()).padStart(2, '0');
+            } else if (typeof input === 'string') {
+                if (input.includes('.')) {
+                    // "DD.MM.YYYY" format (runner labels)
+                    const parts = input.split('.');
+                    d = (parts[0] || '').padStart(2, '0');
+                    m = (parts[1] || '').padStart(2, '0');
+                    y = parts[2] || '';
+                } else {
+                    // "YYYY-MM-DD" ISO format
+                    const parts = input.split('-');
+                    y = parts[0] || ''; m = parts[1] || ''; d = parts[2] || '';
+                }
+            } else {
+                return false;
+            }
+            const isoKey = `${y}-${m}-${d}`;
+            // Check hardcoded list
+            if (HOLIDAYS.includes(isoKey)) return true;
+            // Check BMT feiertag events
+            if (typeof bmtEvents !== 'undefined' && bmtEvents) {
+                return bmtEvents.some(e => {
+                    if (!(e.category === 'holiday' || (e.summary || '').toLowerCase().includes('feiertag'))) return false;
+                    const dd = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                    const ey = dd.getFullYear();
+                    const em = String(dd.getMonth() + 1).padStart(2, '0');
+                    const ed = String(dd.getDate()).padStart(2, '0');
+                    return `${ey}-${em}-${ed}` === isoKey;
+                });
+            }
+            return false;
         }
         
         function isWeekend(date) {
@@ -11498,21 +11662,6 @@ Spittelauer Lnde 12/1
 
         let uploadedRunnerAvailability = null;
 
-        // Get public holidays from BMT (category === 'holiday')
-        function getBMTHolidays() {
-            if (!bmtEvents) return [];
-            return bmtEvents
-                .filter(e => e.category === 'holiday' || (e.summary || '').toLowerCase().includes('feiertag'))
-                .map(e => {
-                    const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                    return d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
-                });
-        }
-
-        function isHoliday(dateLabel) {
-            return getBMTHolidays().includes(dateLabel);
-        }
-
         function getNextDayLabel(dateLabel) {
             const parts = dateLabel.split('.');
             if (parts.length < 3) return '';
@@ -12452,7 +12601,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.57';
+            const HUB_VERSION = 'v15.9.60';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13813,7 +13962,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.57</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.60</div>
                     </div>
                     
                     <div class="section">
@@ -13912,7 +14061,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.57 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.60 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17105,11 +17254,247 @@ Spittelauer Lnde 12/1
             });
         }
 
+        function scrollToQuickNotes() {
+            const el = document.getElementById('quick-notes-widget');
+            if (el) { el.scrollIntoView({behavior:'smooth'}); toggleQuickNotes(true); }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             tpMigrate();
             tpRenderWidget();
         });
         // ═══════════════════════════════════════════════════════
+
+        // COCKPIT auto-loads after sign-in
+
+        // ═══════════════════════════════════════════════════════
+        // COCKPIT — Live MS To-Do Integration
+        // ═══════════════════════════════════════════════════════
+        let cockpitData = { tasks: [], lastLoad: null };
+        let cpCollapsed = localStorage.getItem('cpCollapsed') === 'true';
+
+        const CP_GROUPS = [
+            { key: 'overdue',  label: 'ÜBERFÄLLIG',    color: '#ef4444' },
+            { key: 'today',    label: 'HEUTE',          color: '#f97316' },
+            { key: 'week',     label: 'DIESE WOCHE',   color: '#3b82f6' },
+            { key: 'month',    label: 'DIESEN MONAT',  color: '#22c55e' },
+            { key: 'later',    label: 'SPÄTER',         color: '#6b7280' },
+            { key: 'done',     label: 'ERLEDIGT ✓',    color: '#14532d' },
+        ];
+
+        function cockpitGroupTasks(tasks) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfWeek = new Date(today);
+            endOfWeek.setDate(today.getDate() + (7 - today.getDay() || 7));
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            const groups = {};
+            CP_GROUPS.forEach(g => groups[g.key] = []);
+
+            tasks.forEach(t => {
+                if (t.status === 'completed') { groups.done.push(t); return; }
+                if (!t.dueDateTime) { groups.later.push(t); return; }
+                const due = new Date(t.dueDateTime.dateTime);
+                const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+                if (dueDay < today) groups.overdue.push(t);
+                else if (+dueDay === +today) groups.today.push(t);
+                else if (dueDay <= endOfWeek) groups.week.push(t);
+                else if (dueDay <= endOfMonth) groups.month.push(t);
+                else groups.later.push(t);
+            });
+            return groups;
+        }
+
+        async function cockpitLoad() {
+            const statusEl = document.getElementById('cp-status');
+            if (statusEl) statusEl.textContent = '⏳ Lädt…';
+
+            // Try to get token
+            let token = accessToken;
+            if (!token) {
+                try { token = await getMailToken(); } catch(e) {}
+            }
+            if (!token) {
+                document.getElementById('cp-signin-hint').style.display = 'block';
+                document.getElementById('cp-groups').innerHTML = '<div style="padding:14px;color:#555;font-size:12px;text-align:center;">Nicht eingeloggt — bitte im HUB anmelden.</div>';
+                if (statusEl) statusEl.textContent = '';
+                return;
+            }
+            document.getElementById('cp-signin-hint').style.display = 'none';
+
+            try {
+                // Fetch all lists
+                const listsRes = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists', {
+                    headers: { Authorization: 'Bearer ' + token }
+                });
+                if (!listsRes.ok) throw new Error('Lists: ' + listsRes.status);
+                const listsData = await listsRes.json();
+                const lists = listsData.value || [];
+
+                // Fetch tasks from each list in parallel
+                const allTasks = [];
+                await Promise.all(lists.map(async list => {
+                    try {
+                        const res = await fetch(
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${list.id}/tasks?$top=100&$select=id,title,status,dueDateTime,importance,createdDateTime`,
+                            { headers: { Authorization: 'Bearer ' + token } }
+                        );
+                        const data = await res.json();
+                        (data.value || []).forEach(t => {
+                            allTasks.push({ ...t, listId: list.id, listName: list.displayName });
+                        });
+                    } catch(e) { /* skip failed list */ }
+                }));
+
+                cockpitData.tasks = allTasks;
+                cockpitData.lastLoad = new Date();
+                cockpitRender();
+                if (statusEl) {
+                    const ts = cockpitData.lastLoad.toLocaleTimeString('de-DE', {hour:'2-digit',minute:'2-digit'});
+                    statusEl.textContent = 'Stand: ' + ts;
+                }
+            } catch(err) {
+                if (statusEl) statusEl.textContent = '❌ ' + err.message;
+            }
+        }
+
+        function cockpitRender() {
+            const groups = cockpitGroupTasks(cockpitData.tasks);
+            const total = cockpitData.tasks.length;
+            const done = groups.done.length;
+            const open = total - done;
+            const pct = total ? Math.round(done / total * 100) : 0;
+
+            const bar = document.getElementById('cp-bar');
+            const pctEl = document.getElementById('cp-pct');
+            const fracEl = document.getElementById('cp-fraction');
+            if (bar) bar.style.width = pct + '%';
+            if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = pct === 100 ? '#22c55e' : '#3b82f6'; }
+            if (fracEl) fracEl.textContent = done + '/' + total;
+
+            const container = document.getElementById('cp-groups');
+            if (!container) return;
+            container.innerHTML = '';
+
+            CP_GROUPS.forEach(g => {
+                const items = groups[g.key] || [];
+                const count = items.length;
+                const isOverdueWithItems = g.key === 'overdue' && count > 0;
+                const isDone = g.key === 'done';
+                const barPct = isDone ? 100 : 0;
+                const barColor = isDone ? '#22c55e' : isOverdueWithItems ? '#ef4444' : '#3b82f6';
+
+                const row = document.createElement('div');
+                row.className = 'cp-group-row';
+                row.onclick = () => cockpitOpenModal(g.key, groups);
+                row.innerHTML = `
+                    <span class="cp-dot" style="background:${g.color};"></span>
+                    <span style="flex:1;color:${isOverdueWithItems ? '#ef4444' : 'var(--text)'};">${g.label}</span>
+                    <div class="cp-mini-bar"><div class="cp-mini-bar-fill" style="width:${barPct}%;background:${barColor};"></div></div>
+                    <span style="min-width:36px;text-align:right;color:${isOverdueWithItems ? '#ef4444' : count === 0 ? '#333' : '#888'};">${count}</span>
+                `;
+                container.appendChild(row);
+            });
+
+            // Apply collapse
+            const body = document.getElementById('cp-body');
+            const btn = document.getElementById('cp-toggle-btn');
+            if (body) body.style.display = cpCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = cpCollapsed ? '▼' : '▲';
+        }
+
+        function cockpitToggleCollapse() {
+            cpCollapsed = !cpCollapsed;
+            localStorage.setItem('cpCollapsed', cpCollapsed);
+            const body = document.getElementById('cp-body');
+            const btn = document.getElementById('cp-toggle-btn');
+            if (body) body.style.display = cpCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = cpCollapsed ? '▼' : '▲';
+        }
+
+        async function cockpitToggleTask(listId, taskId, done) {
+            let token = accessToken;
+            if (!token) { try { token = await getMailToken(); } catch(e) {} }
+            if (!token) { showToast('Nicht eingeloggt', true); return; }
+            try {
+                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
+                    method: 'PATCH',
+                    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: done ? 'completed' : 'notStarted' })
+                });
+                const task = cockpitData.tasks.find(t => t.id === taskId);
+                if (task) task.status = done ? 'completed' : 'notStarted';
+                cockpitRender();
+                showToast(done ? '✓ Erledigt' : 'Wieder offen');
+            } catch(err) {
+                showToast('Fehler: ' + err.message, true);
+            }
+        }
+
+        function cockpitOpenFullModal() {
+            openModal('cockpit-modal');
+            cockpitRenderModal(null);
+        }
+
+        function cockpitOpenModal(filterKey, groups) {
+            openModal('cockpit-modal');
+            cockpitRenderModal(filterKey, groups);
+        }
+
+        function cockpitRenderModal(filterKey, groups) {
+            const container = document.getElementById('cockpit-modal-list');
+            if (!container) return;
+            container.innerHTML = '';
+            const allGroups = groups || cockpitGroupTasks(cockpitData.tasks);
+            const order = filterKey ? [filterKey] : CP_GROUPS.map(g => g.key);
+
+            let hasContent = false;
+            order.forEach(key => {
+                const gCfg = CP_GROUPS.find(g => g.key === key);
+                const items = allGroups[key] || [];
+                if (!items.length) return;
+                hasContent = true;
+
+                // Group header
+                const header = document.createElement('div');
+                header.style.cssText = 'display:flex;align-items:center;gap:8px;padding:12px 0 6px;border-bottom:1px solid var(--border);margin-bottom:4px;';
+                header.innerHTML = `
+                    <span style="width:8px;height:8px;border-radius:50%;background:${gCfg.color};flex-shrink:0;"></span>
+                    <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:${gCfg.color};">${gCfg.label}</span>
+                    <span style="font-size:11px;color:#555;">${items.length} Task${items.length !== 1 ? 's' : ''}</span>
+                `;
+                container.appendChild(header);
+
+                // Tasks
+                items.forEach(task => {
+                    const isDone = task.status === 'completed';
+                    let dueStr = '';
+                    if (task.dueDateTime) {
+                        const d = new Date(task.dueDateTime.dateTime);
+                        dueStr = d.toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'2-digit'});
+                    }
+                    const row = document.createElement('div');
+                    row.className = 'cockpit-task-row';
+                    row.innerHTML = `
+                        <input type="checkbox" ${isDone ? 'checked' : ''} style="margin-top:3px;accent-color:#22c55e;cursor:pointer;flex-shrink:0;"
+                            onchange="cockpitToggleTask('${task.listId}', '${task.id}', this.checked)">
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-size:13px;${isDone ? 'text-decoration:line-through;color:#444;' : 'color:var(--text);'}">${escapeHtml(task.title)}</div>
+                            <div style="font-size:11px;color:#555;margin-top:2px;">${escapeHtml(task.listName)}${dueStr ? ' · ' + dueStr : ''}</div>
+                        </div>
+                        ${task.importance === 'high' ? '<span style="color:#ef4444;font-size:14px;flex-shrink:0;">!</span>' : ''}
+                    `;
+                    container.appendChild(row);
+                });
+            });
+
+            if (!hasContent) {
+                container.innerHTML = '<div style="color:#555;font-size:13px;text-align:center;padding:40px;">Keine Tasks in dieser Gruppe.</div>';
+            }
+        }
+        // ═══════════════════════════════════════════════════════
+
 
         </script>
 </body>
