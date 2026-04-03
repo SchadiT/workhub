@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.55</title>
+    <title>Turbo Projects Work Hub v15.9.57</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3631,7 +3631,7 @@
         </div>
     </div>
     
-    <!-- Event Projector Modal — v15.9.55 C17 DB-Anbindung -->
+    <!-- Event Projector Modal — v15.9.57 C17 DB-Anbindung -->
     <div class="modal-overlay" id="projector-modal">
         <div class="modal" style="max-width:700px">
             <div class="modal-header">
@@ -4911,7 +4911,7 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
-    <div class="version" id="hub-version-footer">Work Hub v15.9.55</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.57</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5184,7 +5184,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.55</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.57</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5989,7 +5989,7 @@
         // 
         
         // ========================================
-        // EVENT PROJECTOR — v15.9.55 C17
+        // EVENT PROJECTOR — v15.9.57 C17
         // EIGEN: hardcoded SERIE_STATS (unchanged)
         // FREMD: live DB load via CSV, per-Promoter stats
         // Freitext: global KW benchmark
@@ -8780,57 +8780,92 @@
         // ═══════════════════════════════════════════════════════
         let glData = { gl: [], fl: [], sl: [] };
 
-        async function glExtract() {
+        function glExtract() {
             const chatText = document.getElementById('gl-chat-input').value.trim();
             if (!chatText) { showToast('Bitte Chat einkopieren', true); return; }
 
             const status = document.getElementById('gl-status');
             status.style.display = 'block';
-            status.innerHTML = '⏳ Claude analysiert den Chat…';
+            status.innerHTML = '⏳ Analysiere…';
             document.getElementById('gl-results').style.display = 'none';
 
-            try {
-                const resp = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1000,
-                        system: `Du bist ein Assistent der aus WhatsApp Gruppen-Nachrichten Gästelisten extrahiert.
-Extrahiere alle Personennamen die als Gäste genannt werden.
-Klassifiziere jeden Namen in eine der drei Listen basierend auf Kürzeln:
-- "FL" im Kontext → FRIENDLIST
-- "SL" oder "SPECIAL" im Kontext → SPECIALLIST  
-- "GL", kein Kürzel, oder unklar → GUESTLIST
-Behalte "+1", "+2" etc. beim Namen.
-Ignoriere: Datum, Event-Namen, Grußformeln, Wörter wie "danke", "ok", "hi", Absendernamen der Chat-Nachrichten.
-Antworte NUR mit einem JSON-Objekt ohne Markdown, exakt in diesem Format:
-{"gl":["Name1","Name2 +1"],"fl":["Name3"],"sl":["Name4"]}`,
-                        messages: [{ role: 'user', content: chatText }]
-                    })
-                });
-                const data = await resp.json();
-                const text = data.content?.[0]?.text || '{}';
-                const clean = text.replace(/```json|```/g, '').trim();
-                const parsed = JSON.parse(clean);
+            // Stop words to ignore
+            const STOPWORDS = new Set(['gl','fl','sl','danke','bitte','ok','ja','nein','hi','hey','hallo','hello',
+                'thx','thanks','thnx','love','und','and','the','for','mit','von','from','merci','grazie',
+                'gerne','super','nice','cool','gut','great','perfect','noted','noted!','done','check']);
 
-                // Merge with existing (no duplicates, case-insensitive)
-                ['gl','fl','sl'].forEach(list => {
-                    const incoming = parsed[list] || [];
-                    incoming.forEach(name => {
-                        const norm = name.trim();
-                        if (!norm || norm.length < 2) return;
-                        const exists = glData[list].some(n => n.toLowerCase() === norm.toLowerCase());
-                        if (!exists) glData[list].push(norm);
-                    });
-                    glData[list].sort((a, b) => a.localeCompare(b));
-                });
+            // WhatsApp message pattern: [DD.MM.YY, HH:MM] or DD.MM.YY, HH:MM -
+            const msgPattern = /^\[?(\d{1,2}[./]\d{1,2}[./]\d{2,4}),?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]+):\s*(.*)$/;
 
-                glRender();
-                status.innerHTML = `✓ Fertig — ${glData.gl.length + glData.fl.length + glData.sl.length} Namen total`;
-            } catch(err) {
-                status.innerHTML = `❌ Fehler: ${err.message}`;
-            }
+            const lines = chatText.split(/\n/);
+            let added = 0;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                // Try to parse as WhatsApp message header
+                const msgMatch = line.match(msgPattern);
+                const messageBody = msgMatch ? msgMatch[3] : line;
+
+                // Determine list type from message body
+                let listType = 'gl'; // default
+                const bodyUpper = messageBody.toUpperCase();
+                // Check for FL/SL keywords
+                if (/\bFL\b/.test(bodyUpper)) listType = 'fl';
+                else if (/\bSL\b|\bSPECIAL\b/.test(bodyUpper)) listType = 'sl';
+                // GL or nothing → gl (default)
+
+                // Extract names: split by newlines within message, commas, semicolons
+                // Remove keywords and date patterns
+                let cleaned = messageBody
+                    .replace(/\b(GL|FL|SL|SPECIAL\s*LIST|GUEST\s*LIST|FRIEND\s*LIST)\b/gi, '')
+                    .replace(/\b\d{1,2}[./]\d{1,2}([./]\d{2,4})?\b/g, '') // dates
+                    .replace(/\b(Mixed\s*Vienna|MixedVienna|Grelle|Forelle|Turbo|Selected|NYE|Halloween|Silvester)\b/gi, '')
+                    .trim();
+
+                // Split by common separators
+                const nameCandidates = cleaned.split(/[,;|\n]+/);
+
+                nameCandidates.forEach(candidate => {
+                    let name = candidate.trim();
+                    // Remove leading numbers, dashes, bullets
+                    name = name.replace(/^[\s\-*#•\d.\)]+/, '').trim();
+                    // Remove trailing punctuation
+                    name = name.replace(/[.,;:!?🙏❤️💙🧡]+$/g, '').trim();
+
+                    if (!name || name.length < 2) return;
+
+                    // Check for +1/+2 suffix and preserve it
+                    const plusMatch = name.match(/^(.+?)\s*(\+\d)\s*$/);
+                    let baseName = plusMatch ? plusMatch[1].trim() : name;
+                    const plusSuffix = plusMatch ? ' ' + plusMatch[2] : '';
+
+                    // Validate: must contain at least one letter, not all digits
+                    if (!/[a-zA-ZäöüÄÖÜß]/.test(baseName)) return;
+                    if (/^\d+$/.test(baseName)) return;
+
+                    // Skip single words that are stopwords
+                    const words = baseName.toLowerCase().split(/\s+/);
+                    if (words.length === 1 && STOPWORDS.has(words[0])) return;
+                    // Skip very short single words
+                    if (words.length === 1 && baseName.length < 3) return;
+
+                    // Capitalize properly
+                    const formatted = baseName.split(' ').map(w =>
+                        w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+                    ).join(' ') + plusSuffix;
+
+                    // Add if not duplicate
+                    const exists = glData[listType].some(n => n.toLowerCase() === formatted.toLowerCase());
+                    if (!exists) { glData[listType].push(formatted); added++; }
+                });
+            });
+
+            ['gl','fl','sl'].forEach(l => glData[l].sort((a,b) => a.localeCompare(b)));
+            glRender();
+            const total = glData.gl.length + glData.fl.length + glData.sl.length;
+            status.innerHTML = `✓ ${added} neu hinzugefügt — ${total} Namen total`;
         }
 
         async function glMergeXlsx(event) {
@@ -12417,7 +12452,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.55';
+            const HUB_VERSION = 'v15.9.57';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13778,7 +13813,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.55</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.57</div>
                     </div>
                     
                     <div class="section">
@@ -13877,7 +13912,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.55 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.57 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
