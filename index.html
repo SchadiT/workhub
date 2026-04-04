@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.60</title>
+    <title>Turbo Projects Work Hub v15.9.61</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2827,14 +2827,22 @@
             <div class="modal-body" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;">
 
                 <!-- Event Info -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="display:flex;flex-direction:column;gap:8px;">
                     <div class="form-group">
-                        <label style="font-size:11px;color:#888;">EVENT DATUM</label>
-                        <input type="text" id="gl-date" placeholder="03.04.26" class="pm-input" style="font-size:14px;font-weight:600;">
+                        <label style="font-size:11px;color:#888;">EVENT AUSWÄHLEN (BMT)</label>
+                        <select id="gl-event-select" class="pm-input" style="font-size:13px;" onchange="glSelectBMTEvent(this.value)">
+                            <option value="">— Manuell eingeben —</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
-                        <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div class="form-group">
+                            <label style="font-size:11px;color:#888;">EVENT DATUM</label>
+                            <input type="text" id="gl-date" placeholder="03.04.26" class="pm-input" style="font-size:14px;font-weight:600;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
+                            <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
+                        </div>
                     </div>
                 </div>
 
@@ -4591,7 +4599,7 @@
                     <span class="tool-icon">&#127757;</span>
                     Promo Mgr.
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal')" style="position: relative;">
+                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal');glPopulateEventDropdown();" style="position: relative;">
                     <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
                     <span class="tool-icon">&#128157;</span>
                     Guestlist
@@ -4999,7 +5007,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.60</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.61</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -8864,10 +8872,44 @@
         let parsedGuestList = [];
         
         // ═══════════════════════════════════════════════════════
-        // C19 GUESTLIST TOOL v2
+        // C19 GUESTLIST TOOL v4
         // ═══════════════════════════════════════════════════════
         let glData = { gl: [], fl: [], sl: [] };
 
+        // ── BMT Event Dropdown ─────────────────────────────────
+        function glPopulateEventDropdown() {
+            const sel = document.getElementById('gl-event-select');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">— Manuell eingeben —</option>';
+            const evs = (typeof bmtEvents !== 'undefined' ? bmtEvents : [])
+                .filter(e => e.dtstart && e.dtstart >= new Date())
+                .filter(e => e.category !== 'technik' && e.category !== 'feiertag')
+                .sort((a,b) => a.dtstart - b.dtstart)
+                .slice(0, 30);
+            evs.forEach((ev, i) => {
+                const d = ev.dtstart;
+                const dateStr = String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getFullYear()).slice(-2);
+                const name = ev.summary || (ev.artists && ev.artists[0] ? ev.artists[0].name : 'Event');
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = dateStr + ' — ' + name;
+                opt.dataset.date = dateStr;
+                opt.dataset.name = name;
+                sel.appendChild(opt);
+            });
+        }
+
+        function glSelectBMTEvent(val) {
+            if (!val) return;
+            const sel = document.getElementById('gl-event-select');
+            const opt = sel.options[sel.selectedIndex];
+            if (opt && opt.dataset.date) {
+                document.getElementById('gl-date').value = opt.dataset.date;
+                document.getElementById('gl-event-name').value = opt.dataset.name;
+            }
+        }
+
+        // ── Parser v4 ──────────────────────────────────────────
         function glExtract() {
             const chatText = document.getElementById('gl-chat-input').value.trim();
             if (!chatText) { showToast('Bitte Chat einkopieren', true); return; }
@@ -8877,119 +8919,212 @@
             status.innerHTML = '⏳ Analysiere…';
             document.getElementById('gl-results').style.display = 'none';
 
-            // C19 v3 — Absender-Filter: nur echte Gäste aus GL/FL/SL-Nachrichten
-            const STOPWORDS = new Set(['gl','fl','sl','danke','bitte','ok','ja','nein','hi','hey','hallo',
-                'hello','thx','thanks','thnx','love','und','and','the','for','mit','von','from','merci',
-                'grazie','gerne','super','nice','cool','gut','great','perfect','noted','done','check',
-                'ich','bin','wir','sie','er','es','du','ihr','uns','das','der','die','ein','eine',
-                'ist','war','hat','auf','bei','bis','wie','was','wer','wo','kann','klar','sure',
-                'yep','nope','alles','okay','passt','top','nice!','👍','🙌']);
-
-            // WhatsApp timestamp pattern: [DD.MM.YY, HH:MM] or DD.MM.YY, HH:MM -
-            const msgPattern = /^\[?(\d{1,2}[./]\d{1,2}[./]\d{2,4}),?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]+):\s*(.*)$/;
-
-            const lines = chatText.split(/\n/);
-            const hasWhatsAppFormat = lines.some(l => msgPattern.test(l.trim()));
+            glData = { gl: [], fl: [], sl: [] };
             let added = 0;
 
-            // Core name extractor — reusable
-            function processNameText(text, listType) {
-                let cleaned = text
-                    .replace(/\b(GL|FL|SL|SPECIAL\s*LIST|GUEST\s*LIST|FRIEND\s*LIST)\b/gi, '')
-                    .replace(/\b\d{1,2}[./]\d{1,2}([./]\d{2,4})?\b/g, '')
-                    .replace(/\b(Mixed\s*Vienna|MixedVienna|Grelle|Forelle|Turbo|Selected|NYE|Halloween|Silvester)\b/gi, '')
-                    .trim();
+            const DATE_RE = /\b(\d{1,2})[./ ](\d{1,2})(?:[./ ](\d{2,4}))?\b/;
+            const TIMESTAMP_RE = /\b\d{1,2}:\d{2}(:\d{2})?\b/;
+            const EXPORT_RE = /^\]\s*[^:]+:/; // ] Sender: msg format
 
-                cleaned.split(/[,;|\n]+/).forEach(candidate => {
-                    let name = candidate.trim()
-                        .replace(/^[\s\-*#•\d.\)]+/, '').trim()
-                        .replace(/[.,;:!?🙏❤️💙🧡]+$/g, '').trim();
+            // Known noise words (lowercased)
+            const NOISE = new Set(['danke','bitte','ok','okay','ja','nein','hi','hey','hallo','hello',
+                'thx','thanks','thnx','love','merci','grazie','gerne','super','nice','cool','gut','great',
+                'perfect','noted','done','yep','nope','passt','top','geht','wenn','noch','möglich','vielen',
+                'viele','dank','bearbeitet','ruf','musst','hahaha','lol','und','von','einem','einen',
+                'mir','dir','uns','ihr','falls','gibt','auch','schon','dann','aber','oder','wie','was',
+                'wer','wo','noch','mal','kurz','bald','immer','nie','alle','kein','mehr','sehr','viel',
+                'one','and','the','for','with','from','love','baby','dear','dear']);
 
-                    if (!name || name.length < 2) return;
-
-                    const plusMatch = name.match(/^(.+?)\s*(\+\d+)\s*$/);
-                    const baseName = plusMatch ? plusMatch[1].trim() : name;
-                    const plusSuffix = plusMatch ? ' ' + plusMatch[2] : '';
-
-                    if (!/[a-zA-ZäöüÄÖÜß]/.test(baseName)) return;
-                    if (/^\d+$/.test(baseName)) return;
-
-                    const words = baseName.toLowerCase().split(/\s+/);
-                    if (words.length === 1 && STOPWORDS.has(words[0])) return;
-                    if (words.length === 1 && baseName.length < 3) return;
-                    if (words.length > 4) return; // skip sentences
-
-                    const formatted = baseName.split(' ').map(w =>
-                        w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-                    ).join(' ') + plusSuffix;
-
-                    const exists = glData[listType].some(n => n.toLowerCase() === formatted.toLowerCase());
-                    if (!exists) { glData[listType].push(formatted); added++; }
-                });
-            }
+            // Known event/venue words to strip from name candidates
+            const EVENT_WORDS = new Set(['turbo','selected','mixedvienna','mixed','vienna','grelle','forelle',
+                'flashback','stepforward','step','forward','halloween','nye','silvester','xmas','sommerfest',
+                'birthday','konzert','technik','event','party','night','club','bar','sputnik','zusatz']);
 
             function detectListType(text) {
                 const u = text.toUpperCase();
-                if (/\bFL\b|\bFRIEND\s*LIST\b/.test(u)) return 'fl';
-                if (/\bSL\b|\bSPECIAL\b/.test(u)) return 'sl';
-                if (/\bGL\b|\bGUEST\s*LIST\b/.test(u)) return 'gl';
+                if (/\bFL\b|\bFRIEND[\s-]*LIST\b/.test(u)) return 'fl';
+                if (/\bSL\b|\bSPECIAL[\s-]*LIST\b/.test(u)) return 'sl';
+                if (/\bGL\b|\bGUEST[\s-]*LIST\b/.test(u)) return 'gl';
                 return null;
             }
 
-            // Strip "SenderName: " prefix from non-timestamped lines (e.g. "Klaus: GL")
-            function stripSenderPrefix(line) {
-                const ci = line.indexOf(':');
-                if (ci > 1 && ci < 35) {
-                    const prefix = line.substring(0, ci).trim();
-                    if (/^[a-zA-ZäöüÄÖÜß\s]{2,30}$/.test(prefix))
-                        return line.substring(ci + 1).trim();
-                }
-                return line;
+            function isNoiseLine(text) {
+                if (!text || text.length < 2) return true;
+                // Emoji / symbol only
+                const stripped = text.replace(/[\s\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u00A9\u00AE\u203C\u2049\u20E3\u2122\u2139\u2194-\u2199\u21A9-\u21AA\u231A-\u231B\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA-\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614-\u2615\u2618\u261D\u2620\u2622-\u2623\u2626\u262A\u262E-\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F-\u2660\u2663\u2665-\u2666\u2668\u267B\u267E-\u267F\u2692-\u2697\u2699\u269B-\u269C\u26A0-\u26A1\u26A7\u26AA-\u26AB\u26B0-\u26B1\u26BD-\u26BE\u26C4-\u26C5\u26CE-\u26CF\u26D1\u26D3-\u26D4\u26E9-\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733-\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763-\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]/gu,'');
+                if (stripped.length === 0) return true;
+                // Too long = sentence
+                if (text.length > 55) return true;
+                // Check noise words ratio
+                const words = text.toLowerCase().replace(/[^a-zäöüß\s]/g,' ').split(/\s+/).filter(Boolean);
+                if (words.length === 0) return true;
+                const noiseCount = words.filter(w => NOISE.has(w)).length;
+                if (words.length <= 2 && noiseCount >= 1) return true;
+                if (words.length >= 3 && noiseCount >= 2) return true;
+                return false;
             }
 
-            if (!hasWhatsAppFormat) {
-                // Raw list mode — no timestamps, process every line directly
-                lines.forEach(line => {
-                    line = line.trim();
-                    if (!line) return;
-                    const lt = detectListType(line) || 'gl';
-                    processNameText(line, lt);
+            function addName(raw, listType) {
+                // Strip WA timestamp at end: "17:02", "21:05 Bearbeitet"
+                let name = raw.replace(/\s*\b\d{1,2}:\d{2}(:\d{2})?\b.*$/, '').trim();
+                // Strip parentheticals entirely
+                name = name.replace(/\([^)]*\)/g, '').trim();
+                // Strip emojis
+                name = name.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\uFE0F\u20E3]+/gu, '').trim();
+                // Strip trailing noise punctuation
+                name = name.replace(/[.,;:!?🙏❤💙🧡🌹🤝]+$/, '').trim();
+                // Strip leading bullets
+                name = name.replace(/^[\s\-*#•>]+/, '').trim();
+
+                if (!name || name.length < 2) return 0;
+
+                // Handle +N (with optional space)
+                const plusMatch = name.match(/^(.+?)\s*\+\s*(\d+)\s*$/);
+                const baseName = plusMatch ? plusMatch[1].trim() : name;
+                const plusSuffix = plusMatch ? ' +' + plusMatch[2] : '';
+
+                if (!baseName || baseName.length < 2) return 0;
+                if (!/[a-zA-ZäöüÄÖÜß]/.test(baseName)) return 0;
+
+                const words = baseName.split(/\s+/).filter(Boolean);
+                if (words.length > 4) return 0; // sentence
+                // Filter pure numeric or pure event words
+                const cleanWords = words.filter(w => {
+                    const wl = w.toLowerCase();
+                    return !EVENT_WORDS.has(wl) && !/^\d+$/.test(w);
                 });
-            } else {
-                // WhatsApp mode — only GL/FL/SL messages; sender names never added
+                if (cleanWords.length === 0) return 0;
+                if (cleanWords.length === 1 && cleanWords[0].length < 2) return 0;
+                if (isNoiseLine(cleanWords.join(' '))) return 0;
+
+                const formatted = cleanWords.map(w =>
+                    w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+                ).join(' ') + plusSuffix;
+
+                const exists = glData[listType].some(n => n.toLowerCase() === formatted.toLowerCase());
+                if (!exists) { glData[listType].push(formatted); return 1; }
+                return 0;
+            }
+
+            function extractNamesFromText(text, listType) {
+                let count = 0;
+                // Remove GL/FL/SL keywords
+                let cleaned = text.replace(/\b(GL|FL|SL|GUEST\s*LIST|FRIEND[S]?\s*LIST|SPECIAL\s*LIST)\b/gi, '');
+                // Remove dates
+                cleaned = cleaned.replace(DATE_RE, '');
+                // Remove "Zusatz:"
+                cleaned = cleaned.replace(/\bZusatz\s*:/gi, '');
+                // Remove WA timestamps
+                cleaned = cleaned.replace(TIMESTAMP_RE, '');
+                // Remove "Bearbeitet"
+                cleaned = cleaned.replace(/\bBearbeitet\b/gi, '');
+                // Split by newlines, commas
+                cleaned.split(/[\n,]+/).forEach(part => {
+                    const trimmed = part.trim();
+                    if (trimmed.length >= 2) count += addName(trimmed, listType);
+                });
+                return count;
+            }
+
+            const rawLines = chatText.split(/\n/).map(l => l.trim());
+            const lines = rawLines.filter(Boolean);
+
+            // ── Detect format ──────────────────────────────────────
+            const hasExportBracket = lines.some(l => EXPORT_RE.test(l));
+            const hasTimestamp = lines.some(l => /^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}/.test(l));
+
+            // ── Format A: ] Sender: message ────────────────────────
+            if (hasExportBracket) {
                 let activeListType = null;
-
                 lines.forEach(line => {
-                    line = line.trim();
-                    if (!line) return;
+                    // Strip ] prefix + sender
+                    let content = line.replace(/^\]\s*/, '').replace(/^[^:]{1,40}:\s*/, '').trim();
+                    if (!content) return;
+                    if (isNoiseLine(content)) return;
+                    const lt = detectListType(content);
+                    if (lt) {
+                        activeListType = lt;
+                        added += extractNamesFromText(content, activeListType);
+                    } else if (activeListType) {
+                        added += extractNamesFromText(content, activeListType);
+                    }
+                });
+            }
 
-                    const msgMatch = line.match(msgPattern);
+            // ── Format B: Timestamp export (iphone/android with timestamps) ──
+            else if (hasTimestamp) {
+                const MSG_RE = /^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]+):\s*(.*)$/;
+                let activeListType = null;
+                lines.forEach(line => {
+                    const m = line.match(MSG_RE);
+                    if (m) {
+                        const body = m[2].trim();
+                        const lt = detectListType(body);
+                        if (lt) { activeListType = lt; added += extractNamesFromText(body, activeListType); }
+                        else { activeListType = null; }
+                    } else if (activeListType && !isNoiseLine(line)) {
+                        added += extractNamesFromText(line, activeListType);
+                    }
+                });
+            }
 
-                    if (msgMatch) {
-                        // Timestamped message — sender (msgMatch[2]) always ignored
-                        const body = msgMatch[3].trim();
-                        const detectedList = detectListType(body);
-                        if (detectedList) {
-                            activeListType = detectedList;
-                            if (body.length > 0) processNameText(body, activeListType);
-                        } else if (body.length === 0) {
-                            // Keep context — sender hit enter after GL keyword
-                        } else {
-                            activeListType = null; // Different topic
+            // ── Format C/D: Copy-paste or raw name list ────────────
+            else {
+                // Two-pass: pass 1 = identify sender lines (short line before date/GL line)
+                const senderLines = new Set();
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (isNoiseLine(line)) continue;
+                    if (detectListType(line)) continue;
+                    if (DATE_RE.test(line)) continue;
+                    // Candidate: 1-3 words, mostly alphabetic
+                    const alphaOnly = line.replace(/[^a-zA-ZäöüÄÖÜß\s]/g, '').trim();
+                    const words = alphaOnly.split(/\s+/).filter(Boolean);
+                    if (words.length >= 1 && words.length <= 3 && alphaOnly.length >= 2) {
+                        // Look ahead for next non-noise, non-empty line
+                        let next = i + 1;
+                        while (next < lines.length && (lines[next].trim() === '' || isNoiseLine(lines[next]))) next++;
+                        if (next < lines.length) {
+                            const nextLine = lines[next];
+                            if (DATE_RE.test(nextLine) || detectListType(nextLine)) {
+                                senderLines.add(i);
+                            }
                         }
+                    }
+                }
+
+                // Pass 2: extract
+                let activeListType = null;
+                let hasDateContext = false;
+
+                lines.forEach((line, i) => {
+                    if (senderLines.has(i)) return; // skip sender
+                    if (isNoiseLine(line)) {
+                        // Noise resets date-only context but not GL/FL context
+                        hasDateContext = false;
+                        return;
+                    }
+
+                    const lt = detectListType(line);
+                    const hasDate = DATE_RE.test(line);
+
+                    if (lt) {
+                        activeListType = lt;
+                        hasDateContext = true;
+                        added += extractNamesFromText(line, activeListType);
+                    } else if (hasDate) {
+                        hasDateContext = true;
+                        const withoutDate = line.replace(DATE_RE,'').replace(TIMESTAMP_RE,'').trim();
+                        if (withoutDate.length >= 2 && !isNoiseLine(withoutDate)) {
+                            added += extractNamesFromText(line, activeListType || 'gl');
+                        }
+                    } else if (activeListType) {
+                        added += extractNamesFromText(line, activeListType);
+                    } else if (hasDateContext) {
+                        added += extractNamesFromText(line, 'gl');
                     } else {
-                        // Non-timestamped line — could be "Klaus: GL", name list, or noise
-                        const stripped = stripSenderPrefix(line);
-                        const lineLt = detectListType(stripped) || detectListType(line);
-                        if (lineLt) {
-                            // Has GL/FL/SL keyword (possibly after sender prefix)
-                            activeListType = lineLt;
-                            processNameText(stripped, activeListType);
-                        } else if (activeListType) {
-                            // No keyword but active context → continuation name line
-                            processNameText(line, activeListType);
-                        }
-                        // No keyword + no context → skip (system msg / noise)
+                        // No context at all — raw name list mode
+                        added += extractNamesFromText(line, 'gl');
                     }
                 });
             }
@@ -8998,6 +9133,7 @@
             glRender();
             const total = glData.gl.length + glData.fl.length + glData.sl.length;
             status.innerHTML = `✓ ${added} neu hinzugefügt — ${total} Namen total`;
+            document.getElementById('gl-results').style.display = 'flex';
         }
 
         async function glMergeXlsx(event) {
@@ -14061,7 +14197,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.60 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.61 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17106,7 +17242,7 @@ Spittelauer Lnde 12/1
               tasks: [
                 { id:'d7', text:'D7 UTM Tracking System', owner:'Claude' },
                 { id:'d5', text:'D5/D6 Meta Pixel + CAPI Setup', owner:'Schadi+Claude' },
-                { id:'c19', text:'C19 Guestlist Tool neu', owner:'Claude' },
+                { id:'c19', text:'C19 Guestlist v4 — BMT Dropdown, 3-Format Parser, Klammern-Strip', owner:'Claude' },
                 { id:'d14', text:'D14 Instagram Verifizierung', owner:'Schadi' },
                 { id:'h1', text:'H1/H2 Julius.ai + Metricool Setup', owner:'Schadi' },
                 { id:'f2', text:'F2/F3 FOH + VVK Daten eintragen', owner:'Schadi' },
