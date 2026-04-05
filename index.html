@@ -2830,11 +2830,11 @@
                 <div style="display:flex;flex-direction:column;gap:8px;">
                     <div class="form-group">
                         <label style="font-size:11px;color:#888;">EVENT AUSWÄHLEN (BMT)</label>
-                        <select id="gl-event-select" class="pm-input" style="font-size:13px;" onchange="glSelectBMTEvent(this.value)">
+                        <select id="gl-event-select" class="pm-input" style="font-size:13px;" onchange="glClear();glSelectBMTEvent(this.value)">
                             <option value="">— Manuell eingeben —</option>
                         </select>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;">
                         <div class="form-group">
                             <label style="font-size:11px;color:#888;">EVENT DATUM</label>
                             <input type="text" id="gl-date" placeholder="03.04.26" class="pm-input" style="font-size:14px;font-weight:600;">
@@ -2843,6 +2843,7 @@
                             <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
                             <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
                         </div>
+                        <button class="modal-btn" onclick="glData={gl:[],fl:[],sl:[]};document.getElementById('gl-status').style.display='none';document.getElementById('gl-results').style.display='none';document.getElementById('gl-chat-input').value='';showToast('Guestlist geleert');" style="background:#3d3d54;font-size:12px;height:36px;">OK</button>
                     </div>
                 </div>
 
@@ -2905,7 +2906,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="flex-shrink:0;">
-                <button class="modal-btn cancel" onclick="closeModal('guestlist-modal')">Schliessen</button>
+                <button class="modal-btn cancel" onclick="glClear();closeModal('guestlist-modal')">Schliessen</button>
             </div>
         </div>
     </div>
@@ -8872,6 +8873,16 @@
         let parsedGuestList = [];
         
         // ═══════════════════════════════════════════════════════
+        function glClear() {
+            glData = { gl: [], fl: [], sl: [] };
+            document.getElementById('gl-chat-input').value = '';
+            document.getElementById('gl-status').style.display = 'none';
+            document.getElementById('gl-results').style.display = 'none';
+            document.getElementById('gl-date').value = '';
+            document.getElementById('gl-event-name').value = '';
+            document.getElementById('gl-event-select').value = '';
+        }
+
         // C19 GUESTLIST TOOL v4
         // ═══════════════════════════════════════════════════════
         let glData = { gl: [], fl: [], sl: [] };
@@ -8931,7 +8942,7 @@
                 'thx','thanks','thnx','love','merci','grazie','gerne','super','nice','cool','gut','great',
                 'perfect','noted','done','yep','nope','passt','top','geht','wenn','noch','möglich','vielen',
                 'viele','dank','bearbeitet','ruf','musst','hahaha','lol','und','von','einem','einen',
-                'mir','dir','uns','ihr','falls','gibt','auch','schon','dann','aber','oder','wie','was',
+                'mir','dir','mich','uns','ihr','falls','gibt','auch','schon','dann','aber','oder','wie','was',
                 'wer','wo','noch','mal','kurz','bald','immer','nie','alle','kein','mehr','sehr','viel',
                 'one','and','the','for','with','from','love','baby','dear','dear']);
 
@@ -9019,6 +9030,8 @@
                 // Remove "Bearbeitet"
                 cleaned = cleaned.replace(/\bBearbeitet\b/gi, '');
                 // Split by newlines, commas
+                // Also split on ' und ' to handle 'Mich und Benjamin'
+                cleaned = cleaned.replace(/\b(und|and|&)\b/gi, ',');
                 cleaned.split(/[\n,]+/).forEach(part => {
                     const trimmed = part.trim();
                     if (trimmed.length >= 2) count += addName(trimmed, listType);
@@ -9031,39 +9044,82 @@
 
             // ── Detect format ──────────────────────────────────────
             const hasExportBracket = lines.some(l => EXPORT_RE.test(l));
-            const hasTimestamp = lines.some(l => /^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}/.test(l));
+            // Date-first timestamps: [DD.MM.YY, HH:MM] or DD.MM.YY, HH:MM - Sender:
+            const hasDateFirstTS = lines.some(l => /^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}/.test(l));
+            // Time-first timestamps: [HH:MM, D.M.YYYY] Sender: (mobile WA export)
+            const hasTimeFirstTS = lines.some(l => /^\[\d{1,2}:\d{2},\s*\d{1,2}[./]\d{1,2}[./]\d{4}\]/.test(l));
+            const hasTimestamp = hasDateFirstTS || hasTimeFirstTS;
+
+            // Unified message parser — strips timestamp+sender, returns body
+            function stripTSAndSender(line) {
+                // Time-first: [04:42, 4.4.2026] Sender: body
+                let m = line.match(/^\[\d{1,2}:\d{2},\s*[^\]]+\]\s*([^:]{1,40}):\s*(.*)$/);
+                if (m) return { sender: m[1].trim(), body: m[2].trim() };
+                // Date-first: [DD.MM.YY, HH:MM] Sender: body  or  DD.MM.YY, HH:MM - Sender: body
+                m = line.match(/^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]{1,40}):\s*(.*)$/);
+                if (m) return { sender: m[1].trim(), body: m[2].trim() };
+                return null;
+            }
 
             // ── Format A: ] Sender: message ────────────────────────
             if (hasExportBracket) {
                 let activeListType = null;
+                let hasCtx = false;
                 lines.forEach(line => {
-                    // Strip ] prefix + sender
                     let content = line.replace(/^\]\s*/, '').replace(/^[^:]{1,40}:\s*/, '').trim();
                     if (!content) return;
                     if (isNoiseLine(content)) return;
                     const lt = detectListType(content);
+                    const hasDate = DATE_RE.test(content);
                     if (lt) {
-                        activeListType = lt;
+                        activeListType = lt; hasCtx = true;
                         added += extractNamesFromText(content, activeListType);
+                    } else if (hasDate) {
+                        hasCtx = true;
+                        const rest = content.replace(DATE_RE,'').trim();
+                        if (rest.length >= 2) added += extractNamesFromText(content, activeListType || 'gl');
                     } else if (activeListType) {
                         added += extractNamesFromText(content, activeListType);
+                    } else if (hasCtx) {
+                        added += extractNamesFromText(content, 'gl');
                     }
                 });
             }
 
-            // ── Format B: Timestamp export (iphone/android with timestamps) ──
+            // ── Format B: Timestamp export (date-first or time-first) ──
             else if (hasTimestamp) {
-                const MSG_RE = /^\[?\d{1,2}[./]\d{1,2}[./]\d{2,4},?\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]?\s*([^:]+):\s*(.*)$/;
                 let activeListType = null;
+                let hasCtx = false;
                 lines.forEach(line => {
-                    const m = line.match(MSG_RE);
-                    if (m) {
-                        const body = m[2].trim();
+                    const parsed = stripTSAndSender(line);
+                    if (parsed) {
+                        // Timestamped line — sender ignored, process body
+                        const body = parsed.body;
+                        if (!body || isNoiseLine(body)) return;
                         const lt = detectListType(body);
-                        if (lt) { activeListType = lt; added += extractNamesFromText(body, activeListType); }
-                        else { activeListType = null; }
-                    } else if (activeListType && !isNoiseLine(line)) {
-                        added += extractNamesFromText(line, activeListType);
+                        const hasDate = DATE_RE.test(body);
+                        if (lt) {
+                            activeListType = lt; hasCtx = true;
+                            added += extractNamesFromText(body, activeListType);
+                        } else if (hasDate) {
+                            hasCtx = true;
+                            const rest = body.replace(DATE_RE,'').trim();
+                            if (rest.length >= 2 && !isNoiseLine(rest)) {
+                                added += extractNamesFromText(body, activeListType || 'gl');
+                            }
+                        } else if (activeListType) {
+                            added += extractNamesFromText(body, activeListType);
+                        } else if (hasCtx) {
+                            added += extractNamesFromText(body, 'gl');
+                        }
+                    } else {
+                        // Continuation line (no timestamp) — name continuation
+                        if (isNoiseLine(line)) { hasCtx = false; return; }
+                        if (activeListType) {
+                            added += extractNamesFromText(line, activeListType);
+                        } else if (hasCtx) {
+                            added += extractNamesFromText(line, 'gl');
+                        }
                     }
                 });
             }
@@ -16517,9 +16573,9 @@ Spittelauer Lnde 12/1
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade Emails…</div>';
 
             try {
-                const filter = unreadOnly ? "&$filter=isRead eq false" : "&$filter=isDraft eq false";
+                const filter = unreadOnly ? "&$filter=isRead eq false" : "";
                 const res = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/messages?$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
+                    `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=25&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
                     { headers: { 'Authorization': 'Bearer ' + mailToken } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -16580,8 +16636,8 @@ Spittelauer Lnde 12/1
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade geflaggte Emails…</div>';
             try {
                 const res = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/messages?$filter=flag/flagStatus eq 'flagged'&$top=30&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview`,
-                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
+                    `https://graph.microsoft.com/v1.0/me/messages?$filter=flag/flagStatus eq 'flagged'&$top=25&$count=true&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview`,
+                    { headers: { 'Authorization': 'Bearer ' + mailToken, 'ConsistencyLevel': 'eventual' } }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
