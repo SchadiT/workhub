@@ -2393,8 +2393,8 @@
         </div>
         <div class="header-right">
             <button class="header-btn" id="auth-btn" onclick="handleAuth()">Sign in</button>
-            <button class="header-btn" onclick="forceResetAuth()">Refresh</button>
-            <button class="header-btn" onclick="toggleTheme()" id="theme-toggle">Theme</button>
+            <button class="header-btn" onclick="forceResetAuth()">↺</button>
+            <button class="header-btn" onclick="toggleTheme()" id="theme-toggle">◑</button>
         </div>
     </div>
     
@@ -2420,6 +2420,29 @@
                 <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:14px;">Lädt…</div>
             </div>
         </div>
+
+        <!-- QUICK NOTES BLOCK -->
+        <div class="widget-block" id="quick-notes-widget">
+            <div class="widget-block-hdr">
+                <div class="wbh-title">
+                    &#128221; QUICK NOTES
+                    <span class="save-indicator" id="notes-saved" style="font-size:9px;font-weight:400;color:#22c55e;opacity:0;transition:opacity 0.3s;"> &#10003; Gespeichert</span>
+                </div>
+                <div class="wbh-actions">
+                    <button class="quick-notes-add" onclick="toggleSpeechToText()" id="speech-btn" title="Spracheingabe">&#127908;</button>
+                    <button class="quick-notes-add" onclick="addToOfficeNotes()" title="+ Office Notes">+ Office</button>
+                </div>
+            </div>
+            <div class="widget-block-body" id="quick-notes-body">
+                <div id="qn-cards-list"></div>
+            </div>
+            <div class="qn-input-area">
+                <textarea id="quick-notes-text" placeholder="Notiz eingeben…" oninput="saveQuickNotes()"></textarea>
+                <button class="qn-save-btn" onclick="qnAddCard()">+ Als Notiz speichern</button>
+            </div>
+        </div>
+
+    </div><!-- end widgets-row -->
 
     <!-- E13 RECHNUNGEN MODAL APP -->
     <style>
@@ -2608,27 +2631,7 @@
 
     <!-- Quick Notes (collapsible) -->
         <!-- QUICK NOTES BLOCK -->
-        <div class="widget-block" id="quick-notes-widget">
-            <div class="widget-block-hdr">
-                <div class="wbh-title">
-                    &#128221; QUICK NOTES
-                    <span class="save-indicator" id="notes-saved" style="font-size:9px;font-weight:400;color:#22c55e;opacity:0;transition:opacity 0.3s;"> &#10003; Gespeichert</span>
-                </div>
-                <div class="wbh-actions">
-                    <button class="quick-notes-add" onclick="toggleSpeechToText()" id="speech-btn" title="Spracheingabe">&#127908;</button>
-                    <button class="quick-notes-add" onclick="addToOfficeNotes()" title="+ Office Notes">+ Office</button>
-                </div>
-            </div>
-            <div class="widget-block-body" id="quick-notes-body">
-                <div id="qn-cards-list"></div>
-            </div>
-            <div class="qn-input-area">
-                <textarea id="quick-notes-text" placeholder="Notiz eingeben…" oninput="saveQuickNotes()"></textarea>
-                <button class="qn-save-btn" onclick="qnAddCard()">+ Als Notiz speichern</button>
-            </div>
-        </div>
-
-    </div><!-- end widgets-row -->
+        
     
 
     <!--  -->
@@ -8665,15 +8668,23 @@
             if (!container) return;
             const cards = qnGetCards();
             if (!cards.length) {
-                container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">Noch keine Notizen — Text eingeben und speichern.</div>';
+                container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">Noch keine Notizen gespeichert.</div>';
                 return;
             }
-            container.innerHTML = cards.slice().reverse().map(c => {
-                const safe = c.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                return '<div class="qn-card"><div class="qn-card-ts">' + c.ts + '</div><div class="qn-card-text">' + safe + '</div><button class="qn-card-del" onclick="qnDeleteCard('' + c.id + '')" title="L\u00f6schen">&#10005;</button></div>';
-            }).join('');
+            container.innerHTML = '';
+            cards.slice().reverse().forEach(function(c) {
+                const div = document.createElement('div');
+                div.className = 'qn-card';
+                div.innerHTML = '<div class="qn-card-ts">' + c.ts + '</div><div class="qn-card-text">' + c.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+                const btn = document.createElement('button');
+                btn.className = 'qn-card-del';
+                btn.textContent = '×';
+                btn.title = 'Löschen';
+                btn.onclick = function() { qnDeleteCard(c.id); };
+                div.appendChild(btn);
+                container.appendChild(div);
+            });
         }
-
         function qnAddCard() {
             const ta = document.getElementById('quick-notes-text');
             if (!ta || !ta.value.trim()) return;
