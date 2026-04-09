@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.74</title>
+    <title>Turbo Projects Work Hub v15.9.75</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2389,120 +2389,117 @@
 
     <!-- E13 RECHNUNGEN SECTION -->
     <style>
-        .inv-section { margin-bottom:8px;border:1px solid var(--border);overflow:hidden; }
-        .inv-section-header { background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none; }
-        .inv-section-body { display:block; }
-        .inv-section-body.collapsed { display:none; }
-        .inv-kpi-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 14px 0; }
-        .inv-kpi { background:var(--surface-2);padding:10px 12px; }
-        .inv-kpi-label { font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px; }
-        .inv-kpi-val { font-size:18px;font-weight:700;color:var(--text); }
-        .inv-kpi-sub { font-size:10px;color:#888;margin-top:2px; }
-        .inv-body-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;padding:12px 14px; }
-        .inv-bar-row { display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border); }
-        .inv-bar-row:last-child { border-bottom:none; }
-        .inv-urg-row { display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px; }
-        .inv-urg-row:last-child { border-bottom:none; }
-        .inv-badge { display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 6px;letter-spacing:0.3px; }
-        .inv-badge-red { background:rgba(239,68,68,0.15);color:#ef4444; }
-        .inv-badge-amber { background:rgba(234,179,8,0.15);color:#eab308; }
-        .inv-badge-blue { background:rgba(59,130,246,0.15);color:#3b82f6; }
-        .inv-badge-green { background:rgba(34,197,94,0.15);color:#22c55e; }
-        .inv-controls { display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 14px;border-top:1px solid var(--border);background:var(--surface); }
-        .inv-detail { border-top:1px solid var(--border); }
-        .inv-ks-header { display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;background:var(--surface); }
-        .inv-ks-rows { display:none;overflow-x:auto; }
-        @media(max-width:600px){
-            .inv-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-            .inv-body-grid{grid-template-columns:1fr;}
-        }
+        .inv-section{margin-bottom:8px;border:1px solid var(--border);overflow:hidden;}
+        .inv-section-header{background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;}
+        .inv-section-body{display:block;}
+        .inv-section-body.collapsed{display:none;}
+        .inv-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);}
+        .inv-tab{padding:7px 18px;font-size:12px;cursor:pointer;background:transparent;color:#888;border:none;border-bottom:2px solid transparent;font-weight:500;}
+        .inv-tab.active{color:#f59e0b;border-bottom-color:#f59e0b;}
+        .inv-tab-content{display:none;padding:12px 14px;}
+        .inv-tab-content.active{display:block;}
+        .inv-file-bar{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface-2);border:1px solid var(--border);font-size:11px;color:#888;margin-bottom:10px;}
+        .inv-ks-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+        .inv-ks-tab{padding:3px 12px;font-size:11px;border:1px solid var(--border);cursor:pointer;background:var(--surface-2);color:#888;}
+        .inv-ks-tab.active{background:#1e3a5f;border-color:#3b82f6;color:#fff;}
+        .inv-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+        .inv-tbl th{text-align:left;padding:6px 8px;color:#888;font-weight:500;border-bottom:1px solid var(--border);font-size:11px;white-space:nowrap;}
+        .inv-tbl td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+        .inv-tbl tr:last-child td{border-bottom:none;}
+        .inv-tbl tr.inv-approved td{color:#22c55e;}
+        .inv-badge-red{background:rgba(239,68,68,0.15);color:#ef4444;padding:2px 6px;font-size:10px;font-weight:700;}
+        .inv-badge-amber{background:rgba(234,179,8,0.15);color:#eab308;padding:2px 6px;font-size:10px;font-weight:700;}
+        .inv-badge-green{background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 6px;font-size:10px;font-weight:700;}
+        .inv-badge-gray{background:var(--surface-2);color:#888;padding:2px 6px;font-size:10px;}
+        .inv-sum-row{display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:8px 0;font-size:12px;border-top:1px solid var(--border);margin-top:6px;}
+        .inv-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+        .inv-btn{padding:4px 12px;font-size:11px;border:1px solid var(--border);cursor:pointer;background:var(--surface-2);color:var(--text);}
+        .inv-btn-green{background:#22c55e;border-color:#22c55e;color:#000;font-weight:700;}
+        .inv-btn-blue{background:#1e3a5f;border-color:#3b82f6;color:#fff;}
+        .inv-empty{padding:24px;text-align:center;color:#555;font-size:12px;}
     </style>
     <div class="inv-section" id="inv-section">
-        <!-- Header -->
         <div class="inv-section-header" onclick="invToggleSection()">
             <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:#f59e0b;text-transform:uppercase;">&#128179; RECHNUNGEN</span>
-            <span id="inv-hdr-date" style="font-size:10px;color:#555;"></span>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto;" onclick="event.stopPropagation()">
+            <span id="inv-hdr-info" style="font-size:10px;color:#888;margin-left:4px;"></span>
+            <div style="display:flex;align-items:center;gap:6px;margin-left:auto;" onclick="event.stopPropagation()">
                 <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
-                <button onclick="document.getElementById('invoice-file-input').click()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">&#128196; Excel laden</button>
-                <span id="invoice-file-name" style="font-size:10px;color:#888;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                <button id="inv-reload-btn" onclick="invoiceReloadLastFile()" style="display:none;background:#111;border:1px solid #2a2a2a;color:#888;padding:3px 10px;font-size:11px;cursor:pointer;">&#8679; <span id="inv-reload-name">Letztes File</span></button>
-                <button onclick="invoiceGenerateUpdate()" style="background:#22c55e;border:none;color:#000;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;">&#128257; Speichern</button>
+                <button class="inv-btn" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel laden</button>
+                <span id="invoice-file-name" style="font-size:10px;color:#888;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
-                <div style="text-align:right;">
-                    <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Offen</div>
-                    <div id="inv-hdr-open" style="font-size:12px;font-weight:700;color:#ef4444;">—</div>
-                </div>
-                <div style="width:1px;height:20px;background:#2a2a2a;"></div>
-                <div style="text-align:right;">
-                    <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Forder.</div>
-                    <div id="inv-hdr-recv" style="font-size:12px;font-weight:700;color:#3b82f6;">—</div>
-                </div>
-            </div>
-            <span id="inv-section-toggle" style="font-size:10px;color:#555;margin-left:4px;">▲</span>
+            <span id="inv-section-toggle" style="font-size:10px;color:#555;margin-left:4px;">&#9650;</span>
         </div>
-        <!-- Body -->
         <div class="inv-section-body" id="inv-section-body">
-            <!-- KPI Row -->
-            <div class="inv-kpi-grid">
-                <div class="inv-kpi">
-                    <div class="inv-kpi-label">Offen zu zahlen</div>
-                    <div class="inv-kpi-val" id="inv-kpi-open" style="color:#ef4444;">—</div>
-                    <div class="inv-kpi-sub" id="inv-kpi-open-sub"></div>
-                </div>
-                <div class="inv-kpi">
-                    <div class="inv-kpi-label">Freigegeben</div>
-                    <div class="inv-kpi-val" id="inv-kpi-approved" style="color:#22c55e;">—</div>
-                    <div class="inv-kpi-sub" id="inv-kpi-approved-sub"></div>
-                </div>
-                <div class="inv-kpi">
-                    <div class="inv-kpi-label">Ausstehend (Forderungen)</div>
-                    <div class="inv-kpi-val" id="inv-kpi-recv" style="color:#3b82f6;">—</div>
-                    <div class="inv-kpi-sub" id="inv-kpi-recv-sub"></div>
-                </div>
-                <div class="inv-kpi">
-                    <div class="inv-kpi-label">Gesamt Kosten</div>
-                    <div class="inv-kpi-val" id="inv-kpi-total">—</div>
-                    <div class="inv-kpi-sub" id="inv-kpi-total-sub"></div>
-                </div>
+            <div class="inv-tabs">
+                <div class="inv-tab active" onclick="invSwitchTab('freigabe')" id="inv-tab-freigabe">Freigabe</div>
+                <div class="inv-tab" onclick="invSwitchTab('buch')" id="inv-tab-buch">Rechnungsbuch</div>
             </div>
-            <!-- KS + Dringend -->
-            <div class="inv-body-grid">
-                <div style="padding-right:14px;border-right:1px solid var(--border);">
-                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Freigabe nach Kostenstelle</div>
-                    <div id="inv-ks-bars">
-                        <div style="color:#555;font-size:12px;padding:20px 0;text-align:center;">Kein File geladen</div>
+            <!-- TAB: FREIGABE -->
+            <div class="inv-tab-content active" id="inv-content-freigabe">
+                <div class="inv-file-bar" id="inv-file-bar">
+                    <span>&#128196;</span>
+                    <span id="inv-file-bar-name" style="color:var(--text);">Kein File geladen</span>
+                    <span id="inv-file-bar-date" style="margin-left:auto;"></span>
+                </div>
+                <div class="inv-ks-tabs">
+                    <div class="inv-ks-tab active" onclick="invSwitchKS('alle')" id="inv-ks-alle">Alle</div>
+                    <div class="inv-ks-tab" onclick="invSwitchKS('TURBO')" id="inv-ks-TURBO">TURBO</div>
+                    <div class="inv-ks-tab" onclick="invSwitchKS('GASTRO')" id="inv-ks-GASTRO">GASTRO</div>
+                    <div class="inv-ks-tab" onclick="invSwitchKS('SPUTNIK')" id="inv-ks-SPUTNIK">SPUTNIK</div>
+                    <div class="inv-ks-tab" onclick="invSwitchKS('OFFICE')" id="inv-ks-OFFICE">OFFICE</div>
+                    <div style="margin-left:auto;display:flex;gap:5px;">
+                        <button class="inv-btn" onclick="invSelectAll()">Alle &#10003;</button>
+                        <button class="inv-btn" onclick="invClearAll()">Alle &#10005;</button>
                     </div>
                 </div>
-                <div style="padding-left:14px;">
-                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Dringend</div>
-                    <div id="inv-urgent-list">
-                        <div style="color:#555;font-size:12px;padding:20px 0;text-align:center;">—</div>
-                    </div>
+                <div style="overflow-x:auto;">
+                    <table class="inv-tbl" id="inv-freigabe-table">
+                        <thead><tr>
+                            <th style="width:28px;"></th>
+                            <th>Beleg</th>
+                            <th>Absender</th>
+                            <th>Betreff</th>
+                            <th>Brutto</th>
+                            <th>Fällig</th>
+                            <th>KS</th>
+                        </tr></thead>
+                        <tbody id="inv-freigabe-body">
+                            <tr><td colspan="7" class="inv-empty">Excel laden um Rechnungen anzuzeigen</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="inv-sum-row">
+                    <span style="color:#888;">Freigegeben:</span>
+                    <span id="inv-sum-approved" style="font-weight:700;color:#22c55e;">€ 0,00</span>
+                    <span style="color:#888;margin-left:8px;">Gesamt offen:</span>
+                    <span id="inv-sum-total" style="font-weight:700;">—</span>
+                </div>
+                <div class="inv-actions">
+                    <button class="inv-btn inv-btn-green" onclick="invSpeichern()">&#128257; Speichern</button>
+                    <button class="inv-btn inv-btn-blue" onclick="invDownloadTxt()">&#8681; Download .txt</button>
+                    <button class="inv-btn" onclick="invKopieren()">&#128203; Kopieren</button>
+                    <button class="inv-btn" onclick="invEmailDraft()">&#9993; Email-Draft</button>
                 </div>
             </div>
-            <!-- Controls -->
-            <div class="inv-controls">
-                <span style="font-size:11px;color:#888;">Filter:</span>
-                <button id="inv-filter-all" onclick="invoiceSwitchFilter('all')" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">Alle</button>
-                <button id="inv-filter-open" onclick="invoiceSwitchFilter('open')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">Nur offen</button>
-                <button id="inv-filter-overdue" onclick="invoiceSwitchFilter('overdue')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">&#128308; Überfällig</button>
-                <div style="margin-left:auto;display:flex;gap:6px;">
-                    <button onclick="invoiceSelectAll()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">Alle ✓</button>
-                    <button onclick="invoiceClearAll()" style="background:#2a1a1a;border:1px solid #555;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">Alle ✗</button>
-                    <button onclick="invoiceCopyDraft()" style="background:#0d1b2a;border:1px solid #1e3a5f;color:#3b82f6;padding:3px 10px;font-size:11px;cursor:pointer;">&#128203; Draft</button>
+            <!-- TAB: RECHNUNGSBUCH -->
+            <div class="inv-tab-content" id="inv-content-buch">
+                <div style="overflow-x:auto;">
+                    <table class="inv-tbl" id="inv-buch-table">
+                        <thead><tr>
+                            <th>Beleg</th>
+                            <th>KS</th>
+                            <th>Absender</th>
+                            <th>Betreff</th>
+                            <th>Brutto</th>
+                            <th>Freigegeben</th>
+                            <th>Status</th>
+                        </tr></thead>
+                        <tbody id="inv-buch-body">
+                            <tr><td colspan="7" class="inv-empty">Noch keine Rechnungen freigegeben</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <!-- Detail Table per KS -->
-            <div class="inv-detail" id="inv-detail-container">
-                <div style="padding:30px;text-align:center;color:#555;font-size:12px;">Excel laden um Rechnungen anzuzeigen</div>
-            </div>
-            <!-- Hidden draft textarea for copy function -->
-            <textarea id="invoice-draft-box" style="display:none;">Noch keine Rechnungen freigegeben.</textarea>
-            <!-- Hidden count/total elements for JS compat -->
-            <span id="invoice-count-label" style="display:none;"></span>
-            <span id="invoice-total-label" style="display:none;"></span>
         </div>
     </div>
 
@@ -4988,7 +4985,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.74</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.75</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5010,7 +5007,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.74</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.75</div>
     
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
@@ -14659,7 +14656,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.74 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.75 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17680,528 +17677,224 @@ Spittelauer Lnde 12/1
         // E13 RECHNUNGSFREIGABE
         // ═══════════════════════════════════════════════════════
         // ── Tab switching ────────────────────────────────────────
-        function invoiceSwitchTab(tab) {
-            ['list','ku','draft'].forEach(t => {
-                document.getElementById('inv-panel-' + t).classList.toggle('active', t === tab);
-                document.getElementById('inv-tab-' + t).classList.toggle('active', t === tab);
-            });
-            if (tab === 'ku') invoiceRenderKU();
-            if (tab === 'draft') invoiceUpdateDraft();
-        }
+        // ═══════════════════════════════════════════════════════
+        // E13 RECHNUNGEN — v2 (compact)
+        // ═══════════════════════════════════════════════════════
+        let invoiceData = [];
+        let invKS = 'alle';
+        let invTabActive = 'freigabe';
 
-        // ── Filter ───────────────────────────────────────────────
-        let invoiceFilter = 'all';
-        function invoiceSwitchFilter(f) {
-            invoiceFilter = f;
-            ['all','open','overdue'].forEach(k => {
-                const btn = document.getElementById('inv-filter-' + k);
-                if (!btn) return;
-                const active = k === f;
-                btn.style.background = active ? '#1e3a5f' : '#1a1a1a';
-                btn.style.color = active ? '#fff' : '#aaa';
-                btn.style.borderColor = active ? '#3b82f6' : '#333';
-            });
-            invoiceRenderDetailTable();
-        }
-
-        // ── Urgency helpers ──────────────────────────────────────
-        function invoiceParseDate(str) {
-            if (!str) return null;
-            const p = str.split('.');
-            if (p.length === 3) return new Date(p[2], p[1]-1, p[0]);
-            return null;
-        }
-        function invoiceUrgency(item) {
-            if (item.ks === 'SONSTIGE') return 'recv';
-            if (item.approved) return 'ok';
-            const d = invoiceParseDate(item.faellig);
-            if (!d) return 'open';
-            const today = new Date(); today.setHours(0,0,0,0);
-            const week = new Date(today); week.setDate(week.getDate() + 7);
-            if (d < today) return 'overdue';
-            if (d <= week) return 'soon';
-            return 'open';
-        }
-
-        // ── Kostenübersicht ──────────────────────────────────────
-
-        function invoiceKUToggle(id, headerEl) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const arrow = headerEl.querySelector('span:last-child');
-            const hidden = el.style.display === 'none';
-            el.style.display = hidden ? 'block' : 'none';
-            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
-        }
-
-        // ── Select/deselect per KS ───────────────────────────────
-        function invoiceSelectKS(ks) {
-            invoiceData.filter(i => i.ks === ks).forEach(i => i.approved = true);
-            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
-        }
-        function invoiceClearKS(ks) {
-            invoiceData.filter(i => i.ks === ks).forEach(i => i.approved = false);
-            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
-        }
-
-        let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, ks, approved }
-        let invoiceSortField = 'ks';
-        let invoiceSortDir = 1;
-
-        // ── Persistence ──────────────────────────────────────────
-        const INV_FILE_KEY = 'invoice_file_b64';
-        const INV_FILE_NAME_KEY = 'invoice_file_name_saved';
-        const IW_KEY = 'invoice_snapshot';
-        let iwCollapsed = localStorage.getItem('iwCollapsed') === 'true';
-
-        function invoicePersistFile(arrayBuffer, name) {
-            try {
-                const bytes = new Uint8Array(arrayBuffer);
-                let binary = '';
-                for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-                const b64 = btoa(binary);
-                localStorage.setItem(INV_FILE_KEY, b64);
-                localStorage.setItem(INV_FILE_NAME_KEY, name);
-                invoiceShowLastFileInfo(name);
-            } catch(e) { /* localStorage full — skip silently */ }
-        }
-
-        function invoiceShowLastFileInfo(name) {
-            const btn = document.getElementById('inv-reload-btn');
-            const nameEl = document.getElementById('inv-reload-name');
-            if (btn) btn.style.display = 'inline-block';
-            if (nameEl) nameEl.textContent = name.length > 20 ? name.substring(0,18) + '…' : name;
-        }
-
-        function invoiceReloadLastFile() {
-            const b64 = localStorage.getItem(INV_FILE_KEY);
-            const name = localStorage.getItem(INV_FILE_NAME_KEY);
-            if (!b64) { showToast('Kein gespeichertes File', true); return; }
-            const binary = atob(b64);
-            const bytes = new Uint8Array(binary.length);
-            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-            const nameEl = document.getElementById('invoice-file-name');
-            if (nameEl) nameEl.textContent = name || 'Gespeichertes File';
-            try {
-                const wb = XLSX.read(bytes.buffer, { type: 'array', cellDates: true });
-                const ws = wb.Sheets[wb.SheetNames[0]];
-                const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-                invoiceParseRows(rows);
-                showToast('File geladen: ' + (name || '') + ' ✓');
-            } catch(e) { showToast('Fehler beim Laden: ' + e.message, true); }
-        }
-
-        function invoiceOpenWithLastFile() {
-            invScrollTo();
-            setTimeout(() => invoiceReloadLastFile(), 100);
-        }
-
-        function invoiceInitLastFile() {
-            const name = localStorage.getItem(INV_FILE_NAME_KEY);
-            if (name) invoiceShowLastFileInfo(name);
-        }
-
-        // ── Section toggle ───────────────────────────────────────
-        let invSectionCollapsed = localStorage.getItem('invSectionCollapsed') === 'true';
         function invToggleSection() {
-            invSectionCollapsed = !invSectionCollapsed;
-            localStorage.setItem('invSectionCollapsed', invSectionCollapsed);
             const body = document.getElementById('inv-section-body');
             const btn = document.getElementById('inv-section-toggle');
-            if (body) body.classList.toggle('collapsed', invSectionCollapsed);
-            if (btn) btn.textContent = invSectionCollapsed ? '▼' : '▲';
+            const collapsed = body.classList.toggle('collapsed');
+            btn.innerHTML = collapsed ? '&#9660;' : '&#9650;';
+            localStorage.setItem('invSectionCollapsed', collapsed);
         }
+
         function invScrollTo() {
             const el = document.getElementById('inv-section');
             if (!el) return;
-            if (invSectionCollapsed) invToggleSection();
-            el.scrollIntoView({ behavior: 'smooth' });
+            if (document.getElementById('inv-section-body').classList.contains('collapsed')) invToggleSection();
+            el.scrollIntoView({behavior:'smooth'});
         }
 
-        // ── Dashboard render ────────────────────────────────────
-        function invoiceFmtEurShort(n) {
-            if (n >= 1000) return '€\u00a0' + (n/1000).toFixed(1).replace('.',',') + 'k';
-            return '€\u00a0' + n.toLocaleString('de-AT', {minimumFractionDigits:0, maximumFractionDigits:0});
+        function invSwitchTab(tab) {
+            invTabActive = tab;
+            ['freigabe','buch'].forEach(t => {
+                document.getElementById('inv-tab-' + t).classList.toggle('active', t === tab);
+                document.getElementById('inv-content-' + t).classList.toggle('active', t === tab);
+            });
+            if (tab === 'buch') invRenderBuch();
         }
 
-        function invoiceRenderDashboard() {
-            if (!invoiceData.length) return;
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
-            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7' };
-            const kostAll = invoiceData.filter(i => i.ks !== 'SONSTIGE');
-            const recvAll = invoiceData.filter(i => i.ks === 'SONSTIGE');
-            const approved = kostAll.filter(i => i.approved);
-            const totalKosten = kostAll.reduce((s,i) => s + i.brutto, 0);
-            const totalFreigegeben = approved.reduce((s,i) => s + i.brutto, 0);
-            const totalOffen = totalKosten - totalFreigegeben;
-            const totalRecv = recvAll.reduce((s,i) => s + i.brutto, 0);
-            const pctTotal = totalKosten > 0 ? Math.round(totalFreigegeben / totalKosten * 100) : 0;
+        function invSwitchKS(ks) {
+            invKS = ks;
+            document.querySelectorAll('.inv-ks-tab').forEach(el => el.classList.remove('active'));
+            const btn = document.getElementById('inv-ks-' + ks);
+            if (btn) btn.classList.add('active');
+            invRenderFreigabe();
+        }
 
-            // Header KPIs
-            const hdrOpen = document.getElementById('inv-hdr-open');
-            const hdrRecv = document.getElementById('inv-hdr-recv');
-            if (hdrOpen) hdrOpen.textContent = invoiceFmtEurShort(totalOffen);
-            if (hdrRecv) hdrRecv.textContent = '+ ' + invoiceFmtEurShort(totalRecv);
+        function invFmtEur(val) {
+            if (val === null || val === undefined || val === '') return '';
+            const n = parseFloat(String(val).replace(/[^0-9.,\-]/g,'').replace(',','.'));
+            if (isNaN(n)) return String(val);
+            return '€ ' + n.toLocaleString('de-AT', {minimumFractionDigits:2, maximumFractionDigits:2});
+        }
 
-            // KPI cards
-            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-            set('inv-kpi-open', invoiceFmtEurShort(totalOffen));
-            set('inv-kpi-open-sub', kostAll.filter(i=>!i.approved).length + ' Rechnungen');
-            set('inv-kpi-approved', invoiceFmtEurShort(totalFreigegeben));
-            set('inv-kpi-approved-sub', pctTotal + '% erledigt');
-            set('inv-kpi-recv', '+ ' + invoiceFmtEurShort(totalRecv));
-            set('inv-kpi-recv-sub', recvAll.length + ' Position' + (recvAll.length!==1?'en':''));
-            set('inv-kpi-total', invoiceFmtEurShort(totalKosten));
-            set('inv-kpi-total-sub', kostAll.length + ' Positionen gesamt');
+        function invFmtDate(val) {
+            if (!val) return '';
+            if (val instanceof Date) return val.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+            if (typeof val === 'string' && val.includes('T')) return new Date(val).toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
+            return String(val).substring(0,10);
+        }
 
-            // KS Bars
-            const barsEl = document.getElementById('inv-ks-bars');
-            if (barsEl) {
-                let bhtml = '';
-                ksOrder.forEach(ks => {
-                    const items = invoiceData.filter(i => i.ks === ks);
-                    if (!items.length) return;
-                    const tot = items.reduce((s,i) => s + i.brutto, 0);
-                    const app = items.filter(i=>i.approved).reduce((s,i) => s + i.brutto, 0);
-                    const pct = tot > 0 ? Math.round(app/tot*100) : 0;
-                    const col = ksColors[ks];
-                    bhtml += `<div class="inv-bar-row">
-                        <span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0;"></span>
-                        <span style="font-size:12px;font-weight:500;color:var(--text);min-width:58px;">${ks}</span>
-                        <div style="flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
-                            <div style="height:100%;width:${pct}%;background:${col};border-radius:2px;"></div>
-                        </div>
-                        <span style="font-size:11px;color:${col};min-width:48px;text-align:right;">${invoiceFmtEurShort(app)}</span>
-                        <span style="font-size:10px;color:#555;min-width:28px;text-align:right;">${pct}%</span>
-                    </div>`;
+        function invUrgency(faellig, bezahlt) {
+            if (bezahlt) return 'paid';
+            if (!faellig) return 'none';
+            const d = new Date(faellig);
+            if (isNaN(d)) return 'none';
+            const today = new Date(); today.setHours(0,0,0,0);
+            const diff = Math.floor((d - today) / 86400000);
+            if (diff < 0) return 'overdue';
+            if (diff <= 7) return 'soon';
+            return 'ok';
+        }
+
+        function invBadge(faellig, bezahlt) {
+            const u = invUrgency(faellig, bezahlt);
+            const label = faellig ? invFmtDate(faellig) : '—';
+            if (u === 'paid') return '<span class="inv-badge-green">&#10003; bezahlt</span>';
+            if (u === 'overdue') return '<span class="inv-badge-red">' + label + '</span>';
+            if (u === 'soon') return '<span class="inv-badge-amber">' + label + '</span>';
+            if (u === 'ok') return '<span class="inv-badge-green">' + label + '</span>';
+            return '<span class="inv-badge-gray">' + label + '</span>';
+        }
+
+        function invGetApprovals() {
+            try { return JSON.parse(localStorage.getItem('inv_approvals') || '{}'); } catch(e) { return {}; }
+        }
+
+        function invSaveApprovals() {
+            const approvals = {};
+            invoiceData.forEach(i => { if (i.approved) approvals[i.beleg] = true; });
+            localStorage.setItem('inv_approvals', JSON.stringify(approvals));
+        }
+
+        function invLoadApprovals() {
+            const saved = invGetApprovals();
+            invoiceData.forEach(i => { i.approved = !!saved[i.beleg]; });
+        }
+
+        function invToggleRow(beleg) {
+            const item = invoiceData.find(i => i.beleg === beleg);
+            if (item) { item.approved = !item.approved; invSaveApprovals(); invRenderFreigabe(); }
+        }
+
+        function invSelectAll() {
+            const visible = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
+            visible.forEach(i => i.approved = true);
+            invSaveApprovals(); invRenderFreigabe();
+        }
+
+        function invClearAll() {
+            const visible = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
+            visible.forEach(i => i.approved = false);
+            invSaveApprovals(); invRenderFreigabe();
+        }
+
+        function invRenderFreigabe() {
+            const tbody = document.getElementById('inv-freigabe-body');
+            if (!tbody) return;
+            const rows = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
+            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="inv-empty">Kein File geladen</td></tr>'; invUpdateSums(); return; }
+            tbody.innerHTML = rows.map(item => {
+                const checked = item.approved ? 'checked' : '';
+                const rowClass = item.approved ? ' class="inv-approved"' : '';
+                return `<tr${rowClass}>
+                    <td><input type="checkbox" ${checked} onchange="invToggleRow('${item.beleg.replace(/'/g,"\'")}')"></td>
+                    <td>${item.beleg}</td>
+                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
+                    <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
+                    <td style="white-space:nowrap;">${invFmtEur(item.brutto)}</td>
+                    <td>${invBadge(item.faellig, item.bezahlt)}</td>
+                    <td style="color:#888;font-size:11px;">${item.ks}</td>
+                </tr>`;
+            }).join('');
+            invUpdateSums();
+        }
+
+        function invUpdateSums() {
+            const approved = invoiceData.filter(i => i.approved);
+            const sumApproved = approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+            const sumTotal = invoiceData.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+            const el1 = document.getElementById('inv-sum-approved');
+            const el2 = document.getElementById('inv-sum-total');
+            const hdr = document.getElementById('inv-hdr-info');
+            if (el1) el1.textContent = invFmtEur(sumApproved);
+            if (el2) el2.textContent = invoiceData.length ? invFmtEur(sumTotal) : '—';
+            if (hdr) hdr.textContent = approved.length ? approved.length + ' freigegeben · ' + invFmtEur(sumApproved) : '';
+        }
+
+        function invRenderBuch() {
+            const tbody = document.getElementById('inv-buch-body');
+            if (!tbody) return;
+            const saved = invGetApprovals();
+            const buchData = JSON.parse(localStorage.getItem('inv_buch') || '[]');
+            if (!buchData.length) { tbody.innerHTML = '<tr><td colspan="7" class="inv-empty">Noch keine Rechnungen freigegeben</td></tr>'; return; }
+            tbody.innerHTML = buchData.map(item => {
+                const status = item.bezahlt
+                    ? '<span class="inv-badge-green">&#10003; bezahlt</span>'
+                    : '<span class="inv-badge-red">offen</span>';
+                return `<tr>
+                    <td>${item.beleg}</td>
+                    <td style="font-size:11px;color:#888;">${item.ks}</td>
+                    <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
+                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
+                    <td style="white-space:nowrap;">${invFmtEur(item.brutto)}</td>
+                    <td style="white-space:nowrap;color:#888;">${item.freigegebenAm || ''}</td>
+                    <td>${status}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function invSpeichern() {
+            const approved = invoiceData.filter(i => i.approved);
+            if (!approved.length) { showToast('Keine Rechnungen freigegeben', true); return; }
+            const today = new Date().toLocaleDateString('de-AT');
+            const existing = JSON.parse(localStorage.getItem('inv_buch') || '[]');
+            const existingBelege = new Set(existing.map(i => i.beleg));
+            const newItems = approved.filter(i => !existingBelege.has(i.beleg)).map(i => ({...i, freigegebenAm: today}));
+            const updated = [...existing, ...newItems];
+            localStorage.setItem('inv_buch', JSON.stringify(updated));
+            invSaveApprovals();
+            showToast(approved.length + ' Rechnungen gespeichert ✓');
+        }
+
+        function invBuildText() {
+            const approved = invoiceData.filter(i => i.approved);
+            if (!approved.length) return null;
+            const today = new Date().toLocaleDateString('de-AT');
+            const ksGroups = {};
+            approved.forEach(i => { if (!ksGroups[i.ks]) ksGroups[i.ks] = []; ksGroups[i.ks].push(i); });
+            let lines = ['Freigabe Eingangsrechnungen — ' + today, ''];
+            Object.keys(ksGroups).sort().forEach(ks => {
+                lines.push(ks);
+                ksGroups[ks].forEach(i => {
+                    lines.push('  ' + i.beleg + ' | ' + i.absender + ' | ' + i.gegenstand + ' | ' + invFmtEur(i.brutto) + (i.faellig ? ' | fällig: ' + invFmtDate(i.faellig) : ''));
                 });
-                if (recvAll.length) {
-                    bhtml += `<div class="inv-bar-row" style="margin-top:4px;border-top:1px solid var(--border);padding-top:10px;">
-                        <span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block;flex-shrink:0;opacity:0.5;"></span>
-                        <span style="font-size:12px;font-weight:500;color:#3b82f6;min-width:58px;">FORDER.</span>
-                        <div style="flex:1;height:4px;background:#1e3a5f;border-radius:2px;"></div>
-                        <span style="font-size:11px;color:#3b82f6;min-width:48px;text-align:right;">+ ${invoiceFmtEurShort(totalRecv)}</span>
-                    </div>`;
-                }
-                barsEl.innerHTML = bhtml || '<div style="color:#555;font-size:12px;padding:10px 0;">Keine Daten</div>';
-            }
-
-            // Dringend List
-            const urgEl = document.getElementById('inv-urgent-list');
-            if (urgEl) {
-                const urgent = kostAll.filter(i => !i.approved && (invoiceUrgency(i) === 'overdue' || invoiceUrgency(i) === 'soon'))
-                    .sort((a,b) => { const ua = invoiceUrgency(a), ub = invoiceUrgency(b); return (ua==='overdue'?0:1)-(ub==='overdue'?0:1) || b.brutto-a.brutto; });
-                const recv = recvAll;
-                let uhtml = '';
-                if (!urgent.length && !recv.length) {
-                    uhtml = '<div style="color:#22c55e;font-size:12px;padding:10px 0;">Alles im grünen Bereich ✓</div>';
-                } else {
-                    urgent.slice(0,6).forEach(item => {
-                        const urg = invoiceUrgency(item);
-                        const badge = urg === 'overdue'
-                            ? '<span class="inv-badge inv-badge-red">ÜBERFÄLLIG</span>'
-                            : '<span class="inv-badge inv-badge-amber">DIESE WOCHE</span>';
-                        const col = urg === 'overdue' ? '#ef4444' : '#eab308';
-                        uhtml += `<div class="inv-urg-row">
-                            ${badge}
-                            <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</span>
-                            <span style="color:${col};font-weight:700;white-space:nowrap;">${invoiceFmtEurShort(item.brutto)}</span>
-                        </div>`;
-                    });
-                    recv.slice(0,3).forEach(item => {
-                        uhtml += `<div class="inv-urg-row">
-                            <span class="inv-badge inv-badge-blue">FORDERUNG</span>
-                            <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</span>
-                            <span style="color:#3b82f6;font-weight:700;white-space:nowrap;">+ ${invoiceFmtEurShort(item.brutto)}</span>
-                        </div>`;
-                    });
-                }
-                urgEl.innerHTML = uhtml;
-            }
-
-            // Detail table
-            invoiceRenderDetailTable();
-        }
-
-        function invoiceRenderDetailTable() {
-            const container = document.getElementById('inv-detail-container');
-            if (!container || !invoiceData.length) return;
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
-            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7' };
-
-            let filtered = [...invoiceData.filter(i => i.ks !== 'SONSTIGE')];
-            if (invoiceFilter === 'open') filtered = filtered.filter(i => !i.approved);
-            else if (invoiceFilter === 'overdue') filtered = filtered.filter(i => invoiceUrgency(i) === 'overdue');
-
-            let html = '';
-            ksOrder.forEach(ks => {
-                const items = filtered.filter(i => i.ks === ks);
-                if (!items.length) return;
-                const col = ksColors[ks];
-                const tot = invoiceData.filter(i=>i.ks===ks).reduce((s,i)=>s+i.brutto,0);
-                const app = invoiceData.filter(i=>i.ks===ks&&i.approved).reduce((s,i)=>s+i.brutto,0);
-                const domId = 'inv-ks-detail-' + ks;
-                html += `<div class="inv-ks-header" onclick="invToggleKSDetail('${domId}',this)" style="border-top:2px solid ${col};">
-                    <span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;"></span>
-                    <span style="font-size:11px;font-weight:700;color:${col};letter-spacing:0.5px;flex:1;">${ks}</span>
-                    <button onclick="event.stopPropagation();invoiceSelectKS('${ks}')" style="background:#1e3a5f;border:none;color:#fff;padding:2px 8px;font-size:10px;cursor:pointer;margin-right:4px;">Alle ✓</button>
-                    <button onclick="event.stopPropagation();invoiceClearKS('${ks}')" style="background:#2a1a1a;border:none;color:#aaa;padding:2px 8px;font-size:10px;cursor:pointer;margin-right:8px;">Alle ✗</button>
-                    <span style="font-size:11px;color:${col};">${invoiceFmtEurShort(app)} / ${invoiceFmtEurShort(tot)}</span>
-                    <span style="font-size:10px;color:#555;margin-left:8px;">▼</span>
-                </div>
-                <div class="inv-ks-rows" id="${domId}">
-                    <table style="width:100%;border-collapse:collapse;font-size:12px;">
-                    <thead><tr style="background:var(--surface);"><th style="padding:6px 14px;text-align:left;color:#555;font-size:10px;font-weight:600;width:32px;"></th><th style="padding:6px 4px;text-align:left;color:#555;font-size:10px;">Absender</th><th style="padding:6px 4px;text-align:left;color:#555;font-size:10px;">Gegenstand</th><th style="padding:6px 14px;text-align:right;color:#555;font-size:10px;">Betrag</th><th style="padding:6px 10px;text-align:left;color:#555;font-size:10px;">Fällig</th></tr></thead>
-                    <tbody>`;
-                items.sort((a,b)=>b.brutto-a.brutto).forEach(item => {
-                    const urg = invoiceUrgency(item);
-                    const rowBg = item.approved ? 'rgba(34,197,94,0.05)' : urg==='overdue' ? 'rgba(239,68,68,0.05)' : '';
-                    const amtCol = item.approved ? '#22c55e' : urg==='overdue' ? '#ef4444' : urg==='soon' ? '#eab308' : 'var(--text)';
-                    const faelligCol = urg==='overdue' ? '#ef4444' : urg==='soon' ? '#eab308' : '#888';
-                    const urgDot = urg==='overdue' ? '<span style="color:#ef4444;font-size:9px;">●</span>' : urg==='soon' ? '<span style="color:#eab308;font-size:9px;">●</span>' : '';
-                    const nrSafe = item.nr.replace(/'/g,"\\'");
-                    html += `<tr style="background:${rowBg};border-bottom:1px solid var(--border);cursor:pointer;" onclick="invoiceToggle('${nrSafe}')">
-                        <td style="padding:7px 14px;"><input type="checkbox" ${item.approved?'checked':''} onclick="event.stopPropagation();invoiceToggle('${nrSafe}')"> ${urgDot}</td>
-                        <td style="padding:7px 4px;color:var(--text);font-weight:500;white-space:nowrap;">${item.absender}</td>
-                        <td style="padding:7px 4px;color:#888;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>
-                        <td style="padding:7px 14px;text-align:right;color:${amtCol};font-weight:600;white-space:nowrap;">${invoiceFmtEur(item.brutto)}</td>
-                        <td style="padding:7px 10px;color:${faelligCol};white-space:nowrap;">${item.faellig||'—'}</td>
-                    </tr>`;
-                });
-                html += `</tbody></table></div>`;
+                lines.push('');
             });
-
-            // Forderungen section
-            const recvItems = invoiceData.filter(i=>i.ks==='SONSTIGE');
-            if (recvItems.length) {
-                html += `<div class="inv-ks-header" onclick="invToggleKSDetail('inv-ks-detail-SONSTIGE',this)" style="border-top:2px solid #3b82f6;">
-                    <span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;opacity:0.5;display:inline-block;"></span>
-                    <span style="font-size:11px;font-weight:700;color:#3b82f6;letter-spacing:0.5px;flex:1;">FORDERUNGEN</span>
-                    <span style="font-size:11px;color:#3b82f6;">+ ${invoiceFmtEurShort(recvItems.reduce((s,i)=>s+i.brutto,0))}</span>
-                    <span style="font-size:10px;color:#555;margin-left:8px;">▼</span>
-                </div>
-                <div class="inv-ks-rows" id="inv-ks-detail-SONSTIGE"><table style="width:100%;border-collapse:collapse;font-size:12px;"><tbody>`;
-                recvItems.forEach(item => {
-                    html += `<tr style="border-bottom:1px solid var(--border);">
-                        <td style="padding:7px 14px;color:#3b82f6;">↑</td>
-                        <td style="padding:7px 4px;color:#3b82f6;font-weight:500;white-space:nowrap;">${item.absender}</td>
-                        <td style="padding:7px 4px;color:#888;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
-                        <td style="padding:7px 14px;text-align:right;color:#3b82f6;font-weight:600;white-space:nowrap;">+ ${invoiceFmtEur(item.brutto)}</td>
-                        <td style="padding:7px 10px;color:#888;white-space:nowrap;">${item.faellig||'—'}</td>
-                    </tr>`;
-                });
-                html += `</tbody></table></div>`;
-            }
-
-            container.innerHTML = html || '<div style="padding:20px;text-align:center;color:#555;font-size:12px;">Keine Rechnungen für diesen Filter</div>';
+            const total = approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+            lines.push('Gesamt freigegeben: ' + invFmtEur(total));
+            return lines.join('\n');
         }
 
-        function invToggleKSDetail(id, headerEl) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const arrow = headerEl.querySelector('span:last-child');
-            const hidden = el.style.display === 'none' || el.style.display === '';
-            el.style.display = hidden ? 'block' : 'none';
-            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
+        function invDownloadTxt() {
+            const text = invBuildText();
+            if (!text) { showToast('Keine Rechnungen freigegeben', true); return; }
+            const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Freigabe_' + new Date().toLocaleDateString('de-AT').replace(/\./g,'-') + '.txt';
+            a.click();
+            showToast('Download gestartet ✓');
         }
 
-        // ── Aliases for compat ───────────────────────────────────
-        function invoiceRenderWidget() { invoiceRenderDashboard(); }
-        function invoiceToggleWidget() { invToggleSection(); }
-        function iwToggleKS(id, rowEl) { invToggleKSDetail(id, rowEl); }
-        function invoiceGenerateUpdate() {
-            const all = invoiceData;
-            if (!all.length) { showToast('Kein File geladen', true); return; }
-
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
-            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#3b82f6' };
-            const approved = all.filter(i => i.approved && i.ks !== 'SONSTIGE');
-            const kostAll = all.filter(i => i.ks !== 'SONSTIGE');
-            const recvAll = all.filter(i => i.ks === 'SONSTIGE');
-
-            const snapshot = {
-                date: new Date().toLocaleDateString('de-AT') + ' ' + new Date().toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'}),
-                totalKosten: kostAll.reduce((s,i) => s + i.brutto, 0),
-                totalFreigegeben: approved.reduce((s,i) => s + i.brutto, 0),
-                totalOffen: kostAll.filter(i => !i.approved).reduce((s,i) => s + i.brutto, 0),
-                totalRecv: recvAll.reduce((s,i) => s + i.brutto, 0),
-                countAll: kostAll.length,
-                countApproved: approved.length,
-                byKs: {}
-            };
-
-            ksOrder.forEach(ks => {
-                const ksAll = all.filter(i => i.ks === ks);
-                const ksApp = ksAll.filter(i => i.approved);
-                if (ksAll.length) {
-                    snapshot.byKs[ks] = {
-                        color: ksColors[ks],
-                        totalAll: ksAll.reduce((s,i) => s + i.brutto, 0),
-                        totalApproved: ksApp.reduce((s,i) => s + i.brutto, 0),
-                        countAll: ksAll.length,
-                        countApproved: ksApp.length,
-                        items: ksAll.sort((a,b) => b.brutto - a.brutto).map(i => ({
-                            absender: i.absender, gegenstand: i.gegenstand,
-                            brutto: i.brutto, faellig: i.faellig,
-                            approved: i.approved, urgency: invoiceUrgency(i)
-                        }))
-                    };
-                }
-            });
-
-            // Receivables separately
-            if (recvAll.length) {
-                snapshot.byKs['SONSTIGE'] = {
-                    color: '#3b82f6', isRecv: true,
-                    totalAll: recvAll.reduce((s,i) => s + i.brutto, 0),
-                    items: recvAll.map(i => ({ absender: i.absender, gegenstand: i.gegenstand, brutto: i.brutto, faellig: i.faellig }))
-                };
-            }
-
-            localStorage.setItem(IW_KEY, JSON.stringify(snapshot));
-            // Update header date
-            const hdrDate = document.getElementById('inv-hdr-date');
-            if (hdrDate) hdrDate.textContent = 'Stand: ' + snapshot.date;
-            invoiceRenderDashboard();
-            showToast('Stand gespeichert ✓');
+        function invKopieren() {
+            const text = invBuildText();
+            if (!text) { showToast('Keine Rechnungen freigegeben', true); return; }
+            navigator.clipboard.writeText(text).then(() => showToast('Kopiert ✓'));
         }
 
-        function invoiceToggleWidget() {
-            iwCollapsed = !iwCollapsed;
-            localStorage.setItem('iwCollapsed', iwCollapsed);
-            const body = document.getElementById('iw-body');
-            const btn = document.getElementById('iw-toggle-btn');
-            if (body) body.style.display = iwCollapsed ? 'none' : 'block';
-            if (btn) btn.textContent = iwCollapsed ? '▼' : '▲';
-        }
-
-        function invoiceFmtEurShort(n) {
-            if (n >= 1000) return '€ ' + (n/1000).toFixed(1).replace('.',',') + 'k';
-            return '€ ' + n.toLocaleString('de-AT', {minimumFractionDigits:0, maximumFractionDigits:0});
-        }
-
-        function invoiceRenderWidget() {
-            const raw = localStorage.getItem(IW_KEY);
-            const widget = document.getElementById('invoice-status-widget');
-            if (!raw || !widget) return;
-
-            const snap = JSON.parse(raw);
-            widget.style.display = 'block';
-
-            const dateEl = document.getElementById('iw-date');
-            const kpiOpen = document.getElementById('iw-kpi-open');
-            const kpiRecv = document.getElementById('iw-kpi-recv');
-            const body = document.getElementById('iw-body');
-            const btn = document.getElementById('iw-toggle-btn');
-            const content = document.getElementById('iw-content');
-
-            if (dateEl) dateEl.textContent = snap.date;
-            if (kpiOpen) kpiOpen.textContent = invoiceFmtEurShort(snap.totalOffen || 0);
-            if (kpiRecv) kpiRecv.textContent = '+ ' + invoiceFmtEurShort(snap.totalRecv || 0);
-            if (body) body.style.display = iwCollapsed ? 'none' : 'block';
-            if (btn) btn.textContent = iwCollapsed ? '▼' : '▲';
-            if (!content) return;
-
-            const pctTotal = snap.totalKosten > 0 ? Math.round(snap.totalFreigegeben / snap.totalKosten * 100) : 0;
-            let html = `<div style="margin-bottom:10px;">
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
-                    <span>${snap.countApproved}/${snap.countAll} Rechnungen freigegeben</span>
-                    <span style="color:#22c55e;font-weight:700;">${pctTotal}%</span>
-                </div>
-                <div style="height:5px;background:#2a2a2a;border-radius:3px;overflow:hidden;">
-                    <div style="height:100%;width:${pctTotal}%;background:#22c55e;border-radius:3px;transition:width 0.4s;"></div>
-                </div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px;">
-                    <span style="color:#22c55e;font-weight:700;">${invoiceFmtEurShort(snap.totalFreigegeben)} freigegeben</span>
-                    <span style="color:#ef4444;">${invoiceFmtEurShort(snap.totalOffen)} offen</span>
-                </div>
-            </div>`;
-
-            html += '<div style="display:flex;flex-direction:column;gap:4px;">';
-            Object.entries(snap.byKs).forEach(([ks, data]) => {
-                if (data.isRecv) {
-                    // Receivables row
-                    const domId = 'iw-ks-rows-SONSTIGE';
-                    html += `<div><div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
-                        <span style="font-size:10px;font-weight:700;color:#3b82f6;min-width:55px;letter-spacing:0.5px;">FORDER.</span>
-                        <div style="flex:1;height:4px;background:#1e3a5f;border-radius:2px;"></div>
-                        <span style="font-size:11px;color:#3b82f6;font-weight:600;min-width:60px;text-align:right;">+ ${invoiceFmtEurShort(data.totalAll)}</span>
-                        <span style="font-size:9px;color:#555;">▼</span>
-                    </div>`;
-                    if (data.items && data.items.length) {
-                        html += `<div id="${domId}" style="display:none;margin-left:63px;border-left:2px solid #3b82f6;padding-left:8px;margin-bottom:4px;">`;
-                        data.items.forEach(item => {
-                            html += `<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;flex-wrap:wrap;">
-                                <span style="color:#3b82f6;">↑</span>
-                                <span style="color:var(--text);font-weight:500;flex:1;min-width:80px;">${item.absender}</span>
-                                <span style="color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;" title="${item.gegenstand}">${item.gegenstand}</span>
-                                <span style="color:#3b82f6;font-weight:600;white-space:nowrap;">+ ${invoiceFmtEurShort(item.brutto)}</span>
-                            </div>`;
-                        });
-                        html += `</div>`;
-                    }
-                    html += `</div>`;
-                    return;
-                }
-
-                const pct = data.totalAll > 0 ? Math.round(data.totalApproved / data.totalAll * 100) : 0;
-                const remaining = data.totalAll - data.totalApproved;
-                const domId = 'iw-ks-rows-' + ks;
-                html += `<div><div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
-                    <span style="font-size:10px;font-weight:700;color:${data.color};min-width:55px;letter-spacing:0.5px;">${ks}</span>
-                    <div style="flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;">
-                        <div style="height:100%;width:${pct}%;background:${data.color};border-radius:2px;opacity:0.85;"></div>
-                    </div>
-                    <span style="font-size:11px;color:${data.color};font-weight:600;min-width:50px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
-                    <span style="font-size:10px;color:#555;min-width:48px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
-                    <span style="font-size:9px;color:#555;">▼</span>
-                </div>`;
-                if (data.items && data.items.length) {
-                    html += `<div id="${domId}" style="display:none;margin-left:63px;border-left:2px solid ${data.color};padding-left:8px;margin-bottom:4px;">`;
-                    data.items.forEach(item => {
-                        const urgIcon = item.urgency === 'overdue' ? '<span style="color:#ef4444;font-size:9px;font-weight:700;">●</span>' :
-                                        item.urgency === 'soon'    ? '<span style="color:#eab308;font-size:9px;">●</span>' :
-                                        item.approved              ? '<span style="color:#22c55e;font-size:9px;">✓</span>' :
-                                                                     '<span style="color:#555;font-size:9px;">○</span>';
-                        const col = item.approved ? '#22c55e' : item.urgency === 'overdue' ? '#ef4444' : item.urgency === 'soon' ? '#eab308' : '#888';
-                        html += `<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;flex-wrap:wrap;">
-                            ${urgIcon}
-                            <span style="color:var(--text);font-weight:500;flex:1;min-width:80px;">${item.absender}</span>
-                            <span style="color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;" title="${item.gegenstand}">${item.gegenstand}</span>
-                            <span style="color:${col};font-weight:600;white-space:nowrap;">${invoiceFmtEurShort(item.brutto)}</span>
-                        </div>`;
-                    });
-                    html += `</div>`;
-                }
-                html += `</div>`;
-            });
-            html += '</div>';
-            content.innerHTML = html;
-        }
-
-        function iwToggleKS(id, rowEl) {
-            const el = document.getElementById(id);
-            if (!el) return;
-            const arrow = rowEl.querySelector('span:last-child');
-            const hidden = el.style.display === 'none';
-            el.style.display = hidden ? 'block' : 'none';
-            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
-        }
-
-        function invoiceSort(field) {
-            if (invoiceSortField === field) { invoiceSortDir *= -1; }
-            else { invoiceSortField = field; invoiceSortDir = field === 'brutto' ? -1 : 1; }
-            ['ks','absender','brutto','faellig'].forEach(f => {
-                const btn = document.getElementById('sort-btn-' + f);
-                if (!btn) return;
-                const active = f === invoiceSortField;
-                btn.style.background = active ? '#1e3a5f' : '#1a1a1a';
-                btn.style.color = active ? '#fff' : '#aaa';
-                btn.style.borderColor = active ? '#3b82f6' : '#333';
-                btn.textContent = btn.textContent.replace(' ↑','').replace(' ↓','');
-                if (active) btn.textContent += invoiceSortDir === 1 ? ' ↑' : ' ↓';
-            });
-            invoiceRenderTable();
+        function invEmailDraft() {
+            const approved = invoiceData.filter(i => i.approved);
+            if (!approved.length) { showToast('Keine Rechnungen freigegeben', true); return; }
+            const text = invBuildText();
+            const subject = encodeURIComponent('Freigabe Eingangsrechnungen ' + new Date().toLocaleDateString('de-AT'));
+            const body = encodeURIComponent('Hallo Matthäus,\n\nbitte folgende Rechnungen zur Zahlung freigeben:\n\n' + text + '\n\nLG Schadi');
+            window.open('mailto:?subject=' + subject + '&body=' + body);
         }
 
         function invoiceHandleUpload(event) {
@@ -18214,142 +17907,108 @@ Spittelauer Lnde 12/1
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    invoicePersistFile(e.target.result, file.name);
-                    const wb = XLSX.read(e.target.result, { type: 'array', cellDates: true });
+                    invPersistFile(e.target.result, file.name);
+                    const wb = XLSX.read(e.target.result, {type:'array', cellDates:true});
                     const ws = wb.Sheets[wb.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-                    invoiceParseRows(rows);
+                    const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+                    invParseRows(rows);
                     showToast(file.name + ' geladen ✓');
                 } catch(err) { showToast('Fehler: ' + err.message, true); }
             };
             reader.readAsArrayBuffer(file);
         }
 
-        function invoiceFmtDate(val) {
-            if (!val) return '';
-            if (val instanceof Date) return val.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
-            return String(val);
-        }
-
-        function invoiceFmtEur(val) {
-            if (!val && val !== 0) return '';
-            const n = parseFloat(String(val).replace(/[^0-9.,]/g,'').replace(',','.'));
-            if (isNaN(n)) return String(val);
-            return '€ ' + n.toLocaleString('de-AT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        function invoiceParseRows(rows) {
+        function invParseRows(rows) {
             invoiceData = [];
-            let headerIdx = -1;
-            for (let i = 0; i < Math.min(rows.length, 10); i++) {
-                const row = rows[i].map(v => String(v).toLowerCase());
-                if (row.some(v => v.includes('absender') || v.includes('brutto'))) { headerIdx = i; break; }
-            }
-            const dataStart = headerIdx >= 0 ? headerIdx + 1 : 1;
-            const ksMap = { T: 'TURBO', G: 'GASTRO', S: 'SPUTNIK', O: 'OFFICE' };
-
-            for (let i = dataStart; i < rows.length; i++) {
-                const row = rows[i];
-                if (!row || row.every(v => !v)) continue;
-                const nr = String(row[0] || '').trim();
-                if (!nr) continue;
-                if (nr.length > 10 || /^(SUMME|TURBO|GASTRO|SPUTNIK|OFFICE|BANK|AR|BELEG)/i.test(nr)) continue;
-                const ksKey = nr.charAt(0).toUpperCase();
-                const ks = ksMap[ksKey] || 'SONSTIGE';
+            const ksMap = {'TURBO EG RE':'TURBO','OFFICE EG RE':'OFFICE','GASTRO EG RE':'GASTRO','SPUTNIK EG RE':'SPUTNIK'};
+            let currentKS = '';
+            rows.forEach((row, idx) => {
+                if (!row || !row[0]) return;
+                const cell0 = String(row[0]).trim();
+                if (ksMap[cell0]) { currentKS = ksMap[cell0]; return; }
+                if (!currentKS) return;
+                if (/^(Beleg|NaN|SUMME|Gesamt|AR |BEIHILFEN)/i.test(cell0)) return;
+                if (cell0.length > 10) return;
                 const absender = String(row[1] || '').trim();
-                if (!absender) continue;
-                const gegenstand = String(row[2] || '').trim();
-                const datum = invoiceFmtDate(row[3]);
-                const brutto = row[7] !== undefined && row[7] !== '' ? row[7] : (row[5] || '');
-                const faellig = invoiceFmtDate(row[8]);
-                let bruttoNum = 0;
-                if (brutto !== '') {
-                    const bStr = String(brutto).replace(/[€\s]/g,'').replace(',','.');
-                    bruttoNum = parseFloat(bStr) || 0;
-                }
-                invoiceData.push({ nr, absender, gegenstand, datum, brutto: bruttoNum, faellig, ks, approved: false });
-            }
-            const saved = invoiceGetSaved();
-            invoiceData.forEach(item => { if (saved[item.nr]) item.approved = true; });
-            invoiceSortField = 'ks'; invoiceSortDir = 1;
-            invoiceRenderDashboard();
-            invoiceUpdateDraft();
-        }
-
-        function invoiceGetSaved() {
-            try { return JSON.parse(localStorage.getItem('invoice_approvals') || '{}'); } catch(e) { return {}; }
-        }
-
-        function invoiceSaveApprovals() {
-            const obj = {};
-            invoiceData.forEach(item => { if (item.approved) obj[item.nr] = true; });
-            localStorage.setItem('invoice_approvals', JSON.stringify(obj));
-        }
-
-
-        function invoiceToggle(nr) {
-            const item = invoiceData.find(i => i.nr === nr);
-            if (!item || item.ks === 'SONSTIGE') return;
-            item.approved = !item.approved;
-            invoiceSaveApprovals();
-            invoiceRenderDashboard();
-            invoiceUpdateDraft();
-        }
-
-        function invoiceSelectAll() {
-            invoiceData.filter(i => i.ks !== 'SONSTIGE').forEach(i => i.approved = true);
-            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
-        }
-
-        function invoiceClearAll() {
-            invoiceData.filter(i => i.ks !== 'SONSTIGE').forEach(i => i.approved = false);
-            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
-        }
-
-        function invoiceUpdateDraft() {
-            const approved = invoiceData.filter(i => i.approved && i.ks !== 'SONSTIGE');
-            const box = document.getElementById('invoice-draft-box');
-            const countEl = document.getElementById('invoice-count-label');
-            const totalEl = document.getElementById('invoice-total-label');
-
-            if (!approved.length) {
-                if (box) box.value = 'Noch keine Rechnungen freigegeben.';
-                if (countEl) countEl.textContent = '0 Rechnungen freigegeben';
-                if (totalEl) totalEl.textContent = '€ 0,00';
-                return;
-            }
-            const groups = {};
-            approved.forEach(item => { if (!groups[item.ks]) groups[item.ks] = []; groups[item.ks].push(item); });
-            let total = 0;
-            let lines = ['RECHNUNGSFREIGABE — ' + new Date().toLocaleDateString('de-AT'), ''];
-            Object.entries(groups).forEach(([ks, items]) => {
-                lines.push('── ' + ks + ' ──');
-                items.forEach(item => {
-                    const betrag = invoiceFmtEur(item.brutto).padStart(12);
-                    const faellig = item.faellig ? '  fällig: ' + item.faellig : '';
-                    lines.push(`${item.nr.padEnd(6)}  ${item.absender.substring(0,25).padEnd(25)}  ${betrag}${faellig}`);
-                    total += item.brutto;
+                if (!absender || absender === 'Absender') return;
+                const brutto = parseFloat(String(row[7] || '').replace(/[^0-9.,\-]/g,'').replace(',','.'));
+                if (isNaN(brutto)) return;
+                invoiceData.push({
+                    beleg: cell0,
+                    ks: currentKS,
+                    absender: absender,
+                    gegenstand: String(row[2] || '').trim(),
+                    datum: invFmtDate(row[3]),
+                    rechNr: String(row[4] || '').trim(),
+                    netto: parseFloat(String(row[5]||'').replace(/[^0-9.,\-]/g,'').replace(',','.')) || 0,
+                    ust: parseFloat(String(row[6]||'').replace(/[^0-9.,\-]/g,'').replace(',','.')) || 0,
+                    brutto: brutto,
+                    faellig: row[8] ? invFmtDate(row[8]) : '',
+                    bezahlt: row[9] ? invFmtDate(row[9]) : '',
+                    approved: false
                 });
-                lines.push('');
             });
-            const recv = invoiceData.filter(i => i.ks === 'SONSTIGE');
-            if (recv.length) {
-                const recvTotal = recv.reduce((s,i) => s + i.brutto, 0);
-                lines.push('── FORDERUNGEN (ausstehend) ──');
-                recv.forEach(item => { lines.push(`       ${item.absender.substring(0,25).padEnd(25)}  + ${invoiceFmtEur(item.brutto).padStart(12)}`); });
-                lines.push(''); lines.push('FORDERUNGEN GESAMT: + ' + invoiceFmtEur(recvTotal));
-            }
-            lines.push('─'.repeat(52)); lines.push('KOSTEN GESAMT: ' + invoiceFmtEur(total));
-            if (box) box.value = lines.join('\n');
-            if (countEl) countEl.textContent = approved.length + ' Rechnung' + (approved.length !== 1 ? 'en' : '') + ' freigegeben';
-            if (totalEl) totalEl.textContent = invoiceFmtEur(total);
+            invLoadApprovals();
+            invUpdateFileBar();
+            invRenderFreigabe();
+            invUpdateSums();
         }
 
-        function invoiceCopyDraft() {
-            const box = document.getElementById('invoice-draft-box');
-            if (!box || !box.value || box.value === 'Noch keine Rechnungen freigegeben.') { showToast('Keine freigegebenen Rechnungen', true); return; }
-            navigator.clipboard.writeText(box.value).then(() => showToast('Draft kopiert ✓'));
+        function invUpdateFileBar() {
+            const name = localStorage.getItem('inv_file_name') || '';
+            const bar = document.getElementById('inv-file-bar-name');
+            const dateEl = document.getElementById('inv-file-bar-date');
+            if (bar) bar.textContent = name || 'Kein File geladen';
+            if (dateEl) dateEl.textContent = name ? 'geladen ' + new Date().toLocaleDateString('de-AT') : '';
         }
+
+        function invPersistFile(arrayBuffer, name) {
+            try {
+                const bytes = new Uint8Array(arrayBuffer);
+                let binary = '';
+                bytes.forEach(b => binary += String.fromCharCode(b));
+                localStorage.setItem('inv_file_b64', btoa(binary));
+                localStorage.setItem('inv_file_name', name);
+                const reloadBtn = document.getElementById('inv-reload-btn');
+                if (reloadBtn) { reloadBtn.style.display = 'inline-block'; document.getElementById('inv-reload-name').textContent = name; }
+            } catch(e) { console.warn('Invoice persist failed:', e); }
+        }
+
+        function invoiceReloadLastFile() {
+            const b64 = localStorage.getItem('inv_file_b64');
+            const name = localStorage.getItem('inv_file_name');
+            if (!b64) { showToast('Kein gespeichertes File', true); return; }
+            const binary = atob(b64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            const fnEl = document.getElementById('invoice-file-name');
+            if (fnEl) fnEl.textContent = name || '';
+            try {
+                const wb = XLSX.read(bytes.buffer, {type:'array', cellDates:true});
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+                invParseRows(rows);
+                showToast('File geladen: ' + (name||'') + ' ✓');
+            } catch(e) { showToast('Fehler: ' + e.message, true); }
+        }
+
+        function invoiceInitLastFile() {
+            const b64 = localStorage.getItem('inv_file_b64');
+            const name = localStorage.getItem('inv_file_name');
+            if (b64) {
+                const reloadBtn = document.getElementById('inv-reload-btn');
+                if (reloadBtn) { reloadBtn.style.display = 'inline-block'; const rn = document.getElementById('inv-reload-name'); if(rn) rn.textContent = name||'Letztes File'; }
+                invoiceReloadLastFile();
+            }
+            const collapsed = localStorage.getItem('invSectionCollapsed') === 'true';
+            if (collapsed) {
+                document.getElementById('inv-section-body').classList.add('collapsed');
+                document.getElementById('inv-section-toggle').innerHTML = '&#9660;';
+            }
+            invRenderBuch();
+        }
+
+        function invoiceRenderWidget() { invoiceInitLastFile(); }
 
         function scrollToQuickNotes() {
             const el = document.getElementById('quick-notes-widget');
