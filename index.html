@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.61</title>
+    <title>Turbo Projects Work Hub v15.9.62</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -8957,7 +8957,7 @@
             const EXPORT_RE = /^\]\s*[^:]+:/; // ] Sender: msg format
 
             // Known noise words (lowercased)
-            const NOISE = new Set(['danke','bitte','ok','okay','ja','nein','hi','hey','hallo','hello',
+            const NOISE = new Set(['danke','bitte','ok','okay','ja','nein','hi','hey','hallo','hello','für','heute','morgen','nacht','abend','jetzt','gleich',
                 'thx','thanks','thnx','love','merci','grazie','gerne','super','nice','cool','gut','great',
                 'perfect','noted','done','yep','nope','passt','top','geht','wenn','noch','möglich','vielen',
                 'viele','dank','bearbeitet','ruf','musst','hahaha','lol','und','von','einem','einen',
@@ -9117,8 +9117,9 @@
                     if (parsed) {
                         // Timestamped line — sender ignored, process body
                         const body = parsed.body;
-                        if (!body || isNoiseLine(body)) return;
+                        if (!body) return;
                         const lt = detectListType(body);
+                        if (!lt && isNoiseLine(body)) return;
                         const hasDate = DATE_RE.test(body);
                         if (lt) {
                             activeListType = lt; hasCtx = true;
