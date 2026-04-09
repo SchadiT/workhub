@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.62</title>
+    <title>Turbo Projects Work Hub v15.9.65</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2387,40 +2387,6 @@
         </div>
     </div>
 
-    <!-- TURBO Progress Tracker Widget -->
-    <div id="progress-widget" style="margin-bottom:8px;border:1px solid var(--border);border-radius:0;overflow:hidden;">
-        <div style="background:#1a1a2e;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="toggleProgressWidget()">
-            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#fff;text-transform:uppercase;">&#127919; Turbo Roadmap</span>
-            <div style="flex:1;height:4px;background:#2d2d44;border-radius:2px;overflow:hidden;">
-                <div id="pw-bar" style="height:100%;background:#22c55e;border-radius:2px;width:0%;transition:width 0.4s;"></div>
-            </div>
-            <span id="pw-pct" style="font-size:12px;font-weight:700;color:#22c55e;min-width:36px;text-align:right;">0%</span>
-            <span id="pw-fraction" style="font-size:11px;color:#888;">0/0</span>
-            <span id="pw-toggle-btn" style="font-size:10px;color:#888;">&#9650;</span>
-        </div>
-        <div id="pw-body">
-            <!-- Week rows -->
-            <div id="pw-weeks" style="padding:4px 0;"></div>
-            <!-- Footer -->
-            <div style="padding:8px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
-                <span id="pw-deadline" style="font-size:11px;color:#888;"></span>
-                <button onclick="openModal('roadmap-modal')" style="margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;border-radius:0;">&#128203; Full Checklist</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Roadmap Full Modal -->
-    <div class="modal-overlay" id="roadmap-modal">
-        <div class="modal-content" style="max-width:700px;height:88vh;display:flex;flex-direction:column;">
-            <div class="modal-header" style="flex-shrink:0;">
-                <h2>&#127919; Turbo Roadmap — Daily Checklist</h2>
-                <button class="modal-close" onclick="closeModal('roadmap-modal')">&times;</button>
-            </div>
-            <div style="flex:1;overflow-y:auto;padding:16px;" id="roadmap-full-list"></div>
-        </div>
-
-    </div>
-
     <!-- COCKPIT Widget -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <!-- Header -->
@@ -4048,6 +4014,18 @@
                     </div>
                 </div>
                 
+                <!-- SECURITY ROWS -->
+                <div class="form-row" style="grid-template-columns: 1fr;">
+                    <div class="form-group" style="margin-bottom: 8px;">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                            <label style="margin:0;">🔒 SECURITY <span style="font-size:11px;color:#888;font-weight:normal;">(manuell anpassbar)</span></label>
+                            <button type="button" onclick="fsAddSecurityRow()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:2px 10px;font-size:14px;cursor:pointer;border-radius:2px;line-height:1;">+</button>
+                            <button type="button" onclick="fsRemoveSecurityRow()" style="background:#2a1a1a;border:1px solid #ef4444;color:#fff;padding:2px 10px;font-size:14px;cursor:pointer;border-radius:2px;line-height:1;">−</button>
+                        </div>
+                        <div id="fs-security-rows" style="display:flex;flex-direction:column;gap:6px;"></div>
+                    </div>
+                </div>
+
                 <!-- RUNNER 1-6 -->
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px 1fr 80px;">
                     <div class="form-group" style="margin-bottom: 8px;">
@@ -4373,6 +4351,47 @@
         </div>
     </div>
 
+    <!-- E13 Rechnungsfreigabe Modal -->
+    <div class="modal-overlay" id="invoice-approval-modal">
+        <div class="modal-content" style="max-width:1100px;height:90vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;">
+                <h2>&#128179; Rechnungsfreigabe</h2>
+                <button class="modal-close" onclick="closeModal('invoice-approval-modal')">&times;</button>
+            </div>
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:16px;gap:12px;">
+                <!-- Upload Row -->
+                <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+                    <input type="file" id="invoice-file-input" accept=".xlsx,.xls,.pdf" style="display:none;" onchange="invoiceHandleUpload(event)">
+                    <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel / PDF laden</button>
+                    <span id="invoice-file-name" style="font-size:12px;color:#888;">Kein File geladen</span>
+                    <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;margin-left:auto;">Alle markieren</button>
+                    <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;">Alle abwählen</button>
+                </div>
+                <!-- Main Area: Table + Draft -->
+                <div style="flex:1;overflow:hidden;display:flex;gap:12px;">
+                    <!-- Left: Invoice Table -->
+                    <div style="flex:1.6;overflow-y:auto;border:1px solid var(--border);">
+                        <div id="invoice-table-container">
+                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel oder PDF hochladen um Rechnungen anzuzeigen</div>
+                        </div>
+                    </div>
+                    <!-- Right: Draft Preview -->
+                    <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+                            <span style="font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;">&#128196; Freigabe-Draft</span>
+                            <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;">&#128203; Kopieren</button>
+                        </div>
+                        <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:12px;padding:12px;resize:none;line-height:1.6;">Noch keine Rechnungen freigegeben.</textarea>
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+                            <span style="font-size:11px;color:#888;" id="invoice-count-label">0 Rechnungen freigegeben</span>
+                            <span style="font-size:14px;font-weight:700;color:#22c55e;" id="invoice-total-label">€ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Security Orders Modal -->
     <div class="modal-overlay" id="security-orders-modal">
         <div class="modal" style="max-width: 900px;">
@@ -4628,6 +4647,10 @@
                     <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
                     <span class="tool-icon">&#127860;</span>
                     Hospitality
+                </button>
+                <button class="tool-btn border-blue" onclick="openModal('invoice-approval-modal')" style="border-color:#f59e0b;">
+                    <span class="tool-icon">&#128179;</span>
+                    Rechnungen
                 </button>
             </div>
         </div>
@@ -5027,7 +5050,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.61</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.65</div>
     
     <!-- Notepad Modal -->
     <div class="modal-overlay" id="notepad-modal">
@@ -5300,7 +5323,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.61</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.65</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -5599,14 +5622,97 @@
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value === 'CONCERT' ? 'CONCERT' : 'CLUB';
             applyFactsheet(name, datum, eventType, null);
+            fsRenderSecurityRows();
         }
 
         // v15.9.11: Template select onChange — reset all times
+        // SECURITY ROWS — editable in factsheet, feeds into Security Order
+        function fsGetSecurityDefaults() {
+            const eventType = document.getElementById('fs-template').value;
+            const mainFloor = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
+            if (eventType === 'CONCERT') {
+                return [
+                    { time: '18:45', pax: '1 PAX' },
+                    { time: '19:00', pax: '2 PAX' },
+                    { time: '19:30', pax: '1 PAX' },
+                    { time: '19:45', pax: '1 PAX' },
+                    { time: '20:30', pax: '1 PAX (Abruf)' }
+                ];
+            } else if (mainFloor === '00:30') {
+                return [
+                    { time: '22:45', pax: '1 PAX' },
+                    { time: '23:00', pax: '3 PAX' },
+                    { time: '23:30', pax: '1 PAX' },
+                    { time: '00:30', pax: '3 PAX' },
+                    { time: '01:00', pax: '1 PAX (Abruf)' }
+                ];
+            } else {
+                return [
+                    { time: '22:45', pax: '1 PAX' },
+                    { time: '23:00', pax: '3 PAX' },
+                    { time: '23:30', pax: '1 PAX' },
+                    { time: '00:00', pax: '3 PAX' },
+                    { time: '01:00', pax: '1 PAX (Abruf)' }
+                ];
+            }
+        }
+
+        function fsRenderSecurityRows(defaults) {
+            const container = document.getElementById('fs-security-rows');
+            if (!container) return;
+            const rows = defaults || fsGetSecurityDefaults();
+            container.innerHTML = '';
+            rows.forEach((row, i) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'display:flex;gap:8px;align-items:center;';
+                div.innerHTML = `
+                    <span style="font-size:11px;color:#888;min-width:16px;">${i+1}.</span>
+                    <input type="text" id="fs-sec-time-${i}" value="${row.time}" 
+                        class="time-input" style="width:64px;" 
+                        oninput="updateFactsheetPreview()" 
+                        placeholder="Zeit">
+                    <input type="text" id="fs-sec-pax-${i}" value="${row.pax}" 
+                        style="flex:1;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:6px 10px;font-size:13px;" 
+                        oninput="updateFactsheetPreview()" 
+                        placeholder="PAX">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function fsAddSecurityRow() {
+            const current = fsGetSecurityRows();
+            current.push({ time: '', pax: '' });
+            fsRenderSecurityRows(current);
+            updateFactsheetPreview();
+        }
+
+        function fsRemoveSecurityRow() {
+            const current = fsGetSecurityRows();
+            if (current.length <= 1) return;
+            current.pop();
+            fsRenderSecurityRows(current);
+            updateFactsheetPreview();
+        }
+
+        function fsGetSecurityRows() {
+            const rows = [];
+            for (let i = 0; i < 5; i++) {
+                const timeEl = document.getElementById('fs-sec-time-' + i);
+                const paxEl = document.getElementById('fs-sec-pax-' + i);
+                if (timeEl && paxEl && (timeEl.value || paxEl.value)) {
+                    rows.push({ time: timeEl.value.trim(), pax: paxEl.value.trim() });
+                }
+            }
+            return rows;
+        }
+
         function onTemplateChange() {
             const name  = document.getElementById('fs-event-name')?.value || '';
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value;
             applyFactsheet(name, datum, eventType, null);
+            fsRenderSecurityRows();
         }
         
         // 
@@ -7951,7 +8057,7 @@
             if (id === 'bar-staffing-modal') disablePastMonths('bar-month-check', 'bar-year');
             if (id === 'runner-staffing-modal') disablePastMonths('runner-month-check', 'runner-year');
             if (id === 'projector-modal') epOnModalOpen();
-            if (id === 'roadmap-modal' && typeof tpRenderFullModal === 'function') tpRenderFullModal();
+            if (id === 'factsheet-modal') fsRenderSecurityRows();
         }
 
         function disablePastMonths(checkClass, yearSelectId) {
@@ -12852,7 +12958,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.61';
+            const HUB_VERSION = 'v15.9.65';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -12945,33 +13051,9 @@ Spittelauer Lnde 12/1
             const mainFloorTime = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
             const eventType = document.getElementById('fs-template').value;
             
-            // Get security times based on template
-            let securityTimes = [];
-            if (eventType === 'CONCERT') {
-                securityTimes = [
-                    { time: '18:45', pax: '1 PAX' },
-                    { time: '19:00', pax: '2 PAX' },
-                    { time: '19:30', pax: '1 PAX' },
-                    { time: '19:45', pax: '1 PAX' },
-                    { time: '20:30', pax: '1 PAX (Abruf)' }
-                ];
-            } else if (mainFloorTime === '00:30') {
-                securityTimes = [
-                    { time: '22:45', pax: '1 PAX' },
-                    { time: '23:00', pax: '3 PAX' },
-                    { time: '23:30', pax: '1 PAX' },
-                    { time: '00:30', pax: '3 PAX' },
-                    { time: '01:00', pax: '1 PAX (Abruf)' }
-                ];
-            } else {
-                securityTimes = [
-                    { time: '22:45', pax: '1 PAX' },
-                    { time: '23:00', pax: '3 PAX' },
-                    { time: '23:30', pax: '1 PAX' },
-                    { time: '00:00', pax: '3 PAX' },
-                    { time: '01:00', pax: '1 PAX (Abruf)' }
-                ];
-            }
+            // Read security times from editable form fields (falls back to defaults)
+            let securityTimes = fsGetSecurityRows();
+            if (!securityTimes.length) securityTimes = fsGetSecurityDefaults();
             
             const order = {
                 id: Date.now(),
@@ -14213,7 +14295,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.61</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.64</div>
                     </div>
                     
                     <div class="section">
@@ -14312,7 +14394,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.61 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.65 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17328,181 +17410,239 @@ Spittelauer Lnde 12/1
         // ═══════════════════════════════════════════════════════
 
         
+
         // ═══════════════════════════════════════════════════════
-        // TURBO PROGRESS TRACKER
+        // E13 RECHNUNGSFREIGABE
         // ═══════════════════════════════════════════════════════
+        let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, kostenstelle, approved }
 
-        const TP_STORE = 'turbo_plan_v1';
-        let pwCollapsed = localStorage.getItem('pwCollapsed') === 'true';
-
-        const TP_WEEKS = [
-            { label: 'ERLEDIGT ✓', color: '#14532d',
-              tasks: [
-                { id:'done_c17', text:'C17 Event Projector DB-Anbindung', owner:'Claude' },
-                { id:'done_g9', text:'G9 Email Hub (Inbox/Flagged/Compose)', owner:'Claude' },
-                { id:'done_c20', text:'C20 Promo Manager (3 Tabs)', owner:'Claude' },
-                { id:'done_d13', text:'D13 Linktree Widget', owner:'Claude' },
-                { id:'done_g3', text:'G3 Microsoft To-Do Integration', owner:'Claude' },
-                { id:'done_bugs', text:'B10–B15 Bug Fixes (Buttons, Email, Cleaning, Notes)', owner:'Claude' },
-              ]
-            },
-            { label: 'ÜBERFÄLLIG 🔴 — Schadi sofort', color: '#7f1d1d',
-              tasks: [
-                { id:'d1', text:'D1–D4 Meta Cleanup (Hypehunters, Johannes, John William, Sputnik Payment)', owner:'Schadi' },
-                { id:'g8', text:'G8 BMT API Email senden', owner:'Schadi' },
-                { id:'e2', text:'E2/E3 Fix- + variable Kosten eintragen', owner:'Schadi' },
-              ]
-            },
-            { label: 'KW15 — 07.04', color: '#185fa5',
-              tasks: [
-                { id:'d7', text:'D7 UTM Tracking System', owner:'Claude' },
-                { id:'d5', text:'D5/D6 Meta Pixel + CAPI Setup', owner:'Schadi+Claude' },
-                { id:'c19', text:'C19 Guestlist v4 — BMT Dropdown, 3-Format Parser, Klammern-Strip', owner:'Claude' },
-                { id:'d14', text:'D14 Instagram Verifizierung', owner:'Schadi' },
-                { id:'h1', text:'H1/H2 Julius.ai + Metricool Setup', owner:'Schadi' },
-                { id:'f2', text:'F2/F3 FOH + VVK Daten eintragen', owner:'Schadi' },
-              ]
-            },
-            { label: 'KW16 — 14.04', color: '#3b6d11',
-              tasks: [
-                { id:'c21', text:'C21 QR Code Generator', owner:'Claude' },
-                { id:'c23', text:'C23 Linktree Auto-Fetch', owner:'Claude' },
-                { id:'c24', text:'C24 Standalone Roadmap Page', owner:'Claude' },
-                { id:'g10', text:'G10/G11 Reminder + Push System', owner:'Claude' },
-                { id:'c20t4', text:'C20 Tab 4 Kanal-Stats (nach Meta live)', owner:'Claude' },
-                { id:'e4', text:'E4 Pricing Engine', owner:'Claude' },
-              ]
-            },
-            { label: 'KW17 — 21.04', color: '#85501b',
-              tasks: [
-                { id:'e8', text:'E8/E9 PreSale + Cost Calculator Update', owner:'Claude' },
-                { id:'d15', text:'D15 Marketing Analyse Dashboard', owner:'Claude' },
-                { id:'c15', text:'C15 Mobile Optimierung', owner:'Claude' },
-                { id:'e12', text:'E12 Financial Dashboard', owner:'Claude' },
-                { id:'test1', text:'Alle Features testen + Finetuning', owner:'Schadi+Claude' },
-                { id:'drive', text:'Drive Cleanup + Backup', owner:'Claude' },
-              ]
-            },
-            { label: 'KW18 — 30.04 🎯', color: '#8b1c1c',
-              tasks: [
-                { id:'launch1', text:'Final Bug Fix + Launch Check', owner:'Schadi+Claude' },
-                { id:'deadline', text:'Hub v1.0 LIVE ✓', owner:'Schadi+Claude' },
-              ]
-            },
-        ];
-
-        function tpGetState() { try { return JSON.parse(localStorage.getItem(TP_STORE)||'{}'); } catch(e){return{};} }
-        function tpSetState(s) { localStorage.setItem(TP_STORE, JSON.stringify(s)); }
-
-        // Auto-check completed tasks on first load
-        function tpMigrate() {
-            const done = ['done_c17','done_g9','done_c20','done_d13','done_g3','done_bugs'];
-            const s = tpGetState();
-            let changed = false;
-            done.forEach(id => { if (!s[id]) { s[id] = true; changed = true; } });
-            if (changed) tpSetState(s);
+        function invoiceHandleUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            document.getElementById('invoice-file-name').textContent = file.name;
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (ext === 'xlsx' || ext === 'xls') {
+                invoiceReadExcel(file);
+            } else if (ext === 'pdf') {
+                showToast('PDF-Parsing: Bitte Excel verwenden für beste Ergebnisse', true);
+                invoiceReadExcel(file); // attempt anyway
+            }
         }
 
-        function tpCount() {
-            const s = tpGetState(); let total=0,done=0;
-            TP_WEEKS.forEach(w => w.tasks.forEach(t => { total++; if(s[t.id]) done++; }));
-            return {total,done};
+        function invoiceReadExcel(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const wb = XLSX.read(e.target.result, { type: 'array', cellDates: true });
+                    const ws = wb.Sheets[wb.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+                    invoiceParseRows(rows);
+                } catch(err) {
+                    showToast('Fehler beim Lesen: ' + err.message, true);
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
-        function toggleProgressWidget() {
-            pwCollapsed = !pwCollapsed;
-            localStorage.setItem('pwCollapsed', pwCollapsed);
-            const body = document.getElementById('pw-body');
-            const btn = document.getElementById('pw-toggle-btn');
-            if(body) body.style.display = pwCollapsed ? 'none' : 'block';
-            if(btn) btn.textContent = pwCollapsed ? '▼' : '▲';
+        function invoiceFmtDate(val) {
+            if (!val) return '';
+            if (val instanceof Date) {
+                return val.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
+            }
+            return String(val);
         }
 
-        function tpRenderWidget() {
-            const {total,done} = tpCount();
-            const pct = total ? Math.round(done/total*100) : 0;
-            const bar = document.getElementById('pw-bar');
-            const pctEl = document.getElementById('pw-pct');
-            const frac = document.getElementById('pw-fraction');
-            const dl = document.getElementById('pw-deadline');
-            if(bar) bar.style.width = pct+'%';
-            if(pctEl) pctEl.textContent = pct+'%';
-            if(frac) frac.textContent = done+'/'+total;
-            if(dl) {
-                const days = Math.ceil((new Date('2026-04-30') - new Date())/(1000*60*60*24));
-                dl.textContent = days > 0 ? days+' Tage bis 30.04 Deadline' : '🎯 Deadline erreicht';
+        function invoiceFmtEur(val) {
+            if (!val && val !== 0) return '';
+            const n = parseFloat(String(val).replace(/[^0-9.,]/g,'').replace(',','.'));
+            if (isNaN(n)) return String(val);
+            return '€ ' + n.toLocaleString('de-AT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function invoiceParseRows(rows) {
+            invoiceData = [];
+            // Detect header row — look for "Absender" or "Brutto"
+            let headerIdx = -1;
+            for (let i = 0; i < Math.min(rows.length, 10); i++) {
+                const row = rows[i].map(v => String(v).toLowerCase());
+                if (row.some(v => v.includes('absender') || v.includes('brutto'))) {
+                    headerIdx = i; break;
+                }
             }
 
-            // Week rows
-            const weeksEl = document.getElementById('pw-weeks');
-            if(!weeksEl) return;
-            const s = tpGetState();
-            weeksEl.innerHTML = '';
-            TP_WEEKS.forEach(w => {
-                let wDone=0, wTotal=w.tasks.length;
-                w.tasks.forEach(t => { if(s[t.id]) wDone++; });
-                const wPct = wTotal ? Math.round(wDone/wTotal*100) : 0;
-                const row = document.createElement('div');
-                row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:6px 14px;border-bottom:1px solid var(--border);font-size:12px;';
-                row.innerHTML = `
-                    <span style="width:8px;height:8px;border-radius:50%;background:${w.color};flex-shrink:0;"></span>
-                    <span style="flex:1;color:var(--text);">${w.label}</span>
-                    <div style="width:80px;height:3px;background:#2d2d44;border-radius:2px;overflow:hidden;">
-                        <div style="height:100%;width:${wPct}%;background:${wPct===100?'#22c55e':'#3b82f6'};border-radius:2px;"></div>
-                    </div>
-                    <span style="min-width:36px;text-align:right;color:${wDone===wTotal?'#22c55e':'#888'};">${wDone}/${wTotal}</span>
-                `;
-                weeksEl.appendChild(row);
+            // Column mapping based on the actual file structure:
+            // Col0=Beleg-Nr(has T/G/S/O prefix), Col1=Absender, Col2=Gegenstand,
+            // Col3=Datum, Col4=Nummer, Col5=Netto, Col6=Ust, Col7=Brutto, Col8=fällig
+            const dataStart = headerIdx >= 0 ? headerIdx + 1 : 1;
+
+            // Detect kostenstelle from Beleg-Nr prefix
+            const ksMap = { T: 'TURBO', G: 'GASTRO', S: 'SPUTNIK', O: 'OFFICE' };
+
+            for (let i = dataStart; i < rows.length; i++) {
+                const row = rows[i];
+                if (!row || row.every(v => !v)) continue;
+                const nr = String(row[0] || '').trim();
+                if (!nr) continue;
+                // Skip section headers / totals
+                if (nr.length > 10 || /^(SUMME|TURBO|GASTRO|SPUTNIK|OFFICE|BANK|AR|BELEG)/i.test(nr)) continue;
+                // Get kostenstelle from first letter
+                const ksKey = nr.charAt(0).toUpperCase();
+                const ks = ksMap[ksKey] || 'SONSTIGE';
+
+                const absender = String(row[1] || '').trim();
+                if (!absender) continue;
+
+                const gegenstand = String(row[2] || '').trim();
+                const datum = invoiceFmtDate(row[3]);
+                const brutto = row[7] !== undefined && row[7] !== '' ? row[7] : (row[5] || '');
+                const faellig = invoiceFmtDate(row[8]);
+
+                // Parse brutto as number
+                let bruttoNum = 0;
+                if (brutto !== '') {
+                    const bStr = String(brutto).replace(/[€\s]/g,'').replace(',','.');
+                    bruttoNum = parseFloat(bStr) || 0;
+                }
+
+                invoiceData.push({ nr, absender, gegenstand, datum, brutto: bruttoNum, faellig, ks, approved: false });
+            }
+
+            // Restore saved approvals from localStorage
+            const saved = invoiceGetSaved();
+            invoiceData.forEach(item => {
+                if (saved[item.nr]) item.approved = true;
             });
 
-            // Apply collapse state
-            const body = document.getElementById('pw-body');
-            const btn = document.getElementById('pw-toggle-btn');
-            if(body) body.style.display = pwCollapsed ? 'none' : 'block';
-            if(btn) btn.textContent = pwCollapsed ? '▼' : '▲';
+            invoiceRenderTable();
+            invoiceUpdateDraft();
         }
 
-        function tpRenderFullModal() {
-            const container = document.getElementById('roadmap-full-list');
-            if(!container) return;
-            const s = tpGetState();
-            container.innerHTML = '';
+        function invoiceGetSaved() {
+            try { return JSON.parse(localStorage.getItem('invoice_approvals') || '{}'); } catch(e) { return {}; }
+        }
 
-            TP_WEEKS.forEach(w => {
-                let wDone=0;
-                w.tasks.forEach(t => { if(s[t.id]) wDone++; });
+        function invoiceSaveApprovals() {
+            const obj = {};
+            invoiceData.forEach(item => { if (item.approved) obj[item.nr] = true; });
+            localStorage.setItem('invoice_approvals', JSON.stringify(obj));
+        }
 
-                const wDiv = document.createElement('div');
-                wDiv.style.marginBottom = '16px';
-                wDiv.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);">
-                    <span style="width:10px;height:10px;border-radius:50%;background:${w.color};"></span>
-                    <span style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:var(--text);">${w.label}</span>
-                    <span style="margin-left:auto;font-size:11px;color:#888;">${wDone}/${w.tasks.length}</span>
-                </div>`;
+        function invoiceRenderTable() {
+            const container = document.getElementById('invoice-table-container');
+            if (!invoiceData.length) {
+                container.innerHTML = '<div style="padding:30px;text-align:center;color:#555;">Keine Rechnungen gefunden</div>';
+                return;
+            }
 
-                w.tasks.forEach(t => {
-                    const checked = !!s[t.id];
-                    const row = document.createElement('div');
-                    row.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:7px 8px;border-radius:4px;cursor:pointer;transition:background 0.1s;';
-                    row.innerHTML = `
-                        <input type="checkbox" ${checked?'checked':''} style="margin-top:2px;width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#22c55e;">
-                        <span style="font-size:13px;flex:1;color:${checked?'#888':'var(--text)'};${checked?'text-decoration:line-through;':''}">${t.text}</span>
-                        <span style="font-size:10px;color:#888;flex-shrink:0;">${t.owner}</span>
-                    `;
-                    row.querySelector('input').onchange = (e) => {
-                        const s2=tpGetState(); s2[t.id]=e.target.checked; tpSetState(s2);
-                        tpRenderWidget(); tpRenderFullModal();
-                    };
-                    row.onclick = (e) => {
-                        if(e.target.tagName==='INPUT') return;
-                        const cb=row.querySelector('input'); cb.checked=!cb.checked;
-                        const s2=tpGetState(); s2[t.id]=cb.checked; tpSetState(s2);
-                        tpRenderWidget(); tpRenderFullModal();
-                    };
-                    wDiv.appendChild(row);
+            // Group by kostenstelle
+            const groups = { TURBO: [], GASTRO: [], SPUTNIK: [], OFFICE: [], SONSTIGE: [] };
+            invoiceData.forEach(item => { (groups[item.ks] || groups.SONSTIGE).push(item); });
+
+            const ksColors = { TURBO: '#3b82f6', GASTRO: '#22c55e', SPUTNIK: '#f59e0b', OFFICE: '#a855f7', SONSTIGE: '#888' };
+
+            let html = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+            html += '<thead><tr style="background:#1a1a1a;position:sticky;top:0;">';
+            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;width:32px;">✓</th>';
+            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Beleg</th>';
+            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Absender</th>';
+            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Gegenstand</th>';
+            html += '<th style="padding:8px 10px;text-align:right;color:#888;font-weight:600;">Brutto</th>';
+            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Fällig</th>';
+            html += '</tr></thead><tbody>';
+
+            Object.entries(groups).forEach(([ks, items]) => {
+                if (!items.length) return;
+                const color = ksColors[ks] || '#888';
+                html += `<tr style="background:#111;"><td colspan="6" style="padding:6px 10px;font-size:11px;font-weight:700;color:${color};letter-spacing:1px;border-top:2px solid ${color};">${ks}</td></tr>`;
+                items.forEach(item => {
+                    const checked = item.approved ? 'checked' : '';
+                    const rowBg = item.approved ? '#0d1f0d' : 'transparent';
+                    html += `<tr style="background:${rowBg};border-bottom:1px solid #1a1a1a;cursor:pointer;" onclick="invoiceToggle('${item.nr.replace(/'/g,"\'")}')">`;
+                    html += `<td style="padding:7px 10px;"><input type="checkbox" ${checked} onclick="event.stopPropagation();invoiceToggle('${item.nr.replace(/'/g,"\'")}')"></td>`;
+                    html += `<td style="padding:7px 10px;color:#888;">${item.nr}</td>`;
+                    html += `<td style="padding:7px 10px;color:var(--text);font-weight:500;">${item.absender}</td>`;
+                    html += `<td style="padding:7px 10px;color:#aaa;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>`;
+                    html += `<td style="padding:7px 10px;text-align:right;color:${item.approved ? '#22c55e' : '#fff'};font-weight:600;">${invoiceFmtEur(item.brutto)}</td>`;
+                    html += `<td style="padding:7px 10px;color:#888;">${item.faellig}</td>`;
+                    html += '</tr>';
                 });
-                container.appendChild(wDiv);
             });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function invoiceToggle(nr) {
+            const item = invoiceData.find(i => i.nr === nr);
+            if (!item) return;
+            item.approved = !item.approved;
+            invoiceSaveApprovals();
+            invoiceRenderTable();
+            invoiceUpdateDraft();
+        }
+
+        function invoiceSelectAll() {
+            invoiceData.forEach(i => i.approved = true);
+            invoiceSaveApprovals();
+            invoiceRenderTable();
+            invoiceUpdateDraft();
+        }
+
+        function invoiceClearAll() {
+            invoiceData.forEach(i => i.approved = false);
+            invoiceSaveApprovals();
+            invoiceRenderTable();
+            invoiceUpdateDraft();
+        }
+
+        function invoiceUpdateDraft() {
+            const approved = invoiceData.filter(i => i.approved);
+            const box = document.getElementById('invoice-draft-box');
+            const countEl = document.getElementById('invoice-count-label');
+            const totalEl = document.getElementById('invoice-total-label');
+
+            if (!approved.length) {
+                if (box) box.value = 'Noch keine Rechnungen freigegeben.';
+                if (countEl) countEl.textContent = '0 Rechnungen freigegeben';
+                if (totalEl) totalEl.textContent = '€ 0,00';
+                return;
+            }
+
+            // Group by KS for draft
+            const groups = {};
+            approved.forEach(item => {
+                if (!groups[item.ks]) groups[item.ks] = [];
+                groups[item.ks].push(item);
+            });
+
+            let total = 0;
+            let lines = ['RECHNUNGSFREIGABE — ' + new Date().toLocaleDateString('de-AT'), ''];
+
+            Object.entries(groups).forEach(([ks, items]) => {
+                lines.push('── ' + ks + ' ──');
+                items.forEach(item => {
+                    const betrag = invoiceFmtEur(item.brutto).padStart(12);
+                    const faellig = item.faellig ? '  fällig: ' + item.faellig : '';
+                    lines.push(`${item.nr.padEnd(6)}  ${item.absender.substring(0,25).padEnd(25)}  ${betrag}${faellig}`);
+                    total += item.brutto;
+                });
+                lines.push('');
+            });
+
+            lines.push('─'.repeat(52));
+            lines.push('GESAMT: ' + invoiceFmtEur(total));
+
+            if (box) box.value = lines.join('\n');
+            if (countEl) countEl.textContent = approved.length + ' Rechnung' + (approved.length !== 1 ? 'en' : '') + ' freigegeben';
+            if (totalEl) totalEl.textContent = invoiceFmtEur(total);
+        }
+
+        function invoiceCopyDraft() {
+            const box = document.getElementById('invoice-draft-box');
+            if (!box || !box.value || box.value === 'Noch keine Rechnungen freigegeben.') {
+                showToast('Keine freigegebenen Rechnungen', true); return;
+            }
+            navigator.clipboard.writeText(box.value).then(() => showToast('Draft kopiert ✓'));
         }
 
         function scrollToQuickNotes() {
@@ -17512,7 +17652,6 @@ Spittelauer Lnde 12/1
 
         document.addEventListener('DOMContentLoaded', function() {
             tpMigrate();
-            tpRenderWidget();
         });
         // ═══════════════════════════════════════════════════════
 
