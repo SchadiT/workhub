@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.70</title>
+    <title>Turbo Projects Work Hub v15.9.71</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4365,50 +4365,85 @@
     </div>
 
     <!-- E13 Rechnungsfreigabe Modal -->
+    <style>
+        #invoice-approval-modal .inv-tab-btn { padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:0.5px;background:transparent;border:none;border-bottom:2px solid transparent;color:#888;cursor:pointer;text-transform:uppercase;white-space:nowrap; }
+        #invoice-approval-modal .inv-tab-btn.active { color:#f59e0b;border-bottom-color:#f59e0b; }
+        #invoice-approval-modal .inv-tab-panel { display:none;flex:1;overflow:hidden;flex-direction:column;gap:8px; }
+        #invoice-approval-modal .inv-tab-panel.active { display:flex; }
+        #invoice-ku-table { width:100%;border-collapse:collapse;font-size:13px; }
+        #invoice-ku-table th { padding:8px 12px;text-align:right;color:#888;font-size:11px;font-weight:600;border-bottom:1px solid var(--border); }
+        #invoice-ku-table th:first-child { text-align:left; }
+        #invoice-ku-table td { padding:9px 12px;text-align:right;border-bottom:1px solid #1a1a1a;font-size:12px; }
+        #invoice-ku-table td:first-child { text-align:left;font-weight:700;letter-spacing:0.5px; }
+        #invoice-ku-table tr.ku-total td { border-top:2px solid var(--border);font-weight:700;color:#fff;background:#111;font-size:13px; }
+        @media (max-width:600px) {
+            #invoice-approval-modal .modal-content { height:95vh!important;max-width:100%!important; }
+            #invoice-ku-table { font-size:11px; }
+            #invoice-ku-table th,#invoice-ku-table td { padding:6px 8px; }
+            .inv-controls-row { flex-direction:column;align-items:stretch!important; }
+            .inv-controls-row .modal-btn { width:100%;justify-content:center; }
+            #invoice-approval-modal .inv-tab-btn { padding:6px 10px;font-size:11px; }
+        }
+    </style>
     <div class="modal-overlay" id="invoice-approval-modal">
         <div class="modal-content" style="max-width:1100px;height:90vh;display:flex;flex-direction:column;">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>&#128179; Rechnungsfreigabe</h2>
                 <button class="modal-close" onclick="closeModal('invoice-approval-modal')">&times;</button>
             </div>
-            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:12px;gap:10px;">
-                <!-- Upload + Controls Row -->
-                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex-shrink:0;">
-                    <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
-                    <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()" style="min-height:38px;">&#128196; Excel laden</button>
-                    <span id="invoice-file-name" style="font-size:12px;color:#888;flex:1;min-width:80px;">Kein File geladen</span>
-                    <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;min-height:38px;">Alle ✓</button>
-                    <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;min-height:38px;">Alle ✗</button>
-                </div>
-                <!-- Sort Controls -->
-                <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0;align-items:center;">
-                    <span style="font-size:11px;color:#888;">Sortieren:</span>
-                    <button id="sort-btn-ks" onclick="invoiceSort('ks')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Kostenstelle</button>
-                    <button id="sort-btn-absender" onclick="invoiceSort('absender')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Absender</button>
-                    <button id="sort-btn-brutto" onclick="invoiceSort('brutto')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Betrag</button>
-                    <button id="sort-btn-faellig" onclick="invoiceSort('faellig')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Fällig</button>
-                </div>
-                <!-- Main Area: responsive flex -->
-                <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:10px;">
-                    <!-- Table -->
-                    <div style="flex:1.8;overflow-y:auto;overflow-x:auto;border:1px solid var(--border);min-height:120px;">
+            <!-- Upload + Controls -->
+            <div style="flex-shrink:0;padding:10px 12px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;" class="inv-controls-row">
+                <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
+                <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()" style="min-height:38px;">&#128196; Excel laden</button>
+                <span id="invoice-file-name" style="font-size:12px;color:#888;flex:1;min-width:80px;">Kein File geladen</span>
+                <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;min-height:38px;">Alle ✓</button>
+                <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;min-height:38px;">Alle ✗</button>
+            </div>
+            <!-- Tabs -->
+            <div style="flex-shrink:0;display:flex;gap:0;border-bottom:1px solid var(--border);margin:8px 12px 0;overflow-x:auto;">
+                <button class="inv-tab-btn active" id="inv-tab-list" onclick="invoiceSwitchTab('list')">&#128203; Rechnungen</button>
+                <button class="inv-tab-btn" id="inv-tab-ku" onclick="invoiceSwitchTab('ku')">&#128200; Kostenübersicht</button>
+                <button class="inv-tab-btn" id="inv-tab-draft" onclick="invoiceSwitchTab('draft')">&#9998; Draft</button>
+            </div>
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:10px 12px;gap:8px;">
+                <!-- TAB: Rechnungen -->
+                <div class="inv-tab-panel active" id="inv-panel-list">
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0;align-items:center;">
+                        <span style="font-size:11px;color:#888;">Sortieren:</span>
+                        <button id="sort-btn-ks" onclick="invoiceSort('ks')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Kostenstelle</button>
+                        <button id="sort-btn-absender" onclick="invoiceSort('absender')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Absender</button>
+                        <button id="sort-btn-brutto" onclick="invoiceSort('brutto')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Betrag</button>
+                        <button id="sort-btn-faellig" onclick="invoiceSort('faellig')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Fällig</button>
+                    </div>
+                    <div style="flex:1;overflow-y:auto;overflow-x:auto;border:1px solid var(--border);">
                         <div id="invoice-table-container">
                             <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Rechnungen anzuzeigen</div>
                         </div>
                     </div>
-                    <!-- Draft Preview -->
-                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:100px;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-                            <span style="font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;">&#128196; Freigabe-Draft</span>
-                            <div style="display:flex;gap:6px;align-items:center;">
-                                <span style="font-size:14px;font-weight:700;color:#22c55e;" id="invoice-total-label">€ 0,00</span>
-                                <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;min-height:30px;">&#128203; Kopieren</button>
-                                <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:4px 12px;min-height:30px;font-weight:700;">&#128257; Stand speichern</button>
-                            </div>
-                        </div>
-                        <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:11px;padding:10px;resize:none;line-height:1.6;min-height:80px;">Noch keine Rechnungen freigegeben.</textarea>
+                    <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
                         <span style="font-size:11px;color:#888;" id="invoice-count-label">0 Rechnungen freigegeben</span>
+                        <span style="font-size:14px;font-weight:700;color:#22c55e;margin-left:auto;" id="invoice-total-label">€ 0,00</span>
                     </div>
+                </div>
+                <!-- TAB: Kostenübersicht -->
+                <div class="inv-tab-panel" id="inv-panel-ku">
+                    <div style="flex:1;overflow-y:auto;overflow-x:auto;">
+                        <div id="invoice-ku-container">
+                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Übersicht anzuzeigen</div>
+                        </div>
+                    </div>
+                    <div style="flex-shrink:0;display:flex;justify-content:flex-end;">
+                        <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:6px 14px;font-weight:700;">&#128257; Stand speichern</button>
+                    </div>
+                </div>
+                <!-- TAB: Draft -->
+                <div class="inv-tab-panel" id="inv-panel-draft">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
+                        <span style="font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;">&#128196; Freigabe-Draft</span>
+                        <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;min-height:30px;margin-left:auto;">&#128203; Kopieren</button>
+                        <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:4px 12px;min-height:30px;font-weight:700;">&#128257; Stand speichern</button>
+                    </div>
+                    <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:11px;padding:10px;resize:none;line-height:1.6;">Noch keine Rechnungen freigegeben.</textarea>
                 </div>
             </div>
         </div>
@@ -4952,7 +4987,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.70</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.71</div>
     
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
@@ -5710,10 +5745,13 @@
 
         function fsGetSecurityRows() {
             const rows = [];
-            for (let i = 0; i < 5; i++) {
+            const container = document.getElementById('fs-security-rows');
+            if (!container) return rows;
+            const count = container.querySelectorAll('[id^="fs-sec-time-"]').length;
+            for (let i = 0; i < count; i++) {
                 const timeEl = document.getElementById('fs-sec-time-' + i);
                 const paxEl = document.getElementById('fs-sec-pax-' + i);
-                if (timeEl && paxEl && (timeEl.value || paxEl.value)) {
+                if (timeEl && paxEl) {
                     rows.push({ time: timeEl.value.trim(), pax: paxEl.value.trim() });
                 }
             }
@@ -14598,7 +14636,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.70 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.71 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17618,6 +17656,99 @@ Spittelauer Lnde 12/1
         // ═══════════════════════════════════════════════════════
         // E13 RECHNUNGSFREIGABE
         // ═══════════════════════════════════════════════════════
+        // ── Tab switching ────────────────────────────────────────
+        function invoiceSwitchTab(tab) {
+            ['list','ku','draft'].forEach(t => {
+                document.getElementById('inv-panel-' + t).classList.toggle('active', t === tab);
+                document.getElementById('inv-tab-' + t).classList.toggle('active', t === tab);
+            });
+            if (tab === 'ku') invoiceRenderKU();
+            if (tab === 'draft') invoiceUpdateDraft();
+        }
+
+        // ── Kostenübersicht ──────────────────────────────────────
+        function invoiceRenderKU() {
+            const container = document.getElementById('invoice-ku-container');
+            if (!container) return;
+            if (!invoiceData.length) {
+                container.innerHTML = '<div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Übersicht anzuzeigen</div>';
+                return;
+            }
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
+            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#888' };
+
+            let totalAll = 0, totalApproved = 0, totalOpen = 0;
+            let html = '';
+
+            ksOrder.forEach(ks => {
+                const items = invoiceData.filter(i => i.ks === ks);
+                if (!items.length) return;
+                const ksTotal = items.reduce((s,i) => s + i.brutto, 0);
+                const ksApproved = items.filter(i => i.approved).reduce((s,i) => s + i.brutto, 0);
+                const ksOpen = ksTotal - ksApproved;
+                const pct = ksTotal > 0 ? Math.round(ksApproved / ksTotal * 100) : 0;
+                const color = ksColors[ks] || '#888';
+                totalAll += ksTotal; totalApproved += ksApproved; totalOpen += ksOpen;
+
+                // KS header + progress
+                html += `<div style="margin-bottom:4px;border:1px solid #1a1a1a;overflow:hidden;">`;
+                html += `<div style="background:#111;padding:8px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="invoiceKUToggle('ku-rows-${ks}',this)">`;
+                html += `<span style="font-size:11px;font-weight:700;color:${color};min-width:60px;letter-spacing:0.5px;">${ks}</span>`;
+                html += `<div style="flex:1;height:5px;background:#2a2a2a;border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;transition:width 0.4s;"></div></div>`;
+                html += `<span style="font-size:11px;color:${color};font-weight:700;min-width:70px;text-align:right;">${invoiceFmtEur(ksApproved)}</span>`;
+                html += `<span style="font-size:10px;color:#555;min-width:70px;text-align:right;">offen: ${invoiceFmtEur(ksOpen)}</span>`;
+                html += `<span style="font-size:10px;color:#888;">${pct}%</span>`;
+                html += `<span style="font-size:10px;color:#555;margin-left:4px;">▼</span>`;
+                html += `</div>`;
+
+                // Positions rows (hidden by default, toggle)
+                html += `<div id="ku-rows-${ks}" style="display:none;overflow-x:auto;">`;
+                html += `<table style="width:100%;border-collapse:collapse;font-size:12px;">`;
+                html += `<thead><tr style="background:#0d0d0d;">`;
+                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;width:36px;">✓</th>`;
+                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Absender</th>`;
+                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Gegenstand</th>`;
+                html += `<th style="padding:6px 12px;text-align:right;color:#555;font-size:10px;font-weight:600;">Betrag</th>`;
+                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Fällig</th>`;
+                html += `</tr></thead><tbody>`;
+
+                items.sort((a,b) => b.brutto - a.brutto).forEach(item => {
+                    const statusColor = item.approved ? '#22c55e' : '#ef4444';
+                    const statusIcon = item.approved ? '✅' : '🔴';
+                    const rowBg = item.approved ? 'rgba(34,197,94,0.05)' : 'transparent';
+                    html += `<tr style="background:${rowBg};border-bottom:1px solid #1a1a1a;cursor:pointer;" onclick="invoiceToggle('${item.nr.replace(/'/g,"\\'")}');invoiceRenderKU();">`;
+                    html += `<td style="padding:6px 12px;">${statusIcon}</td>`;
+                    html += `<td style="padding:6px 12px;color:var(--text);font-weight:500;white-space:nowrap;">${item.absender}</td>`;
+                    html += `<td style="padding:6px 12px;color:#aaa;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>`;
+                    html += `<td style="padding:6px 12px;text-align:right;color:${statusColor};font-weight:600;white-space:nowrap;">${invoiceFmtEur(item.brutto)}</td>`;
+                    html += `<td style="padding:6px 12px;color:#888;white-space:nowrap;">${item.faellig||'—'}</td>`;
+                    html += `</tr>`;
+                });
+                html += `</tbody></table></div></div>`;
+            });
+
+            // Gesamt row
+            const totalPct = totalAll > 0 ? Math.round(totalApproved / totalAll * 100) : 0;
+            html += `<div style="margin-top:8px;background:#111;border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">`;
+            html += `<span style="font-size:12px;font-weight:700;color:#fff;min-width:60px;">GESAMT</span>`;
+            html += `<div style="flex:1;height:5px;background:#2a2a2a;border-radius:2px;overflow:hidden;min-width:60px;"><div style="height:100%;width:${totalPct}%;background:#22c55e;border-radius:2px;"></div></div>`;
+            html += `<span style="font-size:13px;font-weight:700;color:#22c55e;">${invoiceFmtEur(totalApproved)}</span>`;
+            html += `<span style="font-size:11px;color:#555;">offen: ${invoiceFmtEur(totalOpen)}</span>`;
+            html += `<span style="font-size:11px;color:#888;">${totalPct}%</span>`;
+            html += `</div>`;
+
+            container.innerHTML = html;
+        }
+
+        function invoiceKUToggle(id, headerEl) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const arrow = headerEl.querySelector('span:last-child');
+            const hidden = el.style.display === 'none';
+            el.style.display = hidden ? 'block' : 'none';
+            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
+        }
+
         let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, ks, approved }
         let invoiceSortField = 'ks';
         let invoiceSortDir = 1; // 1=asc, -1=desc
@@ -17652,7 +17783,14 @@ Spittelauer Lnde 12/1
                         totalAll: ksAll.reduce((s,i) => s + i.brutto, 0),
                         totalApproved: ksApp.reduce((s,i) => s + i.brutto, 0),
                         countAll: ksAll.length,
-                        countApproved: ksApp.length
+                        countApproved: ksApp.length,
+                        items: ksAll.sort((a,b) => b.brutto - a.brutto).map(i => ({
+                            absender: i.absender,
+                            gegenstand: i.gegenstand,
+                            brutto: i.brutto,
+                            faellig: i.faellig,
+                            approved: i.approved
+                        }))
                     };
                 }
             });
@@ -17697,12 +17835,11 @@ Spittelauer Lnde 12/1
 
             if (!content) return;
 
-            // Build visual overview
             const pctTotal = snap.totalAll > 0 ? Math.round(snap.totalApproved / snap.totalAll * 100) : 0;
 
             let html = '';
             // Overall bar
-            html += `<div style="margin-bottom:12px;">
+            html += `<div style="margin-bottom:10px;">
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
                     <span>Gesamt: ${snap.countApproved}/${snap.countAll} Rechnungen freigegeben</span>
                     <span style="color:#22c55e;font-weight:700;">${pctTotal}%</span>
@@ -17716,25 +17853,52 @@ Spittelauer Lnde 12/1
                 </div>
             </div>`;
 
-            // Per KS rows
-            html += '<div style="display:flex;flex-direction:column;gap:6px;">';
+            // Per KS: bar + expandable positions
+            html += '<div style="display:flex;flex-direction:column;gap:4px;">';
             Object.entries(snap.byKs).forEach(([ks, data]) => {
                 const pct = data.totalAll > 0 ? Math.round(data.totalApproved / data.totalAll * 100) : 0;
                 const remaining = data.totalAll - data.totalApproved;
+                const domId = 'iw-ks-rows-' + ks;
+                // KS bar row (clickable)
                 html += `<div>
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
                         <span style="font-size:10px;font-weight:700;color:${data.color};min-width:55px;letter-spacing:0.5px;">${ks}</span>
                         <div style="flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;">
                             <div style="height:100%;width:${pct}%;background:${data.color};border-radius:2px;transition:width 0.4s;opacity:0.85;"></div>
                         </div>
-                        <span style="font-size:11px;color:${data.color};font-weight:600;min-width:56px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
-                        <span style="font-size:10px;color:#555;min-width:52px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
-                    </div>
-                </div>`;
+                        <span style="font-size:11px;color:${data.color};font-weight:600;min-width:50px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
+                        <span style="font-size:10px;color:#555;min-width:48px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
+                        <span style="font-size:9px;color:#555;">▼</span>
+                    </div>`;
+                // Positions list (collapsed by default)
+                if (data.items && data.items.length) {
+                    html += `<div id="${domId}" style="display:none;margin-left:63px;border-left:2px solid ${data.color};padding-left:8px;margin-bottom:4px;">`;
+                    data.items.forEach(item => {
+                        const icon = item.approved ? '✅' : '🔴';
+                        const col = item.approved ? '#22c55e' : '#888';
+                        html += `<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;flex-wrap:wrap;">
+                            <span>${icon}</span>
+                            <span style="color:var(--text);font-weight:500;flex:1;min-width:80px;">${item.absender}</span>
+                            <span style="color:#888;flex:2;min-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</span>
+                            <span style="color:${col};font-weight:600;white-space:nowrap;">${invoiceFmtEurShort(item.brutto)}</span>
+                        </div>`;
+                    });
+                    html += `</div>`;
+                }
+                html += `</div>`;
             });
             html += '</div>';
 
             content.innerHTML = html;
+        }
+
+        function iwToggleKS(id, rowEl) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const arrow = rowEl.querySelector('span:last-child');
+            const hidden = el.style.display === 'none';
+            el.style.display = hidden ? 'block' : 'none';
+            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
         }
 
         function invoiceSort(field) {
