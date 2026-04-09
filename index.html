@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.75</title>
+    <title>Turbo Projects Work Hub v15.9.76</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2389,115 +2389,111 @@
 
     <!-- E13 RECHNUNGEN SECTION -->
     <style>
-        .inv-section{margin-bottom:8px;border:1px solid var(--border);overflow:hidden;}
-        .inv-section-header{background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;}
-        .inv-section-body{display:block;}
-        .inv-section-body.collapsed{display:none;}
-        .inv-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);}
-        .inv-tab{padding:7px 18px;font-size:12px;cursor:pointer;background:transparent;color:#888;border:none;border-bottom:2px solid transparent;font-weight:500;}
+        .inv-wrap{margin-bottom:8px;border:1px solid var(--border);overflow:hidden;background:var(--surface);}
+        .inv-header{background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;}
+        .inv-body{display:block;}
+        .inv-body.collapsed{display:none;}
+        .inv-file-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(255,255,255,0.05);border:0.5px solid #333;border-radius:20px;font-size:11px;color:#888;}
+        .inv-ks-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 14px;}
+        .inv-ks-card{padding:10px 12px;border-radius:6px;cursor:pointer;border:1.5px solid transparent;transition:opacity 0.15s;}
+        .inv-ks-card:hover{opacity:0.85;}
+        .inv-ks-card.turbo{background:rgba(245,158,11,0.1);border-color:#f59e0b;}
+        .inv-ks-card.gastro{background:rgba(59,130,246,0.1);border-color:#3b82f6;}
+        .inv-ks-card.sputnik{background:rgba(168,85,247,0.1);border-color:#a855f7;}
+        .inv-ks-card.office{background:rgba(34,197,94,0.1);border-color:#22c55e;}
+        .inv-ks-card .lbl{font-size:10px;font-weight:700;letter-spacing:0.8px;margin-bottom:4px;}
+        .inv-ks-card.turbo .lbl{color:#f59e0b;} .inv-ks-card.gastro .lbl{color:#3b82f6;}
+        .inv-ks-card.sputnik .lbl{color:#a855f7;} .inv-ks-card.office .lbl{color:#22c55e;}
+        .inv-ks-card .amt{font-size:15px;font-weight:700;color:var(--text);}
+        .inv-ks-card .cnt{font-size:10px;color:#888;margin-top:2px;}
+        .inv-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 14px;}
+        .inv-tab{padding:7px 16px;font-size:12px;cursor:pointer;color:#888;border-bottom:2px solid transparent;font-weight:500;}
         .inv-tab.active{color:#f59e0b;border-bottom-color:#f59e0b;}
-        .inv-tab-content{display:none;padding:12px 14px;}
+        .inv-tab-content{display:none;}
         .inv-tab-content.active{display:block;}
-        .inv-file-bar{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface-2);border:1px solid var(--border);font-size:11px;color:#888;margin-bottom:10px;}
-        .inv-ks-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
-        .inv-ks-tab{padding:3px 12px;font-size:11px;border:1px solid var(--border);cursor:pointer;background:var(--surface-2);color:#888;}
-        .inv-ks-tab.active{background:#1e3a5f;border-color:#3b82f6;color:#fff;}
+        .inv-split{display:grid;grid-template-columns:190px 1fr;min-height:200px;}
+        .inv-sidebar{border-right:1px solid var(--border);padding:8px 0;background:var(--surface-2);}
+        .inv-sb-item{padding:8px 14px;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#888;border-left:3px solid transparent;}
+        .inv-sb-item.active.turbo{background:rgba(245,158,11,0.08);color:#f59e0b;border-left-color:#f59e0b;}
+        .inv-sb-item.active.gastro{background:rgba(59,130,246,0.08);color:#3b82f6;border-left-color:#3b82f6;}
+        .inv-sb-item.active.sputnik{background:rgba(168,85,247,0.08);color:#a855f7;border-left-color:#a855f7;}
+        .inv-sb-item.active.office{background:rgba(34,197,94,0.08);color:#22c55e;border-left-color:#22c55e;}
+        .inv-sb-item.active.all{background:rgba(255,255,255,0.04);color:#fff;border-left-color:#555;}
+        .inv-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px;flex-shrink:0;}
+        .inv-dot.turbo{background:#f59e0b;} .inv-dot.gastro{background:#3b82f6;}
+        .inv-dot.sputnik{background:#a855f7;} .inv-dot.office{background:#22c55e;} .inv-dot.all{background:#555;}
+        .inv-main{padding:10px 12px;overflow-x:auto;}
         .inv-tbl{width:100%;border-collapse:collapse;font-size:12px;}
-        .inv-tbl th{text-align:left;padding:6px 8px;color:#888;font-weight:500;border-bottom:1px solid var(--border);font-size:11px;white-space:nowrap;}
-        .inv-tbl td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+        .inv-tbl th{text-align:left;padding:5px 8px;color:#888;font-size:11px;border-bottom:1px solid var(--border);white-space:nowrap;}
+        .inv-tbl td{padding:6px 8px;border-bottom:0.5px solid var(--border);color:var(--text);vertical-align:middle;}
         .inv-tbl tr:last-child td{border-bottom:none;}
-        .inv-tbl tr.inv-approved td{color:#22c55e;}
-        .inv-badge-red{background:rgba(239,68,68,0.15);color:#ef4444;padding:2px 6px;font-size:10px;font-weight:700;}
-        .inv-badge-amber{background:rgba(234,179,8,0.15);color:#eab308;padding:2px 6px;font-size:10px;font-weight:700;}
-        .inv-badge-green{background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 6px;font-size:10px;font-weight:700;}
-        .inv-badge-gray{background:var(--surface-2);color:#888;padding:2px 6px;font-size:10px;}
-        .inv-sum-row{display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:8px 0;font-size:12px;border-top:1px solid var(--border);margin-top:6px;}
-        .inv-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
-        .inv-btn{padding:4px 12px;font-size:11px;border:1px solid var(--border);cursor:pointer;background:var(--surface-2);color:var(--text);}
-        .inv-btn-green{background:#22c55e;border-color:#22c55e;color:#000;font-weight:700;}
-        .inv-btn-blue{background:#1e3a5f;border-color:#3b82f6;color:#fff;}
-        .inv-empty{padding:24px;text-align:center;color:#555;font-size:12px;}
+        .inv-tbl tr.inv-row-approved td:not(:first-child){opacity:0.55;}
+        .inv-chk{width:16px;height:16px;border-radius:3px;border:1px solid #555;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;font-weight:700;flex-shrink:0;}
+        .inv-chk.on{background:#f59e0b;border-color:#f59e0b;color:#000;}
+        .inv-action-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--border);background:var(--surface-2);}
+        .inv-btn{padding:4px 12px;font-size:11px;border-radius:4px;cursor:pointer;font-weight:500;}
+        .inv-btn-save{background:#22c55e;border:none;color:#000;}
+        .inv-btn-dl{background:#1e3a5f;border:1px solid #3b82f6;color:#fff;}
+        .inv-btn-sec{background:transparent;border:0.5px solid #444;color:#aaa;}
+        .inv-sum{margin-left:auto;font-size:12px;color:#888;}
+        .inv-badge-red{background:rgba(239,68,68,0.15);color:#ef4444;padding:2px 6px;font-size:10px;font-weight:700;border-radius:3px;white-space:nowrap;}
+        .inv-badge-amber{background:rgba(234,179,8,0.15);color:#eab308;padding:2px 6px;font-size:10px;border-radius:3px;white-space:nowrap;}
+        .inv-badge-green{background:rgba(34,197,94,0.15);color:#22c55e;padding:2px 6px;font-size:10px;border-radius:3px;white-space:nowrap;}
+        .inv-badge-gray{background:var(--surface-2);color:#888;padding:2px 6px;font-size:10px;border-radius:3px;white-space:nowrap;}
+        .inv-buch-ks{margin-bottom:2px;}
+        .inv-buch-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:0.5px;}
+        .inv-buch-hdr.turbo{background:rgba(245,158,11,0.1);color:#f59e0b;border-left:3px solid #f59e0b;}
+        .inv-buch-hdr.gastro{background:rgba(59,130,246,0.1);color:#3b82f6;border-left:3px solid #3b82f6;}
+        .inv-buch-hdr.sputnik{background:rgba(168,85,247,0.1);color:#a855f7;border-left:3px solid #a855f7;}
+        .inv-buch-hdr.office{background:rgba(34,197,94,0.1);color:#22c55e;border-left:3px solid #22c55e;}
+        .inv-empty{padding:30px;text-align:center;color:#555;font-size:12px;}
+        @media(max-width:600px){.inv-ks-cards{grid-template-columns:repeat(2,1fr);}.inv-split{grid-template-columns:1fr;}.inv-sidebar{display:flex;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--border);}}
     </style>
-    <div class="inv-section" id="inv-section">
-        <div class="inv-section-header" onclick="invToggleSection()">
+    <div class="inv-wrap" id="inv-section">
+        <div class="inv-header" onclick="invToggleSection()">
             <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:#f59e0b;text-transform:uppercase;">&#128179; RECHNUNGEN</span>
-            <span id="inv-hdr-info" style="font-size:10px;color:#888;margin-left:4px;"></span>
+            <span id="inv-hdr-info" style="font-size:10px;color:#888;"></span>
             <div style="display:flex;align-items:center;gap:6px;margin-left:auto;" onclick="event.stopPropagation()">
                 <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
-                <button class="inv-btn" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel laden</button>
                 <span id="invoice-file-name" style="font-size:10px;color:#888;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                <button class="inv-btn inv-btn-dl" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel laden</button>
             </div>
-            <span id="inv-section-toggle" style="font-size:10px;color:#555;margin-left:4px;">&#9650;</span>
+            <span id="inv-section-toggle" style="font-size:10px;color:#555;margin-left:6px;">&#9650;</span>
         </div>
-        <div class="inv-section-body" id="inv-section-body">
+        <div class="inv-body" id="inv-section-body">
+            <div class="inv-ks-cards" id="inv-ks-cards">
+                <div class="inv-ks-card turbo" onclick="invSwitchKS('TURBO')"><div class="lbl">TURBO</div><div class="amt" id="inv-card-amt-TURBO">—</div><div class="cnt" id="inv-card-cnt-TURBO">—</div></div>
+                <div class="inv-ks-card gastro" onclick="invSwitchKS('GASTRO')"><div class="lbl">GASTRO</div><div class="amt" id="inv-card-amt-GASTRO">—</div><div class="cnt" id="inv-card-cnt-GASTRO">—</div></div>
+                <div class="inv-ks-card sputnik" onclick="invSwitchKS('SPUTNIK')"><div class="lbl">SPUTNIK</div><div class="amt" id="inv-card-amt-SPUTNIK">—</div><div class="cnt" id="inv-card-cnt-SPUTNIK">—</div></div>
+                <div class="inv-ks-card office" onclick="invSwitchKS('OFFICE')"><div class="lbl">OFFICE</div><div class="amt" id="inv-card-amt-OFFICE">—</div><div class="cnt" id="inv-card-cnt-OFFICE">—</div></div>
+            </div>
             <div class="inv-tabs">
                 <div class="inv-tab active" onclick="invSwitchTab('freigabe')" id="inv-tab-freigabe">Freigabe</div>
-                <div class="inv-tab" onclick="invSwitchTab('buch')" id="inv-tab-buch">Rechnungsbuch</div>
+                <div class="inv-tab" onclick="invSwitchTab('buch')" id="inv-tab-buch">Rechnungsbuch (offen)</div>
             </div>
-            <!-- TAB: FREIGABE -->
             <div class="inv-tab-content active" id="inv-content-freigabe">
-                <div class="inv-file-bar" id="inv-file-bar">
-                    <span>&#128196;</span>
-                    <span id="inv-file-bar-name" style="color:var(--text);">Kein File geladen</span>
-                    <span id="inv-file-bar-date" style="margin-left:auto;"></span>
-                </div>
-                <div class="inv-ks-tabs">
-                    <div class="inv-ks-tab active" onclick="invSwitchKS('alle')" id="inv-ks-alle">Alle</div>
-                    <div class="inv-ks-tab" onclick="invSwitchKS('TURBO')" id="inv-ks-TURBO">TURBO</div>
-                    <div class="inv-ks-tab" onclick="invSwitchKS('GASTRO')" id="inv-ks-GASTRO">GASTRO</div>
-                    <div class="inv-ks-tab" onclick="invSwitchKS('SPUTNIK')" id="inv-ks-SPUTNIK">SPUTNIK</div>
-                    <div class="inv-ks-tab" onclick="invSwitchKS('OFFICE')" id="inv-ks-OFFICE">OFFICE</div>
-                    <div style="margin-left:auto;display:flex;gap:5px;">
-                        <button class="inv-btn" onclick="invSelectAll()">Alle &#10003;</button>
-                        <button class="inv-btn" onclick="invClearAll()">Alle &#10005;</button>
+                <div class="inv-split">
+                    <div class="inv-sidebar" id="inv-sidebar"></div>
+                    <div>
+                        <div class="inv-main">
+                            <table class="inv-tbl">
+                                <thead><tr><th style="width:24px;"></th><th>Beleg</th><th>Absender</th><th>Betreff</th><th>Brutto</th><th>Fällig</th></tr></thead>
+                                <tbody id="inv-freigabe-body"><tr><td colspan="6" class="inv-empty">Excel laden um Rechnungen anzuzeigen</td></tr></tbody>
+                            </table>
+                        </div>
+                        <div class="inv-action-bar">
+                            <button class="inv-btn inv-btn-save" onclick="invSpeichern()">&#128257; Speichern</button>
+                            <button class="inv-btn inv-btn-dl" onclick="invDownloadTxt()">&#8681; .txt</button>
+                            <button class="inv-btn inv-btn-sec" onclick="invKopieren()">&#128203; Kopieren</button>
+                            <button class="inv-btn inv-btn-sec" onclick="invEmailDraft()">&#9993; Email</button>
+                            <div class="inv-sum">Freigegeben: <strong id="inv-sum-approved" style="color:#22c55e;">€ 0,00</strong> &nbsp;|&nbsp; Gesamt: <span id="inv-sum-total">—</span></div>
+                        </div>
                     </div>
                 </div>
-                <div style="overflow-x:auto;">
-                    <table class="inv-tbl" id="inv-freigabe-table">
-                        <thead><tr>
-                            <th style="width:28px;"></th>
-                            <th>Beleg</th>
-                            <th>Absender</th>
-                            <th>Betreff</th>
-                            <th>Brutto</th>
-                            <th>Fällig</th>
-                            <th>KS</th>
-                        </tr></thead>
-                        <tbody id="inv-freigabe-body">
-                            <tr><td colspan="7" class="inv-empty">Excel laden um Rechnungen anzuzeigen</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="inv-sum-row">
-                    <span style="color:#888;">Freigegeben:</span>
-                    <span id="inv-sum-approved" style="font-weight:700;color:#22c55e;">€ 0,00</span>
-                    <span style="color:#888;margin-left:8px;">Gesamt offen:</span>
-                    <span id="inv-sum-total" style="font-weight:700;">—</span>
-                </div>
-                <div class="inv-actions">
-                    <button class="inv-btn inv-btn-green" onclick="invSpeichern()">&#128257; Speichern</button>
-                    <button class="inv-btn inv-btn-blue" onclick="invDownloadTxt()">&#8681; Download .txt</button>
-                    <button class="inv-btn" onclick="invKopieren()">&#128203; Kopieren</button>
-                    <button class="inv-btn" onclick="invEmailDraft()">&#9993; Email-Draft</button>
-                </div>
             </div>
-            <!-- TAB: RECHNUNGSBUCH -->
             <div class="inv-tab-content" id="inv-content-buch">
-                <div style="overflow-x:auto;">
-                    <table class="inv-tbl" id="inv-buch-table">
-                        <thead><tr>
-                            <th>Beleg</th>
-                            <th>KS</th>
-                            <th>Absender</th>
-                            <th>Betreff</th>
-                            <th>Brutto</th>
-                            <th>Freigegeben</th>
-                            <th>Status</th>
-                        </tr></thead>
-                        <tbody id="inv-buch-body">
-                            <tr><td colspan="7" class="inv-empty">Noch keine Rechnungen freigegeben</td></tr>
-                        </tbody>
-                    </table>
+                <div id="inv-buch-content" style="padding:8px 0;">
+                    <div class="inv-empty">Excel laden um offene Positionen anzuzeigen</div>
                 </div>
             </div>
         </div>
@@ -4985,7 +4981,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.75</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.76</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5007,8 +5003,6 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.75</div>
-    
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
         <div class="modal-content" style="max-width:900px;height:90vh;display:flex;flex-direction:column;">
@@ -14656,7 +14650,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.75 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.76 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17678,11 +17672,14 @@ Spittelauer Lnde 12/1
         // ═══════════════════════════════════════════════════════
         // ── Tab switching ────────────────────────────────────────
         // ═══════════════════════════════════════════════════════
-        // E13 RECHNUNGEN — v2 (compact)
+        // E13 RECHNUNGEN — v3
         // ═══════════════════════════════════════════════════════
         let invoiceData = [];
         let invKS = 'alle';
         let invTabActive = 'freigabe';
+        const INV_KS_LIST = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
+        const INV_KS_COLOR = {TURBO:'#f59e0b',GASTRO:'#3b82f6',SPUTNIK:'#a855f7',OFFICE:'#22c55e'};
+        const INV_KS_CLASS = {TURBO:'turbo',GASTRO:'gastro',SPUTNIK:'sputnik',OFFICE:'office'};
 
         function invToggleSection() {
             const body = document.getElementById('inv-section-body');
@@ -17710,17 +17707,15 @@ Spittelauer Lnde 12/1
 
         function invSwitchKS(ks) {
             invKS = ks;
-            document.querySelectorAll('.inv-ks-tab').forEach(el => el.classList.remove('active'));
-            const btn = document.getElementById('inv-ks-' + ks);
-            if (btn) btn.classList.add('active');
+            invRenderSidebar();
             invRenderFreigabe();
         }
 
         function invFmtEur(val) {
             if (val === null || val === undefined || val === '') return '';
-            const n = parseFloat(String(val).replace(/[^0-9.,\-]/g,'').replace(',','.'));
-            if (isNaN(n)) return String(val);
-            return '€ ' + n.toLocaleString('de-AT', {minimumFractionDigits:2, maximumFractionDigits:2});
+            const n = parseFloat(String(val).replace(/[^0-9.,-]/g,'').replace(',','.'));
+            if (isNaN(n)) return '';
+            return '€ ' + n.toLocaleString('de-AT',{minimumFractionDigits:2,maximumFractionDigits:2});
         }
 
         function invFmtDate(val) {
@@ -17730,156 +17725,159 @@ Spittelauer Lnde 12/1
             return String(val).substring(0,10);
         }
 
-        function invUrgency(faellig, bezahlt) {
-            if (bezahlt) return 'paid';
-            if (!faellig) return 'none';
-            const d = new Date(faellig);
-            if (isNaN(d)) return 'none';
-            const today = new Date(); today.setHours(0,0,0,0);
-            const diff = Math.floor((d - today) / 86400000);
-            if (diff < 0) return 'overdue';
-            if (diff <= 7) return 'soon';
-            return 'ok';
-        }
-
         function invBadge(faellig, bezahlt) {
-            const u = invUrgency(faellig, bezahlt);
-            const label = faellig ? invFmtDate(faellig) : '—';
-            if (u === 'paid') return '<span class="inv-badge-green">&#10003; bezahlt</span>';
-            if (u === 'overdue') return '<span class="inv-badge-red">' + label + '</span>';
-            if (u === 'soon') return '<span class="inv-badge-amber">' + label + '</span>';
-            if (u === 'ok') return '<span class="inv-badge-green">' + label + '</span>';
-            return '<span class="inv-badge-gray">' + label + '</span>';
+            if (bezahlt) return '<span class="inv-badge-green">&#10003; bezahlt</span>';
+            if (!faellig) return '<span class="inv-badge-gray">—</span>';
+            const d = new Date(faellig instanceof Date ? faellig : String(faellig).substring(0,10));
+            if (isNaN(d)) return '<span class="inv-badge-gray">' + invFmtDate(faellig) + '</span>';
+            const diff = Math.floor((d - new Date().setHours(0,0,0,0)) / 86400000);
+            if (diff < 0) return '<span class="inv-badge-red">' + invFmtDate(faellig) + '</span>';
+            if (diff <= 7) return '<span class="inv-badge-amber">' + invFmtDate(faellig) + '</span>';
+            return '<span class="inv-badge-green">' + invFmtDate(faellig) + '</span>';
         }
 
-        function invGetApprovals() {
-            try { return JSON.parse(localStorage.getItem('inv_approvals') || '{}'); } catch(e) { return {}; }
-        }
-
+        function invGetApprovals() { try { return JSON.parse(localStorage.getItem('inv_approvals') || '{}'); } catch(e) { return {}; } }
         function invSaveApprovals() {
-            const approvals = {};
-            invoiceData.forEach(i => { if (i.approved) approvals[i.beleg] = true; });
-            localStorage.setItem('inv_approvals', JSON.stringify(approvals));
+            const a = {}; invoiceData.forEach(i => { if (i.approved) a[i.beleg] = true; });
+            localStorage.setItem('inv_approvals', JSON.stringify(a));
         }
-
-        function invLoadApprovals() {
-            const saved = invGetApprovals();
-            invoiceData.forEach(i => { i.approved = !!saved[i.beleg]; });
-        }
+        function invLoadApprovals() { const s = invGetApprovals(); invoiceData.forEach(i => { i.approved = !!s[i.beleg]; }); }
 
         function invToggleRow(beleg) {
             const item = invoiceData.find(i => i.beleg === beleg);
-            if (item) { item.approved = !item.approved; invSaveApprovals(); invRenderFreigabe(); }
+            if (item) { item.approved = !item.approved; invSaveApprovals(); invRenderFreigabe(); invUpdateCards(); }
         }
 
-        function invSelectAll() {
-            const visible = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
-            visible.forEach(i => i.approved = true);
-            invSaveApprovals(); invRenderFreigabe();
-        }
-
-        function invClearAll() {
-            const visible = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
-            visible.forEach(i => i.approved = false);
-            invSaveApprovals(); invRenderFreigabe();
+        function invRenderSidebar() {
+            const sb = document.getElementById('inv-sidebar');
+            if (!sb) return;
+            const items = [
+                {ks:'alle', label:'Alle', cls:'all'},
+                ...INV_KS_LIST.map(k => ({ks:k, label:k, cls:INV_KS_CLASS[k]}))
+            ];
+            sb.innerHTML = items.map(it => {
+                const count = it.ks === 'alle' ? invoiceData.length : invoiceData.filter(i => i.ks === it.ks).length;
+                const isActive = invKS === it.ks;
+                return `<div class="inv-sb-item${isActive ? ' active ' + it.cls : ''}" onclick="invSwitchKS('${it.ks}')">
+                    <span><span class="inv-dot ${it.cls}"></span>${it.label}</span>
+                    <span style="font-size:10px;${isActive ? 'color:' + (INV_KS_COLOR[it.ks]||'#fff') : 'color:#555'}">${count}</span>
+                </div>`;
+            }).join('') + '<div style="border-top:0.5px solid var(--border);margin:6px 0;"></div>';
         }
 
         function invRenderFreigabe() {
             const tbody = document.getElementById('inv-freigabe-body');
             if (!tbody) return;
             const rows = invKS === 'alle' ? invoiceData : invoiceData.filter(i => i.ks === invKS);
-            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="7" class="inv-empty">Kein File geladen</td></tr>'; invUpdateSums(); return; }
+            if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="inv-empty">Kein File geladen</td></tr>'; invUpdateSums(); return; }
+            const color = INV_KS_COLOR[invKS] || '#f59e0b';
             tbody.innerHTML = rows.map(item => {
-                const checked = item.approved ? 'checked' : '';
-                const rowClass = item.approved ? ' class="inv-approved"' : '';
-                return `<tr${rowClass}>
-                    <td><input type="checkbox" ${checked} onchange="invToggleRow('${item.beleg.replace(/'/g,"\'")}')"></td>
-                    <td>${item.beleg}</td>
-                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
-                    <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
+                const c = INV_KS_COLOR[item.ks] || '#888';
+                return `<tr id="inv-row-${item.beleg.replace(/[^a-zA-Z0-9]/g,'_')}"${item.approved ? ' class="inv-row-approved"' : ''}>
+                    <td><span class="inv-chk${item.approved ? ' on' : ''}" onclick="invToggleRow('${item.beleg.replace(/'/g,"\'")}')">
+                        ${item.approved ? '&#10003;' : ''}</span></td>
+                    <td style="color:${c};font-weight:500;">${item.beleg}</td>
+                    <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
+                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#888;">${item.gegenstand}</td>
                     <td style="white-space:nowrap;">${invFmtEur(item.brutto)}</td>
                     <td>${invBadge(item.faellig, item.bezahlt)}</td>
-                    <td style="color:#888;font-size:11px;">${item.ks}</td>
                 </tr>`;
             }).join('');
             invUpdateSums();
         }
 
+        function invUpdateCards() {
+            INV_KS_LIST.forEach(ks => {
+                const items = invoiceData.filter(i => i.ks === ks);
+                const total = items.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+                const el_amt = document.getElementById('inv-card-amt-' + ks);
+                const el_cnt = document.getElementById('inv-card-cnt-' + ks);
+                if (el_amt) el_amt.textContent = total ? invFmtEur(total) : '—';
+                if (el_cnt) el_cnt.textContent = items.length ? items.length + ' Position' + (items.length !== 1 ? 'en' : '') + ' offen' : 'keine';
+            });
+        }
+
         function invUpdateSums() {
             const approved = invoiceData.filter(i => i.approved);
-            const sumApproved = approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
-            const sumTotal = invoiceData.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+            const sumA = approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+            const sumT = invoiceData.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
             const el1 = document.getElementById('inv-sum-approved');
             const el2 = document.getElementById('inv-sum-total');
             const hdr = document.getElementById('inv-hdr-info');
-            if (el1) el1.textContent = invFmtEur(sumApproved);
-            if (el2) el2.textContent = invoiceData.length ? invFmtEur(sumTotal) : '—';
-            if (hdr) hdr.textContent = approved.length ? approved.length + ' freigegeben · ' + invFmtEur(sumApproved) : '';
+            if (el1) el1.textContent = invFmtEur(sumA);
+            if (el2) el2.textContent = invoiceData.length ? invFmtEur(sumT) : '—';
+            if (hdr) hdr.textContent = approved.length ? approved.length + ' freigegeben · ' + invFmtEur(sumA) : '';
+        }
+
+        function invJumpToItem(beleg) {
+            invSwitchTab('freigabe');
+            invSwitchKS('alle');
+            setTimeout(() => {
+                const rowId = 'inv-row-' + beleg.replace(/[^a-zA-Z0-9]/g,'_');
+                const el = document.getElementById(rowId);
+                if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline = '2px solid #f59e0b'; setTimeout(() => el.style.outline = '', 1500); }
+            }, 100);
         }
 
         function invRenderBuch() {
-            const tbody = document.getElementById('inv-buch-body');
-            if (!tbody) return;
-            const saved = invGetApprovals();
-            const buchData = JSON.parse(localStorage.getItem('inv_buch') || '[]');
-            if (!buchData.length) { tbody.innerHTML = '<tr><td colspan="7" class="inv-empty">Noch keine Rechnungen freigegeben</td></tr>'; return; }
-            tbody.innerHTML = buchData.map(item => {
-                const status = item.bezahlt
-                    ? '<span class="inv-badge-green">&#10003; bezahlt</span>'
-                    : '<span class="inv-badge-red">offen</span>';
-                return `<tr>
-                    <td>${item.beleg}</td>
-                    <td style="font-size:11px;color:#888;">${item.ks}</td>
-                    <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
-                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
-                    <td style="white-space:nowrap;">${invFmtEur(item.brutto)}</td>
-                    <td style="white-space:nowrap;color:#888;">${item.freigegebenAm || ''}</td>
-                    <td>${status}</td>
-                </tr>`;
-            }).join('');
-        }
-
-        function invSpeichern() {
-            const approved = invoiceData.filter(i => i.approved);
-            if (!approved.length) { showToast('Keine Rechnungen freigegeben', true); return; }
-            const today = new Date().toLocaleDateString('de-AT');
-            const existing = JSON.parse(localStorage.getItem('inv_buch') || '[]');
-            const existingBelege = new Set(existing.map(i => i.beleg));
-            const newItems = approved.filter(i => !existingBelege.has(i.beleg)).map(i => ({...i, freigegebenAm: today}));
-            const updated = [...existing, ...newItems];
-            localStorage.setItem('inv_buch', JSON.stringify(updated));
-            invSaveApprovals();
-            showToast(approved.length + ' Rechnungen gespeichert ✓');
+            const container = document.getElementById('inv-buch-content');
+            if (!container) return;
+            const open = invoiceData.filter(i => !i.bezahlt);
+            if (!open.length) { container.innerHTML = '<div class="inv-empty">Keine offenen Positionen</div>'; return; }
+            let html = '';
+            INV_KS_LIST.forEach(ks => {
+                const items = open.filter(i => i.ks === ks);
+                if (!items.length) return;
+                const cls = INV_KS_CLASS[ks];
+                const total = items.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
+                html += `<div class="inv-buch-ks">
+                    <div class="inv-buch-hdr ${cls}">${ks} <span style="font-weight:400;font-size:10px;">${items.length} offen &nbsp;·&nbsp; ${invFmtEur(total)}</span></div>
+                    <table class="inv-tbl" style="margin-bottom:4px;">
+                        <thead><tr><th>Beleg</th><th>Absender</th><th>Betreff</th><th>Brutto</th><th>Fällig</th><th></th></tr></thead>
+                        <tbody>${items.map(item => `<tr>
+                            <td style="color:${INV_KS_COLOR[ks]};font-weight:500;">${item.beleg}</td>
+                            <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</td>
+                            <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#888;">${item.gegenstand}</td>
+                            <td style="white-space:nowrap;">${invFmtEur(item.brutto)}</td>
+                            <td>${invBadge(item.faellig,'')}</td>
+                            <td><span onclick="invJumpToItem('${item.beleg.replace(/'/g,"\'")}'')" style="font-size:10px;color:#888;cursor:pointer;border:0.5px solid #444;padding:2px 7px;border-radius:3px;">Freigabe &#8599;</span></td>
+                        </tr>`).join('')}</tbody>
+                    </table></div>`;
+            });
+            container.innerHTML = html || '<div class="inv-empty">Alle Positionen bezahlt</div>';
         }
 
         function invBuildText() {
             const approved = invoiceData.filter(i => i.approved);
             if (!approved.length) return null;
             const today = new Date().toLocaleDateString('de-AT');
-            const ksGroups = {};
-            approved.forEach(i => { if (!ksGroups[i.ks]) ksGroups[i.ks] = []; ksGroups[i.ks].push(i); });
+            const groups = {};
+            approved.forEach(i => { if (!groups[i.ks]) groups[i.ks] = []; groups[i.ks].push(i); });
             let lines = ['Freigabe Eingangsrechnungen — ' + today, ''];
-            Object.keys(ksGroups).sort().forEach(ks => {
+            INV_KS_LIST.forEach(ks => {
+                if (!groups[ks]) return;
                 lines.push(ks);
-                ksGroups[ks].forEach(i => {
-                    lines.push('  ' + i.beleg + ' | ' + i.absender + ' | ' + i.gegenstand + ' | ' + invFmtEur(i.brutto) + (i.faellig ? ' | fällig: ' + invFmtDate(i.faellig) : ''));
-                });
+                groups[ks].forEach(i => lines.push('  ' + i.beleg + ' | ' + i.absender + ' | ' + i.gegenstand + ' | ' + invFmtEur(i.brutto) + (i.faellig ? ' | fällig: ' + invFmtDate(i.faellig) : '')));
                 lines.push('');
             });
-            const total = approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0);
-            lines.push('Gesamt freigegeben: ' + invFmtEur(total));
+            lines.push('Gesamt freigegeben: ' + invFmtEur(approved.reduce((s,i) => s + (parseFloat(i.brutto)||0), 0)));
             return lines.join('\n');
+        }
+
+        function invSpeichern() {
+            const approved = invoiceData.filter(i => i.approved);
+            if (!approved.length) { showToast('Keine Rechnungen freigegeben', true); return; }
+            showToast(approved.length + ' Rechnungen gespeichert ✓');
+            invSaveApprovals();
         }
 
         function invDownloadTxt() {
             const text = invBuildText();
             if (!text) { showToast('Keine Rechnungen freigegeben', true); return; }
             const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
             a.download = 'Freigabe_' + new Date().toLocaleDateString('de-AT').replace(/\./g,'-') + '.txt';
-            a.click();
-            showToast('Download gestartet ✓');
+            a.click(); showToast('Download gestartet ✓');
         }
 
         function invKopieren() {
@@ -17898,20 +17896,16 @@ Spittelauer Lnde 12/1
         }
 
         function invoiceHandleUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const fnEl = document.getElementById('invoice-file-name');
-            if (fnEl) fnEl.textContent = file.name;
-            const ext = file.name.split('.').pop().toLowerCase();
-            if (ext !== 'xlsx' && ext !== 'xls') { showToast('Bitte Excel (.xlsx) verwenden', true); return; }
+            const file = event.target.files[0]; if (!file) return;
+            const fnEl = document.getElementById('invoice-file-name'); if (fnEl) fnEl.textContent = file.name;
+            if (!['xlsx','xls'].includes(file.name.split('.').pop().toLowerCase())) { showToast('Bitte Excel (.xlsx) verwenden', true); return; }
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     invPersistFile(e.target.result, file.name);
                     const wb = XLSX.read(e.target.result, {type:'array', cellDates:true});
                     const ws = wb.Sheets[wb.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-                    invParseRows(rows);
+                    invParseRows(XLSX.utils.sheet_to_json(ws, {header:1, defval:''}));
                     showToast(file.name + ' geladen ✓');
                 } catch(err) { showToast('Fehler: ' + err.message, true); }
             };
@@ -17920,92 +17914,67 @@ Spittelauer Lnde 12/1
 
         function invParseRows(rows) {
             invoiceData = [];
-            const ksMap = {'TURBO EG RE':'TURBO','OFFICE EG RE':'OFFICE','GASTRO EG RE':'GASTRO','SPUTNIK EG RE':'SPUTNIK'};
+            const KS_HEADERS = {'TURBO EG RE':'TURBO','OFFICE EG RE':'OFFICE','GASTRO EG RE':'GASTRO','SPUTNIK EG RE':'SPUTNIK'};
             let currentKS = '';
-            rows.forEach((row, idx) => {
+            rows.forEach(row => {
                 if (!row || !row[0]) return;
-                const cell0 = String(row[0]).trim();
-                if (ksMap[cell0]) { currentKS = ksMap[cell0]; return; }
-                if (!currentKS) return;
-                if (/^(Beleg|NaN|SUMME|Gesamt|AR |BEIHILFEN)/i.test(cell0)) return;
-                if (cell0.length > 10) return;
-                const absender = String(row[1] || '').trim();
+                const c0 = String(row[0]).trim();
+                if (KS_HEADERS[c0]) { currentKS = KS_HEADERS[c0]; return; }
+                if (!currentKS || c0.length > 12) return;
+                if (/^(Beleg|SUMME|Gesamt|AR |BEIHILFEN|NaN)/i.test(c0)) return;
+                const absender = String(row[1]||'').trim();
                 if (!absender || absender === 'Absender') return;
-                const brutto = parseFloat(String(row[7] || '').replace(/[^0-9.,\-]/g,'').replace(',','.'));
+                const brutto = parseFloat(String(row[7]||'').replace(/[^0-9.,-]/g,'').replace(',','.'));
                 if (isNaN(brutto)) return;
                 invoiceData.push({
-                    beleg: cell0,
-                    ks: currentKS,
-                    absender: absender,
-                    gegenstand: String(row[2] || '').trim(),
+                    beleg: c0, ks: currentKS, absender,
+                    gegenstand: String(row[2]||'').trim(),
                     datum: invFmtDate(row[3]),
-                    rechNr: String(row[4] || '').trim(),
-                    netto: parseFloat(String(row[5]||'').replace(/[^0-9.,\-]/g,'').replace(',','.')) || 0,
-                    ust: parseFloat(String(row[6]||'').replace(/[^0-9.,\-]/g,'').replace(',','.')) || 0,
-                    brutto: brutto,
-                    faellig: row[8] ? invFmtDate(row[8]) : '',
+                    rechNr: String(row[4]||'').trim(),
+                    netto: parseFloat(String(row[5]||'').replace(/[^0-9.,-]/g,'').replace(',','.')) || 0,
+                    brutto,
+                    faellig: row[8] ? (row[8] instanceof Date ? row[8] : String(row[8])) : '',
                     bezahlt: row[9] ? invFmtDate(row[9]) : '',
                     approved: false
                 });
             });
             invLoadApprovals();
-            invUpdateFileBar();
+            invUpdateCards();
+            invRenderSidebar();
             invRenderFreigabe();
             invUpdateSums();
         }
 
-        function invUpdateFileBar() {
-            const name = localStorage.getItem('inv_file_name') || '';
-            const bar = document.getElementById('inv-file-bar-name');
-            const dateEl = document.getElementById('inv-file-bar-date');
-            if (bar) bar.textContent = name || 'Kein File geladen';
-            if (dateEl) dateEl.textContent = name ? 'geladen ' + new Date().toLocaleDateString('de-AT') : '';
-        }
-
-        function invPersistFile(arrayBuffer, name) {
+        function invPersistFile(buf, name) {
             try {
-                const bytes = new Uint8Array(arrayBuffer);
-                let binary = '';
-                bytes.forEach(b => binary += String.fromCharCode(b));
-                localStorage.setItem('inv_file_b64', btoa(binary));
+                const bytes = new Uint8Array(buf); let bin = '';
+                bytes.forEach(b => bin += String.fromCharCode(b));
+                localStorage.setItem('inv_file_b64', btoa(bin));
                 localStorage.setItem('inv_file_name', name);
-                const reloadBtn = document.getElementById('inv-reload-btn');
-                if (reloadBtn) { reloadBtn.style.display = 'inline-block'; document.getElementById('inv-reload-name').textContent = name; }
-            } catch(e) { console.warn('Invoice persist failed:', e); }
+            } catch(e) {}
         }
 
         function invoiceReloadLastFile() {
-            const b64 = localStorage.getItem('inv_file_b64');
-            const name = localStorage.getItem('inv_file_name');
+            const b64 = localStorage.getItem('inv_file_b64'); const name = localStorage.getItem('inv_file_name');
             if (!b64) { showToast('Kein gespeichertes File', true); return; }
-            const binary = atob(b64);
-            const bytes = new Uint8Array(binary.length);
-            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-            const fnEl = document.getElementById('invoice-file-name');
-            if (fnEl) fnEl.textContent = name || '';
+            const bin = atob(b64); const bytes = new Uint8Array(bin.length);
+            for (let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+            const fnEl = document.getElementById('invoice-file-name'); if (fnEl) fnEl.textContent = name||'';
             try {
-                const wb = XLSX.read(bytes.buffer, {type:'array', cellDates:true});
+                const wb = XLSX.read(bytes.buffer, {type:'array',cellDates:true});
                 const ws = wb.Sheets[wb.SheetNames[0]];
-                const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-                invParseRows(rows);
-                showToast('File geladen: ' + (name||'') + ' ✓');
+                invParseRows(XLSX.utils.sheet_to_json(ws, {header:1, defval:''}));
+                showToast('File geladen ✓');
             } catch(e) { showToast('Fehler: ' + e.message, true); }
         }
 
         function invoiceInitLastFile() {
-            const b64 = localStorage.getItem('inv_file_b64');
-            const name = localStorage.getItem('inv_file_name');
-            if (b64) {
-                const reloadBtn = document.getElementById('inv-reload-btn');
-                if (reloadBtn) { reloadBtn.style.display = 'inline-block'; const rn = document.getElementById('inv-reload-name'); if(rn) rn.textContent = name||'Letztes File'; }
-                invoiceReloadLastFile();
-            }
-            const collapsed = localStorage.getItem('invSectionCollapsed') === 'true';
-            if (collapsed) {
+            if (localStorage.getItem('invSectionCollapsed') === 'true') {
                 document.getElementById('inv-section-body').classList.add('collapsed');
                 document.getElementById('inv-section-toggle').innerHTML = '&#9660;';
             }
-            invRenderBuch();
+            if (localStorage.getItem('inv_file_b64')) invoiceReloadLastFile();
+            else { invRenderSidebar(); invUpdateCards(); }
         }
 
         function invoiceRenderWidget() { invoiceInitLastFile(); }
