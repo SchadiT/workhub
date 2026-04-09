@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.71</title>
+    <title>Turbo Projects Work Hub v15.9.73</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2387,16 +2387,121 @@
         </div>
     </div>
 
-    <!-- E13 Rechnungsstand Widget -->
-    <div id="invoice-status-widget" style="margin-bottom:8px;border:1px solid var(--border);border-radius:0;overflow:hidden;display:none;">
-        <div style="background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="invoiceToggleWidget()">
-            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#f59e0b;text-transform:uppercase;">&#128179; Rechnungsstand</span>
-            <span id="iw-date" style="font-size:11px;color:#888;margin-left:4px;"></span>
-            <span id="iw-total-approved" style="margin-left:auto;font-size:13px;font-weight:700;color:#22c55e;"></span>
-            <span id="iw-toggle-btn" style="font-size:10px;color:#888;">▲</span>
+    <!-- E13 RECHNUNGEN SECTION -->
+    <style>
+        .inv-section { margin-bottom:8px;border:1px solid var(--border);overflow:hidden; }
+        .inv-section-header { background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none; }
+        .inv-section-body { display:block; }
+        .inv-section-body.collapsed { display:none; }
+        .inv-kpi-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 14px 0; }
+        .inv-kpi { background:var(--surface-2);padding:10px 12px; }
+        .inv-kpi-label { font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px; }
+        .inv-kpi-val { font-size:18px;font-weight:700;color:var(--text); }
+        .inv-kpi-sub { font-size:10px;color:#888;margin-top:2px; }
+        .inv-body-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;padding:12px 14px; }
+        .inv-bar-row { display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border); }
+        .inv-bar-row:last-child { border-bottom:none; }
+        .inv-urg-row { display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px; }
+        .inv-urg-row:last-child { border-bottom:none; }
+        .inv-badge { display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 6px;letter-spacing:0.3px; }
+        .inv-badge-red { background:rgba(239,68,68,0.15);color:#ef4444; }
+        .inv-badge-amber { background:rgba(234,179,8,0.15);color:#eab308; }
+        .inv-badge-blue { background:rgba(59,130,246,0.15);color:#3b82f6; }
+        .inv-badge-green { background:rgba(34,197,94,0.15);color:#22c55e; }
+        .inv-controls { display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 14px;border-top:1px solid var(--border);background:var(--surface); }
+        .inv-detail { border-top:1px solid var(--border); }
+        .inv-ks-header { display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;background:var(--surface); }
+        .inv-ks-rows { display:none;overflow-x:auto; }
+        @media(max-width:600px){
+            .inv-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+            .inv-body-grid{grid-template-columns:1fr;}
+        }
+    </style>
+    <div class="inv-section" id="inv-section">
+        <!-- Header -->
+        <div class="inv-section-header" onclick="invToggleSection()">
+            <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:#f59e0b;text-transform:uppercase;">&#128179; RECHNUNGEN</span>
+            <span id="inv-hdr-date" style="font-size:10px;color:#555;"></span>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto;" onclick="event.stopPropagation()">
+                <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
+                <button onclick="document.getElementById('invoice-file-input').click()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">&#128196; Excel laden</button>
+                <button id="inv-reload-btn" onclick="invoiceReloadLastFile()" style="display:none;background:#111;border:1px solid #2a2a2a;color:#888;padding:3px 10px;font-size:11px;cursor:pointer;">&#8679; <span id="inv-reload-name">Letztes File</span></button>
+                <button onclick="invoiceGenerateUpdate()" style="background:#22c55e;border:none;color:#000;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;">&#128257; Speichern</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+                <div style="text-align:right;">
+                    <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Offen</div>
+                    <div id="inv-hdr-open" style="font-size:12px;font-weight:700;color:#ef4444;">—</div>
+                </div>
+                <div style="width:1px;height:20px;background:#2a2a2a;"></div>
+                <div style="text-align:right;">
+                    <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Forder.</div>
+                    <div id="inv-hdr-recv" style="font-size:12px;font-weight:700;color:#3b82f6;">—</div>
+                </div>
+            </div>
+            <span id="inv-section-toggle" style="font-size:10px;color:#555;margin-left:4px;">▲</span>
         </div>
-        <div id="iw-body" style="padding:10px 14px;">
-            <div id="iw-content"></div>
+        <!-- Body -->
+        <div class="inv-section-body" id="inv-section-body">
+            <!-- KPI Row -->
+            <div class="inv-kpi-grid">
+                <div class="inv-kpi">
+                    <div class="inv-kpi-label">Offen zu zahlen</div>
+                    <div class="inv-kpi-val" id="inv-kpi-open" style="color:#ef4444;">—</div>
+                    <div class="inv-kpi-sub" id="inv-kpi-open-sub"></div>
+                </div>
+                <div class="inv-kpi">
+                    <div class="inv-kpi-label">Freigegeben</div>
+                    <div class="inv-kpi-val" id="inv-kpi-approved" style="color:#22c55e;">—</div>
+                    <div class="inv-kpi-sub" id="inv-kpi-approved-sub"></div>
+                </div>
+                <div class="inv-kpi">
+                    <div class="inv-kpi-label">Ausstehend (Forderungen)</div>
+                    <div class="inv-kpi-val" id="inv-kpi-recv" style="color:#3b82f6;">—</div>
+                    <div class="inv-kpi-sub" id="inv-kpi-recv-sub"></div>
+                </div>
+                <div class="inv-kpi">
+                    <div class="inv-kpi-label">Gesamt Kosten</div>
+                    <div class="inv-kpi-val" id="inv-kpi-total">—</div>
+                    <div class="inv-kpi-sub" id="inv-kpi-total-sub"></div>
+                </div>
+            </div>
+            <!-- KS + Dringend -->
+            <div class="inv-body-grid">
+                <div style="padding-right:14px;border-right:1px solid var(--border);">
+                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Freigabe nach Kostenstelle</div>
+                    <div id="inv-ks-bars">
+                        <div style="color:#555;font-size:12px;padding:20px 0;text-align:center;">Kein File geladen</div>
+                    </div>
+                </div>
+                <div style="padding-left:14px;">
+                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Dringend</div>
+                    <div id="inv-urgent-list">
+                        <div style="color:#555;font-size:12px;padding:20px 0;text-align:center;">—</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Controls -->
+            <div class="inv-controls">
+                <span style="font-size:11px;color:#888;">Filter:</span>
+                <button id="inv-filter-all" onclick="invoiceSwitchFilter('all')" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">Alle</button>
+                <button id="inv-filter-open" onclick="invoiceSwitchFilter('open')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">Nur offen</button>
+                <button id="inv-filter-overdue" onclick="invoiceSwitchFilter('overdue')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">&#128308; Überfällig</button>
+                <div style="margin-left:auto;display:flex;gap:6px;">
+                    <button onclick="invoiceSelectAll()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:3px 10px;font-size:11px;cursor:pointer;">Alle ✓</button>
+                    <button onclick="invoiceClearAll()" style="background:#2a1a1a;border:1px solid #555;color:#aaa;padding:3px 10px;font-size:11px;cursor:pointer;">Alle ✗</button>
+                    <button onclick="invoiceCopyDraft()" style="background:#0d1b2a;border:1px solid #1e3a5f;color:#3b82f6;padding:3px 10px;font-size:11px;cursor:pointer;">&#128203; Draft</button>
+                </div>
+            </div>
+            <!-- Detail Table per KS -->
+            <div class="inv-detail" id="inv-detail-container">
+                <div style="padding:30px;text-align:center;color:#555;font-size:12px;">Excel laden um Rechnungen anzuzeigen</div>
+            </div>
+            <!-- Hidden draft textarea for copy function -->
+            <textarea id="invoice-draft-box" style="display:none;">Noch keine Rechnungen freigegeben.</textarea>
+            <!-- Hidden count/total elements for JS compat -->
+            <span id="invoice-count-label" style="display:none;"></span>
+            <span id="invoice-total-label" style="display:none;"></span>
         </div>
     </div>
 
@@ -4364,92 +4469,8 @@
         </div>
     </div>
 
-    <!-- E13 Rechnungsfreigabe Modal -->
-    <style>
-        #invoice-approval-modal .inv-tab-btn { padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:0.5px;background:transparent;border:none;border-bottom:2px solid transparent;color:#888;cursor:pointer;text-transform:uppercase;white-space:nowrap; }
-        #invoice-approval-modal .inv-tab-btn.active { color:#f59e0b;border-bottom-color:#f59e0b; }
-        #invoice-approval-modal .inv-tab-panel { display:none;flex:1;overflow:hidden;flex-direction:column;gap:8px; }
-        #invoice-approval-modal .inv-tab-panel.active { display:flex; }
-        #invoice-ku-table { width:100%;border-collapse:collapse;font-size:13px; }
-        #invoice-ku-table th { padding:8px 12px;text-align:right;color:#888;font-size:11px;font-weight:600;border-bottom:1px solid var(--border); }
-        #invoice-ku-table th:first-child { text-align:left; }
-        #invoice-ku-table td { padding:9px 12px;text-align:right;border-bottom:1px solid #1a1a1a;font-size:12px; }
-        #invoice-ku-table td:first-child { text-align:left;font-weight:700;letter-spacing:0.5px; }
-        #invoice-ku-table tr.ku-total td { border-top:2px solid var(--border);font-weight:700;color:#fff;background:#111;font-size:13px; }
-        @media (max-width:600px) {
-            #invoice-approval-modal .modal-content { height:95vh!important;max-width:100%!important; }
-            #invoice-ku-table { font-size:11px; }
-            #invoice-ku-table th,#invoice-ku-table td { padding:6px 8px; }
-            .inv-controls-row { flex-direction:column;align-items:stretch!important; }
-            .inv-controls-row .modal-btn { width:100%;justify-content:center; }
-            #invoice-approval-modal .inv-tab-btn { padding:6px 10px;font-size:11px; }
-        }
-    </style>
-    <div class="modal-overlay" id="invoice-approval-modal">
-        <div class="modal-content" style="max-width:1100px;height:90vh;display:flex;flex-direction:column;">
-            <div class="modal-header" style="flex-shrink:0;">
-                <h2>&#128179; Rechnungsfreigabe</h2>
-                <button class="modal-close" onclick="closeModal('invoice-approval-modal')">&times;</button>
-            </div>
-            <!-- Upload + Controls -->
-            <div style="flex-shrink:0;padding:10px 12px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;" class="inv-controls-row">
-                <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
-                <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()" style="min-height:38px;">&#128196; Excel laden</button>
-                <span id="invoice-file-name" style="font-size:12px;color:#888;flex:1;min-width:80px;">Kein File geladen</span>
-                <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;min-height:38px;">Alle ✓</button>
-                <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;min-height:38px;">Alle ✗</button>
-            </div>
-            <!-- Tabs -->
-            <div style="flex-shrink:0;display:flex;gap:0;border-bottom:1px solid var(--border);margin:8px 12px 0;overflow-x:auto;">
-                <button class="inv-tab-btn active" id="inv-tab-list" onclick="invoiceSwitchTab('list')">&#128203; Rechnungen</button>
-                <button class="inv-tab-btn" id="inv-tab-ku" onclick="invoiceSwitchTab('ku')">&#128200; Kostenübersicht</button>
-                <button class="inv-tab-btn" id="inv-tab-draft" onclick="invoiceSwitchTab('draft')">&#9998; Draft</button>
-            </div>
-            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:10px 12px;gap:8px;">
-                <!-- TAB: Rechnungen -->
-                <div class="inv-tab-panel active" id="inv-panel-list">
-                    <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0;align-items:center;">
-                        <span style="font-size:11px;color:#888;">Sortieren:</span>
-                        <button id="sort-btn-ks" onclick="invoiceSort('ks')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Kostenstelle</button>
-                        <button id="sort-btn-absender" onclick="invoiceSort('absender')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Absender</button>
-                        <button id="sort-btn-brutto" onclick="invoiceSort('brutto')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Betrag</button>
-                        <button id="sort-btn-faellig" onclick="invoiceSort('faellig')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Fällig</button>
-                    </div>
-                    <div style="flex:1;overflow-y:auto;overflow-x:auto;border:1px solid var(--border);">
-                        <div id="invoice-table-container">
-                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Rechnungen anzuzeigen</div>
-                        </div>
-                    </div>
-                    <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                        <span style="font-size:11px;color:#888;" id="invoice-count-label">0 Rechnungen freigegeben</span>
-                        <span style="font-size:14px;font-weight:700;color:#22c55e;margin-left:auto;" id="invoice-total-label">€ 0,00</span>
-                    </div>
-                </div>
-                <!-- TAB: Kostenübersicht -->
-                <div class="inv-tab-panel" id="inv-panel-ku">
-                    <div style="flex:1;overflow-y:auto;overflow-x:auto;">
-                        <div id="invoice-ku-container">
-                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Übersicht anzuzeigen</div>
-                        </div>
-                    </div>
-                    <div style="flex-shrink:0;display:flex;justify-content:flex-end;">
-                        <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:6px 14px;font-weight:700;">&#128257; Stand speichern</button>
-                    </div>
-                </div>
-                <!-- TAB: Draft -->
-                <div class="inv-tab-panel" id="inv-panel-draft">
-                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0;">
-                        <span style="font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;">&#128196; Freigabe-Draft</span>
-                        <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;min-height:30px;margin-left:auto;">&#128203; Kopieren</button>
-                        <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:4px 12px;min-height:30px;font-weight:700;">&#128257; Stand speichern</button>
-                    </div>
-                    <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:11px;padding:10px;resize:none;line-height:1.6;">Noch keine Rechnungen freigegeben.</textarea>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Security Orders Modal -->
+        <!-- Security Orders Modal -->
     <div class="modal-overlay" id="security-orders-modal">
         <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
@@ -4585,7 +4606,7 @@
                     <span class="tool-icon">&#127860;</span>
                     Hospitality
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('invoice-approval-modal')" style="border-color:#f59e0b;">
+                <button class="tool-btn border-blue" onclick="invScrollTo()" style="border-color:#f59e0b;">
                     <span class="tool-icon">&#128179;</span>
                     Rechnungen
                 </button>
@@ -4966,6 +4987,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.73</span>
     </div>
     
     <!-- Metrics Button -->
@@ -4987,7 +5009,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.71</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.73</div>
     
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
@@ -14636,7 +14658,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.71 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.73 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17666,79 +17688,41 @@ Spittelauer Lnde 12/1
             if (tab === 'draft') invoiceUpdateDraft();
         }
 
-        // ── Kostenübersicht ──────────────────────────────────────
-        function invoiceRenderKU() {
-            const container = document.getElementById('invoice-ku-container');
-            if (!container) return;
-            if (!invoiceData.length) {
-                container.innerHTML = '<div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Übersicht anzuzeigen</div>';
-                return;
-            }
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
-            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#888' };
-
-            let totalAll = 0, totalApproved = 0, totalOpen = 0;
-            let html = '';
-
-            ksOrder.forEach(ks => {
-                const items = invoiceData.filter(i => i.ks === ks);
-                if (!items.length) return;
-                const ksTotal = items.reduce((s,i) => s + i.brutto, 0);
-                const ksApproved = items.filter(i => i.approved).reduce((s,i) => s + i.brutto, 0);
-                const ksOpen = ksTotal - ksApproved;
-                const pct = ksTotal > 0 ? Math.round(ksApproved / ksTotal * 100) : 0;
-                const color = ksColors[ks] || '#888';
-                totalAll += ksTotal; totalApproved += ksApproved; totalOpen += ksOpen;
-
-                // KS header + progress
-                html += `<div style="margin-bottom:4px;border:1px solid #1a1a1a;overflow:hidden;">`;
-                html += `<div style="background:#111;padding:8px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="invoiceKUToggle('ku-rows-${ks}',this)">`;
-                html += `<span style="font-size:11px;font-weight:700;color:${color};min-width:60px;letter-spacing:0.5px;">${ks}</span>`;
-                html += `<div style="flex:1;height:5px;background:#2a2a2a;border-radius:2px;overflow:hidden;"><div style="height:100%;width:${pct}%;background:${color};border-radius:2px;transition:width 0.4s;"></div></div>`;
-                html += `<span style="font-size:11px;color:${color};font-weight:700;min-width:70px;text-align:right;">${invoiceFmtEur(ksApproved)}</span>`;
-                html += `<span style="font-size:10px;color:#555;min-width:70px;text-align:right;">offen: ${invoiceFmtEur(ksOpen)}</span>`;
-                html += `<span style="font-size:10px;color:#888;">${pct}%</span>`;
-                html += `<span style="font-size:10px;color:#555;margin-left:4px;">▼</span>`;
-                html += `</div>`;
-
-                // Positions rows (hidden by default, toggle)
-                html += `<div id="ku-rows-${ks}" style="display:none;overflow-x:auto;">`;
-                html += `<table style="width:100%;border-collapse:collapse;font-size:12px;">`;
-                html += `<thead><tr style="background:#0d0d0d;">`;
-                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;width:36px;">✓</th>`;
-                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Absender</th>`;
-                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Gegenstand</th>`;
-                html += `<th style="padding:6px 12px;text-align:right;color:#555;font-size:10px;font-weight:600;">Betrag</th>`;
-                html += `<th style="padding:6px 12px;text-align:left;color:#555;font-size:10px;font-weight:600;">Fällig</th>`;
-                html += `</tr></thead><tbody>`;
-
-                items.sort((a,b) => b.brutto - a.brutto).forEach(item => {
-                    const statusColor = item.approved ? '#22c55e' : '#ef4444';
-                    const statusIcon = item.approved ? '✅' : '🔴';
-                    const rowBg = item.approved ? 'rgba(34,197,94,0.05)' : 'transparent';
-                    html += `<tr style="background:${rowBg};border-bottom:1px solid #1a1a1a;cursor:pointer;" onclick="invoiceToggle('${item.nr.replace(/'/g,"\\'")}');invoiceRenderKU();">`;
-                    html += `<td style="padding:6px 12px;">${statusIcon}</td>`;
-                    html += `<td style="padding:6px 12px;color:var(--text);font-weight:500;white-space:nowrap;">${item.absender}</td>`;
-                    html += `<td style="padding:6px 12px;color:#aaa;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>`;
-                    html += `<td style="padding:6px 12px;text-align:right;color:${statusColor};font-weight:600;white-space:nowrap;">${invoiceFmtEur(item.brutto)}</td>`;
-                    html += `<td style="padding:6px 12px;color:#888;white-space:nowrap;">${item.faellig||'—'}</td>`;
-                    html += `</tr>`;
-                });
-                html += `</tbody></table></div></div>`;
+        // ── Filter ───────────────────────────────────────────────
+        let invoiceFilter = 'all';
+        function invoiceSwitchFilter(f) {
+            invoiceFilter = f;
+            ['all','open','overdue'].forEach(k => {
+                const btn = document.getElementById('inv-filter-' + k);
+                if (!btn) return;
+                const active = k === f;
+                btn.style.background = active ? '#1e3a5f' : '#1a1a1a';
+                btn.style.color = active ? '#fff' : '#aaa';
+                btn.style.borderColor = active ? '#3b82f6' : '#333';
             });
-
-            // Gesamt row
-            const totalPct = totalAll > 0 ? Math.round(totalApproved / totalAll * 100) : 0;
-            html += `<div style="margin-top:8px;background:#111;border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">`;
-            html += `<span style="font-size:12px;font-weight:700;color:#fff;min-width:60px;">GESAMT</span>`;
-            html += `<div style="flex:1;height:5px;background:#2a2a2a;border-radius:2px;overflow:hidden;min-width:60px;"><div style="height:100%;width:${totalPct}%;background:#22c55e;border-radius:2px;"></div></div>`;
-            html += `<span style="font-size:13px;font-weight:700;color:#22c55e;">${invoiceFmtEur(totalApproved)}</span>`;
-            html += `<span style="font-size:11px;color:#555;">offen: ${invoiceFmtEur(totalOpen)}</span>`;
-            html += `<span style="font-size:11px;color:#888;">${totalPct}%</span>`;
-            html += `</div>`;
-
-            container.innerHTML = html;
+            invoiceRenderDetailTable();
         }
+
+        // ── Urgency helpers ──────────────────────────────────────
+        function invoiceParseDate(str) {
+            if (!str) return null;
+            const p = str.split('.');
+            if (p.length === 3) return new Date(p[2], p[1]-1, p[0]);
+            return null;
+        }
+        function invoiceUrgency(item) {
+            if (item.ks === 'SONSTIGE') return 'recv';
+            if (item.approved) return 'ok';
+            const d = invoiceParseDate(item.faellig);
+            if (!d) return 'open';
+            const today = new Date(); today.setHours(0,0,0,0);
+            const week = new Date(today); week.setDate(week.getDate() + 7);
+            if (d < today) return 'overdue';
+            if (d <= week) return 'soon';
+            return 'open';
+        }
+
+        // ── Kostenübersicht ──────────────────────────────────────
 
         function invoiceKUToggle(id, headerEl) {
             const el = document.getElementById(id);
@@ -17749,34 +17733,305 @@ Spittelauer Lnde 12/1
             if (arrow) arrow.textContent = hidden ? '▲' : '▼';
         }
 
+        // ── Select/deselect per KS ───────────────────────────────
+        function invoiceSelectKS(ks) {
+            invoiceData.filter(i => i.ks === ks).forEach(i => i.approved = true);
+            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
+        }
+        function invoiceClearKS(ks) {
+            invoiceData.filter(i => i.ks === ks).forEach(i => i.approved = false);
+            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
+        }
+
         let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, ks, approved }
         let invoiceSortField = 'ks';
-        let invoiceSortDir = 1; // 1=asc, -1=desc
+        let invoiceSortDir = 1;
 
-        // ── Invoice Status Widget ────────────────────────────────
+        // ── Persistence ──────────────────────────────────────────
+        const INV_FILE_KEY = 'invoice_file_b64';
+        const INV_FILE_NAME_KEY = 'invoice_file_name_saved';
         const IW_KEY = 'invoice_snapshot';
         let iwCollapsed = localStorage.getItem('iwCollapsed') === 'true';
 
+        function invoicePersistFile(arrayBuffer, name) {
+            try {
+                const bytes = new Uint8Array(arrayBuffer);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+                const b64 = btoa(binary);
+                localStorage.setItem(INV_FILE_KEY, b64);
+                localStorage.setItem(INV_FILE_NAME_KEY, name);
+                invoiceShowLastFileInfo(name);
+            } catch(e) { /* localStorage full — skip silently */ }
+        }
+
+        function invoiceShowLastFileInfo(name) {
+            const btn = document.getElementById('inv-reload-btn');
+            const nameEl = document.getElementById('inv-reload-name');
+            if (btn) btn.style.display = 'inline-block';
+            if (nameEl) nameEl.textContent = name.length > 20 ? name.substring(0,18) + '…' : name;
+        }
+
+        function invoiceReloadLastFile() {
+            const b64 = localStorage.getItem(INV_FILE_KEY);
+            const name = localStorage.getItem(INV_FILE_NAME_KEY);
+            if (!b64) { showToast('Kein gespeichertes File', true); return; }
+            const binary = atob(b64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            const nameEl = document.getElementById('invoice-file-name');
+            if (nameEl) nameEl.textContent = name || 'Gespeichertes File';
+            try {
+                const wb = XLSX.read(bytes.buffer, { type: 'array', cellDates: true });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+                invoiceParseRows(rows);
+                showToast('File geladen: ' + (name || '') + ' ✓');
+            } catch(e) { showToast('Fehler beim Laden: ' + e.message, true); }
+        }
+
+        function invoiceOpenWithLastFile() {
+            invScrollTo();
+            setTimeout(() => invoiceReloadLastFile(), 100);
+        }
+
+        function invoiceInitLastFile() {
+            const name = localStorage.getItem(INV_FILE_NAME_KEY);
+            if (name) invoiceShowLastFileInfo(name);
+        }
+
+        // ── Section toggle ───────────────────────────────────────
+        let invSectionCollapsed = localStorage.getItem('invSectionCollapsed') === 'true';
+        function invToggleSection() {
+            invSectionCollapsed = !invSectionCollapsed;
+            localStorage.setItem('invSectionCollapsed', invSectionCollapsed);
+            const body = document.getElementById('inv-section-body');
+            const btn = document.getElementById('inv-section-toggle');
+            if (body) body.classList.toggle('collapsed', invSectionCollapsed);
+            if (btn) btn.textContent = invSectionCollapsed ? '▼' : '▲';
+        }
+        function invScrollTo() {
+            const el = document.getElementById('inv-section');
+            if (!el) return;
+            if (invSectionCollapsed) invToggleSection();
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ── Dashboard render ────────────────────────────────────
+        function invoiceFmtEurShort(n) {
+            if (n >= 1000) return '€\u00a0' + (n/1000).toFixed(1).replace('.',',') + 'k';
+            return '€\u00a0' + n.toLocaleString('de-AT', {minimumFractionDigits:0, maximumFractionDigits:0});
+        }
+
+        function invoiceRenderDashboard() {
+            if (!invoiceData.length) return;
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
+            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7' };
+            const kostAll = invoiceData.filter(i => i.ks !== 'SONSTIGE');
+            const recvAll = invoiceData.filter(i => i.ks === 'SONSTIGE');
+            const approved = kostAll.filter(i => i.approved);
+            const totalKosten = kostAll.reduce((s,i) => s + i.brutto, 0);
+            const totalFreigegeben = approved.reduce((s,i) => s + i.brutto, 0);
+            const totalOffen = totalKosten - totalFreigegeben;
+            const totalRecv = recvAll.reduce((s,i) => s + i.brutto, 0);
+            const pctTotal = totalKosten > 0 ? Math.round(totalFreigegeben / totalKosten * 100) : 0;
+
+            // Header KPIs
+            const hdrOpen = document.getElementById('inv-hdr-open');
+            const hdrRecv = document.getElementById('inv-hdr-recv');
+            if (hdrOpen) hdrOpen.textContent = invoiceFmtEurShort(totalOffen);
+            if (hdrRecv) hdrRecv.textContent = '+ ' + invoiceFmtEurShort(totalRecv);
+
+            // KPI cards
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            set('inv-kpi-open', invoiceFmtEurShort(totalOffen));
+            set('inv-kpi-open-sub', kostAll.filter(i=>!i.approved).length + ' Rechnungen');
+            set('inv-kpi-approved', invoiceFmtEurShort(totalFreigegeben));
+            set('inv-kpi-approved-sub', pctTotal + '% erledigt');
+            set('inv-kpi-recv', '+ ' + invoiceFmtEurShort(totalRecv));
+            set('inv-kpi-recv-sub', recvAll.length + ' Position' + (recvAll.length!==1?'en':''));
+            set('inv-kpi-total', invoiceFmtEurShort(totalKosten));
+            set('inv-kpi-total-sub', kostAll.length + ' Positionen gesamt');
+
+            // KS Bars
+            const barsEl = document.getElementById('inv-ks-bars');
+            if (barsEl) {
+                let bhtml = '';
+                ksOrder.forEach(ks => {
+                    const items = invoiceData.filter(i => i.ks === ks);
+                    if (!items.length) return;
+                    const tot = items.reduce((s,i) => s + i.brutto, 0);
+                    const app = items.filter(i=>i.approved).reduce((s,i) => s + i.brutto, 0);
+                    const pct = tot > 0 ? Math.round(app/tot*100) : 0;
+                    const col = ksColors[ks];
+                    bhtml += `<div class="inv-bar-row">
+                        <span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0;"></span>
+                        <span style="font-size:12px;font-weight:500;color:var(--text);min-width:58px;">${ks}</span>
+                        <div style="flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
+                            <div style="height:100%;width:${pct}%;background:${col};border-radius:2px;"></div>
+                        </div>
+                        <span style="font-size:11px;color:${col};min-width:48px;text-align:right;">${invoiceFmtEurShort(app)}</span>
+                        <span style="font-size:10px;color:#555;min-width:28px;text-align:right;">${pct}%</span>
+                    </div>`;
+                });
+                if (recvAll.length) {
+                    bhtml += `<div class="inv-bar-row" style="margin-top:4px;border-top:1px solid var(--border);padding-top:10px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block;flex-shrink:0;opacity:0.5;"></span>
+                        <span style="font-size:12px;font-weight:500;color:#3b82f6;min-width:58px;">FORDER.</span>
+                        <div style="flex:1;height:4px;background:#1e3a5f;border-radius:2px;"></div>
+                        <span style="font-size:11px;color:#3b82f6;min-width:48px;text-align:right;">+ ${invoiceFmtEurShort(totalRecv)}</span>
+                    </div>`;
+                }
+                barsEl.innerHTML = bhtml || '<div style="color:#555;font-size:12px;padding:10px 0;">Keine Daten</div>';
+            }
+
+            // Dringend List
+            const urgEl = document.getElementById('inv-urgent-list');
+            if (urgEl) {
+                const urgent = kostAll.filter(i => !i.approved && (invoiceUrgency(i) === 'overdue' || invoiceUrgency(i) === 'soon'))
+                    .sort((a,b) => { const ua = invoiceUrgency(a), ub = invoiceUrgency(b); return (ua==='overdue'?0:1)-(ub==='overdue'?0:1) || b.brutto-a.brutto; });
+                const recv = recvAll;
+                let uhtml = '';
+                if (!urgent.length && !recv.length) {
+                    uhtml = '<div style="color:#22c55e;font-size:12px;padding:10px 0;">Alles im grünen Bereich ✓</div>';
+                } else {
+                    urgent.slice(0,6).forEach(item => {
+                        const urg = invoiceUrgency(item);
+                        const badge = urg === 'overdue'
+                            ? '<span class="inv-badge inv-badge-red">ÜBERFÄLLIG</span>'
+                            : '<span class="inv-badge inv-badge-amber">DIESE WOCHE</span>';
+                        const col = urg === 'overdue' ? '#ef4444' : '#eab308';
+                        uhtml += `<div class="inv-urg-row">
+                            ${badge}
+                            <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</span>
+                            <span style="color:${col};font-weight:700;white-space:nowrap;">${invoiceFmtEurShort(item.brutto)}</span>
+                        </div>`;
+                    });
+                    recv.slice(0,3).forEach(item => {
+                        uhtml += `<div class="inv-urg-row">
+                            <span class="inv-badge inv-badge-blue">FORDERUNG</span>
+                            <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.absender}</span>
+                            <span style="color:#3b82f6;font-weight:700;white-space:nowrap;">+ ${invoiceFmtEurShort(item.brutto)}</span>
+                        </div>`;
+                    });
+                }
+                urgEl.innerHTML = uhtml;
+            }
+
+            // Detail table
+            invoiceRenderDetailTable();
+        }
+
+        function invoiceRenderDetailTable() {
+            const container = document.getElementById('inv-detail-container');
+            if (!container || !invoiceData.length) return;
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
+            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7' };
+
+            let filtered = [...invoiceData.filter(i => i.ks !== 'SONSTIGE')];
+            if (invoiceFilter === 'open') filtered = filtered.filter(i => !i.approved);
+            else if (invoiceFilter === 'overdue') filtered = filtered.filter(i => invoiceUrgency(i) === 'overdue');
+
+            let html = '';
+            ksOrder.forEach(ks => {
+                const items = filtered.filter(i => i.ks === ks);
+                if (!items.length) return;
+                const col = ksColors[ks];
+                const tot = invoiceData.filter(i=>i.ks===ks).reduce((s,i)=>s+i.brutto,0);
+                const app = invoiceData.filter(i=>i.ks===ks&&i.approved).reduce((s,i)=>s+i.brutto,0);
+                const domId = 'inv-ks-detail-' + ks;
+                html += `<div class="inv-ks-header" onclick="invToggleKSDetail('${domId}',this)" style="border-top:2px solid ${col};">
+                    <span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block;"></span>
+                    <span style="font-size:11px;font-weight:700;color:${col};letter-spacing:0.5px;flex:1;">${ks}</span>
+                    <button onclick="event.stopPropagation();invoiceSelectKS('${ks}')" style="background:#1e3a5f;border:none;color:#fff;padding:2px 8px;font-size:10px;cursor:pointer;margin-right:4px;">Alle ✓</button>
+                    <button onclick="event.stopPropagation();invoiceClearKS('${ks}')" style="background:#2a1a1a;border:none;color:#aaa;padding:2px 8px;font-size:10px;cursor:pointer;margin-right:8px;">Alle ✗</button>
+                    <span style="font-size:11px;color:${col};">${invoiceFmtEurShort(app)} / ${invoiceFmtEurShort(tot)}</span>
+                    <span style="font-size:10px;color:#555;margin-left:8px;">▼</span>
+                </div>
+                <div class="inv-ks-rows" id="${domId}">
+                    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                    <thead><tr style="background:var(--surface);"><th style="padding:6px 14px;text-align:left;color:#555;font-size:10px;font-weight:600;width:32px;"></th><th style="padding:6px 4px;text-align:left;color:#555;font-size:10px;">Absender</th><th style="padding:6px 4px;text-align:left;color:#555;font-size:10px;">Gegenstand</th><th style="padding:6px 14px;text-align:right;color:#555;font-size:10px;">Betrag</th><th style="padding:6px 10px;text-align:left;color:#555;font-size:10px;">Fällig</th></tr></thead>
+                    <tbody>`;
+                items.sort((a,b)=>b.brutto-a.brutto).forEach(item => {
+                    const urg = invoiceUrgency(item);
+                    const rowBg = item.approved ? 'rgba(34,197,94,0.05)' : urg==='overdue' ? 'rgba(239,68,68,0.05)' : '';
+                    const amtCol = item.approved ? '#22c55e' : urg==='overdue' ? '#ef4444' : urg==='soon' ? '#eab308' : 'var(--text)';
+                    const faelligCol = urg==='overdue' ? '#ef4444' : urg==='soon' ? '#eab308' : '#888';
+                    const urgDot = urg==='overdue' ? '<span style="color:#ef4444;font-size:9px;">●</span>' : urg==='soon' ? '<span style="color:#eab308;font-size:9px;">●</span>' : '';
+                    const nrSafe = item.nr.replace(/'/g,"\\'");
+                    html += `<tr style="background:${rowBg};border-bottom:1px solid var(--border);cursor:pointer;" onclick="invoiceToggle('${nrSafe}')">
+                        <td style="padding:7px 14px;"><input type="checkbox" ${item.approved?'checked':''} onclick="event.stopPropagation();invoiceToggle('${nrSafe}')"> ${urgDot}</td>
+                        <td style="padding:7px 4px;color:var(--text);font-weight:500;white-space:nowrap;">${item.absender}</td>
+                        <td style="padding:7px 4px;color:#888;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>
+                        <td style="padding:7px 14px;text-align:right;color:${amtCol};font-weight:600;white-space:nowrap;">${invoiceFmtEur(item.brutto)}</td>
+                        <td style="padding:7px 10px;color:${faelligCol};white-space:nowrap;">${item.faellig||'—'}</td>
+                    </tr>`;
+                });
+                html += `</tbody></table></div>`;
+            });
+
+            // Forderungen section
+            const recvItems = invoiceData.filter(i=>i.ks==='SONSTIGE');
+            if (recvItems.length) {
+                html += `<div class="inv-ks-header" onclick="invToggleKSDetail('inv-ks-detail-SONSTIGE',this)" style="border-top:2px solid #3b82f6;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;opacity:0.5;display:inline-block;"></span>
+                    <span style="font-size:11px;font-weight:700;color:#3b82f6;letter-spacing:0.5px;flex:1;">FORDERUNGEN</span>
+                    <span style="font-size:11px;color:#3b82f6;">+ ${invoiceFmtEurShort(recvItems.reduce((s,i)=>s+i.brutto,0))}</span>
+                    <span style="font-size:10px;color:#555;margin-left:8px;">▼</span>
+                </div>
+                <div class="inv-ks-rows" id="inv-ks-detail-SONSTIGE"><table style="width:100%;border-collapse:collapse;font-size:12px;"><tbody>`;
+                recvItems.forEach(item => {
+                    html += `<tr style="border-bottom:1px solid var(--border);">
+                        <td style="padding:7px 14px;color:#3b82f6;">↑</td>
+                        <td style="padding:7px 4px;color:#3b82f6;font-weight:500;white-space:nowrap;">${item.absender}</td>
+                        <td style="padding:7px 4px;color:#888;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.gegenstand}</td>
+                        <td style="padding:7px 14px;text-align:right;color:#3b82f6;font-weight:600;white-space:nowrap;">+ ${invoiceFmtEur(item.brutto)}</td>
+                        <td style="padding:7px 10px;color:#888;white-space:nowrap;">${item.faellig||'—'}</td>
+                    </tr>`;
+                });
+                html += `</tbody></table></div>`;
+            }
+
+            container.innerHTML = html || '<div style="padding:20px;text-align:center;color:#555;font-size:12px;">Keine Rechnungen für diesen Filter</div>';
+        }
+
+        function invToggleKSDetail(id, headerEl) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const arrow = headerEl.querySelector('span:last-child');
+            const hidden = el.style.display === 'none' || el.style.display === '';
+            el.style.display = hidden ? 'block' : 'none';
+            if (arrow) arrow.textContent = hidden ? '▲' : '▼';
+        }
+
+        // ── Aliases for compat ───────────────────────────────────
+        function invoiceRenderWidget() { invoiceRenderDashboard(); }
+        function invoiceToggleWidget() { invToggleSection(); }
+        function iwToggleKS(id, rowEl) { invToggleKSDetail(id, rowEl); }
         function invoiceGenerateUpdate() {
-            const approved = invoiceData.filter(i => i.approved);
             const all = invoiceData;
             if (!all.length) { showToast('Kein File geladen', true); return; }
 
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
-            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#888' };
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE'];
+            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#3b82f6' };
+            const approved = all.filter(i => i.approved && i.ks !== 'SONSTIGE');
+            const kostAll = all.filter(i => i.ks !== 'SONSTIGE');
+            const recvAll = all.filter(i => i.ks === 'SONSTIGE');
 
             const snapshot = {
                 date: new Date().toLocaleDateString('de-AT') + ' ' + new Date().toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'}),
-                totalAll: all.reduce((s,i) => s + i.brutto, 0),
-                totalApproved: approved.reduce((s,i) => s + i.brutto, 0),
-                countAll: all.length,
+                totalKosten: kostAll.reduce((s,i) => s + i.brutto, 0),
+                totalFreigegeben: approved.reduce((s,i) => s + i.brutto, 0),
+                totalOffen: kostAll.filter(i => !i.approved).reduce((s,i) => s + i.brutto, 0),
+                totalRecv: recvAll.reduce((s,i) => s + i.brutto, 0),
+                countAll: kostAll.length,
                 countApproved: approved.length,
                 byKs: {}
             };
 
             ksOrder.forEach(ks => {
                 const ksAll = all.filter(i => i.ks === ks);
-                const ksApp = approved.filter(i => i.ks === ks);
+                const ksApp = ksAll.filter(i => i.approved);
                 if (ksAll.length) {
                     snapshot.byKs[ks] = {
                         color: ksColors[ks],
@@ -17785,18 +18040,28 @@ Spittelauer Lnde 12/1
                         countAll: ksAll.length,
                         countApproved: ksApp.length,
                         items: ksAll.sort((a,b) => b.brutto - a.brutto).map(i => ({
-                            absender: i.absender,
-                            gegenstand: i.gegenstand,
-                            brutto: i.brutto,
-                            faellig: i.faellig,
-                            approved: i.approved
+                            absender: i.absender, gegenstand: i.gegenstand,
+                            brutto: i.brutto, faellig: i.faellig,
+                            approved: i.approved, urgency: invoiceUrgency(i)
                         }))
                     };
                 }
             });
 
+            // Receivables separately
+            if (recvAll.length) {
+                snapshot.byKs['SONSTIGE'] = {
+                    color: '#3b82f6', isRecv: true,
+                    totalAll: recvAll.reduce((s,i) => s + i.brutto, 0),
+                    items: recvAll.map(i => ({ absender: i.absender, gegenstand: i.gegenstand, brutto: i.brutto, faellig: i.faellig }))
+                };
+            }
+
             localStorage.setItem(IW_KEY, JSON.stringify(snapshot));
-            invoiceRenderWidget();
+            // Update header date
+            const hdrDate = document.getElementById('inv-hdr-date');
+            if (hdrDate) hdrDate.textContent = 'Stand: ' + snapshot.date;
+            invoiceRenderDashboard();
             showToast('Stand gespeichert ✓');
         }
 
@@ -17823,63 +18088,85 @@ Spittelauer Lnde 12/1
             widget.style.display = 'block';
 
             const dateEl = document.getElementById('iw-date');
-            const totalEl = document.getElementById('iw-total-approved');
+            const kpiOpen = document.getElementById('iw-kpi-open');
+            const kpiRecv = document.getElementById('iw-kpi-recv');
             const body = document.getElementById('iw-body');
             const btn = document.getElementById('iw-toggle-btn');
             const content = document.getElementById('iw-content');
 
-            if (dateEl) dateEl.textContent = 'Stand: ' + snap.date;
-            if (totalEl) totalEl.textContent = invoiceFmtEurShort(snap.totalApproved) + ' freigegeben';
+            if (dateEl) dateEl.textContent = snap.date;
+            if (kpiOpen) kpiOpen.textContent = invoiceFmtEurShort(snap.totalOffen || 0);
+            if (kpiRecv) kpiRecv.textContent = '+ ' + invoiceFmtEurShort(snap.totalRecv || 0);
             if (body) body.style.display = iwCollapsed ? 'none' : 'block';
             if (btn) btn.textContent = iwCollapsed ? '▼' : '▲';
-
             if (!content) return;
 
-            const pctTotal = snap.totalAll > 0 ? Math.round(snap.totalApproved / snap.totalAll * 100) : 0;
-
-            let html = '';
-            // Overall bar
-            html += `<div style="margin-bottom:10px;">
+            const pctTotal = snap.totalKosten > 0 ? Math.round(snap.totalFreigegeben / snap.totalKosten * 100) : 0;
+            let html = `<div style="margin-bottom:10px;">
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
-                    <span>Gesamt: ${snap.countApproved}/${snap.countAll} Rechnungen freigegeben</span>
+                    <span>${snap.countApproved}/${snap.countAll} Rechnungen freigegeben</span>
                     <span style="color:#22c55e;font-weight:700;">${pctTotal}%</span>
                 </div>
-                <div style="height:6px;background:#2a2a2a;border-radius:3px;overflow:hidden;">
+                <div style="height:5px;background:#2a2a2a;border-radius:3px;overflow:hidden;">
                     <div style="height:100%;width:${pctTotal}%;background:#22c55e;border-radius:3px;transition:width 0.4s;"></div>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px;">
-                    <span style="color:#22c55e;font-weight:700;">${invoiceFmtEurShort(snap.totalApproved)} freigegeben</span>
-                    <span style="color:#888;">von ${invoiceFmtEurShort(snap.totalAll)} gesamt</span>
+                    <span style="color:#22c55e;font-weight:700;">${invoiceFmtEurShort(snap.totalFreigegeben)} freigegeben</span>
+                    <span style="color:#ef4444;">${invoiceFmtEurShort(snap.totalOffen)} offen</span>
                 </div>
             </div>`;
 
-            // Per KS: bar + expandable positions
             html += '<div style="display:flex;flex-direction:column;gap:4px;">';
             Object.entries(snap.byKs).forEach(([ks, data]) => {
+                if (data.isRecv) {
+                    // Receivables row
+                    const domId = 'iw-ks-rows-SONSTIGE';
+                    html += `<div><div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
+                        <span style="font-size:10px;font-weight:700;color:#3b82f6;min-width:55px;letter-spacing:0.5px;">FORDER.</span>
+                        <div style="flex:1;height:4px;background:#1e3a5f;border-radius:2px;"></div>
+                        <span style="font-size:11px;color:#3b82f6;font-weight:600;min-width:60px;text-align:right;">+ ${invoiceFmtEurShort(data.totalAll)}</span>
+                        <span style="font-size:9px;color:#555;">▼</span>
+                    </div>`;
+                    if (data.items && data.items.length) {
+                        html += `<div id="${domId}" style="display:none;margin-left:63px;border-left:2px solid #3b82f6;padding-left:8px;margin-bottom:4px;">`;
+                        data.items.forEach(item => {
+                            html += `<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;flex-wrap:wrap;">
+                                <span style="color:#3b82f6;">↑</span>
+                                <span style="color:var(--text);font-weight:500;flex:1;min-width:80px;">${item.absender}</span>
+                                <span style="color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;" title="${item.gegenstand}">${item.gegenstand}</span>
+                                <span style="color:#3b82f6;font-weight:600;white-space:nowrap;">+ ${invoiceFmtEurShort(item.brutto)}</span>
+                            </div>`;
+                        });
+                        html += `</div>`;
+                    }
+                    html += `</div>`;
+                    return;
+                }
+
                 const pct = data.totalAll > 0 ? Math.round(data.totalApproved / data.totalAll * 100) : 0;
                 const remaining = data.totalAll - data.totalApproved;
                 const domId = 'iw-ks-rows-' + ks;
-                // KS bar row (clickable)
-                html += `<div>
-                    <div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
-                        <span style="font-size:10px;font-weight:700;color:${data.color};min-width:55px;letter-spacing:0.5px;">${ks}</span>
-                        <div style="flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;">
-                            <div style="height:100%;width:${pct}%;background:${data.color};border-radius:2px;transition:width 0.4s;opacity:0.85;"></div>
-                        </div>
-                        <span style="font-size:11px;color:${data.color};font-weight:600;min-width:50px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
-                        <span style="font-size:10px;color:#555;min-width:48px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
-                        <span style="font-size:9px;color:#555;">▼</span>
-                    </div>`;
-                // Positions list (collapsed by default)
+                html += `<div><div style="display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;" onclick="iwToggleKS('${domId}',this)">
+                    <span style="font-size:10px;font-weight:700;color:${data.color};min-width:55px;letter-spacing:0.5px;">${ks}</span>
+                    <div style="flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;">
+                        <div style="height:100%;width:${pct}%;background:${data.color};border-radius:2px;opacity:0.85;"></div>
+                    </div>
+                    <span style="font-size:11px;color:${data.color};font-weight:600;min-width:50px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
+                    <span style="font-size:10px;color:#555;min-width:48px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
+                    <span style="font-size:9px;color:#555;">▼</span>
+                </div>`;
                 if (data.items && data.items.length) {
                     html += `<div id="${domId}" style="display:none;margin-left:63px;border-left:2px solid ${data.color};padding-left:8px;margin-bottom:4px;">`;
                     data.items.forEach(item => {
-                        const icon = item.approved ? '✅' : '🔴';
-                        const col = item.approved ? '#22c55e' : '#888';
+                        const urgIcon = item.urgency === 'overdue' ? '<span style="color:#ef4444;font-size:9px;font-weight:700;">●</span>' :
+                                        item.urgency === 'soon'    ? '<span style="color:#eab308;font-size:9px;">●</span>' :
+                                        item.approved              ? '<span style="color:#22c55e;font-size:9px;">✓</span>' :
+                                                                     '<span style="color:#555;font-size:9px;">○</span>';
+                        const col = item.approved ? '#22c55e' : item.urgency === 'overdue' ? '#ef4444' : item.urgency === 'soon' ? '#eab308' : '#888';
                         html += `<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:11px;flex-wrap:wrap;">
-                            <span>${icon}</span>
+                            ${urgIcon}
                             <span style="color:var(--text);font-weight:500;flex:1;min-width:80px;">${item.absender}</span>
-                            <span style="color:#888;flex:2;min-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</span>
+                            <span style="color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;" title="${item.gegenstand}">${item.gegenstand}</span>
                             <span style="color:${col};font-weight:600;white-space:nowrap;">${invoiceFmtEurShort(item.brutto)}</span>
                         </div>`;
                     });
@@ -17888,7 +18175,6 @@ Spittelauer Lnde 12/1
                 html += `</div>`;
             });
             html += '</div>';
-
             content.innerHTML = html;
         }
 
@@ -17902,13 +18188,8 @@ Spittelauer Lnde 12/1
         }
 
         function invoiceSort(field) {
-            if (invoiceSortField === field) {
-                invoiceSortDir *= -1;
-            } else {
-                invoiceSortField = field;
-                invoiceSortDir = field === 'brutto' ? -1 : 1; // default desc for amounts
-            }
-            // Update button styles
+            if (invoiceSortField === field) { invoiceSortDir *= -1; }
+            else { invoiceSortField = field; invoiceSortDir = field === 'brutto' ? -1 : 1; }
             ['ks','absender','brutto','faellig'].forEach(f => {
                 const btn = document.getElementById('sort-btn-' + f);
                 if (!btn) return;
@@ -17927,33 +18208,24 @@ Spittelauer Lnde 12/1
             if (!file) return;
             document.getElementById('invoice-file-name').textContent = file.name;
             const ext = file.name.split('.').pop().toLowerCase();
-            if (ext === 'xlsx' || ext === 'xls') {
-                invoiceReadExcel(file);
-            } else {
-                showToast('Bitte Excel (.xlsx) verwenden', true);
-            }
-        }
-
-        function invoiceReadExcel(file) {
+            if (ext !== 'xlsx' && ext !== 'xls') { showToast('Bitte Excel (.xlsx) verwenden', true); return; }
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
+                    invoicePersistFile(e.target.result, file.name);
                     const wb = XLSX.read(e.target.result, { type: 'array', cellDates: true });
                     const ws = wb.Sheets[wb.SheetNames[0]];
                     const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
                     invoiceParseRows(rows);
-                } catch(err) {
-                    showToast('Fehler beim Lesen: ' + err.message, true);
-                }
+                    showToast(file.name + ' geladen ✓');
+                } catch(err) { showToast('Fehler: ' + err.message, true); }
             };
             reader.readAsArrayBuffer(file);
         }
 
         function invoiceFmtDate(val) {
             if (!val) return '';
-            if (val instanceof Date) {
-                return val.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
-            }
+            if (val instanceof Date) return val.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
             return String(val);
         }
 
@@ -17966,21 +18238,12 @@ Spittelauer Lnde 12/1
 
         function invoiceParseRows(rows) {
             invoiceData = [];
-            // Detect header row — look for "Absender" or "Brutto"
             let headerIdx = -1;
             for (let i = 0; i < Math.min(rows.length, 10); i++) {
                 const row = rows[i].map(v => String(v).toLowerCase());
-                if (row.some(v => v.includes('absender') || v.includes('brutto'))) {
-                    headerIdx = i; break;
-                }
+                if (row.some(v => v.includes('absender') || v.includes('brutto'))) { headerIdx = i; break; }
             }
-
-            // Column mapping based on the actual file structure:
-            // Col0=Beleg-Nr(has T/G/S/O prefix), Col1=Absender, Col2=Gegenstand,
-            // Col3=Datum, Col4=Nummer, Col5=Netto, Col6=Ust, Col7=Brutto, Col8=fällig
             const dataStart = headerIdx >= 0 ? headerIdx + 1 : 1;
-
-            // Detect kostenstelle from Beleg-Nr prefix
             const ksMap = { T: 'TURBO', G: 'GASTRO', S: 'SPUTNIK', O: 'OFFICE' };
 
             for (let i = dataStart; i < rows.length; i++) {
@@ -17988,39 +18251,26 @@ Spittelauer Lnde 12/1
                 if (!row || row.every(v => !v)) continue;
                 const nr = String(row[0] || '').trim();
                 if (!nr) continue;
-                // Skip section headers / totals
                 if (nr.length > 10 || /^(SUMME|TURBO|GASTRO|SPUTNIK|OFFICE|BANK|AR|BELEG)/i.test(nr)) continue;
-                // Get kostenstelle from first letter
                 const ksKey = nr.charAt(0).toUpperCase();
                 const ks = ksMap[ksKey] || 'SONSTIGE';
-
                 const absender = String(row[1] || '').trim();
                 if (!absender) continue;
-
                 const gegenstand = String(row[2] || '').trim();
                 const datum = invoiceFmtDate(row[3]);
                 const brutto = row[7] !== undefined && row[7] !== '' ? row[7] : (row[5] || '');
                 const faellig = invoiceFmtDate(row[8]);
-
-                // Parse brutto as number
                 let bruttoNum = 0;
                 if (brutto !== '') {
                     const bStr = String(brutto).replace(/[€\s]/g,'').replace(',','.');
                     bruttoNum = parseFloat(bStr) || 0;
                 }
-
                 invoiceData.push({ nr, absender, gegenstand, datum, brutto: bruttoNum, faellig, ks, approved: false });
             }
-
-            // Restore saved approvals from localStorage
             const saved = invoiceGetSaved();
-            invoiceData.forEach(item => {
-                if (saved[item.nr]) item.approved = true;
-            });
-
-            invoiceSortField = 'ks';
-            invoiceSortDir = 1;
-            invoiceRenderTable();
+            invoiceData.forEach(item => { if (saved[item.nr]) item.approved = true; });
+            invoiceSortField = 'ks'; invoiceSortDir = 1;
+            invoiceRenderDashboard();
             invoiceUpdateDraft();
         }
 
@@ -18034,90 +18284,28 @@ Spittelauer Lnde 12/1
             localStorage.setItem('invoice_approvals', JSON.stringify(obj));
         }
 
-        function invoiceRenderTable() {
-            const container = document.getElementById('invoice-table-container');
-            if (!invoiceData.length) {
-                container.innerHTML = '<div style="padding:30px;text-align:center;color:#555;">Keine Rechnungen gefunden</div>';
-                return;
-            }
-
-            // Sort data
-            const sorted = [...invoiceData].sort((a, b) => {
-                let va = a[invoiceSortField], vb = b[invoiceSortField];
-                if (invoiceSortField === 'brutto') return (vb - va) * invoiceSortDir * -1;
-                if (invoiceSortField === 'faellig') {
-                    // parse dd.mm.yyyy
-                    const pd = s => { if(!s) return 0; const p=s.split('.'); return p.length===3?new Date(p[2],p[1]-1,p[0]).getTime():0; };
-                    return (pd(va) - pd(vb)) * invoiceSortDir;
-                }
-                return String(va).localeCompare(String(vb), 'de') * invoiceSortDir;
-            });
-
-            // Group by kostenstelle (preserving sort within group, or flat if not ks sort)
-            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
-            const groups = {};
-            ksOrder.forEach(k => groups[k] = []);
-            sorted.forEach(item => { (groups[item.ks] || groups.SONSTIGE).push(item); });
-
-            const ksColors = { TURBO: '#3b82f6', GASTRO: '#22c55e', SPUTNIK: '#f59e0b', OFFICE: '#a855f7', SONSTIGE: '#888' };
-
-            let html = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
-            html += '<thead><tr style="background:#1a1a1a;position:sticky;top:0;">';
-            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;width:32px;">✓</th>';
-            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Beleg</th>';
-            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Absender</th>';
-            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Gegenstand</th>';
-            html += '<th style="padding:8px 10px;text-align:right;color:#888;font-weight:600;">Brutto</th>';
-            html += '<th style="padding:8px 10px;text-align:left;color:#888;font-weight:600;">Fällig</th>';
-            html += '</tr></thead><tbody>';
-
-            Object.entries(groups).forEach(([ks, items]) => {
-                if (!items.length) return;
-                const color = ksColors[ks] || '#888';
-                html += `<tr style="background:#111;"><td colspan="6" style="padding:6px 10px;font-size:11px;font-weight:700;color:${color};letter-spacing:1px;border-top:2px solid ${color};">${ks}</td></tr>`;
-                items.forEach(item => {
-                    const checked = item.approved ? 'checked' : '';
-                    const rowBg = item.approved ? '#0d1f0d' : 'transparent';
-                    html += `<tr style="background:${rowBg};border-bottom:1px solid #1a1a1a;cursor:pointer;" onclick="invoiceToggle('${item.nr.replace(/'/g,"\'")}')">`;
-                    html += `<td style="padding:7px 10px;"><input type="checkbox" ${checked} onclick="event.stopPropagation();invoiceToggle('${item.nr.replace(/'/g,"\'")}')"></td>`;
-                    html += `<td style="padding:7px 10px;color:#888;">${item.nr}</td>`;
-                    html += `<td style="padding:7px 10px;color:var(--text);font-weight:500;">${item.absender}</td>`;
-                    html += `<td style="padding:7px 10px;color:#aaa;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.gegenstand}">${item.gegenstand}</td>`;
-                    html += `<td style="padding:7px 10px;text-align:right;color:${item.approved ? '#22c55e' : '#fff'};font-weight:600;">${invoiceFmtEur(item.brutto)}</td>`;
-                    html += `<td style="padding:7px 10px;color:#888;">${item.faellig}</td>`;
-                    html += '</tr>';
-                });
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        }
 
         function invoiceToggle(nr) {
             const item = invoiceData.find(i => i.nr === nr);
-            if (!item) return;
+            if (!item || item.ks === 'SONSTIGE') return;
             item.approved = !item.approved;
             invoiceSaveApprovals();
-            invoiceRenderTable();
+            invoiceRenderDashboard();
             invoiceUpdateDraft();
         }
 
         function invoiceSelectAll() {
-            invoiceData.forEach(i => i.approved = true);
-            invoiceSaveApprovals();
-            invoiceRenderTable();
-            invoiceUpdateDraft();
+            invoiceData.filter(i => i.ks !== 'SONSTIGE').forEach(i => i.approved = true);
+            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
         }
 
         function invoiceClearAll() {
-            invoiceData.forEach(i => i.approved = false);
-            invoiceSaveApprovals();
-            invoiceRenderTable();
-            invoiceUpdateDraft();
+            invoiceData.filter(i => i.ks !== 'SONSTIGE').forEach(i => i.approved = false);
+            invoiceSaveApprovals(); invoiceRenderDashboard(); invoiceUpdateDraft();
         }
 
         function invoiceUpdateDraft() {
-            const approved = invoiceData.filter(i => i.approved);
+            const approved = invoiceData.filter(i => i.approved && i.ks !== 'SONSTIGE');
             const box = document.getElementById('invoice-draft-box');
             const countEl = document.getElementById('invoice-count-label');
             const totalEl = document.getElementById('invoice-total-label');
@@ -18128,17 +18316,10 @@ Spittelauer Lnde 12/1
                 if (totalEl) totalEl.textContent = '€ 0,00';
                 return;
             }
-
-            // Group by KS for draft
             const groups = {};
-            approved.forEach(item => {
-                if (!groups[item.ks]) groups[item.ks] = [];
-                groups[item.ks].push(item);
-            });
-
+            approved.forEach(item => { if (!groups[item.ks]) groups[item.ks] = []; groups[item.ks].push(item); });
             let total = 0;
             let lines = ['RECHNUNGSFREIGABE — ' + new Date().toLocaleDateString('de-AT'), ''];
-
             Object.entries(groups).forEach(([ks, items]) => {
                 lines.push('── ' + ks + ' ──');
                 items.forEach(item => {
@@ -18149,10 +18330,14 @@ Spittelauer Lnde 12/1
                 });
                 lines.push('');
             });
-
-            lines.push('─'.repeat(52));
-            lines.push('GESAMT: ' + invoiceFmtEur(total));
-
+            const recv = invoiceData.filter(i => i.ks === 'SONSTIGE');
+            if (recv.length) {
+                const recvTotal = recv.reduce((s,i) => s + i.brutto, 0);
+                lines.push('── FORDERUNGEN (ausstehend) ──');
+                recv.forEach(item => { lines.push(`       ${item.absender.substring(0,25).padEnd(25)}  + ${invoiceFmtEur(item.brutto).padStart(12)}`); });
+                lines.push(''); lines.push('FORDERUNGEN GESAMT: + ' + invoiceFmtEur(recvTotal));
+            }
+            lines.push('─'.repeat(52)); lines.push('KOSTEN GESAMT: ' + invoiceFmtEur(total));
             if (box) box.value = lines.join('\n');
             if (countEl) countEl.textContent = approved.length + ' Rechnung' + (approved.length !== 1 ? 'en' : '') + ' freigegeben';
             if (totalEl) totalEl.textContent = invoiceFmtEur(total);
@@ -18160,9 +18345,7 @@ Spittelauer Lnde 12/1
 
         function invoiceCopyDraft() {
             const box = document.getElementById('invoice-draft-box');
-            if (!box || !box.value || box.value === 'Noch keine Rechnungen freigegeben.') {
-                showToast('Keine freigegebenen Rechnungen', true); return;
-            }
+            if (!box || !box.value || box.value === 'Noch keine Rechnungen freigegeben.') { showToast('Keine freigegebenen Rechnungen', true); return; }
             navigator.clipboard.writeText(box.value).then(() => showToast('Draft kopiert ✓'));
         }
 
@@ -18174,6 +18357,7 @@ Spittelauer Lnde 12/1
         document.addEventListener('DOMContentLoaded', function() {
             tpMigrate();
             invoiceRenderWidget();
+            invoiceInitLastFile();
         });
         // ═══════════════════════════════════════════════════════
 
