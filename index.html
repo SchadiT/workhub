@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.68</title>
+    <title>Turbo Projects Work Hub v15.9.70</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4952,7 +4952,7 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.68</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.70</div>
     
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
@@ -5336,7 +5336,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.68</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.70</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -6712,7 +6712,11 @@
             const gard2Time = document.getElementById('fs-gard2-time')?.value || t.gard2;
             const gard3Time = document.getElementById('fs-gard3-time')?.value || t.gard3;
             
-            const secRows = t.security.map((s, i) => `<tr><td>${i === 0 ? 'SECURITY:' : ''}</td><td>${s.time}</td><td>${s.pax}</td></tr>`).join('');
+            // Read from editable form fields if available, else fall back to template
+            const _secData = (typeof fsGetSecurityRows === 'function' && fsGetSecurityRows().length > 0)
+                ? fsGetSecurityRows()
+                : t.security;
+            const secRows = _secData.map((s, i) => `<tr><td>${i === 0 ? 'SECURITY:' : ''}</td><td>${s.time}</td><td>${s.pax}</td></tr>`).join('');
             
             document.getElementById('fs-preview').innerHTML = `
                 <h2>EVENT: <span class="event-name">${eventName.toUpperCase()}</span></h2>
@@ -9834,12 +9838,20 @@
                 label: b.label || ''
             }));
 
+            // Check for cancellation in API response
+            const apiState = (ev.state || ev.status || '').toLowerCase();
+            const apiStatus = apiState.includes('cancel') ? 'CANCELLED' :
+                              apiState.includes('option') ? 'OPTION' : 'CONFIRMED';
+            // Also check description
+            const descLower = (ev.presstext || ev.api_notes || '').toLowerCase();
+            const finalStatus = (descLower.includes('event state: cancelled') || apiState.includes('cancel')) ? 'CANCELLED' : apiStatus;
+
             return {
                 summary,
                 dtstart,
                 dtend: ev.end_time ? new Date(dateStr + 'T' + ev.end_time + ':00') : null,
                 category,
-                status: 'CONFIRMED',
+                status: finalStatus,
                 description: ev.presstext || ev.api_notes || '',
                 doors_open_time: doorsTime,
                 admission: ev.admission || '',
@@ -9852,7 +9864,164 @@
             };
         }
 
+        // ═══════════════════════════════════════════════════════
+        // C18 BMT CHANGE DETECTION
+        // ═══════════════════════════════════════════════════════
+        const BMT_PREV_KEY = 'bmt_prev_snapshot';
+
+        function bmtSnapshotCurrent() {
+            // Saves a lightweight snapshot: { id/summary+date → status }
+            const snap = {};
+            bmtEvents.forEach(ev => {
+                const key = (ev.summary || '') + '|' + (ev.dtstart ? ev.dtstart.toISOString().slice(0,10) : '');
+                snap[key] = ev.status || 'CONFIRMED';
+            });
+            return snap;
+        }
+
+        function bmtDetectChanges() {
+            const prevRaw = localStorage.getItem(BMT_PREV_KEY);
+            const current = bmtSnapshotCurrent();
+
+            if (!prevRaw) {
+                // First load — just save, no comparison
+                localStorage.setItem(BMT_PREV_KEY, JSON.stringify(current));
+                return;
+            }
+
+            let prev = {};
+            try { prev = JSON.parse(prevRaw); } catch(e) {}
+
+            const newCancellations = [];
+            const newConfirmations = []; // O: → C: (silent)
+
+            // Check all events in BOTH prev and current
+            // We also need to catch events that disappeared (were removed = likely cancelled)
+            // and events that changed status
+
+            // 1. Events in prev that are now CANCELLED or missing
+            Object.keys(prev).forEach(key => {
+                const prevStatus = prev[key];
+                const currStatus = current[key];
+                if (prevStatus !== 'CANCELLED' && (currStatus === 'CANCELLED' || currStatus === undefined)) {
+                    // Was active, now cancelled/gone
+                    const parts = key.split('|');
+                    newCancellations.push({ summary: parts[0], date: parts[1] });
+                }
+                if (prevStatus === 'OPTION' && currStatus === 'CONFIRMED') {
+                    newConfirmations.push({ summary: parts[0], date: parts[1] }); // silent
+                }
+            });
+
+            // 2. Events in current that are CANCELLED and weren't in prev
+            Object.keys(current).forEach(key => {
+                if (!prev[key] && current[key] === 'CANCELLED') {
+                    const parts = key.split('|');
+                    newCancellations.push({ summary: parts[0], date: parts[1] });
+                }
+            });
+
+            // Save current as new prev
+            localStorage.setItem(BMT_PREV_KEY, JSON.stringify(current));
+
+            if (newCancellations.length > 0) {
+                bmtHandleCancellations(newCancellations);
+            }
+        }
+
+        function bmtHandleCancellations(cancelled) {
+            cancelled.forEach(ev => {
+                const label = (ev.summary || 'Event') + (ev.date ? ' (' + ev.date + ')' : '');
+
+                // 1. Toast notification
+                showToast('⚠️ CANCELLED: ' + label, true);
+
+                // 2. Store in cancelled log for badge
+                const log = bmtGetCancelledLog();
+                if (!log.find(e => e.summary === ev.summary && e.date === ev.date)) {
+                    log.push({ summary: ev.summary, date: ev.date, detectedAt: new Date().toISOString(), acknowledged: false });
+                    localStorage.setItem('bmt_cancelled_log', JSON.stringify(log));
+                }
+
+                // 3. Email draft to Sofie — check if event is on grelleforelle.com/programm
+                bmtCheckProgrammAndDraft(ev);
+            });
+
+            // Update badge
+            bmtUpdateCancelBadge();
+
+            // Cleaning plan — regenerate if modal open
+            if (document.getElementById('cleaning-modal')?.classList.contains('show')) {
+                generateCleaningSchedule();
+            }
+        }
+
+        function bmtGetCancelledLog() {
+            try { return JSON.parse(localStorage.getItem('bmt_cancelled_log') || '[]'); } catch(e) { return []; }
+        }
+
+        function bmtUpdateCancelBadge() {
+            const log = bmtGetCancelledLog();
+            const unacked = log.filter(e => !e.acknowledged).length;
+            // Find or create badge on BMT button
+            let badge = document.getElementById('bmt-cancel-badge');
+            if (!badge) {
+                const bmtBtn = document.querySelector('[onclick*="loadBMT"], [onclick*="autoLoadBMT"], #bmt-load-btn');
+                if (bmtBtn) {
+                    badge = document.createElement('span');
+                    badge.id = 'bmt-cancel-badge';
+                    badge.style.cssText = 'position:absolute;top:2px;right:2px;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;line-height:16px;text-align:center;display:none;';
+                    bmtBtn.style.position = 'relative';
+                    bmtBtn.appendChild(badge);
+                }
+            }
+            if (badge) {
+                badge.style.display = unacked > 0 ? 'block' : 'none';
+                badge.textContent = unacked;
+            }
+        }
+
+        async function bmtCheckProgrammAndDraft(ev) {
+            // Check grelleforelle.com/programm for the event name
+            // We do a simple fetch + text search — if it contains the summary keyword, draft email
+            const summaryLower = (ev.summary || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (!summaryLower || summaryLower.length < 3) return;
+
+            try {
+                const resp = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://grelleforelle.com/programm'));
+                if (!resp.ok) return;
+                const html = await resp.text();
+                const htmlLower = html.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (htmlLower.includes(summaryLower)) {
+                    // Event is on website — create email draft
+                    bmtCreateCancellationDraft(ev);
+                }
+            } catch(e) {
+                // Silently fail — don't block anything
+                console.log('C18 programm check failed:', e.message);
+            }
+        }
+
+        function bmtCreateCancellationDraft(ev) {
+            const label = (ev.summary || 'Event') + (ev.date ? ' am ' + ev.date : '');
+            const subject = 'Website Update: ' + (ev.summary || 'Event') + ' abgesagt';
+            const body = 'Hi Sofie,\n\n' + label + ' wurde abgesagt und muss von der Website (grelleforelle.com/programm) entfernt werden.\n\nBitte kurz Bescheid wenn erledigt.\n\nDanke & lg\nSchadi';
+
+            // Open email composer with pre-filled draft
+            const subjectEl = document.getElementById('compose-subject');
+            const toEl = document.getElementById('compose-to');
+            const bodyEl = document.getElementById('compose-body');
+            if (subjectEl) subjectEl.value = subject;
+            if (toEl) toEl.value = 'sofie@grelleforelle.com';
+            if (bodyEl) bodyEl.value = body;
+
+            // Switch email modal to compose tab if possible
+            if (typeof showEmailTab === 'function') showEmailTab('compose');
+            showToast('📧 Email Draft für Sofie vorbereitet — öffne Email Hub');
+        }
+
         function afterBMTLoad(source) {
+            bmtDetectChanges();
             renderBMTEvents();
             renderUpcomingFromBMT();
             populateFactsheetDropdown();
@@ -12989,7 +13158,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.68';
+            const HUB_VERSION = 'v15.9.70';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13522,7 +13691,11 @@ Spittelauer Lnde 12/1
             rows.push({ pos: 'SECURITY', zeit: '', name: '', isHeader: true, isBold: true });
 
             // Security rows — from template
-            t.security.forEach((s, idx) => {
+            // Use form fields if available
+            const _dlSecData = (typeof fsGetSecurityRows === 'function' && fsGetSecurityRows().length > 0)
+                ? fsGetSecurityRows()
+                : t.security;
+            _dlSecData.forEach((s, idx) => {
                 const isRedTime = isConcert ? false : (s.time === '00:00' || s.time === '00:30');
                 rows.push({ pos: '', zeit: s.time, name: s.pax, zeitRed: isRedTime });
             });
@@ -14425,7 +14598,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.68 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.70 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
