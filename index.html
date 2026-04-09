@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.65</title>
+    <title>Turbo Projects Work Hub v15.9.68</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2387,6 +2387,19 @@
         </div>
     </div>
 
+    <!-- E13 Rechnungsstand Widget -->
+    <div id="invoice-status-widget" style="margin-bottom:8px;border:1px solid var(--border);border-radius:0;overflow:hidden;display:none;">
+        <div style="background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="invoiceToggleWidget()">
+            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#f59e0b;text-transform:uppercase;">&#128179; Rechnungsstand</span>
+            <span id="iw-date" style="font-size:11px;color:#888;margin-left:4px;"></span>
+            <span id="iw-total-approved" style="margin-left:auto;font-size:13px;font-weight:700;color:#22c55e;"></span>
+            <span id="iw-toggle-btn" style="font-size:10px;color:#888;">▲</span>
+        </div>
+        <div id="iw-body" style="padding:10px 14px;">
+            <div id="iw-content"></div>
+        </div>
+    </div>
+
     <!-- COCKPIT Widget -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <!-- Header -->
@@ -4358,34 +4371,43 @@
                 <h2>&#128179; Rechnungsfreigabe</h2>
                 <button class="modal-close" onclick="closeModal('invoice-approval-modal')">&times;</button>
             </div>
-            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:16px;gap:12px;">
-                <!-- Upload Row -->
-                <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
-                    <input type="file" id="invoice-file-input" accept=".xlsx,.xls,.pdf" style="display:none;" onchange="invoiceHandleUpload(event)">
-                    <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel / PDF laden</button>
-                    <span id="invoice-file-name" style="font-size:12px;color:#888;">Kein File geladen</span>
-                    <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;margin-left:auto;">Alle markieren</button>
-                    <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;">Alle abwählen</button>
+            <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:12px;gap:10px;">
+                <!-- Upload + Controls Row -->
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex-shrink:0;">
+                    <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
+                    <button class="modal-btn primary" onclick="document.getElementById('invoice-file-input').click()" style="min-height:38px;">&#128196; Excel laden</button>
+                    <span id="invoice-file-name" style="font-size:12px;color:#888;flex:1;min-width:80px;">Kein File geladen</span>
+                    <button class="modal-btn" onclick="invoiceSelectAll()" style="background:#1e3a5f;min-height:38px;">Alle ✓</button>
+                    <button class="modal-btn" onclick="invoiceClearAll()" style="background:#2a1a1a;min-height:38px;">Alle ✗</button>
                 </div>
-                <!-- Main Area: Table + Draft -->
-                <div style="flex:1;overflow:hidden;display:flex;gap:12px;">
-                    <!-- Left: Invoice Table -->
-                    <div style="flex:1.6;overflow-y:auto;border:1px solid var(--border);">
+                <!-- Sort Controls -->
+                <div style="display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0;align-items:center;">
+                    <span style="font-size:11px;color:#888;">Sortieren:</span>
+                    <button id="sort-btn-ks" onclick="invoiceSort('ks')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Kostenstelle</button>
+                    <button id="sort-btn-absender" onclick="invoiceSort('absender')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Absender</button>
+                    <button id="sort-btn-brutto" onclick="invoiceSort('brutto')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Betrag</button>
+                    <button id="sort-btn-faellig" onclick="invoiceSort('faellig')" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:4px 10px;font-size:11px;cursor:pointer;border-radius:2px;">Fällig</button>
+                </div>
+                <!-- Main Area: responsive flex -->
+                <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:10px;">
+                    <!-- Table -->
+                    <div style="flex:1.8;overflow-y:auto;overflow-x:auto;border:1px solid var(--border);min-height:120px;">
                         <div id="invoice-table-container">
-                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel oder PDF hochladen um Rechnungen anzuzeigen</div>
+                            <div style="padding:40px;text-align:center;color:#555;font-size:13px;">Excel hochladen um Rechnungen anzuzeigen</div>
                         </div>
                     </div>
-                    <!-- Right: Draft Preview -->
-                    <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                    <!-- Draft Preview -->
+                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-height:100px;">
                         <div style="display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
                             <span style="font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;">&#128196; Freigabe-Draft</span>
-                            <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;">&#128203; Kopieren</button>
+                            <div style="display:flex;gap:6px;align-items:center;">
+                                <span style="font-size:14px;font-weight:700;color:#22c55e;" id="invoice-total-label">€ 0,00</span>
+                                <button class="modal-btn" onclick="invoiceCopyDraft()" style="background:#1e3a5f;font-size:11px;padding:4px 12px;min-height:30px;">&#128203; Kopieren</button>
+                                <button class="modal-btn success" onclick="invoiceGenerateUpdate()" style="font-size:11px;padding:4px 12px;min-height:30px;font-weight:700;">&#128257; Stand speichern</button>
+                            </div>
                         </div>
-                        <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:12px;padding:12px;resize:none;line-height:1.6;">Noch keine Rechnungen freigegeben.</textarea>
-                        <div style="display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
-                            <span style="font-size:11px;color:#888;" id="invoice-count-label">0 Rechnungen freigegeben</span>
-                            <span style="font-size:14px;font-weight:700;color:#22c55e;" id="invoice-total-label">€ 0,00</span>
-                        </div>
+                        <textarea id="invoice-draft-box" readonly style="flex:1;background:#0d1b2a;border:1px solid #1e3a5f;color:#e2e8f0;font-family:monospace;font-size:11px;padding:10px;resize:none;line-height:1.6;min-height:80px;">Noch keine Rechnungen freigegeben.</textarea>
+                        <span style="font-size:11px;color:#888;" id="invoice-count-label">0 Rechnungen freigegeben</span>
                     </div>
                 </div>
             </div>
@@ -4460,123 +4482,7 @@
     </div>
 
     <!-- BRIEFING MODAL -->
-    <div class="modal-overlay" id="briefing-modal">
-        <div class="modal" style="max-width: 900px;">
-            <div class="modal-header">
-                <h3>&#128203; Briefing Generator</h3>
-                <button class="modal-close" onclick="closeModal('briefing-modal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Mode Selection -->
-                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                    <button class="modal-btn" id="briefing-mode-general" onclick="setBriefingMode('general')" style="flex: 1; background: var(--blue-accent);">General Briefing</button>
-                    <button class="modal-btn" id="briefing-mode-weekend" onclick="setBriefingMode('weekend')" style="flex: 1; background: var(--blue-dark);">Weekend Briefing</button>
-                </div>
-                
-                <!-- Department Selection -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Department</label>
-                        <select id="briefing-dept" onchange="updateBriefingPreview()">
-                            <option value="OFFICE">OFFICE</option>
-                            <option value="BAR">BAR</option>
-                            <option value="RUNNER">RUNNER</option>
-                            <option value="TECH">TECH</option>
-                            <option value="SPUTNIK">SPUTNIK</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="briefing-date-single">
-                        <label>Date</label>
-                        <input type="date" id="briefing-date" onchange="updateBriefingPreview()">
-                    </div>
-                    <div class="form-group">
-                        <label>Subject</label>
-                        <input type="text" id="briefing-subject" placeholder="e.g. Weekly Update, Event Prep..." oninput="updateBriefingPreview()">
-                    </div>
-                </div>
-                
-                <!-- Weekend Date Row (hidden by default) -->
-                <div class="form-row" id="briefing-weekend-dates" style="display: none;">
-                    <div class="form-group">
-                        <label>Friday Date</label>
-                        <input type="date" id="briefing-date-fri" onchange="updateBriefingPreview()">
-                    </div>
-                    <div class="form-group">
-                        <label>Saturday Date</label>
-                        <input type="date" id="briefing-date-sat" onchange="updateBriefingPreview()">
-                    </div>
-                </div>
-                
-                <!-- GENERAL MODE CONTENT -->
-                <div id="briefing-general-content">
-                    <div class="form-group">
-                        <label>General Info / Notes</label>
-                        <textarea id="briefing-general-text" rows="8" placeholder="Enter briefing content here...&#10;&#10;Use bullet points:&#10;&#8226; Point 1&#10;&#8226; Point 2&#10;&#8226; Point 3" oninput="updateBriefingPreview()"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>&#128157; Attachments (optional)</label>
-                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
-                            <input type="file" id="briefing-files" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
-                            <button class="modal-btn" onclick="document.getElementById('briefing-files').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
-                            <div id="briefing-file-preview" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- WEEKEND MODE CONTENT -->
-                <div id="briefing-weekend-content" style="display: none;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <!-- Friday Column -->
-                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
-                            <h4 style="color: #3b82f6; margin-bottom: 10px;">&#128188; FRIDAY</h4>
-                            <div class="form-group">
-                                <label>Event Name</label>
-                                <input type="text" id="briefing-fri-event" placeholder="Event name..." oninput="updateBriefingPreview()">
-                            </div>
-                            <div class="form-group">
-                                <label>Notes / Instructions</label>
-                                <textarea id="briefing-fri-text" rows="6" placeholder="Friday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
-                            </div>
-                        </div>
-                        <!-- Saturday Column -->
-                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
-                            <h4 style="color: #f59e0b; margin-bottom: 10px;">&#128188; SATURDAY</h4>
-                            <div class="form-group">
-                                <label>Event Name</label>
-                                <input type="text" id="briefing-sat-event" placeholder="Event name..." oninput="updateBriefingPreview()">
-                            </div>
-                            <div class="form-group">
-                                <label>Notes / Instructions</label>
-                                <textarea id="briefing-sat-text" rows="6" placeholder="Saturday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label>&#128157; Attachments (optional)</label>
-                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
-                            <input type="file" id="briefing-files-weekend" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
-                            <button class="modal-btn" onclick="document.getElementById('briefing-files-weekend').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
-                            <div id="briefing-file-preview-weekend" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Preview -->
-                <div style="margin-top: 20px; padding: 15px; background: var(--bg); border: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 10px;">&#128190; Preview</h4>
-                    <div id="briefing-preview" style="font-family: monospace; font-size: 13px; white-space: pre-wrap;"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('briefing-modal')">Close</button>
-                <button class="modal-btn" onclick="clearBriefing()" style="background: #dc2626;">&#127759; Clear</button>
-                <button class="modal-btn primary" onclick="copyBriefing()">&#128203; Copy</button>
-                <button class="modal-btn success" onclick="downloadBriefingPDF()">&#128190; PDF</button>
-            </div>
-        </div>
-    </div>
+
     
 
     
@@ -4612,14 +4518,10 @@
                     <span class="tool-icon">&#127939;</span>
                     Runner Staff
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('briefing-modal')">
-                    <span class="tool-icon">&#128203;</span>
-                    Briefing
-                </button>
-                <button class="tool-btn border-blue" onclick="openModal('notepad-modal')" style="position: relative;">
+                <button class="tool-btn border-blue" onclick="openEditor('notepad')" style="position:relative;">
                     <span class="notepad-badge hidden" id="notepad-badge">0</span>
-                    <span class="tool-icon">&#128221;</span>
-                    Notepad
+                    <span class="tool-icon">&#9998;</span>
+                    Editor
                 </button>
                 <button class="tool-btn border-blue" onclick="openInbox()" style="position:relative;">
                     <span class="tool-icon">&#9993;</span>
@@ -5050,33 +4952,144 @@
         </div>
     </div>
 
-    <div class="version" id="hub-version-footer">Work Hub v15.9.65</div>
+    <div class="version" id="hub-version-footer">Work Hub v15.9.68</div>
     
-    <!-- Notepad Modal -->
-    <div class="modal-overlay" id="notepad-modal">
-        <div class="modal" style="max-width: 900px; height: 80vh;">
-            <div class="modal-header">
-                <h3>&#128221; Notepad</h3>
-                <button class="modal-close" onclick="closeModal('notepad-modal')">&times;</button>
+    <!-- EDITOR Modal (Notepad + Briefing) -->
+    <div class="modal-overlay" id="editor-modal">
+        <div class="modal-content" style="max-width:900px;height:90vh;display:flex;flex-direction:column;">
+            <div class="modal-header" style="flex-shrink:0;padding:0 16px 0 0;display:flex;align-items:stretch;">
+                <button id="editor-tab-notepad" onclick="editorSwitchTab('notepad')"
+                    style="background:#1e3a5f;color:#fff;border:none;border-bottom:2px solid #3b82f6;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;">
+                    &#128221; Notepad
+                </button>
+                <button id="editor-tab-briefing" onclick="editorSwitchTab('briefing')"
+                    style="background:transparent;color:#888;border:none;border-bottom:2px solid transparent;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;">
+                    &#128203; Briefing
+                </button>
+                <button class="modal-close" onclick="closeModal('editor-modal')" style="margin-left:auto;">&times;</button>
             </div>
-            <div class="modal-body" style="display: flex; flex-direction: column; height: calc(100% - 130px); padding: 15px;">
-                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <button class="modal-btn" onclick="copyNotepad()" style="background: var(--blue-accent); color: #fff;">&#128203; Copy</button>
-                    <button class="modal-btn success" onclick="downloadNotepad()" style="color: #fff;">&#128190; Save TXT</button>
-                    <button class="modal-btn" onclick="document.getElementById('notepad-upload').click()" style="background: #6b7280; color: #fff;">&#128194; Load</button>
-                    <input type="file" id="notepad-upload" accept=".txt" onchange="loadNotepadFile(event)" style="display: none;">
-                    <button class="modal-btn" onclick="emailNotepad()" style="background: var(--blue-medium); color: #fff;">&#9993; Email</button>
-                    <button class="modal-btn" onclick="clearNotepad()" style="background: #dc3545; color: #fff;">&#128465; Clear</button>
-                    <span class="save-indicator" id="notepad-saved" style="margin-left: auto; color: var(--good); font-size: 12px;">&#10004; Auto-saved</span>
+            <!-- Notepad Pane -->
+            <div id="editor-pane-notepad" style="flex:1;display:flex;flex-direction:column;overflow:hidden;padding:12px;">
+                <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;flex-shrink:0;">
+                    <button class="modal-btn" onclick="copyNotepad()" style="background:var(--blue-accent);color:#fff;">&#128203; Copy</button>
+                    <button class="modal-btn success" onclick="downloadNotepad()" style="color:#fff;">&#128190; Save TXT</button>
+                    <button class="modal-btn" onclick="document.getElementById('notepad-upload').click()" style="background:#6b7280;color:#fff;">&#128194; Load</button>
+                    <input type="file" id="notepad-upload" accept=".txt" onchange="loadNotepadFile(event)" style="display:none;">
+                    <button class="modal-btn" onclick="emailNotepad()" style="background:var(--blue-medium);color:#fff;">&#9993; Email</button>
+                    <button class="modal-btn" onclick="clearNotepad()" style="background:#dc3545;color:#fff;">&#128465; Clear</button>
+                    <span class="save-indicator" id="notepad-saved" style="margin-left:auto;color:var(--good);font-size:12px;">&#10004; Auto-saved</span>
                 </div>
-                <textarea id="notepad-text" 
-                    style="flex: 1; width: 100%; resize: none; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 15px; background: var(--blue-dark); color: #fff; border: 1px solid var(--border); tab-size: 4;"
-                    placeholder="Write your notes here...&#10;&#10;&#8226; Use bullet points&#10;   - Indented details&#10;   - More details&#10;&#10;&#8226; Another heading&#10;   - Sub-point&#10;&#10;Press Tab for indentation"
+                <textarea id="notepad-text"
+                    style="flex:1;width:100%;resize:none;font-family:'Courier New',monospace;font-size:14px;line-height:1.6;padding:15px;background:var(--blue-dark);color:#fff;border:1px solid var(--border);tab-size:4;"
+                    placeholder="Write your notes here..."
                     oninput="saveNotepad()"
                     onkeydown="handleNotepadTab(event)"></textarea>
             </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('notepad-modal')">Close</button>
+            <!-- Briefing Pane -->
+            <div id="editor-pane-briefing" style="flex:1;display:none;flex-direction:column;overflow-y:auto;">
+<div class="modal-body">
+                <!-- Mode Selection -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="modal-btn" id="briefing-mode-general" onclick="setBriefingMode('general')" style="flex: 1; background: var(--blue-accent);">General Briefing</button>
+                    <button class="modal-btn" id="briefing-mode-weekend" onclick="setBriefingMode('weekend')" style="flex: 1; background: var(--blue-dark);">Weekend Briefing</button>
+                </div>
+                
+                <!-- Department Selection -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select id="briefing-dept" onchange="updateBriefingPreview()">
+                            <option value="OFFICE">OFFICE</option>
+                            <option value="BAR">BAR</option>
+                            <option value="RUNNER">RUNNER</option>
+                            <option value="TECH">TECH</option>
+                            <option value="SPUTNIK">SPUTNIK</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="briefing-date-single">
+                        <label>Date</label>
+                        <input type="date" id="briefing-date" onchange="updateBriefingPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="briefing-subject" placeholder="e.g. Weekly Update, Event Prep..." oninput="updateBriefingPreview()">
+                    </div>
+                </div>
+                
+                <!-- Weekend Date Row (hidden by default) -->
+                <div class="form-row" id="briefing-weekend-dates" style="display: none;">
+                    <div class="form-group">
+                        <label>Friday Date</label>
+                        <input type="date" id="briefing-date-fri" onchange="updateBriefingPreview()">
+                    </div>
+                    <div class="form-group">
+                        <label>Saturday Date</label>
+                        <input type="date" id="briefing-date-sat" onchange="updateBriefingPreview()">
+                    </div>
+                </div>
+                
+                <!-- GENERAL MODE CONTENT -->
+                <div id="briefing-general-content">
+                    <div class="form-group">
+                        <label>General Info / Notes</label>
+                        <textarea id="briefing-general-text" rows="8" placeholder="Enter briefing content here...&#10;&#10;Use bullet points:&#10;&#8226; Point 1&#10;&#8226; Point 2&#10;&#8226; Point 3" oninput="updateBriefingPreview()"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>&#128157; Attachments (optional)</label>
+                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
+                            <input type="file" id="briefing-files" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
+                            <div id="briefing-file-preview" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WEEKEND MODE CONTENT -->
+                <div id="briefing-weekend-content" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <!-- Friday Column -->
+                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
+                            <h4 style="color: #3b82f6; margin-bottom: 10px;">&#128188; FRIDAY</h4>
+                            <div class="form-group">
+                                <label>Event Name</label>
+                                <input type="text" id="briefing-fri-event" placeholder="Event name..." oninput="updateBriefingPreview()">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes / Instructions</label>
+                                <textarea id="briefing-fri-text" rows="6" placeholder="Friday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
+                            </div>
+                        </div>
+                        <!-- Saturday Column -->
+                        <div style="background: var(--blue-dark); padding: 15px; border: 1px solid var(--border);">
+                            <h4 style="color: #f59e0b; margin-bottom: 10px;">&#128188; SATURDAY</h4>
+                            <div class="form-group">
+                                <label>Event Name</label>
+                                <input type="text" id="briefing-sat-event" placeholder="Event name..." oninput="updateBriefingPreview()">
+                            </div>
+                            <div class="form-group">
+                                <label>Notes / Instructions</label>
+                                <textarea id="briefing-sat-text" rows="6" placeholder="Saturday briefing...&#10;&#8226; Point 1&#10;&#8226; Point 2" oninput="updateBriefingPreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>&#128157; Attachments (optional)</label>
+                        <div style="border: 2px dashed var(--border); padding: 20px; text-align: center; border-radius: 4px;">
+                            <input type="file" id="briefing-files-weekend" multiple accept="image/*" onchange="handleBriefingFiles(event)" style="display: none;">
+                            <button class="modal-btn" onclick="document.getElementById('briefing-files-weekend').click()" style="background: var(--blue-dark);">&#128247; Add Images</button>
+                            <div id="briefing-file-preview-weekend" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div style="margin-top: 20px; padding: 15px; background: var(--bg); border: 1px solid var(--border);">
+                    <h4 style="margin-bottom: 10px;">&#128190; Preview</h4>
+                    <div id="briefing-preview" style="font-family: monospace; font-size: 13px; white-space: pre-wrap;"></div>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -5323,7 +5336,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.65</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.68</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -8240,6 +8253,24 @@
         }
         
         // Notepad Functions
+        function openEditor(tab) {
+            openModal('editor-modal');
+            editorSwitchTab(tab || 'notepad');
+        }
+
+        function editorSwitchTab(tab) {
+            ['notepad','briefing'].forEach(t => {
+                const btn = document.getElementById('editor-tab-' + t);
+                const pane = document.getElementById('editor-pane-' + t);
+                if (btn) {
+                    btn.style.background = t === tab ? '#1e3a5f' : 'transparent';
+                    btn.style.color = t === tab ? '#fff' : '#888';
+                    btn.style.borderBottom = t === tab ? '2px solid #3b82f6' : '2px solid transparent';
+                }
+                if (pane) pane.style.display = t === tab ? 'flex' : 'none';
+            });
+        }
+
         function updateNotepadCounter() {
             const text = document.getElementById('notepad-text')?.value || '';
             const lines = text.split('\n');
@@ -12958,7 +12989,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.65';
+            const HUB_VERSION = 'v15.9.68';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13830,7 +13861,7 @@ Spittelauer Lnde 12/1
         
         // Initialize briefing on modal open
         document.getElementById('briefing-modal')?.addEventListener('click', function(e) {
-            if (e.target === this) closeModal('briefing-modal');
+            if (e.target === this) closeModal('editor-modal');
         });
         
         // ==========================================
@@ -14394,7 +14425,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.65 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.68 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17414,7 +17445,145 @@ Spittelauer Lnde 12/1
         // ═══════════════════════════════════════════════════════
         // E13 RECHNUNGSFREIGABE
         // ═══════════════════════════════════════════════════════
-        let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, kostenstelle, approved }
+        let invoiceData = []; // { nr, absender, gegenstand, datum, brutto, faellig, ks, approved }
+        let invoiceSortField = 'ks';
+        let invoiceSortDir = 1; // 1=asc, -1=desc
+
+        // ── Invoice Status Widget ────────────────────────────────
+        const IW_KEY = 'invoice_snapshot';
+        let iwCollapsed = localStorage.getItem('iwCollapsed') === 'true';
+
+        function invoiceGenerateUpdate() {
+            const approved = invoiceData.filter(i => i.approved);
+            const all = invoiceData;
+            if (!all.length) { showToast('Kein File geladen', true); return; }
+
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
+            const ksColors = { TURBO:'#3b82f6', GASTRO:'#22c55e', SPUTNIK:'#f59e0b', OFFICE:'#a855f7', SONSTIGE:'#888' };
+
+            const snapshot = {
+                date: new Date().toLocaleDateString('de-AT') + ' ' + new Date().toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'}),
+                totalAll: all.reduce((s,i) => s + i.brutto, 0),
+                totalApproved: approved.reduce((s,i) => s + i.brutto, 0),
+                countAll: all.length,
+                countApproved: approved.length,
+                byKs: {}
+            };
+
+            ksOrder.forEach(ks => {
+                const ksAll = all.filter(i => i.ks === ks);
+                const ksApp = approved.filter(i => i.ks === ks);
+                if (ksAll.length) {
+                    snapshot.byKs[ks] = {
+                        color: ksColors[ks],
+                        totalAll: ksAll.reduce((s,i) => s + i.brutto, 0),
+                        totalApproved: ksApp.reduce((s,i) => s + i.brutto, 0),
+                        countAll: ksAll.length,
+                        countApproved: ksApp.length
+                    };
+                }
+            });
+
+            localStorage.setItem(IW_KEY, JSON.stringify(snapshot));
+            invoiceRenderWidget();
+            showToast('Stand gespeichert ✓');
+        }
+
+        function invoiceToggleWidget() {
+            iwCollapsed = !iwCollapsed;
+            localStorage.setItem('iwCollapsed', iwCollapsed);
+            const body = document.getElementById('iw-body');
+            const btn = document.getElementById('iw-toggle-btn');
+            if (body) body.style.display = iwCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = iwCollapsed ? '▼' : '▲';
+        }
+
+        function invoiceFmtEurShort(n) {
+            if (n >= 1000) return '€ ' + (n/1000).toFixed(1).replace('.',',') + 'k';
+            return '€ ' + n.toLocaleString('de-AT', {minimumFractionDigits:0, maximumFractionDigits:0});
+        }
+
+        function invoiceRenderWidget() {
+            const raw = localStorage.getItem(IW_KEY);
+            const widget = document.getElementById('invoice-status-widget');
+            if (!raw || !widget) return;
+
+            const snap = JSON.parse(raw);
+            widget.style.display = 'block';
+
+            const dateEl = document.getElementById('iw-date');
+            const totalEl = document.getElementById('iw-total-approved');
+            const body = document.getElementById('iw-body');
+            const btn = document.getElementById('iw-toggle-btn');
+            const content = document.getElementById('iw-content');
+
+            if (dateEl) dateEl.textContent = 'Stand: ' + snap.date;
+            if (totalEl) totalEl.textContent = invoiceFmtEurShort(snap.totalApproved) + ' freigegeben';
+            if (body) body.style.display = iwCollapsed ? 'none' : 'block';
+            if (btn) btn.textContent = iwCollapsed ? '▼' : '▲';
+
+            if (!content) return;
+
+            // Build visual overview
+            const pctTotal = snap.totalAll > 0 ? Math.round(snap.totalApproved / snap.totalAll * 100) : 0;
+
+            let html = '';
+            // Overall bar
+            html += `<div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;">
+                    <span>Gesamt: ${snap.countApproved}/${snap.countAll} Rechnungen freigegeben</span>
+                    <span style="color:#22c55e;font-weight:700;">${pctTotal}%</span>
+                </div>
+                <div style="height:6px;background:#2a2a2a;border-radius:3px;overflow:hidden;">
+                    <div style="height:100%;width:${pctTotal}%;background:#22c55e;border-radius:3px;transition:width 0.4s;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px;">
+                    <span style="color:#22c55e;font-weight:700;">${invoiceFmtEurShort(snap.totalApproved)} freigegeben</span>
+                    <span style="color:#888;">von ${invoiceFmtEurShort(snap.totalAll)} gesamt</span>
+                </div>
+            </div>`;
+
+            // Per KS rows
+            html += '<div style="display:flex;flex-direction:column;gap:6px;">';
+            Object.entries(snap.byKs).forEach(([ks, data]) => {
+                const pct = data.totalAll > 0 ? Math.round(data.totalApproved / data.totalAll * 100) : 0;
+                const remaining = data.totalAll - data.totalApproved;
+                html += `<div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+                        <span style="font-size:10px;font-weight:700;color:${data.color};min-width:55px;letter-spacing:0.5px;">${ks}</span>
+                        <div style="flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;">
+                            <div style="height:100%;width:${pct}%;background:${data.color};border-radius:2px;transition:width 0.4s;opacity:0.85;"></div>
+                        </div>
+                        <span style="font-size:11px;color:${data.color};font-weight:600;min-width:56px;text-align:right;">${invoiceFmtEurShort(data.totalApproved)}</span>
+                        <span style="font-size:10px;color:#555;min-width:52px;text-align:right;">offen: ${invoiceFmtEurShort(remaining)}</span>
+                    </div>
+                </div>`;
+            });
+            html += '</div>';
+
+            content.innerHTML = html;
+        }
+
+        function invoiceSort(field) {
+            if (invoiceSortField === field) {
+                invoiceSortDir *= -1;
+            } else {
+                invoiceSortField = field;
+                invoiceSortDir = field === 'brutto' ? -1 : 1; // default desc for amounts
+            }
+            // Update button styles
+            ['ks','absender','brutto','faellig'].forEach(f => {
+                const btn = document.getElementById('sort-btn-' + f);
+                if (!btn) return;
+                const active = f === invoiceSortField;
+                btn.style.background = active ? '#1e3a5f' : '#1a1a1a';
+                btn.style.color = active ? '#fff' : '#aaa';
+                btn.style.borderColor = active ? '#3b82f6' : '#333';
+                btn.textContent = btn.textContent.replace(' ↑','').replace(' ↓','');
+                if (active) btn.textContent += invoiceSortDir === 1 ? ' ↑' : ' ↓';
+            });
+            invoiceRenderTable();
+        }
 
         function invoiceHandleUpload(event) {
             const file = event.target.files[0];
@@ -17423,9 +17592,8 @@ Spittelauer Lnde 12/1
             const ext = file.name.split('.').pop().toLowerCase();
             if (ext === 'xlsx' || ext === 'xls') {
                 invoiceReadExcel(file);
-            } else if (ext === 'pdf') {
-                showToast('PDF-Parsing: Bitte Excel verwenden für beste Ergebnisse', true);
-                invoiceReadExcel(file); // attempt anyway
+            } else {
+                showToast('Bitte Excel (.xlsx) verwenden', true);
             }
         }
 
@@ -17513,6 +17681,8 @@ Spittelauer Lnde 12/1
                 if (saved[item.nr]) item.approved = true;
             });
 
+            invoiceSortField = 'ks';
+            invoiceSortDir = 1;
             invoiceRenderTable();
             invoiceUpdateDraft();
         }
@@ -17534,9 +17704,23 @@ Spittelauer Lnde 12/1
                 return;
             }
 
-            // Group by kostenstelle
-            const groups = { TURBO: [], GASTRO: [], SPUTNIK: [], OFFICE: [], SONSTIGE: [] };
-            invoiceData.forEach(item => { (groups[item.ks] || groups.SONSTIGE).push(item); });
+            // Sort data
+            const sorted = [...invoiceData].sort((a, b) => {
+                let va = a[invoiceSortField], vb = b[invoiceSortField];
+                if (invoiceSortField === 'brutto') return (vb - va) * invoiceSortDir * -1;
+                if (invoiceSortField === 'faellig') {
+                    // parse dd.mm.yyyy
+                    const pd = s => { if(!s) return 0; const p=s.split('.'); return p.length===3?new Date(p[2],p[1]-1,p[0]).getTime():0; };
+                    return (pd(va) - pd(vb)) * invoiceSortDir;
+                }
+                return String(va).localeCompare(String(vb), 'de') * invoiceSortDir;
+            });
+
+            // Group by kostenstelle (preserving sort within group, or flat if not ks sort)
+            const ksOrder = ['TURBO','GASTRO','SPUTNIK','OFFICE','SONSTIGE'];
+            const groups = {};
+            ksOrder.forEach(k => groups[k] = []);
+            sorted.forEach(item => { (groups[item.ks] || groups.SONSTIGE).push(item); });
 
             const ksColors = { TURBO: '#3b82f6', GASTRO: '#22c55e', SPUTNIK: '#f59e0b', OFFICE: '#a855f7', SONSTIGE: '#888' };
 
@@ -17652,6 +17836,7 @@ Spittelauer Lnde 12/1
 
         document.addEventListener('DOMContentLoaded', function() {
             tpMigrate();
+            invoiceRenderWidget();
         });
         // ═══════════════════════════════════════════════════════
 
