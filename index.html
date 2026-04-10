@@ -18172,9 +18172,48 @@ Spittelauer Lnde 12/1
             if (hint) hint.style.display = 'none';
 
             try {
+                // Fetch all lists, match by name
+                const listsRes = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists',
+                    { headers: { Authorization: 'Bearer ' + token } });
+                const listsData = await listsRes.json();
+                const allLists = listsData.value || [];
+
+                // Name matching — flexible (case-insensitive, partial)
+                const NAME_MAP = {
+                    office:  ['office', 'büro', 'admin'],
+                    bar:     ['bar', 'gastro'],
+                    runner:  ['runner', 'service'],
+                    technik: ['technik', 'tech', 'it'],
+                    sputnik: ['sputnik'],
+                };
+
+                // Build resolved list IDs
+                const resolvedIds = {};
+                allLists.forEach(list => {
+                    const n = (list.displayName || '').toLowerCase();
+                    for (const [dept, keywords] of Object.entries(NAME_MAP)) {
+                        if (!resolvedIds[dept] && keywords.some(kw => n.includes(kw))) {
+                            resolvedIds[dept] = list.id;
+                        }
+                    }
+                    // Also match hardcoded TODO_LISTS IDs as fallback
+                    for (const [dept, id] of Object.entries(TODO_LISTS)) {
+                        if (!resolvedIds[dept] && list.id === id) {
+                            resolvedIds[dept] = list.id;
+                        }
+                    }
+                });
+
+                // If no match found for any dept, log available lists for debugging
+                const matched = Object.keys(resolvedIds).length;
+                console.log('COCKPIT lists matched:', matched, 'of 5');
+                console.log('Available lists:', allLists.map(l => l.displayName + ' → ' + l.id));
+                console.log('Resolved:', resolvedIds);
+
+                // Fetch tasks for each matched dept
                 await Promise.all(CP_DEPTS.map(async dept => {
-                    const listId = TODO_LISTS[dept.key];
-                    if (!listId) return;
+                    const listId = resolvedIds[dept.key] || TODO_LISTS[dept.key];
+                    if (!listId) { cockpitData.byDept[dept.key] = []; return; }
                     try {
                         const res = await fetch(
                             `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$top=100&$select=id,title,status,dueDateTime,importance,createdDateTime`,
@@ -18182,17 +18221,21 @@ Spittelauer Lnde 12/1
                         );
                         const data = await res.json();
                         cockpitData.byDept[dept.key] = data.value || [];
+                        // Store resolved ID for toggleTask
+                        TODO_LISTS[dept.key] = listId;
                     } catch(e) { cockpitData.byDept[dept.key] = []; }
                 }));
 
                 cockpitData.lastLoad = new Date();
                 cockpitRender();
+                const total = Object.values(cockpitData.byDept).flat().length;
                 if (statusEl) {
                     const ts = cockpitData.lastLoad.toLocaleTimeString('de-DE', {hour:'2-digit',minute:'2-digit'});
-                    statusEl.textContent = 'Stand: ' + ts;
+                    statusEl.textContent = `Stand: ${ts} · ${total} Tasks`;
                 }
             } catch(err) {
                 if (statusEl) statusEl.textContent = '❌ ' + err.message;
+                console.error('COCKPIT load error:', err);
             }
         }
 
