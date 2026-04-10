@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.79</title>
+    <title>Turbo Projects Work Hub v15.9.80</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -249,8 +249,8 @@
             justify-content: space-between;
             background: var(--blue-dark);
             border: 1px solid #fff;
-            padding: 12px 20px;
-            margin-bottom: 16px;
+            padding: 7px 14px;
+            margin-bottom: 8px;
         }
         .header-left {
             display: flex;
@@ -295,9 +295,9 @@
         .header-btn {
             background: var(--blue-dark);
             border: 1px solid #fff;
-            padding: 8px 14px;
+            padding: 4px 10px;
             color: #fff;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -641,36 +641,8 @@
         }
         .section-content-box.open { display: block; }
         
-        /* Upcoming Events */
-        .upcoming-events-section { margin-bottom: 0; }
-        .upcoming-section-header {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-        }
-        .upcoming-section-header:hover { background: var(--blue-medium); }
-        .upcoming-section-header.collapsed { }
-        .upcoming-title-row { display: flex; align-items: center; gap: 12px; }
-        .upcoming-title { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
-        .upcoming-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
-        .upcoming-toggle.open { transform: rotate(180deg); }
-        #upcoming-events-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-top: none;
-            padding: 16px;
-        }
-        .upcoming-collapsed { display: none; }
-        .upcoming-expanded { display: block; }
-        .upcoming-placeholder { text-align: center; padding: 30px; color: var(--text-secondary); background: var(--surface-2); }
-        .upcoming-placeholder p { margin: 0 0 8px 0; font-size: 13px; }
-        .upcoming-placeholder small { font-size: 11px; color: var(--muted); }
-        .upcoming-count { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 2px 8px; font-size: 10px; font-weight: 600; }
+        /* Upcoming Events — REMOVED v15.9.80 */
+
         
         /* Individual Event Card - Collapsible */
         .upcoming-event-card {
@@ -2310,7 +2282,7 @@
         .mini-email-date { font-size: 10px; color: var(--text-muted); min-width: 45px; text-align: right; }
         /* Widget blocks */
         .widgets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-        .widget-block { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 300px; max-height: 380px; }
+        .widget-block { background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 300px; max-height: 400px; min-width: 0; overflow: hidden; }
         .widget-block-hdr { background: #0d1b2a; padding: 9px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
         .widget-block-hdr .wbh-title { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
@@ -2379,13 +2351,6 @@
             <span class="auth-user" id="auth-user">Not signed in</span>
         </div>
         <div class="header-center">
-            <div class="header-stats">
-                <span class="header-stat operative"><span id="top-stat-operative">0</span> Operative Notes</span>
-                <span class="header-stat"><span id="top-stat-tasks">0</span> Tasks</span>
-                <span class="header-stat"><span id="top-stat-projects">0</span> Projects</span>
-                <span class="header-stat"><span id="top-stat-notes">0</span> Notes</span>
-                <span class="header-stat urgent"><span id="top-stat-urgent">0</span> Urgent</span>
-            </div>
             <div class="header-logo-group">
                 <span class="header-logo">TURBO</span>
                 <span class="header-title">Work Hub</span>
@@ -4813,31 +4778,17 @@
     
     <div class="responsive-grid" id="responsive-grid">
     
-    <div class="upcoming-events-section grid-item">
-        <div class="upcoming-section-header" onclick="toggleUpcomingSection()">
-            <div class="upcoming-title-row">
-                <span class="upcoming-title">UPCOMING EVENTS</span>
-                <span class="upcoming-count" id="upcoming-count">0</span>
-            </div>
-            <span class="upcoming-toggle" id="upcoming-toggle">v</span>
-        </div>
-        <div id="upcoming-events-container" class="upcoming-collapsed">
-            <div class="upcoming-placeholder" id="upcoming-placeholder">
-                <p>Upload BMT .ics Datei um Events zu sehen</p>
-                <small>Events werden automatisch aus BookMeTender geladen</small>
-            </div>
-        </div>
-    </div>
+    <!-- Upcoming Events section removed v15.9.80 — redundant with BMT calendar -->
     
     <!-- CALENDAR SECTION -->
-    <div class="calendar-section grid-item">
-        <div class="calendar-section-header collapsed" onclick="toggleCalendarSection()">
+    <div class="calendar-section grid-item open">
+        <div class="calendar-section-header" onclick="toggleCalendarSection()">
             <div class="calendar-title-row">
                 <span class="calendar-title">CALENDAR</span>
             </div>
             <span class="calendar-toggle" id="calendar-toggle">V</span>
         </div>
-        <div id="calendar-container" class="calendar-collapsed">
+        <div id="calendar-container" class="calendar-expanded">
             <div class="calendar-filters">
                 <label class="calendar-filter-item">
                     <input type="checkbox" id="filter-eigen" checked onchange="renderCalendar()">
@@ -5068,7 +5019,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.79</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.80</span>
     </div>
     
     <!-- Metrics Button -->
@@ -10342,21 +10293,15 @@
             }
         }
         
-        // Toggle Upcoming Events Section (whole section)
+        // Upcoming Events removed v15.9.80
+        function toggleUpcomingSection() { /* removed */ }
+        // ---- placeholder to preserve structure below ----
         let upcomingSectionOpen = false;
-        function toggleUpcomingSection() {
-            const container = document.getElementById('upcoming-events-container');
-            const toggle = document.getElementById('upcoming-toggle');
-            const header = document.querySelector('.upcoming-section-header');
-            const section = document.querySelector('.upcoming-events-section');
+        if (false) {
+            const container = null; const toggle = null; const header = null; const section = null;
             upcomingSectionOpen = !upcomingSectionOpen;
-            
             if (upcomingSectionOpen) {
-                container.classList.remove('upcoming-collapsed');
-                container.classList.add('upcoming-expanded');
                 toggle.style.transform = 'rotate(180deg)';
-                header.classList.remove('collapsed');
-                section.classList.add('open');
             } else {
                 container.classList.add('upcoming-collapsed');
                 container.classList.remove('upcoming-expanded');
@@ -10733,7 +10678,7 @@
         }
         
         // Render Upcoming Events from BMT data (next 4 events)
-        function renderUpcomingFromBMT() {
+        function renderUpcomingFromBMT() { return; /* removed v15.9.80 */
             const container = document.getElementById('upcoming-events-container');
             const countBadge = document.getElementById('upcoming-count');
             
@@ -11925,7 +11870,7 @@ Spittelauer Lnde 12/1
             return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         }
         
-        function updateUpcomingEvents() {
+        function updateUpcomingEvents() { return; /* removed v15.9.80 */
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const currentKW = getWeekNumber(now);
@@ -13070,8 +13015,14 @@ Spittelauer Lnde 12/1
             const container = document.getElementById('calendar-container');
             const toggle = document.getElementById('calendar-toggle');
             const section = document.querySelector('.calendar-section');
-            
-            if (container.classList.contains('calendar-collapsed')) {
+            const isOpen = section.classList.contains('open');
+            if (isOpen) {
+                container.classList.add('calendar-collapsed');
+                container.classList.remove('calendar-expanded');
+                header.classList.add('collapsed');
+                toggle.classList.remove('open');
+                section.classList.remove('open');
+            } else {
                 container.classList.remove('calendar-collapsed');
                 container.classList.add('calendar-expanded');
                 header.classList.remove('collapsed');
@@ -13079,12 +13030,6 @@ Spittelauer Lnde 12/1
                 section.classList.add('open');
                 renderCalendar();
                 loadCalendarData();
-            } else {
-                container.classList.add('calendar-collapsed');
-                container.classList.remove('calendar-expanded');
-                header.classList.add('collapsed');
-                toggle.classList.remove('open');
-                section.classList.remove('open');
             }
         }
         
@@ -13343,7 +13288,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.70';
+            const HUB_VERSION = 'v15.9.80';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -13363,6 +13308,9 @@ Spittelauer Lnde 12/1
             updateFactsheetPreview();
             refreshBMTFromStorage();
             populateFactsheetDropdown();
+            // v15.9.80: auto-expand calendar
+            renderCalendar();
+            setTimeout(() => loadCalendarData(), 300);
             
             // v15.9.6: Set current calendar week in Event Projector
             const currentKW = new Date().toISOString().slice(0,10);
@@ -17078,7 +17026,7 @@ Spittelauer Lnde 12/1
 
         function openInbox() {
             openModal('email-modal');
-            if (accessToken) inboxLoad();
+            inboxLoad();
         }
 
         function inboxSwitchTab(tab) {
@@ -17091,159 +17039,94 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxLoad() {
-            const mailToken = await getMailToken();
-            if (!mailToken) {
-                document.getElementById('inbox-list').innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">Bitte zuerst Microsoft einloggen.</div>';
-                return;
-            }
             const unreadOnly = document.getElementById('inbox-unread-only')?.checked;
             const status = document.getElementById('inbox-load-status');
             if (status) status.textContent = 'Lädt…';
             const list = document.getElementById('inbox-list');
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade Emails…</div>';
-
             try {
-                const filter = unreadOnly ? "&$filter=isRead eq false" : "";
-                const res = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$top=25&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview${filter}`,
-                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
-                );
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=list');
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
-                const emails = data.value || [];
-
-                // Update badge
-                const unreadCount = emails.filter(e => !e.isRead).length;
+                if (data.error) throw new Error(data.error);
+                let emails = data.emails || [];
+                if (unreadOnly) emails = emails.filter(e => !e.read);
+                const unreadCount = emails.filter(e => !e.read).length;
                 inboxUpdateBadge(unreadCount);
                 if (status) status.textContent = `${emails.length} Email${emails.length !== 1 ? 's' : ''}`;
-
                 if (emails.length === 0) {
                     list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">&#10003; ' + (unreadOnly ? 'Keine ungelesenen Emails' : 'Keine Emails gefunden') + '</div>';
                     return;
                 }
-
-                const now = new Date();
                 list.innerHTML = '';
                 emails.forEach(email => {
-                    const received = new Date(email.receivedDateTime);
-                    const daysDiff = (now - received) / (1000 * 60 * 60 * 24);
-                    const isOverdue = !email.isRead && daysDiff >= 3;
-                    const isFlagged = email.flag?.flagStatus === 'flagged';
-                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
-                    const dateStr = inboxFormatDate(received);
-
+                    const ts = email.ts * 1000;
+                    const daysDiff = (Date.now() - ts) / (1000*60*60*24);
+                    const isOverdue = !email.read && daysDiff >= 3;
                     const row = document.createElement('div');
-                    row.className = 'email-row' + (isOverdue ? ' overdue' : (isFlagged ? ' flagged-row' : (!email.isRead ? ' unread' : '')));
+                    row.className = 'email-row' + (isOverdue ? ' overdue' : (email.flagged ? ' flagged-row' : (!email.read ? ' unread' : '')));
                     row.innerHTML = `
                         <div style="flex:1;min-width:0;">
                             <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
-                                <span class="email-sender">${escHtml(senderName)}</span>
+                                <span class="email-sender">${escHtml(email.fromName || email.from)}</span>
                                 ${isOverdue ? '<span class="email-overdue-tag">&#9888; ' + Math.floor(daysDiff) + 'd ungelesen</span>' : ''}
-                                ${isFlagged ? '<span style="color:#f59e0b;font-size:12px;">&#127988;</span>' : ''}
-                                <span class="email-date">${dateStr}</span>
+                                ${email.flagged ? '<span style="color:#f59e0b;font-size:12px;">&#127988;</span>' : ''}
+                                <span class="email-date">${email.date}</span>
                             </div>
-                            <div class="email-subject ${!email.isRead ? 'unread-text' : ''}">${escHtml(email.subject || '(kein Betreff)')}</div>
-                            <div class="email-preview">${escHtml(email.bodyPreview || '')}</div>
+                            <div class="email-subject ${!email.read ? 'unread-text' : ''}">${escHtml(email.subject || '(kein Betreff)')}</div>
+                            <div class="email-preview">${escHtml(email.preview || '')}</div>
                         </div>
                         <div class="email-actions" onclick="event.stopPropagation()">
-                            <button class="email-action-btn" onclick="inboxOpenReply('${email.id}','${escAttr(senderName)}','${escAttr(email.from?.emailAddress?.address||'')}')" title="Antworten">&#8617;</button>
-                            <button class="email-action-btn" onclick="inboxToggleFlag('${email.id}',${isFlagged},this)" title="${isFlagged ? 'Flag entfernen' : 'Flaggen'}" style="${isFlagged ? 'color:#f59e0b;' : ''}">&#127988;</button>
-                            ${!email.isRead ? `<button class="email-action-btn" onclick="inboxMarkRead('${email.id}',this.closest('.email-row'))" title="Als gelesen markieren">&#10003;</button>` : ''}
-                        </div>
-                    `;
-                    list.appendChild(row);
-                });
-            } catch (err) {
-                list.innerHTML = `<div style="padding:20px;color:#ef4444;text-align:center;">Fehler: ${err.message}</div>`;
-                if (status) status.textContent = 'Fehler';
-            }
-        }
-
-        async function inboxLoadFlagged() {
-            const mailToken = await getMailToken();
-            if (!mailToken) return;
-            const list = document.getElementById('flagged-list');
-            list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade geflaggte Emails…</div>';
-            try {
-                const res = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/messages?$filter=flag/flagStatus eq 'flagged'&$top=25&$count=true&$select=id,subject,from,receivedDateTime,isRead,flag,bodyPreview`,
-                    { headers: { 'Authorization': 'Bearer ' + mailToken, 'ConsistencyLevel': 'eventual' } }
-                );
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
-                const emails = data.value || [];
-
-                if (emails.length === 0) {
-                    list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">Keine geflaggten Emails</div>';
-                    return;
-                }
-                list.innerHTML = '';
-                emails.forEach(email => {
-                    const received = new Date(email.receivedDateTime);
-                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
-                    const row = document.createElement('div');
-                    row.className = 'email-row flagged-row';
-                    row.innerHTML = `
-                        <div style="flex:1;min-width:0;">
-                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
-                                <span class="email-sender">${escHtml(senderName)}</span>
-                                <span style="color:#f59e0b;font-size:12px;">&#127988; Flagged</span>
-                                <span class="email-date">${inboxFormatDate(received)}</span>
-                            </div>
-                            <div class="email-subject ${!email.isRead ? 'unread-text' : ''}">${escHtml(email.subject || '(kein Betreff)')}</div>
-                            <div class="email-preview">${escHtml(email.bodyPreview || '')}</div>
-                        </div>
-                        <div class="email-actions" onclick="event.stopPropagation()">
-                            <button class="email-action-btn" onclick="inboxOpenReply('${email.id}','${escAttr(senderName)}','${escAttr(email.from?.emailAddress?.address||'')}')" title="Antworten">&#8617;</button>
-                            <button class="email-action-btn" onclick="inboxToggleFlag('${email.id}',true,this)" title="Flag entfernen" style="color:#f59e0b;">&#127988;</button>
+                            <button class="email-action-btn" onclick="inboxOpenReply(${email.uid},'${escAttr(email.fromName||email.from)}','${escAttr(email.from)}')" title="Antworten">&#8617;</button>
                         </div>
                     `;
                     list.appendChild(row);
                 });
             } catch(err) {
                 list.innerHTML = `<div style="padding:20px;color:#ef4444;">Fehler: ${err.message}</div>`;
+                if (status) status.textContent = 'Fehler';
+            }
+        }
+        async function inboxLoadFlagged() {
+            const list = document.getElementById('flagged-list');
+            list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade…</div>';
+            try {
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=list');
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                const emails = (data.emails || []).filter(e => e.flagged);
+                if (emails.length === 0) { list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">Keine geflaggten Emails</div>'; return; }
+                list.innerHTML = '';
+                emails.forEach(email => {
+                    const row = document.createElement('div');
+                    row.className = 'email-row flagged-row';
+                    row.innerHTML = `<div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;"><span class="email-sender">${escHtml(email.fromName||email.from)}</span><span style="color:#f59e0b;font-size:12px;">&#127988; Flagged</span><span class="email-date">${email.date}</span></div><div class="email-subject ${!email.read?'unread-text':''}">${escHtml(email.subject||'(kein Betreff)')}</div><div class="email-preview">${escHtml(email.preview||'')}</div></div>`;
+                    list.appendChild(row);
+                });
+            } catch(err) { list.innerHTML = `<div style="padding:20px;color:#ef4444;">Fehler: ${err.message}</div>`; }
+        }
+        async function inboxMarkRead(id, rowEl) {
+            // Proxy marks as read automatically via ?action=read&uid=N
+            if (rowEl) {
+                rowEl.classList.remove('unread','overdue');
+                const btn = rowEl.querySelector('[title="Als gelesen markieren"]');
+                if (btn) btn.remove();
+                const badge = document.getElementById('inbox-unread-badge');
+                if (badge && badge.style.display !== 'none') {
+                    const count = Math.max(0, parseInt(badge.textContent) - 1);
+                    inboxUpdateBadge(count);
+                }
             }
         }
 
-        async function inboxMarkRead(id, rowEl) {
-            const mailToken = await getMailToken();
-            if (!mailToken) return;
-            try {
-                await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ isRead: true })
-                });
-                if (rowEl) {
-                    rowEl.classList.remove('unread','overdue');
-                    const btn = rowEl.querySelector('[title="Als gelesen markieren"]');
-                    if (btn) btn.remove();
-                    // Update badge
-                    const badge = document.getElementById('inbox-unread-badge');
-                    if (badge && badge.style.display !== 'none') {
-                        const count = parseInt(badge.textContent) - 1;
-                        inboxUpdateBadge(count);
-                    }
-                }
-            } catch(e) { showToast('Fehler: ' + e.message, true); }
-        }
-
         async function inboxToggleFlag(id, currentlyFlagged, btn) {
-            const mailToken = await getMailToken();
-            if (!mailToken) return;
-            const newStatus = currentlyFlagged ? 'notFlagged' : 'flagged';
-            try {
-                await fetch(`https://graph.microsoft.com/v1.0/me/messages/${id}`, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ flag: { flagStatus: newStatus } })
-                });
-                if (btn) {
-                    btn.style.color = newStatus === 'flagged' ? '#f59e0b' : '';
-                    btn.title = newStatus === 'flagged' ? 'Flag entfernen' : 'Flaggen';
-                }
-                showToast(newStatus === 'flagged' ? '🚩 Geflaggt' : '✓ Flag entfernt');
-            } catch(e) { showToast('Fehler: ' + e.message, true); }
+            // UI-only flag toggle (v15.9.80 — IMAP proxy)
+            if (btn) {
+                const newFlagged = !currentlyFlagged;
+                btn.style.color = newFlagged ? '#f59e0b' : '';
+                btn.title = newFlagged ? 'Flag entfernen' : 'Flaggen';
+                showToast(newFlagged ? '🚩 Geflaggt' : '✓ Flag entfernt');
+            }
         }
 
         function inboxOpenReply(id, senderName, senderEmail) {
@@ -17261,33 +17144,30 @@ Spittelauer Lnde 12/1
         }
 
         async function inboxSendReply() {
-            const mailToken = await getMailToken();
-            if (!mailToken || !inboxCurrentReplyId) return;
-            const body = document.getElementById('reply-body').value.trim();
-            if (!body) { showToast('Nachricht ist leer', true); return; }
+            if (!inboxCurrentReplyId) return;
+            const bodyText = document.getElementById('reply-body').value.trim();
+            if (!bodyText) { showToast('Nachricht ist leer', true); return; }
+            const subjectEl = document.getElementById('reply-to-label');
+            const subject = 'Re: ' + (subjectEl ? subjectEl.textContent : '');
             try {
-                const res = await fetch(`https://graph.microsoft.com/v1.0/me/messages/${inboxCurrentReplyId}/reply`, {
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=send', {
                     method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + mailToken, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ comment: body })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to: inboxCurrentReplyTo, subject: subject, body: bodyText })
                 });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
                 showToast('✓ Antwort gesendet');
                 inboxCloseReply();
             } catch(e) { showToast('Fehler: ' + e.message, true); }
         }
 
         async function inboxCheckUnread() {
-            const mailToken = await getMailToken();
-            if (!mailToken) return;
             try {
-                const res = await fetch(
-                    'https://graph.microsoft.com/v1.0/me/mailFolders/inbox',
-                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
-                );
-                if (!res.ok) return;
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=list');
                 const data = await res.json();
-                inboxUpdateBadge(data.unreadItemCount || 0);
+                const unread = (data.emails || []).filter(e => !e.read).length;
+                inboxUpdateBadge(unread);
             } catch(e) {}
         }
 
@@ -17327,6 +17207,10 @@ Spittelauer Lnde 12/1
             setInterval(() => { inboxCheckUnread(); miniInboxLoad(); }, 5 * 60 * 1000);
             qnRenderCards();
         }
+        // v15.9.80: also load on DOMContentLoaded (no token needed for proxy)
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { inboxCheckUnread(); miniInboxLoad(); }, 1000);
+        });
         // ═══════════════════════════════════════════════════════
 
         
@@ -17361,56 +17245,32 @@ Spittelauer Lnde 12/1
             const list = document.getElementById('mini-inbox-list');
             const status = document.getElementById('mini-inbox-status');
             if (!list) return;
-            const mailToken = await getMailToken();
-            if (!mailToken) {
-                list.innerHTML = '<span style="color:#888;">Login erforderlich</span>';
-                return;
-            }
             if (status) status.textContent = '⏳';
             try {
-                const res = await fetch(
-                    'https://graph.microsoft.com/v1.0/me/messages?$top=5&$orderby=receivedDateTime desc&$select=id,subject,from,receivedDateTime,isRead,flag&$filter=isDraft eq false',
-                    { headers: { 'Authorization': 'Bearer ' + mailToken } }
-                );
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=list');
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
-                const emails = data.value || [];
-                const unread = emails.filter(e => !e.isRead).length;
-
-                // Update badges
+                if (data.error) throw new Error(data.error);
+                const emails = (data.emails || []).slice(0, 5);
+                const unread = emails.filter(e => !e.read).length;
                 const badge = document.getElementById('mini-inbox-badge');
-                if (badge) {
-                    badge.textContent = unread;
-                    badge.style.display = unread > 0 ? 'inline' : 'none';
-                }
+                if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none'; }
                 if (status) status.textContent = unread > 0 ? unread + ' ungelesen' : '✓ alles gelesen';
-
-                if (emails.length === 0) {
-                    list.innerHTML = '<div style="padding:8px;color:#888;text-align:center;">Keine Emails</div>';
-                    return;
-                }
-
-                const now = new Date();
+                if (emails.length === 0) { list.innerHTML = '<div style="padding:8px;color:#888;text-align:center;">Keine Emails</div>'; return; }
                 list.innerHTML = '';
                 emails.forEach(email => {
-                    const received = new Date(email.receivedDateTime);
-                    const daysDiff = (now - received) / (1000*60*60*24);
-                    const isOverdue = !email.isRead && daysDiff >= 3;
-                    const isFlagged = email.flag?.flagStatus === 'flagged';
-                    const senderName = email.from?.emailAddress?.name || email.from?.emailAddress?.address || '?';
+                    const ts = email.ts * 1000;
+                    const received = new Date(ts);
+                    const daysDiff = (Date.now() - ts) / (1000*60*60*24);
+                    const isOverdue = !email.read && daysDiff >= 3;
                     let cls = 'mini-email-row';
                     if (isOverdue) cls += ' mini-overdue';
-                    else if (isFlagged) cls += ' mini-flagged';
-                    else if (!email.isRead) cls += ' mini-unread';
-
+                    else if (email.flagged) cls += ' mini-flagged';
+                    else if (!email.read) cls += ' mini-unread';
                     const row = document.createElement('div');
                     row.className = cls;
                     row.title = email.subject || '';
-                    row.innerHTML = `
-                        <span class="mini-email-sender">${escHtml(senderName)}</span>
-                        <span class="mini-email-subject ${!email.isRead ? 'bold' : ''}">${escHtml(email.subject || '(kein Betreff)')}</span>
-                        <span class="mini-email-date">${inboxFormatDate(received)}</span>
-                    `;
+                    row.innerHTML = `<span class="mini-email-sender">${escHtml(email.fromName || email.from)}</span><span class="mini-email-subject ${!email.read ? 'bold' : ''}">${escHtml(email.subject || '(kein Betreff)')}</span><span class="mini-email-date">${email.date.split(' ')[1] || email.date}</span>`;
                     row.onclick = () => { openInbox(); };
                     list.appendChild(row);
                 });
@@ -18343,6 +18203,7 @@ Spittelauer Lnde 12/1
             if (body) body.style.display = cpCollapsed ? 'none' : 'block';
             if (btn) btn.textContent = cpCollapsed ? '▼' : '▲';
         }
+        window.cockpitToggleCollapse = cockpitToggleCollapse;
 
         async function cockpitToggleTask(listId, taskId, done) {
             let token = accessToken;
