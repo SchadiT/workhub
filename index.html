@@ -18216,7 +18216,7 @@ Spittelauer Lnde 12/1
                     if (!listId) { cockpitData.byDept[dept.key] = []; return; }
                     try {
                         const res = await fetch(
-                            `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$top=100&$select=id,title,status,dueDateTime,importance,createdDateTime`,
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${encodeURIComponent(listId)}/tasks?$top=100&$select=id,title,status,dueDateTime,importance,createdDateTime`,
                             { headers: { Authorization: 'Bearer ' + token } }
                         );
                         const data = await res.json();
@@ -18351,7 +18351,7 @@ Spittelauer Lnde 12/1
             if (!token) { try { token = await getMailToken(); } catch(e) {} }
             if (!token) { showToast('Nicht eingeloggt', true); return; }
             try {
-                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
+                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${encodeURIComponent(listId)}/tasks/${encodeURIComponent(taskId)}`, {
                     method: 'PATCH',
                     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: done ? 'completed' : 'notStarted' })
