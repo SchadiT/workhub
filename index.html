@@ -18172,58 +18172,46 @@ Spittelauer Lnde 12/1
             if (hint) hint.style.display = 'none';
 
             try {
-                // Fetch all lists, match by name
+                // Fetch all lists
                 const listsRes = await fetch('https://graph.microsoft.com/v1.0/me/todo/lists',
                     { headers: { Authorization: 'Bearer ' + token } });
+                if (!listsRes.ok) throw new Error('Lists: ' + listsRes.status);
                 const listsData = await listsRes.json();
                 const allLists = listsData.value || [];
 
-                // Name matching — flexible (case-insensitive, partial)
+                // Name matching per dept
                 const NAME_MAP = {
-                    office:  ['office', 'büro', 'admin'],
-                    bar:     ['bar', 'gastro'],
-                    runner:  ['runner', 'service'],
-                    technik: ['technik', 'tech', 'it'],
+                    office:  ['office', 'büro'],
+                    bar:     ['bar'],
+                    runner:  ['runner'],
+                    technik: ['technik', 'tech'],
                     sputnik: ['sputnik'],
                 };
 
-                // Build resolved list IDs
-                const resolvedIds = {};
-                allLists.forEach(list => {
-                    const n = (list.displayName || '').toLowerCase();
+                // Reset
+                CP_DEPTS.forEach(d => cockpitData.byDept[d.key] = []);
+
+                // Fetch tasks for ALL lists, assign to dept by name
+                await Promise.all(allLists.map(async list => {
+                    const name = (list.displayName || '').toLowerCase();
+                    let deptKey = null;
                     for (const [dept, keywords] of Object.entries(NAME_MAP)) {
-                        if (!resolvedIds[dept] && keywords.some(kw => n.includes(kw))) {
-                            resolvedIds[dept] = list.id;
-                        }
+                        if (keywords.some(kw => name.includes(kw))) { deptKey = dept; break; }
                     }
-                    // Also match hardcoded TODO_LISTS IDs as fallback
-                    for (const [dept, id] of Object.entries(TODO_LISTS)) {
-                        if (!resolvedIds[dept] && list.id === id) {
-                            resolvedIds[dept] = list.id;
-                        }
-                    }
-                });
+                    if (!deptKey) return; // skip unmatched lists
 
-                // If no match found for any dept, log available lists for debugging
-                const matched = Object.keys(resolvedIds).length;
-                console.log('COCKPIT lists matched:', matched, 'of 5');
-                console.log('Available lists:', allLists.map(l => l.displayName + ' → ' + l.id));
-                console.log('Resolved:', resolvedIds);
-
-                // Fetch tasks for each matched dept
-                await Promise.all(CP_DEPTS.map(async dept => {
-                    const listId = resolvedIds[dept.key] || TODO_LISTS[dept.key];
-                    if (!listId) { cockpitData.byDept[dept.key] = []; return; }
                     try {
                         const res = await fetch(
-                            `https://graph.microsoft.com/v1.0/me/todo/lists/${encodeURIComponent(listId)}/tasks?$top=100&$select=id,title,status,dueDateTime,importance,createdDateTime`,
+                            `https://graph.microsoft.com/v1.0/me/todo/lists/${list.id}/tasks?$top=100`,
                             { headers: { Authorization: 'Bearer ' + token } }
                         );
+                        if (!res.ok) { console.warn('Tasks 400 for', list.displayName, res.status); return; }
                         const data = await res.json();
-                        cockpitData.byDept[dept.key] = data.value || [];
-                        // Store resolved ID for toggleTask
-                        TODO_LISTS[dept.key] = listId;
-                    } catch(e) { cockpitData.byDept[dept.key] = []; }
+                        const tasks = data.value || [];
+                        tasks.forEach(t => t.listId = list.id); // store listId on task
+                        cockpitData.byDept[deptKey].push(...tasks);
+                        TODO_LISTS[deptKey] = list.id; // update for toggleTask
+                    } catch(e) { console.warn('Tasks error for', list.displayName, e); }
                 }));
 
                 cockpitData.lastLoad = new Date();
@@ -18238,6 +18226,7 @@ Spittelauer Lnde 12/1
                 console.error('COCKPIT load error:', err);
             }
         }
+
 
         function cockpitRender() {
             // Update overall progress bar (all tasks across all depts)
@@ -18326,7 +18315,7 @@ Spittelauer Lnde 12/1
                 if (isOverdue) row.style.borderLeft = '3px solid #ef4444';
                 row.innerHTML = `
                     <input type="checkbox" class="cp-task-cb" ${isDone ? 'checked' : ''}
-                        onchange="cockpitToggleTask('${listId}','${task.id}',this.checked)">
+                        onchange="cockpitToggleTask('${task.listId || listId}','${task.id}',this.checked)">
                     <div style="flex:1;min-width:0;">
                         <div class="cp-task-title ${isDone ? 'done' : ''}">${escHtml(task.title || '')}</div>
                         ${dueStr ? `<div class="cp-task-due ${isOverdue ? 'overdue' : ''}">${isOverdue ? '⚠ ' : ''}${dueStr}</div>` : ''}
@@ -18351,13 +18340,16 @@ Spittelauer Lnde 12/1
             if (!token) { try { token = await getMailToken(); } catch(e) {} }
             if (!token) { showToast('Nicht eingeloggt', true); return; }
             try {
-                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${encodeURIComponent(listId)}/tasks/${encodeURIComponent(taskId)}`, {
+                await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
                     method: 'PATCH',
                     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: done ? 'completed' : 'notStarted' })
                 });
-                const task = cockpitData.tasks.find(t => t.id === taskId);
-                if (task) task.status = done ? 'completed' : 'notStarted';
+                // Update local data
+                for (const dept of Object.keys(cockpitData.byDept)) {
+                    const task = cockpitData.byDept[dept].find(t => t.id === taskId);
+                    if (task) { task.status = done ? 'completed' : 'notStarted'; break; }
+                }
                 cockpitRender();
                 showToast(done ? '✓ Erledigt' : 'Wieder offen');
             } catch(err) {
