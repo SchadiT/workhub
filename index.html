@@ -967,40 +967,51 @@
         /* COCKPIT dept tabs */
         .cp-dept-tabs {
             display: flex;
-            border-bottom: 1px solid var(--border);
-            background: #0a0f1a;
+            border: 1px solid var(--border);
+            border-top: none;
+            background: #070d17;
             overflow-x: auto;
         }
         .cp-dept-tab {
-            padding: 8px 16px;
+            flex: 1;
+            padding: 10px 12px 8px;
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.5px;
-            color: #666;
+            color: #4b5563;
             background: transparent;
             border: none;
-            border-bottom: 2px solid transparent;
+            border-right: 1px solid var(--border);
+            border-bottom: 3px solid transparent;
             cursor: pointer;
-            white-space: nowrap;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             font-family: inherit;
             text-transform: uppercase;
-            transition: color 0.15s;
+            transition: all 0.15s;
+            min-width: 90px;
         }
-        .cp-dept-tab:hover { color: #aaa; }
-        .cp-dept-tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        .cp-dept-tab:last-child { border-right: none; }
+        .cp-dept-tab:hover { background: #0d1b2a; color: #9ca3af; }
+        .cp-dept-tab.active { color: #fff; background: #0d1b2a; border-bottom-color: #3b82f6; }
+        .cp-tab-label { font-size: 11px; font-weight: 700; white-space: nowrap; }
         .cp-tab-count {
             background: #1e3a5f;
             color: #3b82f6;
-            padding: 1px 6px;
+            padding: 1px 7px;
             font-size: 10px;
             border-radius: 10px;
-            min-width: 18px;
+            min-width: 20px;
             text-align: center;
+            font-weight: 800;
         }
         .cp-dept-tab.active .cp-tab-count { background: #3b82f6; color: #fff; }
+        .cp-tab-bar { width: 80%; height: 3px; background: #111827; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+        .cp-tab-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+        .cp-tab-pct { font-size: 10px; color: #4b5563; font-weight: 600; }
+        .cp-dept-tab.active .cp-tab-pct { color: #9ca3af; }
         .cp-task-item {
             display: flex;
             align-items: flex-start;
@@ -2357,11 +2368,12 @@
         }
         #cockpit-header {
             background: #0d1b2a;
-            padding: 10px 14px;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
             cursor: pointer;
+            border: 1px solid #1e3a5f;
         }
         .cp-group-row {
             display: flex;
@@ -2411,6 +2423,69 @@
     </div>
     
     <div class="toast" id="toast"></div>
+
+    <!-- COCKPIT — TOP POSITION v15.9.84 -->
+    <div id="cockpit-widget" style="margin-bottom:8px;">
+        <!-- Header bar -->
+        <div id="cockpit-header" onclick="cockpitToggleCollapse()" style="cursor:pointer;background:#0d1b2a;border:1px solid #1e3a5f;padding:12px 18px;display:flex;align-items:center;gap:14px;">
+            <span style="font-size:13px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;min-width:80px;">🎯 COCKPIT</span>
+            <div style="flex:1;height:6px;background:#111827;border-radius:3px;overflow:hidden;border:1px solid #1e3a5f;">
+                <div id="cp-bar" style="height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6);border-radius:3px;width:0%;transition:width 0.5s;"></div>
+            </div>
+            <span id="cp-pct" style="font-size:15px;font-weight:800;color:#3b82f6;min-width:44px;text-align:right;">—</span>
+            <span id="cp-fraction" style="font-size:12px;color:#4b5563;min-width:40px;">0/0</span>
+            <span id="cp-toggle-btn" style="font-size:11px;color:#4b5563;margin-left:4px;">▲</span>
+        </div>
+        <div id="cp-body">
+            <!-- Dept Tabs with per-dept progress -->
+            <div class="cp-dept-tabs">
+                <button class="cp-dept-tab active" data-dept="office" onclick="cockpitSwitchDept('office')">
+                    <span class="cp-tab-label">🏠 OFFICE</span>
+                    <span class="cp-tab-count" id="cp-count-office">0</span>
+                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-office" style="width:0%;background:#22c55e;"></div></div>
+                    <span class="cp-tab-pct" id="cp-pct-office">—</span>
+                </button>
+                <button class="cp-dept-tab" data-dept="bar" onclick="cockpitSwitchDept('bar')">
+                    <span class="cp-tab-label">🍹 BAR</span>
+                    <span class="cp-tab-count" id="cp-count-bar">0</span>
+                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-bar" style="width:0%;background:#f59e0b;"></div></div>
+                    <span class="cp-tab-pct" id="cp-pct-bar">—</span>
+                </button>
+                <button class="cp-dept-tab" data-dept="runner" onclick="cockpitSwitchDept('runner')">
+                    <span class="cp-tab-label">🏃 RUNNER</span>
+                    <span class="cp-tab-count" id="cp-count-runner">0</span>
+                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-runner" style="width:0%;background:#3b82f6;"></div></div>
+                    <span class="cp-tab-pct" id="cp-pct-runner">—</span>
+                </button>
+                <button class="cp-dept-tab" data-dept="technik" onclick="cockpitSwitchDept('technik')">
+                    <span class="cp-tab-label">🔧 TECHNIK</span>
+                    <span class="cp-tab-count" id="cp-count-technik">0</span>
+                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-technik" style="width:0%;background:#8b5cf6;"></div></div>
+                    <span class="cp-tab-pct" id="cp-pct-technik">—</span>
+                </button>
+                <button class="cp-dept-tab" data-dept="sputnik" onclick="cockpitSwitchDept('sputnik')">
+                    <span class="cp-tab-label">🚀 SPUTNIK</span>
+                    <span class="cp-tab-count" id="cp-count-sputnik">0</span>
+                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-sputnik" style="width:0%;background:#ec4899;"></div></div>
+                    <span class="cp-tab-pct" id="cp-pct-sputnik">—</span>
+                </button>
+            </div>
+            <!-- Task List -->
+            <div id="cp-task-list" style="max-height:380px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-top:none;"></div>
+            <!-- Footer -->
+            <div style="padding:6px 14px;border:1px solid var(--border);border-top:none;display:flex;align-items:center;gap:10px;background:var(--surface);">
+                <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
+                <div style="margin-left:auto;">
+                    <button onclick="cockpitLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;">↺ Refresh</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid #1e3a5f;font-size:12px;color:#888;background:#0d1b2a;">
+        ⚠️ Microsoft Login erforderlich für COCKPIT.
+    </div>
+
+
 
     <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
     <div class="widgets-row">
@@ -2612,7 +2687,7 @@
     </div>
 
     <!-- COCKPIT Widget -->
-    <!-- COCKPIT moved to above departments v15.9.81 -->
+    <!-- COCKPIT moved to above departments v15.9.84 -->
 
     <!-- Quick Notes (collapsible) -->
         <!-- QUICK NOTES BLOCK -->
@@ -4796,7 +4871,7 @@
     <!-- RESPONSIVE GRID - Events, Calendar, Departments -->
     <!--  -->
     
-    <!-- CALENDAR — full width v15.9.81 -->
+    <!-- CALENDAR — full width v15.9.84 -->
     <div class="calendar-section" id="calendar-full-width" style="margin-bottom:8px;">
         <div class="calendar-section-header" onclick="toggleCalendarSection()">
             <div class="calendar-title-row">
@@ -4853,40 +4928,7 @@
         </div>
     </div>
     
-    <!-- COCKPIT — full width with dept tabs v15.9.81 -->
-    <div id="cockpit-widget" style="margin-bottom:8px;">
-        <div id="cockpit-header" onclick="cockpitToggleCollapse()">
-            <span style="font-size:12px;font-weight:700;letter-spacing:1px;color:#fff;text-transform:uppercase;">🎯 COCKPIT</span>
-            <div style="flex:1;height:4px;background:#2d2d44;border-radius:2px;overflow:hidden;">
-                <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:2px;width:0%;transition:width 0.4s;"></div>
-            </div>
-            <span id="cp-pct" style="font-size:12px;font-weight:700;color:#3b82f6;min-width:36px;text-align:right;">—</span>
-            <span id="cp-fraction" style="font-size:11px;color:#888;">0/0</span>
-            <span id="cp-toggle-btn" style="font-size:10px;color:#888;">▲</span>
-        </div>
-        <div id="cp-body">
-            <!-- Dept Tabs -->
-            <div class="cp-dept-tabs">
-                <button class="cp-dept-tab active" data-dept="office" onclick="cockpitSwitchDept('office')">🏠 OFFICE <span class="cp-tab-count" id="cp-count-office">0</span></button>
-                <button class="cp-dept-tab" data-dept="bar" onclick="cockpitSwitchDept('bar')">🍹 BAR <span class="cp-tab-count" id="cp-count-bar">0</span></button>
-                <button class="cp-dept-tab" data-dept="runner" onclick="cockpitSwitchDept('runner')">🏃 RUNNER <span class="cp-tab-count" id="cp-count-runner">0</span></button>
-                <button class="cp-dept-tab" data-dept="technik" onclick="cockpitSwitchDept('technik')">🔧 TECHNIK <span class="cp-tab-count" id="cp-count-technik">0</span></button>
-                <button class="cp-dept-tab" data-dept="sputnik" onclick="cockpitSwitchDept('sputnik')">🚀 SPUTNIK <span class="cp-tab-count" id="cp-count-sputnik">0</span></button>
-            </div>
-            <!-- Task List -->
-            <div id="cp-task-list" style="max-height:260px;overflow-y:auto;"></div>
-            <!-- Footer -->
-            <div style="padding:7px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
-                <span id="cp-status" style="font-size:11px;color:#888;"></span>
-                <div style="margin-left:auto;display:flex;gap:8px;">
-                    <button onclick="cockpitLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;">↺ Refresh</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:#888;">
-        ⚠️ Bitte einloggen (Microsoft) um COCKPIT zu aktivieren.
-    </div>
+    <!-- COCKPIT moved to top v15.9.84 -->
 
     <!-- DEPARTMENTS -->
     <div class="dept-grid" id="dept-grid">
@@ -5071,7 +5113,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.81</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.84</span>
     </div>
     
     <!-- Metrics Button -->
@@ -13340,7 +13382,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.81';
+            const HUB_VERSION = 'v15.9.84';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18111,7 +18153,7 @@ Spittelauer Lnde 12/1
         // COCKPIT auto-loads after sign-in
 
         // ═══════════════════════════════════════════════════════
-        // COCKPIT — Dept Tabs + MS To-Do v15.9.81
+        // COCKPIT — Dept Tabs + MS To-Do v15.9.84
         // ═══════════════════════════════════════════════════════
         let cockpitData = { byDept: { office:[], bar:[], runner:[], technik:[], sputnik:[] }, lastLoad: null };
         let cpCollapsed = localStorage.getItem('cpCollapsed') === 'true';
@@ -18241,12 +18283,19 @@ Spittelauer Lnde 12/1
             if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = pct === 100 ? '#22c55e' : '#3b82f6'; }
             if (fracEl) fracEl.textContent = done + '/' + total;
 
-            // Update tab counts
+            // Update tab counts + per-dept progress bars
             CP_DEPTS.forEach(dept => {
                 const tasks = cockpitData.byDept[dept.key] || [];
-                const open = tasks.filter(t => t.status !== 'completed').length;
+                const total = tasks.length;
+                const done = tasks.filter(t => t.status === 'completed').length;
+                const open = total - done;
+                const pctDept = total ? Math.round(done / total * 100) : 0;
                 const countEl = document.getElementById('cp-count-' + dept.key);
                 if (countEl) countEl.textContent = open;
+                const barEl = document.getElementById('cp-bar-' + dept.key);
+                if (barEl) barEl.style.width = pctDept + '%';
+                const pctEl = document.getElementById('cp-pct-' + dept.key);
+                if (pctEl) pctEl.textContent = total ? pctDept + '%' : '';
             });
 
             // Apply collapse
@@ -18288,8 +18337,12 @@ Spittelauer Lnde 12/1
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const sorted = [...tasks].sort((a, b) => {
-                if (a.status === 'completed' && b.status !== 'completed') return 1;
-                if (a.status !== 'completed' && b.status === 'completed') return -1;
+                // Open tasks first, done last
+                const aDone = a.status === 'completed';
+                const bDone = b.status === 'completed';
+                if (!aDone && bDone) return -1;
+                if (aDone && !bDone) return 1;
+                // Among open: overdue first, then by due date, then no date
                 const aD = a.dueDateTime ? new Date(a.dueDateTime.dateTime) : null;
                 const bD = b.dueDateTime ? new Date(b.dueDateTime.dateTime) : null;
                 if (aD && !bD) return -1;
