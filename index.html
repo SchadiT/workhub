@@ -964,54 +964,51 @@
         @media (max-width: 768px) {
             .dept-grid { grid-template-columns: 1fr; }
         }
-        /* COCKPIT dept tabs */
-        .cp-dept-tabs {
-            display: flex;
-            border: 1px solid var(--border);
-            border-top: none;
-            background: #070d17;
-            overflow-x: auto;
-        }
+        /* COCKPIT dept tabs — inline header v15.9.85 */
         .cp-dept-tab {
             flex: 1;
-            padding: 10px 12px 8px;
-            font-size: 11px;
+            padding: 5px 4px 4px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 0.5px;
             color: #4b5563;
             background: transparent;
             border: none;
-            border-right: 1px solid var(--border);
-            border-bottom: 3px solid transparent;
+            border-left: 1px solid #1e3a5f;
+            border-bottom: 2px solid transparent;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             font-family: inherit;
             text-transform: uppercase;
             transition: all 0.15s;
-            min-width: 90px;
+            min-width: 0;
         }
-        .cp-dept-tab:last-child { border-right: none; }
-        .cp-dept-tab:hover { background: #0d1b2a; color: #9ca3af; }
-        .cp-dept-tab.active { color: #fff; background: #0d1b2a; border-bottom-color: #3b82f6; }
-        .cp-tab-label { font-size: 11px; font-weight: 700; white-space: nowrap; }
+        .cp-dept-tab:first-child { border-left: 1px solid #1e3a5f; }
+        .cp-dept-tab:hover { background: rgba(255,255,255,0.04); color: #9ca3af; }
+        .cp-dept-tab[data-dept="office"].active  { color:#22c55e; border-bottom-color:#22c55e; background:rgba(34,197,94,0.07); }
+        .cp-dept-tab[data-dept="bar"].active     { color:#f59e0b; border-bottom-color:#f59e0b; background:rgba(245,158,11,0.07); }
+        .cp-dept-tab[data-dept="runner"].active  { color:#3b82f6; border-bottom-color:#3b82f6; background:rgba(59,130,246,0.07); }
+        .cp-dept-tab[data-dept="technik"].active { color:#8b5cf6; border-bottom-color:#8b5cf6; background:rgba(139,92,246,0.07); }
+        .cp-dept-tab[data-dept="sputnik"].active { color:#ec4899; border-bottom-color:#ec4899; background:rgba(236,72,153,0.07); }
+        .cp-tab-label { font-size: 9px; font-weight: 700; white-space: nowrap; }
         .cp-tab-count {
-            background: #1e3a5f;
-            color: #3b82f6;
-            padding: 1px 7px;
-            font-size: 10px;
-            border-radius: 10px;
-            min-width: 20px;
+            background: #1a1a1a;
+            color: #555;
+            padding: 1px 5px;
+            font-size: 9px;
+            border-radius: 8px;
+            min-width: 16px;
             text-align: center;
             font-weight: 800;
         }
-        .cp-dept-tab.active .cp-tab-count { background: #3b82f6; color: #fff; }
-        .cp-tab-bar { width: 80%; height: 3px; background: #111827; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+        .cp-dept-tab.active .cp-tab-count { color: inherit; background: rgba(255,255,255,0.1); }
+        .cp-tab-bar { width: 80%; height: 2px; background: #111827; border-radius: 2px; overflow: hidden; margin-top: 1px; }
         .cp-tab-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
-        .cp-tab-pct { font-size: 10px; color: #4b5563; font-weight: 600; }
-        .cp-dept-tab.active .cp-tab-pct { color: #9ca3af; }
+        .cp-tab-pct { font-size: 9px; color: #4b5563; font-weight: 600; }
+        .cp-dept-tab.active .cp-tab-pct { color: inherit; opacity: 0.8; }
         .cp-task-item {
             display: flex;
             align-items: flex-start;
@@ -2397,6 +2394,74 @@
             border-bottom: 1px solid var(--border);
         }
         .cockpit-task-row:last-child { border-bottom: none; }
+
+        /* ── Visual Polish v15.9.86 ── */
+        /* 1: Custom scrollbars */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #060606; }
+        ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        /* 6: Button hierarchy */
+        .btn-secondary {
+            background: transparent !important;
+            border: 1px solid #2e4a6a !important;
+            color: #5b8ab5 !important;
+            font-size: 10px;
+            padding: 3px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+        }
+        .btn-secondary:hover { border-color: #3b82f6 !important; color: #7aa3cc !important; }
+        .btn-tertiary {
+            background: transparent !important;
+            border: 1px solid #222 !important;
+            color: #444 !important;
+            font-size: 10px;
+            padding: 3px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
+        }
+        .btn-tertiary:hover { border-color: #3a3a3a !important; color: #666 !important; }
+
+        /* 3: Skeleton loader */
+        @keyframes cp-shimmer { 0%,100%{opacity:0.35} 50%{opacity:0.7} }
+        .cp-skeleton-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; border-bottom: 1px solid var(--border);
+        }
+        .cp-skel { background: #1e2a3a; border-radius: 2px; animation: cp-shimmer 1.4s ease-in-out infinite; }
+
+        /* Modal Fullscreen — App modals v15.9.87 */
+        .modal-app {
+            width: 98vw !important;
+            max-width: 98vw !important;
+            height: 96vh !important;
+            max-height: 96vh !important;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-app .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            max-height: none !important;
+        }
+        @media (max-width: 768px) {
+            .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+            .modal-app {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                height: 96vh !important;
+                max-height: 96vh !important;
+                border-radius: 0 !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -2424,21 +2489,18 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — TOP POSITION v15.9.84 -->
+    <!-- COCKPIT — ALWAYS VISIBLE + DROPDOWN v15.9.85 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
-        <!-- Header bar -->
-        <div id="cockpit-header" onclick="cockpitToggleCollapse()" style="cursor:pointer;background:#0d1b2a;border:1px solid #1e3a5f;padding:12px 18px;display:flex;align-items:center;gap:14px;">
-            <span style="font-size:13px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;min-width:80px;">🎯 COCKPIT</span>
-            <div style="flex:1;height:6px;background:#111827;border-radius:3px;overflow:hidden;border:1px solid #1e3a5f;">
-                <div id="cp-bar" style="height:100%;background:linear-gradient(90deg,#1d4ed8,#3b82f6);border-radius:3px;width:0%;transition:width 0.5s;"></div>
+        <!-- Always-visible header with inline dept tabs -->
+        <div id="cockpit-header" style="background:#0d1b2a;border:1px solid #1e3a5f;padding:6px 12px;display:flex;align-items:center;gap:10px;">
+            <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;min-width:70px;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
+            <div style="height:5px;background:#111827;border-radius:3px;overflow:hidden;border:1px solid #1e3a5f;width:100px;flex-shrink:0;">
+                <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:3px;width:0%;transition:width 0.5s;"></div>
             </div>
-            <span id="cp-pct" style="font-size:15px;font-weight:800;color:#3b82f6;min-width:44px;text-align:right;">—</span>
-            <span id="cp-fraction" style="font-size:12px;color:#4b5563;min-width:40px;">0/0</span>
-            <span id="cp-toggle-btn" style="font-size:11px;color:#4b5563;margin-left:4px;">▲</span>
-        </div>
-        <div id="cp-body">
-            <!-- Dept Tabs with per-dept progress -->
-            <div class="cp-dept-tabs">
+            <span id="cp-pct" style="font-size:13px;font-weight:800;color:#3b82f6;min-width:38px;text-align:right;flex-shrink:0;">—</span>
+            <span id="cp-fraction" style="font-size:11px;color:#4b5563;min-width:34px;flex-shrink:0;">0/0</span>
+            <!-- Dept Tabs inline -->
+            <div style="display:flex;flex:1;gap:0;min-width:0;align-self:stretch;">
                 <button class="cp-dept-tab active" data-dept="office" onclick="cockpitSwitchDept('office')">
                     <span class="cp-tab-label">🏠 OFFICE</span>
                     <span class="cp-tab-count" id="cp-count-office">0</span>
@@ -2470,13 +2532,15 @@
                     <span class="cp-tab-pct" id="cp-pct-sputnik">—</span>
                 </button>
             </div>
-            <!-- Task List -->
-            <div id="cp-task-list" style="max-height:380px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-top:none;"></div>
-            <!-- Footer -->
+            <span id="cp-toggle-btn" onclick="cockpitToggleCollapse()" style="font-size:10px;color:#4b5563;cursor:pointer;flex-shrink:0;padding:4px 6px;user-select:none;">▶</span>
+        </div>
+        <!-- Dropdown: task list only -->
+        <div id="cp-body" style="display:none;">
+            <div id="cp-task-list" style="max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-top:none;"></div>
             <div style="padding:6px 14px;border:1px solid var(--border);border-top:none;display:flex;align-items:center;gap:10px;background:var(--surface);">
                 <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
                 <div style="margin-left:auto;">
-                    <button onclick="cockpitLoad()" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:3px 10px;font-size:11px;cursor:pointer;">↺ Refresh</button>
+                    <button onclick="cockpitLoad()" class="btn-secondary">↺ Refresh</button>
                 </div>
             </div>
         </div>
@@ -2630,7 +2694,7 @@
     </style>
 
     <div class="modal-overlay" id="rechnungen-modal">
-        <div class="modal" style="width:99vw;max-width:99vw;height:97vh;max-height:97vh;">
+        <div class="modal modal-app">
             <div class="modal-header" style="background:#0d1b2a;border-bottom:1px solid #f59e0b22;">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <span style="font-size:14px;font-weight:700;letter-spacing:1px;color:#f59e0b;">&#128179; RECHNUNGEN</span>
@@ -2776,7 +2840,7 @@
 
     <!-- Cleaning Schedule Modal -->
     <div class="modal-overlay" id="cleaning-modal">
-        <div class="modal" style="max-width: 900px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#129529; Cleaning Schedule</h3>
                 <button class="modal-close" onclick="closeModal('cleaning-modal')">&times;</button>
@@ -2860,7 +2924,7 @@
     
     <!-- NYE Projector Modal -->
     <div class="modal-overlay" id="nye-projector-modal">
-        <div class="modal" style="max-width: 900px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127878; NYE Projector (3-Jahre Benchmark)</h3>
                 <button class="modal-close" onclick="closeModal('nye-projector-modal')">&times;</button>
@@ -3044,7 +3108,7 @@
     
     <!-- Guest List Parser Modal -->
     <div class="modal-overlay" id="guestlist-modal">
-        <div class="modal" style="max-width:920px;height:88vh;display:flex;flex-direction:column;">
+        <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h3>&#128157; Guestlist Tool</h3>
                 <button class="modal-close" onclick="closeModal('guestlist-modal')">&times;</button>
@@ -3157,7 +3221,7 @@
 
     <!-- BAR STAFFING Modal -->
     <div class="modal-overlay" id="bar-staffing-modal">
-        <div class="modal" style="max-width: 850px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127864; Bar Staffing Tool</h3>
                 <button class="modal-close" onclick="closeModal('bar-staffing-modal')">&times;</button>
@@ -3264,7 +3328,7 @@
     
     <!-- DATABASE VIEWER Modal -->
     <div class="modal-overlay" id="db-viewer-modal">
-        <div class="modal" style="max-width:1100px;width:95vw;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128202; Database Viewer</h3>
                 <button class="modal-close" onclick="closeModal('db-viewer-modal')">&times;</button>
@@ -3322,12 +3386,12 @@
 
     <!-- PROMOTER ANALYSIS Modal -->
     <div class="modal-overlay" id="promoter-analysis-modal">
-        <div class="modal" style="max-width:1200px;width:96vw;max-height:92vh;">
+        <div class="modal modal-app">
             <div class="modal-header" style="background:linear-gradient(135deg,#0c1a2e,#0e2340);">
                 <h3>&#128200; Promoter Analysis</h3>
                 <button class="modal-close" onclick="closeModal('promoter-analysis-modal')">&times;</button>
             </div>
-            <div class="modal-body" style="padding:0;display:flex;flex-direction:column;max-height:calc(92vh - 60px);overflow:hidden;">
+            <div class="modal-body" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
 
                 <!-- TOP BAR: Promoter Multi-Select + Controls -->
                 <div style="padding:12px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
@@ -3631,7 +3695,7 @@
 
     <!-- RUNNER STAFFING Modal -->
     <div class="modal-overlay" id="runner-staffing-modal">
-        <div class="modal" style="max-width: 850px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127939; Runner Staffing Tool</h3>
                 <button class="modal-close" onclick="closeModal('runner-staffing-modal')">&times;</button>
@@ -4109,7 +4173,7 @@
     
     <!-- Factsheet Generator Modal -->
     <div class="modal-overlay" id="factsheet-modal">
-        <div class="modal" style="max-width: 900px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3> Factsheet Generator</h3>
                 <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
@@ -4388,7 +4452,7 @@
     <!-- Email Composer Modal -->
     <!-- G9 Email Hub Modal -->
     <div class="modal-overlay" id="email-modal">
-        <div class="modal-content" style="max-width:780px;height:85vh;display:flex;flex-direction:column;">
+        <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>&#9993; E-Mail Hub <span id="inbox-header-badge" style="display:none;background:#ef4444;color:#fff;border-radius:12px;padding:2px 8px;font-size:12px;font-weight:700;margin-left:8px;"></span></h2>
                 <button class="modal-close" onclick="closeModal('email-modal')">&times;</button>
@@ -4613,7 +4677,7 @@
 
         <!-- Security Orders Modal -->
     <div class="modal-overlay" id="security-orders-modal">
-        <div class="modal" style="max-width: 900px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128221; Security Orders</h3>
                 <button class="modal-close" onclick="closeModal('security-orders-modal')">&times;</button>
@@ -5124,7 +5188,7 @@
 
     <!-- COCKPIT Full Checklist Modal -->
     <div class="modal-overlay" id="cockpit-modal">
-        <div class="modal-content" style="max-width:700px;height:88vh;display:flex;flex-direction:column;">
+        <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>🎯 COCKPIT — Full Checklist</h2>
                 <button class="modal-close" onclick="closeModal('cockpit-modal')">&times;</button>
@@ -5137,7 +5201,7 @@
 
     <!-- EDITOR Modal (Notepad + Briefing) -->
     <div class="modal-overlay" id="editor-modal">
-        <div class="modal-content" style="max-width:900px;height:90vh;display:flex;flex-direction:column;">
+        <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;padding:0 16px 0 0;display:flex;align-items:stretch;">
                 <button id="editor-tab-notepad" onclick="editorSwitchTab('notepad')"
                     style="background:#1e3a5f;color:#fff;border:none;border-bottom:2px solid #3b82f6;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;">
@@ -5277,7 +5341,7 @@
     
     <!-- Metrics Modal -->
     <div class="modal-overlay" id="metrics-modal">
-        <div class="modal-content" style="max-width: 1000px;">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128202; Work Hub Metrics Dashboard</h3>
                 <button class="modal-close" onclick="closeModal('metrics-modal')">&times;</button>
@@ -18156,7 +18220,7 @@ Spittelauer Lnde 12/1
         // COCKPIT — Dept Tabs + MS To-Do v15.9.84
         // ═══════════════════════════════════════════════════════
         let cockpitData = { byDept: { office:[], bar:[], runner:[], technik:[], sputnik:[] }, lastLoad: null };
-        let cpCollapsed = localStorage.getItem('cpCollapsed') === 'true';
+        let cpCollapsed = localStorage.getItem('cpCollapsed') !== 'false';
         let cpActiveDept = localStorage.getItem('cpActiveDept') || 'office';
 
         const CP_DEPTS = [
@@ -18197,9 +18261,25 @@ Spittelauer Lnde 12/1
             return groups;
         }
 
+        function cockpitShowSkeleton() {
+            const tl = document.getElementById('cp-task-list');
+            if (!tl) return;
+            let rows = '';
+            const widths = ['75%','55%','85%','60%','70%'];
+            widths.forEach((w, i) => {
+                rows += `<div class="cp-skeleton-row">
+                    <div class="cp-skel" style="width:14px;height:14px;border-radius:2px;flex-shrink:0;animation-delay:${i*0.1}s;"></div>
+                    <div class="cp-skel" style="height:10px;width:${w};animation-delay:${i*0.1+0.05}s;"></div>
+                    <div class="cp-skel" style="height:10px;width:38px;margin-left:auto;animation-delay:${i*0.1+0.1}s;"></div>
+                </div>`;
+            });
+            tl.innerHTML = rows;
+        }
+
         async function cockpitLoad() {
             const statusEl = document.getElementById('cp-status');
             if (statusEl) statusEl.textContent = '⏳ Lädt…';
+            cockpitShowSkeleton();
             let token = accessToken;
             if (!token) { try { token = await getMailToken(); } catch(e) {} }
             if (!token) {
@@ -18302,7 +18382,7 @@ Spittelauer Lnde 12/1
             const body = document.getElementById('cp-body');
             const btn = document.getElementById('cp-toggle-btn');
             if (body) body.style.display = cpCollapsed ? 'none' : 'block';
-            if (btn) btn.textContent = cpCollapsed ? '▼' : '▲';
+            if (btn) btn.textContent = cpCollapsed ? '▶' : '▼';
 
             // Render active dept
             cockpitRenderDeptTasks(cpActiveDept);
@@ -18312,6 +18392,15 @@ Spittelauer Lnde 12/1
         function cockpitSwitchDept(dept) {
             cpActiveDept = dept;
             localStorage.setItem('cpActiveDept', dept);
+            // Auto-expand if collapsed
+            if (cpCollapsed) {
+                cpCollapsed = false;
+                localStorage.setItem('cpCollapsed', 'false');
+                const body = document.getElementById('cp-body');
+                const btn = document.getElementById('cp-toggle-btn');
+                if (body) body.style.display = 'block';
+                if (btn) btn.textContent = '▼';
+            }
             cockpitRenderDeptTasks(dept);
             cockpitUpdateTabActive();
         }
@@ -18380,11 +18469,11 @@ Spittelauer Lnde 12/1
 
         function cockpitToggleCollapse() {
             cpCollapsed = !cpCollapsed;
-            localStorage.setItem('cpCollapsed', cpCollapsed);
+            localStorage.setItem('cpCollapsed', String(cpCollapsed));
             const body = document.getElementById('cp-body');
             const btn = document.getElementById('cp-toggle-btn');
             if (body) body.style.display = cpCollapsed ? 'none' : 'block';
-            if (btn) btn.textContent = cpCollapsed ? '▼' : '▲';
+            if (btn) btn.textContent = cpCollapsed ? '▶' : '▼';
         }
         window.cockpitToggleCollapse = cockpitToggleCollapse;
 
