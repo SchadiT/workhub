@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.89</title>
+    <title>Turbo Projects Work Hub v15.9.90</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2438,29 +2438,61 @@
         }
         .cp-skel { background: #1e2a3a; border-radius: 2px; animation: cp-shimmer 1.4s ease-in-out infinite; }
 
-        /* Modal Fullscreen — App modals v15.9.87 → v15.9.89 */
+        /* Modal Fullscreen — App modals v15.9.90 */
         .modal-app {
-            width: 98vw !important;
-            max-width: 98vw !important;
-            height: 96vh !important;
-            max-height: 96vh !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
             display: flex;
             flex-direction: column;
+            border-radius: 0 !important;
+            margin: 0 !important;
         }
         .modal-app .modal-body {
             flex: 1;
             overflow-y: auto;
             max-height: none !important;
+            min-height: 0;
         }
+        /* Overlay: no padding for app modals — stretch fills 100% */
+        .modal-overlay.show:has(.modal-app) {
+            padding: 0 !important;
+            align-items: stretch !important;
+        }
+        /* Fallback for browsers without :has() */
+        .modal-overlay-app {
+            padding: 0 !important;
+            align-items: stretch !important;
+        }
+        /* Compact header on landscape mobile */
+        @media (orientation: landscape) and (max-height: 520px) {
+            .modal-app .modal-header { padding: 6px 14px !important; }
+            .modal-app .modal-header h3 { font-size: 13px !important; }
+            .modal-app .modal-footer { padding: 8px 14px !important; }
+        }
+        /* DB Viewer — table fills remaining height */
+        #db-viewer-modal .modal-body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #dbv-table-wrap {
+            flex: 1 !important;
+            max-height: none !important;
+            overflow: auto;
+            min-height: 0;
+        }
+        /* Promoter Analysis — chart area fills height */
+        #promoter-analysis-modal .modal-body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* Guestlist lists — adaptive on mobile */
         @media (max-width: 768px) {
-            .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
-            .modal-app {
-                width: 100vw !important;
-                max-width: 100vw !important;
-                height: 96vh !important;
-                max-height: 96vh !important;
-                border-radius: 0 !important;
-            }
+            #gl-list-gl, #gl-list-fl, #gl-list-sl { max-height: 28vh !important; }
+            #security-order-output { max-height: none !important; }
         }
 </style>
 </head>
@@ -2551,7 +2583,7 @@
 
 
 
-    <!-- HEUTE BANNER v15.9.89 -->
+    <!-- HEUTE BANNER v15.9.90 -->
     <div id="heute-banner" style="display:none;margin-bottom:8px;">
         <div style="background:#1c1c22;border-radius:10px;border:1.5px solid rgba(232,93,93,0.25);padding:16px 20px;">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
@@ -2728,7 +2760,7 @@
         }
     </style>
 
-    <div class="modal-overlay" id="rechnungen-modal">
+    <div class="modal-overlay modal-overlay-app" id="rechnungen-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="background:#0d1b2a;border-bottom:1px solid #f59e0b22;">
                 <div style="display:flex;align-items:center;gap:10px;">
@@ -2874,7 +2906,7 @@
     </div>
 
     <!-- Cleaning Schedule Modal -->
-    <div class="modal-overlay" id="cleaning-modal">
+    <div class="modal-overlay modal-overlay-app" id="cleaning-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#129529; Cleaning Schedule</h3>
@@ -2958,7 +2990,7 @@
     <!--  -->
     
     <!-- NYE Projector Modal -->
-    <div class="modal-overlay" id="nye-projector-modal">
+    <div class="modal-overlay modal-overlay-app" id="nye-projector-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127878; NYE Projector (3-Jahre Benchmark)</h3>
@@ -3142,7 +3174,7 @@
     </div>
     
     <!-- Guest List Parser Modal -->
-    <div class="modal-overlay" id="guestlist-modal">
+    <div class="modal-overlay modal-overlay-app" id="guestlist-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h3>&#128157; Guestlist Tool</h3>
@@ -3255,7 +3287,7 @@
     </div>
 
     <!-- BAR STAFFING Modal -->
-    <div class="modal-overlay" id="bar-staffing-modal">
+    <div class="modal-overlay modal-overlay-app" id="bar-staffing-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127864; Bar Staffing Tool</h3>
@@ -3362,7 +3394,7 @@
     </div>
     
     <!-- DATABASE VIEWER Modal -->
-    <div class="modal-overlay" id="db-viewer-modal">
+    <div class="modal-overlay modal-overlay-app" id="db-viewer-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128202; Database Viewer</h3>
@@ -3412,7 +3444,7 @@
                     <div style="background:var(--surface);padding:8px 16px;flex:1;min-width:120px;"><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">Top Promoter</div><div id="dbv-s-top" style="font-size:13px;font-weight:700;color:#a855f7;">—</div></div>
                 </div>
                 <!-- Table -->
-                <div id="dbv-table-wrap" style="overflow:auto;max-height:45vh;">
+                <div id="dbv-table-wrap" style="overflow:auto;flex:1;min-height:0;">
                     <div style="text-align:center;padding:40px;color:#888;">Wird geladen...</div>
                 </div>
             </div>
@@ -3420,7 +3452,7 @@
     </div>
 
     <!-- PROMOTER ANALYSIS Modal -->
-    <div class="modal-overlay" id="promoter-analysis-modal">
+    <div class="modal-overlay modal-overlay-app" id="promoter-analysis-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="background:linear-gradient(135deg,#0c1a2e,#0e2340);">
                 <h3>&#128200; Promoter Analysis</h3>
@@ -3729,7 +3761,7 @@
     </style>
 
     <!-- RUNNER STAFFING Modal -->
-    <div class="modal-overlay" id="runner-staffing-modal">
+    <div class="modal-overlay modal-overlay-app" id="runner-staffing-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#127939; Runner Staffing Tool</h3>
@@ -4207,7 +4239,7 @@
     </div>
     
     <!-- Factsheet Generator Modal -->
-    <div class="modal-overlay" id="factsheet-modal">
+    <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3> Factsheet Generator</h3>
@@ -4486,7 +4518,7 @@
 
     <!-- Email Composer Modal -->
     <!-- G9 Email Hub Modal -->
-    <div class="modal-overlay" id="email-modal">
+    <div class="modal-overlay modal-overlay-app" id="email-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>&#9993; E-Mail Hub <span id="inbox-header-badge" style="display:none;background:#ef4444;color:#fff;border-radius:12px;padding:2px 8px;font-size:12px;font-weight:700;margin-left:8px;"></span></h2>
@@ -4711,7 +4743,7 @@
 
 
         <!-- Security Orders Modal -->
-    <div class="modal-overlay" id="security-orders-modal">
+    <div class="modal-overlay modal-overlay-app" id="security-orders-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128221; Security Orders</h3>
@@ -5210,7 +5242,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.89</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.90</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5220,7 +5252,7 @@
     
 
     <!-- COCKPIT Full Checklist Modal -->
-    <div class="modal-overlay" id="cockpit-modal">
+    <div class="modal-overlay modal-overlay-app" id="cockpit-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>🎯 COCKPIT — Full Checklist</h2>
@@ -5233,7 +5265,7 @@
     </div>
 
     <!-- EDITOR Modal (Notepad + Briefing) -->
-    <div class="modal-overlay" id="editor-modal">
+    <div class="modal-overlay modal-overlay-app" id="editor-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;padding:0 16px 0 0;display:flex;align-items:stretch;">
                 <button id="editor-tab-notepad" onclick="editorSwitchTab('notepad')"
@@ -5373,7 +5405,7 @@
     </div>
     
     <!-- Metrics Modal -->
-    <div class="modal-overlay" id="metrics-modal">
+    <div class="modal-overlay modal-overlay-app" id="metrics-modal">
         <div class="modal modal-app">
             <div class="modal-header">
                 <h3>&#128202; Work Hub Metrics Dashboard</h3>
@@ -5907,7 +5939,7 @@
             });
         }
 
-        // v15.9.89: Smart security time update on radio/template change
+        // v15.9.90: Smart security time update on radio/template change
         function fsAdaptSecurityTimesToTemplate(forceEventType) {
             const current = fsGetSecurityRows();
             const defaults = fsGetSecurityDefaults(forceEventType);
@@ -5931,7 +5963,7 @@
             updateFactsheetPreview();
         }
 
-        // v15.9.89: Radio 00:00 / 00:30 onChange
+        // v15.9.90: Radio 00:00 / 00:30 onChange
         function onMainFloorRadioChange() {
             const name  = document.getElementById('fs-event-name')?.value || '';
             const datum = document.getElementById('fs-datum')?.value || '';
@@ -5940,7 +5972,7 @@
             fsAdaptSecurityTimesToTemplate(eventType);
         }
 
-        // v15.9.89: Template select onChange
+        // v15.9.90: Template select onChange
         // SECURITY ROWS — editable in factsheet, feeds into Security Order
         function fsGetSecurityDefaults(forceEventType) {
             const eventType = forceEventType || document.getElementById('fs-template').value;
@@ -10371,7 +10403,7 @@
             showToast('📧 Email Draft für Sofie vorbereitet — öffne Email Hub');
         }
 
-        // v15.9.89: Heute-Banner — zeigt heutiges Event prominent
+        // v15.9.90: Heute-Banner — zeigt heutiges Event prominent
         function renderHeuteBanner() {
             const banner = document.getElementById('heute-banner');
             if (!banner) return;
@@ -13557,7 +13589,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.89';
+            const HUB_VERSION = 'v15.9.90';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
