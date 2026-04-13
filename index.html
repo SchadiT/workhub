@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.88</title>
+    <title>Turbo Projects Work Hub v15.9.89</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2438,7 +2438,7 @@
         }
         .cp-skel { background: #1e2a3a; border-radius: 2px; animation: cp-shimmer 1.4s ease-in-out infinite; }
 
-        /* Modal Fullscreen — App modals v15.9.87 → v15.9.88 */
+        /* Modal Fullscreen — App modals v15.9.87 → v15.9.89 */
         .modal-app {
             width: 98vw !important;
             max-width: 98vw !important;
@@ -2550,6 +2550,41 @@
     </div>
 
 
+
+    <!-- HEUTE BANNER v15.9.89 -->
+    <div id="heute-banner" style="display:none;margin-bottom:8px;">
+        <div style="background:#1c1c22;border-radius:10px;border:1.5px solid rgba(232,93,93,0.25);padding:16px 20px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+                        <div style="width:7px;height:7px;border-radius:50%;background:#e85d5d;flex-shrink:0;"></div>
+                        <span style="font-size:11px;color:#e85d5d;font-weight:600;letter-spacing:0.08em;">EVENT HEUTE</span>
+                    </div>
+                    <p id="heute-event-name" style="font-size:17px;font-weight:500;color:#f5f5f5;margin:0;line-height:1.3;"></p>
+                    <p id="heute-event-meta" style="font-size:12px;color:#888;margin:3px 0 0;"></p>
+                </div>
+                <button id="heute-factsheet-btn" onclick="" style="background:transparent;border:0.5px solid #444;color:#ccc;font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;flex-shrink:0;">Factsheet ↗</button>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <div style="background:#252528;border-radius:7px;padding:8px 14px;min-width:72px;">
+                    <div style="font-size:10px;color:#666;margin-bottom:2px;">Doors</div>
+                    <div id="heute-doors" style="font-size:15px;font-weight:500;color:#f0f0f0;">—</div>
+                </div>
+                <div style="background:#252528;border-radius:7px;padding:8px 14px;min-width:72px;">
+                    <div style="font-size:10px;color:#666;margin-bottom:2px;">Main Floor</div>
+                    <div id="heute-main" style="font-size:15px;font-weight:500;color:#f0f0f0;">—</div>
+                </div>
+                <div style="background:#252528;border-radius:7px;padding:8px 14px;min-width:72px;">
+                    <div style="font-size:10px;color:#666;margin-bottom:2px;">Security ab</div>
+                    <div id="heute-security" style="font-size:15px;font-weight:500;color:#f0f0f0;">—</div>
+                </div>
+                <div style="background:#252528;border-radius:7px;padding:8px 14px;min-width:72px;">
+                    <div style="font-size:10px;color:#666;margin-bottom:2px;">Typ</div>
+                    <div id="heute-type" style="font-size:15px;font-weight:500;color:#f0f0f0;">—</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
     <div class="widgets-row">
@@ -4801,13 +4836,11 @@
                     <span class="tool-icon">&#127757;</span>
                     Promo Mgr.
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal');glPopulateEventDropdown();" style="position: relative;">
-                    <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
+                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal');glPopulateEventDropdown();">
                     <span class="tool-icon">&#128157;</span>
                     Guestlist
                 </button>
-                <button class="tool-btn border-blue" onclick="openHospitalityModal()" style="position: relative;">
-                    <span style="position:absolute;top:6px;right:8px;color:#ef4444;font-size:14px;line-height:1;">&#9733;</span>
+                <button class="tool-btn border-blue" onclick="openHospitalityModal()">
                     <span class="tool-icon">&#127860;</span>
                     Hospitality
                 </button>
@@ -5177,7 +5210,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.88</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.89</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5874,12 +5907,12 @@
             });
         }
 
-        // v15.9.88: Smart security time update on radio/template change
-        function fsAdaptSecurityTimesToTemplate() {
+        // v15.9.89: Smart security time update on radio/template change
+        function fsAdaptSecurityTimesToTemplate(forceEventType) {
             const current = fsGetSecurityRows();
-            const defaults = fsGetSecurityDefaults();
+            const defaults = fsGetSecurityDefaults(forceEventType);
             if (current.length === 0) {
-                fsRenderSecurityRows();
+                fsRenderSecurityRows(defaults);
                 updateFactsheetPreview();
                 return;
             }
@@ -5898,19 +5931,19 @@
             updateFactsheetPreview();
         }
 
-        // v15.9.88: Radio 00:00 / 00:30 onChange
+        // v15.9.89: Radio 00:00 / 00:30 onChange
         function onMainFloorRadioChange() {
             const name  = document.getElementById('fs-event-name')?.value || '';
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value === 'CONCERT' ? 'CONCERT' : 'CLUB';
             applyFactsheet(name, datum, eventType, null);
-            fsAdaptSecurityTimesToTemplate();
+            fsAdaptSecurityTimesToTemplate(eventType);
         }
 
-        // v15.9.88: Template select onChange
+        // v15.9.89: Template select onChange
         // SECURITY ROWS — editable in factsheet, feeds into Security Order
-        function fsGetSecurityDefaults() {
-            const eventType = document.getElementById('fs-template').value;
+        function fsGetSecurityDefaults(forceEventType) {
+            const eventType = forceEventType || document.getElementById('fs-template').value;
             const mainFloor = document.querySelector('input[name="main-floor-time"]:checked')?.value || '00:00';
             if (eventType === 'CONCERT') {
                 return [
@@ -5997,7 +6030,7 @@
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value;
             applyFactsheet(name, datum, eventType, null);
-            fsAdaptSecurityTimesToTemplate();
+            fsAdaptSecurityTimesToTemplate(eventType);
         }
         
         // 
@@ -10338,6 +10371,59 @@
             showToast('📧 Email Draft für Sofie vorbereitet — öffne Email Hub');
         }
 
+        // v15.9.89: Heute-Banner — zeigt heutiges Event prominent
+        function renderHeuteBanner() {
+            const banner = document.getElementById('heute-banner');
+            if (!banner) return;
+            if (typeof bmtEvents === 'undefined' || !bmtEvents.length) { banner.style.display = 'none'; return; }
+
+            const today = new Date();
+            const todayStr = today.toISOString().slice(0, 10);
+
+            const ev = bmtEvents.find(e => {
+                if (!e.dtstart) return false;
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                return d.toISOString().slice(0, 10) === todayStr;
+            });
+
+            if (!ev) { banner.style.display = 'none'; return; }
+
+            const name = ev.summary || (ev.artists && ev.artists[0] ? ev.artists[0].name : 'Event');
+            const cat = (ev.category || '').toLowerCase();
+            const isConcert = cat === 'konzert';
+            const isEigen = cat === 'eigen';
+            const typeLabel = isConcert ? 'KONZERT' : (isEigen ? 'EIGEN' : 'FREMD');
+
+            const t = isConcert ? TEMPLATES.CONCERT : TEMPLATES.MAIN_00;
+            const doors = t.doors1 || '23:00';
+            const mainFloor = isConcert ? t.doors1 : '00:00';
+            const secStart = t.security && t.security[0] ? t.security[0].time : '22:45';
+
+            const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            const d = ev.dtstart instanceof Date ? ev.dtstart : new Date(ev.dtstart);
+            const dateStr = dayNames[d.getDay()] + ' ' + d.toLocaleDateString('de-AT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+            document.getElementById('heute-event-name').textContent = name;
+            document.getElementById('heute-event-meta').textContent = dateStr + ' · ' + typeLabel;
+            document.getElementById('heute-doors').textContent = doors;
+            document.getElementById('heute-main').textContent = mainFloor;
+            document.getElementById('heute-security').textContent = secStart;
+            document.getElementById('heute-type').textContent = typeLabel;
+
+            // Factsheet button — open factsheet modal pre-filled with this event
+            const btn = document.getElementById('heute-factsheet-btn');
+            if (btn) {
+                btn.onclick = function() {
+                    const eventType = isConcert ? 'CONCERT' : 'CLUB';
+                    applyFactsheet(name, dateStr, eventType, null);
+                    fsAdaptSecurityTimesToTemplate(eventType);
+                    openModal('factsheet-modal');
+                };
+            }
+
+            banner.style.display = 'block';
+        }
+
         function afterBMTLoad(source) {
             bmtDetectChanges();
             renderBMTEvents();
@@ -10353,6 +10439,7 @@
                 generateCleaningSchedule();
             }
             updateBMTApiBtn();
+            renderHeuteBanner();
             showToast('✅ ' + bmtEvents.length + ' BMT Events geladen (' + source + ')');
         }
 
@@ -13470,7 +13557,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.88';
+            const HUB_VERSION = 'v15.9.89';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17391,7 +17478,7 @@ Spittelauer Lnde 12/1
         }
         // v15.9.80: also load on DOMContentLoaded (no token needed for proxy)
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => { inboxCheckUnread(); miniInboxLoad(); }, 1000);
+            setTimeout(() => { inboxCheckUnread(); miniInboxLoad(); renderHeuteBanner(); }, 1000);
         });
         // ═══════════════════════════════════════════════════════
 
