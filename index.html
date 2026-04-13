@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.93</title>
+    <title>Turbo Projects Work Hub v15.9.94</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1049,6 +1049,27 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
+        /* ===== COCKPIT DEPT ROWS v15.9.94 ===== */
+        .cp-dept-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .cp-dept-row:last-of-type { border-bottom: none; }
+        .cp-dept-row-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; cursor: pointer; transition: background 0.15s;
+        }
+        .cp-dept-row-header:hover { background: rgba(255,255,255,0.025); }
+        .cp-chev { font-size: 9px; color: #444; flex-shrink: 0; width: 10px; }
+        .cp-dept-icon { font-size: 14px; flex-shrink: 0; }
+        .cp-dept-row-name { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; min-width: 60px; }
+        .cp-open-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; }
+        .cp-dept-minibar { flex: 1; height: 3px; background: #1e2a3a; border-radius: 2px; overflow: hidden; min-width: 40px; }
+        .cp-dept-minibar-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+        .cp-dept-row-pct { font-size: 11px; color: #4b5563; min-width: 32px; text-align: right; flex-shrink: 0; }
+        .cp-dept-row-body { border-top: 1px solid rgba(255,255,255,0.04); }
+        #cp-alerts-bar { background: #08080f; border-bottom: 1px solid rgba(239,68,68,0.15); padding: 5px 14px; display: flex; align-items: center; gap: 10px; }
+        .cp-alert-label { font-size: 10px; letter-spacing: 1px; color: #ef4444; text-transform: uppercase; font-weight: 600; flex-shrink: 0; }
+        .cp-alert-pill { font-size: 10px; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
+        .cp-alert-pill-red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; }
+        .cp-alert-pill-amber { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #f59e0b; }
         .cp-task-item:hover { background: var(--surface-2); }
         .cp-task-item:last-child { border-bottom: none; }
         .cp-task-cb { margin-top: 2px; width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; accent-color: #3b82f6; }
@@ -2553,59 +2574,78 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — ALWAYS VISIBLE + DROPDOWN v15.9.85 -->
+    <!-- COCKPIT — DEPT ROWS v15.9.94 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
-        <!-- Always-visible header with inline dept tabs -->
-        <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:6px 12px;display:flex;align-items:center;gap:10px;">
-            <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;min-width:70px;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
-            <div style="height:5px;background:#111827;border-radius:3px;overflow:hidden;border:1px solid #1e3a5f;width:100px;flex-shrink:0;">
-                <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:3px;width:0%;transition:width 0.5s;"></div>
+        <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
+            <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
+            <div style="height:4px;background:#111827;border-radius:2px;overflow:hidden;border:1px solid #1e3a5f;width:100px;flex-shrink:0;">
+                <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:2px;width:0%;transition:width 0.5s;"></div>
             </div>
             <span id="cp-pct" style="font-size:13px;font-weight:800;color:#3b82f6;min-width:38px;text-align:right;flex-shrink:0;">—</span>
-            <span id="cp-fraction" style="font-size:11px;color:#4b5563;min-width:34px;flex-shrink:0;">0/0</span>
-            <!-- Dept Tabs inline -->
-            <div style="display:flex;flex:1;gap:0;min-width:0;align-self:stretch;">
-                <button class="cp-dept-tab active" data-dept="office" onclick="cockpitSwitchDept('office')">
-                    <span class="cp-tab-label">🏠 OFFICE</span>
-                    <span class="cp-tab-count" id="cp-count-office">0</span>
-                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-office" style="width:0%;background:#22c55e;"></div></div>
-                    <span class="cp-tab-pct" id="cp-pct-office">—</span>
-                </button>
-                <button class="cp-dept-tab" data-dept="bar" onclick="cockpitSwitchDept('bar')">
-                    <span class="cp-tab-label">🍹 BAR</span>
-                    <span class="cp-tab-count" id="cp-count-bar">0</span>
-                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-bar" style="width:0%;background:#f59e0b;"></div></div>
-                    <span class="cp-tab-pct" id="cp-pct-bar">—</span>
-                </button>
-                <button class="cp-dept-tab" data-dept="runner" onclick="cockpitSwitchDept('runner')">
-                    <span class="cp-tab-label">🏃 RUNNER</span>
-                    <span class="cp-tab-count" id="cp-count-runner">0</span>
-                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-runner" style="width:0%;background:#3b82f6;"></div></div>
-                    <span class="cp-tab-pct" id="cp-pct-runner">—</span>
-                </button>
-                <button class="cp-dept-tab" data-dept="technik" onclick="cockpitSwitchDept('technik')">
-                    <span class="cp-tab-label">🔧 TECHNIK</span>
-                    <span class="cp-tab-count" id="cp-count-technik">0</span>
-                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-technik" style="width:0%;background:#8b5cf6;"></div></div>
-                    <span class="cp-tab-pct" id="cp-pct-technik">—</span>
-                </button>
-                <button class="cp-dept-tab" data-dept="sputnik" onclick="cockpitSwitchDept('sputnik')">
-                    <span class="cp-tab-label">🚀 SPUTNIK</span>
-                    <span class="cp-tab-count" id="cp-count-sputnik">0</span>
-                    <div class="cp-tab-bar"><div class="cp-tab-bar-fill" id="cp-bar-sputnik" style="width:0%;background:#ec4899;"></div></div>
-                    <span class="cp-tab-pct" id="cp-pct-sputnik">—</span>
-                </button>
-            </div>
-            <span id="cp-toggle-btn" onclick="cockpitToggleCollapse()" style="font-size:10px;color:#4b5563;cursor:pointer;flex-shrink:0;padding:4px 6px;user-select:none;">▶</span>
+            <span id="cp-fraction" style="font-size:11px;color:#4b5563;flex-shrink:0;">0/0</span>
+            <span id="cp-toggle-btn" onclick="cockpitToggleCollapse()" style="font-size:10px;color:#4b5563;cursor:pointer;flex-shrink:0;padding:4px 6px;user-select:none;margin-left:auto;">▶</span>
         </div>
-        <!-- Dropdown: task list only -->
-        <div id="cp-body" style="display:none;">
-            <div id="cp-task-list" style="max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-top:none;"></div>
-            <div style="padding:6px 14px;border:1px solid var(--border);border-top:none;display:flex;align-items:center;gap:10px;background:var(--surface);">
-                <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
-                <div style="margin-left:auto;">
-                    <button onclick="cockpitLoad()" class="btn-secondary">↺ Refresh</button>
+        <div id="cp-body" style="display:none;border:1px solid var(--border);border-top:none;">
+            <div id="cp-alerts-bar" style="display:none;">
+                <span class="cp-alert-label">⚠ Alerts</span>
+                <span id="cp-alert-overdue" class="cp-alert-pill cp-alert-pill-red"></span>
+                <span id="cp-alert-today" class="cp-alert-pill cp-alert-pill-amber"></span>
+            </div>
+            <div style="background:var(--surface);">
+                <div class="cp-dept-row">
+                    <div class="cp-dept-row-header" onclick="cockpitToggleDept('office')">
+                        <span class="cp-chev" id="cp-chev-office">▶</span><span class="cp-dept-icon">🏠</span>
+                        <span class="cp-dept-row-name" style="color:#22c55e;">OFFICE</span>
+                        <span class="cp-open-badge" id="cp-count-office" style="background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2);">0 offen</span>
+                        <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-office" style="width:0%;background:#22c55e;"></div></div>
+                        <span class="cp-dept-row-pct" id="cp-pct-office">—</span>
+                    </div>
+                    <div class="cp-dept-row-body" id="cp-dept-body-office" style="display:none;"></div>
                 </div>
+                <div class="cp-dept-row">
+                    <div class="cp-dept-row-header" onclick="cockpitToggleDept('bar')">
+                        <span class="cp-chev" id="cp-chev-bar">▶</span><span class="cp-dept-icon">🍹</span>
+                        <span class="cp-dept-row-name" style="color:#f59e0b;">BAR</span>
+                        <span class="cp-open-badge" id="cp-count-bar" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.2);">0 offen</span>
+                        <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-bar" style="width:0%;background:#f59e0b;"></div></div>
+                        <span class="cp-dept-row-pct" id="cp-pct-bar">—</span>
+                    </div>
+                    <div class="cp-dept-row-body" id="cp-dept-body-bar" style="display:none;"></div>
+                </div>
+                <div class="cp-dept-row">
+                    <div class="cp-dept-row-header" onclick="cockpitToggleDept('runner')">
+                        <span class="cp-chev" id="cp-chev-runner">▶</span><span class="cp-dept-icon">🏃</span>
+                        <span class="cp-dept-row-name" style="color:#3b82f6;">RUNNER</span>
+                        <span class="cp-open-badge" id="cp-count-runner" style="background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">0 offen</span>
+                        <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-runner" style="width:0%;background:#3b82f6;"></div></div>
+                        <span class="cp-dept-row-pct" id="cp-pct-runner">—</span>
+                    </div>
+                    <div class="cp-dept-row-body" id="cp-dept-body-runner" style="display:none;"></div>
+                </div>
+                <div class="cp-dept-row">
+                    <div class="cp-dept-row-header" onclick="cockpitToggleDept('technik')">
+                        <span class="cp-chev" id="cp-chev-technik">▶</span><span class="cp-dept-icon">🔧</span>
+                        <span class="cp-dept-row-name" style="color:#8b5cf6;">TECHNIK</span>
+                        <span class="cp-open-badge" id="cp-count-technik" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border:1px solid rgba(139,92,246,0.2);">0 offen</span>
+                        <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-technik" style="width:0%;background:#8b5cf6;"></div></div>
+                        <span class="cp-dept-row-pct" id="cp-pct-technik">—</span>
+                    </div>
+                    <div class="cp-dept-row-body" id="cp-dept-body-technik" style="display:none;"></div>
+                </div>
+                <div class="cp-dept-row" style="border-bottom:none;">
+                    <div class="cp-dept-row-header" onclick="cockpitToggleDept('sputnik')">
+                        <span class="cp-chev" id="cp-chev-sputnik">▶</span><span class="cp-dept-icon">🚀</span>
+                        <span class="cp-dept-row-name" style="color:#ec4899;">SPUTNIK</span>
+                        <span class="cp-open-badge" id="cp-count-sputnik" style="background:rgba(236,72,153,0.1);color:#ec4899;border:1px solid rgba(236,72,153,0.2);">0 offen</span>
+                        <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-sputnik" style="width:0%;background:#ec4899;"></div></div>
+                        <span class="cp-dept-row-pct" id="cp-pct-sputnik">—</span>
+                    </div>
+                    <div class="cp-dept-row-body" id="cp-dept-body-sputnik" style="display:none;"></div>
+                </div>
+            </div>
+            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface);">
+                <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
+                <div style="margin-left:auto;"><button onclick="cockpitLoad()" class="btn-secondary">↺ Refresh</button></div>
             </div>
         </div>
     </div>
@@ -5275,7 +5315,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.93</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.94</span>
     </div>
     
     <!-- Metrics Button -->
@@ -13626,7 +13666,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.93';
+            const HUB_VERSION = 'v15.9.94';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18408,7 +18448,8 @@ Spittelauer Lnde 12/1
         // ═══════════════════════════════════════════════════════
         let cockpitData = { byDept: { office:[], bar:[], runner:[], technik:[], sputnik:[] }, lastLoad: null };
         let cpCollapsed = localStorage.getItem('cpCollapsed') !== 'false';
-        let cpActiveDept = localStorage.getItem('cpActiveDept') || 'office';
+        let cpExpandedDepts = new Set(JSON.parse(localStorage.getItem('cpExpandedDepts') || '[]'));
+        let cpActiveDept = 'office'; // legacy compat
 
         const CP_DEPTS = [
             { key: 'office',  label: 'OFFICE',  color: '#22c55e' },
@@ -18449,18 +18490,17 @@ Spittelauer Lnde 12/1
         }
 
         function cockpitShowSkeleton() {
-            const tl = document.getElementById('cp-task-list');
-            if (!tl) return;
-            let rows = '';
-            const widths = ['75%','55%','85%','60%','70%'];
-            widths.forEach((w, i) => {
-                rows += `<div class="cp-skeleton-row">
-                    <div class="cp-skel" style="width:14px;height:14px;border-radius:2px;flex-shrink:0;animation-delay:${i*0.1}s;"></div>
-                    <div class="cp-skel" style="height:10px;width:${w};animation-delay:${i*0.1+0.05}s;"></div>
-                    <div class="cp-skel" style="height:10px;width:38px;margin-left:auto;animation-delay:${i*0.1+0.1}s;"></div>
-                </div>`;
+            // v15.9.94: skeleton shown per expanded dept body
+            cpExpandedDepts.forEach(dept => {
+                const body = document.getElementById('cp-dept-body-' + dept);
+                if (!body) return;
+                let rows = '';
+                const widths = ['75%','55%','85%','60%'];
+                widths.forEach((w, i) => {
+                    rows += `<div class="cp-skeleton-row"><div class="cp-skel" style="width:14px;height:14px;border-radius:2px;flex-shrink:0;animation-delay:${i*0.1}s;"></div><div class="cp-skel" style="height:10px;width:${w};animation-delay:${i*0.1+0.05}s;"></div></div>`;
+                });
+                body.innerHTML = rows;
             });
-            tl.innerHTML = rows;
         }
 
         async function cockpitLoad() {
@@ -18472,9 +18512,7 @@ Spittelauer Lnde 12/1
             if (!token) {
                 const hint = document.getElementById('cp-signin-hint');
                 if (hint) hint.style.display = 'block';
-                const tl = document.getElementById('cp-task-list');
-                if (tl) tl.innerHTML = '<div style="padding:14px;color:#555;font-size:12px;text-align:center;">Nicht eingeloggt</div>';
-                if (statusEl) statusEl.textContent = '';
+                if (statusEl) statusEl.textContent = 'Microsoft Login erforderlich';
                 return;
             }
             const hint = document.getElementById('cp-signin-hint');
@@ -18538,7 +18576,7 @@ Spittelauer Lnde 12/1
 
 
         function cockpitRender() {
-            // Update overall progress bar (all tasks across all depts)
+            // Overall bar
             const allTasks = Object.values(cockpitData.byDept).flat();
             const total = allTasks.length;
             const done = allTasks.filter(t => t.status === 'completed').length;
@@ -18550,56 +18588,60 @@ Spittelauer Lnde 12/1
             if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = pct === 100 ? '#22c55e' : '#3b82f6'; }
             if (fracEl) fracEl.textContent = done + '/' + total;
 
-            // Update tab counts + per-dept progress bars
+            // Per-dept row badges + bars
             CP_DEPTS.forEach(dept => {
                 const tasks = cockpitData.byDept[dept.key] || [];
-                const total = tasks.length;
-                const done = tasks.filter(t => t.status === 'completed').length;
-                const open = total - done;
-                const pctDept = total ? Math.round(done / total * 100) : 0;
+                const dTotal = tasks.length;
+                const dDone = tasks.filter(t => t.status === 'completed').length;
+                const open = dTotal - dDone;
+                const pctDept = dTotal ? Math.round(dDone / dTotal * 100) : 0;
                 const countEl = document.getElementById('cp-count-' + dept.key);
-                if (countEl) countEl.textContent = open;
+                if (countEl) countEl.textContent = open + ' offen';
                 const barEl = document.getElementById('cp-bar-' + dept.key);
                 if (barEl) barEl.style.width = pctDept + '%';
-                const pctEl = document.getElementById('cp-pct-' + dept.key);
-                if (pctEl) pctEl.textContent = total ? pctDept + '%' : '';
+                const pctDeptEl = document.getElementById('cp-pct-' + dept.key);
+                if (pctDeptEl) pctDeptEl.textContent = dTotal ? pctDept + '%' : '—';
             });
 
-            // Apply collapse
+            // Collapse
             const body = document.getElementById('cp-body');
             const btn = document.getElementById('cp-toggle-btn');
             if (body) body.style.display = cpCollapsed ? 'none' : 'block';
             if (btn) btn.textContent = cpCollapsed ? '▶' : '▼';
 
-            // Render active dept
-            cockpitRenderDeptTasks(cpActiveDept);
+            // Alerts
+            cockpitRenderAlerts();
+
+            // Re-render all expanded depts
+            cpExpandedDepts.forEach(dept => cockpitRenderDeptTasks(dept));
             cockpitUpdateTabActive();
         }
 
-        function cockpitSwitchDept(dept) {
-            cpActiveDept = dept;
-            localStorage.setItem('cpActiveDept', dept);
-            // Auto-expand if collapsed
-            if (cpCollapsed) {
-                cpCollapsed = false;
-                localStorage.setItem('cpCollapsed', 'false');
-                const body = document.getElementById('cp-body');
-                const btn = document.getElementById('cp-toggle-btn');
-                if (body) body.style.display = 'block';
-                if (btn) btn.textContent = '▼';
+        function cockpitToggleDept(dept) { // v15.9.94
+            if (cpExpandedDepts.has(dept)) {
+                cpExpandedDepts.delete(dept);
+            } else {
+                cpExpandedDepts.add(dept);
+                cockpitRenderDeptTasks(dept);
             }
-            cockpitRenderDeptTasks(dept);
+            localStorage.setItem('cpExpandedDepts', JSON.stringify([...cpExpandedDepts]));
             cockpitUpdateTabActive();
         }
+
+        function cockpitSwitchDept(dept) { cockpitToggleDept(dept); } // legacy compat
 
         function cockpitUpdateTabActive() {
-            document.querySelectorAll('.cp-dept-tab').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.dept === cpActiveDept);
+            CP_DEPTS.forEach(d => {
+                const chev = document.getElementById('cp-chev-' + d.key);
+                const body = document.getElementById('cp-dept-body-' + d.key);
+                const isOpen = cpExpandedDepts.has(d.key);
+                if (chev) chev.textContent = isOpen ? '▼' : '▶';
+                if (body) body.style.display = isOpen ? 'block' : 'none';
             });
         }
 
         function cockpitRenderDeptTasks(dept) {
-            const container = document.getElementById('cp-task-list');
+            const container = document.getElementById('cp-dept-body-' + dept);
             if (!container) return;
             const tasks = cockpitData.byDept[dept] || [];
             const listId = TODO_LISTS[dept];
@@ -18652,6 +18694,28 @@ Spittelauer Lnde 12/1
                 `;
                 container.appendChild(row);
             });
+        }
+
+        function cockpitRenderAlerts() { // v15.9.94
+            const alertsBar = document.getElementById('cp-alerts-bar');
+            if (!alertsBar) return;
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+            const open = Object.values(cockpitData.byDept).flat().filter(t => t.status !== 'completed');
+            let overdue = 0, dueToday = 0;
+            open.forEach(t => {
+                if (!t.dueDateTime) return;
+                const d = new Date(new Date(t.dueDateTime.dateTime).toDateString());
+                if (d < today) overdue++;
+                else if (d >= today && d < tomorrow) dueToday++;
+            });
+            if (overdue === 0 && dueToday === 0) { alertsBar.style.display = 'none'; return; }
+            alertsBar.style.display = 'flex';
+            const oEl = document.getElementById('cp-alert-overdue');
+            const tEl = document.getElementById('cp-alert-today');
+            if (oEl) { oEl.textContent = overdue + ' Overdue'; oEl.style.display = overdue > 0 ? '' : 'none'; }
+            if (tEl) { tEl.textContent = dueToday + ' Fällig heute'; tEl.style.display = dueToday > 0 ? '' : 'none'; }
         }
 
         function cockpitToggleCollapse() {
