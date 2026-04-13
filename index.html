@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.87</title>
+    <title>Turbo Projects Work Hub v15.9.88</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2438,7 +2438,7 @@
         }
         .cp-skel { background: #1e2a3a; border-radius: 2px; animation: cp-shimmer 1.4s ease-in-out infinite; }
 
-        /* Modal Fullscreen — App modals v15.9.87 */
+        /* Modal Fullscreen — App modals v15.9.87 → v15.9.88 */
         .modal-app {
             width: 98vw !important;
             max-width: 98vw !important;
@@ -5177,7 +5177,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.87</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.88</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5874,16 +5874,40 @@
             });
         }
 
-        // v15.9.11: Radio 00:00 / 00:30 onChange — reset times to new template
+        // v15.9.88: Smart security time update on radio/template change
+        function fsAdaptSecurityTimesToTemplate() {
+            const current = fsGetSecurityRows();
+            const defaults = fsGetSecurityDefaults();
+            if (current.length === 0) {
+                fsRenderSecurityRows();
+                updateFactsheetPreview();
+                return;
+            }
+            // Update times of existing rows from defaults, preserve PAX + extra rows
+            const updated = current.map((row, i) => ({
+                time: i < defaults.length ? defaults[i].time : row.time,
+                pax:  row.pax || (i < defaults.length ? defaults[i].pax : '')
+            }));
+            // If fewer rows than defaults, pad to defaults count
+            if (updated.length < defaults.length) {
+                for (let i = updated.length; i < defaults.length; i++) {
+                    updated.push({ time: defaults[i].time, pax: defaults[i].pax });
+                }
+            }
+            fsRenderSecurityRows(updated);
+            updateFactsheetPreview();
+        }
+
+        // v15.9.88: Radio 00:00 / 00:30 onChange
         function onMainFloorRadioChange() {
             const name  = document.getElementById('fs-event-name')?.value || '';
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value === 'CONCERT' ? 'CONCERT' : 'CLUB';
             applyFactsheet(name, datum, eventType, null);
-            fsRenderSecurityRows();
+            fsAdaptSecurityTimesToTemplate();
         }
 
-        // v15.9.11: Template select onChange — reset all times
+        // v15.9.88: Template select onChange
         // SECURITY ROWS — editable in factsheet, feeds into Security Order
         function fsGetSecurityDefaults() {
             const eventType = document.getElementById('fs-template').value;
@@ -5973,7 +5997,7 @@
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value;
             applyFactsheet(name, datum, eventType, null);
-            fsRenderSecurityRows();
+            fsAdaptSecurityTimesToTemplate();
         }
         
         // 
@@ -13446,7 +13470,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.87';
+            const HUB_VERSION = 'v15.9.88';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
