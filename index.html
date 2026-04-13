@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.92</title>
+    <title>Turbo Projects Work Hub v15.9.93</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3537,6 +3537,7 @@
                     <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
                         <div id="pa-status-dot" style="width:7px;height:7px;border-radius:50%;background:#444;"></div>
                         <span id="pa-status" style="font-size:11px;color:#888;">—</span>
+                        <button onclick="paReload()" style="background:transparent;border:1px solid #2e4a6a;color:#5b8ab5;font-size:10px;padding:2px 8px;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;">↺</button>
                     </div>
                 </div>
 
@@ -5274,7 +5275,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.92</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.93</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5971,11 +5972,11 @@
             });
         }
 
-        // v15.9.92: Smart security time update on radio/template change
-        function fsAdaptSecurityTimesToTemplate(forceEventType) {
+        // v15.9.93: resetPax=true → full reset on type change; false → preserve PAX on radio-only
+        function fsAdaptSecurityTimesToTemplate(forceEventType, resetPax = false) {
             const current = fsGetSecurityRows();
             const defaults = fsGetSecurityDefaults(forceEventType);
-            if (current.length === 0) {
+            if (current.length === 0 || resetPax) {
                 fsRenderSecurityRows(defaults);
                 updateFactsheetPreview();
                 return;
@@ -6094,7 +6095,7 @@
             const datum = document.getElementById('fs-datum')?.value || '';
             const eventType = document.getElementById('fs-template')?.value;
             applyFactsheet(name, datum, eventType, null);
-            fsAdaptSecurityTimesToTemplate(eventType);
+            fsAdaptSecurityTimesToTemplate(eventType, true); // v15.9.93
         }
         
         // 
@@ -8032,7 +8033,7 @@
             };
 
             applyFactsheet(e.name, e.datum, e.eventType, names);
-            fsAdaptSecurityTimesToTemplate(e.eventType);
+            fsAdaptSecurityTimesToTemplate(e.eventType, true); // v15.9.93
         }
 
         // v15.9.11: Single clean function — template times always win, names from shiftplan
@@ -8191,7 +8192,7 @@
             }
             
             updateFactsheetPreview();
-            fsAdaptSecurityTimesToTemplate(template);
+            fsAdaptSecurityTimesToTemplate(template, true); // v15.9.93
         }
         
         // Format runner name with time (legacy - kept for compatibility)
@@ -10482,7 +10483,7 @@
                 btn.onclick = function() {
                     const eventType = isConcert ? 'CONCERT' : 'CLUB';
                     applyFactsheet(name, dateStr, eventType, null);
-                    fsAdaptSecurityTimesToTemplate(eventType);
+                    fsAdaptSecurityTimesToTemplate(eventType, true); // v15.9.93
                     openModal('factsheet-modal');
                 };
             }
@@ -10703,7 +10704,7 @@
                 
                 // Update preview
                 updateFactsheetPreview();
-                fsAdaptSecurityTimesToTemplate(template);
+                fsAdaptSecurityTimesToTemplate(template, true); // v15.9.93
                 
                 // Open factsheet modal
                 openModal('factsheet-modal');
@@ -11185,7 +11186,7 @@
             
             // Update preview
             updateFactsheetPreview();
-            fsAdaptSecurityTimesToTemplate(template);
+            fsAdaptSecurityTimesToTemplate(template, true); // v15.9.93
             
             // Open modal
             openModal('factsheet-modal');
@@ -13625,7 +13626,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.92';
+            const HUB_VERSION = 'v15.9.93';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16755,6 +16756,11 @@ Spittelauer Lnde 12/1
             return new Date(s);
         }
 
+        async function paReload() { // v15.9.93: force-reload clears cache
+            paLoaded = false;
+            paData = [];
+            await paLoad();
+        }
         async function paLoad() {
             if (paLoaded) { paRender(); return; }
             // Reuse dbvData if already loaded
@@ -16785,8 +16791,9 @@ Spittelauer Lnde 12/1
         }
 
         function paInit() {
+            // v15.9.93: strip blank/header rows from raw CSV
+            paData = paData.filter(r => r['Event_ID'] && String(r['Event_ID']).trim() !== '' && String(r['Event_ID']).trim() !== 'Event_ID');
             document.getElementById('pa-status-dot').style.background = '#22c55e';
-            document.getElementById('pa-status').textContent = paData.length + ' Events';
             // Build promoter list
             const promoters = [...new Set(paData.map(r => r['Promoter']).filter(Boolean))].sort();
             // Default: top 5 by event count
@@ -16794,6 +16801,7 @@ Spittelauer Lnde 12/1
             promoters.forEach(p => counts[p] = paData.filter(r => r['Promoter'] === p).length);
             const top5 = promoters.sort((a,b) => counts[b]-counts[a]).slice(0,5);
             paSelected = new Set(top5);
+            document.getElementById('pa-status').textContent = paData.length + ' Events · ' + promoters.length + ' Promoter'; // v15.9.93
             paBuildDropdown(promoters);
             paRender();
         }
