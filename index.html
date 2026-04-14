@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.94</title>
+    <title>Turbo Projects Work Hub v15.9.96</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1049,7 +1049,7 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
-        /* ===== COCKPIT DEPT ROWS v15.9.94 ===== */
+        /* ===== COCKPIT DEPT ROWS v15.9.96 ===== */
         .cp-dept-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .cp-dept-row:last-of-type { border-bottom: none; }
         .cp-dept-row-header {
@@ -2395,15 +2395,37 @@
         .widget-block-hdr .wbh-title { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
         .widget-block-body { flex: 1; overflow-y: auto; }
-        .qn-card { padding: 10px 14px; border-bottom: 1px solid var(--border); position: relative; }
+        .qn-card { padding: 10px 14px 10px 10px; border-bottom: 1px solid var(--border); position: relative; display: flex; gap: 8px; align-items: flex-start; }
+        .qn-card-left { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
+        .qn-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 5px; border-radius: 3px; width: 22px; text-align: center; flex-shrink: 0; }
+        .qn-badge.P1 { background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
+        .qn-badge.P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .qn-badge.P3 { background: rgba(100,116,139,0.18); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
+        .qn-card-content { flex: 1; min-width: 0; padding-right: 18px; }
         .qn-card-ts { font-size: 9px; color: #555; margin-bottom: 3px; }
         .qn-card-text { font-size: 12px; color: #ccc; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
-        .qn-card-del { position: absolute; top: 8px; right: 10px; background: transparent; border: none; color: #444; font-size: 12px; cursor: pointer; padding: 2px 5px; }
+        .qn-card-del { position: absolute; top: 8px; right: 8px; background: transparent; border: none; color: #444; font-size: 12px; cursor: pointer; padding: 2px 4px; line-height: 1; }
         .qn-card-del:hover { color: #ef4444; }
+        /* Filter bar */
+        .qn-filter-bar { display: flex; gap: 4px; padding: 6px 8px; border-bottom: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
+        .qn-filter-btn { padding: 3px 9px; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; }
+        .qn-filter-btn:hover { color: #aaa; border-color: #555; }
+        .qn-filter-btn.active-all { background: rgba(255,255,255,0.08); color: #fff; border-color: #555; }
+        .qn-filter-btn.active-P1 { background: rgba(239,68,68,0.15); color: #ef4444; border-color: rgba(239,68,68,0.4); }
+        .qn-filter-btn.active-P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border-color: rgba(245,158,11,0.4); }
+        .qn-filter-btn.active-P3 { background: rgba(100,116,139,0.15); color: #94a3b8; border-color: rgba(100,116,139,0.4); }
+        .qn-filter-count { margin-left: auto; font-size: 9px; color: #444; align-self: center; }
+        /* Priority selector */
+        .qn-prio-row { display: flex; gap: 4px; margin-bottom: 5px; }
+        .qn-prio-btn { flex: 1; padding: 4px 0; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; }
+        .qn-prio-btn:hover { color: #aaa; }
+        .qn-prio-btn.sel-P1 { background: rgba(239,68,68,0.18); color: #ef4444; border-color: rgba(239,68,68,0.5); }
+        .qn-prio-btn.sel-P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border-color: rgba(245,158,11,0.5); }
+        .qn-prio-btn.sel-P3 { background: rgba(100,116,139,0.15); color: #94a3b8; border-color: rgba(100,116,139,0.5); }
         .qn-input-area { padding: 8px; border-top: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
-        .qn-input-area textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 64px; box-sizing: border-box; }
+        .qn-input-area textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 56px; box-sizing: border-box; }
         .qn-input-area textarea:focus { border-color: #3b82f6; }
-        .qn-save-btn { margin-top: 6px; width: 100%; padding: 6px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
+        .qn-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
         .qn-save-btn:hover { background: #3b82f6; color: #fff; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { min-height: 240px; max-height: 300px; } }
 
@@ -2518,6 +2540,35 @@
             padding: 0 !important;
             align-items: stretch !important;
         }
+        /* ===== CLAUDE NOTEPAD ===== */
+        #claude-notepad-modal .modal { display: flex; flex-direction: column; height: 100%; }
+        .cn-chat { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+        .cn-msg { display: flex; flex-direction: column; max-width: 85%; }
+        .cn-msg.user { align-self: flex-end; align-items: flex-end; }
+        .cn-msg.assistant { align-self: flex-start; align-items: flex-start; }
+        .cn-bubble { padding: 9px 13px; border-radius: 10px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+        .cn-msg.user .cn-bubble { background: #1e3a5f; color: #e0eaff; border: 1px solid #3b82f6; border-bottom-right-radius: 3px; }
+        .cn-msg.assistant .cn-bubble { background: #111; color: #ddd; border: 1px solid #222; border-bottom-left-radius: 3px; }
+        .cn-meta { font-size: 9px; color: #444; margin-top: 3px; padding: 0 3px; }
+        .cn-typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
+        .cn-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b82f6; animation: cnPulse 1.2s infinite; }
+        .cn-dot:nth-child(2) { animation-delay: 0.2s; }
+        .cn-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes cnPulse { 0%,80%,100%{opacity:.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+        .cn-input-bar { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
+        .cn-input-bar textarea { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 52px; border-radius: 4px; box-sizing: border-box; }
+        .cn-input-bar textarea:focus { border-color: #3b82f6; }
+        .cn-send-btn { padding: 0 16px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; border-radius: 4px; white-space: nowrap; }
+        .cn-send-btn:hover { background: #3b82f6; color: #fff; }
+        .cn-send-btn:disabled { opacity: 0.4; cursor: default; }
+        .cn-key-bar { display: flex; gap: 6px; padding: 6px 12px; border-top: 1px solid var(--border); background: #0a0a0a; flex-shrink: 0; align-items: center; }
+        .cn-key-bar input { flex: 1; background: #111; border: 1px solid #333; color: #aaa; font-size: 11px; padding: 5px 8px; font-family: inherit; outline: none; border-radius: 3px; }
+        .cn-key-bar input:focus { border-color: #3b82f6; }
+        .cn-key-btn { padding: 5px 10px; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #666; cursor: pointer; font-family: inherit; border-radius: 3px; white-space: nowrap; }
+        .cn-key-btn:hover { color: #fff; border-color: #555; }
+        .cn-key-btn.active { background: rgba(34,197,94,0.15); color: #22c55e; border-color: rgba(34,197,94,0.4); }
+        .cn-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; font-size: 12px; gap: 6px; }
+        .cn-empty-icon { font-size: 28px; opacity: 0.4; }
         /* Compact header on landscape mobile */
         @media (orientation: landscape) and (max-height: 520px) {
             .modal-app .modal-header { padding: 6px 14px !important; }
@@ -2574,7 +2625,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.94 -->
+    <!-- COCKPIT — DEPT ROWS v15.9.96 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
@@ -2723,10 +2774,22 @@
                     <button class="quick-notes-add" onclick="addToOfficeNotes()" title="+ Office Notes">+ Office</button>
                 </div>
             </div>
+            <div class="qn-filter-bar" id="qn-filter-bar">
+                <button class="qn-filter-btn active-all" id="qn-f-all" onclick="qnSetFilter('ALL')">ALL</button>
+                <button class="qn-filter-btn" id="qn-f-P1" onclick="qnSetFilter('P1')">P1</button>
+                <button class="qn-filter-btn" id="qn-f-P2" onclick="qnSetFilter('P2')">P2</button>
+                <button class="qn-filter-btn" id="qn-f-P3" onclick="qnSetFilter('P3')">P3</button>
+                <span class="qn-filter-count" id="qn-filter-count"></span>
+            </div>
             <div class="widget-block-body" id="quick-notes-body">
                 <div id="qn-cards-list"></div>
             </div>
             <div class="qn-input-area">
+                <div class="qn-prio-row">
+                    <button class="qn-prio-btn" id="qn-prio-P1" onclick="qnSelectPrio('P1')">P1 Kritisch</button>
+                    <button class="qn-prio-btn sel-P2" id="qn-prio-P2" onclick="qnSelectPrio('P2')">P2 Normal</button>
+                    <button class="qn-prio-btn" id="qn-prio-P3" onclick="qnSelectPrio('P3')">P3 Später</button>
+                </div>
                 <textarea id="quick-notes-text" placeholder="Notiz eingeben…" oninput="saveQuickNotes()"></textarea>
                 <button class="qn-save-btn" onclick="qnAddCard()">+ Als Notiz speichern</button>
             </div>
@@ -4988,6 +5051,10 @@
                     <span class="tool-icon">&#128221;</span>
                     Quick Notes
                 </button>
+                <button class="tool-btn border-white" onclick="cnOpen()" style="border-color:#3b82f6;">
+                    <span class="tool-icon">&#129302;</span>
+                    Claude AI
+                </button>
                 <div class="dropdown-container" style="position: relative;">
                     <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
                         <span class="tool-icon">&#11088;</span>
@@ -5315,7 +5382,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.94</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.96</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5323,6 +5390,39 @@
         <button class="metrics-btn" onclick="openModal('metrics-modal')">&#128202; Metrics</button>
     </div>
     
+
+    <!-- CLAUDE NOTEPAD Modal -->
+    <div class="modal-overlay modal-overlay-app" id="claude-notepad-modal">
+        <div class="modal modal-app">
+            <div class="modal-header" style="flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 16px;">
+                <span style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px;">&#129302; CLAUDE NOTEPAD</span>
+                <span id="cn-model-badge" style="font-size:9px;color:#3b82f6;border:1px solid #1e3a5f;padding:2px 7px;border-radius:10px;background:rgba(59,130,246,0.1);">claude-sonnet-4-20250514</span>
+                <div style="margin-left:auto;display:flex;gap:6px;">
+                    <button onclick="cnClear()" title="Chat leeren" style="background:transparent;border:1px solid #333;color:#666;padding:4px 9px;font-size:11px;cursor:pointer;border-radius:3px;">&#128465; Clear</button>
+                    <button onclick="cnCopyLast()" title="Letzte Antwort kopieren" style="background:transparent;border:1px solid #333;color:#666;padding:4px 9px;font-size:11px;cursor:pointer;border-radius:3px;">&#128203; Copy</button>
+                    <button class="modal-close" onclick="closeModal('claude-notepad-modal')" style="margin-left:4px;">&times;</button>
+                </div>
+            </div>
+            <div class="cn-chat" id="cn-chat">
+                <div class="cn-empty" id="cn-empty">
+                    <span class="cn-empty-icon">&#129302;</span>
+                    <span>Claude ist bereit</span>
+                    <span style="font-size:10px;color:#2a2a2a;">API Key eingeben und loslegen</span>
+                </div>
+            </div>
+            <div class="cn-input-bar">
+                <textarea id="cn-input" placeholder="Nachricht eingeben… (Enter = senden, Shift+Enter = neue Zeile)" onkeydown="cnHandleKey(event)"></textarea>
+                <button class="cn-send-btn" id="cn-send-btn" onclick="cnSend()">&#9658; Senden</button>
+            </div>
+            <div class="cn-key-bar">
+                <span style="font-size:10px;color:#444;white-space:nowrap;">API KEY:</span>
+                <input type="password" id="cn-key-input" placeholder="sk-ant-..." onkeydown="if(event.key==='Enter')cnSaveKey()">
+                <button class="cn-key-btn" id="cn-key-status-btn" onclick="cnSaveKey()">Speichern</button>
+                <button class="cn-key-btn" onclick="cnClearKey()" style="color:#555;">Löschen</button>
+                <span id="cn-token-count" style="font-size:9px;color:#333;margin-left:auto;white-space:nowrap;"></span>
+            </div>
+        </div>
+    </div>
 
     <!-- COCKPIT Full Checklist Modal -->
     <div class="modal-overlay modal-overlay-app" id="cockpit-modal">
@@ -8936,40 +9036,115 @@
         function qnGetCards() { try { return JSON.parse(localStorage.getItem('qn_cards_v1') || '[]'); } catch(e) { return []; } }
         function qnSaveCards(cards) { localStorage.setItem('qn_cards_v1', JSON.stringify(cards)); }
 
+        // Priority state
+        let qnCurrentPrio = 'P2';
+        let qnCurrentFilter = 'ALL';
+
+        function qnSelectPrio(p) {
+            qnCurrentPrio = p;
+            ['P1','P2','P3'].forEach(function(x) {
+                var btn = document.getElementById('qn-prio-' + x);
+                if (btn) btn.className = 'qn-prio-btn' + (x === p ? ' sel-' + x : '');
+            });
+        }
+
+        function qnSetFilter(f) {
+            qnCurrentFilter = f;
+            ['ALL','P1','P2','P3'].forEach(function(x) {
+                var btn = document.getElementById('qn-f-' + x);
+                if (!btn) return;
+                btn.className = 'qn-filter-btn' + (x === f ? ' active-' + (x === 'ALL' ? 'all' : x) : '');
+            });
+            qnRenderCards();
+        }
+
         function qnRenderCards() {
-            const container = document.getElementById('qn-cards-list');
+            var container = document.getElementById('qn-cards-list');
             if (!container) return;
-            const cards = qnGetCards();
-            if (!cards.length) {
-                container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">Noch keine Notizen gespeichert.</div>';
+            var cards = qnGetCards();
+
+            // Sort: P1 first, P2 second, P3 third; within same prio newest first
+            var prioOrder = { 'P1': 0, 'P2': 1, 'P3': 2 };
+            cards = cards.slice().sort(function(a, b) {
+                var pa = prioOrder[a.priority || 'P2'];
+                var pb = prioOrder[b.priority || 'P2'];
+                if (pa !== pb) return pa - pb;
+                return Number(b.id) - Number(a.id);
+            });
+
+            // Filter
+            var filtered = qnCurrentFilter === 'ALL' ? cards : cards.filter(function(c) {
+                return (c.priority || 'P2') === qnCurrentFilter;
+            });
+
+            // Update count
+            var countEl = document.getElementById('qn-filter-count');
+            if (countEl) {
+                if (qnCurrentFilter === 'ALL') {
+                    var p1c = cards.filter(function(c){ return (c.priority||'P2')==='P1'; }).length;
+                    countEl.textContent = p1c > 0 ? p1c + ' kritisch' : cards.length + ' total';
+                    countEl.style.color = p1c > 0 ? '#ef4444' : '#444';
+                } else {
+                    countEl.textContent = filtered.length + ' Notiz' + (filtered.length !== 1 ? 'en' : '');
+                    countEl.style.color = '#444';
+                }
+            }
+
+            if (!filtered.length) {
+                container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">' +
+                    (qnCurrentFilter === 'ALL' ? 'Noch keine Notizen gespeichert.' : 'Keine ' + qnCurrentFilter + ' Notizen.') + '</div>';
                 return;
             }
+
             container.innerHTML = '';
-            cards.slice().reverse().forEach(function(c) {
-                const div = document.createElement('div');
+            filtered.forEach(function(c) {
+                var prio = c.priority || 'P2';
+                var div = document.createElement('div');
                 div.className = 'qn-card';
-                div.innerHTML = '<div class="qn-card-ts">' + c.ts + '</div><div class="qn-card-text">' + c.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
-                const btn = document.createElement('button');
+
+                var left = document.createElement('div');
+                left.className = 'qn-card-left';
+                var badge = document.createElement('span');
+                badge.className = 'qn-badge ' + prio;
+                badge.textContent = prio;
+                left.appendChild(badge);
+
+                var content = document.createElement('div');
+                content.className = 'qn-card-content';
+                var ts = document.createElement('div');
+                ts.className = 'qn-card-ts';
+                ts.textContent = c.ts;
+                var text = document.createElement('div');
+                text.className = 'qn-card-text';
+                text.textContent = c.text;
+                content.appendChild(ts);
+                content.appendChild(text);
+
+                var btn = document.createElement('button');
                 btn.className = 'qn-card-del';
                 btn.textContent = '×';
                 btn.title = 'Löschen';
-                btn.onclick = function() { qnDeleteCard(c.id); };
+                btn.onclick = (function(id){ return function(){ qnDeleteCard(id); }; })(c.id);
+
+                div.appendChild(left);
+                div.appendChild(content);
                 div.appendChild(btn);
                 container.appendChild(div);
             });
         }
+
         function qnAddCard() {
-            const ta = document.getElementById('quick-notes-text');
+            var ta = document.getElementById('quick-notes-text');
             if (!ta || !ta.value.trim()) return;
-            const cards = qnGetCards();
-            const now = new Date();
-            const ts = now.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
-            cards.push({ id: String(Date.now()), ts: ts, text: ta.value.trim() });
+            var cards = qnGetCards();
+            var now = new Date();
+            var ts = now.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
+            cards.push({ id: String(Date.now()), ts: ts, text: ta.value.trim(), priority: qnCurrentPrio });
             qnSaveCards(cards);
             ta.value = '';
             saveQuickNotes();
             qnRenderCards();
-            const si = document.getElementById('notes-saved');
+            var si = document.getElementById('notes-saved');
             if (si) { si.style.opacity = '1'; setTimeout(function(){ si.style.opacity = '0'; }, 1800); }
         }
 
@@ -13666,7 +13841,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.94';
+            const HUB_VERSION = 'v15.9.96';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18429,6 +18604,203 @@ Spittelauer Lnde 12/1
 
         function invoiceRenderWidget() { invoiceInitLastFile(); }
 
+        // ═══════════════════════════════════════════════════════
+        // CLAUDE NOTEPAD — v15.9.96
+        // ═══════════════════════════════════════════════════════
+        var cnHistory = []; // session chat history
+        var cnTyping = false;
+
+        var CN_SYSTEM = 'Du bist ein eingebetteter Assistent im Work Hub von Turbo Projects GmbH (Wien). ' +
+            'Schadi Tayyah ist CEO/Geschäftsführer. Clubs: Grelle Forelle (Spittelauer Lände 12, 1090 Wien) und Sputnik Bar. ' +
+            'Kollegen: Matthäus (Finance), Stephan (Booker), Sofie (Grafik), Niat & Alain (CVDs). ' +
+            'Antworte immer auf Deutsch, kurz und direkt. Kein Filler, kein Gelaber. ' +
+            'Factsheet und Security Order sind LOCKED FORMATS — nie ändern ohne explizite Anfrage. ' +
+            'BMT = BookMeTender (Event-Buchungssystem). COCKPIT = MS To-Do Department Tasks. ' +
+            'Kostenstellen: TURBO 30% / GASTRO 50% / SPUTNIK 20% / OFFICE variabel. ' +
+            'Bar-Roster: PRIO1=Yohanna,Ada,Kamil,Milos,Dora | PRIO2=Martina,Ivo,Jessi,Camillo,Lino. ' +
+            'Heute: ' + new Date().toLocaleDateString('de-AT', {weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}) + '.';
+
+        function cnGetKey() { return localStorage.getItem('cn_api_key') || ''; }
+
+        function cnOpen() {
+            openModal('claude-notepad-modal');
+            cnInitKeyUI();
+            if (!cnHistory.length) cnShowEmpty(true);
+        }
+
+        function cnInitKeyUI() {
+            var key = cnGetKey();
+            var btn = document.getElementById('cn-key-status-btn');
+            var inp = document.getElementById('cn-key-input');
+            if (key) {
+                if (btn) { btn.textContent = '✓ Aktiv'; btn.className = 'cn-key-btn active'; }
+                if (inp) inp.placeholder = 'sk-ant-••••••••••••';
+            } else {
+                if (btn) { btn.textContent = 'Speichern'; btn.className = 'cn-key-btn'; }
+            }
+        }
+
+        function cnSaveKey() {
+            var inp = document.getElementById('cn-key-input');
+            var val = inp ? inp.value.trim() : '';
+            if (val) {
+                localStorage.setItem('cn_api_key', val);
+                inp.value = '';
+                cnInitKeyUI();
+                showToast('✓ API Key gespeichert');
+            } else {
+                showToast('Kein Key eingegeben', true);
+            }
+        }
+
+        function cnClearKey() {
+            localStorage.removeItem('cn_api_key');
+            var inp = document.getElementById('cn-key-input');
+            if (inp) inp.value = '';
+            cnInitKeyUI();
+            showToast('API Key gelöscht');
+        }
+
+        function cnShowEmpty(show) {
+            var el = document.getElementById('cn-empty');
+            if (el) el.style.display = show ? 'flex' : 'none';
+        }
+
+        function cnHandleKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); cnSend(); }
+        }
+
+        function cnRenderHistory() {
+            var chat = document.getElementById('cn-chat');
+            if (!chat) return;
+            cnShowEmpty(false);
+            // Remove all messages but keep empty placeholder
+            var msgs = chat.querySelectorAll('.cn-msg');
+            msgs.forEach(function(m){ m.remove(); });
+            var typing = chat.querySelector('.cn-typing-wrap');
+            if (typing) typing.remove();
+
+            cnHistory.forEach(function(m) {
+                var wrap = document.createElement('div');
+                wrap.className = 'cn-msg ' + m.role;
+                var bubble = document.createElement('div');
+                bubble.className = 'cn-bubble';
+                bubble.textContent = m.content;
+                var meta = document.createElement('div');
+                meta.className = 'cn-meta';
+                meta.textContent = m.ts || '';
+                wrap.appendChild(bubble);
+                wrap.appendChild(meta);
+                chat.appendChild(wrap);
+            });
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function cnShowTyping() {
+            var chat = document.getElementById('cn-chat');
+            if (!chat) return;
+            var wrap = document.createElement('div');
+            wrap.className = 'cn-msg assistant cn-typing-wrap';
+            var bubble = document.createElement('div');
+            bubble.className = 'cn-bubble cn-typing';
+            bubble.innerHTML = '<div class="cn-dot"></div><div class="cn-dot"></div><div class="cn-dot"></div>';
+            wrap.appendChild(bubble);
+            chat.appendChild(wrap);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function cnRemoveTyping() {
+            var t = document.querySelector('.cn-typing-wrap');
+            if (t) t.remove();
+        }
+
+        function cnUpdateTokenCount() {
+            var el = document.getElementById('cn-token-count');
+            if (!el) return;
+            var total = cnHistory.reduce(function(s,m){ return s + m.content.length; }, 0);
+            var approx = Math.round(total / 4);
+            el.textContent = '~' + approx + ' tokens';
+        }
+
+        async function cnSend() {
+            if (cnTyping) return;
+            var inp = document.getElementById('cn-input');
+            var text = inp ? inp.value.trim() : '';
+            if (!text) return;
+            var key = cnGetKey();
+            if (!key) { showToast('API Key fehlt — unten eintragen', true); return; }
+
+            var now = new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
+            cnHistory.push({ role: 'user', content: text, ts: now });
+            inp.value = '';
+            cnTyping = true;
+            var sendBtn = document.getElementById('cn-send-btn');
+            if (sendBtn) sendBtn.disabled = true;
+            cnRenderHistory();
+            cnShowTyping();
+
+            var messages = cnHistory.filter(function(m){ return m.role !== 'system'; }).map(function(m){
+                return { role: m.role, content: m.content };
+            });
+
+            try {
+                var resp = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': key,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1024,
+                        system: CN_SYSTEM,
+                        messages: messages
+                    })
+                });
+                var data = await resp.json();
+                cnRemoveTyping();
+                if (data.content && data.content[0] && data.content[0].text) {
+                    var replyTs = new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
+                    cnHistory.push({ role: 'assistant', content: data.content[0].text, ts: replyTs });
+                    cnRenderHistory();
+                } else if (data.error) {
+                    var errMsg = data.error.message || 'Unbekannter Fehler';
+                    showToast('API Fehler: ' + errMsg, true);
+                    cnHistory.pop(); // remove user message on error
+                    cnRenderHistory();
+                }
+            } catch(err) {
+                cnRemoveTyping();
+                showToast('Verbindungsfehler: ' + err.message, true);
+                cnHistory.pop();
+                cnRenderHistory();
+            }
+            cnTyping = false;
+            if (sendBtn) sendBtn.disabled = false;
+            cnUpdateTokenCount();
+            var cinp = document.getElementById('cn-input');
+            if (cinp) cinp.focus();
+        }
+
+        function cnClear() {
+            cnHistory = [];
+            var chat = document.getElementById('cn-chat');
+            if (chat) { chat.querySelectorAll('.cn-msg').forEach(function(m){m.remove();}); }
+            cnShowEmpty(true);
+            cnUpdateTokenCount();
+        }
+
+        function cnCopyLast() {
+            var last = cnHistory.slice().reverse().find(function(m){ return m.role === 'assistant'; });
+            if (!last) { showToast('Keine Antwort zum Kopieren', true); return; }
+            navigator.clipboard.writeText(last.content).then(function(){
+                showToast('✓ Kopiert');
+            });
+        }
+        // ═══════════════════════════════════════════════════════
+
         function scrollToQuickNotes() {
             const el = document.getElementById('quick-notes-widget');
             if (el) { el.scrollIntoView({behavior:'smooth'}); toggleQuickNotes(true); }
@@ -18490,7 +18862,7 @@ Spittelauer Lnde 12/1
         }
 
         function cockpitShowSkeleton() {
-            // v15.9.94: skeleton shown per expanded dept body
+            // v15.9.96: skeleton shown per expanded dept body
             cpExpandedDepts.forEach(dept => {
                 const body = document.getElementById('cp-dept-body-' + dept);
                 if (!body) return;
@@ -18617,7 +18989,7 @@ Spittelauer Lnde 12/1
             cockpitUpdateTabActive();
         }
 
-        function cockpitToggleDept(dept) { // v15.9.94
+        function cockpitToggleDept(dept) { // v15.9.96
             if (cpExpandedDepts.has(dept)) {
                 cpExpandedDepts.delete(dept);
             } else {
@@ -18696,7 +19068,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        function cockpitRenderAlerts() { // v15.9.94
+        function cockpitRenderAlerts() { // v15.9.96
             const alertsBar = document.getElementById('cp-alerts-bar');
             if (!alertsBar) return;
             const now = new Date();
