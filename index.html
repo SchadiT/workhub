@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.96</title>
+    <title>Turbo Projects Work Hub v15.9.97</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1049,7 +1049,7 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
-        /* ===== COCKPIT DEPT ROWS v15.9.96 ===== */
+        /* ===== COCKPIT DEPT ROWS v15.9.97 ===== */
         .cp-dept-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .cp-dept-row:last-of-type { border-bottom: none; }
         .cp-dept-row-header {
@@ -2625,7 +2625,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.96 -->
+    <!-- COCKPIT — DEPT ROWS v15.9.97 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
@@ -2706,7 +2706,7 @@
 
 
 
-    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.96 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
+    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.97 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
 
     <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
     <div class="widgets-row">
@@ -5349,7 +5349,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.96</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.97</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5939,7 +5939,7 @@
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
         };
         
-        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send", "Mail.ReadWrite"] };
+        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send", "Mail.ReadWrite", "Calendars.Read"] };
         
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
@@ -13643,17 +13643,15 @@ Spittelauer Lnde 12/1
                 console.log('Sputnik calendar load failed (CORS?):', err);
             }
             
-            // Load Outlook calendar if logged in (skip for now - needs Calendar.Read scope)
-            // TODO: Enable when Calendar.Read permission added
-            /*
+            // Load Outlook calendar if logged in (Calendars.Read scope active)
             if (accessToken) {
                 try {
                     const startDate = new Date(calendarYear, calendarMonth, 1).toISOString();
                     const endDate = new Date(calendarYear, calendarMonth + 1, 0, 23, 59, 59).toISOString();
                     
                     const response = await fetch(
-                        `https://graph.microsoft.com/v1.0/me/calendar/events?$filter=start/dateTime ge '${startDate}' and start/dateTime le '${endDate}'&$select=subject,start,end&$top=50`,
-                        { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${startDate}&endDateTime=${endDate}&$select=subject,start,end,isAllDay&$top=100&$orderby=start/dateTime`,
+                        { headers: { 'Authorization': 'Bearer ' + accessToken, 'Prefer': 'outlook.timezone="Europe/Vienna"' } }
                     );
                     
                     if (response.ok) {
@@ -13661,13 +13659,16 @@ Spittelauer Lnde 12/1
                         calendarEntries.outlook = (data.value || []).map(e => ({
                             title: e.subject,
                             date: e.start.dateTime.split('T')[0],
-                            time: e.start.dateTime.split('T')[1].substring(0, 5),
+                            time: e.isAllDay ? '' : (e.start.dateTime.split('T')[1] || '').substring(0, 5),
                             source: 'outlook'
                         }));
+                        console.log('Outlook calendar loaded:', calendarEntries.outlook.length, 'events');
+                    } else {
+                        const errData = await response.json();
+                        console.log('Outlook calendar API error:', errData);
                     }
-                } catch (err) { console.log('Outlook calendar error:', err); }
+                } catch (err) { console.log('Outlook calendar fetch error:', err); }
             }
-            */
             
             renderCalendar();
         }
@@ -13808,7 +13809,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.96';
+            const HUB_VERSION = 'v15.9.97';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18572,7 +18573,7 @@ Spittelauer Lnde 12/1
         function invoiceRenderWidget() { invoiceInitLastFile(); }
 
         // ═══════════════════════════════════════════════════════
-        // CLAUDE NOTEPAD — v15.9.96
+        // CLAUDE NOTEPAD — v15.9.97
         // ═══════════════════════════════════════════════════════
         var cnHistory = []; // session chat history
         var cnTyping = false;
@@ -18829,7 +18830,7 @@ Spittelauer Lnde 12/1
         }
 
         function cockpitShowSkeleton() {
-            // v15.9.96: skeleton shown per expanded dept body
+            // v15.9.97: skeleton shown per expanded dept body
             cpExpandedDepts.forEach(dept => {
                 const body = document.getElementById('cp-dept-body-' + dept);
                 if (!body) return;
@@ -18956,7 +18957,7 @@ Spittelauer Lnde 12/1
             cockpitUpdateTabActive();
         }
 
-        function cockpitToggleDept(dept) { // v15.9.96
+        function cockpitToggleDept(dept) { // v15.9.97
             if (cpExpandedDepts.has(dept)) {
                 cpExpandedDepts.delete(dept);
             } else {
@@ -19035,7 +19036,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        function cockpitRenderAlerts() { // v15.9.96
+        function cockpitRenderAlerts() { // v15.9.97
             const alertsBar = document.getElementById('cp-alerts-bar');
             if (!alertsBar) return;
             const now = new Date();
