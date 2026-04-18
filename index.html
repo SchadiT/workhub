@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.99</title>
+    <title>Turbo Projects Work Hub v15.9.100</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1049,7 +1049,7 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
-        /* ===== COCKPIT DEPT ROWS v15.9.99 ===== */
+        /* ===== COCKPIT DEPT ROWS v15.9.100 ===== */
         .cp-dept-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .cp-dept-row:last-of-type { border-bottom: none; }
         .cp-dept-row-header {
@@ -2625,7 +2625,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.99 -->
+    <!-- COCKPIT — DEPT ROWS v15.9.100 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
@@ -2706,7 +2706,7 @@
 
 
 
-    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.99 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
+    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.100 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
 
     <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
     <div class="widgets-row">
@@ -4983,6 +4983,10 @@
                     <span class="tool-icon">&#128179;</span>
                     Rechnungen
                 </button>
+                <button class="tool-btn border-green" onclick="openModal('umsatz-prognose-modal')" style="border-color:#22d47a;">
+                    <span class="tool-icon">&#128200;</span>
+                    Prognose
+                </button>
             </div>
         </div>
     </div>
@@ -5349,7 +5353,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.99</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.100</span>
     </div>
     
     <!-- Metrics Button -->
@@ -8463,6 +8467,76 @@
         .g3-log-err { color: #ef4444; }
         .g3-log-info { color: #94a3b8; }
     </style>
+
+
+    <!-- UMSATZ PROGNOSE MODAL -->
+    <div id="umsatz-prognose-modal" class="modal-overlay-app" style="display:none;">
+        <div class="modal-container" style="max-width:520px;">
+            <div class="modal-header">
+                <span>📈 Umsatz-Prognose</span>
+                <button class="modal-close" onclick="closeModal('umsatz-prognose-modal')">✕</button>
+            </div>
+            <div class="modal-body" style="padding:20px;">
+                <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Gib die aktuelle Uhrzeit und den aktuellen Kassenstand ein — ich berechne den erwarteten Endstand.</p>
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                    <div>
+                        <label style="font-size:11px;color:var(--text-secondary);display:block;margin-bottom:4px;">Aktuelle Uhrzeit</label>
+                        <select id="up-hour" style="width:100%;background:var(--surface-2);border:1px solid var(--border-strong);color:var(--text);border-radius:6px;padding:8px;font-size:13px;">
+                            <option value="23">23:00</option>
+                            <option value="0">00:00</option>
+                            <option value="1" selected>01:00</option>
+                            <option value="2">02:00</option>
+                            <option value="3">03:00</option>
+                            <option value="4">04:00</option>
+                            <option value="5">05:00</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:11px;color:var(--text-secondary);display:block;margin-bottom:4px;">Kassenstand brutto (€)</label>
+                        <input type="number" id="up-current" placeholder="z.B. 8000" style="width:100%;background:var(--surface-2);border:1px solid var(--border-strong);color:var(--text);border-radius:6px;padding:8px;font-size:13px;">
+                    </div>
+                </div>
+
+                <button onclick="upCalculate()" style="width:100%;background:#22d47a;color:#0a0a0f;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;">Prognose berechnen</button>
+
+                <div id="up-result" style="display:none;">
+                    <div style="background:var(--surface-2);border-radius:10px;border:1px solid rgba(34,212,122,0.2);padding:16px;margin-bottom:12px;">
+                        <div style="font-size:11px;color:#22d47a;font-weight:700;letter-spacing:0.08em;margin-bottom:8px;">PROGNOSE ENDSTAND</div>
+                        <div id="up-main-result" style="font-size:32px;font-weight:700;color:#f0f0f0;margin-bottom:4px;">—</div>
+                        <div id="up-range" style="font-size:12px;color:var(--text-secondary);">Range: — bis —</div>
+                    </div>
+                    
+                    <div style="background:var(--surface-2);border-radius:8px;padding:12px;margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                            <span style="font-size:11px;color:var(--text-secondary);">Abend gelaufen</span>
+                            <span id="up-pct" style="font-size:11px;font-weight:600;color:#f0f0f0;">—</span>
+                        </div>
+                        <div style="background:var(--surface);border-radius:4px;height:6px;overflow:hidden;">
+                            <div id="up-bar" style="height:100%;background:#22d47a;border-radius:4px;width:0%;transition:width 0.5s;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+                        <div style="background:var(--surface-2);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:3px;">Aktuell</div>
+                            <div id="up-current-disp" style="font-size:14px;font-weight:600;color:#f0f0f0;">—</div>
+                        </div>
+                        <div style="background:var(--surface-2);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:3px;">Noch erwartet</div>
+                            <div id="up-remaining" style="font-size:14px;font-weight:600;color:#4f8ef7;">—</div>
+                        </div>
+                        <div style="background:var(--surface-2);border-radius:8px;padding:10px;text-align:center;">
+                            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:3px;">Konfidenz</div>
+                            <div id="up-confidence" style="font-size:14px;font-weight:600;color:#f5a623;">—</div>
+                        </div>
+                    </div>
+
+                    <div id="up-note" style="font-size:11px;color:var(--text-secondary);margin-top:10px;padding:8px 12px;background:var(--surface-2);border-radius:6px;border-left:2px solid #4f8ef7;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body></html>`);
             w.document.close();
@@ -13814,7 +13888,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.99';
+            const HUB_VERSION = 'v15.9.100';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18578,7 +18652,7 @@ Spittelauer Lnde 12/1
         function invoiceRenderWidget() { invoiceInitLastFile(); }
 
         // ═══════════════════════════════════════════════════════
-        // CLAUDE NOTEPAD — v15.9.99
+        // CLAUDE NOTEPAD — v15.9.100
         // ═══════════════════════════════════════════════════════
         var cnHistory = []; // session chat history
         var cnTyping = false;
@@ -18835,7 +18909,7 @@ Spittelauer Lnde 12/1
         }
 
         function cockpitShowSkeleton() {
-            // v15.9.99: skeleton shown per expanded dept body
+            // v15.9.100: skeleton shown per expanded dept body
             cpExpandedDepts.forEach(dept => {
                 const body = document.getElementById('cp-dept-body-' + dept);
                 if (!body) return;
@@ -18962,7 +19036,7 @@ Spittelauer Lnde 12/1
             cockpitUpdateTabActive();
         }
 
-        function cockpitToggleDept(dept) { // v15.9.99
+        function cockpitToggleDept(dept) { // v15.9.100
             if (cpExpandedDepts.has(dept)) {
                 cpExpandedDepts.delete(dept);
             } else {
@@ -19041,7 +19115,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        function cockpitRenderAlerts() { // v15.9.99
+        function cockpitRenderAlerts() { // v15.9.100
             const alertsBar = document.getElementById('cp-alerts-bar');
             if (!alertsBar) return;
             const now = new Date();
@@ -19158,6 +19232,57 @@ Spittelauer Lnde 12/1
         }
         // ═══════════════════════════════════════════════════════
 
+
+        
+        // ===== UMSATZ PROGNOSE =====
+        // Stundenkurve basierend auf WBV Daten (Club-Abende, Konzerte ausgeschlossen)
+        // Kumulierte % des Gesamtumsatzes pro Stunde
+        const UP_CURVE = {
+            23: { cumPct: 0.06, rangePct: 0.40 },
+            0:  { cumPct: 0.27, rangePct: 0.25 },
+            1:  { cumPct: 0.57, rangePct: 0.15 },
+            2:  { cumPct: 0.85, rangePct: 0.08 },
+            3:  { cumPct: 0.98, rangePct: 0.03 },
+            4:  { cumPct: 0.995, rangePct: 0.01 },
+            5:  { cumPct: 1.00, rangePct: 0.005 }
+        };
+
+        function upCalculate() {
+            const hour = parseInt(document.getElementById('up-hour').value);
+            const current = parseFloat(document.getElementById('up-current').value);
+            
+            if (!current || current <= 0) { showToast('Bitte Kassenstand eingeben', true); return; }
+            
+            const curve = UP_CURVE[hour];
+            if (!curve) { showToast('Ungültige Uhrzeit', true); return; }
+            
+            const projected = current / curve.cumPct;
+            const rangePct = curve.rangePct;
+            const low = projected * (1 - rangePct);
+            const high = projected * (1 + rangePct);
+            const remaining = projected - current;
+            const pctDone = Math.round(curve.cumPct * 100);
+            
+            const confidence = pctDone >= 85 ? 'Hoch' : pctDone >= 50 ? 'Mittel' : 'Niedrig';
+            const confColor = pctDone >= 85 ? '#22d47a' : pctDone >= 50 ? '#f5a623' : '#f04747';
+            
+            const fmt = v => '€' + Math.round(v).toLocaleString('de-AT');
+            
+            document.getElementById('up-main-result').textContent = fmt(projected);
+            document.getElementById('up-range').textContent = 'Range: ' + fmt(low) + ' – ' + fmt(high);
+            document.getElementById('up-pct').textContent = pctDone + '%';
+            document.getElementById('up-bar').style.width = pctDone + '%';
+            document.getElementById('up-current-disp').textContent = fmt(current);
+            document.getElementById('up-remaining').textContent = fmt(remaining);
+            document.getElementById('up-confidence').textContent = confidence;
+            document.getElementById('up-confidence').style.color = confColor;
+            
+            const hourLabel = hour === 0 ? '00:00' : hour + ':00';
+            document.getElementById('up-note').textContent = 
+                'Basis: WBV Stundendaten KW02–KW15 2026. Um ' + hourLabel + ' sind typischerweise ' + pctDone + '% des Abend-Umsatzes gemacht. Range ±' + Math.round(rangePct * 100) + '% Konfidenz ' + confidence + '.';
+            
+            document.getElementById('up-result').style.display = 'block';
+        }
 
         </script>
 </body>
