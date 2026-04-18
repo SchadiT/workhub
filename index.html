@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.100</title>
+    <title>Turbo Projects Work Hub v15.9.101</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1049,7 +1049,7 @@
             border-bottom: 1px solid var(--border);
             transition: background 0.1s;
         }
-        /* ===== COCKPIT DEPT ROWS v15.9.100 ===== */
+        /* ===== COCKPIT DEPT ROWS v15.9.101 ===== */
         .cp-dept-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .cp-dept-row:last-of-type { border-bottom: none; }
         .cp-dept-row-header {
@@ -2625,7 +2625,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.100 -->
+    <!-- COCKPIT — DEPT ROWS v15.9.101 -->
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
@@ -2706,7 +2706,7 @@
 
 
 
-    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.100 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
+    <!-- HEUTE BANNER — DEAKTIVIERT v15.9.101 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
 
     <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
     <div class="widgets-row">
@@ -5353,7 +5353,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.100</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.101</span>
     </div>
     
     <!-- Metrics Button -->
@@ -13888,7 +13888,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.100';
+            const HUB_VERSION = 'v15.9.101';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18652,7 +18652,7 @@ Spittelauer Lnde 12/1
         function invoiceRenderWidget() { invoiceInitLastFile(); }
 
         // ═══════════════════════════════════════════════════════
-        // CLAUDE NOTEPAD — v15.9.100
+        // CLAUDE NOTEPAD — v15.9.101
         // ═══════════════════════════════════════════════════════
         var cnHistory = []; // session chat history
         var cnTyping = false;
@@ -18909,7 +18909,7 @@ Spittelauer Lnde 12/1
         }
 
         function cockpitShowSkeleton() {
-            // v15.9.100: skeleton shown per expanded dept body
+            // v15.9.101: skeleton shown per expanded dept body
             cpExpandedDepts.forEach(dept => {
                 const body = document.getElementById('cp-dept-body-' + dept);
                 if (!body) return;
@@ -19036,7 +19036,7 @@ Spittelauer Lnde 12/1
             cockpitUpdateTabActive();
         }
 
-        function cockpitToggleDept(dept) { // v15.9.100
+        function cockpitToggleDept(dept) { // v15.9.101
             if (cpExpandedDepts.has(dept)) {
                 cpExpandedDepts.delete(dept);
             } else {
@@ -19115,7 +19115,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        function cockpitRenderAlerts() { // v15.9.100
+        function cockpitRenderAlerts() { // v15.9.101
             const alertsBar = document.getElementById('cp-alerts-bar');
             if (!alertsBar) return;
             const now = new Date();
