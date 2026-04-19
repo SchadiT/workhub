@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.96</title>
+    <title>Turbo Projects Work Hub v15.9.109</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2602,6 +2602,132 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════════════
+     UMSATZ TICKER MODAL — v15.9.109
+     ═══════════════════════════════════════════════════════ -->
+<div class="modal-overlay modal-overlay-app" id="umsatz-ticker-modal">
+    <div class="modal-content" style="max-width:640px;">
+        <div class="modal-header">
+            <h2 class="modal-title">&#128200; Umsatz Ticker</h2>
+            <button class="modal-close" onclick="closeModal('umsatz-ticker-modal')">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:18px;">
+            <div style="font-size:11px;color:#888;margin-bottom:14px;line-height:1.5;">
+                Live-Prognose. Stundenkurve aus echten Daten 2023–2026 (X-78). Bei EIGEN: optional VVK/Scans/FOH eingeben für PAX-basierte Cross-Validation.
+            </div>
+
+            <!-- Zeit + Kasse -->
+            <div style="display:grid;grid-template-columns:80px 80px 1fr;gap:10px;margin-bottom:12px;">
+                <div>
+                    <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Std</label>
+                    <select id="ut-hour" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;">
+                        <option value="23">23</option>
+                        <option value="0">00</option>
+                        <option value="1" selected>01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="4">04</option>
+                        <option value="5">05</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Min</label>
+                    <input type="number" id="ut-min" min="0" max="59" step="1" value="0" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Kassenstand brutto €</label>
+                    <input type="number" id="ut-cash" min="0" step="1" placeholder="z.B. 5500" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;box-sizing:border-box;">
+                </div>
+            </div>
+
+            <!-- Event-Typ -->
+            <div style="margin-bottom:12px;">
+                <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Event-Typ</label>
+                <div style="display:flex;gap:6px;">
+                    <button id="ut-typ-eigen" onclick="utSetTyp('eigen')" style="flex:1;padding:10px;background:rgba(34,212,122,0.15);border:1px solid rgba(34,212,122,0.5);color:#22d47a;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">EIGEN</button>
+                    <button id="ut-typ-fremd" onclick="utSetTyp('fremd')" style="flex:1;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#888;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">FREMD</button>
+                </div>
+            </div>
+
+            <!-- EIGEN Sub-Inputs -->
+            <div id="ut-eigen-block" style="background:rgba(34,212,122,0.05);border:1px solid rgba(34,212,122,0.2);padding:12px;margin-bottom:14px;">
+                <div style="margin-bottom:10px;">
+                    <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Serie</label>
+                    <select id="ut-serie" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;">
+                        <option value="turbo" selected>TURBO (€15.30/Kopf)</option>
+                        <option value="selected">Selected (€16.90/Kopf)</option>
+                        <option value="halloween">Halloween (€16.40/Kopf)</option>
+                        <option value="birthday">Birthday (€17.20/Kopf)</option>
+                        <option value="nye">NYE (€19.50/Kopf)</option>
+                        <option value="special">Special (€17.50/Kopf)</option>
+                        <option value="sommerfest">Sommerfest (€15.30/Kopf)</option>
+                    </select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+                    <div>
+                        <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">VVK verkauft</label>
+                        <input type="number" id="ut-vvk" min="0" step="1" placeholder="320" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">VVK gescannt</label>
+                        <input type="number" id="ut-scan" min="0" step="1" placeholder="285" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">FOH bisher</label>
+                        <input type="number" id="ut-foh" min="0" step="1" placeholder="47" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="umsatzTickerCalc()" style="width:100%;padding:12px;background:rgba(34,212,122,0.15);border:1px solid rgba(34,212,122,0.5);color:#22d47a;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;margin-bottom:16px;">Prognose berechnen</button>
+
+            <div id="ut-result" style="display:none;">
+                <!-- Aktueller Stand -->
+                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;margin-bottom:10px;">
+                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Aktuell — <span id="ut-now-time"></span></div>
+                    <div id="ut-now-info" style="font-size:12px;color:#aaa;line-height:1.6;"></div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;margin-bottom:10px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <span style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;">Nacht gelaufen</span>
+                        <span id="ut-progress-pct" style="font-size:13px;font-weight:700;color:#22d47a;">0%</span>
+                    </div>
+                    <div style="height:8px;background:#111827;border:1px solid #1e3a5f;overflow:hidden;">
+                        <div id="ut-progress-bar" style="height:100%;background:linear-gradient(90deg,#22d47a,#16a34a);width:0%;transition:width 0.5s;"></div>
+                    </div>
+                </div>
+
+                <!-- 3 Szenarien -->
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+                    <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);padding:12px;">
+                        <div style="font-size:9px;color:#ef4444;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700;">Underperforming</div>
+                        <div id="ut-low" style="font-size:18px;font-weight:800;color:#fff;line-height:1;">—</div>
+                    </div>
+                    <div style="background:rgba(34,212,122,0.12);border:1px solid rgba(34,212,122,0.5);padding:12px;">
+                        <div style="font-size:9px;color:#22d47a;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700;">Realistisch</div>
+                        <div id="ut-mid" style="font-size:22px;font-weight:800;color:#22d47a;line-height:1;">—</div>
+                    </div>
+                    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);padding:12px;">
+                        <div style="font-size:9px;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700;">Optimistisch</div>
+                        <div id="ut-high" style="font-size:18px;font-weight:800;color:#fff;line-height:1;">—</div>
+                    </div>
+                </div>
+
+                <!-- Cross-Validation Hinweis -->
+                <div id="ut-crosscheck" style="display:none;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);padding:10px;margin-bottom:10px;font-size:11px;color:#aaa;line-height:1.5;"></div>
+
+                <!-- Stunden-Forecast -->
+                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;">
+                    <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Erwartete Stunden (realistisch, kumuliert)</div>
+                    <div id="ut-hours" style="font-size:12px;color:#fff;line-height:1.8;font-family:monospace;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Unified Header Bar -->
     <div class="header-bar">
         <div class="header-left">
@@ -4983,6 +5109,10 @@
                     <span class="tool-icon">&#128179;</span>
                     Rechnungen
                 </button>
+                <button class="tool-btn border-blue" onclick="openModal('umsatz-ticker-modal');umsatzTickerOnOpen();" style="border-color:rgba(34,212,122,0.4);">
+                    <span class="tool-icon">&#128200;</span>
+                    Umsatz Ticker
+                </button>
             </div>
         </div>
     </div>
@@ -5349,7 +5479,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.96</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.109</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5939,7 +6069,7 @@
             cache: { cacheLocation: "localStorage", storeAuthStateInCookie: false }
         };
         
-        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send", "Mail.ReadWrite"] };
+        const loginRequest = { scopes: ["Tasks.ReadWrite", "User.Read", "Mail.Send", "Mail.ReadWrite", "Calendars.Read"] };
         
         const TODO_LISTS = {
             office: "AQMkADAwATM0MDAAMS0yZjI4LTJjYTktMDACLTAwCgAuAAADxd_TrPbkZEisrfPVcCAWnQEArwnaZSdg_UuQLE65Sg5hCAAEqn88jwAAAA==",
@@ -8549,7 +8679,9 @@
         // 
         
         function openModal(id) {
-            document.getElementById(id).classList.add('show');
+            const el = document.getElementById(id);
+            if (!el) { console.warn('Modal not found:', id); return; }
+            el.classList.add('show');
             if (id === 'bar-staffing-modal') disablePastMonths('bar-month-check', 'bar-year');
             if (id === 'runner-staffing-modal') disablePastMonths('runner-month-check', 'runner-year');
             if (id === 'projector-modal') epOnModalOpen();
@@ -13620,54 +13752,62 @@ Spittelauer Lnde 12/1
             }
             console.log('Tech entries loaded:', calendarEntries.technik.length);
             
-            // Load Sputnik Reservations from Google Calendar (public iCal)
+            // Load Sputnik Reservations via PHP Proxy (CORS-safe)
             try {
-                const sputnikCalId = '355f939de7df075c2527053dadea64b9ba41a6916d7e1917043623230b6b7451@group.calendar.google.com';
-                const icsUrl = `https://calendar.google.com/calendar/ical/${encodeURIComponent(sputnikCalId)}/public/basic.ics`;
-                
-                const response = await fetch(icsUrl);
+                const proxyUrl = 'https://grelleforelle.com/hub-proxy/calendar_proxy.php?cal=sputnik';
+                const response = await fetch(proxyUrl);
                 if (response.ok) {
                     const icsData = await response.text();
                     const sputnikEvents = parseICS(icsData);
                     calendarEntries.sputnik = sputnikEvents.map(e => {
                         const dateObj = new Date(e.dtstart);
+                        const y = dateObj.getFullYear();
+                        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        const d = String(dateObj.getDate()).padStart(2, '0');
                         return {
                             title: e.summary || 'Reservation',
-                            date: dateObj.toISOString().split('T')[0],
+                            date: `${y}-${m}-${d}`,
                             source: 'sputnik'
                         };
                     });
                     console.log('Sputnik entries loaded:', calendarEntries.sputnik.length);
                 }
             } catch (err) {
-                console.log('Sputnik calendar load failed (CORS?):', err);
+                console.log('Sputnik calendar load failed:', err);
             }
             
-            // Load Outlook calendar if logged in (skip for now - needs Calendar.Read scope)
-            // TODO: Enable when Calendar.Read permission added
-            /*
+            // Load Outlook calendar if logged in (requires Calendars.Read scope)
             if (accessToken) {
                 try {
-                    const startDate = new Date(calendarYear, calendarMonth, 1).toISOString();
-                    const endDate = new Date(calendarYear, calendarMonth + 1, 0, 23, 59, 59).toISOString();
+                    const firstDay = new Date(calendarYear, calendarMonth, 1);
+                    const lastDay = new Date(calendarYear, calendarMonth + 1, 0, 23, 59, 59);
+                    const pad = n => String(n).padStart(2, '0');
+                    const fmtLocal = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+                    const startDateTime = fmtLocal(firstDay);
+                    const endDateTime = fmtLocal(lastDay);
                     
                     const response = await fetch(
-                        `https://graph.microsoft.com/v1.0/me/calendar/events?$filter=start/dateTime ge '${startDate}' and start/dateTime le '${endDate}'&$select=subject,start,end&$top=50`,
-                        { headers: { 'Authorization': 'Bearer ' + accessToken } }
+                        `https://graph.microsoft.com/v1.0/me/calendarView?startDateTime=${startDateTime}&endDateTime=${endDateTime}&$select=subject,start,end&$orderby=start/dateTime&$top=100`,
+                        { headers: { 'Authorization': 'Bearer ' + accessToken, 'Prefer': 'outlook.timezone="Europe/Vienna"' } }
                     );
                     
                     if (response.ok) {
                         const data = await response.json();
-                        calendarEntries.outlook = (data.value || []).map(e => ({
-                            title: e.subject,
-                            date: e.start.dateTime.split('T')[0],
-                            time: e.start.dateTime.split('T')[1].substring(0, 5),
-                            source: 'outlook'
-                        }));
+                        calendarEntries.outlook = (data.value || []).map(e => {
+                            const dt = e.start.dateTime;
+                            return {
+                                title: e.subject || '(no subject)',
+                                date: dt.split('T')[0],
+                                time: dt.split('T')[1] ? dt.split('T')[1].substring(0, 5) : '',
+                                source: 'outlook'
+                            };
+                        });
+                        console.log('Outlook entries loaded:', calendarEntries.outlook.length);
+                    } else {
+                        console.log('Outlook calendar fetch failed:', response.status);
                     }
                 } catch (err) { console.log('Outlook calendar error:', err); }
             }
-            */
             
             renderCalendar();
         }
@@ -13808,7 +13948,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.96';
+            const HUB_VERSION = 'v15.9.109';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15251,7 +15391,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.76 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.109 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -18774,7 +18914,7 @@ Spittelauer Lnde 12/1
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            tpMigrate();
+            try { tpMigrate(); } catch(e) { console.warn('tpMigrate skipped:', e); }
             invoiceRenderWidget();
             invoiceInitLastFile();
         });
@@ -19154,5 +19294,268 @@ Spittelauer Lnde 12/1
 
 
         </script>
+
+<!-- ═══════════════════════════════════════════════════════
+     UMSATZ TICKER JS — v15.9.109
+     Stundenkurve + PAX-Cross-Validation
+     Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
+     ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+    'use strict';
+
+    // Anchor-Punkte: Minuten seit 23:00 → kumulierter Umsatz-%
+    const UT_ANCHORS = [
+        { min:   0, pct: 0.000 },
+        { min:  60, pct: 0.0423 },
+        { min: 120, pct: 0.2015 },
+        { min: 180, pct: 0.4456 },
+        { min: 240, pct: 0.6717 },
+        { min: 300, pct: 0.8437 },
+        { min: 360, pct: 0.9514 },
+        { min: 420, pct: 1.0000 }
+    ];
+
+    // σ-Range (relativ auf Forecast) per Anchor
+    const UT_RANGE_ANCHORS = [
+        { min:   0, sd: 0.50 },
+        { min:  60, sd: 0.072 },
+        { min: 120, sd: 0.051 },
+        { min: 180, sd: 0.037 },
+        { min: 240, sd: 0.018 },
+        { min: 300, sd: 0.008 },
+        { min: 360, sd: 0.002 },
+        { min: 420, sd: 0.001 }
+    ];
+
+    // Bar pro Kopf (€ brutto) — aus DB SERIE_STATS
+    const UT_BAR_PP = {
+        turbo: 15.30, selected: 16.90, halloween: 16.40,
+        birthday: 17.20, nye: 19.50, special: 17.50, sommerfest: 15.30
+    };
+
+    // No-Show-Quote VVK
+    const UT_NO_SHOW = 0.10;
+
+    let ut_typ = 'eigen';
+
+    function utInterp(anchors, x, key) {
+        if (x <= anchors[0].min) return anchors[0][key];
+        if (x >= anchors[anchors.length-1].min) return anchors[anchors.length-1][key];
+        for (let i = 0; i < anchors.length - 1; i++) {
+            if (x >= anchors[i].min && x <= anchors[i+1].min) {
+                const t = (x - anchors[i].min) / (anchors[i+1].min - anchors[i].min);
+                return anchors[i][key] + t * (anchors[i+1][key] - anchors[i][key]);
+            }
+        }
+        return 0;
+    }
+
+    function utFmtEUR(n) {
+        if (!isFinite(n) || isNaN(n)) return '—';
+        return '€ ' + Math.round(n).toLocaleString('de-AT');
+    }
+
+    function utClockFromMin(min) {
+        const totalMin = (23 * 60 + min) % (24 * 60);
+        const h = Math.floor(totalMin / 60);
+        const m = totalMin % 60;
+        return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    window.utSetTyp = function(typ) {
+        ut_typ = typ;
+        const eigenBtn = document.getElementById('ut-typ-eigen');
+        const fremdBtn = document.getElementById('ut-typ-fremd');
+        const eigenBlock = document.getElementById('ut-eigen-block');
+        if (typ === 'eigen') {
+            eigenBtn.style.background = 'rgba(34,212,122,0.15)';
+            eigenBtn.style.borderColor = 'rgba(34,212,122,0.5)';
+            eigenBtn.style.color = '#22d47a';
+            fremdBtn.style.background = '#0d1b2a';
+            fremdBtn.style.borderColor = '#1e3a5f';
+            fremdBtn.style.color = '#888';
+            eigenBlock.style.display = 'block';
+        } else {
+            fremdBtn.style.background = 'rgba(59,130,246,0.15)';
+            fremdBtn.style.borderColor = 'rgba(59,130,246,0.5)';
+            fremdBtn.style.color = '#3b82f6';
+            eigenBtn.style.background = '#0d1b2a';
+            eigenBtn.style.borderColor = '#1e3a5f';
+            eigenBtn.style.color = '#888';
+            eigenBlock.style.display = 'none';
+        }
+    };
+
+    window.umsatzTickerOnOpen = function() {
+        const now = new Date();
+        const h = now.getHours();
+        const m = now.getMinutes();
+        const sel = document.getElementById('ut-hour');
+        const minIn = document.getElementById('ut-min');
+        if (sel && minIn) {
+            if (h === 23) { sel.value = '23'; minIn.value = m; }
+            else if (h >= 0 && h <= 5) { sel.value = String(h); minIn.value = m; }
+            else { sel.value = '1'; minIn.value = 0; }
+        }
+        ['ut-cash','ut-vvk','ut-scan','ut-foh'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        utSetTyp('eigen');
+        const result = document.getElementById('ut-result');
+        if (result) result.style.display = 'none';
+    };
+
+    window.umsatzTickerCalc = function() {
+        const hour = parseInt(document.getElementById('ut-hour').value, 10);
+        const minute = Math.max(0, Math.min(59, parseInt(document.getElementById('ut-min').value, 10) || 0));
+        const cash = parseFloat(document.getElementById('ut-cash').value);
+
+        if (!cash || isNaN(cash) || cash <= 0) {
+            const result = document.getElementById('ut-result');
+            if (result) result.style.display = 'none';
+            return;
+        }
+
+        const base = (hour === 23) ? 0 : (hour + 1) * 60;
+        const minSinceStart = base + minute;
+
+        const pctDone = utInterp(UT_ANCHORS, minSinceStart, 'pct');
+        const sd = utInterp(UT_RANGE_ANCHORS, minSinceStart, 'sd');
+
+        let forecastKasse;
+        if (pctDone < 0.005) {
+            forecastKasse = NaN;
+        } else {
+            forecastKasse = cash / pctDone;
+        }
+
+        let forecastPax = NaN;
+        let crossInfo = '';
+        let realisticForecast = forecastKasse;
+
+        if (ut_typ === 'eigen') {
+            const vvk = parseFloat(document.getElementById('ut-vvk').value);
+            const scan = parseFloat(document.getElementById('ut-scan').value);
+            const foh = parseFloat(document.getElementById('ut-foh').value);
+            const serie = document.getElementById('ut-serie').value;
+            const barPP = UT_BAR_PP[serie] || 15.30;
+
+            if (!isNaN(vvk) && vvk > 0) {
+                let stillComing = 0;
+                let scannedNow = 0;
+                if (!isNaN(scan) && scan >= 0) {
+                    const remaining = Math.max(0, vvk - scan);
+                    stillComing = remaining * (1 - UT_NO_SHOW);
+                    scannedNow = scan;
+                } else {
+                    scannedNow = vvk * (1 - UT_NO_SHOW) * pctDone;
+                    stillComing = vvk * (1 - UT_NO_SHOW) - scannedNow;
+                }
+
+                let fohFinal = 0;
+                let fohNow = 0;
+                if (!isNaN(foh) && foh >= 0 && pctDone > 0.05) {
+                    fohNow = foh;
+                    fohFinal = foh / pctDone;
+                } else if (!isNaN(foh)) {
+                    fohNow = foh;
+                    fohFinal = foh;
+                }
+
+                const paxFinal = scannedNow + stillComing + fohFinal;
+                const paxNow = scannedNow + fohNow;
+
+                if (paxFinal > 0) {
+                    forecastPax = paxFinal * barPP;
+
+                    let wKasse;
+                    if (minSinceStart <= 60)       wKasse = 0.20;
+                    else if (minSinceStart <= 120) wKasse = 0.50;
+                    else if (minSinceStart <= 180) wKasse = 0.70;
+                    else                           wKasse = 0.85;
+
+                    if (isNaN(forecastKasse)) {
+                        realisticForecast = forecastPax;
+                    } else {
+                        realisticForecast = wKasse * forecastKasse + (1 - wKasse) * forecastPax;
+                    }
+
+                    crossInfo = `<b>Cross-Check:</b> ` +
+                        `aktuell ~${Math.round(paxNow)} PAX im Haus ` +
+                        `(${Math.round(scannedNow)} VVK gescannt + ${Math.round(fohNow)} FOH). ` +
+                        `Erwartet final: ~${Math.round(paxFinal)} PAX ` +
+                        `(${Math.round(stillComing)} VVK kommen noch + ${Math.round(fohFinal)} FOH gesamt). ` +
+                        `<br><b>Bar-Forecast aus PAX:</b> ${Math.round(paxFinal)} × €${barPP.toFixed(2)} = ` +
+                        `<b>${utFmtEUR(forecastPax)}</b>. ` +
+                        `<br><b>Bar-Forecast aus Kassenkurve:</b> ${utFmtEUR(forecastKasse)}.`;
+                }
+            }
+        }
+
+        let low, high;
+        if (isNaN(realisticForecast)) {
+            low = high = NaN;
+        } else {
+            low  = realisticForecast * (1 - 1.5 * sd);
+            high = realisticForecast * (1 + 1.5 * sd);
+        }
+
+        document.getElementById('ut-now-time').textContent = utClockFromMin(minSinceStart);
+        let nowInfo = `Kassenstand: <b>${utFmtEUR(cash)}</b>`;
+        if (ut_typ === 'eigen') {
+            const serie = document.getElementById('ut-serie');
+            nowInfo += ` &nbsp;·&nbsp; EIGEN / ${serie.options[serie.selectedIndex].text.split(' ')[0]}`;
+        } else {
+            nowInfo += ' &nbsp;·&nbsp; FREMD';
+        }
+        document.getElementById('ut-now-info').innerHTML = nowInfo;
+
+        document.getElementById('ut-progress-pct').textContent = (pctDone * 100).toFixed(1) + '%';
+        document.getElementById('ut-progress-bar').style.width = (pctDone * 100) + '%';
+
+        document.getElementById('ut-low').textContent  = utFmtEUR(low);
+        document.getElementById('ut-mid').textContent  = isNaN(realisticForecast) ? '— zu früh —' : utFmtEUR(realisticForecast);
+        document.getElementById('ut-high').textContent = utFmtEUR(high);
+
+        const xc = document.getElementById('ut-crosscheck');
+        if (crossInfo) {
+            xc.innerHTML = crossInfo;
+            xc.style.display = 'block';
+        } else {
+            xc.style.display = 'none';
+        }
+
+        const hoursDiv = document.getElementById('ut-hours');
+        if (isNaN(realisticForecast)) {
+            hoursDiv.innerHTML = '<span style="color:#666;">Prognose ab ~23:30 sinnvoll.</span>';
+        } else {
+            const checkpoints = [
+                { label: '00:00', min: 60 },
+                { label: '01:00', min: 120 },
+                { label: '02:00', min: 180 },
+                { label: '03:00', min: 240 },
+                { label: '04:00', min: 300 },
+                { label: '05:00', min: 360 },
+                { label: '06:00', min: 420 }
+            ];
+            let html = '';
+            checkpoints.forEach(cp => {
+                const cpPct = utInterp(UT_ANCHORS, cp.min, 'pct');
+                const cpVal = realisticForecast * cpPct;
+                const passed = cp.min <= minSinceStart;
+                const isFinal = cp.min === 420;
+                const color = passed ? '#555' : (isFinal ? '#22d47a' : '#fff');
+                const tag = passed ? ' <span style="color:#444;font-size:10px;">(durch)</span>' : (isFinal ? ' <span style="color:#22d47a;font-size:10px;">← Endstand</span>' : '');
+                html += `<div><span style="color:#666;">${cp.label}</span> &nbsp;→&nbsp; <span style="color:${color};">${utFmtEUR(cpVal)}</span>${tag}</div>`;
+            });
+            hoursDiv.innerHTML = html;
+        }
+
+        document.getElementById('ut-result').style.display = 'block';
+    };
+})();
+</script>
 </body>
 </html>
