@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.110</title>
+    <title>Turbo Projects Work Hub v15.9.111</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -966,11 +966,18 @@
             .dept-grid { grid-template-columns: 1fr; }
         }
         /* Shiftplan modals — table fills full height */
-        #bar-staffing-modal .modal-body,
-        #runner-staffing-modal .modal-body {
+        #bar-staffing-modal .modal-body {
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            padding: 0;
+        }
+        /* Runner-Staffing: scrollable body (can have long event lists) */
+        #runner-staffing-modal .modal-body {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
             padding: 0;
         }
 
@@ -2605,7 +2612,7 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER MODAL — v15.9.110
+     UMSATZ TICKER MODAL — v15.9.111
      ═══════════════════════════════════════════════════════ -->
 <div class="modal-overlay modal-overlay-app" id="umsatz-ticker-modal">
     <div class="modal-content" style="max-width:640px;">
@@ -2716,6 +2723,9 @@
                         <div id="ut-high" style="font-size:18px;font-weight:800;color:#fff;line-height:1;">—</div>
                     </div>
                 </div>
+
+                <!-- Frühe-Stunde-Warnung -->
+                <div id="ut-early-warn" style="display:none;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.4);padding:10px;margin-bottom:10px;font-size:11px;color:#fbbf24;line-height:1.5;"></div>
 
                 <!-- Cross-Validation Hinweis -->
                 <div id="ut-crosscheck" style="display:none;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);padding:10px;margin-bottom:10px;font-size:11px;color:#aaa;line-height:1.5;"></div>
@@ -5486,7 +5496,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.110</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.111</span>
     </div>
     
     <!-- Metrics Button -->
@@ -13968,7 +13978,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.110';
+            const HUB_VERSION = 'v15.9.111';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15411,7 +15421,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.110 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.111 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19316,7 +19326,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.110
+     UMSATZ TICKER JS — v15.9.111
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -19337,10 +19347,11 @@ Spittelauer Lnde 12/1
     ];
 
     // σ-Range (relativ auf Forecast) per Anchor
+    // Weit bei früher Stunde — dort ist die Prognose echt unsicher
     const UT_RANGE_ANCHORS = [
         { min:   0, sd: 0.50 },
-        { min:  60, sd: 0.072 },
-        { min: 120, sd: 0.051 },
+        { min:  60, sd: 0.35 },
+        { min: 120, sd: 0.20 },
         { min: 180, sd: 0.037 },
         { min: 240, sd: 0.018 },
         { min: 300, sd: 0.008 },
@@ -19353,6 +19364,15 @@ Spittelauer Lnde 12/1
         turbo: 15.30, selected: 16.90, halloween: 16.40,
         birthday: 17.20, nye: 19.50, special: 17.50, sommerfest: 15.30
     };
+
+    // Median Bar Revenue pro Event-Typ (€ brutto) — für Bayesian Anchor bei früher Stunde
+    // EIGEN-Serie: aus Master DB (Median Bar Revenue je Serie)
+    // FREMD: konservative Schätzung, nach Test-Nächten zu kalibrieren
+    const UT_MEDIAN_EIGEN = {
+        turbo: 11215, selected: 11826, halloween: 16632, birthday: 13000,
+        nye: 23635, special: 15459, sommerfest: 14880
+    };
+    const UT_MEDIAN_FREMD = 9000;
 
     // No-Show-Quote VVK
     const UT_NO_SHOW = 0.10;
@@ -19514,6 +19534,24 @@ Spittelauer Lnde 12/1
             }
         }
 
+        // Bayesian Median-Anchor Blending
+        // Bei früher Stunde ist Kasse/Kurve-Forecast mathematisch instabil (kleine pctDone = riesiger Multiplikator)
+        // Lösung: Forecast zum historischen Median ziehen, Gewichtung = pctDone (früh ~0 → Median dominiert, spät ~1 → Kasse dominiert)
+        let medianAnchor;
+        if (ut_typ === 'eigen') {
+            const serieEl = document.getElementById('ut-serie');
+            const serieKey = serieEl ? serieEl.value : 'turbo';
+            medianAnchor = UT_MEDIAN_EIGEN[serieKey] || UT_MEDIAN_EIGEN.turbo;
+        } else {
+            medianAnchor = UT_MEDIAN_FREMD;
+        }
+        // Blending nur anwenden wenn keine PAX-Cross-Validation möglich war (ut_typ FREMD oder EIGEN ohne VVK)
+        // crossInfo leer = keine PAX-Basis → Kasse-Prognose zum Median ziehen
+        if (!crossInfo && !isNaN(realisticForecast) && medianAnchor > 0) {
+            const w = Math.max(0, Math.min(1, pctDone));
+            realisticForecast = w * realisticForecast + (1 - w) * medianAnchor;
+        }
+
         let low, high;
         if (isNaN(realisticForecast)) {
             low = high = NaN;
@@ -19545,6 +19583,21 @@ Spittelauer Lnde 12/1
             xc.style.display = 'block';
         } else {
             xc.style.display = 'none';
+        }
+
+        // Frühe-Stunde-Warnung: < 01:00 (120min) = Prognose unzuverlässig
+        const earlyWarn = document.getElementById('ut-early-warn');
+        if (earlyWarn) {
+            if (minSinceStart < 120 && !isNaN(realisticForecast)) {
+                earlyWarn.innerHTML = '<b>⚠️ Frühe Stunde — Prognose unzuverlässig.</b> ' +
+                    'Vor 01:00 ist das Verhältnis Kasse/Stundenkurve mathematisch fragil ' +
+                    '(kleine Abweichungen explodieren im Forecast). ' +
+                    'Die Mitte wurde zum historischen Median gezogen, die Range ist bewusst weit. ' +
+                    'Nutze nur als Trend — ab 02:00 deutlich verlässlicher.';
+                earlyWarn.style.display = 'block';
+            } else {
+                earlyWarn.style.display = 'none';
+            }
         }
 
         const hoursDiv = document.getElementById('ut-hours');
