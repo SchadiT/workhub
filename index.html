@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.109</title>
+    <title>Turbo Projects Work Hub v15.9.110</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -767,6 +767,7 @@
         .filter-dot.technik { background: var(--technik); }
         .filter-dot.outlook { background: var(--outlook); }
         .filter-dot.feiertag { background: var(--feiertag); }
+        .filter-dot.termin { background: #ec4899; }
         .calendar-nav {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 12px;
@@ -810,6 +811,7 @@
         .calendar-entry.technik { background: var(--technik); color: #fff; }
         .calendar-entry.outlook { background: var(--outlook); color: #fff; }
         .calendar-entry.feiertag { background: var(--feiertag); color: #fff; }
+        .calendar-entry.termin { background: #ec4899; color: #fff; }
         .calendar-entry:hover { opacity: 0.8; }
         
         /* Native Shiftplan Table - Clean & Responsive */
@@ -2603,7 +2605,7 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER MODAL — v15.9.109
+     UMSATZ TICKER MODAL — v15.9.110
      ═══════════════════════════════════════════════════════ -->
 <div class="modal-overlay modal-overlay-app" id="umsatz-ticker-modal">
     <div class="modal-content" style="max-width:640px;">
@@ -5282,6 +5284,11 @@
                     <span class="filter-dot feiertag"></span>
                     Feiertag
                 </label>
+                <label class="calendar-filter-item">
+                    <input type="checkbox" id="filter-termin" checked onchange="renderCalendar()">
+                    <span class="filter-dot termin"></span>
+                    Termin
+                </label>
             </div>
             <div class="calendar-nav">
                 <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">&lt; Back</button>
@@ -5479,7 +5486,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.109</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.110</span>
     </div>
     
     <!-- Metrics Button -->
@@ -10551,6 +10558,8 @@
             const doorsTime = ev.doors_open_time || '23:00';
             const cat = (ev.category || '').toLowerCase();
             const category = cat.includes('konzert') || cat.includes('concert') ? 'konzert' :
+                             cat.includes('termin') ? 'termin' :
+                             cat.includes('feiertag') || cat.includes('holiday') ? 'holiday' :
                              cat.includes('eigen') || cat.includes('turbo') || cat.includes('selected') ? 'eigen' : 'fremd';
 
             // Build summary from title + headliner
@@ -11169,6 +11178,7 @@
                 if (cat.includes('fremd')) return 'fremd';
                 if (cat.includes('konzert') || cat.includes('newdeal')) return 'konzert';
                 if (cat.includes('feiertag') || cat.includes('holiday')) return 'holiday';
+                if (cat.includes('termin')) return 'termin';
                 if (cat.includes('special') || cat.includes('firmen')) return 'special';
             }
             return 'fremd';
@@ -13660,7 +13670,7 @@ Spittelauer Lnde 12/1
         // CALENDAR SECTION
         let calendarMonth = new Date().getMonth();
         let calendarYear = new Date().getFullYear();
-        let calendarEntries = { eigen: [], fremd: [], konzert: [], bmt: [], technik: [], outlook: [], feiertag: [] };
+        let calendarEntries = { eigen: [], fremd: [], konzert: [], bmt: [], technik: [], outlook: [], feiertag: [], sputnik: [], termin: [] };
         
         function toggleCalendarSection() {
             const header = document.querySelector('.calendar-section-header');
@@ -13731,6 +13741,10 @@ Spittelauer Lnde 12/1
                     // Feiertag / Holidays (red)
                     calendarEntries.feiertag = parsed.filter(e => e.category === 'holiday' || e.category === 'feiertag').map(mapEvent);
                     console.log('Feiertag loaded:', calendarEntries.feiertag.length);
+                    
+                    // Termin (pink) - BMT category TERMIN
+                    calendarEntries.termin = parsed.filter(e => e.category === 'termin').map(mapEvent);
+                    console.log('Termin loaded:', calendarEntries.termin.length);
                     
                 } catch (err) { console.log('BMT parse error:', err); }
             }
@@ -13830,6 +13844,7 @@ Spittelauer Lnde 12/1
             const showTech = document.getElementById('filter-technik').checked;
             const showOutlook = document.getElementById('filter-outlook').checked;
             const showFeiertag = document.getElementById('filter-feiertag').checked;
+            const showTermin = document.getElementById('filter-termin') ? document.getElementById('filter-termin').checked : true;
             
             // Build calendar grid
             let html = dayNames.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
@@ -13891,6 +13906,11 @@ Spittelauer Lnde 12/1
                     calendarEntries.outlook.filter(e => e.date === dateStr)
                         .forEach(e => { entriesHtml += `<div class="calendar-entry outlook" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
                 }
+                // Termin (pink) - BMT TERMIN category
+                if (showTermin) {
+                    calendarEntries.termin.filter(e => e.date === dateStr || matchDateFormat(e.date, day, calendarMonth, calendarYear))
+                        .forEach(e => { entriesHtml += `<div class="calendar-entry termin" title="${e.title}">${e.time ? e.time + ' ' : ''}${e.title}</div>`; });
+                }
                 
                 html += `<div class="calendar-day${isToday ? ' today' : ''}">
                     <span class="calendar-day-number">${day}</span>
@@ -13948,7 +13968,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.109';
+            const HUB_VERSION = 'v15.9.110';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15391,7 +15411,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.109 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.110 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19296,7 +19316,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.109
+     UMSATZ TICKER JS — v15.9.110
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
