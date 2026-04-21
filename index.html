@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.112</title>
+    <title>Turbo Projects Work Hub v15.9.113</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2463,7 +2463,85 @@
         .qn-card.dept-NONE    { border-left: 3px solid transparent; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { min-height: 240px; max-height: 300px; } }
 
-        
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.113 ===== */
+        #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+        #dtw-master-header { background: #0f1623; padding: 9px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        #dtw-master-header .dtw-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
+        #dtw-master-header .dtw-active-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #666; margin-left: auto; text-transform: uppercase; }
+        #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-bottom: 1px solid var(--border); }
+        .dtw-dept-btn { padding: 10px 4px; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: none; border-right: 1px solid var(--border); background: #0d1b2a; color: #888; cursor: pointer; font-family: inherit; text-transform: uppercase; transition: all 0.15s; }
+        .dtw-dept-btn:last-child { border-right: none; }
+        .dtw-dept-btn:hover { background: #142033; color: #ddd; }
+        .dtw-dept-btn.active[data-dept="OFFICE"]   { background: rgba(24,95,165,0.22);  color: #85B7EB; box-shadow: inset 0 -3px 0 #185FA5; }
+        .dtw-dept-btn.active[data-dept="BAR"]      { background: rgba(186,117,23,0.22); color: #EF9F27; box-shadow: inset 0 -3px 0 #BA7517; }
+        .dtw-dept-btn.active[data-dept="RUNNER"]   { background: rgba(99,153,34,0.22);  color: #97C459; box-shadow: inset 0 -3px 0 #639922; }
+        .dtw-dept-btn.active[data-dept="TECHNIK"]  { background: rgba(83,74,183,0.22);  color: #AFA9EC; box-shadow: inset 0 -3px 0 #534AB7; }
+        .dtw-dept-btn.active[data-dept="SPUTNIK"]  { background: rgba(212,83,126,0.22); color: #ED93B1; box-shadow: inset 0 -3px 0 #D4537E; }
+        #dtw-panel { background: var(--surface); }
+        #dtw-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #0a1220; overflow-x: auto; }
+        .dtw-tab { padding: 8px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+        .dtw-tab:hover { color: #ccc; }
+        .dtw-tab.active { color: #fff; background: rgba(255,255,255,0.03); }
+        .dtw-tab.active.c-OFFICE   { border-bottom-color: #185FA5; color: #85B7EB; }
+        .dtw-tab.active.c-BAR      { border-bottom-color: #BA7517; color: #EF9F27; }
+        .dtw-tab.active.c-RUNNER   { border-bottom-color: #639922; color: #97C459; }
+        .dtw-tab.active.c-TECHNIK  { border-bottom-color: #534AB7; color: #AFA9EC; }
+        .dtw-tab.active.c-SPUTNIK  { border-bottom-color: #D4537E; color: #ED93B1; }
+        .dtw-tab .dtw-tab-count { display:inline-block; margin-left:6px; padding:1px 6px; font-size:9px; font-weight:800; background:rgba(255,255,255,0.08); color:#888; border-radius:8px; min-width:14px; text-align:center; }
+        #dtw-tab-content { min-height: 160px; max-height: 460px; overflow-y: auto; padding: 0; }
+        .dtw-empty { padding: 28px 14px; font-size: 11px; color: #555; text-align: center; }
+        /* Tasks list */
+        .dtw-task { display: flex; align-items: flex-start; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+        .dtw-task:last-child { border-bottom: none; }
+        .dtw-task-cb { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: #3b82f6; }
+        .dtw-task-title { flex: 1; color: #ddd; line-height: 1.4; word-break: break-word; }
+        .dtw-task.done .dtw-task-title { color: #555; text-decoration: line-through; }
+        .dtw-task-due { font-size: 9px; color: #888; padding: 2px 6px; border: 1px solid #333; border-radius: 3px; flex-shrink: 0; white-space: nowrap; }
+        .dtw-task-due.overdue { color: #ef4444; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); }
+        .dtw-task-due.today { color: #f59e0b; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
+        /* Quick Notes preview */
+        .dtw-qn { padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; font-size: 12px; }
+        .dtw-qn:last-child { border-bottom: none; }
+        .dtw-qn-prio { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px; flex-shrink: 0; width: 22px; text-align: center; }
+        .dtw-qn-prio.P1 { background: rgba(239,68,68,0.18); color: #ef4444; }
+        .dtw-qn-prio.P2 { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .dtw-qn-prio.P3 { background: rgba(100,116,139,0.18); color: #94a3b8; }
+        .dtw-qn-body { flex: 1; min-width: 0; }
+        .dtw-qn-ts { font-size: 9px; color: #555; margin-bottom: 2px; }
+        .dtw-qn-text { color: #ccc; line-height: 1.4; word-break: break-word; }
+        /* Notes input */
+        .dtw-notes-input-wrap { padding: 8px; border-bottom: 1px solid var(--border); background: var(--surface-2); display: flex; gap: 6px; }
+        .dtw-notes-input { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; font-family: inherit; outline: none; box-sizing: border-box; }
+        .dtw-notes-input:focus { border-color: #3b82f6; }
+        .dtw-notes-add { padding: 0 12px; font-size: 11px; font-weight: 700; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; cursor: pointer; font-family: inherit; }
+        .dtw-notes-add:hover { background: #3b82f6; color: #fff; }
+        .dtw-note { padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: #ccc; display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+        .dtw-note:last-child { border-bottom: none; }
+        .dtw-note-text { flex: 1; word-break: break-word; line-height: 1.4; }
+        .dtw-note-del { background: transparent; border: none; color: #444; font-size: 14px; cursor: pointer; padding: 0 2px; line-height: 1; }
+        .dtw-note-del:hover { color: #ef4444; }
+        /* Apps grid */
+        .dtw-apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; padding: 12px; }
+        .dtw-app-btn { padding: 14px 10px; background: #0d1b2a; border: 1px solid var(--border); color: #ddd; cursor: pointer; font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 4px; }
+        .dtw-app-btn:hover { background: #152238; border-color: #3b82f6; color: #fff; }
+        .dtw-app-btn .dtw-app-ico { font-size: 22px; }
+        /* Calendar iframe wrapper */
+        .dtw-cal-wrap { padding: 0; }
+        .dtw-cal-wrap iframe { width: 100%; height: 420px; border: none; background: #0d1b2a; display: block; }
+        /* Sputnik reservations list */
+        .dtw-res { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+        .dtw-res:last-child { border-bottom: none; }
+        .dtw-res-date { font-size: 10px; color: #ED93B1; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 3px; }
+        .dtw-res-title { color: #ddd; line-height: 1.4; }
+        .dtw-res-time { font-size: 10px; color: #888; margin-top: 2px; }
+        /* Loading state */
+        .dtw-loading { padding: 20px; font-size: 11px; color: #666; text-align: center; }
+        @media (max-width: 700px) {
+            #dtw-dept-row { grid-template-columns: repeat(5, 1fr); }
+            .dtw-dept-btn { font-size: 9px; padding: 9px 2px; letter-spacing: 0.5px; }
+            .dtw-cal-wrap iframe { height: 360px; }
+            .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
         /* ===== COCKPIT WIDGET ===== */
         #cockpit-widget {
@@ -2788,7 +2866,27 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.96 -->
+    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.113 ==================== -->
+    <div id="dtw-widget" style="margin-bottom:8px;">
+        <div id="dtw-master-header">
+            <span class="dtw-title">🎛 DEPARTMENT TOOLS</span>
+            <span id="dtw-active-label" class="dtw-active-label"></span>
+        </div>
+        <div id="dtw-dept-row">
+            <button class="dtw-dept-btn" data-dept="OFFICE"  onclick="dtwToggleDept('OFFICE')">OFFICE</button>
+            <button class="dtw-dept-btn" data-dept="BAR"     onclick="dtwToggleDept('BAR')">BAR</button>
+            <button class="dtw-dept-btn" data-dept="RUNNER"  onclick="dtwToggleDept('RUNNER')">RUNNER</button>
+            <button class="dtw-dept-btn" data-dept="TECHNIK" onclick="dtwToggleDept('TECHNIK')">TECHNIK</button>
+            <button class="dtw-dept-btn" data-dept="SPUTNIK" onclick="dtwToggleDept('SPUTNIK')">SPUTNIK</button>
+        </div>
+        <div id="dtw-panel" style="display:none;">
+            <div id="dtw-tab-bar"></div>
+            <div id="dtw-tab-content"></div>
+        </div>
+    </div>
+
+    <!-- COCKPIT — DEPT ROWS v15.9.96 — AUSKOMMENTIERT v15.9.113 (ersetzt durch DEPARTMENT TOOLS WIDGET) -->
+    <!--
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
@@ -2808,64 +2906,66 @@
             <div style="background:var(--surface);">
                 <div class="cp-dept-row">
                     <div class="cp-dept-row-header" onclick="cockpitToggleDept('office')">
-                        <span class="cp-chev" id="cp-chev-office">▶</span><span class="cp-dept-icon">🏠</span>
+                        <span class="cp-chev" id="cp-chev-office">&#9654;</span><span class="cp-dept-icon">&#127968;</span>
                         <span class="cp-dept-row-name" style="color:#22c55e;">OFFICE</span>
                         <span class="cp-open-badge" id="cp-count-office" style="background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2);">0 offen</span>
                         <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-office" style="width:0%;background:#22c55e;"></div></div>
-                        <span class="cp-dept-row-pct" id="cp-pct-office">—</span>
+                        <span class="cp-dept-row-pct" id="cp-pct-office">&mdash;</span>
                     </div>
                     <div class="cp-dept-row-body" id="cp-dept-body-office" style="display:none;"></div>
                 </div>
                 <div class="cp-dept-row">
                     <div class="cp-dept-row-header" onclick="cockpitToggleDept('bar')">
-                        <span class="cp-chev" id="cp-chev-bar">▶</span><span class="cp-dept-icon">🍹</span>
+                        <span class="cp-chev" id="cp-chev-bar">&#9654;</span><span class="cp-dept-icon">&#127864;</span>
                         <span class="cp-dept-row-name" style="color:#f59e0b;">BAR</span>
                         <span class="cp-open-badge" id="cp-count-bar" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.2);">0 offen</span>
                         <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-bar" style="width:0%;background:#f59e0b;"></div></div>
-                        <span class="cp-dept-row-pct" id="cp-pct-bar">—</span>
+                        <span class="cp-dept-row-pct" id="cp-pct-bar">&mdash;</span>
                     </div>
                     <div class="cp-dept-row-body" id="cp-dept-body-bar" style="display:none;"></div>
                 </div>
                 <div class="cp-dept-row">
                     <div class="cp-dept-row-header" onclick="cockpitToggleDept('runner')">
-                        <span class="cp-chev" id="cp-chev-runner">▶</span><span class="cp-dept-icon">🏃</span>
+                        <span class="cp-chev" id="cp-chev-runner">&#9654;</span><span class="cp-dept-icon">&#127939;</span>
                         <span class="cp-dept-row-name" style="color:#3b82f6;">RUNNER</span>
                         <span class="cp-open-badge" id="cp-count-runner" style="background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);">0 offen</span>
                         <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-runner" style="width:0%;background:#3b82f6;"></div></div>
-                        <span class="cp-dept-row-pct" id="cp-pct-runner">—</span>
+                        <span class="cp-dept-row-pct" id="cp-pct-runner">&mdash;</span>
                     </div>
                     <div class="cp-dept-row-body" id="cp-dept-body-runner" style="display:none;"></div>
                 </div>
                 <div class="cp-dept-row">
                     <div class="cp-dept-row-header" onclick="cockpitToggleDept('technik')">
-                        <span class="cp-chev" id="cp-chev-technik">▶</span><span class="cp-dept-icon">🔧</span>
+                        <span class="cp-chev" id="cp-chev-technik">&#9654;</span><span class="cp-dept-icon">&#128295;</span>
                         <span class="cp-dept-row-name" style="color:#8b5cf6;">TECHNIK</span>
                         <span class="cp-open-badge" id="cp-count-technik" style="background:rgba(139,92,246,0.1);color:#8b5cf6;border:1px solid rgba(139,92,246,0.2);">0 offen</span>
                         <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-technik" style="width:0%;background:#8b5cf6;"></div></div>
-                        <span class="cp-dept-row-pct" id="cp-pct-technik">—</span>
+                        <span class="cp-dept-row-pct" id="cp-pct-technik">&mdash;</span>
                     </div>
                     <div class="cp-dept-row-body" id="cp-dept-body-technik" style="display:none;"></div>
                 </div>
                 <div class="cp-dept-row" style="border-bottom:none;">
                     <div class="cp-dept-row-header" onclick="cockpitToggleDept('sputnik')">
-                        <span class="cp-chev" id="cp-chev-sputnik">▶</span><span class="cp-dept-icon">🚀</span>
+                        <span class="cp-chev" id="cp-chev-sputnik">&#9654;</span><span class="cp-dept-icon">&#128640;</span>
                         <span class="cp-dept-row-name" style="color:#ec4899;">SPUTNIK</span>
                         <span class="cp-open-badge" id="cp-count-sputnik" style="background:rgba(236,72,153,0.1);color:#ec4899;border:1px solid rgba(236,72,153,0.2);">0 offen</span>
                         <div class="cp-dept-minibar"><div class="cp-dept-minibar-fill" id="cp-bar-sputnik" style="width:0%;background:#ec4899;"></div></div>
-                        <span class="cp-dept-row-pct" id="cp-pct-sputnik">—</span>
+                        <span class="cp-dept-row-pct" id="cp-pct-sputnik">&mdash;</span>
                     </div>
                     <div class="cp-dept-row-body" id="cp-dept-body-sputnik" style="display:none;"></div>
                 </div>
             </div>
             <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface);">
                 <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
-                <div style="margin-left:auto;"><button onclick="cockpitLoad()" class="btn-secondary">↺ Refresh</button></div>
+                <div style="margin-left:auto;"><button onclick="cockpitLoad()" class="btn-secondary">&#8634; Refresh</button></div>
             </div>
         </div>
     </div>
     <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid #1e3a5f;font-size:12px;color:#888;background:#0d1b2a;">
-        ⚠️ Microsoft Login erforderlich für COCKPIT.
+        &#9888;&#65039; Microsoft Login erforderlich f&#252;r COCKPIT.
     </div>
+    -->
+    <!-- END COCKPIT AUSKOMMENTIERT v15.9.113 -->
 
 
 
@@ -5538,7 +5638,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.112</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.113</span>
     </div>
     
     <!-- Metrics Button -->
@@ -14056,12 +14156,13 @@ Spittelauer Lnde 12/1
                 });
             }
         })();
-        
+
+
         // INIT
-        // 
-        
+        //
+
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.112';
+            const HUB_VERSION = 'v15.9.113';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15504,7 +15605,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.112 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.113 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19711,6 +19812,457 @@ Spittelauer Lnde 12/1
 
         document.getElementById('ut-result').style.display = 'block';
     };
+})();
+
+// ═══════════════════════════════════════════════════════
+// DEPARTMENT TOOLS WIDGET v15.9.113
+// ═══════════════════════════════════════════════════════
+(function(){
+    const DTW_DEPTS = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK'];
+    const DTW_COLORS = {
+        OFFICE:  { main: '#185FA5', text: '#85B7EB' },
+        BAR:     { main: '#BA7517', text: '#EF9F27' },
+        RUNNER:  { main: '#639922', text: '#97C459' },
+        TECHNIK: { main: '#534AB7', text: '#AFA9EC' },
+        SPUTNIK: { main: '#D4537E', text: '#ED93B1' }
+    };
+    const DTW_TABS = {
+        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'apps',l:'Applikationen'}],
+        BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
+        RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
+        TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
+        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}]
+    };
+    const DTW_DEFAULT_TAB = { OFFICE:'tasks', BAR:'shift', RUNNER:'shift', TECHNIK:'cal', SPUTNIK:'res' };
+
+    // Sputnik reservations cache (5 min TTL)
+    let dtwSputnikCache = null;
+    let dtwSputnikCacheTs = 0;
+
+    // ---- State helpers ----
+    function dtwGetOpenDept() { return localStorage.getItem('dtw_open_dept') || null; }
+    function dtwSetOpenDept(d) { if (d) localStorage.setItem('dtw_open_dept', d); else localStorage.removeItem('dtw_open_dept'); }
+    function dtwGetLastTab(dept) { return localStorage.getItem('dtw_last_tab_' + dept) || DTW_DEFAULT_TAB[dept]; }
+    function dtwSetLastTab(dept, tab) { localStorage.setItem('dtw_last_tab_' + dept, tab); }
+
+    // ---- Notes storage ----
+    function dtwGetNotes(dept) {
+        try { return JSON.parse(localStorage.getItem('dept_notes_' + dept) || '[]'); } catch(e) { return []; }
+    }
+    function dtwSaveNotes(dept, arr) { localStorage.setItem('dept_notes_' + dept, JSON.stringify(arr)); }
+
+    // ---- Main toggle ----
+    window.dtwToggleDept = function(dept) {
+        const current = dtwGetOpenDept();
+        if (current === dept) {
+            dtwSetOpenDept(null);
+            dtwRenderWidget();
+            return;
+        }
+        dtwSetOpenDept(dept);
+        dtwRenderWidget();
+    };
+
+    window.dtwSwitchTab = function(dept, tab) {
+        dtwSetLastTab(dept, tab);
+        dtwRenderTabBar(dept);
+        dtwRenderTabContent(dept, tab);
+    };
+
+    // ---- Render top-level ----
+    function dtwRenderWidget() {
+        const open = dtwGetOpenDept();
+        // Update dept buttons
+        document.querySelectorAll('.dtw-dept-btn').forEach(btn => {
+            const d = btn.getAttribute('data-dept');
+            btn.classList.toggle('active', d === open);
+        });
+        const panel = document.getElementById('dtw-panel');
+        const activeLabel = document.getElementById('dtw-active-label');
+        if (!open) {
+            if (panel) panel.style.display = 'none';
+            if (activeLabel) activeLabel.textContent = '';
+            return;
+        }
+        if (activeLabel) {
+            activeLabel.textContent = open;
+            activeLabel.style.color = DTW_COLORS[open].text;
+        }
+        if (panel) panel.style.display = 'block';
+        dtwRenderTabBar(open);
+        const tab = dtwGetLastTab(open);
+        dtwRenderTabContent(open, tab);
+    }
+
+    function dtwRenderTabBar(dept) {
+        const bar = document.getElementById('dtw-tab-bar');
+        if (!bar) return;
+        const activeTab = dtwGetLastTab(dept);
+        const tabs = DTW_TABS[dept] || [];
+        const counts = dtwComputeCounts(dept);
+        let html = '';
+        tabs.forEach(t => {
+            const cls = 'dtw-tab c-' + dept + (t.k === activeTab ? ' active' : '');
+            const cnt = counts[t.k];
+            const cntHtml = (cnt !== undefined && cnt !== null) ? `<span class="dtw-tab-count">${cnt}</span>` : '';
+            html += `<button class="${cls}" onclick="dtwSwitchTab('${dept}','${t.k}')">${t.l}${cntHtml}</button>`;
+        });
+        bar.innerHTML = html;
+    }
+
+    function dtwComputeCounts(dept) {
+        const counts = {};
+        // Tasks count — from cockpitData (live after MS Login)
+        try {
+            if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
+                const arr = cockpitData.byDept[dept.toLowerCase()] || [];
+                counts.tasks = arr.filter(t => t.status !== 'completed').length;
+            }
+        } catch(e) {}
+        // Quick Notes count — filtered by dept
+        try {
+            const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
+            counts.qnotes = cards.filter(c => (c.dept || null) === dept).length;
+        } catch(e) {}
+        // Notes count
+        try { counts.notes = dtwGetNotes(dept).length; } catch(e) {}
+        return counts;
+    }
+
+    function dtwRenderTabContent(dept, tab) {
+        const host = document.getElementById('dtw-tab-content');
+        if (!host) return;
+        host.innerHTML = '<div class="dtw-loading">Lädt…</div>';
+        switch(tab) {
+            case 'tasks':  dtwRenderTasks(dept, host); break;
+            case 'qnotes': dtwRenderQuickNotes(dept, host); break;
+            case 'notes':  dtwRenderNotes(dept, host); break;
+            case 'apps':   dtwRenderApps(host); break;
+            case 'shift':  dtwRenderShift(dept, host); break;
+            case 'cal':    dtwRenderTechnikCal(host); break;
+            case 'res':    dtwRenderSputnikReservations(host); break;
+            default: host.innerHTML = '<div class="dtw-empty">Unbekannter Tab.</div>';
+        }
+    }
+
+    // ---- Tasks tab (MS To-Do via existing cockpit data) ----
+    function dtwRenderTasks(dept, host) {
+        const deptLower = dept.toLowerCase();
+        const hasData = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
+        if (!hasData) {
+            // Not loaded yet — try to load, show hint in meantime
+            if (typeof cockpitLoad === 'function') {
+                host.innerHTML = '<div class="dtw-loading">⏳ Lädt aus MS To-Do…</div>';
+                try {
+                    cockpitLoad().then(() => {
+                        if (dtwGetOpenDept() === dept && dtwGetLastTab(dept) === 'tasks') {
+                            dtwRenderTasks(dept, host);
+                            dtwRenderTabBar(dept); // refresh counts
+                        }
+                    }).catch(() => {
+                        host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich. Oben rechts anmelden.</div>';
+                    });
+                } catch(e) {
+                    host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich.</div>';
+                }
+            } else {
+                host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich.</div>';
+            }
+            return;
+        }
+        const tasks = (cockpitData.byDept[deptLower] || []).slice();
+        if (!tasks.length) {
+            host.innerHTML = '<div class="dtw-empty">✓ Keine offenen Tasks für ' + dept + '.</div>';
+            return;
+        }
+        // Sort: open first (by due date asc, null last), then completed at end
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        tasks.sort((a, b) => {
+            const aDone = a.status === 'completed';
+            const bDone = b.status === 'completed';
+            if (aDone !== bDone) return aDone ? 1 : -1;
+            const ad = a.dueDateTime ? new Date(a.dueDateTime.dateTime).getTime() : Infinity;
+            const bd = b.dueDateTime ? new Date(b.dueDateTime.dateTime).getTime() : Infinity;
+            return ad - bd;
+        });
+        let html = '';
+        tasks.forEach(t => {
+            const isDone = t.status === 'completed';
+            let dueHtml = '';
+            if (t.dueDateTime) {
+                const due = new Date(t.dueDateTime.dateTime);
+                const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+                let cls = '';
+                if (dueDay < today) cls = 'overdue';
+                else if (+dueDay === +today) cls = 'today';
+                const dueStr = due.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
+                dueHtml = `<span class="dtw-task-due ${cls}">${dueStr}</span>`;
+            }
+            const titleEsc = (t.title || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            html += `<div class="dtw-task ${isDone?'done':''}">
+                <input type="checkbox" class="dtw-task-cb" ${isDone?'checked':''} onclick="dtwToggleTask('${dept}','${t.id}',this.checked)">
+                <span class="dtw-task-title">${titleEsc}</span>
+                ${dueHtml}
+            </div>`;
+        });
+        host.innerHTML = html;
+    }
+
+    window.dtwToggleTask = async function(dept, taskId, done) {
+        const deptLower = dept.toLowerCase();
+        const listId = (typeof TODO_LISTS !== 'undefined') ? TODO_LISTS[deptLower] : null;
+        const token = (typeof accessToken !== 'undefined') ? accessToken : null;
+        if (!listId || !token) {
+            if (typeof showToast === 'function') showToast('⚠️ Nicht verbunden');
+            return;
+        }
+        try {
+            await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
+                method: 'PATCH',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: done ? 'completed' : 'notStarted' })
+            });
+            // Update in cache
+            if (cockpitData && cockpitData.byDept[deptLower]) {
+                const t = cockpitData.byDept[deptLower].find(x => x.id === taskId);
+                if (t) t.status = done ? 'completed' : 'notStarted';
+            }
+            dtwRenderTasks(dept, document.getElementById('dtw-tab-content'));
+            dtwRenderTabBar(dept);
+        } catch(e) {
+            console.warn('Task toggle failed:', e);
+        }
+    };
+
+    // ---- Quick Notes tab (filtered preview) ----
+    function dtwRenderQuickNotes(dept, host) {
+        let cards = [];
+        try { cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]'); } catch(e) {}
+        const filtered = cards.filter(c => (c.dept || null) === dept);
+        if (!filtered.length) {
+            host.innerHTML = '<div class="dtw-empty">Keine Quick Notes mit Tag ' + dept + '.<br><span style="font-size:10px;color:#444;">Tipp: Beim Anlegen ' + dept + ' Tag setzen.</span></div>';
+            return;
+        }
+        const prioOrder = { P1: 0, P2: 1, P3: 2 };
+        filtered.sort((a,b) => {
+            const pa = prioOrder[a.priority || 'P2'];
+            const pb = prioOrder[b.priority || 'P2'];
+            if (pa !== pb) return pa - pb;
+            return Number(b.id) - Number(a.id);
+        });
+        let html = '';
+        filtered.slice(0, 20).forEach(c => {
+            const prio = c.priority || 'P2';
+            const textEsc = (c.text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            html += `<div class="dtw-qn">
+                <span class="dtw-qn-prio ${prio}">${prio}</span>
+                <div class="dtw-qn-body">
+                    <div class="dtw-qn-ts">${c.ts || ''}</div>
+                    <div class="dtw-qn-text">${textEsc}</div>
+                </div>
+            </div>`;
+        });
+        if (filtered.length > 20) {
+            html += `<div class="dtw-empty" style="padding:10px;">+ ${filtered.length - 20} weitere unten im Quick Notes Block.</div>`;
+        }
+        host.innerHTML = html;
+    }
+
+    // ---- Notes tab (per-dept localStorage) ----
+    function dtwRenderNotes(dept, host) {
+        const notes = dtwGetNotes(dept);
+        let html = `<div class="dtw-notes-input-wrap">
+            <input class="dtw-notes-input" id="dtw-notes-input-${dept}" placeholder="Notiz für ${dept}… (Enter zum Speichern)" onkeydown="if(event.key==='Enter'){dtwAddNote('${dept}')}">
+            <button class="dtw-notes-add" onclick="dtwAddNote('${dept}')">+ Add</button>
+        </div>`;
+        if (!notes.length) {
+            html += '<div class="dtw-empty">Noch keine ' + dept + ' Notes.</div>';
+        } else {
+            notes.slice().reverse().forEach(n => {
+                const textEsc = (n.text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                html += `<div class="dtw-note">
+                    <div class="dtw-note-text"><span style="font-size:9px;color:#555;display:block;">${n.ts || ''}</span>${textEsc}</div>
+                    <button class="dtw-note-del" onclick="dtwDelNote('${dept}','${n.id}')">×</button>
+                </div>`;
+            });
+        }
+        host.innerHTML = html;
+        // Focus input
+        const inp = document.getElementById('dtw-notes-input-' + dept);
+        if (inp) setTimeout(() => inp.focus(), 50);
+    }
+
+    window.dtwAddNote = function(dept) {
+        const inp = document.getElementById('dtw-notes-input-' + dept);
+        if (!inp || !inp.value.trim()) return;
+        const notes = dtwGetNotes(dept);
+        const now = new Date();
+        const ts = now.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'});
+        notes.push({ id: String(Date.now()), ts: ts, text: inp.value.trim() });
+        dtwSaveNotes(dept, notes);
+        inp.value = '';
+        dtwRenderNotes(dept, document.getElementById('dtw-tab-content'));
+        dtwRenderTabBar(dept);
+    };
+
+    window.dtwDelNote = function(dept, id) {
+        const notes = dtwGetNotes(dept).filter(n => n.id !== id);
+        dtwSaveNotes(dept, notes);
+        dtwRenderNotes(dept, document.getElementById('dtw-tab-content'));
+        dtwRenderTabBar(dept);
+    };
+
+    // ---- Apps tab (OFFICE only) ----
+    function dtwRenderApps(host) {
+        const apps = [
+            { ico: '📧', label: 'Email Hub',       action: "openModal('email-modal')" },
+            { ico: '🧾', label: 'Rechnungen',      action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
+            { ico: '🗓️', label: 'Promo Manager',   action: "openPromoManager()" },
+            { ico: '🤖', label: 'Claude Notepad',  action: "openModal('claude-notepad-modal')" },
+            { ico: '📊', label: 'Database Viewer', action: "openModal('db-viewer-modal')" },
+            { ico: '🎫', label: 'PreSale Calc',    action: "openModal('presale-modal')" },
+            { ico: '🎬', label: 'Projector',       action: "openModal('projector-modal')" },
+            { ico: '🔗', label: 'Linktree',        action: "window.open('https://linktr.ee/admin','_blank')" }
+        ];
+        let html = '<div class="dtw-apps-grid">';
+        apps.forEach(a => {
+            html += `<button class="dtw-app-btn" onclick="${a.action}"><span class="dtw-app-ico">${a.ico}</span>${a.label}</button>`;
+        });
+        html += '</div>';
+        host.innerHTML = html;
+    }
+
+    // ---- Shiftplan tab (BAR / RUNNER) ----
+    function dtwRenderShift(dept, host) {
+        const modalMap = {
+            BAR:    { id: 'bar-staffing-modal',    label: 'Bar Staffing' },
+            RUNNER: { id: 'runner-staffing-modal', label: 'Runner Staffing' }
+        };
+        const m = modalMap[dept];
+        if (!m) { host.innerHTML = '<div class="dtw-empty">Kein Shiftplan für ' + dept + '.</div>'; return; }
+        host.innerHTML = `<div style="padding:24px 14px;text-align:center;">
+            <div style="font-size:12px;color:#aaa;margin-bottom:14px;">${m.label} im Modal öffnen</div>
+            <button class="dtw-app-btn" style="margin:0 auto;width:auto;display:inline-flex;flex-direction:row;gap:8px;padding:10px 22px;" onclick="openModal('${m.id}')">
+                <span style="font-size:16px;">📋</span>${m.label} öffnen
+            </button>
+        </div>`;
+    }
+
+    // ---- Technik Calendar tab (Google Embed) ----
+    function dtwRenderTechnikCal(host) {
+        const src = 'https://calendar.google.com/calendar/embed?src=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com&mode=AGENDA&bgcolor=%230d1b2a&ctz=Europe%2FVienna&showTitle=0&showPrint=0&showCalendars=0&showTabs=0';
+        host.innerHTML = `<div class="dtw-cal-wrap">
+            <iframe src="${src}" loading="lazy"></iframe>
+            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--surface-2);">
+                <span style="font-size:10px;color:#888;">Technikerkalender (Google)</span>
+                <a href="https://calendar.google.com/calendar/u/0/r?cid=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com" target="_blank" style="margin-left:auto;font-size:10px;color:#AFA9EC;text-decoration:none;">Im neuen Tab öffnen ↗</a>
+            </div>
+        </div>`;
+    }
+
+    // ---- Sputnik Reservations tab (via PHP Proxy, ICS) ----
+    async function dtwRenderSputnikReservations(host) {
+        // Cache 5 min
+        const age = Date.now() - dtwSputnikCacheTs;
+        if (dtwSputnikCache && age < 5 * 60 * 1000) {
+            dtwDrawSputnikList(host, dtwSputnikCache);
+            return;
+        }
+        host.innerHTML = '<div class="dtw-loading">⏳ Lädt Sputnik Reservierungen…</div>';
+        try {
+            const res = await fetch('https://grelleforelle.com/hub-proxy/calendar_proxy.php?cal=sputnik');
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const icsText = await res.text();
+            const events = dtwParseICS(icsText);
+            dtwSputnikCache = events;
+            dtwSputnikCacheTs = Date.now();
+            dtwDrawSputnikList(host, events);
+        } catch(e) {
+            host.innerHTML = `<div class="dtw-empty">⚠️ Konnte Sputnik Calendar nicht laden.<br><span style="font-size:10px;color:#444;">${(e.message||'')}</span><br><br>
+                <a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:11px;">Google Calendar direkt öffnen ↗</a>
+            </div>`;
+        }
+    }
+
+    function dtwParseICS(text) {
+        const events = [];
+        const lines = text.replace(/\r\n/g, '\n').replace(/\n[ \t]/g, '').split('\n');
+        let cur = null;
+        lines.forEach(line => {
+            if (line === 'BEGIN:VEVENT') cur = {};
+            else if (line === 'END:VEVENT') { if (cur) events.push(cur); cur = null; }
+            else if (cur) {
+                const idx = line.indexOf(':');
+                if (idx < 0) return;
+                const keyFull = line.substring(0, idx);
+                const val = line.substring(idx + 1);
+                const keyParts = keyFull.split(';');
+                const key = keyParts[0];
+                if (key === 'SUMMARY') cur.summary = val;
+                else if (key === 'DESCRIPTION') cur.description = val.replace(/\\n/g, ' ').replace(/\\,/g, ',');
+                else if (key === 'LOCATION') cur.location = val;
+                else if (key === 'DTSTART') cur.start = dtwParseICSDate(val, keyParts);
+                else if (key === 'DTEND')   cur.end   = dtwParseICSDate(val, keyParts);
+            }
+        });
+        return events;
+    }
+
+    function dtwParseICSDate(val, keyParts) {
+        // val: 20260421T180000Z  or  20260421  (all-day)  or  20260421T180000 with TZID param
+        const isDateOnly = /^\d{8}$/.test(val);
+        if (isDateOnly) {
+            const y = +val.substring(0,4), m = +val.substring(4,6) - 1, d = +val.substring(6,8);
+            return new Date(y, m, d);
+        }
+        const mZ = val.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z?)$/);
+        if (!mZ) return new Date(val);
+        const y = +mZ[1], mo = +mZ[2] - 1, d = +mZ[3], h = +mZ[4], mi = +mZ[5], s = +mZ[6];
+        if (mZ[7] === 'Z') return new Date(Date.UTC(y, mo, d, h, mi, s));
+        return new Date(y, mo, d, h, mi, s);
+    }
+
+    function dtwDrawSputnikList(host, events) {
+        const now = new Date();
+        const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const end = new Date(today0); end.setDate(end.getDate() + 7);
+        const filtered = events.filter(e => e.start && e.start >= today0 && e.start < end);
+        filtered.sort((a,b) => a.start - b.start);
+        if (!filtered.length) {
+            host.innerHTML = '<div class="dtw-empty">Keine Reservierungen in den nächsten 7 Tagen.<br><a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:11px;">Google Calendar öffnen ↗</a></div>';
+            return;
+        }
+        let html = '';
+        let lastDay = '';
+        filtered.forEach(e => {
+            const d = e.start;
+            const dayKey = d.toLocaleDateString('de-AT', {weekday:'short', day:'2-digit', month:'2-digit'});
+            const timeStr = d.toLocaleTimeString('de-AT', {hour:'2-digit', minute:'2-digit'});
+            const summaryEsc = (e.summary || '(ohne Titel)').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const descEsc = e.description ? ('<div style="font-size:10px;color:#888;margin-top:3px;">' + e.description.substring(0, 140).replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>') : '';
+            if (dayKey !== lastDay) {
+                html += `<div class="dtw-res-date" style="padding:8px 14px 2px;">${dayKey.toUpperCase()}</div>`;
+                lastDay = dayKey;
+            }
+            html += `<div class="dtw-res">
+                <div class="dtw-res-title">${summaryEsc}</div>
+                <div class="dtw-res-time">${timeStr}${e.location ? ' · ' + e.location.replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''}</div>
+                ${descEsc}
+            </div>`;
+        });
+        html += `<div style="padding:10px 14px;border-top:1px solid var(--border);text-align:right;"><a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:10px;text-decoration:none;">Alle Reservierungen im Google Calendar ↗</a></div>`;
+        host.innerHTML = html;
+    }
+
+    // ---- Init on DOM ready ----
+    document.addEventListener('DOMContentLoaded', function() {
+        dtwRenderWidget();
+    });
+    // Fallback for already-loaded doc
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(dtwRenderWidget, 30);
+    }
 })();
 </script>
 </body>
