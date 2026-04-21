@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.111</title>
+    <title>Turbo Projects Work Hub v15.9.112</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2436,6 +2436,31 @@
         .qn-input-area textarea:focus { border-color: #3b82f6; }
         .qn-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
         .qn-save-btn:hover { background: #3b82f6; color: #fff; }
+        /* ===== QN DEPT TAGS v15.9.112 ===== */
+        .qn-dept-row { display: flex; gap: 3px; margin-bottom: 5px; flex-wrap: wrap; }
+        .qn-dept-btn { flex: 1; min-width: 0; padding: 4px 0; font-size: 9px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; text-align: center; }
+        .qn-dept-btn:hover { color: #aaa; }
+        .qn-dept-btn.sel-OFFICE   { background: rgba(24,95,165,0.18);  color: #85B7EB; border-color: rgba(24,95,165,0.5); }
+        .qn-dept-btn.sel-BAR      { background: rgba(186,117,23,0.18); color: #EF9F27; border-color: rgba(186,117,23,0.5); }
+        .qn-dept-btn.sel-RUNNER   { background: rgba(99,153,34,0.18);  color: #97C459; border-color: rgba(99,153,34,0.5); }
+        .qn-dept-btn.sel-TECHNIK  { background: rgba(83,74,183,0.18);  color: #AFA9EC; border-color: rgba(83,74,183,0.5); }
+        .qn-dept-btn.sel-SPUTNIK  { background: rgba(212,83,126,0.18); color: #ED93B1; border-color: rgba(212,83,126,0.5); }
+        .qn-dept-btn.sel-NONE     { background: rgba(255,255,255,0.06); color: #ccc;    border-color: #555; }
+        /* Second filter row (dept) */
+        .qn-filter-bar.dept { padding: 5px 8px; }
+        .qn-filter-btn.active-OFFICE  { background: rgba(24,95,165,0.18);  color: #85B7EB; border-color: rgba(24,95,165,0.5); }
+        .qn-filter-btn.active-BAR     { background: rgba(186,117,23,0.18); color: #EF9F27; border-color: rgba(186,117,23,0.5); }
+        .qn-filter-btn.active-RUNNER  { background: rgba(99,153,34,0.18);  color: #97C459; border-color: rgba(99,153,34,0.5); }
+        .qn-filter-btn.active-TECHNIK { background: rgba(83,74,183,0.18);  color: #AFA9EC; border-color: rgba(83,74,183,0.5); }
+        .qn-filter-btn.active-SPUTNIK { background: rgba(212,83,126,0.18); color: #ED93B1; border-color: rgba(212,83,126,0.5); }
+        .qn-filter-btn.active-NONE    { background: rgba(255,255,255,0.06); color: #ccc;    border-color: #555; }
+        /* Card border-left in dept color (Variant A) */
+        .qn-card.dept-OFFICE  { border-left: 3px solid #185FA5; }
+        .qn-card.dept-BAR     { border-left: 3px solid #BA7517; }
+        .qn-card.dept-RUNNER  { border-left: 3px solid #639922; }
+        .qn-card.dept-TECHNIK { border-left: 3px solid #534AB7; }
+        .qn-card.dept-SPUTNIK { border-left: 3px solid #D4537E; }
+        .qn-card.dept-NONE    { border-left: 3px solid transparent; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { min-height: 240px; max-height: 300px; } }
 
         
@@ -2886,6 +2911,15 @@
                 <button class="qn-filter-btn" id="qn-f-P3" onclick="qnSetFilter('P3')">P3</button>
                 <span class="qn-filter-count" id="qn-filter-count"></span>
             </div>
+            <div class="qn-filter-bar dept" id="qn-filter-bar-dept">
+                <button class="qn-filter-btn active-all" id="qn-fd-ALL"     onclick="qnSetDeptFilter('ALL')">ALLE</button>
+                <button class="qn-filter-btn"            id="qn-fd-OFFICE"  onclick="qnSetDeptFilter('OFFICE')">OFFICE</button>
+                <button class="qn-filter-btn"            id="qn-fd-BAR"     onclick="qnSetDeptFilter('BAR')">BAR</button>
+                <button class="qn-filter-btn"            id="qn-fd-RUNNER"  onclick="qnSetDeptFilter('RUNNER')">RUNNER</button>
+                <button class="qn-filter-btn"            id="qn-fd-TECHNIK" onclick="qnSetDeptFilter('TECHNIK')">TECHNIK</button>
+                <button class="qn-filter-btn"            id="qn-fd-SPUTNIK" onclick="qnSetDeptFilter('SPUTNIK')">SPUTNIK</button>
+                <button class="qn-filter-btn"            id="qn-fd-NONE"    onclick="qnSetDeptFilter('NONE')">—</button>
+            </div>
             <div class="widget-block-body" id="quick-notes-body">
                 <div id="qn-cards-list"></div>
             </div>
@@ -2894,6 +2928,14 @@
                     <button class="qn-prio-btn" id="qn-prio-P1" onclick="qnSelectPrio('P1')">P1 Kritisch</button>
                     <button class="qn-prio-btn sel-P2" id="qn-prio-P2" onclick="qnSelectPrio('P2')">P2 Normal</button>
                     <button class="qn-prio-btn" id="qn-prio-P3" onclick="qnSelectPrio('P3')">P3 Später</button>
+                </div>
+                <div class="qn-dept-row">
+                    <button class="qn-dept-btn" id="qn-dept-OFFICE"  onclick="qnSelectDept('OFFICE')">OFFICE</button>
+                    <button class="qn-dept-btn" id="qn-dept-BAR"     onclick="qnSelectDept('BAR')">BAR</button>
+                    <button class="qn-dept-btn" id="qn-dept-RUNNER"  onclick="qnSelectDept('RUNNER')">RUNNER</button>
+                    <button class="qn-dept-btn" id="qn-dept-TECHNIK" onclick="qnSelectDept('TECHNIK')">TECHNIK</button>
+                    <button class="qn-dept-btn" id="qn-dept-SPUTNIK" onclick="qnSelectDept('SPUTNIK')">SPUTNIK</button>
+                    <button class="qn-dept-btn sel-NONE" id="qn-dept-NONE" onclick="qnSelectDept('NONE')">—</button>
                 </div>
                 <textarea id="quick-notes-text" placeholder="Notiz eingeben…" oninput="saveQuickNotes()"></textarea>
                 <button class="qn-save-btn" onclick="qnAddCard()">+ Als Notiz speichern</button>
@@ -5496,7 +5538,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.111</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.112</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9155,6 +9197,9 @@
         // Priority state
         let qnCurrentPrio = 'P2';
         let qnCurrentFilter = 'ALL';
+        // Department state v15.9.112
+        let qnCurrentDept = 'NONE';        // input
+        let qnCurrentDeptFilter = 'ALL';   // filter
 
         function qnSelectPrio(p) {
             qnCurrentPrio = p;
@@ -9162,6 +9207,24 @@
                 var btn = document.getElementById('qn-prio-' + x);
                 if (btn) btn.className = 'qn-prio-btn' + (x === p ? ' sel-' + x : '');
             });
+        }
+
+        function qnSelectDept(d) {
+            qnCurrentDept = d;
+            ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK','NONE'].forEach(function(x) {
+                var btn = document.getElementById('qn-dept-' + x);
+                if (btn) btn.className = 'qn-dept-btn' + (x === d ? ' sel-' + x : '');
+            });
+        }
+
+        function qnSetDeptFilter(f) {
+            qnCurrentDeptFilter = f;
+            ['ALL','OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK','NONE'].forEach(function(x) {
+                var btn = document.getElementById('qn-fd-' + x);
+                if (!btn) return;
+                btn.className = 'qn-filter-btn' + (x === f ? (x === 'ALL' ? ' active-all' : ' active-' + x) : '');
+            });
+            qnRenderCards();
         }
 
         function qnSetFilter(f) {
@@ -9188,15 +9251,33 @@
                 return Number(b.id) - Number(a.id);
             });
 
-            // Filter
-            var filtered = qnCurrentFilter === 'ALL' ? cards : cards.filter(function(c) {
-                return (c.priority || 'P2') === qnCurrentFilter;
+            // Dept counts on filter chips v15.9.112
+            var deptKeys = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK','NONE'];
+            var deptCounts = { ALL: cards.length, OFFICE: 0, BAR: 0, RUNNER: 0, TECHNIK: 0, SPUTNIK: 0, NONE: 0 };
+            cards.forEach(function(c) {
+                var d = c.dept || 'NONE';
+                if (deptCounts.hasOwnProperty(d)) deptCounts[d]++;
+            });
+            var allBtn = document.getElementById('qn-fd-ALL');
+            if (allBtn) allBtn.textContent = 'ALLE (' + deptCounts.ALL + ')';
+            deptKeys.forEach(function(k) {
+                var b = document.getElementById('qn-fd-' + k);
+                if (!b) return;
+                var lbl = (k === 'NONE' ? '—' : k);
+                b.textContent = lbl + ' (' + deptCounts[k] + ')';
+            });
+
+            // Filter — Priority AND Dept
+            var filtered = cards.filter(function(c) {
+                var prioOk = qnCurrentFilter === 'ALL' || (c.priority || 'P2') === qnCurrentFilter;
+                var deptOk = qnCurrentDeptFilter === 'ALL' || (c.dept || 'NONE') === qnCurrentDeptFilter;
+                return prioOk && deptOk;
             });
 
             // Update count
             var countEl = document.getElementById('qn-filter-count');
             if (countEl) {
-                if (qnCurrentFilter === 'ALL') {
+                if (qnCurrentFilter === 'ALL' && qnCurrentDeptFilter === 'ALL') {
                     var p1c = cards.filter(function(c){ return (c.priority||'P2')==='P1'; }).length;
                     countEl.textContent = p1c > 0 ? p1c + ' kritisch' : cards.length + ' total';
                     countEl.style.color = p1c > 0 ? '#ef4444' : '#444';
@@ -9208,15 +9289,16 @@
 
             if (!filtered.length) {
                 container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">' +
-                    (qnCurrentFilter === 'ALL' ? 'Noch keine Notizen gespeichert.' : 'Keine ' + qnCurrentFilter + ' Notizen.') + '</div>';
+                    'Keine Notizen für aktive Filter.' + '</div>';
                 return;
             }
 
             container.innerHTML = '';
             filtered.forEach(function(c) {
                 var prio = c.priority || 'P2';
+                var dept = c.dept || 'NONE';
                 var div = document.createElement('div');
-                div.className = 'qn-card';
+                div.className = 'qn-card dept-' + dept;
 
                 var left = document.createElement('div');
                 left.className = 'qn-card-left';
@@ -9255,7 +9337,8 @@
             var cards = qnGetCards();
             var now = new Date();
             var ts = now.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
-            cards.push({ id: String(Date.now()), ts: ts, text: ta.value.trim(), priority: qnCurrentPrio });
+            var deptVal = (qnCurrentDept && qnCurrentDept !== 'NONE') ? qnCurrentDept : null;
+            cards.push({ id: String(Date.now()), ts: ts, text: ta.value.trim(), priority: qnCurrentPrio, dept: deptVal });
             qnSaveCards(cards);
             ta.value = '';
             saveQuickNotes();
@@ -13978,7 +14061,7 @@ Spittelauer Lnde 12/1
         // 
         
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.111';
+            const HUB_VERSION = 'v15.9.112';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15421,7 +15504,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.111 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.112 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
