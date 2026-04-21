@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.113</title>
+    <title>Turbo Projects Work Hub v15.9.114</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2463,7 +2463,7 @@
         .qn-card.dept-NONE    { border-left: 3px solid transparent; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { min-height: 240px; max-height: 300px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.113 ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.114 ===== */
         #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
         #dtw-master-header { background: #0f1623; padding: 9px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
         #dtw-master-header .dtw-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
@@ -2866,7 +2866,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.113 ==================== -->
+    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.114 ==================== -->
     <div id="dtw-widget" style="margin-bottom:8px;">
         <div id="dtw-master-header">
             <span class="dtw-title">🎛 DEPARTMENT TOOLS</span>
@@ -5455,6 +5455,8 @@
     
     <!-- COCKPIT moved to top v15.9.87 -->
 
+    <!-- DEPARTMENTS (DEPRECATED v15.9.114 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
+    <div id="old-dept-section-deprecated" style="display:none;" aria-hidden="true" data-deprecated="v15.9.114-dtw">
     <!-- DEPARTMENTS -->
     <div class="dept-grid" id="dept-grid">
         <!-- OFFICE -->
@@ -5635,10 +5637,11 @@
             </div>
         </div>
     </div> <!-- End dept-grid -->
+    </div> <!-- End old-dept-section-deprecated wrapper v15.9.114 -->
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.113</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.114</span>
     </div>
     
     <!-- Metrics Button -->
@@ -14162,7 +14165,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.113';
+            const HUB_VERSION = 'v15.9.114';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15605,7 +15608,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.113 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.114 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19815,7 +19818,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// DEPARTMENT TOOLS WIDGET v15.9.113
+// DEPARTMENT TOOLS WIDGET v15.9.114
 // ═══════════════════════════════════════════════════════
 (function(){
     const DTW_DEPTS = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK'];
@@ -19827,11 +19830,11 @@ Spittelauer Lnde 12/1
         SPUTNIK: { main: '#D4537E', text: '#ED93B1' }
     };
     const DTW_TABS = {
-        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'apps',l:'Applikationen'}],
+        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'},{k:'apps',l:'Applikationen'}],
         BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
         RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
         TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
-        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}]
+        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'sputshift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}]
     };
     const DTW_DEFAULT_TAB = { OFFICE:'tasks', BAR:'shift', RUNNER:'shift', TECHNIK:'cal', SPUTNIK:'res' };
 
@@ -19934,13 +19937,15 @@ Spittelauer Lnde 12/1
         if (!host) return;
         host.innerHTML = '<div class="dtw-loading">Lädt…</div>';
         switch(tab) {
-            case 'tasks':  dtwRenderTasks(dept, host); break;
-            case 'qnotes': dtwRenderQuickNotes(dept, host); break;
-            case 'notes':  dtwRenderNotes(dept, host); break;
-            case 'apps':   dtwRenderApps(host); break;
-            case 'shift':  dtwRenderShift(dept, host); break;
-            case 'cal':    dtwRenderTechnikCal(host); break;
-            case 'res':    dtwRenderSputnikReservations(host); break;
+            case 'tasks':     dtwRenderTasks(dept, host); break;
+            case 'qnotes':    dtwRenderQuickNotes(dept, host); break;
+            case 'notes':     dtwRenderNotes(dept, host); break;
+            case 'apps':      dtwRenderApps(host); break;
+            case 'shift':     dtwRenderShift(dept, host); break;
+            case 'cal':       dtwRenderTechnikCal(host); break;
+            case 'res':       dtwRenderSputnikReservations(host); break;
+            case 'projects':  dtwRenderProjects(host); break;
+            case 'sputshift': dtwRenderSputnikShift(host); break;
             default: host.innerHTML = '<div class="dtw-empty">Unbekannter Tab.</div>';
         }
     }
@@ -20133,32 +20138,56 @@ Spittelauer Lnde 12/1
         host.innerHTML = html;
     }
 
-    // ---- Shiftplan tab (BAR / RUNNER) ----
+    // ---- Shiftplan tab (BAR / RUNNER inline CSV + Tabelle, v15.9.114) ----
     function dtwRenderShift(dept, host) {
-        const modalMap = {
-            BAR:    { id: 'bar-staffing-modal',    label: 'Bar Staffing' },
-            RUNNER: { id: 'runner-staffing-modal', label: 'Runner Staffing' }
-        };
-        const m = modalMap[dept];
-        if (!m) { host.innerHTML = '<div class="dtw-empty">Kein Shiftplan für ' + dept + '.</div>'; return; }
-        host.innerHTML = `<div style="padding:24px 14px;text-align:center;">
-            <div style="font-size:12px;color:#aaa;margin-bottom:14px;">${m.label} im Modal öffnen</div>
-            <button class="dtw-app-btn" style="margin:0 auto;width:auto;display:inline-flex;flex-direction:row;gap:8px;padding:10px 22px;" onclick="openModal('${m.id}')">
-                <span style="font-size:16px;">📋</span>${m.label} öffnen
-            </button>
-        </div>`;
+        if (dept === 'BAR') {
+            host.innerHTML = `
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <label style="background:#4a3d2d;border:1px solid #7c6a4a;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;color:#fff;display:inline-block;">
+                    🍸 Bar CSV laden
+                    <input type="file" accept=".csv" onchange="handleBarCSVUpload(event)" style="display:none;">
+                </label>
+                <button onclick="openModal('bar-staffing-modal')" style="background:transparent;border:1px solid #7c6a4a;color:#EF9F27;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;">📋 Bar Staffing Modal</button>
+            </div>
+            <div class="shiftplan-table-container" id="bar-shiftplan-table" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+            if (typeof renderBarShiftplan === 'function') {
+                try { renderBarShiftplan(); } catch(e) { console.warn('renderBarShiftplan failed:', e); }
+            }
+            return;
+        }
+        if (dept === 'RUNNER') {
+            host.innerHTML = `
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <label style="background:#2d4a3e;border:1px solid #4a7c59;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;color:#fff;display:inline-block;">
+                    🏃 Runner CSV laden
+                    <input type="file" accept=".csv" onchange="handleRunnerCSVUpload(event)" style="display:none;">
+                </label>
+                <button onclick="openModal('runner-staffing-modal')" style="background:transparent;border:1px solid #4a7c59;color:#97C459;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;">📋 Runner Staffing Modal</button>
+            </div>
+            <div class="shiftplan-table-container" id="runner-shiftplan-table" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+            if (typeof renderRunnerShiftplan === 'function') {
+                try { renderRunnerShiftplan(); } catch(e) { console.warn('renderRunnerShiftplan failed:', e); }
+            }
+            return;
+        }
+        host.innerHTML = '<div class="dtw-empty">Kein Shiftplan für ' + dept + '.</div>';
     }
 
-    // ---- Technik Calendar tab (Google Embed) ----
+    // ---- Technik Calendar tab (inline Liste + Refresh + ICS Upload, v15.9.114) ----
     function dtwRenderTechnikCal(host) {
-        const src = 'https://calendar.google.com/calendar/embed?src=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com&mode=AGENDA&bgcolor=%230d1b2a&ctz=Europe%2FVienna&showTitle=0&showPrint=0&showCalendars=0&showTabs=0';
-        host.innerHTML = `<div class="dtw-cal-wrap">
-            <iframe src="${src}" loading="lazy"></iframe>
-            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--surface-2);">
-                <span style="font-size:10px;color:#888;">Technikerkalender (Google)</span>
-                <a href="https://calendar.google.com/calendar/u/0/r?cid=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com" target="_blank" style="margin-left:auto;font-size:10px;color:#AFA9EC;text-decoration:none;">Im neuen Tab öffnen ↗</a>
-            </div>
-        </div>`;
+        host.innerHTML = `
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button onclick="loadTechnikerFromGoogleCalendar()" style="background:#3d2d4a;border:1px solid #7c4a7a;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:11px;color:#fff;">🔄 Refresh</button>
+            <label style="background:#3d2d4a;border:1px solid #7c4a7a;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:11px;color:#fff;display:inline-block;">
+                📥 ICS Upload
+                <input type="file" accept=".ics" onchange="handleTechnikerICSUpload(event)" style="display:none;">
+            </label>
+            <a href="https://calendar.google.com/calendar/u/0/r?cid=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com" target="_blank" style="margin-left:auto;font-size:11px;color:#AFA9EC;text-decoration:none;">Google Calendar ↗</a>
+        </div>
+        <div class="shiftplan-table-container" id="technik-calendar-list" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+        if (typeof renderTechCalendar === 'function') {
+            try { renderTechCalendar(); } catch(e) { console.warn('renderTechCalendar failed:', e); }
+        }
     }
 
     // ---- Sputnik Reservations tab (via PHP Proxy, ICS) ----
@@ -20253,6 +20282,37 @@ Spittelauer Lnde 12/1
         });
         html += `<div style="padding:10px 14px;border-top:1px solid var(--border);text-align:right;"><a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:10px;text-decoration:none;">Alle Reservierungen im Google Calendar ↗</a></div>`;
         host.innerHTML = html;
+    }
+
+    // ---- Projects tab (OFFICE, v15.9.114) ----
+    function dtwRenderProjects(host) {
+        host.innerHTML = `
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="projects-add-btn" onclick="openProjectModal()" style="padding:7px 12px;font-size:12px;cursor:pointer;background:#185FA5;color:#fff;border:none;border-radius:4px;">+ New Project</button>
+                <button class="projects-add-btn" onclick="downloadProjects()" style="padding:7px 12px;font-size:12px;cursor:pointer;background:var(--good,#22c55e);color:#fff;border:none;border-radius:4px;">💾 Save</button>
+                <button class="projects-add-btn" onclick="document.getElementById('dtw-projects-upload').click()" style="padding:7px 12px;font-size:12px;cursor:pointer;background:#6b7280;color:#fff;border:none;border-radius:4px;">📂 Load</button>
+                <input type="file" id="dtw-projects-upload" accept=".json" onchange="loadProjectsFile(event)" style="display:none;">
+            </div>
+        </div>
+        <div class="projects-list" id="projects-list" style="padding:10px 14px;max-height:500px;overflow:auto;display:flex;flex-direction:column;gap:10px;"></div>`;
+        if (typeof renderProjectsFromCache === 'function') {
+            try { renderProjectsFromCache(); } catch(e) { console.warn('renderProjectsFromCache failed:', e); }
+        } else if (typeof renderProjects === 'function') {
+            try { renderProjects(); } catch(e) { console.warn('renderProjects failed:', e); }
+        }
+    }
+
+    // ---- Sputnik Shiftplan tab (GDoc iframe, v15.9.114) ----
+    function dtwRenderSputnikShift(host) {
+        host.innerHTML = `
+        <div style="padding:0;">
+            <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="width:100%;height:520px;border:none;background:#fff;"></iframe>
+            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;background:var(--surface-2,#0f1623);">
+                <span style="font-size:10px;color:#888;">Sputnik Shiftplan (Google Doc)</span>
+                <a href="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub" target="_blank" style="margin-left:auto;font-size:10px;color:#ED93B1;text-decoration:none;">Im neuen Tab öffnen ↗</a>
+            </div>
+        </div>`;
     }
 
     // ---- Init on DOM ready ----
