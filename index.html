@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.114</title>
+    <title>Turbo Projects Work Hub v15.9.115</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2399,7 +2399,7 @@
         .mini-email-date { font-size: 10px; color: var(--text-muted); min-width: 45px; text-align: right; }
         /* Widget blocks */
         .widgets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-        .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; min-height: 300px; max-height: 400px; min-width: 0; overflow: hidden; }
+        .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; height: 380px; min-width: 0; overflow: hidden; }
         .widget-block-hdr { background: #0d1b2a; padding: 9px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
         .widget-block-hdr .wbh-title { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
@@ -2461,25 +2461,50 @@
         .qn-card.dept-TECHNIK { border-left: 3px solid #534AB7; }
         .qn-card.dept-SPUTNIK { border-left: 3px solid #D4537E; }
         .qn-card.dept-NONE    { border-left: 3px solid transparent; }
-        @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { min-height: 240px; max-height: 300px; } }
+        @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.114 ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.115 (Visual Polish — Version A) ===== */
         #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
-        #dtw-master-header { background: #0f1623; padding: 9px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-        #dtw-master-header .dtw-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
-        #dtw-master-header .dtw-active-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #666; margin-left: auto; text-transform: uppercase; }
-        #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-bottom: 1px solid var(--border); }
-        .dtw-dept-btn { padding: 10px 4px; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; border: none; border-right: 1px solid var(--border); background: #0d1b2a; color: #888; cursor: pointer; font-family: inherit; text-transform: uppercase; transition: all 0.15s; }
-        .dtw-dept-btn:last-child { border-right: none; }
-        .dtw-dept-btn:hover { background: #142033; color: #ddd; }
-        .dtw-dept-btn.active[data-dept="OFFICE"]   { background: rgba(24,95,165,0.22);  color: #85B7EB; box-shadow: inset 0 -3px 0 #185FA5; }
-        .dtw-dept-btn.active[data-dept="BAR"]      { background: rgba(186,117,23,0.22); color: #EF9F27; box-shadow: inset 0 -3px 0 #BA7517; }
-        .dtw-dept-btn.active[data-dept="RUNNER"]   { background: rgba(99,153,34,0.22);  color: #97C459; box-shadow: inset 0 -3px 0 #639922; }
-        .dtw-dept-btn.active[data-dept="TECHNIK"]  { background: rgba(83,74,183,0.22);  color: #AFA9EC; box-shadow: inset 0 -3px 0 #534AB7; }
-        .dtw-dept-btn.active[data-dept="SPUTNIK"]  { background: rgba(212,83,126,0.22); color: #ED93B1; box-shadow: inset 0 -3px 0 #D4537E; }
+
+        /* Master Header — gradient bar with accent */
+        #dtw-master-header { position: relative; background: linear-gradient(90deg, #1e3a5f 0%, #0d1b2a 60%, #0a1420 100%); padding: 16px 22px 16px 28px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #3b82f6; }
+        #dtw-master-header::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #3b82f6; }
+        #dtw-master-header .dtw-title { font-size: 19px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
+        #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #888; margin-left: auto; text-transform: uppercase; padding: 5px 12px; border: 1px solid #1e3a5f; background: rgba(59,130,246,0.08); }
+
+        /* Dept buttons — Parallelogram, permanent dept-colors */
+        #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 14px; background: #0a1420; border-bottom: 1px solid var(--border); }
+        .dtw-dept-btn { padding: 13px 6px; font-size: 12px; font-weight: 800; letter-spacing: 2px; border: 1px solid; background: transparent; cursor: pointer; font-family: inherit; text-transform: uppercase; transition: all 0.18s ease; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
+        .dtw-dept-btn[data-dept="OFFICE"]  { color: #85B7EB; border-color: #185FA5; }
+        .dtw-dept-btn[data-dept="BAR"]     { color: #EF9F27; border-color: #BA7517; }
+        .dtw-dept-btn[data-dept="RUNNER"]  { color: #97C459; border-color: #639922; }
+        .dtw-dept-btn[data-dept="TECHNIK"] { color: #AFA9EC; border-color: #534AB7; }
+        .dtw-dept-btn[data-dept="SPUTNIK"] { color: #ED93B1; border-color: #D4537E; }
+        .dtw-dept-btn[data-dept="OFFICE"]:hover  { background: rgba(24,95,165,0.18);  color: #fff; }
+        .dtw-dept-btn[data-dept="BAR"]:hover     { background: rgba(186,117,23,0.18); color: #fff; }
+        .dtw-dept-btn[data-dept="RUNNER"]:hover  { background: rgba(99,153,34,0.18);  color: #fff; }
+        .dtw-dept-btn[data-dept="TECHNIK"]:hover { background: rgba(83,74,183,0.18);  color: #fff; }
+        .dtw-dept-btn[data-dept="SPUTNIK"]:hover { background: rgba(212,83,126,0.18); color: #fff; }
+        .dtw-dept-btn.active[data-dept="OFFICE"]  { background: #185FA5; color: #fff; border-color: #378ADD; }
+        .dtw-dept-btn.active[data-dept="BAR"]     { background: #BA7517; color: #fff; border-color: #EF9F27; }
+        .dtw-dept-btn.active[data-dept="RUNNER"]  { background: #639922; color: #fff; border-color: #97C459; }
+        .dtw-dept-btn.active[data-dept="TECHNIK"] { background: #534AB7; color: #fff; border-color: #AFA9EC; }
+        .dtw-dept-btn.active[data-dept="SPUTNIK"] { background: #D4537E; color: #fff; border-color: #ED93B1; }
+
         #dtw-panel { background: var(--surface); }
+
+        /* OFFICE 2-column layout: Tab area + permanent Apps sidebar */
+        #dtw-office-layout { display: grid; grid-template-columns: 1fr 240px; gap: 0; background: var(--surface); }
+        #dtw-office-main { min-width: 0; border-right: 1px solid var(--border); }
+        #dtw-office-apps-sidebar { background: #0a1420; padding: 12px; }
+        #dtw-office-apps-sidebar .dtw-apps-title { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; color: #3b82f6; padding: 4px 4px 10px; border-bottom: 1px solid #1e3a5f; margin-bottom: 10px; text-transform: uppercase; }
+        #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 10px 4px; background: transparent; border: 1px solid #1e3a5f; color: #85B7EB; cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.15s; border-radius: 2px; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: #1e3a5f; color: #fff; border-color: #378ADD; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
+
         #dtw-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #0a1220; overflow-x: auto; }
-        .dtw-tab { padding: 8px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+        .dtw-tab { padding: 9px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
         .dtw-tab:hover { color: #ccc; }
         .dtw-tab.active { color: #fff; background: rgba(255,255,255,0.03); }
         .dtw-tab.active.c-OFFICE   { border-bottom-color: #185FA5; color: #85B7EB; }
@@ -2488,8 +2513,11 @@
         .dtw-tab.active.c-TECHNIK  { border-bottom-color: #534AB7; color: #AFA9EC; }
         .dtw-tab.active.c-SPUTNIK  { border-bottom-color: #D4537E; color: #ED93B1; }
         .dtw-tab .dtw-tab-count { display:inline-block; margin-left:6px; padding:1px 6px; font-size:9px; font-weight:800; background:rgba(255,255,255,0.08); color:#888; border-radius:8px; min-width:14px; text-align:center; }
-        #dtw-tab-content { min-height: 160px; max-height: 460px; overflow-y: auto; padding: 0; }
+
+        /* Tab content — scrollable, ~6 rows visible */
+        #dtw-tab-content, #dtw-tab-content-office { min-height: 160px; max-height: 280px; overflow-y: auto; padding: 0; }
         .dtw-empty { padding: 28px 14px; font-size: 11px; color: #555; text-align: center; }
+
         /* Tasks list */
         .dtw-task { display: flex; align-items: flex-start; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
         .dtw-task:last-child { border-bottom: none; }
@@ -2499,6 +2527,7 @@
         .dtw-task-due { font-size: 9px; color: #888; padding: 2px 6px; border: 1px solid #333; border-radius: 3px; flex-shrink: 0; white-space: nowrap; }
         .dtw-task-due.overdue { color: #ef4444; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); }
         .dtw-task-due.today { color: #f59e0b; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
+
         /* Quick Notes preview */
         .dtw-qn { padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; font-size: 12px; }
         .dtw-qn:last-child { border-bottom: none; }
@@ -2509,6 +2538,7 @@
         .dtw-qn-body { flex: 1; min-width: 0; }
         .dtw-qn-ts { font-size: 9px; color: #555; margin-bottom: 2px; }
         .dtw-qn-text { color: #ccc; line-height: 1.4; word-break: break-word; }
+
         /* Notes input */
         .dtw-notes-input-wrap { padding: 8px; border-bottom: 1px solid var(--border); background: var(--surface-2); display: flex; gap: 6px; }
         .dtw-notes-input { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; font-family: inherit; outline: none; box-sizing: border-box; }
@@ -2520,27 +2550,40 @@
         .dtw-note-text { flex: 1; word-break: break-word; line-height: 1.4; }
         .dtw-note-del { background: transparent; border: none; color: #444; font-size: 14px; cursor: pointer; padding: 0 2px; line-height: 1; }
         .dtw-note-del:hover { color: #ef4444; }
-        /* Apps grid */
+
+        /* Apps grid (fallback / non-OFFICE) */
         .dtw-apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; padding: 12px; }
         .dtw-app-btn { padding: 14px 10px; background: #0d1b2a; border: 1px solid var(--border); color: #ddd; cursor: pointer; font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 4px; }
         .dtw-app-btn:hover { background: #152238; border-color: #3b82f6; color: #fff; }
         .dtw-app-btn .dtw-app-ico { font-size: 22px; }
+
         /* Calendar iframe wrapper */
         .dtw-cal-wrap { padding: 0; }
         .dtw-cal-wrap iframe { width: 100%; height: 420px; border: none; background: #0d1b2a; display: block; }
+
         /* Sputnik reservations list */
         .dtw-res { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
         .dtw-res:last-child { border-bottom: none; }
         .dtw-res-date { font-size: 10px; color: #ED93B1; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 3px; }
         .dtw-res-title { color: #ddd; line-height: 1.4; }
         .dtw-res-time { font-size: 10px; color: #888; margin-top: 2px; }
+
         /* Loading state */
         .dtw-loading { padding: 20px; font-size: 11px; color: #666; text-align: center; }
+
+        @media (max-width: 860px) {
+            #dtw-office-layout { grid-template-columns: 1fr; }
+            #dtw-office-apps-sidebar { border-top: 1px solid var(--border); }
+            #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(4, 1fr); }
+        }
         @media (max-width: 700px) {
-            #dtw-dept-row { grid-template-columns: repeat(5, 1fr); }
-            .dtw-dept-btn { font-size: 9px; padding: 9px 2px; letter-spacing: 0.5px; }
+            #dtw-master-header { padding: 12px 14px 12px 22px; }
+            #dtw-master-header .dtw-title { font-size: 14px; letter-spacing: 2.5px; }
+            #dtw-dept-row { gap: 4px; padding: 8px; }
+            .dtw-dept-btn { font-size: 10px; padding: 10px 2px; letter-spacing: 1px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
             .dtw-cal-wrap iframe { height: 360px; }
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
+            #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* ===== COCKPIT WIDGET ===== */
@@ -2866,7 +2909,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.114 ==================== -->
+    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.115 ==================== -->
     <div id="dtw-widget" style="margin-bottom:8px;">
         <div id="dtw-master-header">
             <span class="dtw-title">🎛 DEPARTMENT TOOLS</span>
@@ -2880,8 +2923,20 @@
             <button class="dtw-dept-btn" data-dept="SPUTNIK" onclick="dtwToggleDept('SPUTNIK')">SPUTNIK</button>
         </div>
         <div id="dtw-panel" style="display:none;">
-            <div id="dtw-tab-bar"></div>
-            <div id="dtw-tab-content"></div>
+            <div id="dtw-office-layout" style="display:none;">
+                <div id="dtw-office-main">
+                    <div id="dtw-tab-bar-office"></div>
+                    <div id="dtw-tab-content-office"></div>
+                </div>
+                <aside id="dtw-office-apps-sidebar">
+                    <div class="dtw-apps-title">APPLICATIONS</div>
+                    <div class="dtw-apps-grid-sidebar" id="dtw-office-apps-grid"></div>
+                </aside>
+            </div>
+            <div id="dtw-standard-layout">
+                <div id="dtw-tab-bar"></div>
+                <div id="dtw-tab-content"></div>
+            </div>
         </div>
     </div>
 
@@ -5455,8 +5510,8 @@
     
     <!-- COCKPIT moved to top v15.9.87 -->
 
-    <!-- DEPARTMENTS (DEPRECATED v15.9.114 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
-    <div id="old-dept-section-deprecated" style="display:none;" aria-hidden="true" data-deprecated="v15.9.114-dtw">
+    <!-- DEPARTMENTS (DEPRECATED v15.9.115 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
+    <div id="old-dept-section-deprecated" style="display:none;" aria-hidden="true" data-deprecated="v15.9.115-dtw">
     <!-- DEPARTMENTS -->
     <div class="dept-grid" id="dept-grid">
         <!-- OFFICE -->
@@ -5637,11 +5692,11 @@
             </div>
         </div>
     </div> <!-- End dept-grid -->
-    </div> <!-- End old-dept-section-deprecated wrapper v15.9.114 -->
+    </div> <!-- End old-dept-section-deprecated wrapper v15.9.115 -->
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.114</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.115</span>
     </div>
     
     <!-- Metrics Button -->
@@ -14165,7 +14220,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.114';
+            const HUB_VERSION = 'v15.9.115';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15608,7 +15663,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.114 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.115 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19818,7 +19873,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// DEPARTMENT TOOLS WIDGET v15.9.114
+// DEPARTMENT TOOLS WIDGET v15.9.115
 // ═══════════════════════════════════════════════════════
 (function(){
     const DTW_DEPTS = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK'];
@@ -19830,7 +19885,7 @@ Spittelauer Lnde 12/1
         SPUTNIK: { main: '#D4537E', text: '#ED93B1' }
     };
     const DTW_TABS = {
-        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'},{k:'apps',l:'Applikationen'}],
+        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'}],
         BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
         RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
         TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
@@ -19875,30 +19930,68 @@ Spittelauer Lnde 12/1
     // ---- Render top-level ----
     function dtwRenderWidget() {
         const open = dtwGetOpenDept();
-        // Update dept buttons
         document.querySelectorAll('.dtw-dept-btn').forEach(btn => {
             const d = btn.getAttribute('data-dept');
             btn.classList.toggle('active', d === open);
         });
         const panel = document.getElementById('dtw-panel');
+        const officeLayout = document.getElementById('dtw-office-layout');
+        const standardLayout = document.getElementById('dtw-standard-layout');
         const activeLabel = document.getElementById('dtw-active-label');
+
         if (!open) {
             if (panel) panel.style.display = 'none';
-            if (activeLabel) activeLabel.textContent = '';
+            if (officeLayout) officeLayout.style.display = 'none';
+            if (standardLayout) standardLayout.style.display = 'none';
+            if (activeLabel) { activeLabel.textContent = ''; activeLabel.style.color = '#666'; }
             return;
         }
         if (activeLabel) {
-            activeLabel.textContent = open;
+            activeLabel.textContent = '> ' + open;
             activeLabel.style.color = DTW_COLORS[open].text;
+            activeLabel.style.borderColor = DTW_COLORS[open].main;
         }
         if (panel) panel.style.display = 'block';
-        dtwRenderTabBar(open);
-        const tab = dtwGetLastTab(open);
-        dtwRenderTabContent(open, tab);
+
+        if (open === 'OFFICE') {
+            if (officeLayout) officeLayout.style.display = 'grid';
+            if (standardLayout) standardLayout.style.display = 'none';
+            dtwRenderOfficeAppsSidebar();
+            dtwRenderTabBar(open);
+            const tab = dtwGetLastTab(open);
+            dtwRenderTabContent(open, tab);
+        } else {
+            if (officeLayout) officeLayout.style.display = 'none';
+            if (standardLayout) standardLayout.style.display = 'block';
+            dtwRenderTabBar(open);
+            const tab = dtwGetLastTab(open);
+            dtwRenderTabContent(open, tab);
+        }
+    }
+
+    function dtwRenderOfficeAppsSidebar() {
+        const grid = document.getElementById('dtw-office-apps-grid');
+        if (!grid) return;
+        const apps = [
+            { ico: '📧', label: 'Email',    action: "openModal('email-modal')" },
+            { ico: '🧾', label: 'Rechnung', action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
+            { ico: '🗓️', label: 'Promo',    action: "openPromoManager()" },
+            { ico: '🤖', label: 'Claude',   action: "openModal('claude-notepad-modal')" },
+            { ico: '📊', label: 'DB',       action: "openModal('db-viewer-modal')" },
+            { ico: '🎫', label: 'PreSale',  action: "openModal('presale-modal')" },
+            { ico: '🎬', label: 'Projector',action: "openModal('projector-modal')" },
+            { ico: '🔗', label: 'Linktree', action: "window.open('https://linktr.ee/admin','_blank')" }
+        ];
+        let html = '';
+        apps.forEach(a => {
+            html += `<button class="dtw-app-btn-side" onclick="${a.action}"><span class="dtw-app-ico">${a.ico}</span>${a.label}</button>`;
+        });
+        grid.innerHTML = html;
     }
 
     function dtwRenderTabBar(dept) {
-        const bar = document.getElementById('dtw-tab-bar');
+        const barId = (dept === 'OFFICE') ? 'dtw-tab-bar-office' : 'dtw-tab-bar';
+        const bar = document.getElementById(barId);
         if (!bar) return;
         const activeTab = dtwGetLastTab(dept);
         const tabs = DTW_TABS[dept] || [];
@@ -19933,7 +20026,8 @@ Spittelauer Lnde 12/1
     }
 
     function dtwRenderTabContent(dept, tab) {
-        const host = document.getElementById('dtw-tab-content');
+        const hostId = (dept === 'OFFICE') ? 'dtw-tab-content-office' : 'dtw-tab-content';
+        const host = document.getElementById(hostId);
         if (!host) return;
         host.innerHTML = '<div class="dtw-loading">Lädt…</div>';
         switch(tab) {
@@ -20033,7 +20127,7 @@ Spittelauer Lnde 12/1
                 const t = cockpitData.byDept[deptLower].find(x => x.id === taskId);
                 if (t) t.status = done ? 'completed' : 'notStarted';
             }
-            dtwRenderTasks(dept, document.getElementById('dtw-tab-content'));
+            dtwRenderTasks(dept, document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content'));
             dtwRenderTabBar(dept);
         } catch(e) {
             console.warn('Task toggle failed:', e);
@@ -20107,14 +20201,14 @@ Spittelauer Lnde 12/1
         notes.push({ id: String(Date.now()), ts: ts, text: inp.value.trim() });
         dtwSaveNotes(dept, notes);
         inp.value = '';
-        dtwRenderNotes(dept, document.getElementById('dtw-tab-content'));
+        dtwRenderNotes(dept, document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content'));
         dtwRenderTabBar(dept);
     };
 
     window.dtwDelNote = function(dept, id) {
         const notes = dtwGetNotes(dept).filter(n => n.id !== id);
         dtwSaveNotes(dept, notes);
-        dtwRenderNotes(dept, document.getElementById('dtw-tab-content'));
+        dtwRenderNotes(dept, document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content'));
         dtwRenderTabBar(dept);
     };
 
@@ -20138,7 +20232,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = html;
     }
 
-    // ---- Shiftplan tab (BAR / RUNNER inline CSV + Tabelle, v15.9.114) ----
+    // ---- Shiftplan tab (BAR / RUNNER inline CSV + Tabelle, v15.9.115) ----
     function dtwRenderShift(dept, host) {
         if (dept === 'BAR') {
             host.innerHTML = `
@@ -20149,7 +20243,7 @@ Spittelauer Lnde 12/1
                 </label>
                 <button onclick="openModal('bar-staffing-modal')" style="background:transparent;border:1px solid #7c6a4a;color:#EF9F27;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;">📋 Bar Staffing Modal</button>
             </div>
-            <div class="shiftplan-table-container" id="bar-shiftplan-table" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+            <div class="shiftplan-table-container" id="bar-shiftplan-table" style="padding:10px 14px;max-height:280px;overflow:auto;"></div>`;
             if (typeof renderBarShiftplan === 'function') {
                 try { renderBarShiftplan(); } catch(e) { console.warn('renderBarShiftplan failed:', e); }
             }
@@ -20164,7 +20258,7 @@ Spittelauer Lnde 12/1
                 </label>
                 <button onclick="openModal('runner-staffing-modal')" style="background:transparent;border:1px solid #4a7c59;color:#97C459;padding:7px 12px;border-radius:4px;cursor:pointer;font-size:12px;">📋 Runner Staffing Modal</button>
             </div>
-            <div class="shiftplan-table-container" id="runner-shiftplan-table" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+            <div class="shiftplan-table-container" id="runner-shiftplan-table" style="padding:10px 14px;max-height:280px;overflow:auto;"></div>`;
             if (typeof renderRunnerShiftplan === 'function') {
                 try { renderRunnerShiftplan(); } catch(e) { console.warn('renderRunnerShiftplan failed:', e); }
             }
@@ -20173,7 +20267,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = '<div class="dtw-empty">Kein Shiftplan für ' + dept + '.</div>';
     }
 
-    // ---- Technik Calendar tab (inline Liste + Refresh + ICS Upload, v15.9.114) ----
+    // ---- Technik Calendar tab (inline Liste + Refresh + ICS Upload, v15.9.115) ----
     function dtwRenderTechnikCal(host) {
         host.innerHTML = `
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -20184,7 +20278,7 @@ Spittelauer Lnde 12/1
             </label>
             <a href="https://calendar.google.com/calendar/u/0/r?cid=ebak75bbsf3ac62j0jpd5del7k%40group.calendar.google.com" target="_blank" style="margin-left:auto;font-size:11px;color:#AFA9EC;text-decoration:none;">Google Calendar ↗</a>
         </div>
-        <div class="shiftplan-table-container" id="technik-calendar-list" style="padding:10px 14px;max-height:500px;overflow:auto;"></div>`;
+        <div class="shiftplan-table-container" id="technik-calendar-list" style="padding:10px 14px;max-height:280px;overflow:auto;"></div>`;
         if (typeof renderTechCalendar === 'function') {
             try { renderTechCalendar(); } catch(e) { console.warn('renderTechCalendar failed:', e); }
         }
@@ -20284,7 +20378,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = html;
     }
 
-    // ---- Projects tab (OFFICE, v15.9.114) ----
+    // ---- Projects tab (OFFICE, v15.9.115) ----
     function dtwRenderProjects(host) {
         host.innerHTML = `
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
@@ -20295,7 +20389,7 @@ Spittelauer Lnde 12/1
                 <input type="file" id="dtw-projects-upload" accept=".json" onchange="loadProjectsFile(event)" style="display:none;">
             </div>
         </div>
-        <div class="projects-list" id="projects-list" style="padding:10px 14px;max-height:500px;overflow:auto;display:flex;flex-direction:column;gap:10px;"></div>`;
+        <div class="projects-list" id="projects-list" style="padding:10px 14px;max-height:280px;overflow:auto;display:flex;flex-direction:column;gap:10px;"></div>`;
         if (typeof renderProjectsFromCache === 'function') {
             try { renderProjectsFromCache(); } catch(e) { console.warn('renderProjectsFromCache failed:', e); }
         } else if (typeof renderProjects === 'function') {
@@ -20303,7 +20397,7 @@ Spittelauer Lnde 12/1
         }
     }
 
-    // ---- Sputnik Shiftplan tab (GDoc iframe, v15.9.114) ----
+    // ---- Sputnik Shiftplan tab (GDoc iframe, v15.9.115) ----
     function dtwRenderSputnikShift(host) {
         host.innerHTML = `
         <div style="padding:0;">
