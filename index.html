@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.115</title>
+    <title>Turbo Projects Work Hub v15.9.116</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2463,7 +2463,7 @@
         .qn-card.dept-NONE    { border-left: 3px solid transparent; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.115 (Visual Polish — Version A) ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.116 (Visual Polish — Version A) ===== */
         #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
 
         /* Master Header — gradient bar with accent */
@@ -2909,7 +2909,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.115 ==================== -->
+    <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.116 ==================== -->
     <div id="dtw-widget" style="margin-bottom:8px;">
         <div id="dtw-master-header">
             <span class="dtw-title">🎛 DEPARTMENT TOOLS</span>
@@ -5510,8 +5510,8 @@
     
     <!-- COCKPIT moved to top v15.9.87 -->
 
-    <!-- DEPARTMENTS (DEPRECATED v15.9.115 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
-    <div id="old-dept-section-deprecated" style="display:none;" aria-hidden="true" data-deprecated="v15.9.115-dtw">
+    <!-- DEPARTMENTS (DEPRECATED v15.9.116 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
+    <div id="old-dept-section-deprecated" style="display:none;" aria-hidden="true" data-deprecated="v15.9.116-dtw">
     <!-- DEPARTMENTS -->
     <div class="dept-grid" id="dept-grid">
         <!-- OFFICE -->
@@ -5692,11 +5692,11 @@
             </div>
         </div>
     </div> <!-- End dept-grid -->
-    </div> <!-- End old-dept-section-deprecated wrapper v15.9.115 -->
+    </div> <!-- End old-dept-section-deprecated wrapper v15.9.116 -->
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.115</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.116</span>
     </div>
     
     <!-- Metrics Button -->
@@ -14220,7 +14220,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.115';
+            const HUB_VERSION = 'v15.9.116';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15663,7 +15663,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.115 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.116 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19873,7 +19873,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// DEPARTMENT TOOLS WIDGET v15.9.115
+// DEPARTMENT TOOLS WIDGET v15.9.116
 // ═══════════════════════════════════════════════════════
 (function(){
     const DTW_DEPTS = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK'];
@@ -19885,11 +19885,18 @@ Spittelauer Lnde 12/1
         SPUTNIK: { main: '#D4537E', text: '#ED93B1' }
     };
     const DTW_TABS = {
-        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'}],
-        BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
-        RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
-        TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}],
-        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'sputshift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'}]
+        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'},{k:'uploads',l:'Uploads'}],
+        BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'sputshift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}]
+    };
+    const DTW_DRIVE_FOLDERS = {
+        OFFICE:  { name: '01_WORK_HUB',   id: '1Y4Dx3tPfzdXzbr4IZ123a-42ftvI3Ih7' },
+        BAR:     { name: '08_OPERATIONS', id: '1rLRk6ICOaKtFekP_221hxzb4xNJZUkqu' },
+        RUNNER:  { name: '08_OPERATIONS', id: '1rLRk6ICOaKtFekP_221hxzb4xNJZUkqu' },
+        TECHNIK: { name: '08_OPERATIONS', id: '1rLRk6ICOaKtFekP_221hxzb4xNJZUkqu' },
+        SPUTNIK: { name: '08_OPERATIONS', id: '1rLRk6ICOaKtFekP_221hxzb4xNJZUkqu' }
     };
     const DTW_DEFAULT_TAB = { OFFICE:'tasks', BAR:'shift', RUNNER:'shift', TECHNIK:'cal', SPUTNIK:'res' };
 
@@ -20022,6 +20029,8 @@ Spittelauer Lnde 12/1
         } catch(e) {}
         // Notes count
         try { counts.notes = dtwGetNotes(dept).length; } catch(e) {}
+        // Uploads count
+        try { counts.uploads = dtwGetUploads(dept).length; } catch(e) {}
         return counts;
     }
 
@@ -20040,6 +20049,7 @@ Spittelauer Lnde 12/1
             case 'res':       dtwRenderSputnikReservations(host); break;
             case 'projects':  dtwRenderProjects(host); break;
             case 'sputshift': dtwRenderSputnikShift(host); break;
+            case 'uploads':   dtwRenderUploads(dept, host); break;
             default: host.innerHTML = '<div class="dtw-empty">Unbekannter Tab.</div>';
         }
     }
@@ -20232,7 +20242,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = html;
     }
 
-    // ---- Shiftplan tab (BAR / RUNNER inline CSV + Tabelle, v15.9.115) ----
+    // ---- Shiftplan tab (BAR / RUNNER inline CSV + Tabelle, v15.9.116) ----
     function dtwRenderShift(dept, host) {
         if (dept === 'BAR') {
             host.innerHTML = `
@@ -20267,7 +20277,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = '<div class="dtw-empty">Kein Shiftplan für ' + dept + '.</div>';
     }
 
-    // ---- Technik Calendar tab (inline Liste + Refresh + ICS Upload, v15.9.115) ----
+    // ---- Technik Calendar tab (inline Liste + Refresh + ICS Upload, v15.9.116) ----
     function dtwRenderTechnikCal(host) {
         host.innerHTML = `
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -20378,7 +20388,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = html;
     }
 
-    // ---- Projects tab (OFFICE, v15.9.115) ----
+    // ---- Projects tab (OFFICE, v15.9.116) ----
     function dtwRenderProjects(host) {
         host.innerHTML = `
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
@@ -20397,7 +20407,7 @@ Spittelauer Lnde 12/1
         }
     }
 
-    // ---- Sputnik Shiftplan tab (GDoc iframe, v15.9.115) ----
+    // ---- Sputnik Shiftplan tab (GDoc iframe, v15.9.116) ----
     function dtwRenderSputnikShift(host) {
         host.innerHTML = `
         <div style="padding:0;">
@@ -20408,6 +20418,148 @@ Spittelauer Lnde 12/1
             </div>
         </div>`;
     }
+
+    // ---- Uploads storage (v15.9.116) ----
+    function dtwGetUploads(dept) {
+        try { return JSON.parse(localStorage.getItem('dept_uploads_' + dept) || '[]'); } catch(e) { return []; }
+    }
+    function dtwSaveUploads(dept, arr) {
+        try {
+            localStorage.setItem('dept_uploads_' + dept, JSON.stringify(arr));
+            return true;
+        } catch(e) {
+            if (typeof showToast === 'function') showToast('⚠️ Upload zu groß für localStorage');
+            return false;
+        }
+    }
+    function dtwFmtBytes(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+        return (b/1048576).toFixed(2) + ' MB';
+    }
+
+    // ---- Uploads tab (per-dept localStorage Base64, v15.9.116) ----
+    function dtwRenderUploads(dept, host) {
+        const uploads = dtwGetUploads(dept);
+        const drive = DTW_DRIVE_FOLDERS[dept];
+        const totalBytes = uploads.reduce((s,u) => s + (u.size || 0), 0);
+        const color = DTW_COLORS[dept];
+
+        let html = `
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface-2);display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <button class="dtw-up-pick-btn" onclick="document.getElementById('dtw-up-input-${dept}').click()" style="background:${color.main};color:#fff;border:1px solid ${color.text};padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.5px;border-radius:3px;">+ Datei wählen</button>
+            <input type="file" id="dtw-up-input-${dept}" multiple style="display:none;" onchange="dtwAddUploads('${dept}', event)">
+            <span style="font-size:10px;color:#666;">${uploads.length} File${uploads.length !== 1 ? 's' : ''} · ${dtwFmtBytes(totalBytes)}</span>`;
+
+        if (drive) {
+            html += `<a href="https://drive.google.com/drive/folders/${drive.id}" target="_blank" style="margin-left:auto;background:transparent;color:${color.text};border:1px solid ${color.main};padding:7px 12px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:0.5px;border-radius:3px;">📁 ${drive.name} ↗</a>`;
+        }
+
+        html += `</div>
+        <div id="dtw-up-drop-${dept}" ondragover="event.preventDefault();this.style.background='rgba(59,130,246,0.08)';" ondragleave="this.style.background='transparent';" ondrop="dtwHandleDrop(event,'${dept}')" style="padding:14px;border:2px dashed ${color.main};margin:10px 14px;text-align:center;font-size:11px;color:#888;cursor:default;transition:background 0.15s;">
+            Drag &amp; Drop Files hier · oder Button oben
+        </div>`;
+
+        if (!uploads.length) {
+            html += '<div class="dtw-empty">Keine Uploads für ' + dept + '.</div>';
+        } else {
+            uploads.slice().reverse().forEach(u => {
+                const nameEsc = (u.name || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                html += `<div style="display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;">
+                    <span style="flex:1;color:#ddd;word-break:break-all;line-height:1.3;">
+                        <span style="font-weight:600;">${nameEsc}</span>
+                        <span style="font-size:10px;color:#666;display:block;margin-top:2px;">${u.ts || ''} · ${dtwFmtBytes(u.size || 0)}</span>
+                    </span>
+                    <button onclick="dtwDownloadUpload('${dept}','${u.id}')" title="Download" style="background:transparent;border:1px solid #333;color:${color.text};padding:4px 8px;font-size:11px;cursor:pointer;border-radius:3px;">⬇</button>
+                    <button onclick="dtwDelUpload('${dept}','${u.id}')" title="Delete" style="background:transparent;border:1px solid #333;color:#666;padding:4px 8px;font-size:13px;cursor:pointer;border-radius:3px;">×</button>
+                </div>`;
+            });
+        }
+        host.innerHTML = html;
+    }
+
+    window.dtwAddUploads = function(dept, evt) {
+        const files = evt.target.files;
+        if (!files || !files.length) return;
+        dtwProcessFiles(dept, files);
+        evt.target.value = '';
+    };
+
+    window.dtwHandleDrop = function(evt, dept) {
+        evt.preventDefault();
+        const drop = document.getElementById('dtw-up-drop-' + dept);
+        if (drop) drop.style.background = 'transparent';
+        const files = evt.dataTransfer && evt.dataTransfer.files;
+        if (!files || !files.length) return;
+        dtwProcessFiles(dept, files);
+    };
+
+    function dtwProcessFiles(dept, files) {
+        const uploads = dtwGetUploads(dept);
+        const MAX_SIZE = 5 * 1024 * 1024;
+        let processed = 0;
+        const total = files.length;
+        Array.from(files).forEach(file => {
+            if (file.size > MAX_SIZE) {
+                if (typeof showToast === 'function') showToast('⚠️ ' + file.name + ' > 5MB');
+                else alert(file.name + ' ist zu groß (max 5MB)');
+                processed++;
+                if (processed === total) dtwFinalizeUploads(dept);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const now = new Date();
+                const ts = now.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'});
+                uploads.push({
+                    id: String(Date.now()) + '_' + Math.random().toString(36).slice(2,7),
+                    name: file.name,
+                    size: file.size,
+                    type: file.type || 'application/octet-stream',
+                    ts: ts,
+                    b64: e.target.result
+                });
+                processed++;
+                if (processed === total) {
+                    dtwSaveUploads(dept, uploads);
+                    dtwFinalizeUploads(dept);
+                }
+            };
+            reader.onerror = function() {
+                processed++;
+                if (processed === total) dtwFinalizeUploads(dept);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function dtwFinalizeUploads(dept) {
+        const hostId = (dept === 'OFFICE') ? 'dtw-tab-content-office' : 'dtw-tab-content';
+        const host = document.getElementById(hostId);
+        if (host && dtwGetOpenDept() === dept && dtwGetLastTab(dept) === 'uploads') {
+            dtwRenderUploads(dept, host);
+        }
+        dtwRenderTabBar(dept);
+    }
+
+    window.dtwDownloadUpload = function(dept, id) {
+        const uploads = dtwGetUploads(dept);
+        const u = uploads.find(x => x.id === id);
+        if (!u || !u.b64) return;
+        const a = document.createElement('a');
+        a.href = u.b64;
+        a.download = u.name || 'download';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
+    window.dtwDelUpload = function(dept, id) {
+        if (!confirm('Upload löschen?')) return;
+        const uploads = dtwGetUploads(dept).filter(x => x.id !== id);
+        dtwSaveUploads(dept, uploads);
+        dtwFinalizeUploads(dept);
+    };
 
     // ---- Init on DOM ready ----
     document.addEventListener('DOMContentLoaded', function() {
