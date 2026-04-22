@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.118</title>
+    <title>Turbo Projects Work Hub v15.9.117</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2585,107 +2585,6 @@
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
             #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(2, 1fr); }
         }
-
-
-        /* ===== TASKS GRID v15.9.118 — Mixed Tasks/Notes Card Grid ===== */
-        .dtw-tg-toolbar { padding: 12px 18px; background: #0a0e14; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .dtw-tg-pill { padding: 6px 13px; font-size: 11px; font-weight: 700; border-radius: 100px; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #888; cursor: pointer; transition: all 0.15s; font-family: inherit; }
-        .dtw-tg-pill:hover { background: rgba(255,255,255,0.04); color: #ccc; }
-        .dtw-tg-pill.active.OFFICE  { background: rgba(24,95,165,0.2);  color: #85B7EB; border-color: rgba(24,95,165,0.5); }
-        .dtw-tg-pill.active.BAR     { background: rgba(186,117,23,0.2); color: #EF9F27; border-color: rgba(186,117,23,0.5); }
-        .dtw-tg-pill.active.RUNNER  { background: rgba(99,153,34,0.2);  color: #97C459; border-color: rgba(99,153,34,0.5); }
-        .dtw-tg-pill.active.TECHNIK { background: rgba(83,74,183,0.2);  color: #AFA9EC; border-color: rgba(83,74,183,0.5); }
-        .dtw-tg-pill.active.SPUTNIK { background: rgba(212,83,126,0.2); color: #ED93B1; border-color: rgba(212,83,126,0.5); }
-        .dtw-tg-pill.dot-task::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #4ade80; margin-right: 6px; vertical-align: 1px; }
-        .dtw-tg-pill.dot-note::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; margin-right: 6px; vertical-align: 1px; }
-        .dtw-tg-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.1); margin: 0 4px; }
-        .dtw-tg-spacer { flex: 1; }
-        .dtw-tg-add { padding: 7px 16px; font-size: 11px; font-weight: 700; color: #fff; border: none; border-radius: 100px; cursor: pointer; letter-spacing: 0.4px; font-family: inherit; }
-        .dtw-tg-add.OFFICE  { background: linear-gradient(135deg, #185FA5, #4F8EF7); }
-        .dtw-tg-add.BAR     { background: linear-gradient(135deg, #BA7517, #EF9F27); }
-        .dtw-tg-add.RUNNER  { background: linear-gradient(135deg, #639922, #97C459); }
-        .dtw-tg-add.TECHNIK { background: linear-gradient(135deg, #534AB7, #AFA9EC); }
-        .dtw-tg-add.SPUTNIK { background: linear-gradient(135deg, #D4537E, #ec4899); }
-
-        .dtw-tg-bulk { padding: 10px 18px; border-bottom: 1px solid; display: none; justify-content: space-between; align-items: center; }
-        .dtw-tg-bulk.visible { display: flex; }
-        .dtw-tg-bulk.OFFICE  { background: linear-gradient(90deg, rgba(79,142,247,0.18), rgba(79,142,247,0.05)); border-bottom-color: rgba(79,142,247,0.3); }
-        .dtw-tg-bulk.BAR     { background: linear-gradient(90deg, rgba(239,159,39,0.18), rgba(239,159,39,0.05)); border-bottom-color: rgba(239,159,39,0.3); }
-        .dtw-tg-bulk.RUNNER  { background: linear-gradient(90deg, rgba(151,196,89,0.18), rgba(151,196,89,0.05)); border-bottom-color: rgba(151,196,89,0.3); }
-        .dtw-tg-bulk.TECHNIK { background: linear-gradient(90deg, rgba(175,169,236,0.18), rgba(175,169,236,0.05)); border-bottom-color: rgba(175,169,236,0.3); }
-        .dtw-tg-bulk.SPUTNIK { background: linear-gradient(90deg, rgba(236,72,153,0.18), rgba(236,72,153,0.05)); border-bottom-color: rgba(236,72,153,0.3); }
-        .dtw-tg-bulk-info { font-size: 12px; color: #fff; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .dtw-tg-bulk-info .selcnt { color: #fff; padding: 3px 9px; border-radius: 100px; font-size: 11px; font-weight: 800; }
-        .dtw-tg-bulk.OFFICE  .selcnt { background: #4F8EF7; }
-        .dtw-tg-bulk.BAR     .selcnt { background: #EF9F27; }
-        .dtw-tg-bulk.RUNNER  .selcnt { background: #97C459; }
-        .dtw-tg-bulk.TECHNIK .selcnt { background: #AFA9EC; }
-        .dtw-tg-bulk.SPUTNIK .selcnt { background: #ec4899; }
-        .dtw-tg-bulk-actions { display: flex; gap: 6px; }
-        .dtw-tg-bulk-btn { padding: 6px 13px; font-size: 11px; font-weight: 700; border-radius: 100px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; cursor: pointer; font-family: inherit; transition: all 0.15s; }
-        .dtw-tg-bulk-btn:hover { background: rgba(255,255,255,0.15); }
-        .dtw-tg-bulk-btn.primary { border-color: transparent; }
-        .dtw-tg-bulk.OFFICE  .dtw-tg-bulk-btn.primary { background: #4F8EF7; }
-        .dtw-tg-bulk.BAR     .dtw-tg-bulk-btn.primary { background: #EF9F27; color: #1a1300; }
-        .dtw-tg-bulk.RUNNER  .dtw-tg-bulk-btn.primary { background: #97C459; color: #142500; }
-        .dtw-tg-bulk.TECHNIK .dtw-tg-bulk-btn.primary { background: #AFA9EC; color: #150a40; }
-        .dtw-tg-bulk.SPUTNIK .dtw-tg-bulk-btn.primary { background: #ec4899; }
-        .dtw-tg-bulk-btn.danger:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); color: #ef4444; }
-
-        .dtw-tg-grid { padding: 18px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); max-height: 580px; overflow-y: auto; }
-        .dtw-tg-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; cursor: pointer; transition: all 0.18s; position: relative; min-height: 130px; display: flex; flex-direction: column; gap: 12px; }
-        .dtw-tg-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-        .dtw-tg-card.completed { opacity: 0.55; }
-        .dtw-tg-card.completed .dtw-tg-text { text-decoration: line-through; color: #777; }
-        .dtw-tg-card::before { content: ''; position: absolute; top: 14px; left: -1px; width: 4px; height: 28px; border-radius: 0 4px 4px 0; }
-        .dtw-tg-card.t-task::before { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.5); }
-        .dtw-tg-card.t-note::before { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.5); }
-        .dtw-tg-card.selected.OFFICE  { background: rgba(79,142,247,0.1); border-color: rgba(79,142,247,0.5); box-shadow: 0 4px 14px rgba(79,142,247,0.15); }
-        .dtw-tg-card.selected.BAR     { background: rgba(239,159,39,0.1); border-color: rgba(239,159,39,0.5); box-shadow: 0 4px 14px rgba(239,159,39,0.15); }
-        .dtw-tg-card.selected.RUNNER  { background: rgba(151,196,89,0.1); border-color: rgba(151,196,89,0.5); box-shadow: 0 4px 14px rgba(151,196,89,0.15); }
-        .dtw-tg-card.selected.TECHNIK { background: rgba(175,169,236,0.1); border-color: rgba(175,169,236,0.5); box-shadow: 0 4px 14px rgba(175,169,236,0.15); }
-        .dtw-tg-card.selected.SPUTNIK { background: rgba(236,72,153,0.1); border-color: rgba(236,72,153,0.5); box-shadow: 0 4px 14px rgba(236,72,153,0.15); }
-
-        .dtw-tg-top { display: flex; justify-content: space-between; align-items: center; }
-        .dtw-tg-meta { display: flex; align-items: center; gap: 10px; }
-        .dtw-tg-tag { padding: 3px 9px; border-radius: 100px; font-size: 9px; font-weight: 800; letter-spacing: 0.6px; }
-        .dtw-tg-tag.task { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-        .dtw-tg-tag.note { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
-        .dtw-tg-time { color: #555; font-size: 10px; }
-
-        .dtw-tg-check { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.02); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-        .dtw-tg-check.checked.OFFICE  { background: #4F8EF7; border-color: #4F8EF7; }
-        .dtw-tg-check.checked.BAR     { background: #EF9F27; border-color: #EF9F27; }
-        .dtw-tg-check.checked.RUNNER  { background: #97C459; border-color: #97C459; }
-        .dtw-tg-check.checked.TECHNIK { background: #AFA9EC; border-color: #AFA9EC; }
-        .dtw-tg-check.checked.SPUTNIK { background: #ec4899; border-color: #ec4899; }
-        .dtw-tg-check.checked::after { content: '✓'; color: #fff; font-size: 13px; font-weight: 800; }
-
-        .dtw-tg-text { font-size: 14px; color: #e8e8e8; line-height: 1.5; word-break: break-word; white-space: pre-wrap; flex: 1; }
-
-        .dtw-tg-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.04); }
-        .dtw-tg-badge { padding: 3px 10px; border-radius: 4px; font-size: 9px; font-weight: 800; letter-spacing: 0.6px; }
-        .dtw-tg-badge.p1 { background: rgba(239,68,68,0.2); color: #ef4444; }
-        .dtw-tg-badge.p2 { background: rgba(245,158,11,0.18); color: #f59e0b; }
-        .dtw-tg-badge.p3 { background: rgba(100,116,139,0.2); color: #94a3b8; }
-        .dtw-tg-badge.due { background: rgba(239,68,68,0.2); color: #ef4444; }
-        .dtw-tg-badge.due-soon { background: rgba(245,158,11,0.18); color: #f59e0b; }
-        .dtw-tg-badge.done { background: rgba(34,197,94,0.18); color: #4ade80; }
-        .dtw-tg-del { width: 24px; height: 24px; border-radius: 5px; background: transparent; border: none; color: #555; cursor: pointer; font-size: 14px; opacity: 0; transition: all 0.15s; }
-        .dtw-tg-card:hover .dtw-tg-del { opacity: 1; }
-        .dtw-tg-del:hover { background: rgba(239,68,68,0.15); color: #ef4444; }
-
-        /* Sputnik Iframe + Toggle */
-        .dtw-sp-wrap { padding: 14px 18px; }
-        .dtw-sp-toggle { display: inline-flex; gap: 0; background: rgba(255,255,255,0.04); border-radius: 100px; padding: 3px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px; }
-        .dtw-sp-toggle button { padding: 6px 16px; font-size: 11px; font-weight: 700; border-radius: 100px; background: transparent; border: none; color: #777; cursor: pointer; text-transform: uppercase; letter-spacing: 0.4px; font-family: inherit; }
-        .dtw-sp-toggle button.active { background: rgba(236,72,153,0.25); color: #ec4899; }
-        .dtw-sp-iframe-wrap { width: 100%; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .dtw-sp-iframe-wrap iframe { width: 100%; height: 540px; border: 0; display: block; }
-        .dtw-sp-actions { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .dtw-sp-link { padding: 7px 14px; font-size: 11px; font-weight: 700; background: rgba(236,72,153,0.15); border: 1px solid rgba(236,72,153,0.4); border-radius: 100px; color: #ec4899; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: inherit; }
-        .dtw-sp-link:hover { background: rgba(236,72,153,0.25); }
-        /* ===== END TASKS GRID v118 ===== */
 
         /* ===== COCKPIT WIDGET ===== */
         #cockpit-widget {
@@ -5793,7 +5692,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.118</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.117</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6230,7 +6129,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.118</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.117</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14317,7 +14216,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.118';
+            const HUB_VERSION = 'v15.9.117';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15760,7 +15659,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.118 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.117 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19982,11 +19881,11 @@ Spittelauer Lnde 12/1
         SPUTNIK: { main: '#D4537E', text: '#ED93B1' }
     };
     const DTW_TABS = {
-        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'},{k:'uploads',l:'Uploads'}],
-        BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
-        RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
-        TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
-        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'sputshift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}]
+        OFFICE:  [{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'projects',l:'Projects'},{k:'uploads',l:'Uploads'}],
+        BAR:     [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        RUNNER:  [{k:'shift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        TECHNIK: [{k:'cal',l:'Kalender'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}],
+        SPUTNIK: [{k:'res',l:'Reservierungen'},{k:'sputshift',l:'Shiftplan'},{k:'tasks',l:'Tasks'},{k:'qnotes',l:'Quick Notes'},{k:'notes',l:'Notes'},{k:'uploads',l:'Uploads'}]
     };
     const DTW_DRIVE_FOLDERS = {
         OFFICE:  { name: '01_WORK_HUB',   id: '1Y4Dx3tPfzdXzbr4IZ123a-42ftvI3Ih7' },
@@ -20149,434 +20048,95 @@ Spittelauer Lnde 12/1
         }
     }
 
-    // ---- Tasks tab v15.9.118 — Mixed Grid: Tasks + Quick Notes ----
-    // State per dept
-    const dtwTGState = {
-        OFFICE:  { selected: new Set(), filterType: 'all', filterPrio: 'all', showDone: false },
-        BAR:     { selected: new Set(), filterType: 'all', filterPrio: 'all', showDone: false },
-        RUNNER:  { selected: new Set(), filterType: 'all', filterPrio: 'all', showDone: false },
-        TECHNIK: { selected: new Set(), filterType: 'all', filterPrio: 'all', showDone: false },
-        SPUTNIK: { selected: new Set(), filterType: 'all', filterPrio: 'all', showDone: false }
-    };
-
-    // Get done-flags for notes (separate localStorage)
-    function dtwTGGetNoteDone() { try { return JSON.parse(localStorage.getItem('qn_done_v1') || '{}'); } catch(e) { return {}; } }
-    function dtwTGSaveNoteDone(d) { localStorage.setItem('qn_done_v1', JSON.stringify(d)); }
-
-    // Build mixed item array for a dept
-    function dtwTGGetItems(dept) {
-        const items = [];
-        const deptLower = dept.toLowerCase();
-        // Tasks from cockpitData
-        if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept && cockpitData.byDept[deptLower]) {
-            cockpitData.byDept[deptLower].forEach(t => {
-                items.push({
-                    type: 'task',
-                    id: t.id,
-                    text: t.title || '',
-                    done: t.status === 'completed',
-                    dueDateTime: t.dueDateTime || null,
-                    raw: t
-                });
-            });
-        }
-        // Notes from qn_cards filtered by dept
-        try {
-            const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
-            const noteDone = dtwTGGetNoteDone();
-            cards.forEach(c => {
-                if ((c.dept || null) === dept) {
-                    items.push({
-                        type: 'note',
-                        id: c.id,
-                        text: c.text || '',
-                        priority: c.priority || 'P2',
-                        ts: c.ts,
-                        done: !!noteDone[c.id],
-                        raw: c
-                    });
-                }
-            });
-        } catch(e) {}
-        return items;
-    }
-
-    // Sort priority: overdue → due-today → P1 → due-soon → P2 → P3 → done
-    function dtwTGSortKey(item) {
-        if (item.done) return 1000;
-        if (item.type === 'task') {
-            if (item.dueDateTime) {
-                const due = new Date(item.dueDateTime.dateTime);
-                const today = new Date(); today.setHours(0,0,0,0);
-                const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
-                if (dueDay < today) return 0;          // overdue
-                if (+dueDay === +today) return 10;      // today
-                const daysOff = (dueDay - today) / 86400000;
-                if (daysOff <= 7) return 30;            // due-soon
-                return 50;                              // due-later
-            }
-            return 40;                                  // task no due
-        }
-        // note
-        const p = item.priority || 'P2';
-        if (p === 'P1') return 20;
-        if (p === 'P2') return 35;
-        return 60;                                      // P3
-    }
-
-    function dtwTGFilterItems(dept, items) {
-        const st = dtwTGState[dept];
-        return items.filter(it => {
-            if (st.filterType === 'task' && it.type !== 'task') return false;
-            if (st.filterType === 'note' && it.type !== 'note') return false;
-            if (st.filterPrio !== 'all') {
-                if (it.type === 'note' && (it.priority || 'P2') !== st.filterPrio) return false;
-                if (it.type === 'task') {
-                    // Map task urgency to "P1 = overdue/today, P2 = soon, P3 = later"
-                    const k = dtwTGSortKey(it);
-                    if (st.filterPrio === 'P1' && k > 10) return false;
-                    if (st.filterPrio === 'P2' && (k < 20 || k > 35)) return false;
-                    if (st.filterPrio === 'P3' && k < 50) return false;
-                }
-            }
-            if (!st.showDone && it.done) return false;
-            return true;
-        });
-    }
-
-    function dtwTGFormatTime(item) {
-        if (item.type === 'task') {
-            if (item.dueDateTime) {
-                const due = new Date(item.dueDateTime.dateTime);
-                const today = new Date(); today.setHours(0,0,0,0);
-                const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
-                if (dueDay < today) {
-                    const days = Math.round((today - dueDay) / 86400000);
-                    return 'überfällig ' + days + 'd';
-                }
-                if (+dueDay === +today) return 'heute fällig';
-                const days = Math.round((dueDay - today) / 86400000);
-                if (days === 1) return 'morgen';
-                if (days <= 7) return 'in ' + days + 'd';
-                return due.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
-            }
-            return 'MS To-Do';
-        }
-        return item.ts || '';
-    }
-
-    function dtwTGGetBadge(item) {
-        if (item.done) return '<span class="dtw-tg-badge done">DONE</span>';
-        if (item.type === 'task') {
-            const k = dtwTGSortKey(item);
-            if (k === 0) return '<span class="dtw-tg-badge due">ÜBERFÄLLIG</span>';
-            if (k === 10) return '<span class="dtw-tg-badge due">HEUTE</span>';
-            if (k === 30) return '<span class="dtw-tg-badge due-soon">DEMNÄCHST</span>';
-            return '';
-        }
-        const p = item.priority || 'P2';
-        return '<span class="dtw-tg-badge ' + p.toLowerCase() + '">' + p + '</span>';
-    }
-
+    // ---- Tasks tab (MS To-Do via existing cockpit data) ----
     function dtwRenderTasks(dept, host) {
-        const st = dtwTGState[dept];
-        const allItems = dtwTGGetItems(dept);
-        const totalTasks = allItems.filter(i => i.type === 'task' && !i.done).length;
-        const totalNotes = allItems.filter(i => i.type === 'note' && !i.done).length;
-        const totalDone = allItems.filter(i => i.done).length;
-
-        // If no MS data yet AND no notes — try cockpit load
-        const hasMS = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
-        if (!hasMS && totalNotes === 0) {
+        const deptLower = dept.toLowerCase();
+        const hasData = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
+        if (!hasData) {
+            // Not loaded yet — try to load, show hint in meantime
             if (typeof cockpitLoad === 'function') {
                 host.innerHTML = '<div class="dtw-loading">⏳ Lädt aus MS To-Do…</div>';
                 try {
                     cockpitLoad().then(() => {
                         if (dtwGetOpenDept() === dept && dtwGetLastTab(dept) === 'tasks') {
                             dtwRenderTasks(dept, host);
-                            dtwRenderTabBar(dept);
+                            dtwRenderTabBar(dept); // refresh counts
                         }
                     }).catch(() => {
-                        // Show grid anyway with notes-only (or empty state)
-                        dtwTGRenderInner(dept, host);
+                        host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich. Oben rechts anmelden.</div>';
                     });
-                    return;
-                } catch(e) {}
+                } catch(e) {
+                    host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich.</div>';
+                }
+            } else {
+                host.innerHTML = '<div class="dtw-empty">⚠️ Microsoft Login erforderlich.</div>';
             }
+            return;
         }
-        dtwTGRenderInner(dept, host);
-    }
-
-    function dtwTGRenderInner(dept, host) {
-        const st = dtwTGState[dept];
-        const allItems = dtwTGGetItems(dept);
-        const visible = dtwTGFilterItems(dept, allItems).sort((a,b) => dtwTGSortKey(a) - dtwTGSortKey(b));
-        const cntAll = allItems.filter(i => !i.done || st.showDone).length;
-        const cntTask = allItems.filter(i => i.type==='task' && (!i.done || st.showDone)).length;
-        const cntNote = allItems.filter(i => i.type==='note' && (!i.done || st.showDone)).length;
-        const cntDone = allItems.filter(i => i.done).length;
-
-        // Build toolbar
-        const C = dept;
-        let html = '';
-        html += '<div class="dtw-tg-toolbar">';
-        html += '<button class="dtw-tg-pill ' + (st.filterType==='all'?'active '+C:'') + '" onclick="dtwTGSetFilter(\''+dept+'\',\'type\',\'all\')">Alle ' + cntAll + '</button>';
-        html += '<button class="dtw-tg-pill dot-task ' + (st.filterType==='task'?'active '+C:'') + '" onclick="dtwTGSetFilter(\''+dept+'\',\'type\',\'task\')">Tasks ' + cntTask + '</button>';
-        html += '<button class="dtw-tg-pill dot-note ' + (st.filterType==='note'?'active '+C:'') + '" onclick="dtwTGSetFilter(\''+dept+'\',\'type\',\'note\')">Notes ' + cntNote + '</button>';
-        html += '<span class="dtw-tg-divider"></span>';
-        ['all','P1','P2','P3'].forEach(p => {
-            const lbl = p==='all' ? 'Alle Prio' : p;
-            html += '<button class="dtw-tg-pill ' + (st.filterPrio===p?'active '+C:'') + '" onclick="dtwTGSetFilter(\''+dept+'\',\'prio\',\''+p+'\')">' + lbl + '</button>';
+        const tasks = (cockpitData.byDept[deptLower] || []).slice();
+        if (!tasks.length) {
+            host.innerHTML = '<div class="dtw-empty">✓ Keine offenen Tasks für ' + dept + '.</div>';
+            return;
+        }
+        // Sort: open first (by due date asc, null last), then completed at end
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        tasks.sort((a, b) => {
+            const aDone = a.status === 'completed';
+            const bDone = b.status === 'completed';
+            if (aDone !== bDone) return aDone ? 1 : -1;
+            const ad = a.dueDateTime ? new Date(a.dueDateTime.dateTime).getTime() : Infinity;
+            const bd = b.dueDateTime ? new Date(b.dueDateTime.dateTime).getTime() : Infinity;
+            return ad - bd;
         });
-        html += '<span class="dtw-tg-divider"></span>';
-        html += '<button class="dtw-tg-pill ' + (st.showDone?'active '+C:'') + '" onclick="dtwTGToggleDone(\''+dept+'\')">' + (st.showDone?'Done sichtbar':'Done blenden') + ' (' + cntDone + ')</button>';
-        html += '<span class="dtw-tg-spacer"></span>';
-        html += '<button class="dtw-tg-add ' + C + '" onclick="dtwTGQuickAdd(\''+dept+'\')">+ Schnell-Add</button>';
-        html += '</div>';
-
-        // Bulk bar
-        const selSize = st.selected.size;
-        html += '<div class="dtw-tg-bulk ' + C + (selSize>0?' visible':'') + '" id="dtw-tg-bulk-' + dept + '">';
-        html += '<div class="dtw-tg-bulk-info"><span class="selcnt">' + selSize + '</span><span>ausgewählt</span></div>';
-        html += '<div class="dtw-tg-bulk-actions">';
-        html += '<button class="dtw-tg-bulk-btn primary" onclick="dtwTGBulkExport(\''+dept+'\')">📄 Export .txt</button>';
-        html += '<button class="dtw-tg-bulk-btn" onclick="dtwTGBulkDone(\''+dept+'\')">✓ Done</button>';
-        html += '<button class="dtw-tg-bulk-btn" onclick="dtwTGBulkEmail(\''+dept+'\')">📤 Email</button>';
-        html += '<button class="dtw-tg-bulk-btn danger" onclick="dtwTGBulkDelete(\''+dept+'\')">🗑 Löschen</button>';
-        html += '<button class="dtw-tg-bulk-btn" onclick="dtwTGClearSel(\''+dept+'\')">✕ Aufheben</button>';
-        html += '</div>';
-        html += '</div>';
-
-        // Grid
-        if (!visible.length) {
-            html += '<div class="dtw-empty" style="padding:40px 18px;text-align:center;">';
-            html += allItems.length === 0
-                ? '✓ Keine Tasks oder Notizen für ' + dept + '.<br><span style="font-size:11px;color:#555;margin-top:6px;display:block;">+ Schnell-Add oben rechts oder Quick Notes Widget oberhalb nutzen</span>'
-                : 'Keine Treffer für aktive Filter.';
-            html += '</div>';
-        } else {
-            html += '<div class="dtw-tg-grid">';
-            visible.forEach(it => {
-                const key = it.type + ':' + it.id;
-                const sel = st.selected.has(key);
-                const tag = it.type === 'task' ? '<span class="dtw-tg-tag task">TASK</span>' : '<span class="dtw-tg-tag note">NOTE</span>';
-                const time = dtwTGFormatTime(it);
-                const badge = dtwTGGetBadge(it);
-                const textEsc = (it.text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                html += '<div class="dtw-tg-card t-' + it.type + ' ' + C + (sel?' selected':'') + (it.done?' completed':'') + '" onclick="dtwTGToggleSel(\''+dept+'\',\''+key+'\',event)">';
-                html += '<div class="dtw-tg-top">';
-                html += '<div class="dtw-tg-meta">' + tag + '<span class="dtw-tg-time">' + time + '</span></div>';
-                html += '<div class="dtw-tg-check ' + C + (sel?' checked':'') + '"></div>';
-                html += '</div>';
-                html += '<div class="dtw-tg-text">' + textEsc + '</div>';
-                html += '<div class="dtw-tg-bottom">' + badge + '<button class="dtw-tg-del" onclick="event.stopPropagation();dtwTGDeleteOne(\''+dept+'\',\''+key+'\')">×</button></div>';
-                html += '</div>';
-            });
-            html += '</div>';
-        }
-
+        let html = '';
+        tasks.forEach(t => {
+            const isDone = t.status === 'completed';
+            let dueHtml = '';
+            if (t.dueDateTime) {
+                const due = new Date(t.dueDateTime.dateTime);
+                const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+                let cls = '';
+                if (dueDay < today) cls = 'overdue';
+                else if (+dueDay === +today) cls = 'today';
+                const dueStr = due.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
+                dueHtml = `<span class="dtw-task-due ${cls}">${dueStr}</span>`;
+            }
+            const titleEsc = (t.title || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            html += `<div class="dtw-task ${isDone?'done':''}">
+                <input type="checkbox" class="dtw-task-cb" ${isDone?'checked':''} onclick="dtwToggleTask('${dept}','${t.id}',this.checked)">
+                <span class="dtw-task-title">${titleEsc}</span>
+                ${dueHtml}
+            </div>`;
+        });
         host.innerHTML = html;
     }
 
-    window.dtwTGSetFilter = function(dept, key, val) {
-        const st = dtwTGState[dept];
-        if (key === 'type') st.filterType = val;
-        if (key === 'prio') st.filterPrio = val;
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-    };
-
-    window.dtwTGToggleDone = function(dept) {
-        dtwTGState[dept].showDone = !dtwTGState[dept].showDone;
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-    };
-
-    window.dtwTGToggleSel = function(dept, key, evt) {
-        if (evt && evt.target && (evt.target.tagName === 'BUTTON' || evt.target.classList.contains('dtw-tg-del'))) return;
-        const st = dtwTGState[dept];
-        if (st.selected.has(key)) st.selected.delete(key);
-        else st.selected.add(key);
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-    };
-
-    window.dtwTGClearSel = function(dept) {
-        dtwTGState[dept].selected.clear();
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-    };
-
-    window.dtwTGQuickAdd = function(dept) {
-        const txt = prompt('Schnell-Add für ' + dept + '\n\nNotiz eingeben (P2 default, Du kannst die Prio danach in Quick Notes ändern):');
-        if (!txt || !txt.trim()) return;
-        try {
-            const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
-            const now = new Date();
-            const ts = now.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'});
-            cards.push({ id: String(Date.now()), ts: ts, text: txt.trim(), priority: 'P2', dept: dept });
-            localStorage.setItem('qn_cards_v1', JSON.stringify(cards));
-            if (typeof qnRenderCards === 'function') qnRenderCards();
-            const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-            if (host) dtwTGRenderInner(dept, host);
-        } catch(e) { alert('Fehler beim Speichern: ' + e.message); }
-    };
-
-    window.dtwTGBulkExport = function(dept) {
-        const st = dtwTGState[dept];
-        if (!st.selected.size) return;
-        const items = dtwTGGetItems(dept);
-        const map = {}; items.forEach(i => map[i.type + ':' + i.id] = i);
-        const sel = Array.from(st.selected).map(k => map[k]).filter(Boolean).sort((a,b) => dtwTGSortKey(a) - dtwTGSortKey(b));
-        const now = new Date();
-        const stamp = now.toLocaleDateString('de-AT') + ' ' + now.toLocaleTimeString('de-AT', {hour:'2-digit', minute:'2-digit'});
-        let txt = dept + ' — Tasks & Notes Export — ' + stamp + '\n';
-        txt += '═'.repeat(56) + '\n\n';
-        sel.forEach(it => {
-            const tag = it.type === 'task' ? '[TASK]' : '[NOTE]';
-            const badge = it.done ? '[DONE] ' : '';
-            const prio = it.type === 'note' ? '[' + (it.priority||'P2') + '] ' : '';
-            const due = it.type === 'task' && it.dueDateTime ? '[' + dtwTGFormatTime(it).toUpperCase() + '] ' : '';
-            txt += tag + ' ' + badge + prio + due + it.text + '\n';
-            const meta = it.type === 'task' ? 'MS To-Do' : (it.ts || '');
-            if (meta) txt += '  ' + meta + '\n';
-            txt += '\n';
-        });
-        const blob = new Blob([txt], {type: 'text/plain;charset=utf-8'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = dept + '_Export_' + now.toISOString().slice(0,10) + '.txt';
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    };
-
-    window.dtwTGBulkDone = async function(dept) {
-        const st = dtwTGState[dept];
-        if (!st.selected.size) return;
-        const items = dtwTGGetItems(dept);
-        const map = {}; items.forEach(i => map[i.type + ':' + i.id] = i);
-        const sel = Array.from(st.selected).map(k => map[k]).filter(Boolean);
-        // Notes: set done flag
-        const noteDone = dtwTGGetNoteDone();
-        sel.filter(i => i.type === 'note').forEach(i => { noteDone[i.id] = true; });
-        dtwTGSaveNoteDone(noteDone);
-        // Tasks: PATCH MS Graph
-        const tasksToDo = sel.filter(i => i.type === 'task' && !i.done);
-        if (tasksToDo.length) {
-            const deptLower = dept.toLowerCase();
-            const listId = (typeof TODO_LISTS !== 'undefined') ? TODO_LISTS[deptLower] : null;
-            const token = (typeof accessToken !== 'undefined') ? accessToken : null;
-            if (listId && token) {
-                for (const t of tasksToDo) {
-                    try {
-                        await fetch('https://graph.microsoft.com/v1.0/me/todo/lists/' + listId + '/tasks/' + t.id, {
-                            method: 'PATCH',
-                            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ status: 'completed' })
-                        });
-                        if (cockpitData && cockpitData.byDept[deptLower]) {
-                            const x = cockpitData.byDept[deptLower].find(y => y.id === t.id);
-                            if (x) x.status = 'completed';
-                        }
-                    } catch(e) { console.warn('Mark done failed:', e); }
-                }
-            }
-        }
-        st.selected.clear();
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-        dtwRenderTabBar(dept);
-    };
-
-    window.dtwTGBulkEmail = function(dept) {
-        const st = dtwTGState[dept];
-        if (!st.selected.size) return;
-        const items = dtwTGGetItems(dept);
-        const map = {}; items.forEach(i => map[i.type + ':' + i.id] = i);
-        const sel = Array.from(st.selected).map(k => map[k]).filter(Boolean).sort((a,b) => dtwTGSortKey(a) - dtwTGSortKey(b));
-        let body = 'Tasks & Notes — ' + dept + '\n\n';
-        sel.forEach(it => {
-            const tag = it.type === 'task' ? '[TASK]' : '[NOTE]';
-            const prio = it.type === 'note' ? '[' + (it.priority||'P2') + '] ' : '';
-            body += '• ' + tag + ' ' + prio + it.text + '\n';
-        });
-        const subj = encodeURIComponent(dept + ' — Tasks & Notes (' + sel.length + ')');
-        const bodyEnc = encodeURIComponent(body);
-        window.location.href = 'mailto:?subject=' + subj + '&body=' + bodyEnc;
-    };
-
-    window.dtwTGBulkDelete = async function(dept) {
-        const st = dtwTGState[dept];
-        if (!st.selected.size) return;
-        if (!confirm('Wirklich ' + st.selected.size + ' Items löschen? (Tasks werden in MS To-Do gelöscht, Notes hier)')) return;
-        const items = dtwTGGetItems(dept);
-        const map = {}; items.forEach(i => map[i.type + ':' + i.id] = i);
-        const sel = Array.from(st.selected).map(k => map[k]).filter(Boolean);
-        // Notes
-        const noteIds = sel.filter(i => i.type === 'note').map(i => i.id);
-        if (noteIds.length) {
-            try {
-                const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
-                const filtered = cards.filter(c => !noteIds.includes(c.id));
-                localStorage.setItem('qn_cards_v1', JSON.stringify(filtered));
-                if (typeof qnRenderCards === 'function') qnRenderCards();
-            } catch(e) {}
-        }
-        // Tasks
-        const taskItems = sel.filter(i => i.type === 'task');
-        if (taskItems.length) {
-            const deptLower = dept.toLowerCase();
-            const listId = (typeof TODO_LISTS !== 'undefined') ? TODO_LISTS[deptLower] : null;
-            const token = (typeof accessToken !== 'undefined') ? accessToken : null;
-            if (listId && token) {
-                for (const t of taskItems) {
-                    try {
-                        await fetch('https://graph.microsoft.com/v1.0/me/todo/lists/' + listId + '/tasks/' + t.id, {
-                            method: 'DELETE',
-                            headers: { 'Authorization': 'Bearer ' + token }
-                        });
-                        if (cockpitData && cockpitData.byDept[deptLower]) {
-                            cockpitData.byDept[deptLower] = cockpitData.byDept[deptLower].filter(y => y.id !== t.id);
-                        }
-                    } catch(e) { console.warn('Delete task failed:', e); }
-                }
-            }
-        }
-        st.selected.clear();
-        const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-        if (host) dtwTGRenderInner(dept, host);
-        dtwRenderTabBar(dept);
-    };
-
-    window.dtwTGDeleteOne = async function(dept, key) {
-        if (!confirm('Item löschen?')) return;
-        const st = dtwTGState[dept];
-        st.selected.clear(); st.selected.add(key);
-        await dtwTGBulkDelete(dept);
-    };
-
-    // Legacy dtwToggleTask kept for backwards compat (not used in new grid)
     window.dtwToggleTask = async function(dept, taskId, done) {
         const deptLower = dept.toLowerCase();
         const listId = (typeof TODO_LISTS !== 'undefined') ? TODO_LISTS[deptLower] : null;
         const token = (typeof accessToken !== 'undefined') ? accessToken : null;
-        if (!listId || !token) return;
+        if (!listId || !token) {
+            if (typeof showToast === 'function') showToast('⚠️ Nicht verbunden');
+            return;
+        }
         try {
-            await fetch('https://graph.microsoft.com/v1.0/me/todo/lists/' + listId + '/tasks/' + taskId, {
+            await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks/${taskId}`, {
                 method: 'PATCH',
                 headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: done ? 'completed' : 'notStarted' })
             });
+            // Update in cache
             if (cockpitData && cockpitData.byDept[deptLower]) {
                 const t = cockpitData.byDept[deptLower].find(x => x.id === taskId);
                 if (t) t.status = done ? 'completed' : 'notStarted';
             }
-            const host = document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content');
-            if (host && dtwGetLastTab(dept) === 'tasks') dtwTGRenderInner(dept, host);
+            dtwRenderTasks(dept, document.getElementById(dept === 'OFFICE' ? 'dtw-tab-content-office' : 'dtw-tab-content'));
             dtwRenderTabBar(dept);
-        } catch(e) { console.warn('Task toggle failed:', e); }
+        } catch(e) {
+            console.warn('Task toggle failed:', e);
+        }
     };
-
 
     // ---- Quick Notes tab (filtered preview) ----
     function dtwRenderQuickNotes(dept, host) {
@@ -20729,55 +20289,14 @@ Spittelauer Lnde 12/1
     }
 
     // ---- Sputnik Reservations tab (via PHP Proxy, ICS) ----
-    // Sputnik view mode (iframe default, list optional) v15.9.118
-    function dtwSpGetView() { return localStorage.getItem('dtw_sp_view') || 'cal'; }
-    function dtwSpSetView(v) { localStorage.setItem('dtw_sp_view', v); }
-    window.dtwSpSwitchView = function(v) {
-        dtwSpSetView(v);
-        const host = document.getElementById('dtw-tab-content');
-        if (host) dtwRenderSputnikReservations(host);
-    };
-
-    function dtwRenderSputnikReservations(host) {
-        const view = dtwSpGetView();
-        const calId = '355f939de7df075c2527053dadea64b9ba41a6916d7e1917043623230b6b7451%40group.calendar.google.com';
-        const iframeUrl = 'https://calendar.google.com/calendar/embed?src=' + calId + '&ctz=Europe%2FVienna&mode=AGENDA&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&wkst=2&bgcolor=%23F3E5F5';
-        const openUrl = 'https://calendar.google.com/calendar/u/0?cid=MzU1ZjkzOWRlN2RmMDc1YzI1MjcwNTNkYWRlYTY0YjliYTQxYTY5MTZkN2UxOTE3MDQzNjIzMjMwYjZiNzQ1MUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t';
-
-        let html = '<div class="dtw-sp-wrap">';
-        html += '<div class="dtw-sp-toggle">';
-        html += '<button class="' + (view==='cal'?'active':'') + '" onclick="dtwSpSwitchView(\'cal\')">Kalender</button>';
-        html += '<button class="' + (view==='list'?'active':'') + '" onclick="dtwSpSwitchView(\'list\')">Liste (60d)</button>';
-        html += '</div>';
-
-        if (view === 'cal') {
-            html += '<div class="dtw-sp-iframe-wrap"><iframe src="' + iframeUrl + '"></iframe></div>';
-            html += '<div class="dtw-sp-actions">';
-            html += '<a class="dtw-sp-link" href="' + openUrl + '" target="_blank">📅 In Google Calendar öffnen</a>';
-            html += '<a class="dtw-sp-link" href="#" onclick="dtwSpSwitchView(\'cal\');return false;">🔄 Refresh</a>';
-            html += '</div>';
-            host.innerHTML = html;
-        } else {
-            // List view via proxy
-            html += '<div id="dtw-sp-list-host"><div class="dtw-loading" style="padding:20px;">⏳ Lädt Sputnik Reservierungen…</div></div>';
-            html += '<div class="dtw-sp-actions">';
-            html += '<a class="dtw-sp-link" href="' + openUrl + '" target="_blank">📅 In Google Calendar öffnen</a>';
-            html += '</div>';
-            html += '</div>';
-            host.innerHTML = html;
-            dtwSpLoadList(document.getElementById('dtw-sp-list-host'));
-            return;
-        }
-        html += '</div>';
-    }
-
-    async function dtwSpLoadList(host) {
+    async function dtwRenderSputnikReservations(host) {
         // Cache 5 min
         const age = Date.now() - dtwSputnikCacheTs;
         if (dtwSputnikCache && age < 5 * 60 * 1000) {
             dtwDrawSputnikList(host, dtwSputnikCache);
             return;
         }
+        host.innerHTML = '<div class="dtw-loading">⏳ Lädt Sputnik Reservierungen…</div>';
         try {
             const res = await fetch('https://grelleforelle.com/hub-proxy/calendar_proxy.php?cal=sputnik');
             if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -20787,7 +20306,9 @@ Spittelauer Lnde 12/1
             dtwSputnikCacheTs = Date.now();
             dtwDrawSputnikList(host, events);
         } catch(e) {
-            host.innerHTML = '<div class="dtw-empty" style="padding:20px;">⚠️ PHP Proxy nicht erreichbar.<br><span style="font-size:11px;color:#555;margin-top:6px;display:block;">Fehler: ' + (e.message||'') + '</span><br><button class="dtw-sp-link" style="margin-top:10px;border:none;cursor:pointer;" onclick="dtwSpSwitchView(\'cal\')">→ Zurück zum Kalender-View</button></div>';
+            host.innerHTML = `<div class="dtw-empty">⚠️ Konnte Sputnik Calendar nicht laden.<br><span style="font-size:10px;color:#444;">${(e.message||'')}</span><br><br>
+                <a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:11px;">Google Calendar direkt öffnen ↗</a>
+            </div>`;
         }
     }
 
