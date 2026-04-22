@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.116</title>
+    <title>Turbo Projects Work Hub v15.9.117</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2398,9 +2398,9 @@
         .mini-email-subject.bold { font-weight: 600; color: var(--text); }
         .mini-email-date { font-size: 10px; color: var(--text-muted); min-width: 45px; text-align: right; }
         /* Widget blocks */
-        .widgets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .widgets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
         .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; height: 380px; min-width: 0; overflow: hidden; }
-        .widget-block-hdr { background: #0d1b2a; padding: 9px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+        .widget-block-hdr { background: #0d1b2a; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
         .widget-block-hdr .wbh-title { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
         .widget-block-body { flex: 1; overflow-y: auto; }
@@ -2494,17 +2494,17 @@
         #dtw-panel { background: var(--surface); }
 
         /* OFFICE 2-column layout: Tab area + permanent Apps sidebar */
-        #dtw-office-layout { display: grid; grid-template-columns: 1fr 240px; gap: 0; background: var(--surface); }
+        #dtw-office-layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; background: var(--surface); }
         #dtw-office-main { min-width: 0; border-right: 1px solid var(--border); }
-        #dtw-office-apps-sidebar { background: #0a1420; padding: 12px; }
+        #dtw-office-apps-sidebar { background: #0a1420; padding: 16px; }
         #dtw-office-apps-sidebar .dtw-apps-title { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; color: #3b82f6; padding: 4px 4px 10px; border-bottom: 1px solid #1e3a5f; margin-bottom: 10px; text-transform: uppercase; }
-        #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 10px 4px; background: transparent; border: 1px solid #1e3a5f; color: #85B7EB; cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.15s; border-radius: 2px; }
+        #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 14px 8px; background: transparent; border: 1px solid #1e3a5f; color: #85B7EB; cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 6px; }
         #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: #1e3a5f; color: #fff; border-color: #378ADD; }
         #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
 
         #dtw-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #0a1220; overflow-x: auto; }
-        .dtw-tab { padding: 9px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+        .dtw-tab { padding: 11px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
         .dtw-tab:hover { color: #ccc; }
         .dtw-tab.active { color: #fff; background: rgba(255,255,255,0.03); }
         .dtw-tab.active.c-OFFICE   { border-bottom-color: #185FA5; color: #85B7EB; }
@@ -5353,10 +5353,6 @@
                     <span class="tool-icon">&#9989;</span>
                     To-Do Setup
                 </button>
-                <button class="tool-btn border-white" onclick="scrollToQuickNotes()" style="border-color:#f59e0b;">
-                    <span class="tool-icon">&#128221;</span>
-                    Quick Notes
-                </button>
                 <button class="tool-btn border-white" onclick="cnOpen()" style="border-color:#3b82f6;">
                     <span class="tool-icon">&#129302;</span>
                     Claude AI
@@ -5696,7 +5692,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.116</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.117</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6133,7 +6129,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.70</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.117</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14220,7 +14216,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.116';
+            const HUB_VERSION = 'v15.9.117';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15663,7 +15659,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.116 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.117 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -18190,7 +18186,7 @@ Spittelauer Lnde 12/1
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
                 if (data.error) throw new Error(data.error);
-                const emails = (data.emails || []).slice(0, 5);
+                const emails = (data.emails || []).slice(0, 30);
                 const unread = emails.filter(e => !e.read).length;
                 const badge = document.getElementById('mini-inbox-badge');
                 if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'inline' : 'none'; }
@@ -19980,14 +19976,12 @@ Spittelauer Lnde 12/1
         const grid = document.getElementById('dtw-office-apps-grid');
         if (!grid) return;
         const apps = [
-            { ico: '📧', label: 'Email',    action: "openModal('email-modal')" },
-            { ico: '🧾', label: 'Rechnung', action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
-            { ico: '🗓️', label: 'Promo',    action: "openPromoManager()" },
-            { ico: '🤖', label: 'Claude',   action: "openModal('claude-notepad-modal')" },
-            { ico: '📊', label: 'DB',       action: "openModal('db-viewer-modal')" },
-            { ico: '🎫', label: 'PreSale',  action: "openModal('presale-modal')" },
-            { ico: '🎬', label: 'Projector',action: "openModal('projector-modal')" },
-            { ico: '🔗', label: 'Linktree', action: "window.open('https://linktr.ee/admin','_blank')" }
+            { ico: '📋', label: 'Factsheet', action: "openModal('factsheet-modal')" },
+            { ico: '🛡️', label: 'Security',  action: "openModal('security-orders-modal')" },
+            { ico: '🧹', label: 'Cleaning',  action: "openModal('cleaning-modal')" },
+            { ico: '🧾', label: 'Rechnung',  action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
+            { ico: '📧', label: 'Email',     action: "openModal('email-modal')" },
+            { ico: '🤖', label: 'Claude',    action: "openModal('claude-notepad-modal')" }
         ];
         let html = '';
         apps.forEach(a => {
@@ -20359,11 +20353,11 @@ Spittelauer Lnde 12/1
     function dtwDrawSputnikList(host, events) {
         const now = new Date();
         const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const end = new Date(today0); end.setDate(end.getDate() + 7);
+        const end = new Date(today0); end.setDate(end.getDate() + 60);
         const filtered = events.filter(e => e.start && e.start >= today0 && e.start < end);
         filtered.sort((a,b) => a.start - b.start);
         if (!filtered.length) {
-            host.innerHTML = '<div class="dtw-empty">Keine Reservierungen in den nächsten 7 Tagen.<br><a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:11px;">Google Calendar öffnen ↗</a></div>';
+            host.innerHTML = '<div class="dtw-empty">Keine Reservierungen in den nächsten 60 Tagen.<br><a href="https://calendar.google.com/" target="_blank" style="color:#ED93B1;font-size:11px;">Google Calendar öffnen ↗</a></div>';
             return;
         }
         let html = '';
