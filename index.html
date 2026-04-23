@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.120</title>
+    <title>Turbo Projects Work Hub v15.9.121</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2492,6 +2492,57 @@
         .dtw-dept-btn.active[data-dept="SPUTNIK"] { background: #D4537E; color: #fff; border-color: #ED93B1; }
 
         #dtw-panel { background: var(--surface); }
+
+        /* === v15.9.121 OFFICE Tasks-Grid (.dtw-tg-*) === */
+        .dtw-tg-filterbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:6px; padding:10px 12px; background:#0d1017; border-bottom:1px solid var(--border); }
+        .dtw-tg-deptbtn { padding:11px 18px; font-size:11px; font-weight:800; letter-spacing:1.8px; border:1px solid; cursor:pointer; font-family:inherit; text-transform:uppercase; transition:all 0.18s ease; clip-path:polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); color:#fff; }
+        .dtw-tg-deptbtn[data-dept="OFFICE"]  { background:#185FA5; border-color:#378ADD; }
+        .dtw-tg-deptbtn[data-dept="BAR"]     { background:#BA7517; border-color:#EF9F27; }
+        .dtw-tg-deptbtn[data-dept="RUNNER"]  { background:#639922; border-color:#97C459; }
+        .dtw-tg-deptbtn[data-dept="TECHNIK"] { background:#534AB7; border-color:#AFA9EC; }
+        .dtw-tg-deptbtn[data-dept="SPUTNIK"] { background:#D4537E; border-color:#ED93B1; }
+        .dtw-tg-deptbtn.off { background:transparent !important; }
+        .dtw-tg-deptbtn.off[data-dept="OFFICE"]  { color:#85B7EB; border-color:#185FA5; }
+        .dtw-tg-deptbtn.off[data-dept="BAR"]     { color:#EF9F27; border-color:#BA7517; }
+        .dtw-tg-deptbtn.off[data-dept="RUNNER"]  { color:#97C459; border-color:#639922; }
+        .dtw-tg-deptbtn.off[data-dept="TECHNIK"] { color:#AFA9EC; border-color:#534AB7; }
+        .dtw-tg-deptbtn.off[data-dept="SPUTNIK"] { color:#ED93B1; border-color:#D4537E; }
+        .dtw-tg-deptbtn.off[data-dept="OFFICE"]:hover  { background:rgba(24,95,165,0.18) !important;  color:#fff; }
+        .dtw-tg-deptbtn.off[data-dept="BAR"]:hover     { background:rgba(186,117,23,0.18) !important; color:#fff; }
+        .dtw-tg-deptbtn.off[data-dept="RUNNER"]:hover  { background:rgba(99,153,34,0.18) !important;  color:#fff; }
+        .dtw-tg-deptbtn.off[data-dept="TECHNIK"]:hover { background:rgba(83,74,183,0.18) !important;  color:#fff; }
+        .dtw-tg-deptbtn.off[data-dept="SPUTNIK"]:hover { background:rgba(212,83,126,0.18) !important; color:#fff; }
+        .dtw-tg-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:6px; padding:10px 12px; }
+        .dtw-tg-card { position:relative; background:#1a1f2e; border:1px solid var(--border); border-left:3px solid var(--card-stripe, #4a9eff); border-radius:4px; padding:7px 9px 8px 9px; cursor:pointer; transition:all 0.1s ease; display:flex; flex-direction:column; min-height:64px; }
+        .dtw-tg-card:hover { background:#1f2535; transform:translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,0.3); }
+        .dtw-tg-card.selected { outline:1.5px solid var(--card-stripe, #4a9eff); outline-offset:-1px; background:rgba(74,158,255,0.06); }
+        .dtw-tg-card-head { display:flex; align-items:center; gap:4px; margin-bottom:5px; flex-wrap:wrap; }
+        .dtw-tg-card-head .tg-dept { font-size:8px; font-weight:700; letter-spacing:0.4px; padding:1px 5px; border-radius:2px; background:var(--card-stripe, #4a9eff); color:#fff; }
+        .dtw-tg-card-head .tg-type { font-size:8px; font-weight:700; letter-spacing:0.4px; padding:1px 5px; border-radius:2px; background:rgba(255,255,255,0.06); color:#8a91a8; border:1px solid var(--border); }
+        .dtw-tg-card-head .tg-star { color:#fbbf24; font-size:11px; line-height:1; }
+        .dtw-tg-card-head .tg-prio { font-size:8px; font-weight:700; padding:1px 4px; border-radius:2px; color:#fff; }
+        .dtw-tg-card-head .tg-prio.p1 { background:#ef4444; }
+        .dtw-tg-card-head .tg-prio.p2 { background:#f59e0b; }
+        .dtw-tg-card-head .tg-prio.p3 { background:#3b82f6; }
+        .dtw-tg-card-head .tg-check { margin-left:auto; width:12px; height:12px; border-radius:2px; border:1.5px solid #5a6178; position:relative; flex-shrink:0; }
+        .dtw-tg-card.selected .dtw-tg-card-head .tg-check { background:var(--card-stripe, #4a9eff); border-color:var(--card-stripe, #4a9eff); }
+        .dtw-tg-card.selected .dtw-tg-card-head .tg-check::after { content:'✓'; position:absolute; top:-3px; left:0; color:#fff; font-size:10px; font-weight:700; }
+        .dtw-tg-title { font-size:11px; line-height:1.35; color:var(--text); flex:1; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word; }
+        .dtw-tg-card-foot { display:flex; align-items:center; gap:5px; margin-top:5px; font-size:9px; color:#5a6178; min-height:1px; }
+        .dtw-tg-card-foot:empty { display:none; }
+        .dtw-tg-card-foot .tg-due { margin-left:auto; }
+        .dtw-tg-card-foot .tg-due.overdue { color:#ef4444; font-weight:600; }
+        .dtw-tg-card-foot .tg-due.today { color:#f59e0b; font-weight:600; }
+        .dtw-tg-actionbar { position:sticky; bottom:0; background:linear-gradient(180deg, rgba(19,23,34,0.95) 0%, #131722 100%); backdrop-filter:blur(8px); border-top:1px solid #4a9eff; padding:8px 12px; display:flex; align-items:center; gap:8px; z-index:10; }
+        .dtw-tg-actionbar .tg-count { color:#4a9eff; font-weight:600; font-size:12px; }
+        .dtw-tg-actionbar .tg-spacer { flex:1; }
+        .dtw-tg-btn { padding:5px 11px; border:1px solid var(--border); border-radius:4px; background:#1a1f2e; color:var(--text); font-size:11px; cursor:pointer; font-family:inherit; font-weight:500; transition:all 0.12s ease; }
+        .dtw-tg-btn:hover { background:#232838; }
+        .dtw-tg-btn.primary { background:#4a9eff; border-color:#4a9eff; color:#fff; }
+        .dtw-tg-btn.primary:hover { background:#3a8edf; }
+        .dtw-tg-btn.danger { background:#ef4444; border-color:#ef4444; color:#fff; }
+        .dtw-tg-btn.danger:hover { background:#dc2626; }
+        .dtw-tg-empty { text-align:center; padding:50px 20px; color:#5a6178; font-size:12px; }
 
         /* OFFICE 2-column layout: Tab area + permanent Apps sidebar */
         #dtw-office-layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; background: var(--surface); }
@@ -5692,7 +5743,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.120</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.121</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6129,7 +6180,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.120</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.121</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14216,7 +14267,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.120';
+            const HUB_VERSION = 'v15.9.121';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15659,7 +15710,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.120 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.121 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20034,7 +20085,7 @@ Spittelauer Lnde 12/1
         if (!host) return;
         host.innerHTML = '<div class="dtw-loading">Lädt…</div>';
         switch(tab) {
-            case 'tasks':     dtwRenderTasks(dept, host); break;
+            case 'tasks':     if (dept === 'OFFICE') { dtwRenderTasksOffice(host); } else { dtwRenderTasks(dept, host); } break;
             case 'qnotes':    dtwRenderQuickNotes(dept, host); break;
             case 'notes':     dtwRenderNotes(dept, host); break;
             case 'apps':      dtwRenderApps(host); break;
@@ -20047,6 +20098,250 @@ Spittelauer Lnde 12/1
             default: host.innerHTML = '<div class="dtw-empty">Unbekannter Tab.</div>';
         }
     }
+
+    // ---- v15.9.121 OFFICE Tasks-Grid (Cards + Filter + Multi-Select + Bulk Actions) ----
+    let dtwTgFilter = null;            // Set of active depts; lazy-init
+    let dtwTgSelected = new Set();     // selected item keys (type:id)
+
+    function dtwTgGetFilter() {
+        if (dtwTgFilter) return dtwTgFilter;
+        try {
+            const saved = JSON.parse(localStorage.getItem('dtwTgFilter') || 'null');
+            if (Array.isArray(saved)) { dtwTgFilter = new Set(saved); return dtwTgFilter; }
+        } catch(e) {}
+        dtwTgFilter = new Set(['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK']);
+        return dtwTgFilter;
+    }
+    function dtwTgSaveFilter() {
+        try { localStorage.setItem('dtwTgFilter', JSON.stringify(Array.from(dtwTgFilter))); } catch(e) {}
+    }
+
+    function dtwTgCollectItems() {
+        const items = [];
+        // Tasks from cockpitData (MS To-Do)
+        try {
+            if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
+                Object.keys(cockpitData.byDept).forEach(deptLower => {
+                    const dept = deptLower.toUpperCase();
+                    (cockpitData.byDept[deptLower] || []).forEach(t => {
+                        if (t.status === 'completed') return; // hide done
+                        items.push({
+                            key: 'task:' + dept + ':' + t.id,
+                            type: 'task',
+                            dept: dept,
+                            id: t.id,
+                            title: t.title || '',
+                            star: (t.importance === 'high'),
+                            due: t.dueDateTime ? t.dueDateTime.dateTime : null
+                        });
+                    });
+                });
+            }
+        } catch(e) { console.warn('dtwTgCollectItems tasks error:', e); }
+        // Notes from Quick Notes
+        try {
+            const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
+            cards.forEach(c => {
+                if (!c || !c.dept) return;            // skip notes without dept
+                if (c.dept === 'NONE') return;
+                items.push({
+                    key: 'note:' + c.id,
+                    type: 'note',
+                    dept: c.dept,
+                    id: c.id,
+                    title: c.text || '',
+                    prio: c.priority || 'P2',
+                    due: null
+                });
+            });
+        } catch(e) { console.warn('dtwTgCollectItems notes error:', e); }
+        return items;
+    }
+
+    function dtwTgFmtDate(s) {
+        if (!s) return '';
+        try {
+            const d = new Date(s);
+            return d.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
+        } catch(e) { return ''; }
+    }
+    function dtwTgDueClass(s) {
+        if (!s) return '';
+        try {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const d = new Date(s); d.setHours(0,0,0,0);
+            if (d < today) return 'overdue';
+            if (+d === +today) return 'today';
+        } catch(e) {}
+        return '';
+    }
+    function dtwTgEsc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+    }
+    const DTW_TG_STRIPE = { OFFICE:'#378ADD', BAR:'#EF9F27', RUNNER:'#97C459', TECHNIK:'#AFA9EC', SPUTNIK:'#ED93B1' };
+
+    function dtwRenderTasksOffice(host) {
+        if (!host) return;
+        try {
+            const filter = dtwTgGetFilter();
+            // Filter bar
+            const depts = ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK'];
+            let filterHtml = '<div class="dtw-tg-filterbar">';
+            depts.forEach(d => {
+                const off = filter.has(d) ? '' : 'off';
+                filterHtml += '<button class="dtw-tg-deptbtn ' + off + '" data-dept="' + d + '" onclick="dtwTgToggleFilter(\'' + d + '\')">' + d + '</button>';
+            });
+            filterHtml += '</div>';
+
+            // Items
+            const all = dtwTgCollectItems();
+            const visible = all.filter(it => filter.has(it.dept));
+
+            // Update tab count badge
+            try { dtwRenderTabBar('OFFICE'); } catch(e) {}
+
+            let gridHtml = '';
+            if (!visible.length) {
+                gridHtml = '<div class="dtw-tg-empty">Keine Einträge — alle Filter aus, oder noch nicht geladen (MS Login + Quick Notes prüfen).</div>';
+            } else {
+                gridHtml = '<div class="dtw-tg-grid">';
+                visible.forEach(it => {
+                    const stripe = DTW_TG_STRIPE[it.dept] || '#4a9eff';
+                    const sel = dtwTgSelected.has(it.key) ? 'selected' : '';
+                    const typeLabel = it.type === 'task' ? 'TASK' : 'NOTE';
+                    let badge = '';
+                    if (it.type === 'task' && it.star) badge = '<span class="tg-star" title="Wichtig">⭐</span>';
+                    if (it.type === 'note' && it.prio) badge = '<span class="tg-prio ' + it.prio.toLowerCase() + '">' + it.prio + '</span>';
+                    const dueHtml = it.due
+                        ? '<span class="tg-due ' + dtwTgDueClass(it.due) + '">📅 ' + dtwTgFmtDate(it.due) + '</span>'
+                        : '';
+                    gridHtml += '<div class="dtw-tg-card ' + sel + '" style="--card-stripe:' + stripe + ';" data-key="' + dtwTgEsc(it.key) + '" onclick="dtwTgToggleSelect(\'' + dtwTgEsc(it.key) + '\')">'
+                        + '<div class="dtw-tg-card-head">'
+                        + '<span class="tg-dept" style="background:' + stripe + ';">' + it.dept + '</span>'
+                        + '<span class="tg-type">' + typeLabel + '</span>'
+                        + badge
+                        + '<span class="tg-check"></span>'
+                        + '</div>'
+                        + '<div class="dtw-tg-title">' + dtwTgEsc(it.title) + '</div>'
+                        + '<div class="dtw-tg-card-foot">' + dueHtml + '</div>'
+                        + '</div>';
+                });
+                gridHtml += '</div>';
+            }
+
+            // Bulk action bar
+            let actionHtml = '';
+            if (dtwTgSelected.size > 0) {
+                actionHtml = '<div class="dtw-tg-actionbar">'
+                    + '<span class="tg-count">' + dtwTgSelected.size + ' ausgewählt</span>'
+                    + '<span class="tg-spacer"></span>'
+                    + '<button class="dtw-tg-btn primary" onclick="dtwTgExport()">📄 Export .txt</button>'
+                    + '<button class="dtw-tg-btn danger" onclick="dtwTgDelete()">🗑️ Löschen</button>'
+                    + '<button class="dtw-tg-btn" onclick="dtwTgClearSel()">Abbrechen</button>'
+                    + '</div>';
+            }
+
+            host.innerHTML = filterHtml + gridHtml + actionHtml;
+        } catch(e) {
+            console.warn('dtwRenderTasksOffice error:', e);
+            host.innerHTML = '<div class="dtw-tg-empty">⚠️ Fehler beim Anzeigen.<br><span style="font-size:10px;color:#444;">' + (e.message || '') + '</span></div>';
+        }
+    }
+
+    window.dtwTgToggleFilter = function(dept) {
+        const f = dtwTgGetFilter();
+        if (f.has(dept)) f.delete(dept); else f.add(dept);
+        dtwTgSaveFilter();
+        const host = document.getElementById('dtw-tab-content-office');
+        if (host) dtwRenderTasksOffice(host);
+    };
+    window.dtwTgToggleSelect = function(key) {
+        if (dtwTgSelected.has(key)) dtwTgSelected.delete(key); else dtwTgSelected.add(key);
+        const host = document.getElementById('dtw-tab-content-office');
+        if (host) dtwRenderTasksOffice(host);
+    };
+    window.dtwTgClearSel = function() {
+        dtwTgSelected.clear();
+        const host = document.getElementById('dtw-tab-content-office');
+        if (host) dtwRenderTasksOffice(host);
+    };
+    window.dtwTgExport = function() {
+        try {
+            const all = dtwTgCollectItems();
+            const sel = all.filter(it => dtwTgSelected.has(it.key));
+            if (!sel.length) return;
+            const lines = ['TURBO Hub Export — ' + new Date().toLocaleString('de-AT'), ''];
+            sel.forEach(it => {
+                const parts = ['[' + it.dept + ']', '[' + (it.type === 'task' ? 'TASK' : 'NOTE') + ']'];
+                if (it.type === 'task' && it.star) parts.push('[⭐]');
+                if (it.type === 'note' && it.prio) parts.push('[' + it.prio + ']');
+                let line = parts.join(' ') + ' ' + it.title;
+                if (it.due) line += ' — Deadline ' + dtwTgFmtDate(it.due);
+                lines.push(line);
+            });
+            const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const stamp = new Date().toISOString().slice(0,10);
+            a.href = url; a.download = 'TURBO_Export_' + stamp + '.txt';
+            document.body.appendChild(a); a.click();
+            setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+            if (typeof showToast === 'function') showToast('📄 ' + sel.length + ' Einträge exportiert');
+        } catch(e) {
+            console.warn('dtwTgExport error:', e);
+            alert('Export fehlgeschlagen: ' + (e.message || e));
+        }
+    };
+    window.dtwTgDelete = async function() {
+        const all = dtwTgCollectItems();
+        const sel = all.filter(it => dtwTgSelected.has(it.key));
+        if (!sel.length) return;
+        if (!confirm(sel.length + ' Einträge löschen?\n\nTasks → in MS To-Do als erledigt markiert\nNotes → komplett entfernt (auch im Quick Notes Modal)')) return;
+        // 1. Notes — DELETE from QN localStorage
+        try {
+            const noteIds = new Set(sel.filter(it => it.type === 'note').map(it => it.id));
+            if (noteIds.size > 0) {
+                const cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]');
+                const filtered = cards.filter(c => !noteIds.has(c.id));
+                localStorage.setItem('qn_cards_v1', JSON.stringify(filtered));
+                // Notify QN modal if it has a refresh hook
+                try { window.dispatchEvent(new CustomEvent('qn-cards-changed')); } catch(e) {}
+                try { if (typeof qnRender === 'function') qnRender(); } catch(e) {}
+            }
+        } catch(e) { console.warn('Note delete error:', e); }
+        // 2. Tasks — PATCH MS To-Do as completed
+        try {
+            const taskItems = sel.filter(it => it.type === 'task');
+            const token = (typeof accessToken !== 'undefined') ? accessToken : null;
+            const lists = (typeof TODO_LISTS !== 'undefined') ? TODO_LISTS : null;
+            if (taskItems.length > 0 && token && lists) {
+                for (const it of taskItems) {
+                    const listId = lists[it.dept.toLowerCase()];
+                    if (!listId) continue;
+                    try {
+                        await fetch('https://graph.microsoft.com/v1.0/me/todo/lists/' + listId + '/tasks/' + it.id, {
+                            method: 'PATCH',
+                            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ status: 'completed' })
+                        });
+                        // Update local cache
+                        if (cockpitData && cockpitData.byDept[it.dept.toLowerCase()]) {
+                            const t = cockpitData.byDept[it.dept.toLowerCase()].find(x => x.id === it.id);
+                            if (t) t.status = 'completed';
+                        }
+                    } catch(err) { console.warn('Task PATCH failed for', it.id, err); }
+                }
+            } else if (taskItems.length > 0) {
+                if (typeof showToast === 'function') showToast('⚠️ Tasks: nicht mit MS verbunden');
+            }
+        } catch(e) { console.warn('Task delete error:', e); }
+        // 3. Clear selection + re-render
+        dtwTgSelected.clear();
+        const host = document.getElementById('dtw-tab-content-office');
+        if (host) dtwRenderTasksOffice(host);
+        try { dtwRenderTabBar('OFFICE'); } catch(e) {}
+        if (typeof showToast === 'function') showToast('🗑️ ' + sel.length + ' Einträge entfernt');
+    };
 
     // ---- Tasks tab (MS To-Do via existing cockpit data) ----
     function dtwRenderTasks(dept, host) {
