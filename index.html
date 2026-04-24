@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.123</title>
+    <title>Turbo Projects Work Hub v15.9.124</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2835,6 +2835,7 @@
             #security-order-output { max-height: none !important; }
         }
         /* ===== v15.9.123 NOTEPAD ARCHIVE ===== */
+        #archive-modal { z-index: 1010; } /* v15.9.124 — above other modals so it opens on top */
         #archive-modal .modal { display: flex; flex-direction: column; height: 100%; }
         #archive-modal .modal-header {
             background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%) !important;
@@ -2874,6 +2875,10 @@
         #archive-modal .af-pill.pf-EDITOR.active { background: #185FA5; border-color: #185FA5; }
         #archive-modal .af-pill.pf-CLAUDE { color: #ec4899; }
         #archive-modal .af-pill.pf-CLAUDE.active { background: #D4537E; border-color: #D4537E; }
+        #archive-modal .af-pill.pf-BRIEFING { color: #97C459; }
+        #archive-modal .af-pill.pf-BRIEFING.active { background: #639922; border-color: #639922; }
+        #archive-modal .af-pill.pf-SECURITY { color: #EF9F27; }
+        #archive-modal .af-pill.pf-SECURITY.active { background: #BA7517; border-color: #BA7517; }
         #archive-modal .af-search {
             flex: 1; max-width: 220px; margin-left: auto;
             background: var(--surface); border: 1px solid var(--border); color: var(--text);
@@ -2895,6 +2900,8 @@
         .arc-card:hover { border-color: #334155; }
         .arc-card.expanded { border-color: #4F8EF7; cursor: default; }
         .arc-card.source-claude { border-left-color: #ec4899; }
+        .arc-card.source-briefing { border-left-color: #97C459; }
+        .arc-card.source-security { border-left-color: #EF9F27; }
         .arc-card-head {
             display: flex; align-items: center; gap: 10px;
         }
@@ -2904,6 +2911,8 @@
         }
         .arc-source-badge.src-editor { background: #185FA5; color: #fff; }
         .arc-source-badge.src-claude { background: #D4537E; color: #fff; }
+        .arc-source-badge.src-briefing { background: #639922; color: #fff; }
+        .arc-source-badge.src-security { background: #BA7517; color: #fff; }
         .arc-card .arc-title-text {
             color: #e2e8f0; font-size: 12px; font-weight: 600;
             flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
@@ -2939,6 +2948,7 @@
         .arc-action-btn:hover { filter: brightness(1.25); }
         .arc-action-btn.act-download { border-color: #10b981; color: #10b981; }
         .arc-action-btn.act-restore { border-color: #4F8EF7; color: #4F8EF7; }
+        .arc-action-btn.act-copy { border-color: #f59e0b; color: #f59e0b; }
         .arc-action-btn.act-delete { border-color: #dc2626; color: #f87171; }
         #archive-modal .archive-footer {
             padding: 6px 14px; background: var(--surface-2); border-top: 1px solid var(--border);
@@ -5899,7 +5909,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.123</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.124</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5972,6 +5982,8 @@
                 <button class="af-pill pf-ALL active" id="af-pill-all" onclick="archiveFilter('all')">ALL 0</button>
                 <button class="af-pill pf-EDITOR" id="af-pill-editor" onclick="archiveFilter('editor')">EDITOR 0</button>
                 <button class="af-pill pf-CLAUDE" id="af-pill-claude" onclick="archiveFilter('claude')">CLAUDE 0</button>
+                <button class="af-pill pf-BRIEFING" id="af-pill-briefing" onclick="archiveFilter('briefing')">BRIEFING 0</button>
+                <button class="af-pill pf-SECURITY" id="af-pill-security" onclick="archiveFilter('security')">SECURITY 0</button>
                 <input type="text" class="af-search" id="af-search" placeholder="&#128269; Suchen..." oninput="archiveSearch(this.value)">
             </div>
             <div class="archive-list" id="arc-list">
@@ -6119,6 +6131,14 @@
                 <div style="margin-top: 20px; padding: 15px; background: var(--bg); border: 1px solid var(--border);">
                     <h4 style="margin-bottom: 10px;">&#128190; Preview</h4>
                     <div id="briefing-preview" style="font-family: monospace; font-size: 13px; white-space: pre-wrap;"></div>
+                </div>
+                <!-- v15.9.124 — Briefing Toolbar -->
+                <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                    <button class="modal-btn" onclick="copyBriefing()" style="background:var(--blue-accent);color:#fff;">&#128203; Copy</button>
+                    <button class="modal-btn arc-new-btn" onclick="archiveSaveBriefing('manual')" title="Briefing archivieren">&#128230; Archive</button>
+                    <button class="modal-btn" onclick="archiveOpen()" title="Archiv öffnen" style="background:#1e3a5f;color:#4F8EF7;border:1px solid #4F8EF7;">&#128218; Archiv</button>
+                    <button class="modal-btn" onclick="downloadBriefingPDF()" style="background:var(--blue-medium);color:#fff;">&#128196; PDF</button>
+                    <button class="modal-btn" onclick="clearBriefing()" style="background:#dc3545;color:#fff;margin-left:auto;">&#128465; Clear</button>
                 </div>
             </div>
             </div>
@@ -6367,7 +6387,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.123</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.124</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14465,7 +14485,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.123';
+            const HUB_VERSION = 'v15.9.124';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -14793,6 +14813,13 @@ Spittelauer Lnde 12/1
             orders.sent.push(sentOrder);
             orders.pending = [];
             saveSecurityOrders(orders);
+            
+            // v15.9.124 — Mirror into notepad archive
+            try {
+                if (typeof archiveSaveSecurity === 'function') {
+                    archiveSaveSecurity(sentOrder);
+                }
+            } catch(e) { console.warn('archiveSaveSecurity failed:', e); }
             
             closeModal('security-output-modal');
             renderSecurityPendingList();
@@ -15286,19 +15313,32 @@ Spittelauer Lnde 12/1
         }
         
         function clearBriefing() {
-            document.getElementById('briefing-subject').value = '';
-            document.getElementById('briefing-date').value = '';
-            document.getElementById('briefing-general-text').value = '';
-            document.getElementById('briefing-date-fri').value = '';
-            document.getElementById('briefing-date-sat').value = '';
-            document.getElementById('briefing-fri-event').value = '';
-            document.getElementById('briefing-sat-event').value = '';
-            document.getElementById('briefing-fri-text').value = '';
-            document.getElementById('briefing-sat-text').value = '';
-            document.getElementById('briefing-file-preview').innerHTML = '';
-            document.getElementById('briefing-file-preview-weekend').innerHTML = '';
-            briefingFiles = [];
-            updateBriefingPreview();
+            // v15.9.124 — Archive-before-delete confirm
+            var preview = document.getElementById('briefing-preview');
+            var hasContent = preview && (preview.innerText || '').trim().length > 0;
+            var doClear = function(){
+                document.getElementById('briefing-subject').value = '';
+                document.getElementById('briefing-date').value = '';
+                document.getElementById('briefing-general-text').value = '';
+                document.getElementById('briefing-date-fri').value = '';
+                document.getElementById('briefing-date-sat').value = '';
+                document.getElementById('briefing-fri-event').value = '';
+                document.getElementById('briefing-sat-event').value = '';
+                document.getElementById('briefing-fri-text').value = '';
+                document.getElementById('briefing-sat-text').value = '';
+                document.getElementById('briefing-file-preview').innerHTML = '';
+                document.getElementById('briefing-file-preview-weekend').innerHTML = '';
+                briefingFiles = [];
+                updateBriefingPreview();
+            };
+            if (!hasContent) { doClear(); return; }
+            archiveConfirmClear('briefing', function(shouldArchive){
+                if (shouldArchive) {
+                    archiveSaveBriefing('auto');
+                }
+                doClear();
+                showToast(shouldArchive ? '&#128230; Archiviert + Briefing geleert' : '&#128465; Briefing cleared');
+            });
         }
         
         function copyBriefing() {
@@ -15908,7 +15948,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.123 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.124 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19542,6 +19582,89 @@ Spittelauer Lnde 12/1
             archiveAddEntry('claude', serialized, trigger || 'manual');
         }
 
+        // v15.9.124 — Briefing archive
+        function archiveSaveBriefing(trigger) {
+            var preview = document.getElementById('briefing-preview');
+            var content = preview ? (preview.innerText || '').trim() : '';
+            if (!content) {
+                showToast('⚠ Briefing ist leer', true);
+                return;
+            }
+            // Build metadata-enriched content + auto title
+            var deptEl = document.getElementById('briefing-dept');
+            var subjEl = document.getElementById('briefing-subject');
+            var dateEl = document.getElementById('briefing-date');
+            var dept = deptEl ? (deptEl.value || '') : '';
+            var subj = subjEl ? (subjEl.value || '').trim() : '';
+            var date = dateEl ? (dateEl.value || '') : '';
+            var meta = 'Dept: ' + dept + (date ? ' · Datum: ' + date : '') +
+                       (subj ? ' · Subject: ' + subj : '') + '\n\n---\n\n';
+            var autoTitle = '[' + dept + '] ' + (subj || 'Briefing') + (date ? ' (' + date + ')' : '');
+
+            // Use archiveAddEntry but with pre-computed title suggestion
+            var title = prompt('Titel für Briefing-Archiv:', autoTitle);
+            if (title === null) return;
+            title = (title || autoTitle).trim() || autoTitle;
+
+            var arr = archiveLoad();
+            var entry = {
+                id: Date.now(),
+                source: 'briefing',
+                title: title,
+                content: meta + content,
+                savedAt: archiveFormatDate(new Date()),
+                trigger: trigger || 'manual'
+            };
+            arr.unshift(entry);
+            if (arr.length > ARCHIVE_CAP) arr = arr.slice(0, ARCHIVE_CAP);
+            if (!archivePersist(arr)) return;
+            if (arr.length >= ARCHIVE_WARN && arr.length < ARCHIVE_CAP) {
+                showToast('⚠ Archiv: ' + arr.length + '/' + ARCHIVE_CAP + ' Einträge', true);
+            } else {
+                showToast('✓ Briefing archiviert');
+            }
+            if (document.getElementById('archive-modal').classList.contains('show')) {
+                archiveRender();
+            }
+        }
+
+        // v15.9.124 — Security order mirror (called from markSecurityOrderSent)
+        function archiveSaveSecurity(order) {
+            if (!order || !order.content) return;
+            var title = 'Security Order ' + (order.label || '') +
+                        (order.events && order.events.length ?
+                            ' — ' + order.events.length + ' Event' + (order.events.length > 1 ? 's' : '') : '');
+            var meta = 'Label: ' + (order.label || '') + '\n' +
+                       'Events: ' + ((order.events || []).join(' | ') || '—') + '\n' +
+                       'Gesendet: ' + (order.sentAt || new Date().toISOString()) + '\n\n---\n\n';
+            var arr = archiveLoad();
+            var entry = {
+                id: Date.now(),
+                source: 'security',
+                title: title.trim(),
+                content: meta + (order.content || ''),
+                savedAt: archiveFormatDate(new Date()),
+                trigger: 'auto'
+            };
+            arr.unshift(entry);
+            if (arr.length > ARCHIVE_CAP) arr = arr.slice(0, ARCHIVE_CAP);
+            archivePersist(arr);
+            if (document.getElementById('archive-modal').classList.contains('show')) {
+                archiveRender();
+            }
+        }
+
+        // v15.9.124 — Copy archive entry to clipboard
+        function archiveCopyToClipboard(id) {
+            var e = archiveFindEntry(id);
+            if (!e) return;
+            navigator.clipboard.writeText(e.content || '').then(function(){
+                showToast('✓ In Clipboard kopiert');
+            }, function(){
+                showToast('⚠ Copy fehlgeschlagen', true);
+            });
+        }
+
         function archiveOpen() {
             archiveState.filter = 'all';
             archiveState.search = '';
@@ -19574,21 +19697,27 @@ Spittelauer Lnde 12/1
             var listEl = document.getElementById('arc-list');
             if (!listEl) return;
 
-            // Counts per source
+            // Counts per source (v15.9.124 — 4 sources)
             var cEditor = arr.filter(function(e){ return e.source === 'editor'; }).length;
             var cClaude = arr.filter(function(e){ return e.source === 'claude'; }).length;
+            var cBriefing = arr.filter(function(e){ return e.source === 'briefing'; }).length;
+            var cSecurity = arr.filter(function(e){ return e.source === 'security'; }).length;
             var cAll = arr.length;
 
             var pAll = document.getElementById('af-pill-all');
             var pEd = document.getElementById('af-pill-editor');
             var pCl = document.getElementById('af-pill-claude');
+            var pBr = document.getElementById('af-pill-briefing');
+            var pSe = document.getElementById('af-pill-security');
             if (pAll) pAll.textContent = 'ALL ' + cAll;
             if (pEd) pEd.textContent = 'EDITOR ' + cEditor;
             if (pCl) pCl.textContent = 'CLAUDE ' + cClaude;
+            if (pBr) pBr.textContent = 'BRIEFING ' + cBriefing;
+            if (pSe) pSe.textContent = 'SECURITY ' + cSecurity;
 
-            [pAll, pEd, pCl].forEach(function(el){ if (el) el.classList.remove('active'); });
+            [pAll, pEd, pCl, pBr, pSe].forEach(function(el){ if (el) el.classList.remove('active'); });
             var activeEl = {
-                'all': pAll, 'editor': pEd, 'claude': pCl
+                'all': pAll, 'editor': pEd, 'claude': pCl, 'briefing': pBr, 'security': pSe
             }[archiveState.filter];
             if (activeEl) activeEl.classList.add('active');
 
@@ -19665,11 +19794,20 @@ Spittelauer Lnde 12/1
                     (function(id){ btnDown.onclick = function(ev){ ev.stopPropagation(); archiveDownload(id); }; })(e.id);
                     actions.appendChild(btnDown);
 
-                    var btnRest = document.createElement('button');
-                    btnRest.className = 'arc-action-btn act-restore';
-                    btnRest.innerHTML = '&#128229; Restore to Notepad';
-                    (function(id){ btnRest.onclick = function(ev){ ev.stopPropagation(); archiveRestore(id); }; })(e.id);
-                    actions.appendChild(btnRest);
+                    // v15.9.124 — Restore for editor/claude, Copy for briefing/security
+                    if (e.source === 'editor' || e.source === 'claude') {
+                        var btnRest = document.createElement('button');
+                        btnRest.className = 'arc-action-btn act-restore';
+                        btnRest.innerHTML = '&#128229; Restore to Notepad';
+                        (function(id){ btnRest.onclick = function(ev){ ev.stopPropagation(); archiveRestore(id); }; })(e.id);
+                        actions.appendChild(btnRest);
+                    } else {
+                        var btnCopy = document.createElement('button');
+                        btnCopy.className = 'arc-action-btn act-copy';
+                        btnCopy.innerHTML = '&#128203; Copy';
+                        (function(id){ btnCopy.onclick = function(ev){ ev.stopPropagation(); archiveCopyToClipboard(id); }; })(e.id);
+                        actions.appendChild(btnCopy);
+                    }
 
                     var btnDel = document.createElement('button');
                     btnDel.className = 'arc-action-btn act-delete';
@@ -19780,7 +19918,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.123 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.124 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20619,7 +20757,9 @@ Spittelauer Lnde 12/1
             { ico: '🧹', label: 'Cleaning',  action: "openModal('cleaning-modal')" },
             { ico: '🧾', label: 'Rechnung',  action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
             { ico: '📧', label: 'Email',     action: "openModal('email-modal')" },
-            { ico: '🤖', label: 'Claude',    action: "openModal('claude-notepad-modal')" }
+            { ico: '🤖', label: 'Claude',    action: "openModal('claude-notepad-modal')" },
+            { ico: '📝', label: 'Editor',    action: "openModal('editor-modal')" },
+            { ico: '📚', label: 'Archiv',    action: "archiveOpen()" }
         ];
         let html = '';
         apps.forEach(a => {
