@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.124</title>
+    <title>Turbo Projects Work Hub v15.9.125</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5909,7 +5909,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.124</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.125</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5974,7 +5974,10 @@
                 <span class="arc-title-lbl">&#128218; NOTEPAD ARCHIV</span>
                 <span class="arc-count-badge" id="arc-count-badge">0 Einträge</span>
                 <div class="arc-hdr-actions">
-                    <button class="arc-hdr-btn" onclick="archiveBulkExport()" title="Alles als .md exportieren">&#128228; Alles exportieren</button>
+                    <button class="arc-hdr-btn" onclick="archiveBulkExport()" title="Alles als .md exportieren (menschenlesbar)">&#128228; .md Export</button>
+                    <button class="arc-hdr-btn" onclick="archiveBackupJSON()" title="Full Backup als .json (roundtrip)">&#128190; Backup</button>
+                    <button class="arc-hdr-btn" onclick="document.getElementById('arc-import-input').click()" title="Backup wiederherstellen">&#128229; Import</button>
+                    <input type="file" id="arc-import-input" accept=".json,application/json" style="display:none;" onchange="archiveImportJSON(event)">
                     <button class="modal-close" onclick="closeModal('archive-modal')">&times;</button>
                 </div>
             </div>
@@ -6387,7 +6390,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.124</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.125</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14485,7 +14488,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.124';
+            const HUB_VERSION = 'v15.9.125';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15948,7 +15951,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.124 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.125 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19918,7 +19921,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.124 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.125 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -19935,6 +19938,170 @@ Spittelauer Lnde 12/1
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             showToast('&#128228; Bulk-Export gestartet (' + arr.length + ' Einträge)');
+        }
+
+        // v15.9.125 — JSON Backup (roundtrip-capable)
+        function archiveBackupJSON() {
+            var arr = archiveLoad();
+            if (arr.length === 0) {
+                showToast('⚠ Archiv ist leer — nichts zu sichern', true);
+                return;
+            }
+            var ts = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+            var payload = {
+                format: 'hub_notepad_archive',
+                formatVersion: 1,
+                hubVersion: 'v15.9.125',
+                exportedAt: new Date().toISOString(),
+                entryCount: arr.length,
+                entries: arr
+            };
+            var json = JSON.stringify(payload, null, 2);
+            var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'hub_notepad_archive_backup_' + ts + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('&#128190; Backup gestartet (' + arr.length + ' Einträge)');
+        }
+
+        // v15.9.125 — JSON Import with Merge/Replace
+        function archiveImportJSON(event) {
+            var input = event.target;
+            var file = input.files && input.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var text = e.target.result;
+                var payload;
+                try {
+                    payload = JSON.parse(text);
+                } catch(err) {
+                    showToast('⚠ Ungültige JSON-Datei: ' + err.message, true);
+                    input.value = '';
+                    return;
+                }
+
+                // Accept both array-only and wrapped format
+                var entries;
+                if (Array.isArray(payload)) {
+                    entries = payload;
+                } else if (payload && Array.isArray(payload.entries)) {
+                    entries = payload.entries;
+                } else {
+                    showToast('⚠ Datei enthält keine Archive-Einträge', true);
+                    input.value = '';
+                    return;
+                }
+
+                // Validate each entry
+                var validSources = ['editor', 'claude', 'briefing', 'security'];
+                var validEntries = [];
+                var skipped = 0;
+                entries.forEach(function(e) {
+                    if (!e || typeof e !== 'object') { skipped++; return; }
+                    if (!e.id || !e.source || !e.content) { skipped++; return; }
+                    if (validSources.indexOf(e.source) === -1) { skipped++; return; }
+                    validEntries.push({
+                        id: e.id,
+                        source: e.source,
+                        title: e.title || archiveAutoTitle(e.content),
+                        content: e.content,
+                        savedAt: e.savedAt || archiveFormatDate(new Date()),
+                        trigger: e.trigger || 'manual'
+                    });
+                });
+
+                if (validEntries.length === 0) {
+                    showToast('⚠ Keine gültigen Einträge gefunden (skipped: ' + skipped + ')', true);
+                    input.value = '';
+                    return;
+                }
+
+                // Ask user: Merge or Replace?
+                var existing = archiveLoad();
+                var mode;
+                if (existing.length === 0) {
+                    mode = 'replace'; // empty = just load
+                } else {
+                    var doMerge = confirm(
+                        'Import: ' + validEntries.length + ' Einträge gefunden' +
+                        (skipped > 0 ? ' (' + skipped + ' ungültig übersprungen)' : '') + '\n\n' +
+                        'Bestehendes Archiv: ' + existing.length + ' Einträge\n\n' +
+                        '[OK] = MERGE (zusammenführen, Duplikate nach ID überspringen)\n' +
+                        '[Abbrechen] = weiter zu REPLACE-Option oder Abbruch'
+                    );
+                    if (doMerge) {
+                        mode = 'merge';
+                    } else {
+                        var doReplace = confirm(
+                            '⚠ REPLACE: Bestehendes Archiv (' + existing.length + ' Einträge) wird KOMPLETT überschrieben!\n\n' +
+                            '[OK] = Alles ersetzen\n' +
+                            '[Abbrechen] = Import abbrechen'
+                        );
+                        if (!doReplace) {
+                            input.value = '';
+                            showToast('Import abgebrochen');
+                            return;
+                        }
+                        mode = 'replace';
+                    }
+                }
+
+                var result;
+                if (mode === 'replace') {
+                    result = validEntries.slice();
+                } else {
+                    // merge: existing + new, dedupe by id, existing wins
+                    var ids = {};
+                    existing.forEach(function(e){ ids[e.id] = true; });
+                    result = existing.slice();
+                    var added = 0, duplicates = 0;
+                    validEntries.forEach(function(e){
+                        if (ids[e.id]) {
+                            duplicates++;
+                        } else {
+                            result.push(e);
+                            ids[e.id] = true;
+                            added++;
+                        }
+                    });
+                    // Sort by id desc (newest first)
+                    result.sort(function(a,b){ return b.id - a.id; });
+                    showToast('&#128229; Merge: ' + added + ' neu, ' + duplicates + ' Duplikate übersprungen');
+                }
+
+                // Apply FIFO cap
+                if (result.length > ARCHIVE_CAP) {
+                    var trimmed = result.length - ARCHIVE_CAP;
+                    result = result.slice(0, ARCHIVE_CAP);
+                    setTimeout(function(){
+                        showToast('⚠ FIFO: ' + trimmed + ' älteste Einträge verworfen (Cap ' + ARCHIVE_CAP + ')', true);
+                    }, 1500);
+                }
+
+                if (!archivePersist(result)) {
+                    input.value = '';
+                    return;
+                }
+
+                if (mode === 'replace') {
+                    showToast('&#10004; Replace abgeschlossen: ' + result.length + ' Einträge');
+                }
+
+                archiveRender();
+                input.value = ''; // reset so same file can be re-imported
+            };
+            reader.onerror = function() {
+                showToast('⚠ Datei konnte nicht gelesen werden', true);
+                input.value = '';
+            };
+            reader.readAsText(file);
         }
 
         function archiveConfirmClear(source, onDone) {
