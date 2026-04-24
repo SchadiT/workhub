@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.121</title>
+    <title>Turbo Projects Work Hub v15.9.122</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1854,15 +1854,16 @@
             font-size: 14px;
         }
         
-        /* Quick Notes Add Button */
+        /* Quick Notes Add Button — v15.9.122 lean */
         .quick-notes-add {
-            background: var(--blue-dark); border: 1px solid #fff;
-            padding: 8px 14px; color: #fff; font-size: 11px; font-weight: 600;
-            cursor: pointer; margin-left: 8px;
+            background: transparent; border: 1px solid #4b5563;
+            padding: 4px 10px; color: #fff; font-size: 10px; font-weight: 600;
+            cursor: pointer; margin-left: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-radius: 3px;
         }
-        .quick-notes-add:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
+        .quick-notes-add:hover { background: rgba(255,255,255,0.08); border-color: #fff; color: #fff; }
         
         .loading-spinner::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 1px solid var(--border); border-top-color: #fff; animation: spin 1s linear infinite; margin-left: 10px; }
 
@@ -2400,77 +2401,106 @@
         /* Widget blocks */
         .widgets-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
         .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; height: 380px; min-width: 0; overflow: hidden; }
-        .widget-block-hdr { background: #0d1b2a; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
-        .widget-block-hdr .wbh-title { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        /* v15.9.122 — Lean Gradient Header (Inbox + QN — same style as DTW) */
+        .widget-block-hdr { background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%); padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+        .widget-block-hdr .wbh-title { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1.2px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
         .widget-block-body { flex: 1; overflow-y: auto; }
-        .qn-card { padding: 10px 14px 10px 10px; border-bottom: 1px solid var(--border); position: relative; display: flex; gap: 8px; align-items: flex-start; }
-        .qn-card-left { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
-        .qn-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 5px; border-radius: 3px; width: 22px; text-align: center; flex-shrink: 0; }
-        .qn-badge.P1 { background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
-        .qn-badge.P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
-        .qn-badge.P3 { background: rgba(100,116,139,0.18); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
-        .qn-card-content { flex: 1; min-width: 0; padding-right: 18px; }
-        .qn-card-ts { font-size: 9px; color: #555; margin-bottom: 3px; }
-        .qn-card-text { font-size: 12px; color: #ccc; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
-        .qn-card-del { position: absolute; top: 8px; right: 8px; background: transparent; border: none; color: #444; font-size: 12px; cursor: pointer; padding: 2px 4px; line-height: 1; }
+        /* v15.9.122 — Single-line entry: dot-pair + title (ellipsis) + date + x */
+        .qn-card { padding: 7px 10px 7px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; border-left: 3px solid transparent; }
+        .qn-dot-pair { display: flex; gap: 3px; flex-shrink: 0; }
+        .qn-prio-dot, .qn-dept-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .qn-prio-dot.prio-P1 { background: #dc2626; }
+        .qn-prio-dot.prio-P2 { background: #f59e0b; }
+        .qn-prio-dot.prio-P3 { background: #10b981; }
+        .qn-dept-dot.dot-OFFICE  { background: #4F8EF7; }
+        .qn-dept-dot.dot-BAR     { background: #EF9F27; }
+        .qn-dept-dot.dot-RUNNER  { background: #97C459; }
+        .qn-dept-dot.dot-TECHNIK { background: #AFA9EC; }
+        .qn-dept-dot.dot-SPUTNIK { background: #ec4899; }
+        .qn-dept-dot.dot-NONE    { background: #475569; }
+        .qn-card-title { color: #e2e8f0; font-size: 12px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .qn-card-date { color: #64748b; font-size: 10px; flex-shrink: 0; }
+        .qn-card-del { background: transparent; border: none; color: #475569; font-size: 11px; cursor: pointer; padding: 2px 4px; line-height: 1; flex-shrink: 0; }
         .qn-card-del:hover { color: #ef4444; }
-        /* Filter bar */
-        .qn-filter-bar { display: flex; gap: 4px; padding: 6px 8px; border-bottom: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
-        .qn-filter-btn { padding: 3px 9px; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; }
-        .qn-filter-btn:hover { color: #aaa; border-color: #555; }
-        .qn-filter-btn.active-all { background: rgba(255,255,255,0.08); color: #fff; border-color: #555; }
-        .qn-filter-btn.active-P1 { background: rgba(239,68,68,0.15); color: #ef4444; border-color: rgba(239,68,68,0.4); }
-        .qn-filter-btn.active-P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border-color: rgba(245,158,11,0.4); }
-        .qn-filter-btn.active-P3 { background: rgba(100,116,139,0.15); color: #94a3b8; border-color: rgba(100,116,139,0.4); }
-        .qn-filter-count { margin-left: auto; font-size: 9px; color: #444; align-self: center; }
-        /* Priority selector */
+        /* Filter bar — v15.9.122 always-colored pills, single horizontal row */
+        .qn-filter-bar { display: flex; gap: 4px; padding: 6px 10px; border-bottom: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; align-items: center; flex-wrap: wrap; }
+        .qn-filter-btn { padding: 3px 8px; font-size: 9px; font-weight: 600; border: 1px solid currentColor; background: transparent; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 10px; transition: all 0.15s; opacity: 0.55; white-space: nowrap; flex-shrink: 0; }
+        .qn-filter-btn:hover { opacity: 1; }
+        .qn-filter-btn.active { opacity: 1; color: #fff !important; }
+        /* Priority pills — always colored */
+        .qn-filter-btn.pf-ALL  { color: #cbd5e1; }
+        .qn-filter-btn.pf-ALL.active  { background: #475569; border-color: #475569; }
+        .qn-filter-btn.pf-P1   { color: #f87171; }
+        .qn-filter-btn.pf-P1.active   { background: #dc2626; border-color: #dc2626; }
+        .qn-filter-btn.pf-P2   { color: #fbbf24; }
+        .qn-filter-btn.pf-P2.active   { background: #f59e0b; border-color: #f59e0b; }
+        .qn-filter-btn.pf-P3   { color: #34d399; }
+        .qn-filter-btn.pf-P3.active   { background: #10b981; border-color: #10b981; }
+        /* Filter divider between Prio and Dept */
+        .qn-filter-divider { width: 1px; height: 14px; background: #334155; margin: 0 3px; flex-shrink: 0; align-self: center; }
+        .qn-filter-count { display: none; }
+        /* Priority selector — v15.9.122 always-colored */
         .qn-prio-row { display: flex; gap: 4px; margin-bottom: 5px; }
-        .qn-prio-btn { flex: 1; padding: 4px 0; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; }
-        .qn-prio-btn:hover { color: #aaa; }
-        .qn-prio-btn.sel-P1 { background: rgba(239,68,68,0.18); color: #ef4444; border-color: rgba(239,68,68,0.5); }
-        .qn-prio-btn.sel-P2 { background: rgba(245,158,11,0.15); color: #f59e0b; border-color: rgba(245,158,11,0.5); }
-        .qn-prio-btn.sel-P3 { background: rgba(100,116,139,0.15); color: #94a3b8; border-color: rgba(100,116,139,0.5); }
+        .qn-prio-btn { flex: 1; padding: 5px 0; font-size: 10px; font-weight: 700; border: 1px solid currentColor; background: transparent; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 4px; transition: all 0.15s; opacity: 0.55; }
+        .qn-prio-btn:hover { opacity: 1; }
+        .qn-prio-btn.pb-P1 { color: #f87171; }
+        .qn-prio-btn.pb-P2 { color: #fbbf24; }
+        .qn-prio-btn.pb-P3 { color: #34d399; }
+        .qn-prio-btn.sel-P1 { opacity: 1; background: #dc2626; border-color: #dc2626; color: #fff !important; }
+        .qn-prio-btn.sel-P2 { opacity: 1; background: #f59e0b; border-color: #f59e0b; color: #fff !important; }
+        .qn-prio-btn.sel-P3 { opacity: 1; background: #10b981; border-color: #10b981; color: #fff !important; }
         .qn-input-area { padding: 8px; border-top: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
         .qn-input-area textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 56px; box-sizing: border-box; }
         .qn-input-area textarea:focus { border-color: #3b82f6; }
         .qn-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
         .qn-save-btn:hover { background: #3b82f6; color: #fff; }
-        /* ===== QN DEPT TAGS v15.9.112 ===== */
+        /* ===== QN DEPT — v15.9.122 always-colored (input selector + filter pills) ===== */
         .qn-dept-row { display: flex; gap: 3px; margin-bottom: 5px; flex-wrap: wrap; }
-        .qn-dept-btn { flex: 1; min-width: 0; padding: 4px 0; font-size: 9px; font-weight: 700; border: 1px solid #333; background: transparent; color: #555; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; text-align: center; }
-        .qn-dept-btn:hover { color: #aaa; }
-        .qn-dept-btn.sel-OFFICE   { background: rgba(24,95,165,0.18);  color: #85B7EB; border-color: rgba(24,95,165,0.5); }
-        .qn-dept-btn.sel-BAR      { background: rgba(186,117,23,0.18); color: #EF9F27; border-color: rgba(186,117,23,0.5); }
-        .qn-dept-btn.sel-RUNNER   { background: rgba(99,153,34,0.18);  color: #97C459; border-color: rgba(99,153,34,0.5); }
-        .qn-dept-btn.sel-TECHNIK  { background: rgba(83,74,183,0.18);  color: #AFA9EC; border-color: rgba(83,74,183,0.5); }
-        .qn-dept-btn.sel-SPUTNIK  { background: rgba(212,83,126,0.18); color: #ED93B1; border-color: rgba(212,83,126,0.5); }
-        .qn-dept-btn.sel-NONE     { background: rgba(255,255,255,0.06); color: #ccc;    border-color: #555; }
-        /* Second filter row (dept) */
-        .qn-filter-bar.dept { padding: 5px 8px; }
-        .qn-filter-btn.active-OFFICE  { background: rgba(24,95,165,0.18);  color: #85B7EB; border-color: rgba(24,95,165,0.5); }
-        .qn-filter-btn.active-BAR     { background: rgba(186,117,23,0.18); color: #EF9F27; border-color: rgba(186,117,23,0.5); }
-        .qn-filter-btn.active-RUNNER  { background: rgba(99,153,34,0.18);  color: #97C459; border-color: rgba(99,153,34,0.5); }
-        .qn-filter-btn.active-TECHNIK { background: rgba(83,74,183,0.18);  color: #AFA9EC; border-color: rgba(83,74,183,0.5); }
-        .qn-filter-btn.active-SPUTNIK { background: rgba(212,83,126,0.18); color: #ED93B1; border-color: rgba(212,83,126,0.5); }
-        .qn-filter-btn.active-NONE    { background: rgba(255,255,255,0.06); color: #ccc;    border-color: #555; }
-        /* Card border-left in dept color (Variant A) */
-        .qn-card.dept-OFFICE  { border-left: 3px solid #185FA5; }
-        .qn-card.dept-BAR     { border-left: 3px solid #BA7517; }
-        .qn-card.dept-RUNNER  { border-left: 3px solid #639922; }
-        .qn-card.dept-TECHNIK { border-left: 3px solid #534AB7; }
-        .qn-card.dept-SPUTNIK { border-left: 3px solid #D4537E; }
-        .qn-card.dept-NONE    { border-left: 3px solid transparent; }
+        .qn-dept-btn { flex: 1; min-width: 0; padding: 5px 0; font-size: 9px; font-weight: 700; border: 1px solid currentColor; background: transparent; cursor: pointer; font-family: inherit; letter-spacing: 0.4px; border-radius: 3px; transition: all 0.15s; text-align: center; opacity: 0.55; }
+        .qn-dept-btn:hover { opacity: 1; }
+        .qn-dept-btn.db-OFFICE   { color: #4F8EF7; }
+        .qn-dept-btn.db-BAR      { color: #EF9F27; }
+        .qn-dept-btn.db-RUNNER   { color: #97C459; }
+        .qn-dept-btn.db-TECHNIK  { color: #AFA9EC; }
+        .qn-dept-btn.db-SPUTNIK  { color: #ec4899; }
+        .qn-dept-btn.db-NONE     { color: #94a3b8; }
+        .qn-dept-btn.sel-OFFICE   { opacity: 1; background: #185FA5; border-color: #185FA5; color: #fff !important; }
+        .qn-dept-btn.sel-BAR      { opacity: 1; background: #BA7517; border-color: #BA7517; color: #fff !important; }
+        .qn-dept-btn.sel-RUNNER   { opacity: 1; background: #639922; border-color: #639922; color: #fff !important; }
+        .qn-dept-btn.sel-TECHNIK  { opacity: 1; background: #534AB7; border-color: #534AB7; color: #fff !important; }
+        .qn-dept-btn.sel-SPUTNIK  { opacity: 1; background: #D4537E; border-color: #D4537E; color: #fff !important; }
+        .qn-dept-btn.sel-NONE     { opacity: 1; background: #475569; border-color: #475569; color: #fff !important; }
+        /* Filter pills — Dept always-colored (filled when active) */
+        .qn-filter-btn.df-OFFICE  { color: #4F8EF7; }
+        .qn-filter-btn.df-OFFICE.active  { background: #185FA5; border-color: #185FA5; }
+        .qn-filter-btn.df-BAR     { color: #EF9F27; }
+        .qn-filter-btn.df-BAR.active     { background: #BA7517; border-color: #BA7517; }
+        .qn-filter-btn.df-RUNNER  { color: #97C459; }
+        .qn-filter-btn.df-RUNNER.active  { background: #639922; border-color: #639922; }
+        .qn-filter-btn.df-TECHNIK { color: #AFA9EC; }
+        .qn-filter-btn.df-TECHNIK.active { background: #534AB7; border-color: #534AB7; }
+        .qn-filter-btn.df-SPUTNIK { color: #ec4899; }
+        .qn-filter-btn.df-SPUTNIK.active { background: #D4537E; border-color: #D4537E; }
+        .qn-filter-btn.df-NONE    { color: #94a3b8; }
+        .qn-filter-btn.df-NONE.active    { background: #475569; border-color: #475569; }
+        /* Card border-left in dept color — v15.9.122 brightened */
+        .qn-card.dept-OFFICE  { border-left-color: #4F8EF7; }
+        .qn-card.dept-BAR     { border-left-color: #EF9F27; }
+        .qn-card.dept-RUNNER  { border-left-color: #97C459; }
+        .qn-card.dept-TECHNIK { border-left-color: #AFA9EC; }
+        .qn-card.dept-SPUTNIK { border-left-color: #ec4899; }
+        .qn-card.dept-NONE    { border-left-color: #475569; }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
         /* ===== DEPARTMENT TOOLS WIDGET v15.9.116 (Visual Polish — Version A) ===== */
         #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
 
-        /* Master Header — gradient bar with accent */
-        #dtw-master-header { position: relative; background: linear-gradient(90deg, #1e3a5f 0%, #0d1b2a 60%, #0a1420 100%); padding: 16px 22px 16px 28px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #3b82f6; }
-        #dtw-master-header::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #3b82f6; }
+        /* Master Header — v15.9.122 red gradient (matching QN + Inbox) */
+        #dtw-master-header { position: relative; background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%); padding: 16px 22px 16px 28px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #dc2626; }
+        #dtw-master-header::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #dc2626; }
         #dtw-master-header .dtw-title { font-size: 19px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
-        #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #888; margin-left: auto; text-transform: uppercase; padding: 5px 12px; border: 1px solid #1e3a5f; background: rgba(59,130,246,0.08); }
+        #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #888; margin-left: auto; text-transform: uppercase; padding: 5px 12px; border: 1px solid #5d2424; background: rgba(220,38,38,0.08); }
 
         /* Dept buttons — Parallelogram, permanent dept-colors */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 14px; background: #0a1420; border-bottom: 1px solid var(--border); }
@@ -3110,38 +3140,39 @@
                     <button class="quick-notes-add" onclick="addToOfficeNotes()" title="+ Office Notes">+ Office</button>
                 </div>
             </div>
+            <!-- v15.9.122 — merged single filter bar with always-colored pills -->
             <div class="qn-filter-bar" id="qn-filter-bar">
-                <button class="qn-filter-btn active-all" id="qn-f-all" onclick="qnSetFilter('ALL')">ALL</button>
-                <button class="qn-filter-btn" id="qn-f-P1" onclick="qnSetFilter('P1')">P1</button>
-                <button class="qn-filter-btn" id="qn-f-P2" onclick="qnSetFilter('P2')">P2</button>
-                <button class="qn-filter-btn" id="qn-f-P3" onclick="qnSetFilter('P3')">P3</button>
-                <span class="qn-filter-count" id="qn-filter-count"></span>
-            </div>
-            <div class="qn-filter-bar dept" id="qn-filter-bar-dept">
-                <button class="qn-filter-btn active-all" id="qn-fd-ALL"     onclick="qnSetDeptFilter('ALL')">ALLE</button>
-                <button class="qn-filter-btn"            id="qn-fd-OFFICE"  onclick="qnSetDeptFilter('OFFICE')">OFFICE</button>
-                <button class="qn-filter-btn"            id="qn-fd-BAR"     onclick="qnSetDeptFilter('BAR')">BAR</button>
-                <button class="qn-filter-btn"            id="qn-fd-RUNNER"  onclick="qnSetDeptFilter('RUNNER')">RUNNER</button>
-                <button class="qn-filter-btn"            id="qn-fd-TECHNIK" onclick="qnSetDeptFilter('TECHNIK')">TECHNIK</button>
-                <button class="qn-filter-btn"            id="qn-fd-SPUTNIK" onclick="qnSetDeptFilter('SPUTNIK')">SPUTNIK</button>
-                <button class="qn-filter-btn"            id="qn-fd-NONE"    onclick="qnSetDeptFilter('NONE')">—</button>
+                <button class="qn-filter-btn pf-ALL active" id="qn-f-all" onclick="qnSetFilter('ALL')">ALL</button>
+                <button class="qn-filter-btn pf-P1" id="qn-f-P1" onclick="qnSetFilter('P1')">P1</button>
+                <button class="qn-filter-btn pf-P2" id="qn-f-P2" onclick="qnSetFilter('P2')">P2</button>
+                <button class="qn-filter-btn pf-P3" id="qn-f-P3" onclick="qnSetFilter('P3')">P3</button>
+                <span class="qn-filter-divider"></span>
+                <button class="qn-filter-btn df-NONE active" id="qn-fd-ALL"     onclick="qnSetDeptFilter('ALL')" style="color:#cbd5e1;">ALLE</button>
+                <button class="qn-filter-btn df-OFFICE"      id="qn-fd-OFFICE"  onclick="qnSetDeptFilter('OFFICE')">OFFICE</button>
+                <button class="qn-filter-btn df-BAR"         id="qn-fd-BAR"     onclick="qnSetDeptFilter('BAR')">BAR</button>
+                <button class="qn-filter-btn df-RUNNER"      id="qn-fd-RUNNER"  onclick="qnSetDeptFilter('RUNNER')">RUNNER</button>
+                <button class="qn-filter-btn df-TECHNIK"     id="qn-fd-TECHNIK" onclick="qnSetDeptFilter('TECHNIK')">TECHNIK</button>
+                <button class="qn-filter-btn df-SPUTNIK"     id="qn-fd-SPUTNIK" onclick="qnSetDeptFilter('SPUTNIK')">SPUTNIK</button>
+                <button class="qn-filter-btn df-NONE"        id="qn-fd-NONE"    onclick="qnSetDeptFilter('NONE')">—</button>
+                <span class="qn-filter-count" id="qn-filter-count" style="display:none;"></span>
             </div>
             <div class="widget-block-body" id="quick-notes-body">
                 <div id="qn-cards-list"></div>
             </div>
             <div class="qn-input-area">
+                <!-- v15.9.122 — always-colored prio + dept selector buttons -->
                 <div class="qn-prio-row">
-                    <button class="qn-prio-btn" id="qn-prio-P1" onclick="qnSelectPrio('P1')">P1 Kritisch</button>
-                    <button class="qn-prio-btn sel-P2" id="qn-prio-P2" onclick="qnSelectPrio('P2')">P2 Normal</button>
-                    <button class="qn-prio-btn" id="qn-prio-P3" onclick="qnSelectPrio('P3')">P3 Später</button>
+                    <button class="qn-prio-btn pb-P1" id="qn-prio-P1" onclick="qnSelectPrio('P1')">P1 Kritisch</button>
+                    <button class="qn-prio-btn pb-P2 sel-P2" id="qn-prio-P2" onclick="qnSelectPrio('P2')">P2 Normal</button>
+                    <button class="qn-prio-btn pb-P3" id="qn-prio-P3" onclick="qnSelectPrio('P3')">P3 Später</button>
                 </div>
                 <div class="qn-dept-row">
-                    <button class="qn-dept-btn" id="qn-dept-OFFICE"  onclick="qnSelectDept('OFFICE')">OFFICE</button>
-                    <button class="qn-dept-btn" id="qn-dept-BAR"     onclick="qnSelectDept('BAR')">BAR</button>
-                    <button class="qn-dept-btn" id="qn-dept-RUNNER"  onclick="qnSelectDept('RUNNER')">RUNNER</button>
-                    <button class="qn-dept-btn" id="qn-dept-TECHNIK" onclick="qnSelectDept('TECHNIK')">TECHNIK</button>
-                    <button class="qn-dept-btn" id="qn-dept-SPUTNIK" onclick="qnSelectDept('SPUTNIK')">SPUTNIK</button>
-                    <button class="qn-dept-btn sel-NONE" id="qn-dept-NONE" onclick="qnSelectDept('NONE')">—</button>
+                    <button class="qn-dept-btn db-OFFICE"  id="qn-dept-OFFICE"  onclick="qnSelectDept('OFFICE')">OFFICE</button>
+                    <button class="qn-dept-btn db-BAR"     id="qn-dept-BAR"     onclick="qnSelectDept('BAR')">BAR</button>
+                    <button class="qn-dept-btn db-RUNNER"  id="qn-dept-RUNNER"  onclick="qnSelectDept('RUNNER')">RUNNER</button>
+                    <button class="qn-dept-btn db-TECHNIK" id="qn-dept-TECHNIK" onclick="qnSelectDept('TECHNIK')">TECHNIK</button>
+                    <button class="qn-dept-btn db-SPUTNIK" id="qn-dept-SPUTNIK" onclick="qnSelectDept('SPUTNIK')">SPUTNIK</button>
+                    <button class="qn-dept-btn db-NONE sel-NONE" id="qn-dept-NONE" onclick="qnSelectDept('NONE')">—</button>
                 </div>
                 <textarea id="quick-notes-text" placeholder="Notiz eingeben…" oninput="saveQuickNotes()"></textarea>
                 <button class="qn-save-btn" onclick="qnAddCard()">+ Als Notiz speichern</button>
@@ -5743,7 +5774,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.121</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.122</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6180,7 +6211,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.121</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.122</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -9410,7 +9441,7 @@
             qnCurrentPrio = p;
             ['P1','P2','P3'].forEach(function(x) {
                 var btn = document.getElementById('qn-prio-' + x);
-                if (btn) btn.className = 'qn-prio-btn' + (x === p ? ' sel-' + x : '');
+                if (btn) btn.className = 'qn-prio-btn pb-' + x + (x === p ? ' sel-' + x : '');
             });
         }
 
@@ -9418,7 +9449,7 @@
             qnCurrentDept = d;
             ['OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK','NONE'].forEach(function(x) {
                 var btn = document.getElementById('qn-dept-' + x);
-                if (btn) btn.className = 'qn-dept-btn' + (x === d ? ' sel-' + x : '');
+                if (btn) btn.className = 'qn-dept-btn db-' + x + (x === d ? ' sel-' + x : '');
             });
         }
 
@@ -9427,7 +9458,9 @@
             ['ALL','OFFICE','BAR','RUNNER','TECHNIK','SPUTNIK','NONE'].forEach(function(x) {
                 var btn = document.getElementById('qn-fd-' + x);
                 if (!btn) return;
-                btn.className = 'qn-filter-btn' + (x === f ? (x === 'ALL' ? ' active-all' : ' active-' + x) : '');
+                var cls = (x === 'ALL') ? 'df-NONE' : 'df-' + x;
+                btn.className = 'qn-filter-btn ' + cls + (x === f ? ' active' : '');
+                if (x === 'ALL') btn.style.color = (x === f) ? '' : '#cbd5e1';
             });
             qnRenderCards();
         }
@@ -9435,9 +9468,10 @@
         function qnSetFilter(f) {
             qnCurrentFilter = f;
             ['ALL','P1','P2','P3'].forEach(function(x) {
-                var btn = document.getElementById('qn-f-' + x);
+                var btnId = (x === 'ALL') ? 'qn-f-all' : 'qn-f-' + x;
+                var btn = document.getElementById(btnId);
                 if (!btn) return;
-                btn.className = 'qn-filter-btn' + (x === f ? ' active-' + (x === 'ALL' ? 'all' : x) : '');
+                btn.className = 'qn-filter-btn pf-' + x + (x === f ? ' active' : '');
             });
             qnRenderCards();
         }
@@ -9463,13 +9497,27 @@
                 var d = c.dept || 'NONE';
                 if (deptCounts.hasOwnProperty(d)) deptCounts[d]++;
             });
+            // Priority counts v15.9.122
+            var prioCounts = { ALL: cards.length, P1: 0, P2: 0, P3: 0 };
+            cards.forEach(function(c) {
+                var p = c.priority || 'P2';
+                if (prioCounts.hasOwnProperty(p)) prioCounts[p]++;
+            });
+            // Update prio pill labels with counts v15.9.122
+            var pAllBtn = document.getElementById('qn-f-all');
+            if (pAllBtn) pAllBtn.textContent = 'ALL ' + prioCounts.ALL;
+            ['P1','P2','P3'].forEach(function(p) {
+                var b = document.getElementById('qn-f-' + p);
+                if (b) b.textContent = p + ' ' + prioCounts[p];
+            });
+            // Update dept pill labels with counts
             var allBtn = document.getElementById('qn-fd-ALL');
-            if (allBtn) allBtn.textContent = 'ALLE (' + deptCounts.ALL + ')';
+            if (allBtn) allBtn.textContent = 'ALLE ' + deptCounts.ALL;
             deptKeys.forEach(function(k) {
                 var b = document.getElementById('qn-fd-' + k);
                 if (!b) return;
                 var lbl = (k === 'NONE' ? '—' : k);
-                b.textContent = lbl + ' (' + deptCounts[k] + ')';
+                b.textContent = lbl + ' ' + deptCounts[k];
             });
 
             // Filter — Priority AND Dept
@@ -9479,25 +9527,13 @@
                 return prioOk && deptOk;
             });
 
-            // Update count
-            var countEl = document.getElementById('qn-filter-count');
-            if (countEl) {
-                if (qnCurrentFilter === 'ALL' && qnCurrentDeptFilter === 'ALL') {
-                    var p1c = cards.filter(function(c){ return (c.priority||'P2')==='P1'; }).length;
-                    countEl.textContent = p1c > 0 ? p1c + ' kritisch' : cards.length + ' total';
-                    countEl.style.color = p1c > 0 ? '#ef4444' : '#444';
-                } else {
-                    countEl.textContent = filtered.length + ' Notiz' + (filtered.length !== 1 ? 'en' : '');
-                    countEl.style.color = '#444';
-                }
-            }
-
             if (!filtered.length) {
                 container.innerHTML = '<div style="padding:14px;font-size:11px;color:#444;text-align:center;">' +
                     'Keine Notizen für aktive Filter.' + '</div>';
                 return;
             }
 
+            // v15.9.122 — Single-line entry: dot-pair + title + date + x
             container.innerHTML = '';
             filtered.forEach(function(c) {
                 var prio = c.priority || 'P2';
@@ -9505,23 +9541,25 @@
                 var div = document.createElement('div');
                 div.className = 'qn-card dept-' + dept;
 
-                var left = document.createElement('div');
-                left.className = 'qn-card-left';
-                var badge = document.createElement('span');
-                badge.className = 'qn-badge ' + prio;
-                badge.textContent = prio;
-                left.appendChild(badge);
+                var dotPair = document.createElement('div');
+                dotPair.className = 'qn-dot-pair';
+                var prioDot = document.createElement('span');
+                prioDot.className = 'qn-prio-dot prio-' + prio;
+                var deptDot = document.createElement('span');
+                deptDot.className = 'qn-dept-dot dot-' + dept;
+                dotPair.appendChild(prioDot);
+                dotPair.appendChild(deptDot);
 
-                var content = document.createElement('div');
-                content.className = 'qn-card-content';
-                var ts = document.createElement('div');
-                ts.className = 'qn-card-ts';
-                ts.textContent = c.ts;
-                var text = document.createElement('div');
-                text.className = 'qn-card-text';
-                text.textContent = c.text;
-                content.appendChild(ts);
-                content.appendChild(text);
+                var title = document.createElement('span');
+                title.className = 'qn-card-title';
+                title.textContent = c.text;
+                title.title = c.text; // tooltip on hover for long text
+
+                var date = document.createElement('span');
+                date.className = 'qn-card-date';
+                // Compact date: "DD.MM. HH:MM" instead of "DD.MM.YYYY HH:MM"
+                var ts = String(c.ts || '');
+                date.textContent = ts.replace(/(\d{2}\.\d{2})\.\d{4}\s+(\d{2}:\d{2})/, '$1. $2');
 
                 var btn = document.createElement('button');
                 btn.className = 'qn-card-del';
@@ -9529,8 +9567,9 @@
                 btn.title = 'Löschen';
                 btn.onclick = (function(id){ return function(){ qnDeleteCard(id); }; })(c.id);
 
-                div.appendChild(left);
-                div.appendChild(content);
+                div.appendChild(dotPair);
+                div.appendChild(title);
+                div.appendChild(date);
                 div.appendChild(btn);
                 container.appendChild(div);
             });
@@ -14267,7 +14306,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.121';
+            const HUB_VERSION = 'v15.9.122';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15710,7 +15749,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.121 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.122 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20193,6 +20232,29 @@ Spittelauer Lnde 12/1
             });
             filterHtml += '</div>';
 
+            // Lazy-load cockpitData if not loaded yet (mirrors dtwRenderTasks)
+            const hasCockpit = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
+            if (!hasCockpit) {
+                host.innerHTML = filterHtml + '<div class="dtw-tg-empty">⏳ Lädt Tasks aus MS To-Do…</div>';
+                if (typeof cockpitLoad === 'function') {
+                    try {
+                        cockpitLoad().then(() => {
+                            if (dtwGetOpenDept() === 'OFFICE' && dtwGetLastTab('OFFICE') === 'tasks') {
+                                dtwRenderTasksOffice(host);
+                                try { dtwRenderTabBar('OFFICE'); } catch(e) {}
+                            }
+                        }).catch(() => {
+                            host.innerHTML = filterHtml + '<div class="dtw-tg-empty">⚠️ MS Login erforderlich. Oben rechts anmelden.</div>';
+                        });
+                    } catch(e) {
+                        host.innerHTML = filterHtml + '<div class="dtw-tg-empty">⚠️ MS Login erforderlich.</div>';
+                    }
+                } else {
+                    host.innerHTML = filterHtml + '<div class="dtw-tg-empty">⚠️ MS Login erforderlich.</div>';
+                }
+                return;
+            }
+
             // Items
             const all = dtwTgCollectItems();
             const visible = all.filter(it => filter.has(it.dept));
@@ -20202,7 +20264,9 @@ Spittelauer Lnde 12/1
 
             let gridHtml = '';
             if (!visible.length) {
-                gridHtml = '<div class="dtw-tg-empty">Keine Einträge — alle Filter aus, oder noch nicht geladen (MS Login + Quick Notes prüfen).</div>';
+                const totalT = all.filter(it=>it.type==='task').length;
+                const totalN = all.filter(it=>it.type==='note').length;
+                gridHtml = '<div class="dtw-tg-empty">Keine Einträge für die aktivierten Departments.<br><span style="font-size:10px;color:#5a6178;">Geladen: ' + totalT + ' Tasks · ' + totalN + ' Notes</span></div>';
             } else {
                 gridHtml = '<div class="dtw-tg-grid">';
                 visible.forEach(it => {
