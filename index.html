@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.122</title>
+    <title>Turbo Projects Work Hub v15.9.123</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2834,6 +2834,131 @@
             #gl-list-gl, #gl-list-fl, #gl-list-sl { max-height: 28vh !important; }
             #security-order-output { max-height: none !important; }
         }
+        /* ===== v15.9.123 NOTEPAD ARCHIVE ===== */
+        #archive-modal .modal { display: flex; flex-direction: column; height: 100%; }
+        #archive-modal .modal-header {
+            background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%) !important;
+            padding: 10px 16px !important; display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+        }
+        #archive-modal .arc-title-lbl {
+            font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 1.2px;
+        }
+        #archive-modal .arc-count-badge {
+            font-size: 9px; color: #10b981; border: 1px solid #064e3b;
+            padding: 2px 7px; border-radius: 10px; background: rgba(16,185,129,0.1);
+        }
+        #archive-modal .arc-hdr-actions { margin-left: auto; display: flex; gap: 6px; }
+        #archive-modal .arc-hdr-btn {
+            background: transparent; border: 1px solid #334155; color: #cbd5e1;
+            padding: 4px 10px; font-size: 11px; cursor: pointer; border-radius: 3px;
+            font-family: inherit;
+        }
+        #archive-modal .arc-hdr-btn:hover { border-color: #10b981; color: #10b981; }
+        #archive-modal .af-bar {
+            display: flex; gap: 6px; padding: 8px 12px;
+            border-bottom: 1px solid var(--border); background: var(--surface-2);
+            align-items: center; flex-shrink: 0; flex-wrap: wrap;
+        }
+        #archive-modal .af-pill {
+            padding: 3px 10px; font-size: 10px; font-weight: 600;
+            border: 1px solid currentColor; background: transparent;
+            border-radius: 10px; cursor: pointer; opacity: 0.55;
+            font-family: inherit;
+        }
+        #archive-modal .af-pill:hover { opacity: 1; }
+        #archive-modal .af-pill.active { opacity: 1; color: #fff !important; }
+        #archive-modal .af-pill.pf-ALL { color: #cbd5e1; }
+        #archive-modal .af-pill.pf-ALL.active { background: #475569; border-color: #475569; }
+        #archive-modal .af-pill.pf-EDITOR { color: #4F8EF7; }
+        #archive-modal .af-pill.pf-EDITOR.active { background: #185FA5; border-color: #185FA5; }
+        #archive-modal .af-pill.pf-CLAUDE { color: #ec4899; }
+        #archive-modal .af-pill.pf-CLAUDE.active { background: #D4537E; border-color: #D4537E; }
+        #archive-modal .af-search {
+            flex: 1; max-width: 220px; margin-left: auto;
+            background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            padding: 4px 8px; font-size: 11px; border-radius: 3px; font-family: inherit; outline: none;
+        }
+        #archive-modal .af-search:focus { border-color: #4F8EF7; }
+        #archive-modal .archive-list {
+            flex: 1; overflow-y: auto; padding: 10px 12px;
+            display: flex; flex-direction: column; gap: 6px; min-height: 0;
+        }
+        #archive-modal .arc-empty {
+            text-align: center; padding: 40px 20px; color: #64748b; font-size: 12px;
+        }
+        .arc-card {
+            background: var(--surface-2); border: 1px solid var(--border);
+            border-left: 3px solid #4F8EF7;
+            border-radius: 4px; padding: 10px 12px; cursor: pointer; transition: border-color 0.15s;
+        }
+        .arc-card:hover { border-color: #334155; }
+        .arc-card.expanded { border-color: #4F8EF7; cursor: default; }
+        .arc-card.source-claude { border-left-color: #ec4899; }
+        .arc-card-head {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .arc-source-badge {
+            font-size: 9px; font-weight: 700; padding: 2px 7px;
+            border-radius: 10px; flex-shrink: 0; letter-spacing: 0.5px;
+        }
+        .arc-source-badge.src-editor { background: #185FA5; color: #fff; }
+        .arc-source-badge.src-claude { background: #D4537E; color: #fff; }
+        .arc-card .arc-title-text {
+            color: #e2e8f0; font-size: 12px; font-weight: 600;
+            flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+        }
+        .arc-card .arc-date-text { color: #64748b; font-size: 10px; flex-shrink: 0; }
+        .arc-trigger {
+            font-size: 9px; padding: 1px 5px; border-radius: 2px;
+            background: rgba(100,116,139,0.2); color: #94a3b8; flex-shrink: 0;
+        }
+        .arc-trigger.trg-auto { background: rgba(245,158,11,0.2); color: #f59e0b; }
+        .arc-preview {
+            color: #64748b; font-size: 11px; margin-top: 6px;
+            font-family: 'Courier New', monospace; line-height: 1.4;
+            overflow: hidden; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+        .arc-card.expanded .arc-preview {
+            display: block; -webkit-line-clamp: unset;
+            white-space: pre-wrap; max-height: 220px; overflow-y: auto;
+            background: #050a14; padding: 10px; border-radius: 3px;
+            color: #cbd5e1; margin-top: 10px; word-break: break-word;
+        }
+        .arc-card-actions {
+            display: none; gap: 6px; margin-top: 8px; padding-top: 8px;
+            border-top: 1px solid var(--border); flex-wrap: wrap;
+        }
+        .arc-card.expanded .arc-card-actions { display: flex; }
+        .arc-action-btn {
+            padding: 4px 10px; font-size: 10px; font-weight: 600;
+            background: transparent; border: 1px solid #334155; color: #cbd5e1;
+            border-radius: 3px; cursor: pointer; font-family: inherit;
+        }
+        .arc-action-btn:hover { filter: brightness(1.25); }
+        .arc-action-btn.act-download { border-color: #10b981; color: #10b981; }
+        .arc-action-btn.act-restore { border-color: #4F8EF7; color: #4F8EF7; }
+        .arc-action-btn.act-delete { border-color: #dc2626; color: #f87171; }
+        #archive-modal .archive-footer {
+            padding: 6px 14px; background: var(--surface-2); border-top: 1px solid var(--border);
+            font-size: 10px; color: #64748b; display: flex; justify-content: space-between;
+            flex-shrink: 0; flex-wrap: wrap; gap: 8px;
+        }
+        /* Editor toolbar archive button v15.9.123 */
+        .modal-btn.arc-new-btn {
+            background: #064e3b !important; color: #10b981 !important;
+            border: 1px solid #10b981 !important;
+        }
+        .modal-btn.arc-new-btn:hover { background: #065f46 !important; }
+        /* Claude header archive buttons v15.9.123 */
+        .cn-arc-btn {
+            background: transparent; border: 1px solid #10b981; color: #10b981;
+            padding: 4px 9px; font-size: 11px; cursor: pointer; border-radius: 3px;
+            font-family: inherit;
+        }
+        .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
+        .cn-arc-btn:hover { filter: brightness(1.25); }
 </style>
 </head>
 <body>
@@ -5774,7 +5899,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.122</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.123</span>
     </div>
     
     <!-- Metrics Button -->
@@ -5790,6 +5915,8 @@
                 <span style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px;">&#129302; CLAUDE NOTEPAD</span>
                 <span id="cn-model-badge" style="font-size:9px;color:#3b82f6;border:1px solid #1e3a5f;padding:2px 7px;border-radius:10px;background:rgba(59,130,246,0.1);">claude-sonnet-4-20250514</span>
                 <div style="margin-left:auto;display:flex;gap:6px;">
+                    <button class="cn-arc-btn" onclick="archiveSaveClaude('manual')" title="Aktuellen Chat archivieren">&#128230; Archive</button>
+                    <button class="cn-arc-btn view" onclick="archiveOpen()" title="Archiv öffnen">&#128218; Archiv</button>
                     <button onclick="cnClear()" title="Chat leeren" style="background:transparent;border:1px solid #333;color:#666;padding:4px 9px;font-size:11px;cursor:pointer;border-radius:3px;">&#128465; Clear</button>
                     <button onclick="cnCopyLast()" title="Letzte Antwort kopieren" style="background:transparent;border:1px solid #333;color:#666;padding:4px 9px;font-size:11px;cursor:pointer;border-radius:3px;">&#128203; Copy</button>
                     <button class="modal-close" onclick="closeModal('claude-notepad-modal')" style="margin-left:4px;">&times;</button>
@@ -5830,6 +5957,33 @@
     </div>
 
     <!-- EDITOR Modal (Notepad + Briefing) -->
+    <!-- ═══════ v15.9.123 NOTEPAD ARCHIVE MODAL ═══════ -->
+    <div class="modal-overlay modal-overlay-app" id="archive-modal">
+        <div class="modal modal-app">
+            <div class="modal-header">
+                <span class="arc-title-lbl">&#128218; NOTEPAD ARCHIV</span>
+                <span class="arc-count-badge" id="arc-count-badge">0 Einträge</span>
+                <div class="arc-hdr-actions">
+                    <button class="arc-hdr-btn" onclick="archiveBulkExport()" title="Alles als .md exportieren">&#128228; Alles exportieren</button>
+                    <button class="modal-close" onclick="closeModal('archive-modal')">&times;</button>
+                </div>
+            </div>
+            <div class="af-bar">
+                <button class="af-pill pf-ALL active" id="af-pill-all" onclick="archiveFilter('all')">ALL 0</button>
+                <button class="af-pill pf-EDITOR" id="af-pill-editor" onclick="archiveFilter('editor')">EDITOR 0</button>
+                <button class="af-pill pf-CLAUDE" id="af-pill-claude" onclick="archiveFilter('claude')">CLAUDE 0</button>
+                <input type="text" class="af-search" id="af-search" placeholder="&#128269; Suchen..." oninput="archiveSearch(this.value)">
+            </div>
+            <div class="archive-list" id="arc-list">
+                <div class="arc-empty">Keine Einträge archiviert</div>
+            </div>
+            <div class="archive-footer">
+                <span id="arc-stats">0 / 100 Einträge (FIFO rotation)</span>
+                <span>localStorage: hub_notepad_archive_v1</span>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay modal-overlay-app" id="editor-modal">
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;padding:0 16px 0 0;display:flex;align-items:stretch;">
@@ -5851,6 +6005,8 @@
                     <button class="modal-btn" onclick="document.getElementById('notepad-upload').click()" style="background:#6b7280;color:#fff;">&#128194; Load</button>
                     <input type="file" id="notepad-upload" accept=".txt" onchange="loadNotepadFile(event)" style="display:none;">
                     <button class="modal-btn" onclick="emailNotepad()" style="background:var(--blue-medium);color:#fff;">&#9993; Email</button>
+                    <button class="modal-btn arc-new-btn" onclick="archiveSaveEditor('manual')" title="Aktuellen Inhalt archivieren">&#128230; Archive</button>
+                    <button class="modal-btn" onclick="archiveOpen()" title="Archiv öffnen" style="background:#1e3a5f;color:#4F8EF7;border:1px solid #4F8EF7;">&#128218; Archiv</button>
                     <button class="modal-btn" onclick="clearNotepad()" style="background:#dc3545;color:#fff;">&#128465; Clear</button>
                     <span class="save-indicator" id="notepad-saved" style="margin-left:auto;color:var(--good);font-size:12px;">&#10004; Auto-saved</span>
                 </div>
@@ -6211,7 +6367,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.122</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.123</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -9313,12 +9469,15 @@
                 showToast('&#128221; Notepad is already empty');
                 return;
             }
-            const confirm = prompt('Type "DELETE" to clear all notes:');
-            if (confirm === 'DELETE') {
+            // v15.9.123 — Archive-before-delete confirm
+            archiveConfirmClear('editor', function(shouldArchive){
+                if (shouldArchive) {
+                    archiveSaveEditor('auto');
+                }
                 document.getElementById('notepad-text').value = '';
                 localStorage.removeItem('workhub_notepad');
-                showToast('&#128465; Notepad cleared');
-            }
+                showToast(shouldArchive ? '&#128230; Archiviert + Notepad geleert' : '&#128465; Notepad cleared');
+            });
         }
         
         async function emailNotepad() {
@@ -14306,7 +14465,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.122';
+            const HUB_VERSION = 'v15.9.123';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15749,7 +15908,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.122 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.123 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19250,11 +19409,25 @@ Spittelauer Lnde 12/1
         }
 
         function cnClear() {
-            cnHistory = [];
-            var chat = document.getElementById('cn-chat');
-            if (chat) { chat.querySelectorAll('.cn-msg').forEach(function(m){m.remove();}); }
-            cnShowEmpty(true);
-            cnUpdateTokenCount();
+            // v15.9.123 — Archive-before-delete confirm
+            if (!cnHistory || cnHistory.length === 0) {
+                var chat = document.getElementById('cn-chat');
+                if (chat) { chat.querySelectorAll('.cn-msg').forEach(function(m){m.remove();}); }
+                cnShowEmpty(true);
+                cnUpdateTokenCount();
+                return;
+            }
+            archiveConfirmClear('claude', function(shouldArchive){
+                if (shouldArchive) {
+                    archiveSaveClaude('auto');
+                }
+                cnHistory = [];
+                var chat = document.getElementById('cn-chat');
+                if (chat) { chat.querySelectorAll('.cn-msg').forEach(function(m){m.remove();}); }
+                cnShowEmpty(true);
+                cnUpdateTokenCount();
+                showToast(shouldArchive ? '&#128230; Archiviert + Chat geleert' : '&#128465; Chat cleared');
+            });
         }
 
         function cnCopyLast() {
@@ -19265,6 +19438,381 @@ Spittelauer Lnde 12/1
             });
         }
         // ═══════════════════════════════════════════════════════
+        // v15.9.123 — NOTEPAD ARCHIVE MODULE
+        // ═══════════════════════════════════════════════════════
+        var ARCHIVE_KEY = 'hub_notepad_archive_v1';
+        var ARCHIVE_CAP = 100;
+        var ARCHIVE_WARN = 95;
+        var archiveState = { filter: 'all', search: '', expandedId: null };
+
+        function archiveLoad() {
+            try {
+                var raw = localStorage.getItem(ARCHIVE_KEY);
+                if (!raw) return [];
+                var arr = JSON.parse(raw);
+                return Array.isArray(arr) ? arr : [];
+            } catch (e) { return []; }
+        }
+
+        function archivePersist(arr) {
+            try {
+                localStorage.setItem(ARCHIVE_KEY, JSON.stringify(arr));
+                return true;
+            } catch (e) {
+                showToast('⚠ Archiv voll oder Quota überschritten', true);
+                return false;
+            }
+        }
+
+        function archiveFormatDate(d) {
+            function pad(n) { return n < 10 ? '0' + n : '' + n; }
+            return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() +
+                   ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+        }
+
+        function archiveAutoTitle(content) {
+            if (!content) return 'Leer';
+            var firstLine = content.split('\n').find(function(l){ return l.trim().length > 0; }) || '';
+            firstLine = firstLine.trim();
+            if (firstLine.length > 60) return firstLine.substring(0, 60) + '…';
+            return firstLine || content.substring(0, 60).replace(/\n/g, ' ');
+        }
+
+        function archiveSerializeClaude() {
+            if (!cnHistory || cnHistory.length === 0) return '';
+            return cnHistory.map(function(m){
+                var role = m.role === 'user' ? 'USER' : (m.role === 'assistant' ? 'CLAUDE' : (m.role || 'MSG').toUpperCase());
+                return role + ':\n' + (m.content || '') + '\n';
+            }).join('\n---\n\n');
+        }
+
+        function archiveAddEntry(source, content, trigger) {
+            if (!content || !content.trim()) {
+                showToast('⚠ Nichts zu archivieren', true);
+                return false;
+            }
+            var autoTitle = archiveAutoTitle(content);
+            var title = prompt('Titel für Archiv-Eintrag:', autoTitle);
+            if (title === null) return false; // cancelled
+            title = (title || autoTitle).trim() || autoTitle;
+
+            var arr = archiveLoad();
+            var entry = {
+                id: Date.now(),
+                source: source,
+                title: title,
+                content: content,
+                savedAt: archiveFormatDate(new Date()),
+                trigger: trigger || 'manual'
+            };
+            arr.unshift(entry); // newest first
+
+            // FIFO cap 100
+            if (arr.length > ARCHIVE_CAP) {
+                arr = arr.slice(0, ARCHIVE_CAP);
+            }
+
+            if (!archivePersist(arr)) return false;
+
+            if (arr.length >= ARCHIVE_WARN && arr.length < ARCHIVE_CAP) {
+                showToast('⚠ Archiv: ' + arr.length + '/' + ARCHIVE_CAP + ' Einträge', true);
+            } else {
+                showToast('✓ Archiviert: ' + title);
+            }
+
+            // Re-render if modal open
+            if (document.getElementById('archive-modal').classList.contains('show')) {
+                archiveRender();
+            }
+            return true;
+        }
+
+        function archiveSaveEditor(trigger) {
+            var text = document.getElementById('notepad-text');
+            if (!text) return;
+            archiveAddEntry('editor', text.value || '', trigger || 'manual');
+        }
+
+        function archiveSaveClaude(trigger) {
+            var serialized = archiveSerializeClaude();
+            if (!serialized) {
+                showToast('⚠ Chat ist leer', true);
+                return;
+            }
+            archiveAddEntry('claude', serialized, trigger || 'manual');
+        }
+
+        function archiveOpen() {
+            archiveState.filter = 'all';
+            archiveState.search = '';
+            archiveState.expandedId = null;
+            var searchInput = document.getElementById('af-search');
+            if (searchInput) searchInput.value = '';
+            openModal('archive-modal');
+            archiveRender();
+        }
+
+        function archiveFilter(f) {
+            archiveState.filter = f;
+            archiveState.expandedId = null;
+            archiveRender();
+        }
+
+        function archiveSearch(q) {
+            archiveState.search = (q || '').toLowerCase().trim();
+            archiveState.expandedId = null;
+            archiveRender();
+        }
+
+        function archiveToggleExpand(id) {
+            archiveState.expandedId = (archiveState.expandedId === id) ? null : id;
+            archiveRender();
+        }
+
+        function archiveRender() {
+            var arr = archiveLoad();
+            var listEl = document.getElementById('arc-list');
+            if (!listEl) return;
+
+            // Counts per source
+            var cEditor = arr.filter(function(e){ return e.source === 'editor'; }).length;
+            var cClaude = arr.filter(function(e){ return e.source === 'claude'; }).length;
+            var cAll = arr.length;
+
+            var pAll = document.getElementById('af-pill-all');
+            var pEd = document.getElementById('af-pill-editor');
+            var pCl = document.getElementById('af-pill-claude');
+            if (pAll) pAll.textContent = 'ALL ' + cAll;
+            if (pEd) pEd.textContent = 'EDITOR ' + cEditor;
+            if (pCl) pCl.textContent = 'CLAUDE ' + cClaude;
+
+            [pAll, pEd, pCl].forEach(function(el){ if (el) el.classList.remove('active'); });
+            var activeEl = {
+                'all': pAll, 'editor': pEd, 'claude': pCl
+            }[archiveState.filter];
+            if (activeEl) activeEl.classList.add('active');
+
+            var badge = document.getElementById('arc-count-badge');
+            if (badge) badge.textContent = cAll + ' Einträge';
+
+            var stats = document.getElementById('arc-stats');
+            if (stats) stats.textContent = cAll + ' / ' + ARCHIVE_CAP + ' Einträge (FIFO rotation)';
+
+            // Filter + Search
+            var filtered = arr.filter(function(e){
+                if (archiveState.filter !== 'all' && e.source !== archiveState.filter) return false;
+                if (archiveState.search) {
+                    var hay = ((e.title || '') + ' ' + (e.content || '')).toLowerCase();
+                    if (hay.indexOf(archiveState.search) === -1) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                var msg = cAll === 0 ? 'Keine Einträge archiviert' : 'Keine Treffer';
+                listEl.innerHTML = '<div class="arc-empty">' + msg + '</div>';
+                return;
+            }
+
+            listEl.innerHTML = '';
+            filtered.forEach(function(e){
+                var card = document.createElement('div');
+                var expanded = (archiveState.expandedId === e.id);
+                card.className = 'arc-card source-' + e.source + (expanded ? ' expanded' : '');
+
+                var head = document.createElement('div');
+                head.className = 'arc-card-head';
+
+                var badge = document.createElement('span');
+                badge.className = 'arc-source-badge src-' + e.source;
+                badge.textContent = e.source.toUpperCase();
+                head.appendChild(badge);
+
+                var title = document.createElement('span');
+                title.className = 'arc-title-text';
+                title.textContent = e.title || '(ohne Titel)';
+                title.title = e.title || '';
+                head.appendChild(title);
+
+                var trg = document.createElement('span');
+                trg.className = 'arc-trigger' + (e.trigger === 'auto' ? ' trg-auto' : '');
+                trg.textContent = e.trigger || 'manual';
+                head.appendChild(trg);
+
+                var date = document.createElement('span');
+                date.className = 'arc-date-text';
+                date.textContent = e.savedAt || '';
+                head.appendChild(date);
+
+                card.appendChild(head);
+
+                // Click head to toggle
+                head.style.cursor = 'pointer';
+                (function(id){ head.onclick = function(){ archiveToggleExpand(id); }; })(e.id);
+
+                var preview = document.createElement('div');
+                preview.className = 'arc-preview';
+                preview.textContent = e.content || '';
+                card.appendChild(preview);
+
+                if (expanded) {
+                    var actions = document.createElement('div');
+                    actions.className = 'arc-card-actions';
+
+                    var btnDown = document.createElement('button');
+                    btnDown.className = 'arc-action-btn act-download';
+                    btnDown.innerHTML = '&#128194; .md Download';
+                    (function(id){ btnDown.onclick = function(ev){ ev.stopPropagation(); archiveDownload(id); }; })(e.id);
+                    actions.appendChild(btnDown);
+
+                    var btnRest = document.createElement('button');
+                    btnRest.className = 'arc-action-btn act-restore';
+                    btnRest.innerHTML = '&#128229; Restore to Notepad';
+                    (function(id){ btnRest.onclick = function(ev){ ev.stopPropagation(); archiveRestore(id); }; })(e.id);
+                    actions.appendChild(btnRest);
+
+                    var btnDel = document.createElement('button');
+                    btnDel.className = 'arc-action-btn act-delete';
+                    btnDel.innerHTML = '&#10006; Delete';
+                    (function(id){ btnDel.onclick = function(ev){ ev.stopPropagation(); archiveDelete(id); }; })(e.id);
+                    actions.appendChild(btnDel);
+
+                    card.appendChild(actions);
+                }
+
+                listEl.appendChild(card);
+            });
+        }
+
+        function archiveFindEntry(id) {
+            var arr = archiveLoad();
+            return arr.find(function(e){ return e.id === id; });
+        }
+
+        function archiveSanitizeFilename(s) {
+            return (s || 'archiv').replace(/[^a-zA-Z0-9-_äöüÄÖÜß ]/g, '').replace(/\s+/g, '_').substring(0, 60) || 'archiv';
+        }
+
+        function archiveDownload(id) {
+            var e = archiveFindEntry(id);
+            if (!e) return;
+            var md = '# ' + (e.title || 'Archiv-Eintrag') + '\n\n' +
+                     '**Quelle:** ' + e.source + '  \n' +
+                     '**Gespeichert:** ' + e.savedAt + '  \n' +
+                     '**Trigger:** ' + e.trigger + '\n\n---\n\n' +
+                     (e.content || '');
+            var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = archiveSanitizeFilename(e.title) + '_' + e.id + '.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('&#128194; Download gestartet');
+        }
+
+        function archiveRestore(id) {
+            var e = archiveFindEntry(id);
+            if (!e) return;
+
+            if (e.source === 'editor') {
+                var ta = document.getElementById('notepad-text');
+                if (!ta) { showToast('Editor nicht verfügbar', true); return; }
+                if (ta.value && ta.value.trim()) {
+                    if (!confirm('Aktueller Notepad-Inhalt wird überschrieben. Fortfahren?')) return;
+                }
+                ta.value = e.content || '';
+                if (typeof saveNotepad === 'function') saveNotepad();
+                closeModal('archive-modal');
+                openModal('editor-modal');
+                showToast('✓ Wiederhergestellt in Notepad');
+            } else if (e.source === 'claude') {
+                if (cnHistory && cnHistory.length > 0) {
+                    if (!confirm('Aktueller Claude-Chat wird ersetzt. Fortfahren?')) return;
+                }
+                cnHistory = [];
+                var chat = document.getElementById('cn-chat');
+                if (chat) { chat.querySelectorAll('.cn-msg').forEach(function(m){m.remove();}); }
+                cnShowEmpty(false);
+
+                // Render restored content as single system-note message
+                var msgDiv = document.createElement('div');
+                msgDiv.className = 'cn-msg assistant';
+                var bubble = document.createElement('div');
+                bubble.className = 'cn-bubble';
+                bubble.style.background = '#1e293b';
+                bubble.style.border = '1px solid #4F8EF7';
+                bubble.textContent = '📚 Archiv wiederhergestellt — ' + (e.savedAt || '') + '\n\n' + (e.content || '');
+                msgDiv.appendChild(bubble);
+
+                var meta = document.createElement('div');
+                meta.className = 'cn-meta';
+                meta.textContent = '(Read-only — nicht Teil der API-History)';
+                msgDiv.appendChild(meta);
+
+                if (chat) chat.appendChild(msgDiv);
+                cnUpdateTokenCount();
+                closeModal('archive-modal');
+                openModal('claude-notepad-modal');
+                showToast('✓ Archiv-Chat geladen (read-only)');
+            }
+        }
+
+        function archiveDelete(id) {
+            var e = archiveFindEntry(id);
+            if (!e) return;
+            if (!confirm('Eintrag "' + (e.title || '') + '" dauerhaft löschen?')) return;
+            var arr = archiveLoad().filter(function(x){ return x.id !== id; });
+            archivePersist(arr);
+            archiveState.expandedId = null;
+            archiveRender();
+            showToast('&#10006; Eintrag gelöscht');
+        }
+
+        function archiveBulkExport() {
+            var arr = archiveLoad();
+            if (arr.length === 0) {
+                showToast('⚠ Archiv ist leer', true);
+                return;
+            }
+            var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
+            var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
+                     'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
+                     'Work Hub v15.9.123 — Turbo Projects GmbH\n\n---\n\n';
+            arr.forEach(function(e, idx){
+                md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
+                      '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
+                      ' · **Trigger:** ' + e.trigger + '\n\n' +
+                      (e.content || '') + '\n\n<hr>\n\n';
+            });
+            var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'Notepad_Archiv_' + ts + '.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('&#128228; Bulk-Export gestartet (' + arr.length + ' Einträge)');
+        }
+
+        function archiveConfirmClear(source, onDone) {
+            // Simple sequential confirm chain — lightweight, no new modal DOM
+            var doArchive = confirm('Inhalt wird gelöscht.\n\nSoll der aktuelle Inhalt vorher ins Archiv gespeichert werden?\n\n[OK] = Archivieren + Löschen\n[Abbrechen] = nur löschen oder Vorgang abbrechen');
+            if (!doArchive) {
+                // User chose "nur löschen" — but we need to also allow cancel entirely
+                var proceed = confirm('Ohne Archivierung endgültig löschen?\n\n[OK] = Löschen\n[Abbrechen] = Vorgang abbrechen');
+                if (!proceed) return;
+                onDone(false);
+            } else {
+                onDone(true);
+            }
+        }
+        // ═══════════════════════════════════════════════════════
+
 
         function scrollToQuickNotes() {
             const el = document.getElementById('quick-notes-widget');
