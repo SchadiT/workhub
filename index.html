@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.125</title>
+    <title>Turbo Projects Work Hub v15.9.127</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1399,18 +1399,20 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .tasks-list { max-height: 300px; overflow-y: auto; display: none; background: var(--surface-2); }
         .tasks-list.open { display: block; }
-        .task-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-bottom: 1px solid var(--border); }
+        .task-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 20px; border-bottom: 1px solid var(--border); }
         .task-item:last-child { border-bottom: none; }
-        .task-checkbox { width: 18px; height: 18px; border: 2px solid #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; background: transparent; }
+        .task-checkbox { width: 18px; height: 18px; border: 2px solid #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; background: transparent; flex-shrink: 0; margin-top: 2px; }
         .task-checkbox:hover { border-color: var(--good); }
         .task-checkbox.checked { background: var(--good); border-color: var(--good); }
         .task-checkbox.checked::after { content: '\2714'; color: white; font-size: 12px; }
-        .task-info { flex: 1; }
+        .task-info { flex: 1; min-width: 0; }
         .task-title { font-size: 13px; color: var(--text); }
         .task-due { font-size: 11px; color: var(--muted); }
         .task-due.overdue { color: var(--danger); }
-        .task-importance { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+        .task-importance { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; margin-top: 6px; }
         .task-importance.high { background: var(--danger); }
+        /* v15.9.127 — Task Notes Preview */
+        .task-notes { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word; white-space: pre-wrap; }
         .tasks-empty { padding: 20px; text-align: center; color: var(--muted); font-size: 13px; }
         .tasks-login-prompt { padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
         .tasks-login-prompt button { margin-top: 10px; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
@@ -5909,7 +5911,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.125</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.127</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6390,7 +6392,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.125</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.127</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -7021,7 +7023,7 @@
             }
             if (countEl) countEl.textContent = '...';
             try {
-                const r = await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$orderby=importance desc&$top=10`, {
+                const r = await fetch(`https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$orderby=importance desc&$top=10&$select=id,title,dueDateTime,importance,body,status`, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 const data = await r.json();
@@ -7040,9 +7042,24 @@
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
+                    // v15.9.127 — Notes preview from task.body.content
+                    let notesHtml = '';
+                    if (t.body && t.body.content) {
+                        let raw = t.body.content;
+                        // Strip HTML if contentType is html
+                        if (t.body.contentType === 'html') {
+                            const tmp = document.createElement('div');
+                            tmp.innerHTML = raw;
+                            raw = tmp.textContent || tmp.innerText || '';
+                        }
+                        raw = raw.replace(/\r\n/g, '\n').replace(/\u00a0/g, ' ').trim();
+                        if (raw) {
+                            notesHtml = `<div class="task-notes">${esc(raw)}</div>`;
+                        }
+                    }
                     return `<div class="task-item" data-id="${t.id}" data-dept="${dept}">
                         <div class="task-checkbox" onclick="completeTask('${t.id}','${dept}')"></div>
-                        <div class="task-info"><div class="task-title">${esc(t.title)}</div>${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
+                        <div class="task-info"><div class="task-title">${esc(t.title)}</div>${notesHtml}${dueText ? `<div class="task-due ${dueClass}">${dueText}</div>` : ''}</div>
                         ${t.importance === 'high' ? '<div class="task-importance high"></div>' : ''}
                     </div>`;
                 }).join('') : '<div class="tasks-empty">Alles erledigt!</div>';
@@ -11711,7 +11728,8 @@
         // Helper: Check if event category should appear in shiftplans
         // Specials (meetings) and Feiertag should NOT appear in staffing shiftplans
         function shouldShowInShiftplan(category) {
-            const excludedCategories = ['special', 'holiday'];
+            // v15.9.126 — TERMIN excluded from Runner/Bar Shiftplan + Cleaning Plan (display-only)
+            const excludedCategories = ['special', 'holiday', 'termin'];
             return !excludedCategories.includes(category);
         }
         
@@ -14488,7 +14506,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.125';
+            const HUB_VERSION = 'v15.9.127';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15951,7 +15969,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.125 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.127 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19921,7 +19939,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.125 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.127 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -19951,7 +19969,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.125',
+                hubVersion: 'v15.9.127',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
