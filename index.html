@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.129</title>
+    <title>Turbo Projects Work Hub v15.9.130</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1411,7 +1411,7 @@
         .task-due.overdue { color: var(--danger); }
         .task-importance { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; margin-top: 6px; }
         .task-importance.high { background: var(--danger); }
-        /* v15.9.129 — Task Notes Preview */
+        /* v15.9.130 — Task Notes Preview */
         .task-notes { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word; white-space: pre-wrap; }
         .tasks-empty { padding: 20px; text-align: center; color: var(--muted); font-size: 13px; }
         .tasks-login-prompt { padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
@@ -2669,22 +2669,33 @@
             #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ===== MEIN TAG WIDGET v15.9.129 ===== */
+        /* ===== MEIN TAG WIDGET v15.9.130 ===== */
         #myday-widget {
             margin-bottom: 8px;
             border: 1px solid rgba(255,255,255,0.07);
             border-radius: var(--radius);
             overflow: hidden;
+            background: var(--surface);
         }
         #myday-header {
             background: linear-gradient(90deg, #5d2424 0%, #1a1a2e 100%);
             padding: 8px 14px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 10px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            user-select: none;
         }
+        .myday-toggle {
+            font-size: 10px;
+            color: rgba(255,255,255,0.55);
+            transition: transform 0.18s;
+            display: inline-block;
+            width: 10px;
+        }
+        #myday-widget.collapsed .myday-toggle { transform: rotate(-90deg); }
+        #myday-widget.collapsed #myday-body { display: none; }
         .myday-title {
             font-size: 12px;
             font-weight: 800;
@@ -2692,16 +2703,41 @@
             color: #fff;
             text-transform: uppercase;
         }
+        .myday-stats {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .myday-stat-pill {
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 0.3px;
+        }
+        .myday-stat-pill.overdue {
+            background: rgba(239,68,68,0.18);
+            color: #ef4444;
+        }
+        .myday-stat-pill.today {
+            background: rgba(59,130,246,0.18);
+            color: #3b82f6;
+        }
+        .myday-stat-pill.events {
+            background: rgba(236,72,153,0.18);
+            color: #ec4899;
+        }
         .myday-date {
             font-size: 11px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.65);
+            margin-left: auto;
             font-weight: 500;
         }
         .myday-refresh {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.12);
             color: #fff;
-            font-size: 10px;
+            font-size: 11px;
             padding: 3px 8px;
             border-radius: 4px;
             cursor: pointer;
@@ -2710,154 +2746,151 @@
         .myday-refresh:hover { background: rgba(255,255,255,0.16); }
         .myday-refresh.spinning { animation: myday-spin 0.8s linear infinite; }
         @keyframes myday-spin { 100% { transform: rotate(360deg); } }
-        #myday-body {
-            background: var(--surface);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-        }
-        .myday-section {
-            padding: 10px 14px;
-            border-right: 1px solid var(--border);
-        }
-        .myday-section:last-child { border-right: none; }
-        .myday-section-title {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            color: #888;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+        #myday-body { background: var(--surface); }
+
+        /* Mini-Divider zwischen Sektionen */
+        .myday-divider {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-        .myday-section-title .myday-count {
-            background: rgba(59,130,246,0.15);
-            color: #3b82f6;
-            padding: 1px 6px;
-            border-radius: 8px;
-            font-size: 10px;
-        }
-        .myday-overdue-badge {
-            background: rgba(239,68,68,0.15);
-            color: #ef4444;
-            padding: 1px 6px;
-            border-radius: 8px;
-            font-size: 10px;
-            margin-left: 4px;
-        }
-        .myday-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .myday-item {
-            display: flex;
-            align-items: flex-start;
             gap: 8px;
-            padding: 6px 8px;
-            border-radius: 4px;
+            padding: 5px 12px;
             background: rgba(255,255,255,0.02);
-            border-left: 3px solid var(--border);
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #6b7280;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.04);
         }
-        .myday-item.overdue { border-left-color: #ef4444; background: rgba(239,68,68,0.04); }
-        .myday-item.today { border-left-color: #f59e0b; }
-        .myday-item.bmt-termin { border-left-color: #ec4899; }
-        .myday-item.bmt-special { border-left-color: #eab308; }
-        .myday-item.dept-OFFICE { border-left-color: #4F8EF7; }
-        .myday-item.dept-BAR { border-left-color: #EF9F27; }
-        .myday-item.dept-RUNNER { border-left-color: #97C459; }
-        .myday-item.dept-TECHNIK { border-left-color: #AFA9EC; }
-        .myday-item.dept-SPUTNIK { border-left-color: #ec4899; }
-        .myday-item-content {
+        .myday-divider:first-child { border-top: none; }
+        .myday-divider.is-overdue { color: #ef4444; background: rgba(239,68,68,0.05); }
+        .myday-divider .myday-divider-count {
+            background: rgba(255,255,255,0.05);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            color: #888;
+        }
+        .myday-divider.is-overdue .myday-divider-count {
+            background: rgba(239,68,68,0.18);
+            color: #ef4444;
+        }
+
+        /* Item Row (Option C) */
+        .myday-row {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+        .myday-row:last-child { border-bottom: none; }
+        .myday-row:hover { background: rgba(255,255,255,0.02); }
+        .myday-row.is-overdue { background: rgba(239,68,68,0.04); }
+        .myday-row.is-overdue:hover { background: rgba(239,68,68,0.08); }
+        .myday-leftbar {
+            width: 4px;
+            align-self: stretch;
+            flex-shrink: 0;
+        }
+        .myday-leftbar.dept-OFFICE { background: #4F8EF7; }
+        .myday-leftbar.dept-BAR { background: #EF9F27; }
+        .myday-leftbar.dept-RUNNER { background: #97C459; }
+        .myday-leftbar.dept-TECHNIK { background: #AFA9EC; }
+        .myday-leftbar.dept-SPUTNIK { background: #ec4899; }
+        .myday-leftbar.dept-NONE { background: #4b5563; }
+        .myday-leftbar.type-TERMIN { background: #ec4899; }
+        .myday-leftbar.type-SPECIAL { background: #eab308; }
+
+        .myday-rowcontent {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 12px;
+            min-width: 0;
+        }
+        .myday-statusicon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .myday-statusicon.is-overdue {
+            background: rgba(239,68,68,0.18);
+            color: #ef4444;
+            border-radius: 50%;
+        }
+        .myday-statusicon.is-today {
+            border: 1.5px solid #4b5563;
+            border-radius: 3px;
+            width: 13px;
+            height: 13px;
+            cursor: pointer;
+        }
+        .myday-statusicon.is-today:hover { border-color: #3b82f6; }
+        .myday-statusicon.is-today.checked {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #fff;
+        }
+        .myday-statusicon.is-today.checked::after {
+            content: '✓';
+            font-size: 9px;
+        }
+        .myday-statusicon.is-event { color: #ec4899; }
+        .myday-statusicon.is-special { color: #eab308; }
+
+        .myday-titlewrap {
             flex: 1;
             min-width: 0;
         }
-        .myday-item-title {
+        .myday-rowtitle {
             color: var(--text);
-            font-weight: 500;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        .myday-item-notes {
-            font-size: 10px;
-            color: #888;
-            margin-top: 2px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            white-space: nowrap;
             overflow: hidden;
-            line-height: 1.3;
+            text-overflow: ellipsis;
         }
-        .myday-item-meta {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 3px;
+        .myday-row.is-overdue .myday-rowtitle { color: #fca5a5; }
+        .myday-rowtitle .myday-notes-inline {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+        .myday-row.is-overdue .myday-rowtitle .myday-notes-inline { color: #9ca3af; }
+        .myday-rowtime {
             font-size: 10px;
             color: #6b7280;
-        }
-        .myday-tag {
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-weight: 600;
-            font-size: 9px;
-            letter-spacing: 0.5px;
-        }
-        .myday-tag.dept-OFFICE { background: rgba(79,142,247,0.15); color: #4F8EF7; }
-        .myday-tag.dept-BAR { background: rgba(239,159,39,0.15); color: #EF9F27; }
-        .myday-tag.dept-RUNNER { background: rgba(151,196,89,0.15); color: #97C459; }
-        .myday-tag.dept-TECHNIK { background: rgba(175,169,236,0.15); color: #AFA9EC; }
-        .myday-tag.dept-SPUTNIK { background: rgba(236,72,153,0.15); color: #ec4899; }
-        .myday-tag.task-tag { background: rgba(139,92,246,0.12); color: #a78bfa; }
-        .myday-tag.note-tag { background: rgba(245,158,11,0.12); color: #fbbf24; }
-        .myday-tag.bmt-tag { background: rgba(236,72,153,0.15); color: #ec4899; }
-        .myday-tag.special-tag { background: rgba(234,179,8,0.15); color: #eab308; }
-        .myday-tag.overdue-tag { background: rgba(239,68,68,0.18); color: #ef4444; }
-        .myday-due {
-            color: #f59e0b;
-            font-weight: 600;
-        }
-        .myday-due.overdue { color: #ef4444; }
-        .myday-empty {
-            color: #555;
-            font-size: 11px;
-            font-style: italic;
-            padding: 8px 4px;
-            text-align: center;
-        }
-        .myday-checkbox {
-            width: 14px;
-            height: 14px;
-            border: 1.5px solid #4b5563;
-            border-radius: 3px;
+            white-space: nowrap;
             flex-shrink: 0;
-            cursor: pointer;
-            margin-top: 2px;
-            transition: all 0.15s;
+            font-variant-numeric: tabular-nums;
         }
-        .myday-checkbox:hover { border-color: #3b82f6; }
-        .myday-checkbox.checked {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            position: relative;
+        .myday-rowtime.is-overdue { color: #ef4444; font-weight: 700; }
+        .myday-rowtime.is-today { color: #f59e0b; font-weight: 600; }
+        .myday-row .myday-star { color: #fbbf24; margin-right: 4px; }
+
+        .myday-empty {
+            padding: 14px;
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            font-style: italic;
         }
-        .myday-checkbox.checked::after {
-            content: '✓';
-            color: #fff;
-            font-size: 10px;
-            position: absolute;
-            top: -2px;
-            left: 2px;
-            font-weight: bold;
-        }
+
         @media (max-width: 768px) {
-            #myday-body { grid-template-columns: 1fr; }
-            .myday-section { border-right: none; border-bottom: 1px solid var(--border); }
-            .myday-section:last-child { border-bottom: none; }
+            .myday-stats { gap: 4px; }
+            .myday-stat-pill { padding: 1px 6px; font-size: 9px; }
+            .myday-date { display: none; }
+            .myday-rowcontent { padding: 7px 8px; gap: 8px; }
+            .myday-rowtitle { font-size: 11px; }
         }
 
         /* ===== COCKPIT WIDGET ===== */
@@ -3318,33 +3351,21 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== MEIN TAG WIDGET v15.9.129 ==================== -->
+    <!-- ==================== MEIN TAG WIDGET v15.9.130 ==================== -->
     <div id="myday-widget">
-        <div id="myday-header">
+        <div id="myday-header" onclick="mydayToggleCollapse()">
+            <span class="myday-toggle">▼</span>
             <span class="myday-title">☀ MEIN TAG</span>
+            <div class="myday-stats" id="myday-stats">
+                <span class="myday-stat-pill events" id="myday-pill-events" style="display:none;"><span id="myday-pill-events-count">0</span> Termine</span>
+                <span class="myday-stat-pill today" id="myday-pill-today" style="display:none;"><span id="myday-pill-today-count">0</span> heute</span>
+                <span class="myday-stat-pill overdue" id="myday-pill-overdue" style="display:none;"><span id="myday-pill-overdue-count">0</span> überfällig</span>
+            </div>
             <span id="myday-date" class="myday-date"></span>
-            <button class="myday-refresh" id="myday-refresh-btn" onclick="loadMyDay(true)" title="Aktualisieren">↻</button>
+            <button class="myday-refresh" id="myday-refresh-btn" onclick="event.stopPropagation();loadMyDay(true);" title="Aktualisieren">↻</button>
         </div>
         <div id="myday-body">
-            <div class="myday-section">
-                <div class="myday-section-title">
-                    📅 Termine heute
-                    <span class="myday-count" id="myday-events-count">0</span>
-                </div>
-                <div class="myday-list" id="myday-events-list">
-                    <div class="myday-empty">Lädt…</div>
-                </div>
-            </div>
-            <div class="myday-section">
-                <div class="myday-section-title">
-                    ✅ To-Do heute
-                    <span class="myday-count" id="myday-tasks-count">0</span>
-                    <span class="myday-overdue-badge" id="myday-overdue-badge" style="display:none;">⚠ <span id="myday-overdue-count">0</span> überfällig</span>
-                </div>
-                <div class="myday-list" id="myday-tasks-list">
-                    <div class="myday-empty">Lädt…</div>
-                </div>
-            </div>
+            <div class="myday-empty">Lädt…</div>
         </div>
     </div>
     <!-- ==================== /MEIN TAG WIDGET ==================== -->
@@ -6133,7 +6154,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.129</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.130</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6614,7 +6635,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.129</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.130</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -7212,7 +7233,7 @@
             loadQuickNotesFromToDo();
             // Load Projects from To Do
             loadProjects();
-            // v15.9.129 — MEIN TAG widget
+            // v15.9.130 — MEIN TAG widget
             loadMyDay();
         }
         
@@ -7266,7 +7287,7 @@
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
-                    // v15.9.129 — Notes preview from task.body.content
+                    // v15.9.130 — Notes preview from task.body.content
                     let notesHtml = '';
                     if (t.body && t.body.content) {
                         let raw = t.body.content;
@@ -14730,7 +14751,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.129';
+            const HUB_VERSION = 'v15.9.130';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16193,7 +16214,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.129 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.130 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20163,7 +20184,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.129 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.130 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20193,7 +20214,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.129',
+                hubVersion: 'v15.9.130',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21054,7 +21075,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// MEIN TAG WIDGET v15.9.129
+// MEIN TAG WIDGET v15.9.130
 // ═══════════════════════════════════════════════════════
 (function(){
     const MYDAY_DEPTS = ['office', 'bar', 'runner', 'technik', 'sputnik'];
@@ -21062,7 +21083,8 @@ Spittelauer Lnde 12/1
         office: 'OFFICE', bar: 'BAR', runner: 'RUNNER', technik: 'TECHNIK', sputnik: 'SPUTNIK'
     };
     const MYDAY_CACHE_KEY = 'myday_cache_v1';
-    const MYDAY_TTL_MS = 5 * 60 * 1000; // 5 minutes
+    const MYDAY_TTL_MS = 5 * 60 * 1000;
+    const MYDAY_COLLAPSED_KEY = 'myday_collapsed_v1';
     let mydayLastDateStr = '';
     let mydayRefreshTimer = null;
     let mydayMidnightTimer = null;
@@ -21087,7 +21109,6 @@ Spittelauer Lnde 12/1
         mydayLastDateStr = mydayTodayStr();
     }
 
-    // Strip HTML to plain text (for task body.content)
     function mydayStripHtml(raw) {
         if (!raw) return '';
         const tmp = document.createElement('div');
@@ -21096,12 +21117,21 @@ Spittelauer Lnde 12/1
         return txt;
     }
 
-    // ---- Source: BMT Termin + Special for today ----
+    // Relative date label, e.g. "3 Tage", "1 Tag", "Heute"
+    function mydayRelDays(diffMs) {
+        const days = Math.round(diffMs / (24 * 60 * 60 * 1000));
+        if (days === 0) return 'Heute';
+        if (days === 1) return '1 Tag';
+        if (days < 14) return days + ' Tage';
+        const weeks = Math.round(days / 7);
+        return weeks + (weeks === 1 ? ' Wo.' : ' Wo.');
+    }
+
+    // ---- Source: BMT Termine + Specials for today ----
     function mydayGetBmtToday() {
         const today = mydayTodayStr();
         const items = [];
         if (typeof calendarEntries !== 'undefined') {
-            // Termine (rosa)
             (calendarEntries.termin || []).forEach(e => {
                 if (e.date === today) {
                     items.push({
@@ -21112,7 +21142,6 @@ Spittelauer Lnde 12/1
                     });
                 }
             });
-            // Specials (gelb / BMT Specials)
             (calendarEntries.bmt || []).forEach(e => {
                 if (e.date === today) {
                     items.push({
@@ -21128,13 +21157,10 @@ Spittelauer Lnde 12/1
         return items;
     }
 
-    // ---- Source: MS To-Do tasks across all 5 lists ----
-    // Uses cockpitData (populated by cockpitLoad which dynamically matches list names)
-    // Falls back to direct fetch via TODO_LISTS if cockpitData unavailable
+    // ---- Source: MS To-Do tasks (uses cockpitData populated by cockpitLoad) ----
     async function mydayGetTasks() {
         if (typeof accessToken === 'undefined' || !accessToken) return { overdue: [], today: [] };
 
-        // Trigger cockpitLoad if not yet loaded (shared with OFFICE Tasks-Grid)
         const hasCockpit = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
         if (!hasCockpit && typeof cockpitLoad === 'function') {
             try {
@@ -21151,7 +21177,6 @@ Spittelauer Lnde 12/1
         const overdue = [];
         const todayTasks = [];
 
-        // Use cockpitData.byDept if available (preferred — name-matched, fresh)
         if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
             for (const dept of MYDAY_DEPTS) {
                 const tasks = cockpitData.byDept[dept] || [];
@@ -21171,21 +21196,20 @@ Spittelauer Lnde 12/1
                         title: t.title || '',
                         notes: notes,
                         importance: t.importance || 'normal',
-                        dueText: due.toLocaleDateString('de-AT'),
                         dueMs: dueMs,
                         source: 'task'
                     };
                     if (dueMs < todayMs) {
+                        item.overdueBy = todayMs - dueMs;
                         overdue.push(item);
                     } else if (dueMs >= todayMs && dueMs < tomorrowMs) {
                         todayTasks.push(item);
                     }
                 });
             }
-            console.log(`MEIN TAG: from cockpitData → ${overdue.length} overdue, ${todayTasks.length} today`);
-        } else {
-            // Fallback: direct fetch via TODO_LISTS
-            if (typeof TODO_LISTS === 'undefined') return { overdue: [], today: [] };
+            console.log(`MEIN TAG: ${overdue.length} overdue, ${todayTasks.length} today`);
+        } else if (typeof TODO_LISTS !== 'undefined') {
+            // Fallback: direct fetch
             for (const dept of MYDAY_DEPTS) {
                 const listId = TODO_LISTS[dept];
                 if (!listId) continue;
@@ -21206,30 +21230,21 @@ Spittelauer Lnde 12/1
                             notes = raw;
                         }
                         const item = {
-                            id: t.id,
-                            dept: dept,
-                            title: t.title || '',
-                            notes: notes,
-                            importance: t.importance || 'normal',
-                            dueText: due.toLocaleDateString('de-AT'),
-                            dueMs: dueMs,
-                            source: 'task'
+                            id: t.id, dept: dept, title: t.title || '', notes: notes,
+                            importance: t.importance || 'normal', dueMs: dueMs, source: 'task'
                         };
                         if (dueMs < todayMs) {
+                            item.overdueBy = todayMs - dueMs;
                             overdue.push(item);
                         } else if (dueMs >= todayMs && dueMs < tomorrowMs) {
                             todayTasks.push(item);
                         }
                     });
-                } catch (e) {
-                    console.warn('mydayGetTasks fallback error for ' + dept + ':', e);
-                }
+                } catch (e) { console.warn('mydayGetTasks fallback error:', e); }
             }
         }
 
-        // Sort overdue by oldest-first (most overdue first)
         overdue.sort((a, b) => a.dueMs - b.dueMs);
-        // Today tasks: importance high first, then by title
         todayTasks.sort((a, b) => {
             if (a.importance !== b.importance) return a.importance === 'high' ? -1 : 1;
             return a.title.localeCompare(b.title);
@@ -21238,8 +21253,6 @@ Spittelauer Lnde 12/1
     }
 
     // ---- Source: Quick Notes created today ----
-    // Note: Quick Notes have no dueDate field — using ts (created date) as proxy.
-    // C38 backlog: extend Quick Notes with dueDate field for proper overdue logic.
     function mydayGetQuickNotes() {
         let cards = [];
         try { cards = JSON.parse(localStorage.getItem('qn_cards_v1') || '[]'); } catch(e) {}
@@ -21251,12 +21264,10 @@ Spittelauer Lnde 12/1
         const items = [];
         cards.forEach(c => {
             const ts = String(c.ts || '');
-            // ts format: "DD.MM.YYYY HH:MM"
             if (ts.startsWith(todayPrefix)) {
                 items.push({
                     id: c.id,
-                    dept: (c.dept || 'NONE').toLowerCase(),
-                    deptRaw: c.dept || null,
+                    dept: (c.dept || 'NONE'),
                     title: c.text || '',
                     priority: c.priority || 'P2',
                     ts: ts,
@@ -21274,123 +21285,118 @@ Spittelauer Lnde 12/1
         return items;
     }
 
-    // ---- Render: Events Section ----
-    function mydayRenderEvents(events) {
-        const list = document.getElementById('myday-events-list');
-        const count = document.getElementById('myday-events-count');
-        if (!list || !count) return;
-        count.textContent = events.length;
-        if (!events.length) {
-            list.innerHTML = '<div class="myday-empty">Keine Termine heute.</div>';
-            return;
-        }
-        list.innerHTML = events.map(e => {
-            const cls = e.type === 'termin' ? 'bmt-termin' : 'bmt-special';
-            const tagCls = e.type === 'termin' ? 'bmt-tag' : 'special-tag';
-            const tagLbl = e.type === 'termin' ? 'TERMIN' : 'SPECIAL';
-            const timeHtml = e.time ? `<span class="myday-due">${mydayEsc(e.time)}</span>` : '';
-            return `<div class="myday-item ${cls}">
-                <div class="myday-item-content">
-                    <div class="myday-item-title">${mydayEsc(e.title)}</div>
-                    <div class="myday-item-meta">
-                        <span class="myday-tag ${tagCls}">${tagLbl}</span>
-                        ${timeHtml}
-                    </div>
+    // ---- Render row builders ----
+    function mydayBuildEventRow(e) {
+        const isTermin = e.type === 'termin';
+        const leftbarCls = isTermin ? 'type-TERMIN' : 'type-SPECIAL';
+        const iconCls = isTermin ? 'is-event' : 'is-special';
+        const iconChar = isTermin ? '◆' : '★';
+        const timeHtml = e.time ? mydayEsc(e.time) : '';
+        return `<div class="myday-row">
+            <div class="myday-leftbar ${leftbarCls}"></div>
+            <div class="myday-rowcontent">
+                <span class="myday-statusicon ${iconCls}">${iconChar}</span>
+                <div class="myday-titlewrap">
+                    <div class="myday-rowtitle">${mydayEsc(e.title)}</div>
                 </div>
-            </div>`;
-        }).join('');
+                <span class="myday-rowtime">${timeHtml}</span>
+            </div>
+        </div>`;
     }
 
-    // ---- Render: Tasks Section ----
-    function mydayRenderTasks(taskBuckets, qnItems) {
-        const list = document.getElementById('myday-tasks-list');
-        const count = document.getElementById('myday-tasks-count');
-        const overdueBadge = document.getElementById('myday-overdue-badge');
-        const overdueCount = document.getElementById('myday-overdue-count');
-        if (!list || !count) return;
+    function mydayBuildTaskRow(t, isOverdue) {
+        const deptUpper = MYDAY_DEPT_LABELS[t.dept] || t.dept.toUpperCase();
+        const rowCls = isOverdue ? 'is-overdue' : '';
+        const star = t.importance === 'high' ? '<span class="myday-star">★</span>' : '';
+        const notesHtml = t.notes ? `<span class="myday-notes-inline">— ${mydayEsc(t.notes.length > 60 ? t.notes.slice(0,60) + '…' : t.notes)}</span>` : '';
+        const timeLabel = isOverdue ? mydayRelDays(t.overdueBy) : 'Heute';
+        const timeCls = isOverdue ? 'is-overdue' : 'is-today';
+        const iconHtml = isOverdue
+            ? '<span class="myday-statusicon is-overdue">!</span>'
+            : `<span class="myday-statusicon is-today" onclick="mydayCompleteTask('${mydayEsc(t.id)}','${mydayEsc(t.dept)}', this)" title="Erledigt"></span>`;
+        return `<div class="myday-row ${rowCls}">
+            <div class="myday-leftbar dept-${deptUpper}"></div>
+            <div class="myday-rowcontent">
+                ${iconHtml}
+                <div class="myday-titlewrap">
+                    <div class="myday-rowtitle">${star}${mydayEsc(t.title)}${notesHtml}</div>
+                </div>
+                <span class="myday-rowtime ${timeCls}">${timeLabel}</span>
+            </div>
+        </div>`;
+    }
 
-        const overdueTasks = taskBuckets.overdue || [];
+    function mydayBuildQnRow(q) {
+        const deptUpper = q.dept || 'NONE';
+        const prioColor = { P1: '#ef4444', P2: '#f59e0b', P3: '#888' }[q.priority] || '#888';
+        const prioMark = `<span style="color:${prioColor};font-weight:700;font-size:9px;margin-right:4px;">${q.priority}</span>`;
+        return `<div class="myday-row">
+            <div class="myday-leftbar dept-${deptUpper}"></div>
+            <div class="myday-rowcontent">
+                <span class="myday-statusicon" style="color:#a78bfa;">●</span>
+                <div class="myday-titlewrap">
+                    <div class="myday-rowtitle">${prioMark}${mydayEsc(q.title)}</div>
+                </div>
+                <span class="myday-rowtime is-today">Heute</span>
+            </div>
+        </div>`;
+    }
+
+    // ---- Main render: single list with mini-dividers ----
+    function mydayRender(events, taskBuckets, qnItems) {
+        const body = document.getElementById('myday-body');
+        if (!body) return;
+
+        const overdue = taskBuckets.overdue || [];
         const todayTasks = taskBuckets.today || [];
-        const totalToday = todayTasks.length + qnItems.length;
+        const eventCount = events.length;
+        const todayCount = todayTasks.length + qnItems.length;
+        const overdueCount = overdue.length;
 
-        count.textContent = totalToday;
-        if (overdueBadge && overdueCount) {
-            if (overdueTasks.length > 0) {
-                overdueBadge.style.display = '';
-                overdueCount.textContent = overdueTasks.length;
-            } else {
-                overdueBadge.style.display = 'none';
+        // Header pills
+        const setPill = (id, countId, count) => {
+            const pill = document.getElementById(id);
+            const cnt = document.getElementById(countId);
+            if (pill && cnt) {
+                if (count > 0) { pill.style.display = ''; cnt.textContent = count; }
+                else { pill.style.display = 'none'; }
             }
-        }
+        };
+        setPill('myday-pill-events', 'myday-pill-events-count', eventCount);
+        setPill('myday-pill-today', 'myday-pill-today-count', todayCount);
+        setPill('myday-pill-overdue', 'myday-pill-overdue-count', overdueCount);
 
-        if (overdueTasks.length === 0 && totalToday === 0) {
-            list.innerHTML = '<div class="myday-empty">Alles im grünen Bereich. ✓</div>';
+        // Empty state
+        if (eventCount + todayCount + overdueCount === 0) {
+            body.innerHTML = '<div class="myday-empty">Alles im grünen Bereich für heute. ✓</div>';
             return;
         }
 
         let html = '';
 
-        // Overdue first
-        overdueTasks.forEach(t => {
-            html += mydayRenderTaskItem(t, true);
-        });
+        // ---- Section 1: Termine ----
+        if (events.length > 0) {
+            html += `<div class="myday-divider"><span>Termine</span><span class="myday-divider-count">${events.length}</span></div>`;
+            events.forEach(e => { html += mydayBuildEventRow(e); });
+        }
 
-        // Today tasks (MS To-Do)
-        todayTasks.forEach(t => {
-            html += mydayRenderTaskItem(t, false);
-        });
+        // ---- Section 2: Heute fällig ----
+        if (todayCount > 0) {
+            html += `<div class="myday-divider"><span>Heute fällig</span><span class="myday-divider-count">${todayCount}</span></div>`;
+            todayTasks.forEach(t => { html += mydayBuildTaskRow(t, false); });
+            qnItems.forEach(q => { html += mydayBuildQnRow(q); });
+        }
 
-        // Quick Notes today
-        qnItems.forEach(q => {
-            html += mydayRenderQnItem(q);
-        });
+        // ---- Section 3: Überfällig (last) ----
+        if (overdue.length > 0) {
+            html += `<div class="myday-divider is-overdue"><span>Überfällig</span><span class="myday-divider-count">${overdue.length}</span></div>`;
+            overdue.forEach(t => { html += mydayBuildTaskRow(t, true); });
+        }
 
-        list.innerHTML = html;
+        body.innerHTML = html;
     }
 
-    function mydayRenderTaskItem(t, isOverdue) {
-        const deptUpper = MYDAY_DEPT_LABELS[t.dept] || t.dept.toUpperCase();
-        const itemCls = (isOverdue ? 'overdue' : 'today') + ' dept-' + deptUpper;
-        const dueCls = isOverdue ? 'overdue' : '';
-        const dueLabel = isOverdue ? `⚠ ${t.dueText}` : 'Heute';
-        const importanceMark = t.importance === 'high' ? '<span style="color:#fbbf24;">⭐</span> ' : '';
-        const notesHtml = t.notes ? `<div class="myday-item-notes">${mydayEsc(t.notes)}</div>` : '';
-        const overdueTag = isOverdue ? '<span class="myday-tag overdue-tag">ÜBERFÄLLIG</span>' : '';
-        return `<div class="myday-item ${itemCls}">
-            <div class="myday-checkbox" onclick="mydayCompleteTask('${mydayEsc(t.id)}','${mydayEsc(t.dept)}', this)" title="Erledigt"></div>
-            <div class="myday-item-content">
-                <div class="myday-item-title">${importanceMark}${mydayEsc(t.title)}</div>
-                ${notesHtml}
-                <div class="myday-item-meta">
-                    <span class="myday-tag dept-${deptUpper}">${deptUpper}</span>
-                    <span class="myday-tag task-tag">TASK</span>
-                    ${overdueTag}
-                    <span class="myday-due ${dueCls}">${dueLabel}</span>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    function mydayRenderQnItem(q) {
-        const deptUpper = q.deptRaw || 'NONE';
-        const deptCls = (deptUpper && deptUpper !== 'NONE') ? 'dept-' + deptUpper : '';
-        const deptTagHtml = (deptUpper && deptUpper !== 'NONE')
-            ? `<span class="myday-tag dept-${deptUpper}">${deptUpper}</span>` : '';
-        const prioColor = { P1: '#ef4444', P2: '#f59e0b', P3: '#888' }[q.priority] || '#888';
-        return `<div class="myday-item today ${deptCls}">
-            <div class="myday-item-content">
-                <div class="myday-item-title">${mydayEsc(q.title)}</div>
-                <div class="myday-item-meta">
-                    ${deptTagHtml}
-                    <span class="myday-tag note-tag">NOTE</span>
-                    <span style="color:${prioColor};font-weight:700;font-size:10px;">${q.priority}</span>
-                    <span class="myday-due">Heute</span>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    // ---- Complete task from MEIN TAG (calls Graph PATCH) ----
+    // ---- Complete task (Graph PATCH) ----
     window.mydayCompleteTask = async function(taskId, dept, el) {
         if (typeof accessToken === 'undefined' || !accessToken) return;
         if (typeof TODO_LISTS === 'undefined') return;
@@ -21405,9 +21411,7 @@ Spittelauer Lnde 12/1
             });
             if (typeof showToast === 'function') showToast('✓ Erledigt');
             if (typeof trackTaskCompletion === 'function') trackTaskCompletion();
-            // Reload after short delay for visual feedback
             setTimeout(() => loadMyDay(true), 400);
-            // Also refresh DTW tasks list if open
             if (typeof loadTasks === 'function') loadTasks(dept);
         } catch (e) {
             if (el) el.classList.remove('checked');
@@ -21415,20 +21419,32 @@ Spittelauer Lnde 12/1
         }
     };
 
-    // ---- Main load (with cache) ----
+    // ---- Collapse toggle ----
+    window.mydayToggleCollapse = function() {
+        const w = document.getElementById('myday-widget');
+        if (!w) return;
+        const isCollapsed = w.classList.toggle('collapsed');
+        try { localStorage.setItem(MYDAY_COLLAPSED_KEY, isCollapsed ? '1' : '0'); } catch(e) {}
+    };
+
+    function mydayApplyCollapseState() {
+        const w = document.getElementById('myday-widget');
+        if (!w) return;
+        try {
+            if (localStorage.getItem(MYDAY_COLLAPSED_KEY) === '1') {
+                w.classList.add('collapsed');
+            }
+        } catch(e) {}
+    }
+
+    // ---- Main load ----
     window.loadMyDay = async function(force) {
         const btn = document.getElementById('myday-refresh-btn');
         if (btn) btn.classList.add('spinning');
         mydayUpdateDateHeader();
 
-        // Always render BMT immediately (no API needed)
         const events = mydayGetBmtToday();
-        mydayRenderEvents(events);
-
-        // Quick Notes immediately
         const qnItems = mydayGetQuickNotes();
-
-        // Tasks: try cache first unless forced
         let taskBuckets = { overdue: [], today: [] };
         const now = Date.now();
 
@@ -21437,24 +21453,21 @@ Spittelauer Lnde 12/1
                 const cached = JSON.parse(localStorage.getItem(MYDAY_CACHE_KEY) || 'null');
                 if (cached && cached.savedAt && (now - cached.savedAt) < MYDAY_TTL_MS && cached.dateStr === mydayTodayStr()) {
                     taskBuckets = cached.taskBuckets || taskBuckets;
-                    mydayRenderTasks(taskBuckets, qnItems);
+                    mydayRender(events, taskBuckets, qnItems);
                     if (btn) btn.classList.remove('spinning');
-                    // Background refresh
                     setTimeout(() => loadMyDay(true), 100);
                     return;
                 }
             } catch (e) { /* ignore */ }
         }
 
-        // Render placeholder while fetching
         let didFetch = false;
         if (typeof accessToken !== 'undefined' && accessToken) {
             taskBuckets = await mydayGetTasks();
             didFetch = true;
         }
-        mydayRenderTasks(taskBuckets, qnItems);
+        mydayRender(events, taskBuckets, qnItems);
 
-        // Save cache only if we actually fetched (avoid caching empty stub when not signed in)
         if (didFetch) {
             try {
                 localStorage.setItem(MYDAY_CACHE_KEY, JSON.stringify({
@@ -21468,13 +21481,11 @@ Spittelauer Lnde 12/1
         if (btn) btn.classList.remove('spinning');
     };
 
-    // ---- Auto-refresh (5 min) ----
     function mydayStartAutoRefresh() {
         if (mydayRefreshTimer) clearInterval(mydayRefreshTimer);
         mydayRefreshTimer = setInterval(() => loadMyDay(true), MYDAY_TTL_MS);
     }
 
-    // ---- Midnight tick (date change detection) ----
     function mydayStartMidnightTick() {
         if (mydayMidnightTimer) clearInterval(mydayMidnightTimer);
         mydayMidnightTimer = setInterval(() => {
@@ -21487,14 +21498,12 @@ Spittelauer Lnde 12/1
         }, 60 * 1000);
     }
 
-    // ---- Init ----
     function mydayInit() {
+        mydayApplyCollapseState();
         mydayUpdateDateHeader();
-        // Render BMT + QN even without auth
         const events = mydayGetBmtToday();
-        mydayRenderEvents(events);
         const qnItems = mydayGetQuickNotes();
-        mydayRenderTasks({ overdue: [], today: [] }, qnItems);
+        mydayRender(events, { overdue: [], today: [] }, qnItems);
         mydayStartAutoRefresh();
         mydayStartMidnightTick();
     }
