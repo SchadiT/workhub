@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.128</title>
+    <title>Turbo Projects Work Hub v15.9.129</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -1411,7 +1411,7 @@
         .task-due.overdue { color: var(--danger); }
         .task-importance { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; margin-top: 6px; }
         .task-importance.high { background: var(--danger); }
-        /* v15.9.128 — Task Notes Preview */
+        /* v15.9.129 — Task Notes Preview */
         .task-notes { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word; white-space: pre-wrap; }
         .tasks-empty { padding: 20px; text-align: center; color: var(--muted); font-size: 13px; }
         .tasks-login-prompt { padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
@@ -2669,7 +2669,7 @@
             #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ===== MEIN TAG WIDGET v15.9.128 ===== */
+        /* ===== MEIN TAG WIDGET v15.9.129 ===== */
         #myday-widget {
             margin-bottom: 8px;
             border: 1px solid rgba(255,255,255,0.07);
@@ -3318,7 +3318,7 @@
     
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== MEIN TAG WIDGET v15.9.128 ==================== -->
+    <!-- ==================== MEIN TAG WIDGET v15.9.129 ==================== -->
     <div id="myday-widget">
         <div id="myday-header">
             <span class="myday-title">☀ MEIN TAG</span>
@@ -6133,7 +6133,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.128</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.129</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6614,7 +6614,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.128</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.129</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -7212,7 +7212,7 @@
             loadQuickNotesFromToDo();
             // Load Projects from To Do
             loadProjects();
-            // v15.9.128 — MEIN TAG widget
+            // v15.9.129 — MEIN TAG widget
             loadMyDay();
         }
         
@@ -7266,7 +7266,7 @@
                         else if (due.toDateString() === today.toDateString()) { dueClass = 'today'; dueText = 'Heute'; }
                         else dueText = due.toLocaleDateString('de-DE');
                     }
-                    // v15.9.128 — Notes preview from task.body.content
+                    // v15.9.129 — Notes preview from task.body.content
                     let notesHtml = '';
                     if (t.body && t.body.content) {
                         let raw = t.body.content;
@@ -14730,7 +14730,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.128';
+            const HUB_VERSION = 'v15.9.129';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16193,7 +16193,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.128 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.129 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20163,7 +20163,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.128 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.129 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20193,7 +20193,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.128',
+                hubVersion: 'v15.9.129',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21054,7 +21054,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// MEIN TAG WIDGET v15.9.128
+// MEIN TAG WIDGET v15.9.129
 // ═══════════════════════════════════════════════════════
 (function(){
     const MYDAY_DEPTS = ['office', 'bar', 'runner', 'technik', 'sputnik'];
@@ -21129,26 +21129,34 @@ Spittelauer Lnde 12/1
     }
 
     // ---- Source: MS To-Do tasks across all 5 lists ----
+    // Uses cockpitData (populated by cockpitLoad which dynamically matches list names)
+    // Falls back to direct fetch via TODO_LISTS if cockpitData unavailable
     async function mydayGetTasks() {
         if (typeof accessToken === 'undefined' || !accessToken) return { overdue: [], today: [] };
-        if (typeof TODO_LISTS === 'undefined') return { overdue: [], today: [] };
+
+        // Trigger cockpitLoad if not yet loaded (shared with OFFICE Tasks-Grid)
+        const hasCockpit = (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad);
+        if (!hasCockpit && typeof cockpitLoad === 'function') {
+            try {
+                console.log('MEIN TAG: triggering cockpitLoad for fresh task data');
+                await cockpitLoad();
+            } catch (e) {
+                console.warn('MEIN TAG: cockpitLoad failed', e);
+            }
+        }
+
         const today = new Date(); today.setHours(0, 0, 0, 0);
         const todayMs = today.getTime();
         const tomorrowMs = todayMs + 24 * 60 * 60 * 1000;
         const overdue = [];
         const todayTasks = [];
 
-        for (const dept of MYDAY_DEPTS) {
-            const listId = TODO_LISTS[dept];
-            if (!listId) continue;
-            try {
-                const r = await fetch(
-                    `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$top=50&$select=id,title,dueDateTime,importance,body,status`,
-                    { headers: { 'Authorization': `Bearer ${accessToken}` } }
-                );
-                if (!r.ok) continue;
-                const data = await r.json();
-                (data.value || []).forEach(t => {
+        // Use cockpitData.byDept if available (preferred — name-matched, fresh)
+        if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
+            for (const dept of MYDAY_DEPTS) {
+                const tasks = cockpitData.byDept[dept] || [];
+                tasks.forEach(t => {
+                    if (t.status === 'completed') return;
                     if (!t.dueDateTime || !t.dueDateTime.dateTime) return;
                     const due = new Date(t.dueDateTime.dateTime + 'Z');
                     const dueMs = due.getTime();
@@ -21173,10 +21181,52 @@ Spittelauer Lnde 12/1
                         todayTasks.push(item);
                     }
                 });
-            } catch (e) {
-                console.warn('mydayGetTasks error for ' + dept + ':', e);
+            }
+            console.log(`MEIN TAG: from cockpitData → ${overdue.length} overdue, ${todayTasks.length} today`);
+        } else {
+            // Fallback: direct fetch via TODO_LISTS
+            if (typeof TODO_LISTS === 'undefined') return { overdue: [], today: [] };
+            for (const dept of MYDAY_DEPTS) {
+                const listId = TODO_LISTS[dept];
+                if (!listId) continue;
+                try {
+                    const r = await fetch(
+                        `https://graph.microsoft.com/v1.0/me/todo/lists/${listId}/tasks?$filter=status ne 'completed'&$top=50&$select=id,title,dueDateTime,importance,body,status`,
+                        { headers: { 'Authorization': `Bearer ${accessToken}` } }
+                    );
+                    if (!r.ok) continue;
+                    const data = await r.json();
+                    (data.value || []).forEach(t => {
+                        if (!t.dueDateTime || !t.dueDateTime.dateTime) return;
+                        const due = new Date(t.dueDateTime.dateTime + 'Z');
+                        const dueMs = due.getTime();
+                        let notes = '';
+                        if (t.body && t.body.content) {
+                            const raw = t.body.contentType === 'html' ? mydayStripHtml(t.body.content) : t.body.content.trim();
+                            notes = raw;
+                        }
+                        const item = {
+                            id: t.id,
+                            dept: dept,
+                            title: t.title || '',
+                            notes: notes,
+                            importance: t.importance || 'normal',
+                            dueText: due.toLocaleDateString('de-AT'),
+                            dueMs: dueMs,
+                            source: 'task'
+                        };
+                        if (dueMs < todayMs) {
+                            overdue.push(item);
+                        } else if (dueMs >= todayMs && dueMs < tomorrowMs) {
+                            todayTasks.push(item);
+                        }
+                    });
+                } catch (e) {
+                    console.warn('mydayGetTasks fallback error for ' + dept + ':', e);
+                }
             }
         }
+
         // Sort overdue by oldest-first (most overdue first)
         overdue.sort((a, b) => a.dueMs - b.dueMs);
         // Today tasks: importance high first, then by title
@@ -21397,19 +21447,23 @@ Spittelauer Lnde 12/1
         }
 
         // Render placeholder while fetching
+        let didFetch = false;
         if (typeof accessToken !== 'undefined' && accessToken) {
             taskBuckets = await mydayGetTasks();
+            didFetch = true;
         }
         mydayRenderTasks(taskBuckets, qnItems);
 
-        // Save cache
-        try {
-            localStorage.setItem(MYDAY_CACHE_KEY, JSON.stringify({
-                savedAt: now,
-                dateStr: mydayTodayStr(),
-                taskBuckets: taskBuckets
-            }));
-        } catch (e) { /* ignore */ }
+        // Save cache only if we actually fetched (avoid caching empty stub when not signed in)
+        if (didFetch) {
+            try {
+                localStorage.setItem(MYDAY_CACHE_KEY, JSON.stringify({
+                    savedAt: now,
+                    dateStr: mydayTodayStr(),
+                    taskBuckets: taskBuckets
+                }));
+            } catch (e) { /* ignore */ }
+        }
 
         if (btn) btn.classList.remove('spinning');
     };
