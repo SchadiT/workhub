@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.132</title>
+    <title>Turbo Projects Work Hub v15.9.133</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -248,9 +248,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #0f1623;
+            background: linear-gradient(90deg, #0a0a0f 0%, #3b82f6 50%, #0a0a0f 100%);
             border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(59,130,246,0.4);
             padding: 8px 16px;
             margin-bottom: 8px;
             border-radius: 0;
@@ -278,10 +278,10 @@
             gap: 8px;
         }
         .header-logo {
-            font-size: 13px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 500;
             color: #fff;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
         }
         .header-title {
             font-size: 13px;
@@ -2698,8 +2698,8 @@
         #myday-widget.collapsed #myday-body { display: none; }
         .myday-title {
             font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
             color: #fff;
             text-transform: uppercase;
         }
@@ -2858,7 +2858,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .myday-row.is-overdue .myday-rowtitle { color: #fca5a5; }
+        .myday-row.is-overdue .myday-rowtitle { color: #fff; }
         .myday-rowtitle .myday-notes-inline {
             color: #6b7280;
             font-style: italic;
@@ -3338,7 +3338,7 @@
         </div>
         <div class="header-center">
             <div class="header-logo-group">
-                <span class="header-logo">TURBO</span>
+                <span class="header-logo">TURBO-PROJECTS</span>
                 <span class="header-title">Work Hub</span>
             </div>
         </div>
@@ -3355,7 +3355,7 @@
     <div id="myday-widget">
         <div id="myday-header" onclick="mydayToggleCollapse()">
             <span class="myday-toggle">▼</span>
-            <span class="myday-title">☀ MEIN TAG</span>
+            <span class="myday-title">☀ MY WORK DAY</span>
             <div class="myday-stats" id="myday-stats">
                 <span class="myday-stat-pill events" id="myday-pill-events" style="display:none;"><span id="myday-pill-events-count">0</span> Termine</span>
                 <span class="myday-stat-pill today" id="myday-pill-today" style="display:none;"><span id="myday-pill-today-count">0</span> heute</span>
@@ -6155,7 +6155,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.132</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.133</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6489,7 +6489,7 @@
                                 <span class="tool-count" id="app-cleaning-week">0</span>
                             </div>
                             <div class="tool-usage-row">
-                                <span class="tool-name">Email</span>
+                                <span class="tool-name">Email Hub</span>
                                 <div class="tool-bar-bg"><div class="tool-bar" id="tool-bar-email" style="width: 0%;"></div></div>
                                 <span class="tool-count" id="app-email-week">0</span>
                             </div>
@@ -6636,7 +6636,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.132</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.133</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14752,7 +14752,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.132';
+            const HUB_VERSION = 'v15.9.133';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16215,7 +16215,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.132 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.133 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20212,7 +20212,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.132 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.133 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20242,7 +20242,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.132',
+                hubVersion: 'v15.9.133',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
