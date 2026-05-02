@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.133</title>
+    <title>Turbo Projects Work Hub v15.9.134</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4301,6 +4301,26 @@
                 <button class="modal-close" onclick="closeModal('db-viewer-modal')">&times;</button>
             </div>
             <div class="modal-body" style="padding:0;">
+                <!-- v15.9.134 — DB Update Status Bar -->
+                <div id="dbv-update-status" style="display:none;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface);align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <div id="dbv-update-dot" style="width:9px;height:9px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+                        <div>
+                            <span style="color:#888;text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Letzter Eintrag:</span>
+                            <span id="dbv-update-last" style="color:#fff;font-weight:600;margin-left:4px;">—</span>
+                            <span id="dbv-update-last-name" style="color:#aaa;margin-left:4px;"></span>
+                        </div>
+                    </div>
+                    <div style="width:1px;height:18px;background:var(--border);"></div>
+                    <div>
+                        <span style="color:#888;text-transform:uppercase;letter-spacing:.5px;font-size:10px;">Status:</span>
+                        <span id="dbv-update-status-text" style="margin-left:4px;font-weight:600;">—</span>
+                    </div>
+                    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+                        <span id="dbv-update-hint" style="color:#888;font-size:10px;font-style:italic;"></span>
+                    </div>
+                </div>
+
                 <!-- Filters -->
                 <div style="display:flex;flex-wrap:wrap;gap:10px;padding:14px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);align-items:flex-end;">
                     <div style="display:flex;flex-direction:column;gap:3px;">
@@ -6155,7 +6175,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.133</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.134</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6636,7 +6656,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.133</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.134</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14752,7 +14772,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.133';
+            const HUB_VERSION = 'v15.9.134';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16215,7 +16235,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.133 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.134 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17453,11 +17473,48 @@ Spittelauer Lnde 12/1
                 dbvLoaded = true;
                 document.getElementById('dbv-status-dot').style.background = '#22c55e';
                 document.getElementById('dbv-status').textContent = dbvData.length + ' Events geladen';
+                dbvUpdateStatusBar(); // v15.9.134
                 dbvPopulateFilters();
                 dbvApplyFilters();
             } catch(e) {
                 document.getElementById('dbv-status').textContent = 'Fehler beim Laden';
                 document.getElementById('dbv-table-wrap').innerHTML = '<div style="text-align:center;padding:30px;color:#888;">Datenbank konnte nicht geladen werden.<br><small>' + e.message + '</small></div>';
+            }
+        }
+
+        // === v15.9.134 — DB Update Status Bar ===
+        function dbvUpdateStatusBar() {
+            const wrap = document.getElementById('dbv-update-status');
+            if (!wrap) return;
+            const s = (typeof mydayGetDbStatus === 'function') ? mydayGetDbStatus() : null;
+            if (!s || !s.dataReady) { wrap.style.display = 'none'; return; }
+            wrap.style.display = 'flex';
+
+            const dot = document.getElementById('dbv-update-dot');
+            const lastEl = document.getElementById('dbv-update-last');
+            const lastNameEl = document.getElementById('dbv-update-last-name');
+            const statusEl = document.getElementById('dbv-update-status-text');
+            const hintEl = document.getElementById('dbv-update-hint');
+
+            lastEl.textContent = s.lastUpdate;
+            lastNameEl.textContent = s.lastEventName ? '(' + s.lastEventName + ')' : '';
+
+            if (!s.needsUpdate) {
+                dot.style.background = '#22c55e';
+                statusEl.style.color = '#22c55e';
+                statusEl.textContent = '🟢 Aktuell — alle Events erfasst';
+                hintEl.textContent = s.totalEvents + ' Events in DB';
+            } else {
+                const colorMap = { critical: '#ef4444', warning: '#f59e0b', ok: '#3b82f6' };
+                const labelMap = {
+                    critical: '🔴 Kritisch — ' + s.openCount + ' Events offen seit ' + s.oldestDate + ' (' + s.daysOld + ' d)',
+                    warning:  '🟠 Bald fällig — ' + s.openCount + ' Events offen seit ' + s.oldestDate + ' (' + s.daysOld + ' d)',
+                    ok:       '🔵 Update fällig — ' + s.openCount + ' Events offen seit ' + s.oldestDate + ' (' + s.daysOld + ' d)'
+                };
+                dot.style.background = colorMap[s.statusLevel];
+                statusEl.style.color = colorMap[s.statusLevel];
+                statusEl.textContent = labelMap[s.statusLevel];
+                hintEl.textContent = 'Bar Revenue fehlt — Spreadsheet aktualisieren + Reload klicken';
             }
         }
 
@@ -20212,7 +20269,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.133 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.134 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20242,7 +20299,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.133',
+                hubVersion: 'v15.9.134',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21373,6 +21430,108 @@ Spittelauer Lnde 12/1
     }
 
     // ---- Main render: single list with mini-dividers ----
+    // === v15.9.134 — DB UPDATE STATUS ===
+    // Checks dbvData (loaded from MAIN DB CSV) for past events without Bar_Revenue.
+    // Returns status object used by MY DAY widget + Database Viewer status bar.
+    function mydayParseDbDate(s) {
+        if (!s) return null;
+        const m = s.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+        if (!m) return null;
+        return new Date(+m[3], +m[2]-1, +m[1]);
+    }
+    function mydayFmtDbDate(d) {
+        if (!d) return '—';
+        return String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + d.getFullYear();
+    }
+    window.mydayGetDbStatus = function() {
+        // Trigger background load if not yet loaded; will refresh on completion
+        if (typeof dbvLoaded === 'undefined' || !dbvLoaded) {
+            if (typeof dbvLoad === 'function') {
+                dbvLoad().then(() => { try { loadMyDay(true); } catch(e){} }).catch(() => {});
+            }
+            return { dataReady: false, needsUpdate: false, openCount: 0 };
+        }
+        if (!dbvData || dbvData.length === 0) {
+            return { dataReady: true, needsUpdate: false, openCount: 0 };
+        }
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const isOpenEvent = (r) => {
+            const d = mydayParseDbDate(r['Datum']);
+            if (!d || d >= today) return false;
+            const bar = (r['Bar_Revenue'] || '').toString().trim();
+            return !bar || bar === '0' || bar === '-';
+        };
+
+        const openEvents = dbvData.filter(isOpenEvent);
+
+        // Newest event WITH bar revenue = "last update" indicator
+        let lastUpdate = null;
+        let lastEventName = '';
+        for (const r of dbvData) {
+            const d = mydayParseDbDate(r['Datum']);
+            if (!d || d >= today) continue;
+            const bar = (r['Bar_Revenue'] || '').toString().trim();
+            if (bar && bar !== '0' && bar !== '-') {
+                if (!lastUpdate || d > lastUpdate) {
+                    lastUpdate = d;
+                    lastEventName = r['Event_Name'] || r['Eventname'] || r['Promoter'] || '';
+                }
+            }
+        }
+
+        // Oldest open event = how long status has existed
+        let oldestOpenDate = null;
+        for (const r of openEvents) {
+            const d = mydayParseDbDate(r['Datum']);
+            if (!d) continue;
+            if (!oldestOpenDate || d < oldestOpenDate) oldestOpenDate = d;
+        }
+
+        const daysOld = oldestOpenDate ? Math.floor((today - oldestOpenDate) / 86400000) : 0;
+        let statusLevel = 'ok';
+        if (daysOld > 14) statusLevel = 'critical';
+        else if (daysOld > 7) statusLevel = 'warning';
+
+        return {
+            dataReady: true,
+            needsUpdate: openEvents.length > 0,
+            openCount: openEvents.length,
+            oldestDate: mydayFmtDbDate(oldestOpenDate),
+            daysOld: daysOld,
+            lastUpdate: mydayFmtDbDate(lastUpdate),
+            lastEventName: lastEventName,
+            statusLevel: statusLevel,
+            totalEvents: dbvData.length
+        };
+    };
+
+    function mydayBuildDbStatusRow() {
+        const s = mydayGetDbStatus();
+        if (!s.needsUpdate) return '';
+
+        const colors = {
+            critical: { bg: 'rgba(239,68,68,0.10)', accent: '#ef4444', dot: '#ef4444' },
+            warning:  { bg: 'rgba(245,158,11,0.10)', accent: '#f59e0b', dot: '#f59e0b' },
+            ok:       { bg: 'rgba(59,130,246,0.10)', accent: '#3b82f6', dot: '#3b82f6' }
+        };
+        const c = colors[s.statusLevel];
+        const label = s.openCount === 1 ? '1 Event offen' : s.openCount + ' Events offen';
+        const dayStr = s.daysOld === 1 ? '1 d' : s.daysOld + ' d';
+
+        return '<div class="myday-row" style="background:' + c.bg + ';border-left:3px solid ' + c.accent + ';cursor:pointer;" onclick="openModal(\'db-viewer-modal\'); if(typeof dbvLoad===\'function\') dbvLoad();">' +
+            '<div class="myday-rowcontent">' +
+                '<span class="myday-statusicon" style="background:' + c.dot + ';color:#fff;border-color:' + c.accent + ';display:flex;align-items:center;justify-content:center;font-size:11px;">📊</span>' +
+                '<div class="myday-titlewrap">' +
+                    '<div class="myday-rowtitle" style="color:#fff;font-weight:600;">MAIN DB Update fällig <span style="color:rgba(255,255,255,0.7);font-weight:400;">— ' + label + ' seit ' + s.oldestDate + '</span></div>' +
+                '</div>' +
+                '<span class="myday-rowtime" style="color:' + c.accent + ';font-weight:700;">' + dayStr + '</span>' +
+            '</div>' +
+        '</div>';
+    }
+
     function mydayRender(events, taskBuckets, qnItems) {
         const body = document.getElementById('myday-body');
         if (!body) return;
@@ -21382,6 +21541,11 @@ Spittelauer Lnde 12/1
         const eventCount = events.length;
         const todayCount = todayTasks.length + qnItems.length;
         const overdueCount = overdue.length;
+
+        // v15.9.134 — DB status check
+        const dbStatus = mydayGetDbStatus();
+        const dbStatusHtml = mydayBuildDbStatusRow();
+        const hasDbAlert = !!dbStatusHtml;
 
         // Header pills
         const setPill = (id, countId, count) => {
@@ -21397,7 +21561,7 @@ Spittelauer Lnde 12/1
         setPill('myday-pill-overdue', 'myday-pill-overdue-count', overdueCount);
 
         // Empty state
-        if (eventCount + todayCount + overdueCount === 0) {
+        if (eventCount + todayCount + overdueCount === 0 && !hasDbAlert) {
             body.innerHTML = '<div class="myday-empty">Alles im grünen Bereich für heute. ✓</div>';
             return;
         }
@@ -21408,6 +21572,13 @@ Spittelauer Lnde 12/1
         if (events.length > 0) {
             html += `<div class="myday-divider"><span>Termine</span><span class="myday-divider-count">${events.length}</span></div>`;
             events.forEach(e => { html += mydayBuildEventRow(e); });
+        }
+
+        // ---- Section 1.5: DB Update Status (v15.9.134) ----
+        if (hasDbAlert) {
+            const dbDividerCls = dbStatus.statusLevel === 'critical' ? 'is-overdue' : '';
+            html += `<div class="myday-divider ${dbDividerCls}"><span>Operations</span><span class="myday-divider-count">!</span></div>`;
+            html += dbStatusHtml;
         }
 
         // ---- Section 2: Heute fällig ----
