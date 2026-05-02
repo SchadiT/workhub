@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.131</title>
+    <title>Turbo Projects Work Hub v15.9.132</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -6155,7 +6155,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.131</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.132</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6636,7 +6636,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.131</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.132</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14752,7 +14752,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.131';
+            const HUB_VERSION = 'v15.9.132';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16215,7 +16215,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.131 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.132 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20212,7 +20212,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.131 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.132 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20242,7 +20242,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.131',
+                hubVersion: 'v15.9.132',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -20508,8 +20508,10 @@ Spittelauer Lnde 12/1
                 const allLists = listsData.value || [];
 
                 // Name matching per dept
+                // v15.9.132 (C39): MS Default-Liste "Aufgaben" (DE) / "Tasks" (EN) zu OFFICE mappen,
+                // damit Default-Tasks in MEIN TAG + COCKPIT erscheinen
                 const NAME_MAP = {
-                    office:  ['office', 'büro'],
+                    office:  ['office', 'büro', 'aufgaben', 'tasks'],
                     bar:     ['bar'],
                     runner:  ['runner'],
                     technik: ['technik', 'tech'],
@@ -21650,14 +21652,14 @@ Spittelauer Lnde 12/1
         const grid = document.getElementById('dtw-office-apps-grid');
         if (!grid) return;
         const apps = [
-            { ico: '📋', label: 'Factsheet', action: "openModal('factsheet-modal')" },
-            { ico: '🛡️', label: 'Security',  action: "openModal('security-orders-modal')" },
-            { ico: '🧹', label: 'Cleaning',  action: "openModal('cleaning-modal')" },
-            { ico: '🧾', label: 'Rechnungen', action: "invScrollTo()" },
-            { ico: '📧', label: 'Email',     action: "openModal('email-modal')" },
-            { ico: '🤖', label: 'Claude',    action: "openModal('claude-notepad-modal')" },
-            { ico: '📝', label: 'Editor',    action: "openModal('editor-modal')" },
-            { ico: '📚', label: 'Archiv',    action: "archiveOpen()" }
+            { ico: '📋', label: 'Factsheet',     action: "openModal('factsheet-modal')" },
+            { ico: '🛡️', label: 'Security',      action: "openModal('security-orders-modal')" },
+            { ico: '🧹', label: 'Cleaning',      action: "openModal('cleaning-modal')" },
+            { ico: '🧾', label: 'Rechnungen',    action: "invScrollTo()" },
+            { ico: '📧', label: 'Email Hub',     action: "openModal('email-modal')" },
+            { ico: '🤖', label: 'Claude Notepad', action: "openModal('claude-notepad-modal')" },
+            { ico: '📝', label: 'Editor',        action: "openModal('editor-modal')" },
+            { ico: '📚', label: 'Archiv',        action: "archiveOpen()" }
         ];
         let html = '';
         apps.forEach(a => {
