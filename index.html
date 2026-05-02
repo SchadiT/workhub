@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.130</title>
+    <title>Turbo Projects Work Hub v15.9.131</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3670,6 +3670,7 @@
                     <input type="file" id="invoice-file-input" accept=".xlsx,.xls" style="display:none;" onchange="invoiceHandleUpload(event)">
                     <span id="invoice-file-name" style="font-size:10px;color:#888;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
                     <button class="inv-btn inv-btn-dl" onclick="document.getElementById('invoice-file-input').click()">&#128196; Excel laden</button>
+                    <button class="inv-btn inv-btn-sec" onclick="invClearAll()" title="File + Freigaben + Approvals löschen">&#128465; Clear All</button>
                     <button class="modal-close" onclick="closeModal('rechnungen-modal')">&times;</button>
                 </div>
             </div>
@@ -6154,7 +6155,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.130</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.131</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6635,7 +6636,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.130</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.131</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14751,7 +14752,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.130';
+            const HUB_VERSION = 'v15.9.131';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16214,7 +16215,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.130 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.131 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19278,6 +19279,33 @@ Spittelauer Lnde 12/1
             showToast('Freigabe zurückgesetzt');
         }
 
+        // v15.9.131 — Clear All: wipe file + approvals + freigabe (für neuen Excel-Upload)
+        function invClearAll() {
+            if (!confirm('Wirklich alles löschen?\n\nFile, Freigaben und Approvals werden entfernt.')) return;
+            localStorage.removeItem('inv_file_b64');
+            localStorage.removeItem('inv_file_name');
+            localStorage.removeItem('inv_freigegeben');
+            localStorage.removeItem('inv_approvals');
+            invoiceData = [];
+            const fnEl = document.getElementById('invoice-file-name');
+            if (fnEl) fnEl.textContent = '';
+            const fileInput = document.getElementById('invoice-file-input');
+            if (fileInput) fileInput.value = '';
+            const list = document.getElementById('inv-grouped-list');
+            if (list) list.innerHTML = '<div class="inv-empty">Excel laden um Rechnungen anzuzeigen</div>';
+            const buch = document.getElementById('inv-buch-content');
+            if (buch) buch.innerHTML = '<div class="inv-empty">Excel laden um offene Positionen anzuzeigen</div>';
+            const prevBody = document.getElementById('inv-preview-body');
+            if (prevBody) prevBody.textContent = 'Keine Positionen ausgewählt.';
+            const prevSum = document.getElementById('inv-preview-sum');
+            if (prevSum) prevSum.style.display = 'none';
+            const freigabeBtn = document.getElementById('inv-freigabe-btn');
+            if (freigabeBtn) freigabeBtn.disabled = true;
+            invUpdateCards();
+            invUpdateSums();
+            showToast('🗑 Alles gelöscht — bereit für neuen Upload');
+        }
+
         function invToggleRow(beleg, e) {
             if (e) e.stopPropagation();
             const item = invoiceData.find(i => i.beleg === beleg && !i.freigegeben);
@@ -20184,7 +20212,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.130 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.131 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20214,7 +20242,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.130',
+                hubVersion: 'v15.9.131',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21625,7 +21653,7 @@ Spittelauer Lnde 12/1
             { ico: '📋', label: 'Factsheet', action: "openModal('factsheet-modal')" },
             { ico: '🛡️', label: 'Security',  action: "openModal('security-orders-modal')" },
             { ico: '🧹', label: 'Cleaning',  action: "openModal('cleaning-modal')" },
-            { ico: '🧾', label: 'Rechnung',  action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
+            { ico: '🧾', label: 'Rechnungen', action: "invScrollTo()" },
             { ico: '📧', label: 'Email',     action: "openModal('email-modal')" },
             { ico: '🤖', label: 'Claude',    action: "openModal('claude-notepad-modal')" },
             { ico: '📝', label: 'Editor',    action: "openModal('editor-modal')" },
@@ -22137,7 +22165,7 @@ Spittelauer Lnde 12/1
     function dtwRenderApps(host) {
         const apps = [
             { ico: '📧', label: 'Email Hub',       action: "openModal('email-modal')" },
-            { ico: '🧾', label: 'Rechnungen',      action: "document.getElementById('inv-section')&&document.getElementById('inv-section').scrollIntoView({behavior:'smooth'})" },
+            { ico: '🧾', label: 'Rechnungen',      action: "invScrollTo()" },
             { ico: '🗓️', label: 'Promo Manager',   action: "openPromoManager()" },
             { ico: '🤖', label: 'Claude Notepad',  action: "openModal('claude-notepad-modal')" },
             { ico: '📊', label: 'Database Viewer', action: "openModal('db-viewer-modal')" },
