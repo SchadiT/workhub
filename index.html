@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.134</title>
+    <title>Turbo Projects Work Hub v15.9.135</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2883,6 +2883,30 @@
             font-size: 11px;
             color: #555;
             font-style: italic;
+        }
+
+        /* v15.9.135 — Jour Fix Tuesday Sub-Bullets */
+        .myday-subitems {
+            padding: 4px 14px 8px 44px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            background: rgba(236,72,153,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .myday-subitem {
+            font-size: 11px;
+            color: #9ca3af;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .myday-subitem::before {
+            content: '·';
+            color: #ec4899;
+            font-weight: 700;
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
@@ -6175,7 +6199,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.134</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.135</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6656,7 +6680,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.134</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.135</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -7674,7 +7698,8 @@
 
             try {
                 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0z7hOhXnYPX_8AZf8TdPZvjaL7ITeob5BOxpKJvV4iaa_RzBOVjs47W62Io0kA/pub?gid=184884796&single=true&output=csv';
-                const res = await fetch(CSV_URL);
+                // v15.9.135: cache-buster
+                const res = await fetch(CSV_URL + '&t=' + Date.now());
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const text = await res.text();
                 const data = dbvParseCSV(text);
@@ -14772,7 +14797,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.134';
+            const HUB_VERSION = 'v15.9.135';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16235,7 +16260,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.134 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.135 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17464,7 +17489,8 @@ Spittelauer Lnde 12/1
         async function dbvLoad() {
             if (dbvLoaded) return;
             try {
-                const res = await fetch(DBV_CSV_URL);
+                // v15.9.135: cache-buster — Google's published CSV is aggressively cached by browser
+                const res = await fetch(DBV_CSV_URL + '&t=' + Date.now());
                 const text = await res.text();
                 const parsed = dbvParseCSV(text);
                 // Debug: log first row to verify column mapping
@@ -17977,7 +18003,9 @@ Spittelauer Lnde 12/1
             const proxies = ['', 'https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?url=', 'https://api.codetabs.com/v1/proxy?quest='];
             for (const proxy of proxies) {
                 try {
-                    const url = proxy ? proxy + encodeURIComponent(DBV_CSV_URL) : DBV_CSV_URL;
+                    // v15.9.135: cache-buster on direct + proxy fetches
+                    const cbUrl = DBV_CSV_URL + '&t=' + Date.now();
+                    const url = proxy ? proxy + encodeURIComponent(cbUrl) : cbUrl;
                     const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
                     if (!res.ok) continue;
                     const text = await res.text();
@@ -17999,11 +18027,8 @@ Spittelauer Lnde 12/1
             document.getElementById('pa-status-dot').style.background = '#22c55e';
             // Build promoter list
             const promoters = [...new Set(paData.map(r => r['Promoter']).filter(Boolean))].sort();
-            // Default: top 5 by event count
-            const counts = {};
-            promoters.forEach(p => counts[p] = paData.filter(r => r['Promoter'] === p).length);
-            const top5 = promoters.sort((a,b) => counts[b]-counts[a]).slice(0,5);
-            paSelected = new Set(top5);
+            // v15.9.135: Default = ALL Promoters (was Top 5 by event count)
+            paSelected = new Set(promoters);
             document.getElementById('pa-status').textContent = paData.length + ' Events · ' + promoters.length + ' Promoter'; // v15.9.93
             paBuildDropdown(promoters);
             paRender();
@@ -20269,7 +20294,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.134 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.135 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20299,7 +20324,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.134',
+                hubVersion: 'v15.9.135',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21379,6 +21404,13 @@ Spittelauer Lnde 12/1
         const iconCls = isTermin ? 'is-event' : 'is-special';
         const iconChar = isTermin ? '◆' : '★';
         const timeHtml = e.time ? mydayEsc(e.time) : '';
+        // v15.9.135 — Jour Fix Tuesday Sub-Bullets (Factsheets · Security · Rider)
+        const isJourFix = (new Date().getDay() === 2) && /jour\s*fix/i.test(e.title || '');
+        const subItemsHtml = isJourFix ? `<div class="myday-subitems">
+            <div class="myday-subitem">Factsheets</div>
+            <div class="myday-subitem">Security</div>
+            <div class="myday-subitem">Rider</div>
+        </div>` : '';
         return `<div class="myday-row">
             <div class="myday-leftbar ${leftbarCls}"></div>
             <div class="myday-rowcontent">
@@ -21388,7 +21420,7 @@ Spittelauer Lnde 12/1
                 </div>
                 <span class="myday-rowtime">${timeHtml}</span>
             </div>
-        </div>`;
+        </div>${subItemsHtml}`;
     }
 
     function mydayBuildTaskRow(t, isOverdue) {
