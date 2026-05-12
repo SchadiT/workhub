@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.135</title>
+    <title>Turbo Projects Work Hub v15.9.136</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5754,6 +5754,82 @@
         </div>
     </div>
 
+    <!-- v15.9.136 — QUICK SECURITY ORDER MODAL -->
+    <div class="modal-overlay modal-overlay-app" id="quick-sec-order-modal">
+        <div class="modal-box" style="max-width: 720px;">
+            <div class="modal-header">
+                <h3>&#9889; Quick Security Order</h3>
+                <button class="modal-close" onclick="closeModal('quick-sec-order-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <!-- EVENT SELECT -->
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Event waehlen</label>
+                    <select id="qso-event-select" onchange="qsoOnEventSelect()" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:10px;font-size:14px;">
+                        <option value="">-- Event waehlen --</option>
+                    </select>
+                </div>
+
+                <!-- TYP RADIO -->
+                <div style="margin-bottom: 16px;">
+                    <label style="display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Typ</label>
+                    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                            <input type="radio" name="qso-type" value="CLUB_00" checked onchange="qsoOnTypeChange()">
+                            <span>CLUB 00:00</span>
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                            <input type="radio" name="qso-type" value="CLUB_30" onchange="qsoOnTypeChange()">
+                            <span>CLUB 00:30</span>
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                            <input type="radio" name="qso-type" value="CONCERT" onchange="qsoOnTypeChange()">
+                            <span>CONCERT</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SECURITY TIMES -->
+                <div style="margin-bottom: 16px;background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.2);padding:12px;border-radius:4px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <label style="margin:0;font-size:13px;font-weight:600;">&#128274; SECURITY TIMES</label>
+                        <div>
+                            <button type="button" onclick="qsoAddRow()" style="background:#1e3a5f;border:1px solid #3b82f6;color:#fff;padding:2px 10px;font-size:14px;cursor:pointer;border-radius:2px;line-height:1;">+</button>
+                            <button type="button" onclick="qsoRemoveRow()" style="background:#2a1a1a;border:1px solid #ef4444;color:#fff;padding:2px 10px;font-size:14px;cursor:pointer;border-radius:2px;line-height:1;">&minus;</button>
+                        </div>
+                    </div>
+                    <div id="qso-rows" style="display:flex;flex-direction:column;gap:6px;"></div>
+                </div>
+
+                <!-- ADD TO PENDING -->
+                <button class="modal-btn success" onclick="qsoAddToPending()" style="width:100%;margin-bottom:16px;">&#10133; Zu Pending hinzufuegen</button>
+
+                <!-- PENDING LIST -->
+                <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <label style="margin:0;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">Pending <span id="qso-pending-count" style="color:#f59e0b;">(0)</span></label>
+                    </div>
+                    <div id="qso-pending-list" style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;"></div>
+                </div>
+
+                <!-- OUTPUT PREVIEW -->
+                <div id="qso-output-wrap" style="display:none;margin-bottom:14px;">
+                    <label style="display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Output Preview</label>
+                    <pre id="qso-output" style="background:var(--bg);border:1px solid var(--border);padding:12px;white-space:pre-wrap;font-family:monospace;font-size:12px;color:var(--text);max-height:240px;overflow-y:auto;margin:0;"></pre>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeModal('quick-sec-order-modal')">Schliessen</button>
+                <button class="modal-btn" onclick="qsoGenerateOutput()" style="background:var(--surface-2);">&#128221; Generieren</button>
+                <button class="modal-btn" onclick="qsoCopy()" style="background:var(--surface-2);">&#128203; Kopieren</button>
+                <button class="modal-btn" onclick="qsoDownload()" style="background:var(--surface-2);">&#11015; TXT</button>
+                <button class="modal-btn success" onclick="qsoMarkSent()">&#10004; Als gesendet</button>
+            </div>
+        </div>
+    </div>
+
     <!-- BRIEFING MODAL -->
 
     
@@ -5778,6 +5854,10 @@
                 <button class="tool-btn border-yellow" onclick="openModal('security-orders-modal')" style="border-color: #f59e0b;">
                     <span class="tool-icon">&#128545;</span>
                     Security
+                </button>
+                <button class="tool-btn border-yellow" onclick="openQuickSecOrder()" style="border-color: #fbbf24;">
+                    <span class="tool-icon">&#9889;</span>
+                    Sec. Order
                 </button>
                 <button class="tool-btn border-blue" onclick="openCleaningModal()">
                     <span class="tool-icon">&#129529;</span>
@@ -6199,7 +6279,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.135</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.136</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6680,7 +6760,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.135</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.136</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14797,7 +14877,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.135';
+            const HUB_VERSION = 'v15.9.136';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -15137,7 +15217,356 @@ Spittelauer Lnde 12/1
             renderSecurityPendingList();
             alert('... Als gesendet markiert und archiviert!');
         }
-        
+
+        // ============================================================
+        // v15.9.136 — QUICK SECURITY ORDER (standalone app)
+        // ============================================================
+        var QSO_STATE = { selectedEvent: null };
+
+        function qsoGetDefaults(typ) {
+            // LOCKED — exactly matches fsGetSecurityDefaults()
+            if (typ === 'CONCERT') {
+                return [
+                    { time: '18:45', pax: '1 PAX' },
+                    { time: '19:00', pax: '2 PAX' },
+                    { time: '19:30', pax: '1 PAX' },
+                    { time: '19:45', pax: '1 PAX' },
+                    { time: '20:30', pax: '1 PAX (Abruf)' }
+                ];
+            }
+            if (typ === 'CLUB_30') {
+                return [
+                    { time: '22:45', pax: '1 PAX' },
+                    { time: '23:00', pax: '3 PAX' },
+                    { time: '23:30', pax: '1 PAX' },
+                    { time: '00:30', pax: '3 PAX' },
+                    { time: '01:00', pax: '1 PAX (Abruf)' }
+                ];
+            }
+            // default: CLUB_00
+            return [
+                { time: '22:45', pax: '1 PAX' },
+                { time: '23:00', pax: '3 PAX' },
+                { time: '23:30', pax: '1 PAX' },
+                { time: '00:00', pax: '3 PAX' },
+                { time: '01:00', pax: '1 PAX (Abruf)' }
+            ];
+        }
+
+        function qsoGetSelectedType() {
+            return document.querySelector('input[name="qso-type"]:checked')?.value || 'CLUB_00';
+        }
+
+        function qsoSetType(typ) {
+            const radios = document.querySelectorAll('input[name="qso-type"]');
+            radios.forEach(r => { r.checked = (r.value === typ); });
+        }
+
+        function qsoRenderRows(rows) {
+            const container = document.getElementById('qso-rows');
+            if (!container) return;
+            const data = rows || qsoGetDefaults(qsoGetSelectedType());
+            container.innerHTML = '';
+            data.forEach((row, i) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'display:flex;gap:8px;align-items:center;';
+                div.innerHTML =
+                    '<span style="font-size:11px;color:#888;min-width:18px;">' + (i+1) + '.</span>' +
+                    '<input type="text" id="qso-time-' + i + '" value="' + row.time + '" class="time-input" style="width:72px;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:6px 8px;font-size:13px;text-align:center;" placeholder="Zeit">' +
+                    '<input type="text" id="qso-pax-' + i + '" value="' + row.pax + '" style="flex:1;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:6px 10px;font-size:13px;" placeholder="PAX">';
+                container.appendChild(div);
+            });
+        }
+
+        function qsoGetRows() {
+            const rows = [];
+            const container = document.getElementById('qso-rows');
+            if (!container) return rows;
+            const inputs = container.querySelectorAll('input[id^="qso-time-"]');
+            inputs.forEach((inp, i) => {
+                const time = (inp.value || '').trim();
+                const paxEl = document.getElementById('qso-pax-' + i);
+                const pax = paxEl ? (paxEl.value || '').trim() : '';
+                if (time || pax) rows.push({ time: time, pax: pax });
+            });
+            return rows;
+        }
+
+        function qsoAddRow() {
+            const current = qsoGetRows();
+            current.push({ time: '', pax: '' });
+            qsoRenderRows(current);
+        }
+
+        function qsoRemoveRow() {
+            const current = qsoGetRows();
+            if (current.length <= 1) return;
+            current.pop();
+            qsoRenderRows(current);
+        }
+
+        function qsoOnTypeChange() {
+            // Re-fill defaults for the new type (replaces existing rows)
+            qsoRenderRows(qsoGetDefaults(qsoGetSelectedType()));
+        }
+
+        function qsoPopulateDropdown() {
+            const select = document.getElementById('qso-event-select');
+            if (!select) return;
+            select.innerHTML = '<option value="">-- Event waehlen --</option>';
+
+            if (typeof bmtEvents === 'undefined' || !bmtEvents || bmtEvents.length === 0) {
+                select.innerHTML += '<option disabled>Bitte BMT Events laden</option>';
+                return;
+            }
+
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            const futureEvents = bmtEvents.filter(e => {
+                const eventDate = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                if (isNaN(eventDate.getTime())) return false;
+                const summaryLower = (e.summary || e.name || '').toLowerCase();
+                const cat = e.category || '';
+                const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
+                const isNotHoliday = cat !== 'holiday' && !summaryLower.includes('holiday');
+                const isNotClosed = !summaryLower.includes('geschlossen') && !summaryLower.includes('closed');
+                const isNotAppointment = !summaryLower.includes('termin') && !summaryLower.includes('meeting');
+                const isNotCancelled = e.status !== 'CANCELLED';
+                const isFuture = eventDate >= now;
+                return isFuture && isEvent && isNotHoliday && isNotClosed && isNotAppointment && isNotCancelled;
+            }).sort((a, b) => {
+                const dA = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
+                const dB = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
+                return dA - dB;
+            });
+
+            if (futureEvents.length === 0) {
+                select.innerHTML += '<option disabled>Keine kommenden Events</option>';
+                return;
+            }
+
+            const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+            futureEvents.forEach((e, i) => {
+                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
+                const id = 'qso_bmt_' + i;
+                const name = e.summary || e.name || 'Event';
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.dataset.datum = d.toLocaleDateString('de-AT');
+                opt.dataset.name = name;
+                opt.dataset.category = e.category || 'fremd';
+                opt.textContent = d.toLocaleDateString('de-AT') + ' (' + days[d.getDay()] + ') — ' + name;
+                select.appendChild(opt);
+            });
+        }
+
+        function qsoOnEventSelect() {
+            const select = document.getElementById('qso-event-select');
+            const opt = select.options[select.selectedIndex];
+            if (!opt || !opt.value) {
+                QSO_STATE.selectedEvent = null;
+                return;
+            }
+            QSO_STATE.selectedEvent = {
+                datum: opt.dataset.datum,
+                name: opt.dataset.name,
+                category: opt.dataset.category
+            };
+            // Auto-detect concert
+            if (opt.dataset.category === 'konzert') {
+                qsoSetType('CONCERT');
+            } else {
+                qsoSetType('CLUB_00');
+            }
+            qsoRenderRows(qsoGetDefaults(qsoGetSelectedType()));
+        }
+
+        function qsoAddToPending() {
+            if (!QSO_STATE.selectedEvent) {
+                alert('Bitte zuerst ein Event waehlen.');
+                return;
+            }
+            const rows = qsoGetRows();
+            if (rows.length === 0) {
+                alert('Keine Security Times eingegeben.');
+                return;
+            }
+            const typ = qsoGetSelectedType();
+            const mainFloor = typ === 'CLUB_30' ? '00:30' : (typ === 'CONCERT' ? 'CONCERT' : '00:00');
+
+            const order = {
+                id: Date.now(),
+                eventName: QSO_STATE.selectedEvent.name,
+                datum: QSO_STATE.selectedEvent.datum,
+                mainFloor: mainFloor,
+                securityTimes: rows,
+                createdAt: new Date().toISOString()
+            };
+
+            const orders = getSecurityOrders();
+            orders.pending.push(order);
+            saveSecurityOrders(orders);
+
+            qsoRenderPendingList();
+            try { if (typeof renderSecurityPendingList === 'function') renderSecurityPendingList(); } catch(e) {}
+
+            // Reset for next event
+            document.getElementById('qso-event-select').value = '';
+            QSO_STATE.selectedEvent = null;
+            qsoSetType('CLUB_00');
+            qsoRenderRows(qsoGetDefaults('CLUB_00'));
+            showToast && showToast('Security fuer ' + order.datum + ' hinzugefuegt');
+        }
+
+        function qsoRenderPendingList() {
+            const container = document.getElementById('qso-pending-list');
+            const countEl = document.getElementById('qso-pending-count');
+            if (!container) return;
+            const orders = getSecurityOrders();
+            const pending = orders.pending || [];
+
+            if (countEl) countEl.textContent = '(' + pending.length + ')';
+
+            if (pending.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:14px;font-size:12px;margin:0;">Keine pending Orders. Event waehlen und hinzufuegen.</p>';
+                return;
+            }
+
+            // Sort by datum
+            pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
+
+            let html = '';
+            pending.forEach(o => {
+                const times = (o.securityTimes || []).map(s => s.time + '/' + (s.pax || '').replace(/ PAX.*/, '')).join(' · ');
+                html +=
+                    '<div style="background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;">' +
+                        '<div style="min-width:0;flex:1;">' +
+                            '<div style="font-size:13px;"><strong style="color:#f59e0b;">' + o.datum + '</strong> — ' + (o.eventName || 'Event') + '</div>' +
+                            '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (o.mainFloor || '') + ' · ' + times + '</div>' +
+                        '</div>' +
+                        '<button onclick="qsoRemovePending(' + o.id + ')" style="background:#2a1a1a;border:1px solid #ef4444;color:#fff;padding:4px 10px;font-size:12px;cursor:pointer;border-radius:2px;">&#10005;</button>' +
+                    '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function qsoRemovePending(id) {
+            const orders = getSecurityOrders();
+            orders.pending = (orders.pending || []).filter(o => o.id != id);
+            saveSecurityOrders(orders);
+            qsoRenderPendingList();
+            try { if (typeof renderSecurityPendingList === 'function') renderSecurityPendingList(); } catch(e) {}
+        }
+
+        function qsoGenerateOutput() {
+            const orders = getSecurityOrders();
+            const pending = orders.pending || [];
+            if (pending.length === 0) {
+                alert('Keine pending Orders zum Generieren.');
+                return;
+            }
+            pending.sort((a, b) => new Date(a.datum.split('.').reverse().join('-')) - new Date(b.datum.split('.').reverse().join('-')));
+
+            let output = 'Hallo!\n\nHier die Bestellung fuer das Wochenende:\n\n';
+            pending.forEach(order => {
+                output += order.datum + '\n';
+                (order.securityTimes || []).forEach(st => {
+                    output += st.time + ' - ' + st.pax + '\n';
+                });
+                output += '\n';
+            });
+            output += 'Danke & LG\nSchadi';
+
+            const wrap = document.getElementById('qso-output-wrap');
+            const pre = document.getElementById('qso-output');
+            if (pre) pre.textContent = output;
+            if (wrap) wrap.style.display = 'block';
+        }
+
+        function qsoCopy() {
+            const pre = document.getElementById('qso-output');
+            if (!pre || !pre.textContent.trim()) {
+                qsoGenerateOutput();
+            }
+            const txt = document.getElementById('qso-output').textContent;
+            if (!txt) return;
+            navigator.clipboard.writeText(txt).then(() => {
+                showToast && showToast('Security Order kopiert');
+                try { if (typeof trackSecurityOrder === 'function') trackSecurityOrder(); } catch(e) {}
+            }).catch(() => alert('Copy fehlgeschlagen'));
+        }
+
+        function qsoDownload() {
+            const pre = document.getElementById('qso-output');
+            if (!pre || !pre.textContent.trim()) {
+                qsoGenerateOutput();
+            }
+            const txt = document.getElementById('qso-output').textContent;
+            if (!txt) return;
+            const weekNum = (typeof getWeekNumber === 'function') ? getWeekNumber(new Date()) : '00';
+            const filename = 'Security_Order_KW' + weekNum + '_' + new Date().toISOString().slice(0,10) + '.txt';
+            const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function qsoMarkSent() {
+            const pre = document.getElementById('qso-output');
+            if (!pre || !pre.textContent.trim()) {
+                qsoGenerateOutput();
+            }
+            const txt = document.getElementById('qso-output').textContent;
+            if (!txt) {
+                alert('Nichts zu senden.');
+                return;
+            }
+            const orders = getSecurityOrders();
+            const pending = orders.pending || [];
+            if (pending.length === 0) {
+                alert('Keine pending Orders.');
+                return;
+            }
+            const eventNames = pending.map(o => o.datum + ' ' + (o.eventName || ''));
+            const weekNum = (typeof getWeekNumber === 'function') ? getWeekNumber(new Date()) : '00';
+            const sentOrder = {
+                id: Date.now(),
+                label: 'KW' + weekNum,
+                events: eventNames,
+                sentAt: new Date().toISOString(),
+                content: txt
+            };
+            orders.sent = orders.sent || [];
+            orders.sent.push(sentOrder);
+            orders.pending = [];
+            saveSecurityOrders(orders);
+
+            try { if (typeof archiveSaveSecurity === 'function') archiveSaveSecurity(sentOrder); } catch(e) { console.warn('archiveSaveSecurity failed:', e); }
+
+            qsoRenderPendingList();
+            try { if (typeof renderSecurityPendingList === 'function') renderSecurityPendingList(); } catch(e) {}
+
+            document.getElementById('qso-output-wrap').style.display = 'none';
+            document.getElementById('qso-output').textContent = '';
+            showToast && showToast('Als gesendet markiert & archiviert');
+        }
+
+        function openQuickSecOrder() {
+            qsoPopulateDropdown();
+            qsoSetType('CLUB_00');
+            qsoRenderRows(qsoGetDefaults('CLUB_00'));
+            qsoRenderPendingList();
+            const wrap = document.getElementById('qso-output-wrap');
+            if (wrap) wrap.style.display = 'none';
+            openModal('quick-sec-order-modal');
+        }
+
         // Archive sent order
         function archiveSecurityOrder(id) {
             const orders = getSecurityOrders();
@@ -16260,7 +16689,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.135 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.136 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20294,7 +20723,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.135 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.136 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20324,7 +20753,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.135',
+                hubVersion: 'v15.9.136',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
