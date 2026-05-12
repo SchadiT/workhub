@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.136</title>
+    <title>Turbo Projects Work Hub v15.9.141</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2909,12 +2909,108 @@
             font-size: 14px;
         }
 
+        /* ===== v15.9.141 — MY WORK DAY Visual Refresh (Option B: Elevated Dark Cards) ===== */
+        .myday-row {
+            background: #252525;
+            border-bottom: none;
+            border-radius: 4px;
+            margin: 4px 8px;
+        }
+        .myday-row:hover { background: #2d2d2d; }
+        .myday-row.is-overdue {
+            background: #2a1a1a;
+            border-left: 3px solid #ef4444;
+            padding-left: 0;
+        }
+        .myday-row.is-overdue:hover { background: #321f1f; }
+        .myday-divider { margin-top: 4px; }
+        .myday-divider:first-child { margin-top: 0; }
+        /* v141 — Category badge (EIGEN/FREMD/KONZERT/TERMIN) */
+        .myday-cat-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+        .myday-cat-badge.cat-eigen   { background: #22c55e; }
+        .myday-cat-badge.cat-fremd   { background: #f59e0b; }
+        .myday-cat-badge.cat-konzert { background: #8b5cf6; }
+        .myday-cat-badge.cat-termin  { background: #ec4899; }
+        .myday-cat-badge.cat-special { background: #eab308; color: #1a1a1a; }
+        /* v141 — Dept badge (right side of task rows) */
+        .myday-dept-badge {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+        .myday-dept-badge.dept-OFFICE  { color: #85B7EB; }
+        .myday-dept-badge.dept-BAR     { color: #FAC775; }
+        .myday-dept-badge.dept-RUNNER  { color: #C0DD97; }
+        .myday-dept-badge.dept-TECHNIK { color: #CECBF6; }
+        .myday-dept-badge.dept-SPUTNIK { color: #F4C0D1; }
+        .myday-dept-badge.dept-NONE    { color: #888; }
+        /* v141 — Overdue pill */
+        .myday-overdue-pill {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #ef4444;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+        /* v141 — Quick Notes pill + timestamp */
+        .myday-qn-pill {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+        .myday-qn-pill.dept-OFFICE  { background: #4F8EF7; }
+        .myday-qn-pill.dept-BAR     { background: #EF9F27; }
+        .myday-qn-pill.dept-RUNNER  { background: #97C459; color: #1a1a1a; }
+        .myday-qn-pill.dept-TECHNIK { background: #AFA9EC; color: #1a1a1a; }
+        .myday-qn-pill.dept-SPUTNIK { background: #ec4899; }
+        .myday-qn-pill.dept-NONE    { background: #4b5563; }
+        .myday-qn-prio {
+            font-size: 9px;
+            font-weight: 700;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+        .myday-qn-prio.p-P1 { color: #ef4444; }
+        .myday-qn-prio.p-P2 { color: #f59e0b; }
+        .myday-qn-prio.p-P3 { color: #888; }
+        .myday-rowtime.is-ts {
+            color: #888;
+            font-weight: 400;
+        }
+
         @media (max-width: 768px) {
             .myday-stats { gap: 4px; }
             .myday-stat-pill { padding: 1px 6px; font-size: 9px; }
             .myday-date { display: none; }
             .myday-rowcontent { padding: 7px 8px; gap: 8px; }
             .myday-rowtitle { font-size: 11px; }
+            .myday-row { margin: 3px 4px; }
+            .myday-cat-badge, .myday-overdue-pill, .myday-qn-pill { font-size: 8px; padding: 1px 4px; }
+            .myday-dept-badge { font-size: 9px; }
         }
 
         /* ===== COCKPIT WIDGET ===== */
@@ -6279,7 +6375,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.136</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.141</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6760,7 +6856,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.136</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.141</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14877,7 +14973,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.136';
+            const HUB_VERSION = 'v15.9.141';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16689,7 +16785,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.136 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.141 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20723,7 +20819,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.136 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.141 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20753,7 +20849,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.136',
+                hubVersion: 'v15.9.141',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21673,25 +21769,26 @@ Spittelauer Lnde 12/1
         const today = mydayTodayStr();
         const items = [];
         if (typeof calendarEntries !== 'undefined') {
-            (calendarEntries.termin || []).forEach(e => {
-                if (e.date === today) {
-                    items.push({
-                        type: 'termin',
-                        title: e.title || 'Termin',
-                        time: e.time || '',
-                        sortKey: e.time || '99:99'
-                    });
-                }
-            });
-            (calendarEntries.bmt || []).forEach(e => {
-                if (e.date === today) {
-                    items.push({
-                        type: 'special',
-                        title: e.title || 'Special',
-                        time: e.time || '',
-                        sortKey: e.time || '99:99'
-                    });
-                }
+            // v15.9.141 — include all BMT categories with category metadata for badge rendering
+            const buckets = [
+                { key: 'termin',  type: 'termin',  cat: 'termin'  },
+                { key: 'bmt',     type: 'special', cat: 'special' },
+                { key: 'eigen',   type: 'special', cat: 'eigen'   },
+                { key: 'fremd',   type: 'special', cat: 'fremd'   },
+                { key: 'konzert', type: 'special', cat: 'konzert' }
+            ];
+            buckets.forEach(b => {
+                (calendarEntries[b.key] || []).forEach(e => {
+                    if (e.date === today) {
+                        items.push({
+                            type: b.type,
+                            category: b.cat,
+                            title: e.title || (b.type === 'termin' ? 'Termin' : 'Event'),
+                            time: e.time || '',
+                            sortKey: e.time || '99:99'
+                        });
+                    }
+                });
             });
         }
         items.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
@@ -21833,6 +21930,10 @@ Spittelauer Lnde 12/1
         const iconCls = isTermin ? 'is-event' : 'is-special';
         const iconChar = isTermin ? '◆' : '★';
         const timeHtml = e.time ? mydayEsc(e.time) : '';
+        // v15.9.141 — Category badge (EIGEN/FREMD/KONZERT/TERMIN)
+        const catRaw = (e.category || (isTermin ? 'termin' : 'special') || '').toLowerCase();
+        const catLabel = catRaw ? catRaw.toUpperCase() : '';
+        const catBadgeHtml = catLabel ? '<span class="myday-cat-badge cat-' + catRaw + '">' + mydayEsc(catLabel) + '</span>' : '';
         // v15.9.135 — Jour Fix Tuesday Sub-Bullets (Factsheets · Security · Rider)
         const isJourFix = (new Date().getDay() === 2) && /jour\s*fix/i.test(e.title || '');
         const subItemsHtml = isJourFix ? `<div class="myday-subitems">
@@ -21845,7 +21946,7 @@ Spittelauer Lnde 12/1
             <div class="myday-rowcontent">
                 <span class="myday-statusicon ${iconCls}">${iconChar}</span>
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${mydayEsc(e.title)}</div>
+                    <div class="myday-rowtitle">${catBadgeHtml}${mydayEsc(e.title)}</div>
                 </div>
                 <span class="myday-rowtime">${timeHtml}</span>
             </div>
@@ -21857,8 +21958,11 @@ Spittelauer Lnde 12/1
         const rowCls = isOverdue ? 'is-overdue' : '';
         const star = t.importance === 'high' ? '<span class="myday-star">★</span>' : '';
         const notesHtml = t.notes ? `<span class="myday-notes-inline">— ${mydayEsc(t.notes.length > 60 ? t.notes.slice(0,60) + '…' : t.notes)}</span>` : '';
-        const timeLabel = isOverdue ? mydayRelDays(t.overdueBy) : 'Heute';
-        const timeCls = isOverdue ? 'is-overdue' : 'is-today';
+        // v15.9.141 — Overdue pill on title, Dept badge on right for today's tasks
+        const overduePillHtml = isOverdue ? '<span class="myday-overdue-pill">Überfällig</span>' : '';
+        const rightSideHtml = isOverdue
+            ? '<span class="myday-rowtime is-overdue">' + mydayRelDays(t.overdueBy) + '</span>'
+            : '<span class="myday-dept-badge dept-' + deptUpper + '">' + mydayEsc(deptUpper) + '</span>';
         const iconHtml = isOverdue
             ? '<span class="myday-statusicon is-overdue">!</span>'
             : `<span class="myday-statusicon is-today" onclick="mydayCompleteTask('${mydayEsc(t.id)}','${mydayEsc(t.dept)}', this)" title="Erledigt"></span>`;
@@ -21867,27 +21971,52 @@ Spittelauer Lnde 12/1
             <div class="myday-rowcontent">
                 ${iconHtml}
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${star}${mydayEsc(t.title)}${notesHtml}</div>
+                    <div class="myday-rowtitle">${overduePillHtml}${star}${mydayEsc(t.title)}${notesHtml}</div>
                 </div>
-                <span class="myday-rowtime ${timeCls}">${timeLabel}</span>
+                ${rightSideHtml}
             </div>
         </div>`;
     }
 
     function mydayBuildQnRow(q) {
         const deptUpper = q.dept || 'NONE';
-        const prioColor = { P1: '#ef4444', P2: '#f59e0b', P3: '#888' }[q.priority] || '#888';
-        const prioMark = `<span style="color:${prioColor};font-weight:700;font-size:9px;margin-right:4px;">${q.priority}</span>`;
+        // v15.9.141 — Dept pill + priority + timestamp
+        const prioMark = q.priority ? '<span class="myday-qn-prio p-' + q.priority + '">' + q.priority + '</span>' : '';
+        const deptPillHtml = '<span class="myday-qn-pill dept-' + deptUpper + '">' + mydayEsc(deptUpper) + '</span>';
+        const tsHtml = q.ts ? mydayQnTimestamp(q.ts) : 'Heute';
         return `<div class="myday-row">
             <div class="myday-leftbar dept-${deptUpper}"></div>
             <div class="myday-rowcontent">
                 <span class="myday-statusicon" style="color:#a78bfa;">●</span>
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${prioMark}${mydayEsc(q.title)}</div>
+                    <div class="myday-rowtitle">${deptPillHtml}${prioMark}${mydayEsc(q.title)}</div>
                 </div>
-                <span class="myday-rowtime is-today">Heute</span>
+                <span class="myday-rowtime is-ts">${tsHtml}</span>
             </div>
         </div>`;
+    }
+
+    // v15.9.141 — Quick Notes timestamp formatter
+    // Accepts ISO string OR "DD.MM.YYYY HH:MM:SS" / "DD.MM.YYYY HH:MM" / "DD.MM.YYYY"
+    function mydayQnTimestamp(ts) {
+        if (!ts) return 'Heute';
+        let d = null;
+        const m = String(ts).match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+        if (m) {
+            d = new Date(+m[3], +m[2]-1, +m[1], +(m[4]||0), +(m[5]||0), +(m[6]||0));
+        } else {
+            d = new Date(ts);
+        }
+        if (!d || isNaN(d.getTime())) return 'Heute';
+        const diffMs = Date.now() - d.getTime();
+        const diffMin = Math.floor(diffMs / 60000);
+        if (diffMin < 1)  return 'jetzt';
+        if (diffMin < 60) return 'vor ' + diffMin + 'm';
+        const diffH = Math.floor(diffMin / 60);
+        if (diffH < 24)   return 'vor ' + diffH + 'h';
+        const diffD = Math.floor(diffH / 24);
+        if (diffD < 7)    return 'vor ' + diffD + 'd';
+        return d.getDate().toString().padStart(2,'0') + '.' + (d.getMonth()+1).toString().padStart(2,'0');
     }
 
     // ---- Main render: single list with mini-dividers ----
