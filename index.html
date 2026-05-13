@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.145</title>
+    <title>Turbo Projects Work Hub v15.9.146</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5308,16 +5308,11 @@
                             <option value="">DB wird geladen...</option>
                         </select>
                     </div>
-                    <!-- EIGEN: Serie dropdown -->
+                    <!-- EIGEN: Serie dropdown — v15.9.146: dynamic, populated from MAIN DB -->
                     <div class="form-group" id="ep-section-eigen" style="flex:2;display:none;">
-                        <label>Event Serie</label>
+                        <label>Event Serie <span id="ep-eigen-live-pill" style="display:none;font-size:9px;font-weight:700;letter-spacing:0.5px;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;"></span></label>
                         <select id="ep-serie" onchange="updateProjectorData()" style="width:100%">
-                            <option value="turbo">TURBO</option>
-                            <option value="selected">Selected</option>
-                            <option value="halloween">Halloween</option>
-                            <option value="birthday">Birthday</option>
-                            <option value="nye">NYE / Silvester</option>
-                            <option value="special">Special Events</option>
+                            <option value="">Lade DB...</option>
                         </select>
                     </div>
                     <!-- Freitext: description -->
@@ -6587,7 +6582,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.145</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.146</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7068,7 +7063,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.145</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.146</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -8039,7 +8034,9 @@
             if (mode === 'eigen') {
                 const lv = document.getElementById('ep-lbl-vvk'); if (lv) lv.textContent = 'VVK Proj.';
                 const lf = document.getElementById('ep-lbl-foh'); if (lf) lf.textContent = 'FOH Proj.';
-                updateProjectorData();
+                // v15.9.146 — EIGEN also needs live DB stats
+                if (!epDbReady) epLoadDB(true);
+                else { epPopulateEigenDropdown(); updateProjectorData(); }
             } else {
                 const lv = document.getElementById('ep-lbl-vvk'); if (lv) lv.textContent = 'PAX (est.)';
                 const lf = document.getElementById('ep-lbl-foh'); if (lf) lf.textContent = 'VVK (est.)';
@@ -8067,22 +8064,29 @@
         }
 
         // ---- DB Load ----
-        async function epLoadDB() {
+        async function epLoadDB(forEigen) {
             const statusEl = document.getElementById('ep-db-status');
-            if (!statusEl) return;
 
             // Reuse dbvData if DB Viewer already loaded it
             if (typeof dbvData !== 'undefined' && dbvData.length > 0) {
                 if (!epDbReady) epBuildPromoterStats(dbvData);
-                statusEl.textContent = '✓ DB: ' + dbvData.length + ' Events (aus Cache)';
-                statusEl.style.color = '#22c55e';
+                if (statusEl) {
+                    statusEl.textContent = '✓ DB: ' + dbvData.length + ' Events (aus Cache)';
+                    statusEl.style.color = '#22c55e';
+                }
+                if (forEigen) { epPopulateEigenDropdown(); updateProjectorData(); }
                 return;
             }
 
-            if (epDbReady) return; // already loaded standalone
+            if (epDbReady) {
+                if (forEigen) { epPopulateEigenDropdown(); updateProjectorData(); }
+                return;
+            }
 
-            statusEl.textContent = '⟳ Lade Datenbank...';
-            statusEl.style.color = '#f59e0b';
+            if (statusEl) {
+                statusEl.textContent = '⟳ Lade Datenbank...';
+                statusEl.style.color = '#f59e0b';
+            }
 
             try {
                 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0z7hOhXnYPX_8AZf8TdPZvjaL7ITeob5BOxpKJvV4iaa_RzBOVjs47W62Io0kA/pub?gid=184884796&single=true&output=csv';
@@ -8092,11 +8096,23 @@
                 const text = await res.text();
                 const data = dbvParseCSV(text);
                 epBuildPromoterStats(data);
-                statusEl.textContent = '✓ DB: ' + data.length + ' Events geladen';
-                statusEl.style.color = '#22c55e';
+                if (statusEl) {
+                    statusEl.textContent = '✓ DB: ' + data.length + ' Events geladen';
+                    statusEl.style.color = '#22c55e';
+                }
+                if (forEigen) { epPopulateEigenDropdown(); updateProjectorData(); }
             } catch(e) {
-                statusEl.textContent = '✗ Ladefehler: ' + e.message;
-                statusEl.style.color = '#ef4444';
+                if (statusEl) {
+                    statusEl.textContent = '✗ Ladefehler: ' + e.message;
+                    statusEl.style.color = '#ef4444';
+                }
+                const pill = document.getElementById('ep-eigen-live-pill');
+                if (pill && forEigen) {
+                    pill.style.display = 'inline-block';
+                    pill.textContent = 'DB ERROR';
+                    pill.style.background = '#ef4444';
+                    pill.style.color = '#fff';
+                }
             }
         }
 
@@ -8125,6 +8141,10 @@
             epGlobalAvgBar = globalBarCount > 0 ? Math.round(globalBarSum / globalBarCount) : 11800;
             epDbReady = true;
 
+            // v15.9.146 — also build EIGEN + KW live stats from same data pass
+            epBuildEigenStats(data);
+            epBuildKWStats(data);
+
             // Populate dropdown sorted by avg bar desc
             const sel = document.getElementById('ep-promoter');
             if (!sel) return;
@@ -8140,6 +8160,126 @@
                 });
 
             epUpdateFremdStats();
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // v15.9.146 — EIGEN LIVE STATS from MAIN DB
+        // Replaces hardcoded SERIE_STATS. Dynamic dropdown based on actual DB content.
+        // ═══════════════════════════════════════════════════════
+        let epLiveEigenStats = null;   // { 'TURBO': { avgVVK, avgFOH, avgTotal, barPP, events }, ... }
+        let epLiveKWStats    = null;   // { 14: { barPP, n }, ... }
+
+        function epBuildEigenStats(data) {
+            const acc = {}; // promoter -> sum & counts
+            data.forEach(r => {
+                if ((r['Type'] || '').trim() !== 'EIGEN') return;
+                const promoter = (r['Promoter'] || '').trim();
+                if (!promoter) return;
+                const vvk = dbvFmtN(r['PreSale_TicketsSold']);
+                const foh = dbvFmtN(r['FOH_Tickets_Sold']);
+                const tot = dbvFmtN(r['Total_PAX']);
+                const bpp = parseFloat(String(r['Bar_Per_Person'] || '0').replace(/[^\d.,-]/g,'').replace(',','.')) || 0;
+                if (!acc[promoter]) {
+                    acc[promoter] = { vvkSum:0, vvkN:0, fohSum:0, fohN:0, totSum:0, totN:0, bppSum:0, bppN:0, events:0 };
+                }
+                acc[promoter].events++;
+                if (vvk > 0) { acc[promoter].vvkSum += vvk; acc[promoter].vvkN++; }
+                if (foh > 0) { acc[promoter].fohSum += foh; acc[promoter].fohN++; }
+                if (tot > 0) { acc[promoter].totSum += tot; acc[promoter].totN++; }
+                if (bpp > 0) { acc[promoter].bppSum += bpp; acc[promoter].bppN++; }
+            });
+            epLiveEigenStats = {};
+            Object.entries(acc).forEach(([p, a]) => {
+                epLiveEigenStats[p] = {
+                    avgVVK:   a.vvkN > 0 ? Math.round(a.vvkSum / a.vvkN) : 0,
+                    avgFOH:   a.fohN > 0 ? Math.round(a.fohSum / a.fohN) : 0,
+                    avgTotal: a.totN > 0 ? Math.round(a.totSum / a.totN) : 0,
+                    barPP:    a.bppN > 0 ? Math.round((a.bppSum / a.bppN) * 10) / 10 : 0,
+                    events:   a.events
+                };
+            });
+            epPopulateEigenDropdown();
+        }
+
+        function epPopulateEigenDropdown() {
+            const sel = document.getElementById('ep-serie');
+            const pill = document.getElementById('ep-eigen-live-pill');
+            if (!sel) return;
+            const entries = Object.entries(epLiveEigenStats || {})
+                .sort((a,b) => b[1].events - a[1].events);
+            if (entries.length === 0) {
+                sel.innerHTML = '<option value="">⚠ Keine EIGEN-Events in DB</option>';
+                if (pill) { pill.style.display='inline-block'; pill.textContent='DB EMPTY'; pill.style.background='#ef4444'; pill.style.color='#fff'; }
+                return;
+            }
+            sel.innerHTML = entries.map(([name, s]) => {
+                const label = name + ' (\u00d8 ' + s.avgTotal + ' PAX, ' + s.events + ' Events)';
+                return '<option value="' + name + '">' + label + '</option>';
+            }).join('');
+            if (pill) {
+                pill.style.display = 'inline-block';
+                pill.textContent = 'LIVE DB';
+                pill.style.background = '#22c55e';
+                pill.style.color = '#fff';
+            }
+        }
+
+        function epBuildKWStats(data) {
+            const acc = {}; // kw -> { sum, n }
+            data.forEach(r => {
+                const bpp = parseFloat(String(r['Bar_Per_Person'] || '0').replace(/[^\d.,-]/g,'').replace(',','.')) || 0;
+                if (bpp <= 0) return;
+                const datum = (r['Datum'] || '').trim();
+                const m = datum.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+                if (!m) return;
+                const dt = new Date(parseInt(m[3]), parseInt(m[2]) - 1, parseInt(m[1]));
+                if (isNaN(dt.getTime())) return;
+                const kw = epIsoWeek(dt);
+                if (!acc[kw]) acc[kw] = { sum: 0, n: 0 };
+                acc[kw].sum += bpp;
+                acc[kw].n++;
+            });
+            epLiveKWStats = {};
+            Object.entries(acc).forEach(([kw, a]) => {
+                epLiveKWStats[kw] = {
+                    barPP: Math.round((a.sum / a.n) * 10) / 10,
+                    n: a.n
+                };
+            });
+        }
+
+        // ISO 8601 Week (Mon-based)
+        function epIsoWeek(d) {
+            const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            const dayNum = date.getUTCDay() || 7;
+            date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+            return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+        }
+
+        // Helper: safely resolve EIGEN serie stats — live first, hardcoded fallback
+        function epSerieStats(serieKey) {
+            if (!serieKey) return null;
+            if (epLiveEigenStats && epLiveEigenStats[serieKey]) return epLiveEigenStats[serieKey];
+            const lower = serieKey.toLowerCase();
+            if (SERIE_STATS[lower]) return SERIE_STATS[lower];
+            return null;
+        }
+
+        // Helper: safely resolve KW barPP — live first, hardcoded fallback
+        function epKwBarPP(kw) {
+            const k = parseInt(kw);
+            if (epLiveKWStats && epLiveKWStats[k]) return epLiveKWStats[k].barPP;
+            if (KW_STATS[k]) return KW_STATS[k].barPP;
+            return EP_GLOBAL_BAR_PP;
+        }
+
+        // Helper: parse days input handling 0 correctly (v15.9.146 bug fix)
+        function epReadDays() {
+            const raw = document.getElementById('ep-days')?.value;
+            if (raw === '' || raw == null) return 7;
+            const n = parseInt(raw);
+            return isNaN(n) ? 7 : n;
         }
 
         // ---- Update basis card when promoter selected ----
@@ -8172,41 +8312,50 @@
 
         // ---- EIGEN: unchanged core logic ----
         function updateProjectorData() {
-            const serie = document.getElementById('ep-serie')?.value || 'turbo';
+            const serie = document.getElementById('ep-serie')?.value || '';
             const kw = document.getElementById('ep-kw')?.value || '14';
-            const s = SERIE_STATS[serie];
-            const k = KW_STATS[kw] || { barPP: 16.5 };
+            const s = epSerieStats(serie);
+            if (!s) {
+                // No data yet — clear outputs
+                ['ep-avg-vvk','ep-avg-foh','ep-avg-total','ep-events','ep-bar-pp','ep-bar-rev','ep-bar-guests'].forEach(id => {
+                    const el = document.getElementById(id); if (el) el.textContent = '—';
+                });
+                return;
+            }
+            const kwBarPP = epKwBarPP(kw);
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
             set('ep-avg-vvk',    s.avgVVK);
             set('ep-avg-foh',    s.avgFOH);
             set('ep-avg-total',  s.avgTotal);
             set('ep-events',     s.events);
-            set('ep-bar-pp',     k.barPP);
-            set('ep-bar-rev',    Math.round(s.avgTotal * k.barPP).toLocaleString('de-AT'));
+            set('ep-bar-pp',     kwBarPP);
+            set('ep-bar-rev',    Math.round(s.avgTotal * kwBarPP).toLocaleString('de-AT'));
             set('ep-bar-guests', s.avgTotal);
             updateProjectorProjection();
         }
 
         function updateProjectorProjection() {
-            const serie = document.getElementById('ep-serie')?.value || 'turbo';
+            const serie = document.getElementById('ep-serie')?.value || '';
             const kw = document.getElementById('ep-kw')?.value || '14';
             const currentVVK = parseInt(document.getElementById('ep-current-vvk')?.value) || 0;
-            const days = parseInt(document.getElementById('ep-days')?.value) || 7;
-            const s = SERIE_STATS[serie];
-            const k = KW_STATS[kw] || { barPP: 16.5 };
-            const fohRatio = s.avgFOH / s.avgVVK;
+            const days = epReadDays();
+            const s = epSerieStats(serie);
+            if (!s) return;
+            const kwBarPP = epKwBarPP(kw);
+            const fohRatio = s.avgVVK > 0 ? (s.avgFOH / s.avgVVK) : EP_FOH_VVK_RATIO;
             let pct = 0.5;
             for (const d of [14, 10, 7, 5, 3, 2, 1, 0]) { if (days >= d) { pct = VVK_BENCHMARKS[d]; break; } }
             const projVVK = currentVVK > 0 ? Math.round(currentVVK / pct) : s.avgVVK;
             const projFOH = Math.round(projVVK * fohRatio);
-            const projBar = (projVVK + projFOH) * k.barPP;
+            const projBar = (projVVK + projFOH) * kwBarPP;
             const projTotal = projBar + (projVVK * 18) + (projFOH * 22);
             const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
             set('ep-proj-vvk',   '~' + projVVK);
             set('ep-proj-foh',   '~' + projFOH);
             set('ep-proj-bar',   '~\u20ac' + Math.round(projBar).toLocaleString('de-AT'));
             set('ep-proj-total', '~\u20ac' + Math.round(projTotal).toLocaleString('de-AT'));
-            set('ep-proj-basis', 'Basis: EIGEN ' + serie + ' (' + s.events + ' Events) \u00b7 KW' + String(kw).padStart(2,'0') + ' \u20ac' + k.barPP + '/P');
+            const liveTag = (epLiveEigenStats && epLiveEigenStats[serie]) ? 'LIVE' : 'FALLBACK';
+            set('ep-proj-basis', 'Basis: EIGEN ' + serie + ' (' + s.events + ' Events, ' + liveTag + ') \u00b7 KW' + String(kw).padStart(2,'0') + ' \u20ac' + kwBarPP + '/P');
         }
 
         // ---- Master projection (FREMD + Freitext) ----
@@ -8214,9 +8363,9 @@
             if (epMode === 'eigen') { updateProjectorData(); return; }
 
             const currentVVK = parseInt(document.getElementById('ep-current-vvk')?.value) || 0;
-            const days       = parseInt(document.getElementById('ep-days')?.value) || 7;
+            const days       = epReadDays();
             const kw         = parseInt(document.getElementById('ep-kw')?.value) || 14;
-            const kwBarPP    = (KW_STATS[kw] || { barPP: EP_GLOBAL_BAR_PP }).barPP;
+            const kwBarPP    = epKwBarPP(kw);
 
             // VVK pct at this many days out
             let vvkPct = 0.50;
@@ -15185,7 +15334,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.145';
+            const HUB_VERSION = 'v15.9.146';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16997,7 +17146,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.145 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.146 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21031,7 +21180,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.145 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.146 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -21061,7 +21210,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.145',
+                hubVersion: 'v15.9.146',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
