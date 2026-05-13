@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.143</title>
+    <title>Turbo Projects Work Hub v15.9.144</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -546,7 +546,7 @@
         .modal-btn {
             padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
             cursor: pointer; border: 1px solid transparent; transition: all 0.15s; white-space: nowrap;
-            color: var(--text); /* v15.9.143 — bright default for buttons without variant class (e.g. Quick Sec Order Generieren/Kopieren/TXT) */
+            color: var(--text); /* v15.9.144 — bright default for buttons without variant class (e.g. Quick Sec Order Generieren/Kopieren/TXT) */
         }
         .modal-btn.cancel { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1); }
         .modal-btn.cancel:hover { background: rgba(255,255,255,0.1); color: #fff; }
@@ -2793,7 +2793,7 @@
         .myday-row.is-overdue { background: rgba(239,68,68,0.04); }
         .myday-row.is-overdue:hover { background: rgba(239,68,68,0.08); }
         .myday-leftbar {
-            width: 4px;
+            width: 5px;
             align-self: stretch;
             flex-shrink: 0;
         }
@@ -2910,13 +2910,14 @@
             font-size: 14px;
         }
 
-        /* ===== v15.9.143 — MY WORK DAY Visual Polish (Option A: White Cards on Dark Frame) ===== */
+        /* ===== v15.9.144 — MY WORK DAY Variant B (Bold Stripe, White Cards with gap) ===== */
         .myday-row {
             background: #ffffff;
             color: #1a1a1a;
             border-bottom: none;
             border-radius: 4px;
-            margin: 4px 8px;
+            margin: 5px 8px;
+            overflow: hidden; /* v144 — clip 5px stripe to rounded corners */
         }
         .myday-row:hover { background: #f4f4f4; }
         .myday-row.is-overdue {
@@ -2956,7 +2957,7 @@
             .myday-row { margin: 3px 4px; }
         }
 
-        /* ===== v15.9.143 — MY WORK DAY Visual Refresh (Category Badges, Dept Pills, Overdue Pill, QN Timestamp) ===== */
+        /* ===== v15.9.144 — MY WORK DAY Visual Refresh (Category Badges, Dept Pills, Overdue Pill, QN Timestamp) ===== */
         /* Event category badges (inline before title) */
         .myday-cat-badge {
             display: inline-block;
@@ -3054,7 +3055,7 @@
 
         /* Relative timestamp (right of QN row) */
         .myday-rowtime.is-relative { color: #6b7280; font-weight: 500; font-style: italic; }
-        /* ===== /v15.9.143 ===== */
+        /* ===== /v15.9.144 ===== */
 
         /* ===== COCKPIT WIDGET ===== */
         #cockpit-widget {
@@ -6418,7 +6419,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.143</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.144</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6899,7 +6900,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.143</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.144</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15016,7 +15017,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.143';
+            const HUB_VERSION = 'v15.9.144';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16828,7 +16829,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.143 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.144 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20862,7 +20863,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.143 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.144 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20892,7 +20893,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.143',
+                hubVersion: 'v15.9.144',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21807,7 +21808,7 @@ Spittelauer Lnde 12/1
         return weeks + (weeks === 1 ? ' Wo.' : ' Wo.');
     }
 
-    // v15.9.143 — relative hours/minutes helper (for Quick Notes timestamp)
+    // v15.9.144 — relative hours/minutes helper (for Quick Notes timestamp)
     // Input: ts string in format "DD.MM.YYYY HH:MM" (de-AT locale)
     // Output: "vor 30min" / "vor 2h" / "gerade eben"
     function mydayRelHours(ts) {
@@ -21851,7 +21852,7 @@ Spittelauer Lnde 12/1
                     });
                 }
             });
-            // v15.9.143 — also show EIGEN/FREMD/KONZERT events on MY WORK DAY
+            // v15.9.144 — also show EIGEN/FREMD/KONZERT events on MY WORK DAY
             (calendarEntries.eigen || []).forEach(e => {
                 if (e.date === today) {
                     items.push({
@@ -22017,7 +22018,7 @@ Spittelauer Lnde 12/1
 
     // ---- Render row builders ----
     function mydayBuildEventRow(e) {
-        // v15.9.143 — map type → category badge + leftbar class
+        // v15.9.144 — map type → category badge + leftbar class
         const typeMap = {
             'termin':  { cat: 'TERMIN',  leftbar: 'type-TERMIN',  icon: 'is-event',   char: '◆' },
             'special': { cat: 'SPECIAL', leftbar: 'type-SPECIAL', icon: 'is-special', char: '★' },
@@ -22060,7 +22061,7 @@ Spittelauer Lnde 12/1
         const iconHtml = isOverdue
             ? '<span class="myday-statusicon is-overdue">!</span>'
             : `<span class="myday-statusicon is-today" onclick="mydayCompleteTask('${mydayEsc(t.id)}','${mydayEsc(t.dept)}', this)" title="Erledigt"></span>`;
-        // v15.9.143 — ÜBERFÄLLIG pill (overdue, left of title) + dept-badge (today, right of time)
+        // v15.9.144 — ÜBERFÄLLIG pill (overdue, left of title) + dept-badge (today, right of time)
         const overduePill = isOverdue ? '<span class="myday-overdue-pill">ÜBERFÄLLIG</span>' : '';
         const deptBadge = !isOverdue ? `<span class="myday-dept-badge dept-${deptUpper}">${deptUpper}</span>` : '';
         return `<div class="myday-row ${rowCls}">
@@ -22077,7 +22078,7 @@ Spittelauer Lnde 12/1
     }
 
     function mydayBuildQnRow(q) {
-        // v15.9.143 — filled dept pill + P-badge + relative timestamp
+        // v15.9.144 — filled dept pill + P-badge + relative timestamp
         const deptUpper = (q.dept || 'NONE').toUpperCase();
         const deptPill = `<span class="myday-qn-dept-pill dept-${deptUpper}">${deptUpper}</span>`;
         const prio = q.priority || 'P2';
