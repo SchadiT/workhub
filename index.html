@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.144</title>
+    <title>Turbo Projects Work Hub v15.9.145</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -2910,6 +2910,107 @@
             font-size: 14px;
         }
 
+        /* ===== v15.9.145 — LINK BAR TOP STRIP ===== */
+        .linkbar-strip {
+            background: #1c1c2a;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .linkbar-strip::-webkit-scrollbar { height: 6px; }
+        .linkbar-strip::-webkit-scrollbar-thumb { background: rgba(245,158,11,0.4); border-radius: 3px; }
+        .linkbar-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #f59e0b;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            padding-right: 10px;
+            border-right: 1px solid rgba(245,158,11,0.3);
+        }
+        .linkbar-items {
+            display: flex;
+            gap: 6px;
+            flex: 1;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+        .linkbar-items::-webkit-scrollbar { height: 4px; }
+        .linkbar-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+        .linkbar-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e5e5e5;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .linkbar-btn:hover {
+            background: rgba(245,158,11,0.15);
+            border-color: #f59e0b;
+            color: #fff;
+        }
+        .linkbar-btn i { font-size: 14px; line-height: 1; }
+        .linkbar-btn .linkbar-del {
+            display: none;
+            margin-left: 6px;
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0 4px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .linkbar-btn .linkbar-del:hover { background: rgba(239,68,68,0.2); }
+        .linkbar-strip.edit-mode .linkbar-del { display: inline; }
+        .linkbar-strip.edit-mode .linkbar-btn { cursor: default; }
+        .linkbar-strip.edit-mode .linkbar-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #e5e5e5; }
+        .linkbar-edit-toggle {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #999;
+            padding: 6px 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.15s ease;
+        }
+        .linkbar-edit-toggle:hover { color: #f59e0b; border-color: #f59e0b; }
+        .linkbar-strip.edit-mode .linkbar-edit-toggle { color: #f59e0b; border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+        .linkbar-add-btn {
+            display: none;
+            background: rgba(245,158,11,0.1);
+            border: 1px dashed #f59e0b;
+            color: #f59e0b;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            flex-shrink: 0;
+            align-items: center;
+            gap: 4px;
+        }
+        .linkbar-strip.edit-mode .linkbar-add-btn { display: inline-flex; }
+        .linkbar-add-btn:hover { background: rgba(245,158,11,0.2); }
+        /* ===== /v15.9.145 LINK BAR ===== */
+
         /* ===== v15.9.144 — MY WORK DAY Variant B (Bold Stripe, White Cards with gap) ===== */
         .myday-row {
             background: #ffffff;
@@ -3514,6 +3615,15 @@
     </div>
     
     <div class="toast" id="toast"></div>
+
+    <!-- ==================== LINK BAR v15.9.145 ==================== -->
+    <div class="linkbar-strip" id="linkbar-strip">
+        <span class="linkbar-label">LINKS</span>
+        <div class="linkbar-items" id="linkbar-items"></div>
+        <button class="linkbar-add-btn" onclick="linkbarOpenAddModal()" title="Link hinzufügen"><i class="ti ti-plus"></i> Add</button>
+        <button class="linkbar-edit-toggle" id="linkbar-edit-btn" onclick="linkbarToggleEdit()" title="Bearbeiten"><i class="ti ti-pencil"></i></button>
+    </div>
+    <!-- ==================== /LINK BAR ==================== -->
 
     <!-- ==================== MEIN TAG WIDGET v15.9.130 ==================== -->
     <div id="myday-widget">
@@ -5970,6 +6080,64 @@
         </div>
     </div>
 
+    <!-- ==================== LINK BAR ADD MODAL v15.9.145 ==================== -->
+    <div class="modal-overlay" id="linkbar-add-modal" style="display:none;">
+        <div class="modal" style="max-width:440px;">
+            <div class="modal-header">
+                <h3 style="margin:0;">Link hinzufügen</h3>
+                <button class="modal-close" onclick="linkbarCloseAddModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+                <div>
+                    <label style="display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:4px;letter-spacing:0.5px;">LABEL</label>
+                    <input type="text" id="linkbar-add-label" placeholder="z.B. Mailchimp" style="width:100%;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                </div>
+                <div>
+                    <label style="display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:4px;letter-spacing:0.5px;">URL</label>
+                    <input type="text" id="linkbar-add-url" placeholder="https://..." style="width:100%;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                </div>
+                <div>
+                    <label style="display:block;font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:4px;letter-spacing:0.5px;">ICON</label>
+                    <select id="linkbar-add-icon" style="width:100%;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;">
+                        <option value="ti-link">🔗 Link (Default)</option>
+                        <option value="ti-ticket">🎫 Ticket</option>
+                        <option value="ti-chart-bar">📊 Chart</option>
+                        <option value="ti-cash-register">💰 Cash Register</option>
+                        <option value="ti-tree">🌳 Tree</option>
+                        <option value="ti-brand-google-drive">📁 Google Drive</option>
+                        <option value="ti-brand-instagram">📷 Instagram</option>
+                        <option value="ti-brand-facebook">📘 Facebook</option>
+                        <option value="ti-brand-tiktok">🎵 TikTok</option>
+                        <option value="ti-brand-youtube">▶ YouTube</option>
+                        <option value="ti-brand-spotify">🎧 Spotify</option>
+                        <option value="ti-brand-soundcloud">☁ SoundCloud</option>
+                        <option value="ti-brand-whatsapp">💬 WhatsApp</option>
+                        <option value="ti-world">🌐 Website</option>
+                        <option value="ti-mail">✉ Mail</option>
+                        <option value="ti-calendar">📅 Calendar</option>
+                        <option value="ti-music">🎵 Music</option>
+                        <option value="ti-video">🎥 Video</option>
+                        <option value="ti-photo">🖼 Photo</option>
+                        <option value="ti-file">📄 File</option>
+                        <option value="ti-folder">📁 Folder</option>
+                        <option value="ti-settings">⚙ Settings</option>
+                        <option value="ti-key">🔑 Key</option>
+                        <option value="ti-bell">🔔 Bell</option>
+                        <option value="ti-bolt">⚡ Bolt</option>
+                        <option value="ti-dashboard">📈 Dashboard</option>
+                        <option value="ti-tool">🔧 Tool</option>
+                        <option value="ti-cloud">☁ Cloud</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding:12px 16px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--border);">
+                <button class="modal-btn cancel" onclick="linkbarCloseAddModal()">Abbrechen</button>
+                <button class="modal-btn primary" onclick="linkbarAdd()">Speichern</button>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== /LINK BAR ADD MODAL ==================== -->
+
     <!-- BRIEFING MODAL -->
 
     
@@ -6419,7 +6587,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.144</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.145</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6900,7 +7068,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.144</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.145</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15017,7 +15185,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.144';
+            const HUB_VERSION = 'v15.9.145';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16829,7 +16997,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.144 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.145 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20863,7 +21031,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.144 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.145 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20893,7 +21061,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.144',
+                hubVersion: 'v15.9.145',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -22381,6 +22549,133 @@ Spittelauer Lnde 12/1
     document.addEventListener('DOMContentLoaded', mydayInit);
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         setTimeout(mydayInit, 50);
+    }
+})();
+
+// ═══════════════════════════════════════════════════════
+// LINK BAR TOP STRIP v15.9.145
+// Persists in localStorage 'linkbar_v1'. Defaults seeded once.
+// ═══════════════════════════════════════════════════════
+(function(){
+    const LINKBAR_KEY = 'linkbar_v1';
+    const LINKBAR_DEFAULTS = [
+        {label:'Eventim', url:'https://www.eventim-light.com/at/dashboard', icon:'ti-ticket'},
+        {label:'WBV', url:'https://wbv.azurewebsites.net/administration/controlling/topproducts.aspx', icon:'ti-chart-bar'},
+        {label:'Kassa (R2O)', url:'https://my.ready2order.com/views/dashboard.php', icon:'ti-cash-register'},
+        {label:'Bitly', url:'https://app.bitly.com', icon:'ti-link'},
+        {label:'Linktree', url:'https://linktr.ee/admin', icon:'ti-tree'},
+        {label:'Drive (TURBO)', url:'https://drive.google.com/drive/folders/1cbhLooWH8pRVkhYoy_MPJZ5JSF-XH-qu', icon:'ti-brand-google-drive'},
+        {label:'Instagram', url:'https://instagram.com/grelleforelle', icon:'ti-brand-instagram'},
+        {label:'Facebook', url:'https://facebook.com/grelleforelle', icon:'ti-brand-facebook'},
+        {label:'grelleforelle.com', url:'https://www.grelleforelle.com', icon:'ti-world'},
+        {label:'Webmail (W4Y)', url:'https://webmail.world4you.com', icon:'ti-mail'}
+    ];
+
+    function escHtml(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function linkbarLoad() {
+        try {
+            const raw = localStorage.getItem(LINKBAR_KEY);
+            if (!raw) {
+                localStorage.setItem(LINKBAR_KEY, JSON.stringify(LINKBAR_DEFAULTS));
+                return JSON.parse(JSON.stringify(LINKBAR_DEFAULTS));
+            }
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : JSON.parse(JSON.stringify(LINKBAR_DEFAULTS));
+        } catch(e) {
+            console.error('[linkbar] load failed', e);
+            return JSON.parse(JSON.stringify(LINKBAR_DEFAULTS));
+        }
+    }
+
+    function linkbarSave(arr) {
+        try { localStorage.setItem(LINKBAR_KEY, JSON.stringify(arr)); }
+        catch(e) { console.error('[linkbar] save failed', e); }
+    }
+
+    function linkbarRender() {
+        const container = document.getElementById('linkbar-items');
+        if (!container) return;
+        const strip = document.getElementById('linkbar-strip');
+        const isEdit = strip && strip.classList.contains('edit-mode');
+        const items = linkbarLoad();
+        if (items.length === 0) {
+            container.innerHTML = '<span style="color:#666;font-size:12px;font-style:italic;">Keine Links — Pencil klicken um hinzuzufügen</span>';
+            return;
+        }
+        container.innerHTML = items.map((it, idx) => {
+            const label = escHtml(it.label || '');
+            const url = escHtml(it.url || '#');
+            const icon = escHtml(it.icon || 'ti-link');
+            const hrefAttr = isEdit ? '' : `href="${url}" target="_blank" rel="noopener"`;
+            return `<a class="linkbar-btn" ${hrefAttr} data-idx="${idx}" ${isEdit ? 'onclick="event.preventDefault();"' : ''}>` +
+                   `<i class="ti ${icon}"></i>` +
+                   `<span>${label}</span>` +
+                   `<span class="linkbar-del" onclick="event.preventDefault();event.stopPropagation();window.linkbarDelete(${idx});" title="Löschen">×</span>` +
+                   `</a>`;
+        }).join('');
+    }
+
+    window.linkbarToggleEdit = function() {
+        const strip = document.getElementById('linkbar-strip');
+        if (!strip) return;
+        strip.classList.toggle('edit-mode');
+        linkbarRender();
+    };
+
+    window.linkbarDelete = function(idx) {
+        const items = linkbarLoad();
+        if (idx < 0 || idx >= items.length) return;
+        if (!confirm('Link "' + (items[idx].label || '') + '" entfernen?')) return;
+        items.splice(idx, 1);
+        linkbarSave(items);
+        linkbarRender();
+    };
+
+    window.linkbarOpenAddModal = function() {
+        const m = document.getElementById('linkbar-add-modal');
+        const lbl = document.getElementById('linkbar-add-label');
+        const urlEl = document.getElementById('linkbar-add-url');
+        const iconEl = document.getElementById('linkbar-add-icon');
+        if (lbl) lbl.value = '';
+        if (urlEl) urlEl.value = '';
+        if (iconEl) iconEl.value = 'ti-link';
+        if (m) { m.style.display = 'flex'; if (lbl) setTimeout(()=>lbl.focus(), 50); }
+    };
+
+    window.linkbarCloseAddModal = function() {
+        const m = document.getElementById('linkbar-add-modal');
+        if (m) m.style.display = 'none';
+    };
+
+    window.linkbarAdd = function() {
+        const lblEl = document.getElementById('linkbar-add-label');
+        const urlEl = document.getElementById('linkbar-add-url');
+        const iconEl = document.getElementById('linkbar-add-icon');
+        const label = lblEl ? lblEl.value.trim() : '';
+        let url = urlEl ? urlEl.value.trim() : '';
+        const icon = iconEl ? iconEl.value : 'ti-link';
+        if (!label || !url) { alert('Label und URL sind Pflicht'); return; }
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        const items = linkbarLoad();
+        items.push({label, url, icon});
+        linkbarSave(items);
+        linkbarRender();
+        window.linkbarCloseAddModal();
+    };
+
+    function linkbarInit() {
+        try { linkbarRender(); }
+        catch(e) { console.error('[linkbar] init failed', e); }
+    }
+
+    document.addEventListener('DOMContentLoaded', linkbarInit);
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(linkbarInit, 50);
     }
 })();
 
