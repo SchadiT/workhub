@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.141</title>
+    <title>Turbo Projects Work Hub v15.9.143</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -546,6 +546,7 @@
         .modal-btn {
             padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
             cursor: pointer; border: 1px solid transparent; transition: all 0.15s; white-space: nowrap;
+            color: var(--text); /* v15.9.143 — bright default for buttons without variant class (e.g. Quick Sec Order Generieren/Kopieren/TXT) */
         }
         .modal-btn.cancel { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.1); }
         .modal-btn.cancel:hover { background: rgba(255,255,255,0.1); color: #fff; }
@@ -2909,98 +2910,42 @@
             font-size: 14px;
         }
 
-        /* ===== v15.9.141 — MY WORK DAY Visual Refresh (Option B: Elevated Dark Cards) ===== */
+        /* ===== v15.9.143 — MY WORK DAY Visual Polish (Option A: White Cards on Dark Frame) ===== */
         .myday-row {
-            background: #252525;
+            background: #ffffff;
+            color: #1a1a1a;
             border-bottom: none;
             border-radius: 4px;
             margin: 4px 8px;
         }
-        .myday-row:hover { background: #2d2d2d; }
+        .myday-row:hover { background: #f4f4f4; }
         .myday-row.is-overdue {
-            background: #2a1a1a;
+            background: #fff4f4;
             border-left: 3px solid #ef4444;
             padding-left: 0;
         }
-        .myday-row.is-overdue:hover { background: #321f1f; }
+        .myday-row.is-overdue:hover { background: #ffe8e8; }
+        .myday-row .myday-rowtitle { color: #1a1a1a; }
+        .myday-row.is-overdue .myday-rowtitle { color: #991b1b; }
+        .myday-row .myday-rowtitle .myday-notes-inline { color: #6b7280; }
+        .myday-row.is-overdue .myday-rowtitle .myday-notes-inline { color: #b91c1c; }
+        .myday-row .myday-rowtime { color: #6b7280; }
+        .myday-row .myday-rowtime.is-overdue { color: #ef4444; font-weight: 700; }
+        .myday-row .myday-rowtime.is-today { color: #d97706; font-weight: 600; }
+        .myday-row .myday-statusicon.is-today {
+            border-color: #6b7280;
+        }
+        .myday-row .myday-statusicon.is-today:hover { border-color: #3b82f6; }
+        .myday-row .myday-statusicon.is-today.checked {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .myday-row .myday-statusicon.is-overdue {
+            background: rgba(239,68,68,0.18);
+            color: #ef4444;
+        }
         .myday-divider { margin-top: 4px; }
         .myday-divider:first-child { margin-top: 0; }
-        /* v141 — Category badge (EIGEN/FREMD/KONZERT/TERMIN) */
-        .myday-cat-badge {
-            font-size: 9px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-right: 6px;
-            flex-shrink: 0;
-        }
-        .myday-cat-badge.cat-eigen   { background: #22c55e; }
-        .myday-cat-badge.cat-fremd   { background: #f59e0b; }
-        .myday-cat-badge.cat-konzert { background: #8b5cf6; }
-        .myday-cat-badge.cat-termin  { background: #ec4899; }
-        .myday-cat-badge.cat-special { background: #eab308; color: #1a1a1a; }
-        /* v141 — Dept badge (right side of task rows) */
-        .myday-dept-badge {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-            flex-shrink: 0;
-            margin-left: 8px;
-        }
-        .myday-dept-badge.dept-OFFICE  { color: #85B7EB; }
-        .myday-dept-badge.dept-BAR     { color: #FAC775; }
-        .myday-dept-badge.dept-RUNNER  { color: #C0DD97; }
-        .myday-dept-badge.dept-TECHNIK { color: #CECBF6; }
-        .myday-dept-badge.dept-SPUTNIK { color: #F4C0D1; }
-        .myday-dept-badge.dept-NONE    { color: #888; }
-        /* v141 — Overdue pill */
-        .myday-overdue-pill {
-            font-size: 9px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 3px;
-            background: #ef4444;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-right: 6px;
-            flex-shrink: 0;
-        }
-        /* v141 — Quick Notes pill + timestamp */
-        .myday-qn-pill {
-            font-size: 9px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-right: 6px;
-            flex-shrink: 0;
-        }
-        .myday-qn-pill.dept-OFFICE  { background: #4F8EF7; }
-        .myday-qn-pill.dept-BAR     { background: #EF9F27; }
-        .myday-qn-pill.dept-RUNNER  { background: #97C459; color: #1a1a1a; }
-        .myday-qn-pill.dept-TECHNIK { background: #AFA9EC; color: #1a1a1a; }
-        .myday-qn-pill.dept-SPUTNIK { background: #ec4899; }
-        .myday-qn-pill.dept-NONE    { background: #4b5563; }
-        .myday-qn-prio {
-            font-size: 9px;
-            font-weight: 700;
-            margin-right: 4px;
-            flex-shrink: 0;
-        }
-        .myday-qn-prio.p-P1 { color: #ef4444; }
-        .myday-qn-prio.p-P2 { color: #f59e0b; }
-        .myday-qn-prio.p-P3 { color: #888; }
-        .myday-rowtime.is-ts {
-            color: #888;
-            font-weight: 400;
-        }
 
         @media (max-width: 768px) {
             .myday-stats { gap: 4px; }
@@ -3009,9 +2954,107 @@
             .myday-rowcontent { padding: 7px 8px; gap: 8px; }
             .myday-rowtitle { font-size: 11px; }
             .myday-row { margin: 3px 4px; }
-            .myday-cat-badge, .myday-overdue-pill, .myday-qn-pill { font-size: 8px; padding: 1px 4px; }
-            .myday-dept-badge { font-size: 9px; }
         }
+
+        /* ===== v15.9.143 — MY WORK DAY Visual Refresh (Category Badges, Dept Pills, Overdue Pill, QN Timestamp) ===== */
+        /* Event category badges (inline before title) */
+        .myday-cat-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 6px;
+            color: #fff;
+            line-height: 1.3;
+            vertical-align: middle;
+        }
+        .myday-cat-badge.cat-EIGEN   { background: #22c55e; }
+        .myday-cat-badge.cat-FREMD   { background: #f97316; }
+        .myday-cat-badge.cat-KONZERT { background: #a855f7; }
+        .myday-cat-badge.cat-TERMIN  { background: #ec4899; }
+        .myday-cat-badge.cat-SPECIAL { background: #eab308; color: #1a1a1a; }
+
+        /* Dept badge (right side of task row, Heute) */
+        .myday-dept-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            line-height: 1.3;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+        .myday-dept-badge.dept-OFFICE  { background: #4F8EF7; }
+        .myday-dept-badge.dept-BAR     { background: #EF9F27; }
+        .myday-dept-badge.dept-RUNNER  { background: #97C459; color: #1a1a1a; }
+        .myday-dept-badge.dept-TECHNIK { background: #AFA9EC; color: #1a1a1a; }
+        .myday-dept-badge.dept-SPUTNIK { background: #ec4899; }
+        .myday-dept-badge.dept-NONE    { background: #6b7280; }
+
+        /* Overdue pill (left of title, before task text) */
+        .myday-overdue-pill {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #ef4444;
+            color: #fff;
+            margin-right: 6px;
+            line-height: 1.3;
+            vertical-align: middle;
+        }
+
+        /* Quick Notes filled dept pill (left of priority) */
+        .myday-qn-dept-pill {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            margin-right: 6px;
+            line-height: 1.3;
+            vertical-align: middle;
+        }
+        .myday-qn-dept-pill.dept-OFFICE  { background: #4F8EF7; }
+        .myday-qn-dept-pill.dept-BAR     { background: #EF9F27; }
+        .myday-qn-dept-pill.dept-RUNNER  { background: #97C459; color: #1a1a1a; }
+        .myday-qn-dept-pill.dept-TECHNIK { background: #AFA9EC; color: #1a1a1a; }
+        .myday-qn-dept-pill.dept-SPUTNIK { background: #ec4899; }
+        .myday-qn-dept-pill.dept-NONE    { background: #6b7280; }
+
+        /* Quick Notes priority badge (P1/P2/P3) */
+        .myday-qn-prio {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 6px;
+            line-height: 1.3;
+            vertical-align: middle;
+            color: #fff;
+        }
+        .myday-qn-prio.prio-P1 { background: #ef4444; }
+        .myday-qn-prio.prio-P2 { background: #f59e0b; }
+        .myday-qn-prio.prio-P3 { background: #6b7280; }
+
+        /* Relative timestamp (right of QN row) */
+        .myday-rowtime.is-relative { color: #6b7280; font-weight: 500; font-style: italic; }
+        /* ===== /v15.9.143 ===== */
 
         /* ===== COCKPIT WIDGET ===== */
         #cockpit-widget {
@@ -6375,7 +6418,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.141</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.143</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6856,7 +6899,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.141</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.143</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14973,7 +15016,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.141';
+            const HUB_VERSION = 'v15.9.143';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16785,7 +16828,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.141 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.143 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20819,7 +20862,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.141 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.143 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20849,7 +20892,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.141',
+                hubVersion: 'v15.9.143',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21764,31 +21807,80 @@ Spittelauer Lnde 12/1
         return weeks + (weeks === 1 ? ' Wo.' : ' Wo.');
     }
 
+    // v15.9.143 — relative hours/minutes helper (for Quick Notes timestamp)
+    // Input: ts string in format "DD.MM.YYYY HH:MM" (de-AT locale)
+    // Output: "vor 30min" / "vor 2h" / "gerade eben"
+    function mydayRelHours(ts) {
+        if (!ts) return '';
+        const m = String(ts).match(/^(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2})/);
+        if (!m) return '';
+        const tsDate = new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5], 0, 0);
+        const diffMs = Date.now() - tsDate.getTime();
+        if (diffMs < 0) return 'gerade';
+        const mins = Math.floor(diffMs / 60000);
+        if (mins < 1) return 'gerade';
+        if (mins < 60) return 'vor ' + mins + 'min';
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) return 'vor ' + hours + 'h';
+        const days = Math.floor(hours / 24);
+        return 'vor ' + days + 'd';
+    }
+
     // ---- Source: BMT Termine + Specials for today ----
     function mydayGetBmtToday() {
         const today = mydayTodayStr();
         const items = [];
         if (typeof calendarEntries !== 'undefined') {
-            // v15.9.141 — include all BMT categories with category metadata for badge rendering
-            const buckets = [
-                { key: 'termin',  type: 'termin',  cat: 'termin'  },
-                { key: 'bmt',     type: 'special', cat: 'special' },
-                { key: 'eigen',   type: 'special', cat: 'eigen'   },
-                { key: 'fremd',   type: 'special', cat: 'fremd'   },
-                { key: 'konzert', type: 'special', cat: 'konzert' }
-            ];
-            buckets.forEach(b => {
-                (calendarEntries[b.key] || []).forEach(e => {
-                    if (e.date === today) {
-                        items.push({
-                            type: b.type,
-                            category: b.cat,
-                            title: e.title || (b.type === 'termin' ? 'Termin' : 'Event'),
-                            time: e.time || '',
-                            sortKey: e.time || '99:99'
-                        });
-                    }
-                });
+            (calendarEntries.termin || []).forEach(e => {
+                if (e.date === today) {
+                    items.push({
+                        type: 'termin',
+                        title: e.title || 'Termin',
+                        time: e.time || '',
+                        sortKey: e.time || '99:99'
+                    });
+                }
+            });
+            (calendarEntries.bmt || []).forEach(e => {
+                if (e.date === today) {
+                    items.push({
+                        type: 'special',
+                        title: e.title || 'Special',
+                        time: e.time || '',
+                        sortKey: e.time || '99:99'
+                    });
+                }
+            });
+            // v15.9.143 — also show EIGEN/FREMD/KONZERT events on MY WORK DAY
+            (calendarEntries.eigen || []).forEach(e => {
+                if (e.date === today) {
+                    items.push({
+                        type: 'eigen',
+                        title: e.title || 'Event',
+                        time: e.time || '',
+                        sortKey: e.time || '99:99'
+                    });
+                }
+            });
+            (calendarEntries.fremd || []).forEach(e => {
+                if (e.date === today) {
+                    items.push({
+                        type: 'fremd',
+                        title: e.title || 'Event',
+                        time: e.time || '',
+                        sortKey: e.time || '99:99'
+                    });
+                }
+            });
+            (calendarEntries.konzert || []).forEach(e => {
+                if (e.date === today) {
+                    items.push({
+                        type: 'konzert',
+                        title: e.title || 'Konzert',
+                        time: e.time || '',
+                        sortKey: e.time || '99:99'
+                    });
+                }
             });
         }
         items.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
@@ -21925,15 +22017,20 @@ Spittelauer Lnde 12/1
 
     // ---- Render row builders ----
     function mydayBuildEventRow(e) {
-        const isTermin = e.type === 'termin';
-        const leftbarCls = isTermin ? 'type-TERMIN' : 'type-SPECIAL';
-        const iconCls = isTermin ? 'is-event' : 'is-special';
-        const iconChar = isTermin ? '◆' : '★';
+        // v15.9.143 — map type → category badge + leftbar class
+        const typeMap = {
+            'termin':  { cat: 'TERMIN',  leftbar: 'type-TERMIN',  icon: 'is-event',   char: '◆' },
+            'special': { cat: 'SPECIAL', leftbar: 'type-SPECIAL', icon: 'is-special', char: '★' },
+            'eigen':   { cat: 'EIGEN',   leftbar: 'dept-RUNNER',  icon: 'is-event',   char: '●' },
+            'fremd':   { cat: 'FREMD',   leftbar: 'dept-BAR',     icon: 'is-event',   char: '●' },
+            'konzert': { cat: 'KONZERT', leftbar: 'dept-TECHNIK', icon: 'is-event',   char: '♪' }
+        };
+        const m = typeMap[e.type] || typeMap['special'];
+        const leftbarCls = m.leftbar;
+        const iconCls = m.icon;
+        const iconChar = m.char;
+        const catBadge = `<span class="myday-cat-badge cat-${m.cat}">${m.cat}</span>`;
         const timeHtml = e.time ? mydayEsc(e.time) : '';
-        // v15.9.141 — Category badge (EIGEN/FREMD/KONZERT/TERMIN)
-        const catRaw = (e.category || (isTermin ? 'termin' : 'special') || '').toLowerCase();
-        const catLabel = catRaw ? catRaw.toUpperCase() : '';
-        const catBadgeHtml = catLabel ? '<span class="myday-cat-badge cat-' + catRaw + '">' + mydayEsc(catLabel) + '</span>' : '';
         // v15.9.135 — Jour Fix Tuesday Sub-Bullets (Factsheets · Security · Rider)
         const isJourFix = (new Date().getDay() === 2) && /jour\s*fix/i.test(e.title || '');
         const subItemsHtml = isJourFix ? `<div class="myday-subitems">
@@ -21946,7 +22043,7 @@ Spittelauer Lnde 12/1
             <div class="myday-rowcontent">
                 <span class="myday-statusicon ${iconCls}">${iconChar}</span>
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${catBadgeHtml}${mydayEsc(e.title)}</div>
+                    <div class="myday-rowtitle">${catBadge}${mydayEsc(e.title)}</div>
                 </div>
                 <span class="myday-rowtime">${timeHtml}</span>
             </div>
@@ -21958,65 +22055,46 @@ Spittelauer Lnde 12/1
         const rowCls = isOverdue ? 'is-overdue' : '';
         const star = t.importance === 'high' ? '<span class="myday-star">★</span>' : '';
         const notesHtml = t.notes ? `<span class="myday-notes-inline">— ${mydayEsc(t.notes.length > 60 ? t.notes.slice(0,60) + '…' : t.notes)}</span>` : '';
-        // v15.9.141 — Overdue pill on title, Dept badge on right for today's tasks
-        const overduePillHtml = isOverdue ? '<span class="myday-overdue-pill">Überfällig</span>' : '';
-        const rightSideHtml = isOverdue
-            ? '<span class="myday-rowtime is-overdue">' + mydayRelDays(t.overdueBy) + '</span>'
-            : '<span class="myday-dept-badge dept-' + deptUpper + '">' + mydayEsc(deptUpper) + '</span>';
+        const timeLabel = isOverdue ? mydayRelDays(t.overdueBy) : 'Heute';
+        const timeCls = isOverdue ? 'is-overdue' : 'is-today';
         const iconHtml = isOverdue
             ? '<span class="myday-statusicon is-overdue">!</span>'
             : `<span class="myday-statusicon is-today" onclick="mydayCompleteTask('${mydayEsc(t.id)}','${mydayEsc(t.dept)}', this)" title="Erledigt"></span>`;
+        // v15.9.143 — ÜBERFÄLLIG pill (overdue, left of title) + dept-badge (today, right of time)
+        const overduePill = isOverdue ? '<span class="myday-overdue-pill">ÜBERFÄLLIG</span>' : '';
+        const deptBadge = !isOverdue ? `<span class="myday-dept-badge dept-${deptUpper}">${deptUpper}</span>` : '';
         return `<div class="myday-row ${rowCls}">
             <div class="myday-leftbar dept-${deptUpper}"></div>
             <div class="myday-rowcontent">
                 ${iconHtml}
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${overduePillHtml}${star}${mydayEsc(t.title)}${notesHtml}</div>
+                    <div class="myday-rowtitle">${overduePill}${star}${mydayEsc(t.title)}${notesHtml}</div>
                 </div>
-                ${rightSideHtml}
+                <span class="myday-rowtime ${timeCls}">${timeLabel}</span>
+                ${deptBadge}
             </div>
         </div>`;
     }
 
     function mydayBuildQnRow(q) {
-        const deptUpper = q.dept || 'NONE';
-        // v15.9.141 — Dept pill + priority + timestamp
-        const prioMark = q.priority ? '<span class="myday-qn-prio p-' + q.priority + '">' + q.priority + '</span>' : '';
-        const deptPillHtml = '<span class="myday-qn-pill dept-' + deptUpper + '">' + mydayEsc(deptUpper) + '</span>';
-        const tsHtml = q.ts ? mydayQnTimestamp(q.ts) : 'Heute';
+        // v15.9.143 — filled dept pill + P-badge + relative timestamp
+        const deptUpper = (q.dept || 'NONE').toUpperCase();
+        const deptPill = `<span class="myday-qn-dept-pill dept-${deptUpper}">${deptUpper}</span>`;
+        const prio = q.priority || 'P2';
+        const prioBadge = `<span class="myday-qn-prio prio-${prio}">${prio}</span>`;
+        const relTs = mydayRelHours(q.ts);
+        const timeHtml = relTs ? mydayEsc(relTs) : 'Heute';
+        const timeCls = relTs ? 'is-relative' : 'is-today';
         return `<div class="myday-row">
             <div class="myday-leftbar dept-${deptUpper}"></div>
             <div class="myday-rowcontent">
                 <span class="myday-statusicon" style="color:#a78bfa;">●</span>
                 <div class="myday-titlewrap">
-                    <div class="myday-rowtitle">${deptPillHtml}${prioMark}${mydayEsc(q.title)}</div>
+                    <div class="myday-rowtitle">${deptPill}${prioBadge}${mydayEsc(q.title)}</div>
                 </div>
-                <span class="myday-rowtime is-ts">${tsHtml}</span>
+                <span class="myday-rowtime ${timeCls}">${timeHtml}</span>
             </div>
         </div>`;
-    }
-
-    // v15.9.141 — Quick Notes timestamp formatter
-    // Accepts ISO string OR "DD.MM.YYYY HH:MM:SS" / "DD.MM.YYYY HH:MM" / "DD.MM.YYYY"
-    function mydayQnTimestamp(ts) {
-        if (!ts) return 'Heute';
-        let d = null;
-        const m = String(ts).match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
-        if (m) {
-            d = new Date(+m[3], +m[2]-1, +m[1], +(m[4]||0), +(m[5]||0), +(m[6]||0));
-        } else {
-            d = new Date(ts);
-        }
-        if (!d || isNaN(d.getTime())) return 'Heute';
-        const diffMs = Date.now() - d.getTime();
-        const diffMin = Math.floor(diffMs / 60000);
-        if (diffMin < 1)  return 'jetzt';
-        if (diffMin < 60) return 'vor ' + diffMin + 'm';
-        const diffH = Math.floor(diffMin / 60);
-        if (diffH < 24)   return 'vor ' + diffH + 'h';
-        const diffD = Math.floor(diffH / 24);
-        if (diffD < 7)    return 'vor ' + diffD + 'd';
-        return d.getDate().toString().padStart(2,'0') + '.' + (d.getMonth()+1).toString().padStart(2,'0');
     }
 
     // ---- Main render: single list with mini-dividers ----
