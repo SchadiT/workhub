@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.147</title>
+    <title>Turbo Projects Work Hub v15.9.148</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3322,7 +3322,7 @@
         }
         /* Guestlist lists — adaptive on mobile */
         @media (max-width: 768px) {
-            #gl-list-gl, #gl-list-fl, #gl-list-sl { max-height: 28vh !important; }
+            #gl-list-gl { max-height: 50vh !important; }
             #security-order-output { max-height: none !important; }
         }
         /* ===== v15.9.123 NOTEPAD ARCHIVE ===== */
@@ -4373,7 +4373,7 @@
                             <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
                             <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
                         </div>
-                        <button class="modal-btn" onclick="glData={gl:[],fl:[],sl:[]};document.getElementById('gl-status').style.display='none';document.getElementById('gl-results').style.display='none';document.getElementById('gl-chat-input').value='';showToast('Guestlist geleert');" style="background:#3d3d54;font-size:12px;height:36px;">OK</button>
+                        <button class="modal-btn" onclick="glData={gl:[]};document.getElementById('gl-status').style.display='none';document.getElementById('gl-results').style.display='none';document.getElementById('gl-chat-input').value='';showToast('Guestlist geleert');" style="background:#3d3d54;font-size:12px;height:36px;">OK</button>
                     </div>
                 </div>
 
@@ -4394,63 +4394,35 @@
 
                 <!-- Results -->
                 <div id="gl-results" style="display:none;flex-direction:column;gap:12px;">
-                    <!-- Summary -->
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                    <!-- Summary — v5.0 single list -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                         <div style="background:#1a1a2e;border:1px solid #22c55e;padding:12px;text-align:center;">
                             <div id="gl-count-gl" style="font-size:24px;font-weight:700;color:#22c55e;">0</div>
-                            <div style="font-size:11px;color:#888;">GÄSTELISTE</div>
+                            <div style="font-size:11px;color:#888;">NAMEN</div>
                         </div>
-                        <div style="background:#1a1a2e;border:1px solid #3b82f6;padding:12px;text-align:center;">
-                            <div id="gl-count-fl" style="font-size:24px;font-weight:700;color:#3b82f6;">0</div>
-                            <div style="font-size:11px;color:#888;">FRIENDS LIST</div>
-                        </div>
-                        <div style="background:#1a1a2e;border:1px solid #f59e0b;padding:12px;text-align:center;">
-                            <div id="gl-count-sl" style="font-size:24px;font-weight:700;color:#f59e0b;">0</div>
-                            <div style="font-size:11px;color:#888;">SPECIAL LIST</div>
+                        <div style="background:#1a1a2e;border:1px solid #22c55e;padding:12px;text-align:center;">
+                            <div id="gl-count-pax" style="font-size:24px;font-weight:700;color:#22c55e;">0</div>
+                            <div style="font-size:11px;color:#888;">PAX TOTAL (inkl. +N)</div>
                         </div>
                     </div>
 
                     <!-- Actions -->
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <button class="modal-btn" onclick="glCopyList('gl')" style="background:#22c55e;color:#000;font-size:12px;">&#128203; GL kopieren</button>
-                        <button class="modal-btn" onclick="glCopyList('fl')" style="background:#3b82f6;color:#fff;font-size:12px;">&#128203; FL kopieren</button>
-                        <button class="modal-btn" onclick="glCopyList('sl')" style="background:#f59e0b;color:#000;font-size:12px;">&#128203; SL kopieren</button>
-                        <button class="modal-btn" onclick="glSave()" style="background:#22c55e;color:#000;font-size:12px;font-weight:700;">&#128190; SPEICHERN</button>
+                        <button class="modal-btn" onclick="glCopyList('gl')" style="background:#22c55e;color:#000;font-size:12px;font-weight:700;">&#128203; Kopieren</button>
+                        <button class="modal-btn" onclick="glSave()" style="background:#3b82f6;color:#fff;font-size:12px;font-weight:700;">&#128190; SPEICHERN</button>
                         <button class="modal-btn" onclick="glDownloadXlsx()" style="background:#8b5cf6;color:#fff;font-size:12px;margin-left:auto;">&#128190; .xlsx</button>
                     </div>
 
-                    <!-- 3 Lists side by side -->
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-                        <div>
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                                <span style="font-size:11px;font-weight:700;color:#22c55e;letter-spacing:1px;">GÄSTELISTE</span>
-                                <div style="display:flex;gap:4px;">
-                                    <input id="gl-add-gl" type="text" placeholder="Name..." style="width:100px;padding:2px 6px;background:#1a1a2e;border:1px solid #22c55e55;color:#fff;font-size:11px;">
-                                    <button onclick="glAddName('gl')" style="background:#22c55e;color:#000;border:none;padding:2px 6px;cursor:pointer;font-size:11px;font-weight:700;">+</button>
-                                </div>
+                    <!-- Single list — v5.0 -->
+                    <div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                            <span style="font-size:11px;font-weight:700;color:#22c55e;letter-spacing:1px;">GÄSTELISTE</span>
+                            <div style="display:flex;gap:4px;">
+                                <input id="gl-add-gl" type="text" placeholder="Name oder Name +N..." style="width:200px;padding:2px 6px;background:#1a1a2e;border:1px solid #22c55e55;color:#fff;font-size:12px;">
+                                <button onclick="glAddName('gl')" style="background:#22c55e;color:#000;border:none;padding:2px 10px;cursor:pointer;font-size:12px;font-weight:700;">+ Hinzufügen</button>
                             </div>
-                            <div id="gl-list-gl" style="background:#0f0f1a;border:1px solid #22c55e33;padding:10px;max-height:320px;overflow-y:auto;font-size:13px;"></div>
                         </div>
-                        <div>
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                                <span style="font-size:11px;font-weight:700;color:#3b82f6;letter-spacing:1px;">FRIENDS LIST</span>
-                                <div style="display:flex;gap:4px;">
-                                    <input id="gl-add-fl" type="text" placeholder="Name..." style="width:100px;padding:2px 6px;background:#1a1a2e;border:1px solid #3b82f655;color:#fff;font-size:11px;">
-                                    <button onclick="glAddName('fl')" style="background:#3b82f6;color:#fff;border:none;padding:2px 6px;cursor:pointer;font-size:11px;font-weight:700;">+</button>
-                                </div>
-                            </div>
-                            <div id="gl-list-fl" style="background:#0f0f1a;border:1px solid #3b82f633;padding:10px;max-height:320px;overflow-y:auto;font-size:13px;"></div>
-                        </div>
-                        <div>
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                                <span style="font-size:11px;font-weight:700;color:#f59e0b;letter-spacing:1px;">SPECIAL LIST</span>
-                                <div style="display:flex;gap:4px;">
-                                    <input id="gl-add-sl" type="text" placeholder="Name..." style="width:100px;padding:2px 6px;background:#1a1a2e;border:1px solid #f59e0b55;color:#fff;font-size:11px;">
-                                    <button onclick="glAddName('sl')" style="background:#f59e0b;color:#000;border:none;padding:2px 6px;cursor:pointer;font-size:11px;font-weight:700;">+</button>
-                                </div>
-                            </div>
-                            <div id="gl-list-sl" style="background:#0f0f1a;border:1px solid #f59e0b33;padding:10px;max-height:320px;overflow-y:auto;font-size:13px;"></div>
-                        </div>
+                        <div id="gl-list-gl" style="background:#0f0f1a;border:1px solid #22c55e33;padding:10px;max-height:50vh;overflow-y:auto;font-size:13px;"></div>
                     </div>
                 </div>
             </div>
@@ -6578,7 +6550,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.147</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.148</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7059,7 +7031,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.147</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.148</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11049,7 +11021,7 @@
         
         // ═══════════════════════════════════════════════════════
         function glClear() {
-            glData = { gl: [], fl: [], sl: [] };
+            glData = { gl: [] };
             document.getElementById('gl-chat-input').value = '';
             document.getElementById('gl-status').style.display = 'none';
             document.getElementById('gl-results').style.display = 'none';
@@ -11060,7 +11032,7 @@
 
         // C19 GUESTLIST TOOL v4
         // ═══════════════════════════════════════════════════════
-        let glData = { gl: [], fl: [], sl: [] };
+        let glData = { gl: [] };  // v5.0 — single list
 
         // ── BMT Event Dropdown ─────────────────────────────────
         function glPopulateEventDropdown() {
@@ -11105,7 +11077,7 @@
             status.innerHTML = '⏳ Analysiere…';
             document.getElementById('gl-results').style.display = 'none';
 
-            glData = { gl: [], fl: [], sl: [] };
+            glData = { gl: [] };
             let added = 0;
 
             const DATE_RE = /\b(\d{1,2})[./ ](\d{1,2})(?:[./ ](\d{2,4}))?\b/;
@@ -11152,21 +11124,86 @@
                 return false;
             }
 
-            function addName(raw, listType) {
-                // Strip WA timestamp at end: "17:02", "21:05 Bearbeitet"
-                let name = raw.replace(/\s*\b\d{1,2}:\d{2}(:\d{2})?\b.*$/, '').trim();
-                // Strip parentheticals entirely
-                name = name.replace(/\([^)]*\)/g, '').trim();
-                // Strip emojis
-                name = name.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\uFE0F\u20E3]+/gu, '').trim();
-                // Strip trailing noise punctuation
-                name = name.replace(/[.,;:!?🙏❤💙🧡🌹🤝]+$/, '').trim();
-                // Strip leading bullets
-                name = name.replace(/^[\s\-*#•>]+/, '').trim();
+            // v5.0 — Levenshtein distance for fuzzy event-title match
+            function lev(a, b) {
+                if (a === b) return 0;
+                if (!a.length) return b.length;
+                if (!b.length) return a.length;
+                const dp = Array.from({length: a.length + 1}, (_, i) => [i]);
+                for (let j = 1; j <= b.length; j++) dp[0][j] = j;
+                for (let i = 1; i <= a.length; i++) {
+                    for (let j = 1; j <= b.length; j++) {
+                        const cost = a[i-1] === b[j-1] ? 0 : 1;
+                        dp[i][j] = Math.min(dp[i-1][j] + 1, dp[i][j-1] + 1, dp[i-1][j-1] + cost);
+                    }
+                }
+                return dp[a.length][b.length];
+            }
 
+            // v5.0 — Detect nickname-confirmation pattern: "Judl & Sebi endlich 🩵"
+            function isConfirmationLine(text) {
+                if (!/[&+]|\bund\b/i.test(text)) return false;
+                // Has heart-emoji OR ends on emotion word
+                const hasHeart = /[\u2764\u{1F493}-\u{1F49F}\u{1F90D}-\u{1F90F}\u{1F970}\u{1FA75}-\u{1FA77}]/u.test(text);
+                const hasEmotionWord = /\b(endlich|finally|bald|noch|jippie|yay|woohoo|krass)\b/i.test(text);
+                return hasHeart && hasEmotionWord;
+            }
+
+            // v5.0 — Detect fuzzy match against event-title (Seleceted ≈ Selected)
+            function looksLikeEventTitleTypo(word) {
+                const w = word.toLowerCase();
+                if (EVENT_WORDS.has(w)) return true;
+                // Check against current BMT event title
+                const currentEvtTitle = (document.getElementById('gl-event-name').value || '').trim().toLowerCase();
+                if (currentEvtTitle && currentEvtTitle.length >= 4 && w.length >= 4) {
+                    if (lev(w, currentEvtTitle) <= 2) return true;
+                }
+                // Also fuzzy-check well-known event series words
+                for (const ew of EVENT_WORDS) {
+                    if (ew.length >= 5 && w.length >= 5 && lev(w, ew) <= 2) return true;
+                }
+                return false;
+            }
+
+            // v5.0 — Clean raw name string (returns null if invalid)
+            function cleanName(raw) {
+                let n = raw;
+                // 1. Strip WA timestamps at end
+                n = n.replace(/\s*\b\d{1,2}:\d{2}(:\d{2})?\b.*$/, '').trim();
+                // 2. Strip parentheticals entirely (handles "(Bitte)")
+                n = n.replace(/\([^)]*\)/g, '').trim();
+                // 3. Strip Unicode emojis
+                n = n.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\uFE0F\u20E3]+/gu, '').trim();
+                // 4. Strip ASCII smileys (v5.0 NEW)
+                n = n.replace(/[:;=]-?[)(DPp/\\|]/g, '').trim();
+                // 5. Strip "Bitte" suffix (v5.0 NEW — word removed, name stays)
+                n = n.replace(/\s*\bbitte\b\s*$/i, '').trim();
+                // 6. Strip trailing noise punctuation
+                n = n.replace(/[.,;:!?🙏❤💙🧡🌹🤝]+$/u, '').trim();
+                // 7. Strip leading punctuation/whitespace (v5.0 NEW — fixes ". DLV")
+                n = n.replace(/^[\s\.,\-:;_*#•>]+/u, '').trim();
+                return n;
+            }
+
+            // v5.0 — Format name with ALL-CAPS preserve
+            function formatName(name) {
+                return name.split(/\s+/).map(w => {
+                    // ALL-CAPS preserve: 2-5 chars + all uppercase letters → keep (DLV, BMT, NYE)
+                    if (w.length >= 2 && w.length <= 5 && /^[A-ZÄÖÜ]+$/.test(w)) {
+                        return w;
+                    }
+                    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+                }).join(' ');
+            }
+
+            function addName(raw, listType) {
+                let name = cleanName(raw);
                 if (!name || name.length < 2) return 0;
 
-                // Handle +N (with optional space)
+                // v5.0 — Confirmation-line filter (rejects "Judl & Sebi endlich 🩵")
+                if (isConfirmationLine(raw)) return 0;
+
+                // Handle +N suffix (with optional space)
                 const plusMatch = name.match(/^(.+?)\s*\+\s*(\d+)\s*$/);
                 const baseName = plusMatch ? plusMatch[1].trim() : name;
                 const plusSuffix = plusMatch ? ' +' + plusMatch[2] : '';
@@ -11176,21 +11213,25 @@
 
                 const words = baseName.split(/\s+/).filter(Boolean);
                 if (words.length > 4) return 0; // sentence
-                // Filter pure numeric or pure event words
+
+                // v5.0 — Filter words: pure numeric + event words + event-title-typos
                 const cleanWords = words.filter(w => {
                     const wl = w.toLowerCase();
-                    return !EVENT_WORDS.has(wl) && !/^\d+$/.test(w);
+                    if (/^\d+$/.test(w)) return false;
+                    if (EVENT_WORDS.has(wl)) return false;
+                    if (looksLikeEventTitleTypo(w)) return false;  // v5.0 NEW — rejects "Seleceted"
+                    return true;
                 });
                 if (cleanWords.length === 0) return 0;
                 if (cleanWords.length === 1 && cleanWords[0].length < 2) return 0;
                 if (isNoiseLine(cleanWords.join(' '))) return 0;
 
-                const formatted = cleanWords.map(w =>
-                    w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-                ).join(' ') + plusSuffix;
+                // v5.0 — Format with ALL-CAPS preserve
+                const formatted = formatName(cleanWords.join(' ')) + plusSuffix;
 
-                const exists = glData[listType].some(n => n.toLowerCase() === formatted.toLowerCase());
-                if (!exists) { glData[listType].push(formatted); return 1; }
+                // v5.0 — Route everything to 'gl' (single list)
+                const exists = glData.gl.some(n => n.toLowerCase() === formatted.toLowerCase());
+                if (!exists) { glData.gl.push(formatted); return 1; }
                 return 0;
             }
 
@@ -11364,10 +11405,9 @@
                 });
             }
 
-            ['gl','fl','sl'].forEach(l => glData[l].sort((a,b) => a.localeCompare(b)));
+            glData.gl.sort((a,b) => a.localeCompare(b));
             glRender();
-            const total = glData.gl.length + glData.fl.length + glData.sl.length;
-            status.innerHTML = `✓ ${added} neu hinzugefügt — ${total} Namen total`;
+            status.innerHTML = `✓ ${added} neu hinzugefügt — ${glData.gl.length} Namen total`;
             document.getElementById('gl-results').style.display = 'flex';
         }
 
@@ -11383,19 +11423,16 @@
                 const ws = wb.Sheets[wb.SheetNames[0]];
                 const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
-                // Detect columns: A=GUESTLIST(0), C=FRIENDLIST(2), E=SPECIALLIST(4)
-                const colMap = { 0: 'gl', 2: 'fl', 4: 'sl' };
+                // v5.0 — single column: A=GUESTLIST(0)
                 let added = 0;
                 rows.forEach((row, ri) => {
                     if (ri === 0) return; // skip header
-                    Object.entries(colMap).forEach(([col, list]) => {
-                        const val = (row[col] || '').toString().trim();
-                        if (!val || val.length < 2) return;
-                        const exists = glData[list].some(n => n.toLowerCase() === val.toLowerCase());
-                        if (!exists) { glData[list].push(val); added++; }
-                    });
+                    const val = (row[0] || '').toString().trim();
+                    if (!val || val.length < 2) return;
+                    const exists = glData.gl.some(n => n.toLowerCase() === val.toLowerCase());
+                    if (!exists) { glData.gl.push(val); added++; }
                 });
-                ['gl','fl','sl'].forEach(l => glData[l].sort((a,b) => a.localeCompare(b)));
+                glData.gl.sort((a,b) => a.localeCompare(b));
                 glRender();
                 status.innerHTML = `✓ ${added} neue Namen aus .xlsx hinzugefügt`;
             } catch(err) {
@@ -11405,38 +11442,54 @@
         }
 
         function glRender() {
+            // v5.0 — single list, PAX counter (includes +N)
             document.getElementById('gl-results').style.display = 'flex';
-            const colors = { gl: '#22c55e', fl: '#3b82f6', sl: '#f59e0b' };
-            ['gl','fl','sl'].forEach(list => {
-                document.getElementById('gl-count-' + list).textContent = glData[list].length;
-                const container = document.getElementById('gl-list-' + list);
-                if (glData[list].length === 0) {
-                    container.innerHTML = '<span style="color:#555;font-size:12px;">—</span>';
-                } else {
-                    container.innerHTML = glData[list].map((n,i) =>
-                        `<div style="display:flex;align-items:center;gap:4px;padding:2px 0;border-bottom:1px solid #1a1a2e;">
-                            <span style="color:#555;font-size:11px;min-width:18px;">${i+1}.</span>
-                            <input type="text" value="${escapeHtml(n)}" 
-                                onchange="glData['${list}'][${i}]=this.value.trim();glData['${list}'].sort((a,b)=>a.localeCompare(b));glRender();"
-                                style="flex:1;background:transparent;border:none;border-bottom:1px solid transparent;color:#fff;font-size:13px;padding:1px 2px;outline:none;"
-                                onfocus="this.style.borderBottomColor='${colors[list]}'"
-                                onblur="this.style.borderBottomColor='transparent'">
-                            <button onclick="glData['${list}'].splice(${i},1);glRender();" 
-                                style="background:transparent;border:none;color:#555;cursor:pointer;font-size:12px;padding:0 2px;" title="Löschen">✕</button>
-                        </div>`
-                    ).join('');
-                }
+            document.getElementById('gl-count-gl').textContent = glData.gl.length;
+
+            // Calculate PAX total (names + Σ plus-N)
+            let paxTotal = 0;
+            glData.gl.forEach(n => {
+                const m = n.match(/\+\s*(\d+)/);
+                paxTotal += 1 + (m ? parseInt(m[1], 10) : 0);
             });
+            document.getElementById('gl-count-pax').textContent = paxTotal;
+
+            const container = document.getElementById('gl-list-gl');
+            if (glData.gl.length === 0) {
+                container.innerHTML = '<span style="color:#555;font-size:12px;">—</span>';
+                return;
+            }
+            container.innerHTML = glData.gl.map((n,i) =>
+                `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #1a1a2e;">
+                    <span style="color:#555;font-size:11px;min-width:22px;">${i+1}.</span>
+                    <input type="text" value="${escapeHtml(n)}"
+                        onchange="glData.gl[${i}]=this.value.trim();glData.gl.sort((a,b)=>a.localeCompare(b));glRender();"
+                        style="flex:1;background:transparent;border:none;border-bottom:1px solid transparent;color:#fff;font-size:13px;padding:1px 2px;outline:none;"
+                        onfocus="this.style.borderBottomColor='#22c55e'"
+                        onblur="this.style.borderBottomColor='transparent'">
+                    <button onclick="glData.gl.splice(${i},1);glRender();"
+                        style="background:transparent;border:none;color:#555;cursor:pointer;font-size:14px;padding:0 4px;" title="Löschen">✕</button>
+                </div>`
+            ).join('');
         }
 
         function glAddName(list) {
-            const inp = document.getElementById('gl-add-' + list);
-            const name = (inp.value || '').trim();
-            if (!name || name.length < 2) return;
-            const formatted = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
-            if (!glData[list].some(n => n.toLowerCase() === formatted.toLowerCase())) {
-                glData[list].push(formatted);
-                glData[list].sort((a,b) => a.localeCompare(b));
+            // v5.0 — list param ignored, always 'gl'; uses formatName for ALL-CAPS preserve
+            const inp = document.getElementById('gl-add-gl');
+            const raw = (inp.value || '').trim();
+            if (!raw || raw.length < 2) return;
+            // Support "Name +N" inline
+            const plusMatch = raw.match(/^(.+?)\s*\+\s*(\d+)\s*$/);
+            const baseName = plusMatch ? plusMatch[1].trim() : raw;
+            const plusSuffix = plusMatch ? ' +' + plusMatch[2] : '';
+            // ALL-CAPS preserve inline (formatName is defined inside glExtract scope, replicate logic)
+            const formatted = baseName.split(/\s+/).map(w => {
+                if (w.length >= 2 && w.length <= 5 && /^[A-ZÄÖÜ]+$/.test(w)) return w;
+                return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+            }).join(' ') + plusSuffix;
+            if (!glData.gl.some(n => n.toLowerCase() === formatted.toLowerCase())) {
+                glData.gl.push(formatted);
+                glData.gl.sort((a,b) => a.localeCompare(b));
             }
             inp.value = '';
             glRender();
@@ -11444,54 +11497,47 @@
         }
 
         function glSave() {
-            const total = glData.gl.length + glData.fl.length + glData.sl.length;
-            if (!total) { showToast('Keine Namen vorhanden', true); return; }
+            // v5.0 — single list
+            if (!glData.gl.length) { showToast('Keine Namen vorhanden', true); return; }
             const eventName = document.getElementById('gl-event-name').value.trim() || 'Event';
             const date = document.getElementById('gl-date').value.trim() || '';
             const key = 'gl_saved_' + date.replace(/[./]/g,'-') + '_' + eventName.replace(/\s+/g,'_');
-            const payload = { gl: glData.gl, fl: glData.fl, sl: glData.sl, eventName, date, saved: new Date().toISOString() };
+            const payload = { gl: glData.gl, eventName, date, saved: new Date().toISOString(), version: 'v5.0' };
             localStorage.setItem(key, JSON.stringify(payload));
             localStorage.setItem('gl_last_saved', key);
             showToast('✓ Guestlist gespeichert: ' + eventName + ' ' + date);
         }
 
         function glCopyList(list) {
-            const names = glData[list];
+            // v5.0 — list param ignored, always 'gl'
+            const names = glData.gl;
             if (!names.length) { showToast('Liste ist leer', true); return; }
-            const labels = { gl: 'GÄSTELISTE', fl: 'FRIENDS LIST', sl: 'SPECIAL LIST' };
             const eventName = document.getElementById('gl-event-name').value.trim();
             const date = document.getElementById('gl-date').value.trim();
-            let text = `${labels[list]}${eventName ? ' — ' + eventName : ''}${date ? ' ' + date : ''}\n`;
+            // PAX total
+            let paxTotal = 0;
+            names.forEach(n => {
+                const m = n.match(/\+\s*(\d+)/);
+                paxTotal += 1 + (m ? parseInt(m[1], 10) : 0);
+            });
+            let text = `GÄSTELISTE${eventName ? ' — ' + eventName : ''}${date ? ' ' + date : ''}\n`;
             text += '='.repeat(40) + '\n';
-            names.forEach((n, i) => text += `${i+1}. ${n}\n`);
-            navigator.clipboard.writeText(text).then(() => showToast('✓ ' + labels[list] + ' kopiert')).catch(() => showToast('Fehler', true));
+            names.forEach((n, i) => text += `${(i+1).toString().padStart(2,' ')}. ${n}\n`);
+            text += '─'.repeat(40) + '\n';
+            text += `Total: ${names.length} Namen · ${paxTotal} PAX\n`;
+            navigator.clipboard.writeText(text).then(() => showToast('✓ Gästeliste kopiert (' + paxTotal + ' PAX)')).catch(() => showToast('Fehler', true));
         }
 
         function glDownloadXlsx() {
-            const total = glData.gl.length + glData.fl.length + glData.sl.length;
-            if (!total) { showToast('Keine Namen vorhanden', true); return; }
+            // v5.0 — single column GUESTLIST
+            if (!glData.gl.length) { showToast('Keine Namen vorhanden', true); return; }
 
-            const maxRows = Math.max(glData.gl.length, glData.fl.length, glData.sl.length);
-            const wsData = [['GUESTLIST', '', 'FRIENDLIST', '', 'SPECIALLIST']];
-            for (let i = 0; i < maxRows; i++) {
-                wsData.push([
-                    glData.gl[i] || '',
-                    '',
-                    glData.fl[i] || '',
-                    '',
-                    glData.sl[i] || ''
-                ]);
-            }
+            const wsData = [['GUESTLIST']];
+            glData.gl.forEach(n => wsData.push([n]));
 
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-            // Column widths
-            ws['!cols'] = [{wch:30},{wch:4},{wch:30},{wch:4},{wch:30}];
-
-            // Bold headers
-            ['A1','C1','E1'].forEach(cell => {
-                if (ws[cell]) ws[cell].s = { font: { bold: true } };
-            });
+            ws['!cols'] = [{wch:30}];
+            if (ws['A1']) ws['A1'].s = { font: { bold: true } };
 
             const wb = XLSX.utils.book_new();
             const eventName = document.getElementById('gl-event-name').value.trim() || 'Event';
@@ -15246,7 +15292,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.147';
+            const HUB_VERSION = 'v15.9.148';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17058,7 +17104,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.147 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.148 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20923,7 +20969,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.147 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.148 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20953,7 +20999,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.147',
+                hubVersion: 'v15.9.148',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
