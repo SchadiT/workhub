@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.149</title>
+    <title>Turbo Projects Work Hub v15.9.151</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -450,6 +450,154 @@
             display: block;
             font-size: 16px;
             margin-bottom: 5px;
+        }
+
+        /* ============================================
+           v15.9.151: APP DOCK (Tile Grid — White, Auto-Wrap)
+           Replaces .tools-grid for APPLICATIONS / CLUB TOOLS / FINANCE
+           Wraps naturally; no horizontal scroll needed
+           ============================================ */
+        .app-dock {
+            background: #ffffff;
+            border: 1px solid #e4e4e9;
+            border-radius: 14px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 6px;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .app-tile {
+            position: relative;
+            padding: 14px 8px 10px;
+            background: #f7f7f8;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #18181b;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: -0.005em;
+            text-align: center;
+            text-transform: none;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 6px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        .app-tile:hover {
+            background: #ffffff;
+            border-color: #d4d4dc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.07);
+        }
+        .app-tile:active { transform: translateY(0); }
+        .app-tile .app-icon {
+            font-size: 22px;
+            line-height: 1;
+            display: block;
+        }
+        .app-tile .app-label {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Top accent stripe colored by department */
+        .app-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 14px;
+            right: 14px;
+            height: 2px;
+            border-radius: 0 0 2px 2px;
+            background: transparent;
+        }
+        .app-tile[data-dept="office"]::before  { background: #4F8EF7; }
+        .app-tile[data-dept="bar"]::before     { background: #EF9F27; }
+        .app-tile[data-dept="runner"]::before  { background: #97C459; }
+        .app-tile[data-dept="technik"]::before { background: #AFA9EC; }
+        .app-tile[data-dept="sputnik"]::before { background: #ec4899; }
+        .app-tile[data-dept="neutral"]::before { background: #18181b; }
+        .app-tile[data-dept="finance"]::before { background: #f59e0b; }
+
+        /* Badge top-right (Editor count / E-Mail unread) */
+        .app-tile-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 0 0 2px #fff;
+        }
+        .app-tile-badge.hidden { display: none; }
+
+        /* Dropdown variant: tile sits inside .dropdown-container — dropdown menu opens beneath */
+        .app-dock .dropdown-container {
+            position: relative;
+            display: flex;
+        }
+        .app-dock .dropdown-container .app-tile { width: 100%; }
+
+        /* Section header above each dock */
+        .app-dock-section { margin-bottom: 14px; }
+        .app-dock-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+        .app-dock-header-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+        }
+        .app-dock-header-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+        [data-theme="light"] .app-dock-header-title { color: rgba(0,0,0,0.55); }
+        [data-theme="light"] .app-dock-header-line { background: rgba(0,0,0,0.1); }
+
+        /* Light theme: dock blends with light bg — add a soft tint */
+        [data-theme="light"] .app-dock {
+            background: #ffffff;
+            border-color: #d4d4dc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        /* Mobile: smaller tiles, more per row */
+        @media (max-width: 768px) {
+            .app-dock {
+                padding: 8px;
+                gap: 4px;
+                grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+            }
+            .app-tile { padding: 12px 6px 8px; font-size: 10px; }
+            .app-tile .app-icon { font-size: 19px; }
         }
         
         .quick-btn {
@@ -5817,109 +5965,6 @@
         .email-body-panel .email-body-error { color: #ef4444; }
     </style>
 
-    <!-- Hospitality Summary Modal -->
-    <div class="modal-overlay" id="hospitality-modal">
-        <div class="modal" style="max-width: 960px;">
-            <div class="modal-header">
-                <h3>&#127860; Hospitality Summary Generator</h3>
-                <button class="modal-close" onclick="closeModal('hospitality-modal')">&times;</button>
-            </div>
-            <div class="modal-body" style="padding: 20px;">
-                <!-- Event Selection Row -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                    <div>
-                        <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 4px;">Event</label>
-                        <select id="hosp-event-select" onchange="loadHospEventData()" style="width: 100%; padding: 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 14px;">
-                            <option value="">-- Event w&auml;hlen --</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 4px;">Datum</label>
-                        <input type="text" id="hosp-datum" value="" style="width: 100%; padding: 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
-                    </div>
-                </div>
-
-                <!-- Artist Sections -->
-                <div id="hosp-artists-container">
-                    <div class="hosp-artist-section" id="hosp-artist-1" style="border: 1px solid #333; border-radius: 10px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                            <div>
-                                <label style="color: #f59e0b; font-weight: 600; font-size: 13px; display: block; margin-bottom: 4px;">RIDER: Artist 1</label>
-                                <input type="text" id="hosp-artist-name-1" placeholder="Artist Name" oninput="updateHospArtistLabel(1)" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px; box-sizing: border-box;">
-                            </div>
-                            <div>
-                                <label style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Location</label>
-                                <select id="hosp-artist-location-1" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px;">
-                                    <option value="DJ BOOTH">DJ BOOTH</option>
-                                    <option value="ARTIST ROOM / BACKSTAGE">ARTIST ROOM / BACKSTAGE</option>
-                                    <option value="DRESSING ROOM">DRESSING ROOM</option>
-                                    <option value="VIP AREA">VIP AREA</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="hosp-items-list" id="hosp-items-1">
-                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                                <thead>
-                                    <tr style="background: #0d1117; border-bottom: 2px solid #f59e0b;">
-                                        <th style="padding: 8px 6px; width: 55px; color: #ccc; text-align: center; font-weight: 600;">Menge</th>
-                                        <th style="padding: 8px 6px; color: #ccc; text-align: left; font-weight: 600;">Item</th>
-                                        <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">INHOUSE</th>
-                                        <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">ORDER</th>
-                                        <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">DELIVERED</th>
-                                        <th style="padding: 8px 4px; width: 50px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">NOTE</th>
-                                        <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">PREPARED</th>
-                                        <th style="padding: 8px 2px; width: 28px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="hosp-tbody-1"></tbody>
-                            </table>
-                            <button onclick="addHospItem(1)" style="background: transparent; color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 6px; padding: 6px 14px; margin-top: 8px; cursor: pointer; font-size: 12px; transition: all 0.2s;">+ Item hinzuf&uuml;gen</button>
-                        </div>
-                    </div>
-                </div>
-
-                <button onclick="addHospArtist()" style="width: 100%; background: transparent; color: #3b82f6; border: 1px dashed #3b82f6; border-radius: 8px; padding: 10px; margin-bottom: 16px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;">+ Artist hinzuf&uuml;gen</button>
-
-                <!-- Bottom Sections Grid -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
-                        <label style="color: #f59e0b; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#127859; KITCHEN</label>
-                        <textarea id="hosp-kitchen" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Kitchen Artists noch offen. Rider bei Stephan abfragen."></textarea>
-                    </div>
-                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
-                        <label style="color: #f59e0b; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#128101; CREW HOSPITALITY</label>
-                        <textarea id="hosp-crew" rows="3" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Crew Hospitality Items..."></textarea>
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
-                        <label style="color: #e67e22; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#9888; ON THE NIGHT ORDERS</label>
-                        <textarea id="hosp-night-orders" rows="2" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Besondere Anweisungen..."></textarea>
-                    </div>
-                    <div style="border: 1px solid #333; border-radius: 10px; padding: 14px; background: #0d1117;">
-                        <label style="color: #e67e22; font-weight: 600; font-size: 12px; display: block; margin-bottom: 6px;">&#9888; WEITERE ARTISTS</label>
-                        <textarea id="hosp-weitere" rows="2" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; padding: 8px; font-size: 12px; resize: vertical; box-sizing: border-box;" placeholder="Lineup noch nicht vollst&auml;ndig..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Preview -->
-                <details style="border: 1px solid #3b82f6; border-radius: 10px; margin-bottom: 16px; background: #0a0a1a;">
-                    <summary style="padding: 12px 16px; color: #3b82f6; font-weight: 600; font-size: 13px; cursor: pointer; user-select: none;">Preview anzeigen</summary>
-                    <div id="hosp-preview" style="padding: 16px; font-family: Arial; font-size: 13px; color: #fff; border-top: 1px solid #333;"></div>
-                </details>
-
-                <!-- Action Buttons -->
-                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
-                    <button class="modal-btn download" onclick="downloadHospitalityPDF()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#8681; PDF</button>
-                    <button class="modal-btn download" onclick="downloadHospitalityDOCX()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#8681; DOCX</button>
-                    <button class="modal-btn primary" onclick="copyHospitality()" style="font-size: 12px; padding: 10px 0; text-align: center;">&#128203; Kopieren</button>
-                    <button class="modal-btn" onclick="saveHospitalityDraft()" style="background: var(--blue-medium); color: #fff; font-size: 12px; padding: 10px 0; text-align: center;">&#128190; Speichern</button>
-                    <button class="modal-btn" onclick="loadHospitalityDraft()" style="background: #333; color: #fff; font-size: 12px; padding: 10px 0; text-align: center;">&#128194; Laden</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
         <!-- Security Orders Modal -->
     <div class="modal-overlay modal-overlay-app" id="security-orders-modal">
@@ -6138,68 +6183,64 @@
              APPLICATIONS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="apps-content">
-            <div class="tools-grid">
-                <button class="tool-btn border-blue" onclick="openModal('factsheet-modal')">
-                    <span class="tool-icon">&#128203;</span>
-                    Factsheet
+            <div class="app-dock">
+                <button class="app-tile" data-dept="office" onclick="openModal('factsheet-modal')">
+                    <span class="app-icon">&#128203;</span>
+                    <span class="app-label">Factsheet</span>
                 </button>
-                <button class="tool-btn border-yellow" onclick="openModal('security-orders-modal')" style="border-color: #f59e0b;">
-                    <span class="tool-icon">&#128545;</span>
-                    Security
+                <button class="app-tile" data-dept="technik" onclick="openModal('security-orders-modal')">
+                    <span class="app-icon">&#128545;</span>
+                    <span class="app-label">Security</span>
                 </button>
-                <button class="tool-btn border-yellow" onclick="openQuickSecOrder()" style="border-color: #fbbf24;">
-                    <span class="tool-icon">&#9889;</span>
-                    Sec. Order
+                <button class="app-tile" data-dept="technik" onclick="openQuickSecOrder()">
+                    <span class="app-icon">&#9889;</span>
+                    <span class="app-label">Sec. Order</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openCleaningModal()">
-                    <span class="tool-icon">&#129529;</span>
-                    Cleaning
+                <button class="app-tile" data-dept="runner" onclick="openCleaningModal()">
+                    <span class="app-icon">&#129529;</span>
+                    <span class="app-label">Cleaning</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('bar-staffing-modal')">
-                    <span class="tool-icon">&#127864;</span>
-                    Bar Staff
+                <button class="app-tile" data-dept="bar" onclick="openModal('bar-staffing-modal')">
+                    <span class="app-icon">&#127864;</span>
+                    <span class="app-label">Bar Staff</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('runner-staffing-modal')">
-                    <span class="tool-icon">&#127939;</span>
-                    Runner Staff
+                <button class="app-tile" data-dept="runner" onclick="openModal('runner-staffing-modal')">
+                    <span class="app-icon">&#127939;</span>
+                    <span class="app-label">Runner</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openEditor('notepad')" style="position:relative;">
-                    <span class="notepad-badge hidden" id="notepad-badge">0</span>
-                    <span class="tool-icon">&#9998;</span>
-                    Editor
+                <button class="app-tile" data-dept="office" onclick="openEditor('notepad')">
+                    <span class="app-tile-badge notepad-badge hidden" id="notepad-badge">0</span>
+                    <span class="app-icon">&#9998;</span>
+                    <span class="app-label">Editor</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openInbox()" style="position:relative;">
-                    <span class="tool-icon">&#9993;</span>
-                    E-Mail
-                    <span id="inbox-unread-badge" style="display:none;position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;line-height:18px;text-align:center;"></span>
+                <button class="app-tile" data-dept="office" onclick="openInbox()">
+                    <span class="app-tile-badge" id="inbox-unread-badge" style="display:none;"></span>
+                    <span class="app-icon">&#9993;</span>
+                    <span class="app-label">E-Mail</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('db-viewer-modal');dbvLoad();" style="border-color:#a855f7;">
-                    <span class="tool-icon">&#128202;</span>
-                    Database
+                <button class="app-tile" data-dept="office" onclick="openModal('db-viewer-modal');dbvLoad();">
+                    <span class="app-icon">&#128202;</span>
+                    <span class="app-label">Database</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('promoter-analysis-modal');paLoad();" style="border-color:#06b6d4;">
-                    <span class="tool-icon">&#128200;</span>
-                    Promoter
+                <button class="app-tile" data-dept="office" onclick="openModal('promoter-analysis-modal');paLoad();">
+                    <span class="app-icon">&#128200;</span>
+                    <span class="app-label">Promoter</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openPromoManager();" style="border-color:#f472b6;">
-                    <span class="tool-icon">&#127757;</span>
-                    Promo Mgr.
+                <button class="app-tile" data-dept="sputnik" onclick="openPromoManager();">
+                    <span class="app-icon">&#127757;</span>
+                    <span class="app-label">Promo Mgr.</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('guestlist-modal');glPopulateEventDropdown();">
-                    <span class="tool-icon">&#128157;</span>
-                    Guestlist
+                <button class="app-tile" data-dept="office" onclick="openModal('guestlist-modal');glPopulateEventDropdown();">
+                    <span class="app-icon">&#128157;</span>
+                    <span class="app-label">Guestlist</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openHospitalityModal()">
-                    <span class="tool-icon">&#127860;</span>
-                    Hospitality
+                <button class="app-tile" data-dept="finance" onclick="openModal('rechnungen-modal');invoiceOnOpen();">
+                    <span class="app-icon">&#128179;</span>
+                    <span class="app-label">Rechnungen</span>
                 </button>
-                <button class="tool-btn border-blue" onclick="openModal('rechnungen-modal');invoiceOnOpen();" style="border-color:#f59e0b;">
-                    <span class="tool-icon">&#128179;</span>
-                    Rechnungen
-                </button>
-                <button class="tool-btn border-blue" onclick="openModal('umsatz-ticker-modal');umsatzTickerOnOpen();" style="border-color:rgba(34,212,122,0.4);">
-                    <span class="tool-icon">&#128200;</span>
-                    Umsatz Ticker
+                <button class="app-tile" data-dept="bar" onclick="openModal('umsatz-ticker-modal');umsatzTickerOnOpen();">
+                    <span class="app-icon">&#128200;</span>
+                    <span class="app-label">Umsatz Ticker</span>
                 </button>
             </div>
         </div>
@@ -6211,41 +6252,41 @@
              CLUB TOOLS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="tools-content">
-            <div class="tools-grid">
-                <button class="tool-btn border-white" onclick="openModal('presale-modal')">
-                    <span class="tool-icon">&#127908;</span>
-                    PreSale C.
+            <div class="app-dock">
+                <button class="app-tile" data-dept="finance" onclick="openModal('presale-modal')">
+                    <span class="app-icon">&#127908;</span>
+                    <span class="app-label">PreSale</span>
                 </button>
-                <button class="tool-btn border-white" onclick="openModal('cost-modal')">
-                    <span class="tool-icon">&#128176;</span>
-                    Cost C.
+                <button class="app-tile" data-dept="finance" onclick="openModal('cost-modal')">
+                    <span class="app-icon">&#128176;</span>
+                    <span class="app-label">Cost C.</span>
                 </button>
-                <button class="tool-btn border-white" onclick="openModal('projector-modal')">
-                    <span class="tool-icon">&#128202;</span>
-                    Projector
+                <button class="app-tile" data-dept="office" onclick="openModal('projector-modal')">
+                    <span class="app-icon">&#128202;</span>
+                    <span class="app-label">Projector</span>
                 </button>
-                <button class="tool-btn border-white" onclick="openDeepAnalysis()">
-                    <span class="tool-icon">&#128221;</span>
-                    Analysis
+                <button class="app-tile" data-dept="office" onclick="openDeepAnalysis()">
+                    <span class="app-icon">&#128221;</span>
+                    <span class="app-label">Analysis</span>
                 </button>
-                <button class="tool-btn border-white" onclick="cnOpen()" style="border-color:#3b82f6;">
-                    <span class="tool-icon">&#129302;</span>
-                    Claude AI
+                <button class="app-tile" data-dept="office" onclick="cnOpen()">
+                    <span class="app-icon">&#129302;</span>
+                    <span class="app-label">Claude AI</span>
                 </button>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-white" onclick="toggleDropdown('special-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#11088;</span>
-                        Special 
+                <div class="dropdown-container">
+                    <button class="app-tile" data-dept="neutral" onclick="toggleDropdown('special-dropdown')">
+                        <span class="app-icon">&#11088;</span>
+                        <span class="app-label">Special</span>
                     </button>
                     <div id="special-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
                         <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('peak-grid-modal');"><span class="icon"></span> Peak Grid</a>
                         <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('nye-projector-modal');"><span class="icon"></span> NYE Projector</a>
                     </div>
                 </div>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-white" onclick="toggleDropdown('social-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#128177;</span>
-                        Social 
+                <div class="dropdown-container">
+                    <button class="app-tile" data-dept="sputnik" onclick="toggleDropdown('social-dropdown')">
+                        <span class="app-icon">&#128177;</span>
+                        <span class="app-label">Social</span>
                     </button>
                     <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
                         <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Instagram</a>
@@ -6254,10 +6295,10 @@
                         <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon"></span> BMT Dashboard</a>
                     </div>
                 </div>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-white" onclick="toggleDropdown('sales-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#127908;</span>
-                        Sales 
+                <div class="dropdown-container">
+                    <button class="app-tile" data-dept="finance" onclick="toggleDropdown('sales-dropdown')">
+                        <span class="app-icon">&#127908;</span>
+                        <span class="app-label">Sales</span>
                     </button>
                     <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
                         <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon"></span> WBV (POS)</a>
@@ -6266,10 +6307,10 @@
                         <a href="https://oeticket.light.oet.eu/dashboard" class="dropdown-item" target="_blank"><span class="icon"></span> OE TICKET</a>
                     </div>
                 </div>
-                <div class="dropdown-container" style="position: relative;">
-                    <button class="tool-btn border-white" onclick="toggleDropdown('storage-dropdown')" style="width: 100%; height: 100%;">
-                        <span class="tool-icon">&#128230;</span>
-                        Storage 
+                <div class="dropdown-container">
+                    <button class="app-tile" data-dept="office" onclick="toggleDropdown('storage-dropdown')">
+                        <span class="app-icon">&#128230;</span>
+                        <span class="app-label">Storage</span>
                     </button>
                     <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
                         <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon"></span> Google Drive</a>
@@ -6286,22 +6327,22 @@
              FINANCE / CONTROLLING / OPERATIONS <span class="arrow"></span>
         </button>
         <div class="tools-content" id="finance-content">
-            <div class="tools-grid">
-                <button class="tool-btn border-white" onclick="showToast('&#128230; Inventory Tool - Coming Soon!');">
-                    <span class="tool-icon">&#128230;</span>
-                    Inventory
+            <div class="app-dock">
+                <button class="app-tile" data-dept="office" onclick="showToast('&#128230; Inventory Tool - Coming Soon!');">
+                    <span class="app-icon">&#128230;</span>
+                    <span class="app-label">Inventory</span>
                 </button>
-                <button class="tool-btn border-white" onclick="showToast('&#128182; Financials - Coming Soon!');">
-                    <span class="tool-icon">&#128182;</span>
-                    Financials
+                <button class="app-tile" data-dept="finance" onclick="showToast('&#128182; Financials - Coming Soon!');">
+                    <span class="app-icon">&#128182;</span>
+                    <span class="app-label">Financials</span>
                 </button>
-                <button class="tool-btn border-white" onclick="openModal('nye-projector-modal');">
-                    <span class="tool-icon">&#127878;</span>
-                    NYE Proj.
+                <button class="app-tile" data-dept="sputnik" onclick="openModal('nye-projector-modal');">
+                    <span class="app-icon">&#127878;</span>
+                    <span class="app-label">NYE Proj.</span>
                 </button>
-                <button class="tool-btn border-white" onclick="openModal('peak-grid-modal'); renderPeakGrid();">
-                    <span class="tool-icon">&#128200;</span>
-                    Peak Grid
+                <button class="app-tile" data-dept="bar" onclick="openModal('peak-grid-modal'); renderPeakGrid();">
+                    <span class="app-icon">&#128200;</span>
+                    <span class="app-label">Peak Grid</span>
                 </button>
             </div>
         </div>
@@ -6567,7 +6608,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.149</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.151</span>
     </div>
     
     <!-- Metrics Button -->
@@ -6946,7 +6987,6 @@
                                     <tr><td>Factsheets Generated</td><td id="metrics-factsheets">0</td></tr>
                                     <tr><td>Security Orders</td><td id="metrics-security">0</td></tr>
                                     <tr><td>Cleaning Plans</td><td id="metrics-cleaning">0</td></tr>
-                                    <tr><td>Hospitality Summaries</td><td id="metrics-hospitality">0</td></tr>
                                     <tr><td>Emails Sent</td><td id="metrics-emails">0</td></tr>
                                     <tr><td>Notes Processed</td><td id="metrics-notes-processed">0</td></tr>
                                 </tbody>
@@ -7048,7 +7088,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.149</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.151</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11908,7 +11948,7 @@
                 .map(b => b.name || (b.names || []).join(' b2b '));
             if (headliners.length > 0 && !summary) summary = headliners.join(', ');
 
-            // Artist list for Factsheet/Hospitality
+            // Artist list for Factsheet
             const artists = (ev.bookings || []).map(b => ({
                 name: b.name || (b.names || []).join(' b2b '),
                 performance_type: b.performance_type || 'support',
@@ -15309,7 +15349,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.149';
+            const HUB_VERSION = 'v15.9.151';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -16634,14 +16674,6 @@ Spittelauer Lnde 12/1
             trackAppUsage('cleaning');
         }
         
-        // Track hospitality summary
-        function trackHospitality() {
-            const metrics = getMetrics();
-            if (!metrics.hospitalitySummaries) metrics.hospitalitySummaries = 0;
-            metrics.hospitalitySummaries++;
-            saveMetrics(metrics);
-            trackAppUsage('hospitality');
-        }
         
         // Track email sent
         function trackEmailSent() {
@@ -17121,7 +17153,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.149 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.151 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -17962,352 +17994,10 @@ Spittelauer Lnde 12/1
                 'guestlist-modal': 'guestlist',
                 'bar-staffing-modal': 'barstaff',
                 'runner-staffing-modal': 'runnerstaff',
-                'hospitality-modal': 'hospitality'
             };
             if (appMap[id]) trackAppUsage(appMap[id]);
         };
 
-        // ==========================================
-        // HOSPITALITY SUMMARY GENERATOR
-        // ==========================================
-        
-        let hospArtistCount = 1;
-        
-        function openHospitalityModal() {
-            populateHospEventDropdown();
-            if (hospArtistCount === 1 && document.getElementById('hosp-tbody-1').children.length === 0) {
-                addHospItem(1);
-                addHospItem(1);
-                addHospItem(1);
-            }
-            openModal('hospitality-modal');
-            updateHospPreview();
-        }
-        
-        // v15.9.6: Fixed — was reading e.datum/e.name (wrong), now reads e.dtstart/e.summary (correct BMT fields)
-        function populateHospEventDropdown() {
-            const sel = document.getElementById('hosp-event-select');
-            if (!sel) return;
-            const current = sel.value;
-            sel.innerHTML = '<option value="">-- Event wählen --</option>';
-            if (!bmtEvents || bmtEvents.length === 0) {
-                sel.innerHTML += '<option disabled>Bitte BMT Events laden</option>';
-                return;
-            }
-            const now = new Date();
-            const futureEvents = bmtEvents
-                .filter(e => {
-                    const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                    return !isNaN(d) && d >= now &&
-                        (e.category === 'eigen' || e.category === 'fremd' || e.category === 'konzert');
-                })
-                .sort((a, b) => {
-                    const da = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
-                    const db = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
-                    return da - db;
-                });
-            futureEvents.forEach((e, i) => {
-                const opt = document.createElement('option');
-                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                const dateStr = d.toLocaleDateString('de-AT', { weekday: 'short', day: '2-digit', month: '2-digit' });
-                const name = e.summary || e.name || 'Event';
-                opt.value = 'hosp_' + i + '_' + d.toISOString().slice(0,10).replace(/-/g,'');
-                opt.textContent = `${dateStr} - ${name}`;
-                opt.dataset.name = name;
-                opt.dataset.datum = d.toLocaleDateString('de-AT', { day: '2-digit', month: 'long', year: 'numeric' });
-                sel.appendChild(opt);
-            });
-            if (current) sel.value = current;
-        }
-        
-        function loadHospEventData() {
-            const sel = document.getElementById('hosp-event-select');
-            const opt = sel.options[sel.selectedIndex];
-            if (!opt || !opt.dataset.name) return;
-            // datum is already formatted as locale string (set in populateHospEventDropdown)
-            const hospDatum = document.getElementById('hosp-datum');
-            if (hospDatum) hospDatum.value = opt.dataset.datum;
-            updateHospPreview();
-        }
-        
-        function updateHospArtistLabel(idx) {
-            const name = document.getElementById(`hosp-artist-name-${idx}`).value || `Artist ${idx}`;
-            const label = document.querySelector(`#hosp-artist-${idx} label`);
-            if (label) label.textContent = `RIDER: ${name}`;
-            updateHospPreview();
-        }
-        
-        function addHospItem(artistIdx) {
-            const tbody = document.getElementById(`hosp-tbody-${artistIdx}`);
-            if (!tbody) return;
-            const rowNum = tbody.children.length;
-            const row = document.createElement('tr');
-            row.style.cssText = 'border-bottom: 1px solid #1a1a2e; transition: background 0.15s;';
-            row.innerHTML = `
-                <td style="padding: 4px 3px; text-align: center;"><input type="text" value="1x" style="width: 45px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 5px 4px; text-align: center; font-size: 12px;" oninput="updateHospPreview()"></td>
-                <td style="padding: 4px 3px;"><input type="text" placeholder="Item" style="width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 5px 6px; font-size: 12px;" oninput="updateHospPreview()"></td>
-                <td style="text-align: center; padding: 4px 2px;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="inhouse" checked onchange="updateHospDelivered(this); updateHospPreview()" style="accent-color: #f59e0b;"></td>
-                <td style="text-align: center; padding: 4px 2px;"><input type="radio" name="hosp-source-${artistIdx}-${rowNum}" value="order" onchange="updateHospDelivered(this); updateHospPreview()" style="accent-color: #f59e0b;"></td>
-                <td style="text-align: center; padding: 4px 2px;"><input type="checkbox" class="hosp-delivered" onchange="updateHospPreview()" style="accent-color: #3b82f6;"></td>
-                <td style="padding: 4px 2px; text-align: center;"><input type="text" placeholder="" style="width: 40px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 4px; padding: 4px 3px; font-size: 11px; text-align: center;" oninput="updateHospPreview()"></td>
-                <td style="text-align: center; padding: 4px 2px;"><input type="checkbox" class="hosp-prepared" onchange="updateHospPreview()" style="accent-color: #22c55e;"></td>
-                <td style="padding: 4px 2px; text-align: center;"><button onclick="this.closest('tr').remove(); updateHospPreview();" style="background: transparent; color: #666; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; padding: 2px 5px; transition: color 0.15s;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#666'">&times;</button></td>
-            `;
-            tbody.appendChild(row);
-            updateHospDeliveredRow(row);
-        }
-        
-        function updateHospDelivered(radio) {
-            const row = radio.closest('tr');
-            updateHospDeliveredRow(row);
-        }
-        
-        function updateHospDeliveredRow(row) {
-            const radios = row.querySelectorAll('input[type="radio"]');
-            const delivered = row.querySelector('.hosp-delivered');
-            if (!delivered) return;
-            let isInhouse = false;
-            radios.forEach(r => { if (r.value === 'inhouse' && r.checked) isInhouse = true; });
-            if (isInhouse) {
-                delivered.checked = false;
-                delivered.disabled = true;
-                delivered.style.opacity = '0.3';
-            } else {
-                delivered.disabled = false;
-                delivered.style.opacity = '1';
-            }
-        }
-        
-        function addHospArtist() {
-            if (hospArtistCount >= 5) { showToast('Max 5 Artists'); return; }
-            hospArtistCount++;
-            const idx = hospArtistCount;
-            const container = document.getElementById('hosp-artists-container');
-            const section = document.createElement('div');
-            section.className = 'hosp-artist-section';
-            section.id = `hosp-artist-${idx}`;
-            section.style.cssText = 'border: 1px solid #333; border-radius: 10px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);';
-            section.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 12px;">
-                    <div>
-                        <label style="color: #f59e0b; font-weight: 600; font-size: 13px; display: block; margin-bottom: 4px;">RIDER: Artist ${idx}</label>
-                        <input type="text" id="hosp-artist-name-${idx}" placeholder="Artist Name" oninput="updateHospArtistLabel(${idx})" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px; box-sizing: border-box;">
-                    </div>
-                    <div>
-                        <label style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Location</label>
-                        <select id="hosp-artist-location-${idx}" style="width: 100%; padding: 8px 10px; background: #1a1a2e; color: #fff; border: 1px solid #333; border-radius: 6px; font-size: 13px;">
-                            <option value="DJ BOOTH">DJ BOOTH</option>
-                            <option value="ARTIST ROOM / BACKSTAGE" ${idx === 2 ? 'selected' : ''}>ARTIST ROOM / BACKSTAGE</option>
-                            <option value="DRESSING ROOM" ${idx === 3 ? 'selected' : ''}>DRESSING ROOM</option>
-                            <option value="VIP AREA">VIP AREA</option>
-                        </select>
-                    </div>
-                    <button onclick="removeHospArtist(${idx})" style="background: #dc2626; color: #fff; border: none; border-radius: 6px; cursor: pointer; padding: 8px 12px; font-size: 14px; height: 38px;">&times;</button>
-                </div>
-                <div class="hosp-items-list" id="hosp-items-${idx}">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                        <thead>
-                            <tr style="background: #0d1117; border-bottom: 2px solid #f59e0b;">
-                                <th style="padding: 8px 6px; width: 55px; color: #ccc; text-align: center; font-weight: 600;">Menge</th>
-                                <th style="padding: 8px 6px; color: #ccc; text-align: left; font-weight: 600;">Item</th>
-                                <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">INHOUSE</th>
-                                <th style="padding: 8px 4px; width: 55px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">ORDER</th>
-                                <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">DELIVERED</th>
-                                <th style="padding: 8px 4px; width: 50px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">NOTE</th>
-                                <th style="padding: 8px 4px; width: 60px; color: #ccc; text-align: center; font-weight: 600; font-size: 10px;">PREPARED</th>
-                                <th style="padding: 8px 2px; width: 28px;"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="hosp-tbody-${idx}"></tbody>
-                    </table>
-                    <button class="modal-btn" onclick="addHospItem(${idx})" style="background: transparent; color: #f59e0b; border: 1px dashed #f59e0b; border-radius: 6px; padding: 6px 14px; margin-top: 8px; cursor: pointer; font-size: 12px;">+ Item hinzuf\u00fcgen</button>
-                </div>
-            `;
-            container.appendChild(section);
-            addHospItem(idx);
-            addHospItem(idx);
-            addHospItem(idx);
-            updateHospPreview();
-        }
-        
-        function removeHospArtist(idx) {
-            const el = document.getElementById(`hosp-artist-${idx}`);
-            if (el) el.remove();
-            updateHospPreview();
-        }
-        
-        function getHospData() {
-            const sel = document.getElementById('hosp-event-select');
-            const opt = sel.options[sel.selectedIndex];
-            const eventName = opt && opt.dataset.name ? opt.dataset.name : (sel.value || 'Event');
-            const datum = document.getElementById('hosp-datum').value || '';
-            
-            const artists = [];
-            document.querySelectorAll('.hosp-artist-section').forEach(section => {
-                const idx = section.id.replace('hosp-artist-', '');
-                const name = document.getElementById(`hosp-artist-name-${idx}`)?.value || `Artist ${idx}`;
-                const location = document.getElementById(`hosp-artist-location-${idx}`)?.value || 'DJ BOOTH';
-                const tbody = document.getElementById(`hosp-tbody-${idx}`);
-                const items = [];
-                if (tbody) {
-                    tbody.querySelectorAll('tr').forEach(row => {
-                        const inputs = row.querySelectorAll('input[type="text"]');
-                        const radios = row.querySelectorAll('input[type="radio"]');
-                        const delivered = row.querySelector('.hosp-delivered');
-                        const prepared = row.querySelector('.hosp-prepared');
-                        if (inputs.length >= 2) {
-                            const menge = inputs[0].value || '';
-                            const item = inputs[1].value || '';
-                            const note = inputs[2]?.value || '';
-                            let source = 'inhouse';
-                            radios.forEach(r => { if (r.checked) source = r.value; });
-                            const isDelivered = delivered ? delivered.checked : false;
-                            const isPrepared = prepared ? prepared.checked : false;
-                            if (item.trim()) items.push({ menge, item, source, note, delivered: isDelivered, prepared: isPrepared });
-                        }
-                    });
-                }
-                if (name.trim() || items.length > 0) artists.push({ name, location, items });
-            });
-            
-            return {
-                eventName,
-                datum,
-                artists,
-                kitchen: document.getElementById('hosp-kitchen').value,
-                crew: document.getElementById('hosp-crew').value,
-                nightOrders: document.getElementById('hosp-night-orders').value,
-                weitere: document.getElementById('hosp-weitere').value
-            };
-        }
-        
-        function generateHospHTML(data) {
-            let html = `<div style="font-family: Arial, sans-serif;">`;
-            html += `<h2 style="text-align: center; margin-bottom: 5px;">HOSPITALITY SUMMARY</h2>`;
-            html += `<p><strong>Event:</strong> ${data.eventName}</p>`;
-            html += `<p><strong>Datum:</strong> ${data.datum}</p>`;
-            
-            data.artists.forEach(a => {
-                html += `<p style="margin-top: 15px;"><strong>RIDER:</strong> ${a.name}</p>`;
-                html += `<h4 style="color: #f59e0b; margin: 5px 0;">&#9654; ${a.location}</h4>`;
-                html += `<table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 10px;">`;
-                html += `<tr style="background: #1a1a2e; color: #ccc;"><th style="padding: 5px; border: 1px solid #444;">Menge</th><th style="padding: 5px; border: 1px solid #444;">Item</th><th style="padding: 5px; border: 1px solid #444;">INHOUSE</th><th style="padding: 5px; border: 1px solid #444;">ORDER / BUY</th><th style="padding: 5px; border: 1px solid #444;">DELIVERED</th><th style="padding: 5px; border: 1px solid #444;">NOTE</th><th style="padding: 5px; border: 1px solid #444;">PREPARED</th></tr>`;
-                a.items.forEach(i => {
-                    const ih = i.source === 'inhouse' ? '\u2612' : '\u2610';
-                    const ord = i.source === 'order' ? '\u2612' : '\u2610';
-                    const del = i.source === 'inhouse' ? '\u2014' : (i.delivered ? '\u2612' : '\u2610');
-                    const prep = i.prepared ? '\u2612' : '\u2610';
-                    html += `<tr><td style="padding: 4px; border: 1px solid #444; text-align: center;">${i.menge}</td><td style="padding: 4px; border: 1px solid #444;">${i.item}</td><td style="padding: 4px; border: 1px solid #444; text-align: center;">${ih}</td><td style="padding: 4px; border: 1px solid #444; text-align: center;">${ord}</td><td style="padding: 4px; border: 1px solid #444; text-align: center;">${del}</td><td style="padding: 4px; border: 1px solid #444; text-align: center;">${i.note || ''}</td><td style="padding: 4px; border: 1px solid #444; text-align: center;">${prep}</td></tr>`;
-                });
-                html += `</table>`;
-            });
-            
-            if (data.weitere) html += `<p style="margin-top: 10px; padding: 8px; border: 1px solid #f59e0b; border-radius: 6px;"><strong>\u26A0 WEITERE ARTISTS:</strong> ${data.weitere}</p>`;
-            if (data.kitchen) html += `<p style="margin-top: 10px; padding: 8px; border: 1px solid #f59e0b; border-radius: 6px;"><strong>\u26A0 KITCHEN:</strong> ${data.kitchen}</p>`;
-            if (data.crew) html += `<p style="margin-top: 10px;"><strong>CREW HOSPITALITY:</strong><br>${data.crew.replace(/\n/g, '<br>')}</p>`;
-            if (data.nightOrders) html += `<p style="margin-top: 10px;"><strong>ON THE NIGHT ORDERS:</strong><br>${data.nightOrders.replace(/\n/g, '<br>')}</p>`;
-            
-            html += `<hr style="margin-top: 20px; border-color: #444;">`;
-            html += `<p style="font-size: 11px; color: #888;">Grelle Forelle | Spittelauer L\u00e4nde 12, 1090 Wien | st@grelleforelle.com<br>Generated: ${new Date().toLocaleDateString('de-AT')}</p>`;
-            html += `</div>`;
-            return html;
-        }
-        
-        function updateHospPreview() {
-            const data = getHospData();
-            const preview = document.getElementById('hosp-preview');
-            if (preview) preview.innerHTML = generateHospHTML(data);
-        }
-        
-        function copyHospitality() {
-            const data = getHospData();
-            let text = `HOSPITALITY SUMMARY\nEvent: ${data.eventName}\nDatum: ${data.datum}\n`;
-            data.artists.forEach(a => {
-                text += `\nRIDER: ${a.name}\n${a.location}\n`;
-                a.items.forEach(i => {
-                text += `  ${i.menge} ${i.item} [${i.source === 'inhouse' ? 'INHOUSE' : 'ORDER'}] ${i.source === 'order' ? (i.delivered ? '[DELIVERED]' : '[PENDING]') : ''} ${i.prepared ? '[PREPARED]' : ''} ${i.note || ''}\n`;
-                });
-            });
-            if (data.weitere) text += `\nWEITERE ARTISTS: ${data.weitere}`;
-            if (data.kitchen) text += `\nKITCHEN: ${data.kitchen}`;
-            if (data.crew) text += `\nCREW HOSPITALITY:\n${data.crew}`;
-            if (data.nightOrders) text += `\nON THE NIGHT ORDERS:\n${data.nightOrders}`;
-            text += `\n\nGrelle Forelle | Spittelauer L\u00e4nde 12, 1090 Wien | st@grelleforelle.com\nGenerated: ${new Date().toLocaleDateString('de-AT')}`;
-            
-            navigator.clipboard.writeText(text).then(() => showToast('Hospitality Summary kopiert!'));
-            trackHospitality();
-        }
-        
-        function downloadHospitalityPDF() {
-            const data = getHospData();
-            const html = generateHospHTML(data);
-            const printHtml = html.replace(/#1a1a2e/g,'#eee').replace(/color: #ccc/g,'color: #333').replace(/color: #fff/g,'color: #000').replace(/color: #888/g,'color: #666').replace(/border: 1px solid #444/g,'border: 1px solid #333').replace(/border-color: #444/g,'border-color: #333').replace(/color: #f59e0b/g,'color: #b45309');
-            const w = window.open('', '_blank');
-            w.document.write(`<html><head><title>Hospitality Summary - ${data.eventName}</title><style>body{font-family:Arial;padding:20px;background:#fff;color:#000;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #333;padding:6px;}th{background:#eee;}</style></head><body>${printHtml}</body></html>`);
-            w.document.close();
-            w.print();
-            trackHospitality();
-        }
-        
-        function downloadHospitalityDOCX() {
-            const data = getHospData();
-            let content = `HOSPITALITY SUMMARY\n\nEvent: ${data.eventName}\nDatum: ${data.datum}\n\n`;
-            data.artists.forEach(a => {
-                content += `RIDER: ${a.name}\n${a.location}\n`;
-                content += `${'Menge'.padEnd(8)}${'Item'.padEnd(35)}${'Source'.padEnd(12)}${'Delivered'.padEnd(12)}${'Note'.padEnd(10)}Prepared\n`;
-                content += `${'-'.repeat(85)}\n`;
-                a.items.forEach(i => {
-                    const del = i.source === 'inhouse' ? '\u2014' : (i.delivered ? '\u2612' : '\u2610');
-                    const prep = i.prepared ? '\u2612' : '\u2610';
-                    content += `${i.menge.padEnd(8)}${i.item.padEnd(35)}${(i.source === 'inhouse' ? 'INHOUSE' : 'ORDER').padEnd(12)}${del.padEnd(12)}${(i.note || '').padEnd(10)}${prep}\n`;
-                });
-                content += `\n`;
-            });
-            if (data.weitere) content += `WEITERE ARTISTS: ${data.weitere}\n\n`;
-            if (data.kitchen) content += `KITCHEN: ${data.kitchen}\n\n`;
-            if (data.crew) content += `CREW HOSPITALITY:\n${data.crew}\n\n`;
-            if (data.nightOrders) content += `ON THE NIGHT ORDERS:\n${data.nightOrders}\n\n`;
-            content += `---\nGrelle Forelle | Spittelauer L\u00e4nde 12, 1090 Wien\nGenerated: ${new Date().toLocaleDateString('de-AT')}`;
-            
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Hospitality_${data.datum.replace(/[\s.]/g, '_')}_${data.eventName.replace(/\s/g, '_')}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            trackHospitality();
-            showToast('Hospitality Summary heruntergeladen!');
-        }
-        
-        function saveHospitalityDraft() {
-            const data = getHospData();
-            const drafts = JSON.parse(localStorage.getItem('hospDrafts') || '{}');
-            const key = data.eventName + '_' + data.datum;
-            drafts[key] = data;
-            localStorage.setItem('hospDrafts', JSON.stringify(drafts));
-            showToast(`Hospitality Draft gespeichert: ${data.eventName}`);
-        }
-        
-        function loadHospitalityDraft() {
-            const drafts = JSON.parse(localStorage.getItem('hospDrafts') || '{}');
-            const keys = Object.keys(drafts);
-            if (keys.length === 0) { showToast('Keine gespeicherten Drafts'); return; }
-            const key = prompt('Draft laden:\n' + keys.map((k, i) => `${i + 1}. ${k}`).join('\n') + '\n\nNummer eingeben:');
-            if (!key) return;
-            const idx = parseInt(key) - 1;
-            if (idx >= 0 && idx < keys.length) {
-                const data = drafts[keys[idx]];
-                document.getElementById('hosp-datum').value = data.datum || '';
-                document.getElementById('hosp-kitchen').value = data.kitchen || '';
-                document.getElementById('hosp-crew').value = data.crew || '';
-                document.getElementById('hosp-night-orders').value = data.nightOrders || '';
-                document.getElementById('hosp-weitere').value = data.weitere || '';
-                showToast(`Draft geladen: ${keys[idx]}`);
-                updateHospPreview();
-            }
-        }
-        
 
         // ===== DATABASE VIEWER =====
         const DBV_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0z7hOhXnYPX_8AZf8TdPZvjaL7ITeob5BOxpKJvV4iaa_RzBOVjs47W62Io0kA/pub?gid=184884796&single=true&output=csv';
@@ -19485,7 +19175,7 @@ Spittelauer Lnde 12/1
             const headerBadge = document.getElementById('inbox-header-badge');
             if (badge) {
                 badge.textContent = count > 99 ? '99+' : count;
-                badge.style.display = count > 0 ? 'block' : 'none';
+                badge.style.display = count > 0 ? 'flex' : 'none';
             }
             if (headerBadge) {
                 headerBadge.textContent = count + ' ungelesen';
@@ -21030,7 +20720,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.149 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.151 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -21060,7 +20750,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.149',
+                hubVersion: 'v15.9.151',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
