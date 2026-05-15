@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.148</title>
+    <title>Turbo Projects Work Hub v15.9.149</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5798,6 +5798,23 @@
         .email-action-btn:hover { color: var(--text); border-color: var(--text); }
         .email-overdue-tag { background: #7f1d1d; color: #fca5a5; font-size: 10px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
         .email-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .email-body-panel {
+            background: var(--surface-alt, #1a1a2e);
+            border-bottom: 1px solid var(--border);
+            border-left: 3px solid #3b82f6;
+            padding: 16px 20px;
+            font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+            font-size: 12px;
+            line-height: 1.55;
+            color: var(--text);
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .email-body-panel .email-body-meta { font-family: inherit; font-size: 11px; color: var(--text-muted); padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px dashed var(--border); white-space: normal; }
+        .email-body-panel .email-body-loading { color: var(--text-muted); font-style: italic; }
+        .email-body-panel .email-body-error { color: #ef4444; }
     </style>
 
     <!-- Hospitality Summary Modal -->
@@ -6550,7 +6567,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.148</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.149</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7031,7 +7048,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.148</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.149</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15292,7 +15309,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.148';
+            const HUB_VERSION = 'v15.9.149';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17104,7 +17121,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.148 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.149 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19313,6 +19330,8 @@ Spittelauer Lnde 12/1
                     const isOverdue = !email.read && daysDiff >= 3;
                     const row = document.createElement('div');
                     row.className = 'email-row' + (isOverdue ? ' overdue' : (email.flagged ? ' flagged-row' : (!email.read ? ' unread' : '')));
+                    row.dataset.uid = email.uid;
+                    row.onclick = () => inboxToggleBody(email.uid, row);
                     row.innerHTML = `
                         <div style="flex:1;min-width:0;">
                             <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
@@ -19335,6 +19354,48 @@ Spittelauer Lnde 12/1
                 if (status) status.textContent = 'Fehler';
             }
         }
+        async function inboxToggleBody(uid, rowEl) {
+            // Toggle: if panel already open beneath this row, close it
+            const next = rowEl.nextElementSibling;
+            if (next && next.classList.contains('email-body-panel') && next.dataset.uid === String(uid)) {
+                next.remove();
+                return;
+            }
+            // Close any other open body panels first
+            document.querySelectorAll('.email-body-panel').forEach(el => el.remove());
+            // Create panel
+            const panel = document.createElement('div');
+            panel.className = 'email-body-panel';
+            panel.dataset.uid = String(uid);
+            panel.onclick = (e) => e.stopPropagation();
+            panel.innerHTML = '<div class="email-body-loading">⏳ Lade Email-Inhalt…</div>';
+            rowEl.parentNode.insertBefore(panel, rowEl.nextSibling);
+            // Mark as read locally (proxy marks via body endpoint)
+            if (rowEl.classList.contains('unread') || rowEl.classList.contains('overdue')) {
+                rowEl.classList.remove('unread','overdue');
+                const subj = rowEl.querySelector('.email-subject');
+                if (subj) subj.classList.remove('unread-text');
+                const overdueTag = rowEl.querySelector('.email-overdue-tag');
+                if (overdueTag) overdueTag.remove();
+                const badge = document.getElementById('inbox-header-badge');
+                if (badge && badge.style.display !== 'none') {
+                    const count = Math.max(0, parseInt(badge.textContent) - 1);
+                    inboxUpdateBadge(count);
+                }
+            }
+            try {
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=body&uid=' + encodeURIComponent(uid));
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                const meta = `<div class="email-body-meta"><strong>Von:</strong> ${escHtml(data.from || '')}<br><strong>An:</strong> ${escHtml(data.to || '')}<br><strong>Betreff:</strong> ${escHtml(data.subject || '')}<br><strong>Datum:</strong> ${escHtml(data.date || '')}</div>`;
+                const body = escHtml(data.body || '(leer)');
+                panel.innerHTML = meta + body;
+            } catch(err) {
+                panel.innerHTML = `<div class="email-body-error">Fehler beim Laden: ${escHtml(err.message)}</div>`;
+            }
+        }
+
         async function inboxLoadFlagged() {
             const list = document.getElementById('flagged-list');
             list.innerHTML = '<div style="padding:20px;color:var(--text-muted);text-align:center;">⏳ Lade…</div>';
@@ -20969,7 +21030,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.148 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.149 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20999,7 +21060,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.148',
+                hubVersion: 'v15.9.149',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
