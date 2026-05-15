@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.152</title>
+    <title>Turbo Projects Work Hub v15.9.154</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -453,7 +453,7 @@
         }
 
         /* ============================================
-           v15.9.152: APP DOCK (Tile Grid — White, Auto-Wrap)
+           v15.9.154: APP DOCK (Tile Grid — White, Auto-Wrap)
            Replaces .tools-grid for APPLICATIONS / CLUB TOOLS / FINANCE
            Wraps naturally; no horizontal scroll needed
            ============================================ */
@@ -6608,7 +6608,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.152</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.154</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7088,7 +7088,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.152</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.154</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11096,11 +11096,28 @@
             const sel = document.getElementById('gl-event-select');
             if (!sel) return;
             sel.innerHTML = '<option value="">— Manuell eingeben —</option>';
-            const evs = (typeof bmtEvents !== 'undefined' ? bmtEvents : [])
-                .filter(e => e.dtstart && e.dtstart >= new Date())
-                .filter(e => e.category !== 'technik' && e.category !== 'feiertag')
+            const now = new Date();
+            const rawEvs = (typeof bmtEvents !== 'undefined' ? bmtEvents : []);
+            // Defensive: dtstart may be Date OR string (from API cache load)
+            const evs = rawEvs
+                .map(e => {
+                    const d = (e.dtstart instanceof Date) ? e.dtstart : new Date(e.dtstart);
+                    return { ...e, dtstart: d };
+                })
+                .filter(e => e.dtstart instanceof Date && !isNaN(e.dtstart) && e.dtstart >= now)
+                .filter(e => e.category !== 'technik' && e.category !== 'feiertag' && e.category !== 'termin' && e.category !== 'holiday')
+                .filter(e => (e.status || 'CONFIRMED') !== 'CANCELLED')
                 .sort((a,b) => a.dtstart - b.dtstart)
                 .slice(0, 30);
+            console.log('[Guestlist] dropdown populated:', evs.length, 'events from', rawEvs.length, 'total');
+            if (evs.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = '(Keine Events gefunden — BMT laden?)';
+                opt.disabled = true;
+                sel.appendChild(opt);
+                return;
+            }
             evs.forEach((ev, i) => {
                 const d = ev.dtstart;
                 const dateStr = String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getFullYear()).slice(-2);
@@ -11260,10 +11277,32 @@
                 // v5.0 — Confirmation-line filter (rejects "Judl & Sebi endlich 🩵")
                 if (isConfirmationLine(raw)) return 0;
 
-                // Handle +N suffix (with optional space)
-                const plusMatch = name.match(/^(.+?)\s*\+\s*(\d+)\s*$/);
-                const baseName = plusMatch ? plusMatch[1].trim() : name;
-                const plusSuffix = plusMatch ? ' +' + plusMatch[2] : '';
+                // v15.9.154 — Handle plus-suffix variants at END only:
+                //   "Anna +1", "Anna + 1", "Anna +2"
+                //   "Tobias Gruber plus 1", "Tobias plus 2"
+                //   "Lisa plus" (no number → assume +1)
+                // "Plus Group GmbH" stays untouched (Plus at start of name).
+                let baseName = name;
+                let plusSuffix = '';
+                const plusNumMatch = name.match(/^(.+?)\s+(?:\+|plus)\s*(\d+)\s*$/i);
+                if (plusNumMatch) {
+                    baseName = plusNumMatch[1].trim();
+                    plusSuffix = ' +' + plusNumMatch[2];
+                } else {
+                    // "Name plus" with no number → +1
+                    const plusOnlyMatch = name.match(/^(.+?)\s+plus\s*$/i);
+                    if (plusOnlyMatch) {
+                        baseName = plusOnlyMatch[1].trim();
+                        plusSuffix = ' +1';
+                    } else {
+                        // "Name+1" tight (no space before +)
+                        const plusTightMatch = name.match(/^(.+?)\+\s*(\d+)\s*$/);
+                        if (plusTightMatch) {
+                            baseName = plusTightMatch[1].trim();
+                            plusSuffix = ' +' + plusTightMatch[2];
+                        }
+                    }
+                }
 
                 if (!baseName || baseName.length < 2) return 0;
                 if (!/[a-zA-ZäöüÄÖÜß]/.test(baseName)) return 0;
@@ -15349,7 +15388,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.152';
+            const HUB_VERSION = 'v15.9.154';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17153,7 +17192,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.152 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.154 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20740,7 +20779,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.152 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.154 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20770,7 +20809,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.152',
+                hubVersion: 'v15.9.154',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
