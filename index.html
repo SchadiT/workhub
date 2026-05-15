@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.151</title>
+    <title>Turbo Projects Work Hub v15.9.152</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -453,7 +453,7 @@
         }
 
         /* ============================================
-           v15.9.151: APP DOCK (Tile Grid — White, Auto-Wrap)
+           v15.9.152: APP DOCK (Tile Grid — White, Auto-Wrap)
            Replaces .tools-grid for APPLICATIONS / CLUB TOOLS / FINANCE
            Wraps naturally; no horizontal scroll needed
            ============================================ */
@@ -6608,7 +6608,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.151</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.152</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7088,7 +7088,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.151</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.152</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15349,7 +15349,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.151';
+            const HUB_VERSION = 'v15.9.152';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17153,7 +17153,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.151 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.152 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -19074,13 +19074,31 @@ Spittelauer Lnde 12/1
                 }
             }
             try {
-                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=body&uid=' + encodeURIComponent(uid));
+                const res = await fetch('https://www.grelleforelle.com/hub-proxy/mail_proxy.php?action=read&uid=' + encodeURIComponent(uid));
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
                 if (data.error) throw new Error(data.error);
-                const meta = `<div class="email-body-meta"><strong>Von:</strong> ${escHtml(data.from || '')}<br><strong>An:</strong> ${escHtml(data.to || '')}<br><strong>Betreff:</strong> ${escHtml(data.subject || '')}<br><strong>Datum:</strong> ${escHtml(data.date || '')}</div>`;
-                const body = escHtml(data.body || '(leer)');
-                panel.innerHTML = meta + body;
+                const meta = `<div class="email-body-meta"><strong>Von:</strong> ${escHtml(data.fromName || data.from || '')} &lt;${escHtml(data.from || '')}&gt;<br><strong>Betreff:</strong> ${escHtml(data.subject || '')}<br><strong>Datum:</strong> ${escHtml(data.date || '')}</div>`;
+                // body is { type: 'html'|'plain', content: '...' }
+                // For plain: content is already htmlspecialchars'd + nl2br'd → safe to use as innerHTML
+                // For html: strip tags to stay plain-text-only (no XSS, no broken layouts)
+                let bodyHtml = '';
+                if (data.body && typeof data.body === 'object') {
+                    if (data.body.type === 'plain') {
+                        bodyHtml = data.body.content || '(leer)';
+                    } else if (data.body.type === 'html') {
+                        // Strip HTML tags to plain text, decode entities, then re-escape + nl2br
+                        const tmp = document.createElement('div');
+                        tmp.innerHTML = data.body.content || '';
+                        const text = (tmp.textContent || tmp.innerText || '').trim();
+                        bodyHtml = escHtml(text).replace(/\n/g, '<br>');
+                    } else {
+                        bodyHtml = escHtml(String(data.body.content || ''));
+                    }
+                } else {
+                    bodyHtml = escHtml(String(data.body || '(leer)'));
+                }
+                panel.innerHTML = meta + '<div class="email-body-content">' + bodyHtml + '</div>';
             } catch(err) {
                 panel.innerHTML = `<div class="email-body-error">Fehler beim Laden: ${escHtml(err.message)}</div>`;
             }
@@ -19099,6 +19117,8 @@ Spittelauer Lnde 12/1
                 emails.forEach(email => {
                     const row = document.createElement('div');
                     row.className = 'email-row flagged-row';
+                    row.dataset.uid = email.uid;
+                    row.onclick = () => inboxToggleBody(email.uid, row);
                     row.innerHTML = `<div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;"><span class="email-sender">${escHtml(email.fromName||email.from)}</span><span style="color:#f59e0b;font-size:12px;">&#127988; Flagged</span><span class="email-date">${email.date}</span></div><div class="email-subject ${!email.read?'unread-text':''}">${escHtml(email.subject||'(kein Betreff)')}</div><div class="email-preview">${escHtml(email.preview||'')}</div></div>`;
                     list.appendChild(row);
                 });
@@ -20720,7 +20740,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.151 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.152 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20750,7 +20770,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.151',
+                hubVersion: 'v15.9.152',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
