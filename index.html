@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.156</title>
+    <title>Turbo Projects Work Hub v15.9.157</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -465,6 +465,11 @@
            v15.9.156: Bar Availability preview — per-event
            checkboxes (all checked by default), Alle/Keine,
            sheet generates only selected events
+           ============================================ */
+        /* ============================================
+           v15.9.157: COCKPIT/DTW counter fix — OFFICE Tasks
+           badge now matches cross-dept grid scope; post-load
+           tab-bar refresh in cockpitRender(); lastLoad gate
            ============================================ */
         .app-dock {
             background: #ffffff;
@@ -6622,7 +6627,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.156</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.157</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7102,7 +7107,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.156</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.157</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15449,7 +15454,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.156';
+            const HUB_VERSION = 'v15.9.157';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17253,7 +17258,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.156 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.157 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20840,7 +20845,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.156 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.157 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20870,7 +20875,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.156',
+                hubVersion: 'v15.9.157',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -21226,6 +21231,15 @@ Spittelauer Lnde 12/1
             // Re-render all expanded depts
             cpExpandedDepts.forEach(dept => cockpitRenderDeptTasks(dept));
             cockpitUpdateTabActive();
+
+            // v15.9.157: DTW tab-bar count badges are computed once (pre-load against empty
+            // init arrays → "0"). cockpitLoad() populates cockpitData async but never refreshed
+            // DTW → badges stuck at 0 unless user re-triggers tasks-tab lazy-load. Refresh the
+            // currently-open dept's tab bar so counts update the moment data arrives.
+            try {
+                const dtwOpen = (typeof dtwGetOpenDept === 'function') ? dtwGetOpenDept() : null;
+                if (dtwOpen && typeof dtwRenderTabBar === 'function') dtwRenderTabBar(dtwOpen);
+            } catch(e) {}
         }
 
         function cockpitToggleDept(dept) { // v15.9.96
@@ -22632,10 +22646,19 @@ Spittelauer Lnde 12/1
     function dtwComputeCounts(dept) {
         const counts = {};
         // Tasks count — from cockpitData (live after MS Login)
+        // v15.9.157: gate on lastLoad (pre-load → undefined → badge hidden, not misleading "0").
+        // OFFICE Tasks tab renders the cross-dept grid (dtwTgCollectItems, respects active
+        // dept filter) — its badge must match that scope, NOT byDept['office'].
         try {
-            if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
-                const arr = cockpitData.byDept[dept.toLowerCase()] || [];
-                counts.tasks = arr.filter(t => t.status !== 'completed').length;
+            if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.lastLoad) {
+                if (dept === 'OFFICE') {
+                    const filter = dtwTgGetFilter();
+                    counts.tasks = dtwTgCollectItems()
+                        .filter(it => it.type === 'task' && filter.has(it.dept)).length;
+                } else {
+                    const arr = cockpitData.byDept[dept.toLowerCase()] || [];
+                    counts.tasks = arr.filter(t => t.status !== 'completed').length;
+                }
             }
         } catch(e) {}
         // Quick Notes count — filtered by dept
