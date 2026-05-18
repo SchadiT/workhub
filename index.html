@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.154</title>
+    <title>Turbo Projects Work Hub v15.9.156</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -456,6 +456,15 @@
            v15.9.154: APP DOCK (Tile Grid — White, Auto-Wrap)
            Replaces .tools-grid for APPLICATIONS / CLUB TOOLS / FINANCE
            Wraps naturally; no horizontal scroll needed
+           ============================================ */
+        /* ============================================
+           v15.9.155: Projector button moved from CLUB TOOLS
+           into APPLICATIONS (after Promoter, before Promo Mgr.)
+           ============================================ */
+        /* ============================================
+           v15.9.156: Bar Availability preview — per-event
+           checkboxes (all checked by default), Alle/Keine,
+           sheet generates only selected events
            ============================================ */
         .app-dock {
             background: #ffffff;
@@ -2478,6 +2487,11 @@
             gap: 10px;
         }
         .bar-preview-event:last-child { border-bottom: none; }
+        .bar-preview-event .bar-ev-check { width: 18px; height: 18px; cursor: pointer; accent-color: #22c55e; flex: 0 0 auto; }
+        .bar-preview-event.bar-row-disabled { opacity: 0.4; }
+        .bar-preview-event.bar-row-disabled .name,
+        .bar-preview-event.bar-row-disabled .date,
+        .bar-preview-event.bar-row-disabled .day { text-decoration: line-through; }
         .bar-preview-event .date { color: #8b5cf6; font-weight: 600; min-width: 90px; }
         .bar-preview-event .day { color: #6b7280; min-width: 80px; }
         .bar-preview-event .name { flex: 1; color: white; }
@@ -6226,6 +6240,10 @@
                     <span class="app-icon">&#128200;</span>
                     <span class="app-label">Promoter</span>
                 </button>
+                <button class="app-tile" data-dept="office" onclick="openModal('projector-modal')">
+                    <span class="app-icon">&#128202;</span>
+                    <span class="app-label">Projector</span>
+                </button>
                 <button class="app-tile" data-dept="sputnik" onclick="openPromoManager();">
                     <span class="app-icon">&#127757;</span>
                     <span class="app-label">Promo Mgr.</span>
@@ -6260,10 +6278,6 @@
                 <button class="app-tile" data-dept="finance" onclick="openModal('cost-modal')">
                     <span class="app-icon">&#128176;</span>
                     <span class="app-label">Cost C.</span>
-                </button>
-                <button class="app-tile" data-dept="office" onclick="openModal('projector-modal')">
-                    <span class="app-icon">&#128202;</span>
-                    <span class="app-label">Projector</span>
                 </button>
                 <button class="app-tile" data-dept="office" onclick="openDeepAnalysis()">
                     <span class="app-icon">&#128221;</span>
@@ -6608,7 +6622,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.154</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.156</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7088,7 +7102,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.154</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.156</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -14066,10 +14080,17 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            let html = `<p style="margin-bottom: 10px; color: #22c55e;"> ${events.length} Events gefunden:</p>`;
-            events.forEach(e => {
+            let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap;">
+                    <p style="color: #22c55e; margin:0;"><span id="bar-ev-counter">${events.length}</span> / ${events.length} Events selektiert</p>
+                    <div style="display:flex;gap:8px;">
+                        <button type="button" class="modal-btn" style="background:#374151;color:#fff;padding:4px 10px;font-size:12px;" onclick="toggleAllBarEvents(true)">Alle</button>
+                        <button type="button" class="modal-btn" style="background:#374151;color:#fff;padding:4px 10px;font-size:12px;" onclick="toggleAllBarEvents(false)">Keine</button>
+                    </div>
+                </div>`;
+            events.forEach((e, idx) => {
                 const typeClass = e.type === 'Konzert' ? 'konzert' : (e.type === 'Eigen' ? 'eigen' : 'club');
-                html += `<div class="bar-preview-event">
+                html += `<div class="bar-preview-event" data-ev-idx="${idx}">
+                    <input type="checkbox" class="bar-ev-check" checked onchange="toggleBarEventRow(this)">
                     <span class="date">${e.date}</span>
                     <span class="day">${e.day}</span>
                     <span class="name">${e.event}</span>
@@ -14077,6 +14098,36 @@ Spittelauer Lnde 12/1
                 </div>`;
             });
             previewContainer.innerHTML = html;
+            window._barPreviewEvents = events;
+        }
+
+        // v15.9.156 — Event checkboxes in availability preview
+        function toggleBarEventRow(cb) {
+            const row = cb.closest('.bar-preview-event');
+            if (row) row.classList.toggle('bar-row-disabled', !cb.checked);
+            updateBarEventCounter();
+        }
+        function toggleAllBarEvents(state) {
+            document.querySelectorAll('#bar-events-preview .bar-ev-check').forEach(cb => {
+                cb.checked = state;
+                const row = cb.closest('.bar-preview-event');
+                if (row) row.classList.toggle('bar-row-disabled', !state);
+            });
+            updateBarEventCounter();
+        }
+        function updateBarEventCounter() {
+            const counter = document.getElementById('bar-ev-counter');
+            if (counter) counter.textContent = document.querySelectorAll('#bar-events-preview .bar-ev-check:checked').length;
+        }
+        function getSelectedBarPreviewEvents() {
+            const all = window._barPreviewEvents || [];
+            const selected = [];
+            document.querySelectorAll('#bar-events-preview .bar-preview-event').forEach(row => {
+                const cb = row.querySelector('.bar-ev-check');
+                const idx = parseInt(row.getAttribute('data-ev-idx'));
+                if (cb && cb.checked && !isNaN(idx) && all[idx]) selected.push(all[idx]);
+            });
+            return selected;
         }
 
         // Get events for selected months from BMT
@@ -14134,10 +14185,20 @@ Spittelauer Lnde 12/1
                 return;
             }
             
-            const events = getBarEventsForMonths(selectedMonths, year);
+            const allEvents = getBarEventsForMonths(selectedMonths, year);
+            
+            if (allEvents.length === 0) {
+                showToast(' Keine Events fr ausgewhlte Monate!', true);
+                return;
+            }
+            
+            // v15.9.156 — only checked events from preview; fallback to all if preview not rendered
+            const events = getSelectedBarPreviewEvents().length || document.querySelectorAll('#bar-events-preview .bar-ev-check').length
+                ? getSelectedBarPreviewEvents()
+                : allEvents;
             
             if (events.length === 0) {
-                showToast(' Keine Events fr ausgewhlte Monate!', true);
+                showToast(' Keine Events selektiert! Mindestens ein Event anhaken.', true);
                 return;
             }
             
@@ -14169,7 +14230,7 @@ Spittelauer Lnde 12/1
             
             const fileName = `Bar_Availability_${monthStr}_${year}.xlsx`;
             XLSX.writeFile(wb, fileName);
-            showToast(` ${fileName} downloaded!`);
+            showToast(` ${fileName} — ${events.length}/${allEvents.length} Events`);
         }
 
         // Handle availability upload
@@ -15388,7 +15449,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.154';
+            const HUB_VERSION = 'v15.9.156';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17192,7 +17253,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.154 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.156 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20779,7 +20840,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.154 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.156 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20809,7 +20870,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.154',
+                hubVersion: 'v15.9.156',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
