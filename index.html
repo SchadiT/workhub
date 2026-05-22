@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.158</title>
+    <title>Turbo Projects Work Hub v15.9.159</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <!-- v15.9.159: PDF V2 Export (jsPDF + AutoTable) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
         window.msalLoaded = false;
@@ -4790,6 +4793,117 @@
         </div>
     </div>
 
+    <!-- v15.9.159: PDF V2 Report Generator Modal -->
+    <div class="modal-overlay modal-overlay-app" id="pdfv2-modal">
+        <div class="modal modal-app" style="max-width:920px;">
+            <div class="modal-header" style="background:linear-gradient(135deg,#1a0e2e,#3d1a5b);">
+                <h3>&#128196; PDF Report Generator (V2)</h3>
+                <button class="modal-close" onclick="closeModal('pdfv2-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:18px;">
+                <!-- Info Bar -->
+                <div style="display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;margin-bottom:14px;font-size:11px;color:#aaa;">
+                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Status:</span> <span id="pdfv2-status" style="color:#fbbf24;font-weight:600;">SKELETON v159a</span></div>
+                    <div style="width:1px;background:var(--border);"></div>
+                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Selected:</span> <span id="pdfv2-sel-count" style="color:#fff;font-weight:600;">0</span> Events</div>
+                    <div style="width:1px;background:var(--border);"></div>
+                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">CON-Filter:</span> <span style="color:#22c55e;font-weight:600;">AUTO-EXCLUDE</span></div>
+                </div>
+
+                <!-- Step 1: Event Selection -->
+                <div style="margin-bottom:18px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <span style="background:#3d1a5b;color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</span>
+                        <h4 style="margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#fff;">MAIN DB Event-Auswahl</h4>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+                        <div style="display:flex;flex-direction:column;gap:3px;">
+                            <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Typ</label>
+                            <select id="pdfv2-type" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:6px 8px;border-radius:4px;font-size:12px;">
+                                <option value="">EIGEN + FREMD</option>
+                                <option value="EIGEN">EIGEN nur</option>
+                                <option value="FREMD">FREMD nur</option>
+                            </select>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:3px;">
+                            <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Jahr</label>
+                            <select id="pdfv2-year" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:6px 8px;border-radius:4px;font-size:12px;min-width:100px;">
+                                <option value="">Alle</option>
+                            </select>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:3px;">
+                            <label style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.5px;">Promoter</label>
+                            <select id="pdfv2-promoter" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:6px 8px;border-radius:4px;font-size:12px;min-width:140px;">
+                                <option value="">Alle</option>
+                            </select>
+                        </div>
+                        <button class="modal-btn primary" onclick="pdfv2ApplyFilters()" style="padding:7px 14px;font-size:12px;">Filter anwenden</button>
+                        <button class="modal-btn cancel" onclick="pdfv2SelectAll()" style="padding:7px 14px;font-size:12px;">Alle wählen</button>
+                        <button class="modal-btn cancel" onclick="pdfv2SelectNone()" style="padding:7px 14px;font-size:12px;">Auswahl löschen</button>
+                    </div>
+                    <div id="pdfv2-event-list" style="margin-top:10px;max-height:240px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:8px;font-size:12px;">
+                        <div style="text-align:center;padding:30px;color:#888;font-style:italic;">Event-Liste wird in v159b geladen aus MAIN DB</div>
+                    </div>
+                </div>
+
+                <!-- Step 2: S6 Velocity Event Override -->
+                <div style="margin-bottom:18px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <span style="background:#3d1a5b;color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</span>
+                        <h4 style="margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#fff;">S6 Velocity Curve Events (optional Override)</h4>
+                        <span style="font-size:11px;color:#888;">Default: Top-5 by Tickets · konfigurierbar</span>
+                    </div>
+                    <div style="padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;display:flex;gap:10px;align-items:center;">
+                        <select id="pdfv2-s6-mode" onchange="pdfv2S6ModeChange()" style="background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:6px 8px;border-radius:4px;font-size:12px;">
+                            <option value="auto">AUTO — Top 5 by NTRY Tickets</option>
+                            <option value="custom">CUSTOM — Manuell auswählen</option>
+                        </select>
+                        <div id="pdfv2-s6-custom-wrap" style="display:none;flex:1;">
+                            <div id="pdfv2-s6-event-list" style="max-height:120px;overflow-y:auto;border:1px solid var(--border);border-radius:4px;background:#0a0a0a;padding:6px;font-size:11px;">
+                                <div style="text-align:center;padding:14px;color:#888;font-style:italic;">NTRY Events werden in v159d geladen</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Generate -->
+                <div style="margin-bottom:10px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <span style="background:#3d1a5b;color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</span>
+                        <h4 style="margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#fff;">PDF generieren (8 Seiten + Auto-Pagination)</h4>
+                    </div>
+                    <div style="padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:14px;font-size:11px;">
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #4F8EF7;"><strong style="color:#fff;">S1</strong> <span style="color:#aaa;">Cover + KPI Cards</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #4F8EF7;"><strong style="color:#fff;">S2</strong> <span style="color:#aaa;">Revenue Analytics</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #4F8EF7;"><strong style="color:#fff;">S3</strong> <span style="color:#aaa;">Operational Patterns</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #4F8EF7;"><strong style="color:#fff;">S4</strong> <span style="color:#aaa;">Funnel &amp; Conversion</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #4F8EF7;"><strong style="color:#fff;">S5</strong> <span style="color:#aaa;">Strategic Intelligence</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #ec4899;"><strong style="color:#fff;">S6</strong> <span style="color:#aaa;">Sales Velocity (NTRY)</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #ec4899;"><strong style="color:#fff;">S7</strong> <span style="color:#aaa;">Pattern Detection</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #ec4899;"><strong style="color:#fff;">S8</strong> <span style="color:#aaa;">Optimal Push Window</span></div>
+                            <div style="padding:8px;background:var(--surface-2);border-radius:4px;border-left:3px solid #97C459;"><strong style="color:#fff;">S9+</strong> <span style="color:#aaa;">Event-Details (Auto-Paginated)</span></div>
+                        </div>
+                        <button class="modal-btn primary" onclick="generatePDFV2()" style="width:100%;padding:12px;font-size:14px;font-weight:600;letter-spacing:.5px;">
+                            &#128196; PDF V2 generieren
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress -->
+                <div id="pdfv2-progress" style="display:none;margin-top:14px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
+                    <div style="display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-bottom:6px;">
+                        <span id="pdfv2-progress-text">Initialisiere…</span>
+                        <span id="pdfv2-progress-pct">0%</span>
+                    </div>
+                    <div style="height:6px;background:#0a0a0a;border-radius:3px;overflow:hidden;">
+                        <div id="pdfv2-progress-bar" style="height:100%;background:linear-gradient(90deg,#4F8EF7,#ec4899);width:0%;transition:width .3s;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- PROMOTER ANALYSIS Modal -->
     <div class="modal-overlay modal-overlay-app" id="promoter-analysis-modal">
         <div class="modal modal-app">
@@ -6294,6 +6408,11 @@
                     <span class="app-icon">&#128221;</span>
                     <span class="app-label">Analysis</span>
                 </button>
+                <!-- v15.9.159: PDF V2 Report Generator -->
+                <button class="app-tile" data-dept="office" onclick="pdfv2Open()">
+                    <span class="app-icon">&#128196;</span>
+                    <span class="app-label">PDF Report</span>
+                </button>
                 <button class="app-tile" data-dept="office" onclick="cnOpen()">
                     <span class="app-icon">&#129302;</span>
                     <span class="app-label">Claude AI</span>
@@ -6633,7 +6752,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.158</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.159</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7113,7 +7232,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.158</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.159</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -10879,6 +10998,176 @@
             // Opens the Grelle Forelle Analysis Project in Claude
             window.open('https://claude.ai/project/0199e959-4ffb-70e3-8b70-5a7c8594bce7', '_blank');
         }
+
+        // ─────────────────────────────────────────────────────────────────
+        // v15.9.159: PDF V2 REPORT GENERATOR
+        // ─────────────────────────────────────────────────────────────────
+        // Architecture:
+        //   pdfv2Open() → opens modal, populates filter dropdowns from MAIN DB
+        //   pdfv2ApplyFilters() → re-renders event-list based on Typ/Jahr/Promoter
+        //   pdfv2SelectAll/None() → bulk selection helpers
+        //   pdfv2S6ModeChange() → toggles between AUTO (Top-5) and CUSTOM event selection
+        //   generatePDFV2() → orchestrator: builds 8 pages + S9+ auto-paginated detail table
+        //
+        // Page renderers (added in 159b–159d):
+        //   pdfv2_renderS1_cover()       — Logo + 6 KPI cards
+        //   pdfv2_renderS2_revenue()     — Donut + stacked bar + Top 5
+        //   pdfv2_renderS3_operational() — Wochentag, Promoter ROI, Bar/PP trend
+        //   pdfv2_renderS4_funnel()      — VVK→FOH→PAX funnel + conversion table
+        //   pdfv2_renderS5_strategic()   — StdDev, Loyalität, Sellout, Mini-Forecast
+        //   pdfv2_renderS6_velocity()    — NTRY: Daily curves + tipping points 25/50/75/90%
+        //   pdfv2_renderS7_pattern()     — NTRY: Sleeper/Hype/Front-Back, Dead-Zone
+        //   pdfv2_renderS8_pushwindow()  — NTRY: Aggregated bar + Last-day push + Promoter-specific
+        //   pdfv2_renderS9_details()     — jsPDF-AutoTable auto-paginated
+        //
+        // CON-Auto-Exclude: Cross-match Event_Typ against MAIN DB before processing
+        // Logo: firmengrelle.png embedded as base64 on S1 top-left
+
+        // PDF V2 state container
+        const PDFV2_STATE = {
+            selectedEventIds: new Set(),
+            filteredEvents: [],
+            s6Mode: 'auto',
+            s6CustomEvents: [],
+            ntryData: { ntry: null, pivot: null, tagesverteilung: null },
+            ntryLoaded: false
+        };
+
+        // NTRY CSV endpoints (Publish-to-Web from Schadi's Google Sheet)
+        const PDFV2_NTRY_URLS = {
+            ntry:             'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYRVRbIjJkTglML13WdjpttEInBmyoFiEiM1WGVbdwDrcJteNY6z6CCdukwC5ChohiWJK8aZWLxhX/pub?gid=1300552688&single=true&output=csv',
+            tagesverteilung:  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYRVRbIjJkTglML13WdjpttEInBmyoFiEiM1WGVbdwDrcJteNY6z6CCdukwC5ChohiWJK8aZWLxhX/pub?gid=116789164&single=true&output=csv',
+            pivot:            'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYRVRbIjJkTglML13WdjpttEInBmyoFiEiM1WGVbdwDrcJteNY6z6CCdukwC5ChohiWJK8aZWLxhX/pub?gid=603874607&single=true&output=csv'
+        };
+
+        function pdfv2Open() {
+            // Verify jsPDF loaded
+            if (typeof window.jspdf === 'undefined') {
+                showToast('&#9888; jsPDF nicht geladen — Seite neu laden');
+                return;
+            }
+            openModal('pdfv2-modal');
+            // Populate filter dropdowns from MAIN DB (full impl in v159b)
+            pdfv2PopulateFilters();
+            pdfv2UpdateSelectionCount();
+        }
+
+        function pdfv2PopulateFilters() {
+            // STUB v159a — full impl reads from DBV_DATA / window.dbvEvents in v159b
+            const yearSel = document.getElementById('pdfv2-year');
+            const promSel = document.getElementById('pdfv2-promoter');
+            if (yearSel && yearSel.options.length === 1) {
+                for (let y = 2026; y >= 2022; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y; opt.textContent = y;
+                    yearSel.appendChild(opt);
+                }
+            }
+        }
+
+        function pdfv2ApplyFilters() {
+            // STUB v159a — full impl in v159b
+            const status = document.getElementById('pdfv2-status');
+            if (status) status.textContent = 'Filter applied (v159b stub)';
+        }
+
+        function pdfv2SelectAll() {
+            // STUB v159a
+            showToast('Wird in v159b implementiert');
+        }
+
+        function pdfv2SelectNone() {
+            PDFV2_STATE.selectedEventIds.clear();
+            pdfv2UpdateSelectionCount();
+        }
+
+        function pdfv2UpdateSelectionCount() {
+            const el = document.getElementById('pdfv2-sel-count');
+            if (el) el.textContent = PDFV2_STATE.selectedEventIds.size;
+        }
+
+        function pdfv2S6ModeChange() {
+            const mode = document.getElementById('pdfv2-s6-mode').value;
+            PDFV2_STATE.s6Mode = mode;
+            const wrap = document.getElementById('pdfv2-s6-custom-wrap');
+            if (wrap) wrap.style.display = (mode === 'custom') ? 'block' : 'none';
+        }
+
+        function pdfv2SetProgress(pct, text) {
+            const wrap = document.getElementById('pdfv2-progress');
+            const bar = document.getElementById('pdfv2-progress-bar');
+            const t = document.getElementById('pdfv2-progress-text');
+            const p = document.getElementById('pdfv2-progress-pct');
+            if (!wrap) return;
+            wrap.style.display = 'block';
+            if (bar) bar.style.width = pct + '%';
+            if (t) t.textContent = text || '';
+            if (p) p.textContent = Math.round(pct) + '%';
+        }
+
+        async function pdfv2LoadNTRY() {
+            // Stub v159a — actual fetch in v159d
+            // Plan: fetch all 3 PDFV2_NTRY_URLS, parse CSV, store in PDFV2_STATE.ntryData
+            // Fallback: if fetch fails, prompt user to upload CSVs locally
+            return false;
+        }
+
+        // ── Main orchestrator (stub) ────────────────────────────────────────
+        async function generatePDFV2() {
+            if (typeof window.jspdf === 'undefined') {
+                showToast('&#9888; jsPDF nicht verfügbar');
+                return;
+            }
+            // 159a SKELETON: build minimal 1-page PDF to verify jsPDF + AutoTable pipeline
+            try {
+                pdfv2SetProgress(5, 'Initialisiere jsPDF…');
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+                pdfv2SetProgress(25, 'Verifiziere AutoTable…');
+                if (typeof doc.autoTable !== 'function') {
+                    throw new Error('jsPDF-AutoTable plugin nicht geladen');
+                }
+                pdfv2SetProgress(50, 'Render Test-Cover…');
+                doc.setFontSize(20); doc.setFont(undefined, 'bold');
+                doc.text('PDF V2 — SKELETON v159a', 20, 25);
+                doc.setFontSize(11); doc.setFont(undefined, 'normal');
+                doc.setTextColor(100);
+                doc.text('jsPDF + AutoTable pipeline verified.', 20, 35);
+                doc.text('S1–S9+ page renderers werden in v159b–v159d implementiert.', 20, 42);
+                doc.setFontSize(9); doc.setTextColor(150);
+                doc.text('Build: ' + new Date().toLocaleString('de-AT') + ' · Hub v15.9.159', 20, 55);
+                pdfv2SetProgress(75, 'Render Test-AutoTable…');
+                doc.autoTable({
+                    head: [['Page','Inhalt','Datasource','Status']],
+                    body: [
+                        ['S1','Cover + KPI Cards','MAIN DB','v159b'],
+                        ['S2','Revenue Analytics','MAIN DB','v159c'],
+                        ['S3','Operational Patterns','MAIN DB','v159c'],
+                        ['S4','Funnel & Conversion','MAIN DB','v159c'],
+                        ['S5','Strategic Intelligence','MAIN DB','v159c'],
+                        ['S6','Sales Velocity Curves','NTRY pivot','v159d'],
+                        ['S7','Pattern Detection','NTRY pivot','v159d'],
+                        ['S8','Optimal Push Window','NTRY tagesverteilung','v159d'],
+                        ['S9+','Event Details','MAIN DB','v159b']
+                    ],
+                    startY: 65,
+                    theme: 'striped',
+                    headStyles: { fillColor: [26,14,46], textColor: 255, fontStyle: 'bold' },
+                    styles: { fontSize: 9, cellPadding: 3 }
+                });
+                pdfv2SetProgress(95, 'Speichere PDF…');
+                const ts = new Date().toISOString().slice(0,10);
+                doc.save('PDF_V2_Skeleton_' + ts + '.pdf');
+                pdfv2SetProgress(100, '&#10003; Test-PDF erzeugt');
+                setTimeout(() => { const w = document.getElementById('pdfv2-progress'); if (w) w.style.display='none'; }, 2500);
+                showToast('&#128196; Skeleton-PDF erzeugt — jsPDF Pipeline OK');
+            } catch (err) {
+                console.error('[PDF V2] Fehler:', err);
+                pdfv2SetProgress(0, '&#10005; Fehler: ' + err.message);
+                showToast('&#9888; PDF V2 Fehler — Console öffnen');
+            }
+        }
+        // ── END v15.9.159 PDF V2 ───────────────────────────────────────────
         
         // 
         // NYE PROJECTOR (3-Jahre Benchmark)
@@ -15460,7 +15749,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.158';
+            const HUB_VERSION = 'v15.9.159';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17264,7 +17553,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.158 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.159 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -20968,7 +21257,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.158 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.159 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20998,7 +21287,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.158',
+                hubVersion: 'v15.9.159',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
