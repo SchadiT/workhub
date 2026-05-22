@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.157</title>
+    <title>Turbo Projects Work Hub v15.9.158</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4762,9 +4762,15 @@
                     </div>
                     <button onclick="dbvReset()" style="background:var(--surface);border:1px solid var(--border);color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">↺ Filter</button>
                     <button onclick="dbvRefresh()" style="background:var(--surface);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">⟳ Reload DB</button>
-                    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
-                        <div id="dbv-status-dot" style="width:7px;height:7px;border-radius:50%;background:#444;"></div>
-                        <span id="dbv-status" style="font-size:11px;color:#888;">Lädt...</span>
+                    <!-- v15.9.158: Multi-Select Controls -->
+                    <button id="dbv-only-selected-btn" onclick="dbvToggleOnlySelected()" style="background:var(--surface);border:1px solid var(--border);color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">☑ Nur Auswahl</button>
+                    <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
+                    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+                        <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <div id="dbv-status-dot" style="width:7px;height:7px;border-radius:50%;background:#444;"></div>
+                            <span id="dbv-status" style="font-size:11px;color:#888;">Lädt...</span>
+                        </div>
                     </div>
                 </div>
                 <!-- Stats -->
@@ -6627,7 +6633,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.157</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.158</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7107,7 +7113,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.157</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.158</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -15454,7 +15460,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.157';
+            const HUB_VERSION = 'v15.9.158';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17258,7 +17264,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.157 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.158 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -18107,6 +18113,9 @@ Spittelauer Lnde 12/1
         // ===== DATABASE VIEWER =====
         const DBV_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0z7hOhXnYPX_8AZf8TdPZvjaL7ITeob5BOxpKJvV4iaa_RzBOVjs47W62Io0kA/pub?gid=184884796&single=true&output=csv';
         let dbvData = [], dbvFiltered = [], dbvLoaded = false, dbvSortCol = 'Datum', dbvSortDir = -1;
+        // v15.9.158: Multi-Select State (persists across filter changes via Event_ID)
+        let dbvSelected = new Set();
+        let dbvShowOnlySelected = false;
 
         function dbvParseCSV(text) {
             const lines = text.split(/\r?\n/);
@@ -18219,6 +18228,12 @@ Spittelauer Lnde 12/1
             const year = document.getElementById('dbv-year').value;
             const search = (document.getElementById('dbv-search').value || '').toLowerCase();
             dbvFiltered = dbvData.filter(r => {
+                // v15.9.158: "Nur Auswahl" mode bypasses other filters except search
+                if (dbvShowOnlySelected) {
+                    if (!dbvSelected.has(r['Event_ID'])) return false;
+                    if (search && !((r['Event Name']||'').toLowerCase().includes(search) || (r['Promoter']||'').toLowerCase().includes(search) || (r['Mainact']||'').toLowerCase().includes(search))) return false;
+                    return true;
+                }
                 if (type && r['Type'] !== type) return false;
                 if (promoter && r['Promoter'] !== promoter) return false;
                 if (mainact && r['Mainact'] !== mainact) return false;
@@ -18229,6 +18244,7 @@ Spittelauer Lnde 12/1
             dbvSort();
             dbvRenderStats();
             dbvRenderTable();
+            dbvUpdateSelectionUI();
         }
 
         function dbvSort() {
@@ -18297,13 +18313,19 @@ Spittelauer Lnde 12/1
             if (dbvFiltered.length === 0) { wrap.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">Keine Events gefunden.</div>'; return; }
             const cols = [
                 {k:'Datum',l:'Datum'},{k:'Tag',l:'Tag'},{k:'Type',l:'Typ'},{k:'Event Name',l:'Event'},{k:'Promoter',l:'Promoter'},{k:'Mainact',l:'Mainact'},
-                {k:'Bar_Revenue',l:'Bar Rev.'},{k:'FOH_Revenue',l:'FOH Rev.'},{k:'FOH_Tickets_Sold',l:'FOH Tix'},{k:'PreSale_TicketsSold',l:'VVK Tix'},
+                {k:'Bar_Revenue',l:'Bar Rev.'},{k:'FOH_Revenue',l:'FOH Rev.'},{k:'PreSale_Revenue',l:'VVK Rev.'},{k:'FOH_Tickets_Sold',l:'FOH Tix'},{k:'PreSale_TicketsSold',l:'VVK Tix'},
                 {k:'Total_PAX',l:'PAX'},{k:'Total_Revenue',l:'Total Rev.'},{k:'Bar_Per_Person',l:'Bar/P'}
             ];
-            const eurCols = new Set(['Bar_Revenue','FOH_Revenue','Total_Revenue','Bar_Per_Person','Revenue_Per_Person']);
+            // v15.9.158: PreSale_Revenue added to €-formatted columns
+            const eurCols = new Set(['Bar_Revenue','FOH_Revenue','PreSale_Revenue','Total_Revenue','Bar_Per_Person','Revenue_Per_Person']);
             const numCols = new Set(['FOH_Tickets_Sold','PreSale_TicketsSold','Total_PAX']);
             const thStyle = 'padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:#888;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--border);background:#1a1a1a;';
+            // v15.9.158: Master-Checkbox state (checked when all visible rows selected)
+            const visibleIds = dbvFiltered.map(r => r['Event_ID']).filter(Boolean);
+            const allVisibleSelected = visibleIds.length > 0 && visibleIds.every(id => dbvSelected.has(id));
             let html = '<table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr>';
+            // v15.9.158: Checkbox column header
+            html += `<th style="${thStyle}width:28px;text-align:center;cursor:default;padding:7px 4px;" title="Alle sichtbaren auswählen/abwählen"><input type="checkbox" id="dbv-master-checkbox" onclick="dbvToggleAllVisible(this.checked)" ${allVisibleSelected ? 'checked' : ''} style="cursor:pointer;accent-color:#a855f7;"></th>`;
             cols.forEach(c => {
                 const sorted = dbvSortCol === c.k;
                 const arrow = sorted ? (dbvSortDir===1?'↑':'↓') : '↕';
@@ -18311,7 +18333,12 @@ Spittelauer Lnde 12/1
             });
             html += '</tr></thead><tbody>';
             dbvFiltered.forEach(r => {
-                html += '<tr style="border-bottom:1px solid #1a1a1a;" onmouseover="this.style.background=\'#1e1e1e\'" onmouseout="this.style.background=\'\'">';
+                const eid = r['Event_ID'] || '';
+                const isSelected = eid && dbvSelected.has(eid);
+                const rowBg = isSelected ? 'background:rgba(168,85,247,.08);' : '';
+                html += `<tr data-eid="${eid.replace(/"/g,'&quot;')}" style="border-bottom:1px solid #1a1a1a;${rowBg}" onmouseover="this.style.background='rgba(168,85,247,.14)'" onmouseout="this.style.background='${isSelected?'rgba(168,85,247,.08)':''}'">`;
+                // v15.9.158: Checkbox cell
+                html += `<td style="padding:6px 4px;text-align:center;"><input type="checkbox" onclick="event.stopPropagation();dbvToggleSelect('${eid.replace(/'/g,"\\'")}',this.checked)" ${isSelected ? 'checked' : ''} ${eid ? '' : 'disabled'} style="cursor:pointer;accent-color:#a855f7;"></td>`;
                 cols.forEach(c => {
                     const val = r[c.k] || '';
                     const tdStyle = 'padding:6px 10px;white-space:nowrap;';
@@ -18598,7 +18625,97 @@ Spittelauer Lnde 12/1
         function dbvReset() {
             ['dbv-type','dbv-promoter','dbv-mainact','dbv-year'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('dbv-search').value = '';
+            // v15.9.158: Reset auch "Nur Auswahl" Mode (Selection selbst bleibt erhalten)
+            if (dbvShowOnlySelected) {
+                dbvShowOnlySelected = false;
+                const btn = document.getElementById('dbv-only-selected-btn');
+                if (btn) { btn.style.background = 'var(--surface)'; btn.style.borderColor = 'var(--border)'; btn.style.color = '#fff'; }
+            }
             dbvApplyFilters();
+        }
+
+        // ── v15.9.158: Multi-Select Functions ──────────────────────────────
+        function dbvToggleSelect(eventId, checked) {
+            if (!eventId) return;
+            if (checked) dbvSelected.add(eventId);
+            else dbvSelected.delete(eventId);
+            // If "Nur Auswahl" active and we deselect → re-apply filters to remove from view
+            if (dbvShowOnlySelected) {
+                dbvApplyFilters();
+            } else {
+                // Update row visual + master-checkbox state + counter
+                const row = document.querySelector(`#dbv-table-wrap tr[data-eid="${eventId.replace(/"/g,'&quot;')}"]`);
+                if (row) row.style.background = checked ? 'rgba(168,85,247,.08)' : '';
+                dbvUpdateMasterCheckbox();
+                dbvUpdateSelectionUI();
+                dbvRenderStats();
+            }
+        }
+
+        function dbvToggleAllVisible(checked) {
+            dbvFiltered.forEach(r => {
+                const eid = r['Event_ID'];
+                if (!eid) return;
+                if (checked) dbvSelected.add(eid);
+                else dbvSelected.delete(eid);
+            });
+            if (dbvShowOnlySelected && !checked) {
+                dbvApplyFilters();
+            } else {
+                dbvRenderTable();
+                dbvRenderStats();
+                dbvUpdateSelectionUI();
+            }
+        }
+
+        function dbvUpdateMasterCheckbox() {
+            const cb = document.getElementById('dbv-master-checkbox');
+            if (!cb) return;
+            const visibleIds = dbvFiltered.map(r => r['Event_ID']).filter(Boolean);
+            cb.checked = visibleIds.length > 0 && visibleIds.every(id => dbvSelected.has(id));
+        }
+
+        function dbvClearSelection() {
+            if (dbvSelected.size === 0) return;
+            dbvSelected.clear();
+            if (dbvShowOnlySelected) {
+                dbvShowOnlySelected = false;
+                const btn = document.getElementById('dbv-only-selected-btn');
+                if (btn) { btn.style.background = 'var(--surface)'; btn.style.borderColor = 'var(--border)'; btn.style.color = '#fff'; }
+            }
+            dbvApplyFilters();
+        }
+
+        function dbvToggleOnlySelected() {
+            if (dbvSelected.size === 0 && !dbvShowOnlySelected) {
+                alert('Erst Events auswählen, dann "Nur Auswahl" aktivieren.');
+                return;
+            }
+            dbvShowOnlySelected = !dbvShowOnlySelected;
+            const btn = document.getElementById('dbv-only-selected-btn');
+            if (btn) {
+                if (dbvShowOnlySelected) {
+                    btn.style.background = 'rgba(168,85,247,.18)';
+                    btn.style.borderColor = '#a855f7';
+                    btn.style.color = '#a855f7';
+                } else {
+                    btn.style.background = 'var(--surface)';
+                    btn.style.borderColor = 'var(--border)';
+                    btn.style.color = '#fff';
+                }
+            }
+            dbvApplyFilters();
+        }
+
+        function dbvUpdateSelectionUI() {
+            const counter = document.getElementById('dbv-selection-counter');
+            const clearBtn = document.getElementById('dbv-clear-selection-btn');
+            const n = dbvSelected.size;
+            if (counter) {
+                counter.textContent = '● ' + n + ' ausgewählt';
+                counter.style.display = n > 0 ? '' : 'none';
+            }
+            if (clearBtn) clearBtn.style.display = n > 0 ? '' : 'none';
         }
 
         async function dbvRefresh() {
@@ -18614,6 +18731,12 @@ Spittelauer Lnde 12/1
             document.getElementById('dbv-type').value = '';
             document.getElementById('dbv-status').textContent = 'Lade...';
             document.getElementById('dbv-status-dot').style.background = '#eab308';
+            // v15.9.158: Selection bleibt erhalten (Event_IDs sind stabil), aber Modus reset
+            if (dbvShowOnlySelected) {
+                dbvShowOnlySelected = false;
+                const btn = document.getElementById('dbv-only-selected-btn');
+                if (btn) { btn.style.background = 'var(--surface)'; btn.style.borderColor = 'var(--border)'; btn.style.color = '#fff'; }
+            }
             await dbvLoad();
         }
 
@@ -20845,7 +20968,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.157 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.158 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -20875,7 +20998,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.157',
+                hubVersion: 'v15.9.158',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
