@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.160</title>
+    <title>Turbo Projects Work Hub v15.9.161</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4768,6 +4768,8 @@
                     <!-- v15.9.158: Multi-Select Controls -->
                     <button id="dbv-only-selected-btn" onclick="dbvToggleOnlySelected()" style="background:var(--surface);border:1px solid var(--border);color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;">☑ Nur Auswahl</button>
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
+                    <!-- v15.9.161: PDF Report from DBV Selection -->
+                    <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
                         <div style="display:flex;align-items:center;gap:6px;">
@@ -4803,7 +4805,7 @@
             <div class="modal-body" style="padding:18px;">
                 <!-- Info Bar -->
                 <div style="display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;margin-bottom:14px;font-size:11px;color:#aaa;">
-                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Status:</span> <span id="pdfv2-status" style="color:#fbbf24;font-weight:600;">BUILD v160 (S1+S9)</span></div>
+                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Status:</span> <span id="pdfv2-status" style="color:#fbbf24;font-weight:600;">BUILD v161 (S1-S5 + S9)</span></div>
                     <div style="width:1px;background:var(--border);"></div>
                     <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Selected:</span> <span id="pdfv2-sel-count" style="color:#fff;font-weight:600;">0</span> Events</div>
                     <div style="width:1px;background:var(--border);"></div>
@@ -6752,7 +6754,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.160</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.161</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7232,7 +7234,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.160</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.161</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11061,6 +11063,30 @@
             })();
         }
 
+        // v15.9.161: Bridge — open PDF modal with DBV selection pre-loaded
+        function pdfv2OpenFromDBV() {
+            if (typeof window.jspdf === 'undefined') {
+                showToast('&#9888; jsPDF nicht geladen — Seite neu laden');
+                return;
+            }
+            // Copy dbvSelected (DBV multi-select Set) → PDFV2_STATE.selectedEventIds
+            if (typeof dbvSelected !== 'undefined' && dbvSelected.size > 0) {
+                PDFV2_STATE.selectedEventIds = new Set(dbvSelected);
+            } else {
+                showToast('&#9888; Bitte zuerst Events in der DB-Tabelle anhaken');
+                return;
+            }
+            // Close DBV modal, open PDF modal (DB is already loaded, no re-fetch needed)
+            closeModal('db-viewer-modal');
+            openModal('pdfv2-modal');
+            const statusEl = document.getElementById('pdfv2-status');
+            if (statusEl) statusEl.textContent = PDFV2_STATE.selectedEventIds.size + ' Events aus DB Viewer übernommen';
+            pdfv2PopulateFilters();
+            pdfv2ApplyFilters();
+            pdfv2UpdateSelectionCount();
+            showToast('&#128196; ' + PDFV2_STATE.selectedEventIds.size + ' Events übernommen — jetzt PDF generieren');
+        }
+
         function pdfv2PopulateFilters() {
             if (!dbvLoaded || dbvData.length === 0) return;
             // Years
@@ -11295,7 +11321,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.160', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.161', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -11374,7 +11400,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.160  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.161  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -11430,14 +11456,461 @@
             });
         }
 
-        // ── Pages S2-S8 placeholders (will be implemented v161/v162) ──────
+        // ── Chart.js → offscreen Canvas → DataURL helper (v161) ────────────
+        function pdfv2ChartCanvas(config, w, h) {
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.style.position = 'absolute'; canvas.style.left = '-9999px'; canvas.style.top = '-9999px';
+            document.body.appendChild(canvas);
+            config.options = config.options || {};
+            config.options.animation = false;
+            config.options.responsive = false;
+            config.options.maintainAspectRatio = false;
+            config.options.devicePixelRatio = 2;
+            const chart = new Chart(canvas.getContext('2d'), config);
+            const dataURL = canvas.toDataURL('image/png');
+            chart.destroy();
+            document.body.removeChild(canvas);
+            return dataURL;
+        }
+
+        // ── S2 Revenue Analytics (v161) ────────────────────────────────────
+        function pdfv2_renderS2_revenue(doc, rows, kpi) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            // Donut Revenue-Split
+            const donutURL = pdfv2ChartCanvas({
+                type: 'doughnut',
+                data: {
+                    labels: ['Bar Revenue', 'FOH Revenue', 'VVK Revenue'],
+                    datasets: [{ data: [kpi.totalBar, kpi.totalFOH, kpi.totalVVK], backgroundColor: ['#fbbf24','#4F8EF7','#10b981'], borderColor: '#fff', borderWidth: 2 }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 14 }, color: '#1f2937', padding: 12 } },
+                        title: { display: true, text: 'Revenue-Split (€)', font: { size: 18, weight: 'bold' }, color: '#0a0a0a', padding: { top: 10, bottom: 5 } }
+                    }
+                }
+            }, 600, 500);
+            doc.addImage(donutURL, 'PNG', 12, 22, 90, 75);
+            // Top 5 Revenue Table
+            const top5 = [...rows].sort((a,b) => dbvFmtN(b['Total_Revenue']) - dbvFmtN(a['Total_Revenue'])).slice(0, 5);
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Top 5 Events by Total Revenue', 110, 28);
+            doc.autoTable({
+                head: [['Event', 'Datum', '€ Bar', '€ FOH', '€ Total', 'PAX']],
+                body: top5.map(r => [
+                    (r['Event Name']||'').slice(0,38),
+                    (r['Datum']||'').slice(0,10),
+                    '€'+Math.round(dbvFmtN(r['Bar_Revenue'])).toLocaleString('de-AT'),
+                    '€'+Math.round(dbvFmtN(r['FOH_Revenue'])).toLocaleString('de-AT'),
+                    '€'+Math.round(dbvFmtN(r['Total_Revenue'])).toLocaleString('de-AT'),
+                    dbvFmtN(r['Total_PAX']).toLocaleString('de-AT')
+                ]),
+                startY: 32, margin: { left: 110, right: 12 }, theme: 'striped',
+                headStyles: { fillColor: [16,185,129], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.5 },
+                alternateRowStyles: { fillColor: [248,248,250] },
+                columnStyles: { 0:{cellWidth:60}, 1:{cellWidth:18}, 2:{cellWidth:18,halign:'right'}, 3:{cellWidth:18,halign:'right'}, 4:{cellWidth:22,halign:'right'}, 5:{cellWidth:16,halign:'right'} }
+            });
+            // Stacked Bar — Last 10 Events chronological
+            function pd(s) { const m = String(s).match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/); return m ? new Date(2000+ (+m[3]%100), m[2]-1, m[1]) : new Date(0); }
+            const recent10 = [...rows].sort((a,b) => pd(b['Datum']) - pd(a['Datum'])).slice(0, 10).reverse();
+            const stackedURL = pdfv2ChartCanvas({
+                type: 'bar',
+                data: {
+                    labels: recent10.map(r => (r['Event Name']||'').slice(0, 22)),
+                    datasets: [
+                        { label: 'Bar', data: recent10.map(r => Math.round(dbvFmtN(r['Bar_Revenue']))), backgroundColor: '#fbbf24' },
+                        { label: 'FOH', data: recent10.map(r => Math.round(dbvFmtN(r['FOH_Revenue']))), backgroundColor: '#4F8EF7' },
+                        { label: 'VVK', data: recent10.map(r => Math.round(dbvFmtN(r['PreSale_Revenue']))), backgroundColor: '#10b981' }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 13 }, color: '#1f2937' } },
+                        title: { display: true, text: 'Revenue Mix — Last 10 Events (chronological)', font: { size: 18, weight: 'bold' }, color: '#0a0a0a', padding: { top: 5, bottom: 10 } }
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: { color: '#666', font: { size: 10 }, maxRotation: 45, minRotation: 30 } },
+                        y: { stacked: true, ticks: { color: '#666', callback: v => '€'+(v/1000).toFixed(0)+'k' }, grid: { color: '#eee' } }
+                    }
+                }
+            }, 1400, 500);
+            doc.addImage(stackedURL, 'PNG', 12, 105, W-24, 85);
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+            doc.text('Page S2', W-12, H-7, { align: 'right' });
+        }
+
+        // ── S3 Operational Patterns (v161) ─────────────────────────────────
+        function pdfv2_renderS3_operational(doc, rows) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            // Wochentag aggregation
+            const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+            const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
+            const byTag = {};
+            rows.forEach(r => {
+                const t = (r['Tag']||'').slice(0,2);
+                if (!byTag[t]) byTag[t] = { revenue: 0, pax: 0, count: 0 };
+                byTag[t].revenue += dbvFmtN(r['Total_Revenue']);
+                byTag[t].pax += dbvFmtN(r['Total_PAX']);
+                byTag[t].count += 1;
+            });
+            const tagLabels = tagOrder.filter(t => byTag[t]);
+            const tagURL = pdfv2ChartCanvas({
+                type: 'bar',
+                data: {
+                    labels: tagLabels.map(t => (tagFull[t]||t) + ' (' + byTag[t].count + ')'),
+                    datasets: [
+                        { label: 'Avg Revenue (€)', data: tagLabels.map(t => Math.round(byTag[t].revenue / byTag[t].count)), backgroundColor: '#10b981', yAxisID: 'y' },
+                        { label: 'Avg PAX', data: tagLabels.map(t => Math.round(byTag[t].pax / byTag[t].count)), borderColor: '#4F8EF7', backgroundColor: '#4F8EF7', yAxisID: 'y1', type: 'line', borderWidth: 3, pointRadius: 5 }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: 'top', labels: { font: { size: 13 }, color: '#1f2937' } },
+                        title: { display: true, text: 'Avg Performance per Wochentag (Events in Klammern)', font: { size: 17, weight: 'bold' }, color: '#0a0a0a', padding: { bottom: 8 } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#666', font: { size: 11 } } },
+                        y: { position: 'left', title: { display: true, text: '€ Revenue', color: '#10b981', font: { weight: 'bold', size: 12 } }, ticks: { color: '#10b981', callback: v => '€'+(v/1000).toFixed(0)+'k' }, grid: { color: '#eee' } },
+                        y1: { position: 'right', title: { display: true, text: 'PAX', color: '#4F8EF7', font: { weight: 'bold', size: 12 } }, ticks: { color: '#4F8EF7' }, grid: { display: false } }
+                    }
+                }
+            }, 1400, 450);
+            doc.addImage(tagURL, 'PNG', 12, 20, W-24, 70);
+            // Promoter Top 8
+            const byProm = {};
+            rows.forEach(r => {
+                const p = (r['Promoter']||'').trim();
+                if (!p) return;
+                if (!byProm[p]) byProm[p] = { revenue: 0, count: 0 };
+                byProm[p].revenue += dbvFmtN(r['Total_Revenue']);
+                byProm[p].count += 1;
+            });
+            const promArr = Object.entries(byProm)
+                .map(([name, v]) => ({ name, avgRev: v.revenue / v.count, count: v.count }))
+                .sort((a,b) => b.avgRev - a.avgRev).slice(0, 8);
+            const promURL = pdfv2ChartCanvas({
+                type: 'bar',
+                data: {
+                    labels: promArr.map(p => p.name + ' (' + p.count + ')'),
+                    datasets: [{ label: 'Avg Revenue / Event', data: promArr.map(p => Math.round(p.avgRev)), backgroundColor: '#ec4899' }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Promoter Top 8 — Avg Revenue / Event', font: { size: 15, weight: 'bold' }, color: '#0a0a0a', padding: { bottom: 6 } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#666', callback: v => '€'+(v/1000).toFixed(0)+'k' }, grid: { color: '#eee' } },
+                        y: { ticks: { color: '#666', font: { size: 11 } } }
+                    }
+                }
+            }, 900, 600);
+            doc.addImage(promURL, 'PNG', 12, 95, 135, 95);
+            // Bar/PP monthly trend
+            const byMonth = {};
+            rows.forEach(r => {
+                const m = String(r['Datum']||'').match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
+                if (!m) return;
+                const yr = 2000+(+m[3]%100), mo = +m[2];
+                const key = yr + '-' + String(mo).padStart(2,'0');
+                if (!byMonth[key]) byMonth[key] = { bpp: 0, count: 0 };
+                const bpp = dbvFmtN(r['Bar_Per_Person']);
+                if (bpp > 0) { byMonth[key].bpp += bpp; byMonth[key].count += 1; }
+            });
+            const monthLabels = Object.keys(byMonth).sort();
+            const monthAvg = monthLabels.map(k => byMonth[k].count ? +(byMonth[k].bpp / byMonth[k].count).toFixed(2) : null);
+            const bppURL = pdfv2ChartCanvas({
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{ label: 'Avg Bar/PP', data: monthAvg, borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.2)', fill: true, tension: 0.3, pointRadius: 4, spanGaps: true }]
+                },
+                options: {
+                    plugins: { legend: { display: false }, title: { display: true, text: 'Bar / Person — Monthly Trend (€)', font: { size: 15, weight: 'bold' }, color: '#0a0a0a', padding: { bottom: 6 } } },
+                    scales: {
+                        x: { ticks: { color: '#666', maxRotation: 45, minRotation: 0, font: { size: 9 }, autoSkip: true, maxTicksLimit: 12 } },
+                        y: { ticks: { color: '#666', callback: v => '€'+v.toFixed(1) }, grid: { color: '#eee' } }
+                    }
+                }
+            }, 900, 600);
+            doc.addImage(bppURL, 'PNG', 152, 95, 133, 95);
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+            doc.text('Page S3', W-12, H-7, { align: 'right' });
+        }
+
+        // ── S4 Funnel & Conversion (v161, pure jsPDF vector) ───────────────
+        function pdfv2_renderS4_funnel(doc, rows, kpi) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
+            const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
+            const tiers = [
+                { label: 'VVK Tickets sold', value: totalVVK, color: [16,185,129], desc: 'Pre-sale (online + advance)' },
+                { label: 'FOH Tickets sold', value: totalFOH, color: [79,142,247], desc: 'Front-of-house (door)' },
+                { label: 'Total PAX',        value: totalPAX, color: [236,72,153], desc: 'Final headcount inside' }
+            ];
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Aggregierter Conversion Funnel', 20, 26);
+            doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(110);
+            doc.text('Über ' + rows.length + ' selektierte Events', 20, 32);
+            const funnelX = 20, funnelY = 42, funnelW = 110, tierH = 28, gap = 6;
+            tiers.forEach((t, i) => {
+                const widthRatio = t.value / maxTier;
+                const tierW = Math.max(funnelW * widthRatio, 8);
+                const x = funnelX + (funnelW - tierW) / 2;
+                const y = funnelY + i * (tierH + gap);
+                doc.setFillColor(t.color[0], t.color[1], t.color[2]);
+                doc.rect(x, y, tierW, tierH, 'F');
+                doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+                doc.text(t.value.toLocaleString('de-AT'), x + tierW/2, y + tierH/2 + 1, { align: 'center' });
+                doc.setTextColor(20); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+                doc.text(t.label, funnelX + funnelW + 8, y + tierH/2 - 2);
+                doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(120);
+                doc.text(t.desc, funnelX + funnelW + 8, y + tierH/2 + 3);
+                if (i < tiers.length - 1) {
+                    const nextV = tiers[i+1].value;
+                    const conv = t.value > 0 ? (nextV / t.value * 100).toFixed(1) : '—';
+                    const yMid = y + tierH + gap/2;
+                    doc.setDrawColor(200); doc.setLineWidth(0.3);
+                    doc.line(funnelX + funnelW/2, y + tierH, funnelX + funnelW/2, yMid + 0.5);
+                    doc.setFontSize(8); doc.setTextColor(120); doc.setFont('helvetica', 'italic');
+                    doc.text('→ ' + conv + '%', funnelX + funnelW/2 + 4, yMid + 1.5);
+                }
+            });
+            // Key Ratios box
+            const vvkPct = totalPAX > 0 ? (totalVVK / totalPAX * 100).toFixed(1) : '—';
+            const fohPct = totalPAX > 0 ? (totalFOH / totalPAX * 100).toFixed(1) : '—';
+            const vvkFoh = totalFOH > 0 ? (totalVVK / totalFOH).toFixed(2) : '—';
+            doc.setFillColor(245,245,247); doc.rect(20, 148, 130, 38, 'F');
+            doc.setTextColor(110); doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+            doc.text('KEY RATIOS', 25, 154);
+            doc.setTextColor(20); doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+            doc.text('VVK Share von PAX:', 25, 162); doc.setFont('helvetica','bold'); doc.text(vvkPct + '%', 80, 162);
+            doc.setFont('helvetica','normal'); doc.text('FOH Share von PAX:', 25, 169); doc.setFont('helvetica','bold'); doc.text(fohPct + '%', 80, 169);
+            doc.setFont('helvetica','normal'); doc.text('VVK : FOH Ratio:', 25, 176); doc.setFont('helvetica','bold'); doc.text(vvkFoh + ' : 1', 80, 176);
+            doc.setFont('helvetica','normal'); doc.text('Avg PAX / Event:', 25, 183); doc.setFont('helvetica','bold'); doc.text(Math.round(totalPAX/Math.max(1,rows.length)).toLocaleString('de-AT'), 80, 183);
+            // Top 10 by VVK%
+            const conv10 = rows
+                .filter(r => dbvFmtN(r['Total_PAX']) > 0)
+                .map(r => ({
+                    name: (r['Event Name']||'').slice(0,32),
+                    datum: (r['Datum']||'').slice(0,10),
+                    vvk: dbvFmtN(r['PreSale_TicketsSold']),
+                    foh: dbvFmtN(r['FOH_Tickets_Sold']),
+                    pax: dbvFmtN(r['Total_PAX']),
+                    vvkPct: dbvFmtN(r['PreSale_TicketsSold']) / dbvFmtN(r['Total_PAX']) * 100
+                }))
+                .sort((a,b) => b.vvkPct - a.vvkPct).slice(0, 10);
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Top 10 Events by VVK Share', 160, 26);
+            doc.autoTable({
+                head: [['Event','Datum','VVK','FOH','PAX','VVK%']],
+                body: conv10.map(c => [c.name, c.datum, c.vvk.toLocaleString('de-AT'), c.foh.toLocaleString('de-AT'), c.pax.toLocaleString('de-AT'), c.vvkPct.toFixed(1) + '%']),
+                startY: 30, margin: { left: 160, right: 12 }, theme: 'striped',
+                headStyles: { fillColor: [16,185,129], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.5 },
+                alternateRowStyles: { fillColor: [248,248,250] },
+                columnStyles: { 0:{cellWidth:50}, 1:{cellWidth:18}, 2:{cellWidth:14,halign:'right'}, 3:{cellWidth:14,halign:'right'}, 4:{cellWidth:14,halign:'right'}, 5:{cellWidth:16,halign:'right',fontStyle:'bold'} }
+            });
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+            doc.text('Page S4', W-12, H-7, { align: 'right' });
+        }
+
+        // ── S5 Strategic Intelligence (v161) ───────────────────────────────
+        function pdfv2_renderS5_strategic(doc, rows) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            function stdDev(vals) {
+                if (!vals.length) return 0;
+                const m = vals.reduce((a,b)=>a+b,0) / vals.length;
+                return Math.sqrt(vals.reduce((a,b)=>a+(b-m)*(b-m),0) / vals.length);
+            }
+            // Aggregate by Promoter
+            const byProm = {};
+            rows.forEach(r => {
+                const p = (r['Promoter']||'').trim();
+                if (!p) return;
+                if (!byProm[p]) byProm[p] = { bpp: [], vvkPct: [], pax: [] };
+                const bpp = dbvFmtN(r['Bar_Per_Person']);
+                const pax = dbvFmtN(r['Total_PAX']);
+                const vvk = dbvFmtN(r['PreSale_TicketsSold']);
+                if (bpp > 0) byProm[p].bpp.push(bpp);
+                if (pax > 0) { byProm[p].pax.push(pax); byProm[p].vvkPct.push(vvk / pax * 100); }
+            });
+            const consistency = Object.entries(byProm)
+                .filter(([_, v]) => v.bpp.length >= 3)
+                .map(([p, v]) => {
+                    const m = v.bpp.reduce((a,b)=>a+b,0)/v.bpp.length;
+                    const sd = stdDev(v.bpp);
+                    return { name: p, events: v.bpp.length, avg: m, cov: m > 0 ? (sd/m*100) : 999 };
+                }).sort((a,b) => a.cov - b.cov).slice(0, 5);
+            const loyalty = Object.entries(byProm)
+                .filter(([_, v]) => v.vvkPct.length >= 2)
+                .map(([p, v]) => ({ name: p, events: v.vvkPct.length, avg: v.vvkPct.reduce((a,b)=>a+b,0)/v.vvkPct.length }))
+                .sort((a,b) => b.avg - a.avg).slice(0, 5);
+            const sellout = Object.entries(byProm)
+                .filter(([_, v]) => v.pax.length >= 2)
+                .map(([p, v]) => ({ name: p, events: v.pax.length, avg: v.pax.reduce((a,b)=>a+b,0)/v.pax.length, max: Math.max(...v.pax) }))
+                .sort((a,b) => b.avg - a.avg).slice(0, 5);
+            // Forecast via linear regression on monthly avg revenue
+            const byMonth = {};
+            rows.forEach(r => {
+                const m = String(r['Datum']||'').match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
+                if (!m) return;
+                const yr = 2000+(+m[3]%100), mo = +m[2];
+                const key = yr*12 + mo - 1;
+                if (!byMonth[key]) byMonth[key] = { rev: 0, count: 0, label: yr + '-' + String(mo).padStart(2,'0') };
+                byMonth[key].rev += dbvFmtN(r['Total_Revenue']);
+                byMonth[key].count += 1;
+            });
+            const monthKeys = Object.keys(byMonth).map(Number).sort((a,b)=>a-b);
+            const monthData = monthKeys.map(k => ({ x: k, y: byMonth[k].count ? byMonth[k].rev/byMonth[k].count : 0, label: byMonth[k].label }));
+            let regA = 0, regB = 0;
+            if (monthData.length >= 2) {
+                const xs = monthData.map(d => d.x), ys = monthData.map(d => d.y);
+                const mx = xs.reduce((a,b)=>a+b,0)/xs.length, my = ys.reduce((a,b)=>a+b,0)/ys.length;
+                let num = 0, den = 0;
+                for (let i = 0; i < xs.length; i++) { num += (xs[i]-mx)*(ys[i]-my); den += (xs[i]-mx)*(xs[i]-mx); }
+                regB = den > 0 ? num/den : 0; regA = my - regB*mx;
+            }
+            const lastK = monthKeys[monthKeys.length-1] || 0;
+            const projected = [1,2,3].map(i => {
+                const k = lastK + i;
+                const yr = Math.floor(k/12), mo = k%12+1;
+                return { x: k, y: regA + regB*k, label: yr + '-' + String(mo).padStart(2,'0') };
+            });
+            // 2x2 Layout
+            const cellW = (W - 24 - 8) / 2;
+            const cellH = (H - 16 - 12 - 8) / 2;
+            const cells = [
+                { x: 12, y: 22 }, { x: 12 + cellW + 8, y: 22 },
+                { x: 12, y: 22 + cellH + 8 }, { x: 12 + cellW + 8, y: 22 + cellH + 8 }
+            ];
+            // TL: Consistency
+            doc.setFillColor(252,252,253); doc.rect(cells[0].x, cells[0].y, cellW, cellH, 'F');
+            doc.setFillColor(16,185,129); doc.rect(cells[0].x, cells[0].y, 3, cellH, 'F');
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Konsistenz-Top 5 (Bar/PP)', cells[0].x + 8, cells[0].y + 8);
+            doc.setFontSize(7); doc.setFont('helvetica', 'italic'); doc.setTextColor(120);
+            doc.text('Niedrigster Variation Coefficient = stabilstes Bar-Spending', cells[0].x + 8, cells[0].y + 13);
+            doc.autoTable({
+                head: [['Promoter', 'Events', 'Ø €', 'CoV%']],
+                body: consistency.length ? consistency.map(c => [c.name.slice(0,25), c.events, '€'+c.avg.toFixed(2), c.cov.toFixed(1)+'%']) : [['Min. 3 Events pro Promoter','','','']],
+                startY: cells[0].y + 17, margin: { left: cells[0].x + 7, right: W - cells[0].x - cellW + 4 },
+                theme: 'plain', headStyles: { fillColor: [16,185,129], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.5 },
+                columnStyles: { 0:{cellWidth:55}, 1:{cellWidth:14,halign:'right'}, 2:{cellWidth:22,halign:'right'}, 3:{cellWidth:20,halign:'right',fontStyle:'bold'} }
+            });
+            // TR: Loyalty
+            doc.setFillColor(252,252,253); doc.rect(cells[1].x, cells[1].y, cellW, cellH, 'F');
+            doc.setFillColor(139,92,246); doc.rect(cells[1].x, cells[1].y, 3, cellH, 'F');
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('VVK% Loyalitäts-Top 5', cells[1].x + 8, cells[1].y + 8);
+            doc.setFontSize(7); doc.setFont('helvetica', 'italic'); doc.setTextColor(120);
+            doc.text('Höchster VVK-Anteil = treues Publikum, bucht früh', cells[1].x + 8, cells[1].y + 13);
+            doc.autoTable({
+                head: [['Promoter', 'Events', 'Ø VVK%']],
+                body: loyalty.length ? loyalty.map(l => [l.name.slice(0,25), l.events, l.avg.toFixed(1)+'%']) : [['Min. 2 Events pro Promoter','','']],
+                startY: cells[1].y + 17, margin: { left: cells[1].x + 7, right: 12 },
+                theme: 'plain', headStyles: { fillColor: [139,92,246], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.5 },
+                columnStyles: { 0:{cellWidth:60}, 1:{cellWidth:18,halign:'right'}, 2:{cellWidth:22,halign:'right',fontStyle:'bold'} }
+            });
+            // BL: Sellout
+            doc.setFillColor(252,252,253); doc.rect(cells[2].x, cells[2].y, cellW, cellH, 'F');
+            doc.setFillColor(236,72,153); doc.rect(cells[2].x, cells[2].y, 3, cellH, 'F');
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Sellout-Top 5 (Ø PAX)', cells[2].x + 8, cells[2].y + 8);
+            doc.setFontSize(7); doc.setFont('helvetica', 'italic'); doc.setTextColor(120);
+            doc.text('Höchster durchschnittlicher Besuch — Magnet-Promoter', cells[2].x + 8, cells[2].y + 13);
+            doc.autoTable({
+                head: [['Promoter', 'Events', 'Ø PAX', 'Max']],
+                body: sellout.length ? sellout.map(s => [s.name.slice(0,25), s.events, Math.round(s.avg), s.max]) : [['Min. 2 Events pro Promoter','','','']],
+                startY: cells[2].y + 17, margin: { left: cells[2].x + 7, right: W - cells[2].x - cellW + 4 },
+                theme: 'plain', headStyles: { fillColor: [236,72,153], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.5 },
+                columnStyles: { 0:{cellWidth:55}, 1:{cellWidth:14,halign:'right'}, 2:{cellWidth:22,halign:'right',fontStyle:'bold'}, 3:{cellWidth:20,halign:'right'} }
+            });
+            // BR: Forecast
+            doc.setFillColor(252,252,253); doc.rect(cells[3].x, cells[3].y, cellW, cellH, 'F');
+            doc.setFillColor(251,191,36); doc.rect(cells[3].x, cells[3].y, 3, cellH, 'F');
+            doc.setTextColor(20); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+            doc.text('Revenue Forecast (3 Mon.)', cells[3].x + 8, cells[3].y + 8);
+            doc.setFontSize(7); doc.setFont('helvetica', 'italic'); doc.setTextColor(120);
+            doc.text('Linear Regression auf Monats-Ø Revenue der Selektion', cells[3].x + 8, cells[3].y + 13);
+            if (monthData.length >= 2) {
+                const allLabels = [...monthData, ...projected].map(d => d.label);
+                const histData = monthData.map(d => d.y).concat(new Array(projected.length).fill(null));
+                const fcData = new Array(monthData.length - 1).fill(null).concat([monthData[monthData.length-1].y]).concat(projected.map(d => d.y));
+                const chartURL = pdfv2ChartCanvas({
+                    type: 'line',
+                    data: {
+                        labels: allLabels,
+                        datasets: [
+                            { label: 'Historisch', data: histData, borderColor: '#0a0a0a', backgroundColor: 'rgba(10,10,10,0.05)', fill: false, tension: 0.2, pointRadius: 3, spanGaps: false },
+                            { label: 'Forecast', data: fcData, borderColor: '#fbbf24', borderDash: [6,3], fill: false, tension: 0.2, pointRadius: 4, pointBackgroundColor: '#fbbf24', spanGaps: true }
+                        ]
+                    },
+                    options: {
+                        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+                        scales: {
+                            x: { ticks: { color: '#666', font: { size: 8 }, maxRotation: 60, minRotation: 30, autoSkip: true, maxTicksLimit: 8 } },
+                            y: { ticks: { color: '#666', font: { size: 9 }, callback: v => '€'+(v/1000).toFixed(0)+'k' }, grid: { color: '#eee' } }
+                        }
+                    }
+                }, 800, 400);
+                doc.addImage(chartURL, 'PNG', cells[3].x + 6, cells[3].y + 17, cellW - 12, cellH - 30);
+                const lastAvg = monthData[monthData.length-1].y;
+                const proj3 = projected[2].y;
+                const trendSign = regB > 0 ? '↑' : (regB < 0 ? '↓' : '→');
+                const pct = lastAvg > 0 ? ((proj3 - lastAvg) / lastAvg * 100).toFixed(1) : '0';
+                doc.setTextColor(20); doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+                doc.text('Trend ' + trendSign + '  ' + (proj3 > lastAvg ? '+' : '') + pct + '% in 3 Monaten', cells[3].x + 8, cells[3].y + cellH - 5);
+            } else {
+                doc.setTextColor(120); doc.setFontSize(9); doc.setFont('helvetica', 'italic');
+                doc.text('Min. 2 Monate Daten benötigt', cells[3].x + cellW/2, cells[3].y + cellH/2, { align: 'center' });
+            }
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+            doc.text('Page S5', W-12, H-7, { align: 'right' });
+        }
+
+        // ── Pages S6-S8 placeholders (will be implemented v162) ────────────
         function pdfv2_renderPlaceholder(doc, pageCode, title, datasource, plannedVersion) {
             const W = 297, H = 210;
             doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text(pageCode + '  ·  ' + title.toUpperCase(), 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('Hub v15.9.160 · Datasource: ' + datasource, W-12, 10.5, { align: 'right' });
+            doc.text('Hub v15.9.161 · Datasource: ' + datasource, W-12, 10.5, { align: 'right' });
             // Watermark
             doc.setTextColor(230);
             doc.setFontSize(50); doc.setFont('helvetica', 'bold');
@@ -11476,20 +11949,20 @@
                 pdfv2SetProgress(15, 'Render S1 Cover...');
                 pdfv2_renderS1_cover(doc, kpi);
 
-                // S2-S5 placeholders (real impl in v161)
-                pdfv2SetProgress(28, 'Render S2 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S2', 'Revenue Analytics', 'MAIN DB', 'v161');
-                pdfv2SetProgress(36, 'Render S3 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S3', 'Operational Patterns', 'MAIN DB', 'v161');
-                pdfv2SetProgress(44, 'Render S4 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S4', 'Funnel & Conversion', 'MAIN DB', 'v161');
-                pdfv2SetProgress(52, 'Render S5 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S5', 'Strategic Intelligence', 'MAIN DB + Forecast', 'v161');
+                // S2-S5 real renderers (v161)
+                pdfv2SetProgress(28, 'Render S2 Revenue Analytics...');
+                doc.addPage(); pdfv2_renderS2_revenue(doc, selRows, kpi);
+                pdfv2SetProgress(38, 'Render S3 Operational Patterns...');
+                doc.addPage(); pdfv2_renderS3_operational(doc, selRows);
+                pdfv2SetProgress(48, 'Render S4 Funnel & Conversion...');
+                doc.addPage(); pdfv2_renderS4_funnel(doc, selRows, kpi);
+                pdfv2SetProgress(58, 'Render S5 Strategic Intelligence...');
+                doc.addPage(); pdfv2_renderS5_strategic(doc, selRows);
 
                 // S6-S8 placeholders (real impl in v162)
-                pdfv2SetProgress(60, 'Render S6 placeholder...');
+                pdfv2SetProgress(64, 'Render S6 placeholder...');
                 doc.addPage(); pdfv2_renderPlaceholder(doc, 'S6', 'Sales Velocity Curves', 'NTRY pivot', 'v162');
-                pdfv2SetProgress(68, 'Render S7 placeholder...');
+                pdfv2SetProgress(70, 'Render S7 placeholder...');
                 doc.addPage(); pdfv2_renderPlaceholder(doc, 'S7', 'Pattern Detection — Sleeper vs Hype', 'NTRY pivot', 'v162');
                 pdfv2SetProgress(76, 'Render S8 placeholder...');
                 doc.addPage(); pdfv2_renderPlaceholder(doc, 'S8', 'Optimal Push Window', 'NTRY tagesverteilung', 'v162');
@@ -16093,7 +16566,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.160';
+            const HUB_VERSION = 'v15.9.161';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17897,7 +18370,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.160 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.161 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21601,7 +22074,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.160 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.161 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -21631,7 +22104,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.160',
+                hubVersion: 'v15.9.161',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
