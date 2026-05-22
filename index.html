@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.159</title>
+    <title>Turbo Projects Work Hub v15.9.160</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4803,7 +4803,7 @@
             <div class="modal-body" style="padding:18px;">
                 <!-- Info Bar -->
                 <div style="display:flex;flex-wrap:wrap;gap:10px;padding:10px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;margin-bottom:14px;font-size:11px;color:#aaa;">
-                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Status:</span> <span id="pdfv2-status" style="color:#fbbf24;font-weight:600;">SKELETON v159a</span></div>
+                    <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Status:</span> <span id="pdfv2-status" style="color:#fbbf24;font-weight:600;">BUILD v160 (S1+S9)</span></div>
                     <div style="width:1px;background:var(--border);"></div>
                     <div><span style="color:#888;text-transform:uppercase;letter-spacing:.5px;">Selected:</span> <span id="pdfv2-sel-count" style="color:#fff;font-weight:600;">0</span> Events</div>
                     <div style="width:1px;background:var(--border);"></div>
@@ -4842,7 +4842,7 @@
                         <button class="modal-btn cancel" onclick="pdfv2SelectNone()" style="padding:7px 14px;font-size:12px;">Auswahl löschen</button>
                     </div>
                     <div id="pdfv2-event-list" style="margin-top:10px;max-height:240px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;background:var(--surface);padding:8px;font-size:12px;">
-                        <div style="text-align:center;padding:30px;color:#888;font-style:italic;">Event-Liste wird in v159b geladen aus MAIN DB</div>
+                        <div style="text-align:center;padding:30px;color:#888;font-style:italic;">Wird beim Öffnen aus MAIN DB geladen...</div>
                     </div>
                 </div>
 
@@ -4860,7 +4860,7 @@
                         </select>
                         <div id="pdfv2-s6-custom-wrap" style="display:none;flex:1;">
                             <div id="pdfv2-s6-event-list" style="max-height:120px;overflow-y:auto;border:1px solid var(--border);border-radius:4px;background:#0a0a0a;padding:6px;font-size:11px;">
-                                <div style="text-align:center;padding:14px;color:#888;font-style:italic;">NTRY Events werden in v159d geladen</div>
+                                <div style="text-align:center;padding:14px;color:#888;font-style:italic;">NTRY Events werden in v162 geladen</div>
                             </div>
                         </div>
                     </div>
@@ -6752,7 +6752,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.159</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.160</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7232,7 +7232,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.159</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.160</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11009,7 +11009,7 @@
         //   pdfv2S6ModeChange() → toggles between AUTO (Top-5) and CUSTOM event selection
         //   generatePDFV2() → orchestrator: builds 8 pages + S9+ auto-paginated detail table
         //
-        // Page renderers (added in 159b–159d):
+        // Page renderers (added in v160–v162):
         //   pdfv2_renderS1_cover()       — Logo + 6 KPI cards
         //   pdfv2_renderS2_revenue()     — Donut + stacked bar + Top 5
         //   pdfv2_renderS3_operational() — Wochentag, Promoter ROI, Bar/PP trend
@@ -11047,38 +11047,140 @@
                 return;
             }
             openModal('pdfv2-modal');
-            // Populate filter dropdowns from MAIN DB (full impl in v159b)
-            pdfv2PopulateFilters();
-            pdfv2UpdateSelectionCount();
+            // Ensure MAIN DB is loaded — reuse existing dbvLoad infrastructure
+            (async () => {
+                const statusEl = document.getElementById('pdfv2-status');
+                if (!dbvLoaded) {
+                    if (statusEl) statusEl.textContent = 'Lade MAIN DB...';
+                    try { await dbvLoad(); } catch(e) { console.error('[PDF V2] dbvLoad failed:', e); }
+                }
+                if (statusEl) statusEl.textContent = dbvLoaded ? (dbvData.length + ' Events verfügbar') : 'DB nicht verfügbar';
+                pdfv2PopulateFilters();
+                pdfv2ApplyFilters();
+                pdfv2UpdateSelectionCount();
+            })();
         }
 
         function pdfv2PopulateFilters() {
-            // STUB v159a — full impl reads from DBV_DATA / window.dbvEvents in v159b
+            if (!dbvLoaded || dbvData.length === 0) return;
+            // Years
             const yearSel = document.getElementById('pdfv2-year');
+            if (yearSel) {
+                const cur = yearSel.value;
+                yearSel.innerHTML = '<option value="">Alle</option>';
+                const years = [...new Set(dbvData.map(r => r['Year']).filter(Boolean))].sort().reverse();
+                years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; yearSel.appendChild(o); });
+                if (cur) yearSel.value = cur;
+            }
+            // Promoters
             const promSel = document.getElementById('pdfv2-promoter');
-            if (yearSel && yearSel.options.length === 1) {
-                for (let y = 2026; y >= 2022; y--) {
-                    const opt = document.createElement('option');
-                    opt.value = y; opt.textContent = y;
-                    yearSel.appendChild(opt);
-                }
+            if (promSel) {
+                const cur = promSel.value;
+                promSel.innerHTML = '<option value="">Alle</option>';
+                const proms = [...new Set(dbvData.map(r => r['Promoter']).filter(Boolean))].sort();
+                proms.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; promSel.appendChild(o); });
+                if (cur) promSel.value = cur;
             }
         }
 
         function pdfv2ApplyFilters() {
-            // STUB v159a — full impl in v159b
-            const status = document.getElementById('pdfv2-status');
-            if (status) status.textContent = 'Filter applied (v159b stub)';
+            if (!dbvLoaded) return;
+            const typ = document.getElementById('pdfv2-type').value;
+            const year = document.getElementById('pdfv2-year').value;
+            const prom = document.getElementById('pdfv2-promoter').value;
+            // AUTO-EXCLUDE CON: filter Event_Typ values that look like concerts
+            // MAIN DB uses Type=EIGEN/FREMD primarily; concert events sometimes flagged via separate field or Mainact pattern
+            // Defensive: exclude any row whose 'Type' contains "CON" or whose 'Event Name' starts with concert markers
+            PDFV2_STATE.filteredEvents = dbvData.filter(r => {
+                const rType = (r['Type'] || '').toUpperCase().trim();
+                if (rType === 'CON' || rType === 'CONCERT' || rType === 'KONZERT') return false;
+                // Optional secondary check via Event_Typ if column exists
+                const altType = (r['Event_Typ'] || r['Kategorie'] || '').toUpperCase().trim();
+                if (altType === 'CON' || altType === 'KONZERT' || altType === 'CONCERT') return false;
+                if (typ && rType !== typ) return false;
+                if (year && r['Year'] !== year) return false;
+                if (prom && r['Promoter'] !== prom) return false;
+                return true;
+            });
+            pdfv2RenderEventList();
+        }
+
+        function pdfv2RenderEventList() {
+            const wrap = document.getElementById('pdfv2-event-list');
+            if (!wrap) return;
+            const events = PDFV2_STATE.filteredEvents;
+            if (events.length === 0) {
+                wrap.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">Keine Events nach Filter</div>';
+                return;
+            }
+            // Search field + lazy-render (max 50 visible, scrollable; full list also has selected)
+            // Sort: most recent first (Datum desc)
+            const sorted = [...events].sort((a,b) => {
+                function pd(s) { const m = String(s).match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/); return m ? new Date(2000+ (+m[3]%100), m[2]-1, m[1]) : new Date(0); }
+                return pd(b['Datum']) - pd(a['Datum']);
+            });
+            const searchVal = (document.getElementById('pdfv2-search-input') || {}).value || '';
+            const sLower = searchVal.toLowerCase().trim();
+            const matched = sLower
+                ? sorted.filter(r => ((r['Event Name']||'')+' '+(r['Promoter']||'')+' '+(r['Mainact']||'')).toLowerCase().includes(sLower))
+                : sorted;
+            const limit = 80;
+            const visible = matched.slice(0, limit);
+
+            const rows = visible.map(r => {
+                const eid = r['Event_ID'] || '';
+                const checked = PDFV2_STATE.selectedEventIds.has(eid);
+                const datum = (r['Datum'] || '').slice(0,10);
+                const tag = (r['Tag'] || '').slice(0,2);
+                const name = r['Event Name'] || '—';
+                const typ = r['Type'] || '';
+                const prom = r['Promoter'] || '';
+                const pax = dbvFmtN(r['Total_PAX']);
+                const rev = dbvFmtN(r['Total_Revenue']);
+                const typColor = typ === 'EIGEN' ? '#4F8EF7' : '#97C459';
+                return `<label style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;font-size:11px;" data-eid="${eid}">
+                    <input type="checkbox" ${checked?'checked':''} onchange="pdfv2ToggleEvent('${eid}', this.checked)" style="cursor:pointer;">
+                    <span style="color:#888;width:80px;flex-shrink:0;">${datum} ${tag}</span>
+                    <span style="background:${typColor};color:#000;font-weight:700;padding:1px 6px;border-radius:3px;font-size:9px;min-width:42px;text-align:center;">${typ}</span>
+                    <span style="flex:1;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${name}</span>
+                    <span style="color:#aaa;width:110px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${prom}</span>
+                    <span style="color:#22c55e;width:50px;text-align:right;flex-shrink:0;">${pax||'—'}</span>
+                    <span style="color:#fbbf24;width:70px;text-align:right;flex-shrink:0;">${rev ? '€'+rev.toLocaleString('de-AT') : '—'}</span>
+                </label>`;
+            }).join('');
+
+            const moreHint = matched.length > limit
+                ? `<div style="text-align:center;padding:8px;color:#888;font-style:italic;font-size:11px;">${limit} von ${matched.length} angezeigt — Filter verfeinern oder Search nutzen</div>`
+                : '';
+            wrap.innerHTML = `
+                <div style="position:sticky;top:0;background:var(--surface);padding:6px 0;margin-bottom:4px;z-index:1;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--border);">
+                    <input type="text" id="pdfv2-search-input" placeholder="Suche Event/Promoter/Mainact..." value="${searchVal.replace(/"/g,'&quot;')}" oninput="pdfv2RenderEventList()" style="flex:1;background:#0a0a0a;border:1px solid var(--border);color:#fff;padding:5px 8px;border-radius:4px;font-size:11px;">
+                    <span style="color:#888;font-size:10px;">${matched.length} match</span>
+                </div>
+                ${rows}
+                ${moreHint}
+            `;
+            // Focus restore for search after innerHTML wipe
+            const inp = document.getElementById('pdfv2-search-input');
+            if (inp && sLower) { inp.focus(); inp.setSelectionRange(searchVal.length, searchVal.length); }
+        }
+
+        function pdfv2ToggleEvent(eid, checked) {
+            if (checked) PDFV2_STATE.selectedEventIds.add(eid);
+            else PDFV2_STATE.selectedEventIds.delete(eid);
+            pdfv2UpdateSelectionCount();
         }
 
         function pdfv2SelectAll() {
-            // STUB v159a
-            showToast('Wird in v159b implementiert');
+            PDFV2_STATE.filteredEvents.forEach(r => { if (r['Event_ID']) PDFV2_STATE.selectedEventIds.add(r['Event_ID']); });
+            pdfv2UpdateSelectionCount();
+            pdfv2RenderEventList();
         }
 
         function pdfv2SelectNone() {
             PDFV2_STATE.selectedEventIds.clear();
             pdfv2UpdateSelectionCount();
+            pdfv2RenderEventList();
         }
 
         function pdfv2UpdateSelectionCount() {
@@ -11106,61 +11208,303 @@
         }
 
         async function pdfv2LoadNTRY() {
-            // Stub v159a — actual fetch in v159d
-            // Plan: fetch all 3 PDFV2_NTRY_URLS, parse CSV, store in PDFV2_STATE.ntryData
-            // Fallback: if fetch fails, prompt user to upload CSVs locally
+            // Stub v160 — actual fetch in v162
             return false;
         }
 
-        // ── Main orchestrator (stub) ────────────────────────────────────────
+        // ── Selected Events Aggregation ─────────────────────────────────────
+        function pdfv2GetSelectedRows() {
+            const ids = PDFV2_STATE.selectedEventIds;
+            return dbvData.filter(r => r['Event_ID'] && ids.has(r['Event_ID']));
+        }
+
+        function pdfv2ComputeKPIs(rows) {
+            const totalRev = rows.reduce((s,r) => s + dbvFmtN(r['Total_Revenue']), 0);
+            const totalBar = rows.reduce((s,r) => s + dbvFmtN(r['Bar_Revenue']), 0);
+            const totalFOH = rows.reduce((s,r) => s + dbvFmtN(r['FOH_Revenue']), 0);
+            const totalVVK = rows.reduce((s,r) => s + dbvFmtN(r['PreSale_Revenue']), 0);
+            const totalPAX = rows.reduce((s,r) => s + dbvFmtN(r['Total_PAX']), 0);
+            const totalVVKtix = rows.reduce((s,r) => s + dbvFmtN(r['PreSale_TicketsSold']), 0);
+            const totalFOHtix = rows.reduce((s,r) => s + dbvFmtN(r['FOH_Tickets_Sold']), 0);
+            const bppValues = rows.map(r => dbvFmtN(r['Bar_Per_Person'])).filter(v => v > 0);
+            const avgBPP = bppValues.length ? bppValues.reduce((a,b)=>a+b,0) / bppValues.length : 0;
+            const avgVVKpct = totalPAX > 0 ? (totalVVKtix / totalPAX * 100) : 0;
+            // Top promoter by revenue
+            const byProm = {};
+            rows.forEach(r => { const p = (r['Promoter']||'').trim(); if (p) byProm[p] = (byProm[p]||0) + dbvFmtN(r['Total_Revenue']); });
+            const topProm = Object.entries(byProm).sort((a,b) => b[1]-a[1])[0] || ['—', 0];
+            // Top weekday by PAX
+            const byTag = {};
+            rows.forEach(r => { const t = (r['Tag']||'').trim(); if (t) byTag[t] = (byTag[t]||0) + dbvFmtN(r['Total_PAX']); });
+            const topTag = Object.entries(byTag).sort((a,b) => b[1]-a[1])[0] || ['—', 0];
+            // Date range
+            function pd(s) { const m = String(s).match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/); return m ? new Date(2000+ (+m[3]%100), m[2]-1, m[1]) : null; }
+            const dates = rows.map(r => pd(r['Datum'])).filter(Boolean).sort((a,b)=>a-b);
+            const dateRange = dates.length ? `${dates[0].toLocaleDateString('de-AT')} → ${dates[dates.length-1].toLocaleDateString('de-AT')}` : '—';
+            return {
+                count: rows.length, totalRev, totalBar, totalFOH, totalVVK, totalPAX,
+                totalVVKtix, totalFOHtix, avgBPP, avgVVKpct,
+                topPromoter: topProm[0], topPromoterRev: topProm[1],
+                topTag: topTag[0], topTagPax: topTag[1],
+                dateRange
+            };
+        }
+
+        // ── Logo Renderer (Vector replacement for firmengrelle.png) ────────
+        function pdfv2DrawLogo(doc, x, y, w) {
+            // Renders the Grelle Forelle "<>< GRELLE FORELLE" logo as jsPDF vector
+            // Aspect ratio 2:1 (w:h) — scales cleanly at any size
+            const h = w * 0.5;
+            doc.setDrawColor(0,0,0);
+            doc.setLineWidth(w * 0.038);
+            doc.setLineCap('round');
+            doc.setLineJoin('round');
+            // Three fish symbols: < > <
+            const fishW = w * 0.22;
+            const fishH = h * 0.45;
+            const symY = y + h * 0.35;
+            const positions = [
+                { cx: x + w*0.18, dir: 1 },  // <
+                { cx: x + w*0.50, dir: -1 }, // >
+                { cx: x + w*0.82, dir: 1 }   // <
+            ];
+            positions.forEach(p => {
+                const top = symY - fishH/2;
+                const bot = symY + fishH/2;
+                const tip = p.cx + p.dir * fishW/2;
+                const back = p.cx - p.dir * fishW/2;
+                doc.line(tip, top, back, symY);
+                doc.line(back, symY, tip, bot);
+            });
+            // Text "GRELLE FORELLE"
+            doc.setTextColor(0,0,0);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(w * 0.13);
+            doc.text('GRELLE FORELLE', x + w/2, y + h * 0.92, { align: 'center' });
+        }
+
+        // ── S1 Cover Renderer ──────────────────────────────────────────────
+        function pdfv2_renderS1_cover(doc, kpi) {
+            // A4 landscape: 297 x 210 mm
+            const W = 297, H = 210;
+            // Header band
+            doc.setFillColor(10,10,10);
+            doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255);
+            doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+            doc.setTextColor(220);
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.160', W-12, 10.5, { align: 'right' });
+            // Logo top-left
+            pdfv2DrawLogo(doc, 12, 22, 50);
+            // Title
+            doc.setTextColor(20);
+            doc.setFontSize(28); doc.setFont('helvetica', 'bold');
+            doc.text('MAIN DB Analytics', 75, 38);
+            doc.setFontSize(13); doc.setFont('helvetica', 'normal');
+            doc.setTextColor(80);
+            doc.text('Strategic Intelligence Report', 75, 46);
+            // Selection summary box
+            doc.setFillColor(245,245,247);
+            doc.rect(75, 52, W-87, 18, 'F');
+            doc.setFontSize(9); doc.setTextColor(110);
+            doc.text('ZEITRAUM', 80, 58);
+            doc.text('ANZAHL EVENTS', 145, 58);
+            doc.text('CON-FILTER', 210, 58);
+            doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(20);
+            doc.text(kpi.dateRange, 80, 65);
+            doc.text(String(kpi.count), 145, 65);
+            doc.setTextColor(16,185,129);
+            doc.text('AUTO-EXCLUDE', 210, 65);
+            // KPI Cards — 2 rows x 3 cols
+            const cardW = (W - 24 - 16) / 3; // 3 cols with 8mm gutters
+            const cardH = 48;
+            const rowY = [82, 134];
+            const cards = [
+                { label: 'TOTAL REVENUE', value: '€ ' + Math.round(kpi.totalRev).toLocaleString('de-AT'), sub: 'Bar €' + Math.round(kpi.totalBar/1000) + 'k · FOH €' + Math.round(kpi.totalFOH/1000) + 'k · VVK €' + Math.round(kpi.totalVVK/1000) + 'k', color: [16,185,129] },
+                { label: 'TOTAL PAX',     value: Math.round(kpi.totalPAX).toLocaleString('de-AT'), sub: 'Avg ' + Math.round(kpi.totalPAX/Math.max(1,kpi.count)) + ' / Event', color: [79,142,247] },
+                { label: 'AVG BAR / PP',  value: '€ ' + kpi.avgBPP.toFixed(2), sub: 'aus ' + kpi.count + ' Events', color: [251,191,36] },
+                { label: 'AVG VVK %',     value: kpi.avgVVKpct.toFixed(1) + ' %', sub: kpi.totalVVKtix.toLocaleString('de-AT') + ' VVK von ' + kpi.totalPAX.toLocaleString('de-AT') + ' PAX', color: [139,92,246] },
+                { label: 'TOP PROMOTER',  value: kpi.topPromoter, sub: '€ ' + Math.round(kpi.topPromoterRev).toLocaleString('de-AT') + ' Total', color: [236,72,153] },
+                { label: 'TOP WOCHENTAG', value: kpi.topTag, sub: Math.round(kpi.topTagPax).toLocaleString('de-AT') + ' PAX kumuliert', color: [151,196,89] }
+            ];
+            cards.forEach((c, i) => {
+                const col = i % 3;
+                const row = Math.floor(i / 3);
+                const x = 12 + col * (cardW + 8);
+                const y = rowY[row];
+                // Card background + accent stripe
+                doc.setFillColor(252,252,253);
+                doc.rect(x, y, cardW, cardH, 'F');
+                doc.setFillColor(c.color[0], c.color[1], c.color[2]);
+                doc.rect(x, y, 3, cardH, 'F');
+                // Label
+                doc.setFontSize(8); doc.setFont('helvetica', 'bold'); doc.setTextColor(120);
+                doc.text(c.label, x + 7, y + 8);
+                // Value (auto-shrink if too long)
+                let fs = 18;
+                doc.setFont('helvetica', 'bold'); doc.setTextColor(20);
+                doc.setFontSize(fs);
+                while (doc.getTextWidth(c.value) > cardW - 14 && fs > 10) {
+                    fs -= 1; doc.setFontSize(fs);
+                }
+                doc.text(c.value, x + 7, y + 22);
+                // Sub
+                doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(120);
+                const subLines = doc.splitTextToSize(c.sub, cardW - 14);
+                doc.text(subLines, x + 7, y + 30);
+            });
+            // Footer
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Grelle Forelle & Sputnik Bar  ·  Strictly internal', 12, H-7);
+            doc.text('Page S1', W-12, H-7, { align: 'right' });
+        }
+
+        // ── S9+ Auto-Paginated Event Details ───────────────────────────────
+        function pdfv2_renderS9_details(doc, rows) {
+            // Sort by date descending
+            function pd(s) { const m = String(s).match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/); return m ? new Date(2000+ (+m[3]%100), m[2]-1, m[1]) : new Date(0); }
+            const sorted = [...rows].sort((a,b) => pd(b['Datum']) - pd(a['Datum']));
+            // Header + footer hooks for every page
+            const W = 297, H = 210;
+            const drawPageHeader = (data) => {
+                doc.setFillColor(10,10,10); doc.rect(0, 0, W, 12, 'F');
+                doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+                doc.text('S9+  ·  EVENT DETAILS', 12, 8);
+                doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
+                doc.text('Hub v15.9.160  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+            };
+            const drawPageFooter = (data) => {
+                doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
+                doc.setFontSize(7); doc.setTextColor(140); doc.setFont('helvetica', 'normal');
+                doc.text('Turbo Projects GmbH  ·  Internal', 12, H-4);
+                doc.text('Page ' + doc.internal.getNumberOfPages(), W-12, H-4, { align: 'right' });
+            };
+            // Key-15 columns (per Schadi spec)
+            const body = sorted.map(r => [
+                (r['Datum']||'').slice(0,10),
+                r['Tag'] || '',
+                r['Event Name'] || '—',
+                r['Type'] || '',
+                r['Promoter'] || '',
+                r['Mainact'] || '',
+                dbvFmtN(r['PreSale_TicketsSold']) || '',
+                dbvFmtN(r['FOH_Tickets_Sold']) || '',
+                dbvFmtN(r['Total_PAX']) || '',
+                dbvFmtN(r['PreSale_Revenue']) ? '€'+Math.round(dbvFmtN(r['PreSale_Revenue'])).toLocaleString('de-AT') : '',
+                dbvFmtN(r['FOH_Revenue']) ? '€'+Math.round(dbvFmtN(r['FOH_Revenue'])).toLocaleString('de-AT') : '',
+                dbvFmtN(r['Bar_Revenue']) ? '€'+Math.round(dbvFmtN(r['Bar_Revenue'])).toLocaleString('de-AT') : '',
+                dbvFmtN(r['Total_Revenue']) ? '€'+Math.round(dbvFmtN(r['Total_Revenue'])).toLocaleString('de-AT') : '',
+                dbvFmtN(r['Bar_Per_Person']) ? '€'+dbvFmtN(r['Bar_Per_Person']).toFixed(2) : '',
+                dbvFmtN(r['Total_PAX'])>0 ? (dbvFmtN(r['PreSale_TicketsSold'])/dbvFmtN(r['Total_PAX'])*100).toFixed(1)+'%' : ''
+            ]);
+            doc.autoTable({
+                head: [['Datum','Tag','Event','Typ','Promoter','Mainact','VVK','FOH','PAX','€ VVK','€ FOH','€ Bar','€ Total','Bar/P','VVK%']],
+                body: body,
+                startY: 18,
+                margin: { left: 8, right: 8, top: 18, bottom: 14 },
+                theme: 'striped',
+                headStyles: { fillColor: [10,10,10], textColor: 255, fontStyle: 'bold', fontSize: 7, halign: 'left' },
+                bodyStyles: { fontSize: 6.5, cellPadding: 1.2, overflow: 'ellipsize' },
+                alternateRowStyles: { fillColor: [248,248,250] },
+                columnStyles: {
+                    0: { cellWidth: 16 },  // Datum
+                    1: { cellWidth: 8 },   // Tag
+                    2: { cellWidth: 50 },  // Event
+                    3: { cellWidth: 11, halign: 'center' },  // Typ
+                    4: { cellWidth: 24 },  // Promoter
+                    5: { cellWidth: 32 },  // Mainact
+                    6: { cellWidth: 11, halign: 'right' },
+                    7: { cellWidth: 11, halign: 'right' },
+                    8: { cellWidth: 11, halign: 'right' },
+                    9: { cellWidth: 16, halign: 'right' },
+                    10:{ cellWidth: 16, halign: 'right' },
+                    11:{ cellWidth: 16, halign: 'right' },
+                    12:{ cellWidth: 19, halign: 'right' },
+                    13:{ cellWidth: 14, halign: 'right' },
+                    14:{ cellWidth: 12, halign: 'right' }
+                },
+                didDrawPage: (data) => { drawPageHeader(data); drawPageFooter(data); }
+            });
+        }
+
+        // ── Pages S2-S8 placeholders (will be implemented v161/v162) ──────
+        function pdfv2_renderPlaceholder(doc, pageCode, title, datasource, plannedVersion) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text(pageCode + '  ·  ' + title.toUpperCase(), 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('Hub v15.9.160 · Datasource: ' + datasource, W-12, 10.5, { align: 'right' });
+            // Watermark
+            doc.setTextColor(230);
+            doc.setFontSize(50); doc.setFont('helvetica', 'bold');
+            doc.text(plannedVersion.toUpperCase(), W/2, H/2, { align: 'center', angle: 25 });
+            doc.setFontSize(11); doc.setFont('helvetica', 'normal'); doc.setTextColor(120);
+            doc.text('Diese Seite wird in Hub-Version ' + plannedVersion + ' implementiert.', W/2, H/2 + 25, { align: 'center' });
+            doc.setFontSize(9); doc.setTextColor(160);
+            doc.text('Skeleton v159 → v160 (S1+S9) → v161 (S2-S5) → v162 (S6-S8) → FINAL', W/2, H/2 + 32, { align: 'center' });
+            // Footer
+            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+            doc.setFontSize(8); doc.setTextColor(140);
+            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+            doc.text('Page ' + pageCode, W-12, H-7, { align: 'right' });
+        }
+
+        // ── Main orchestrator ──────────────────────────────────────────────
         async function generatePDFV2() {
             if (typeof window.jspdf === 'undefined') {
                 showToast('&#9888; jsPDF nicht verfügbar');
                 return;
             }
-            // 159a SKELETON: build minimal 1-page PDF to verify jsPDF + AutoTable pipeline
+            const selRows = pdfv2GetSelectedRows();
+            if (selRows.length === 0) {
+                showToast('&#9888; Bitte mindestens 1 Event auswählen');
+                return;
+            }
             try {
-                pdfv2SetProgress(5, 'Initialisiere jsPDF…');
+                pdfv2SetProgress(2, 'Initialisiere jsPDF...');
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-                pdfv2SetProgress(25, 'Verifiziere AutoTable…');
-                if (typeof doc.autoTable !== 'function') {
-                    throw new Error('jsPDF-AutoTable plugin nicht geladen');
-                }
-                pdfv2SetProgress(50, 'Render Test-Cover…');
-                doc.setFontSize(20); doc.setFont(undefined, 'bold');
-                doc.text('PDF V2 — SKELETON v159a', 20, 25);
-                doc.setFontSize(11); doc.setFont(undefined, 'normal');
-                doc.setTextColor(100);
-                doc.text('jsPDF + AutoTable pipeline verified.', 20, 35);
-                doc.text('S1–S9+ page renderers werden in v159b–v159d implementiert.', 20, 42);
-                doc.setFontSize(9); doc.setTextColor(150);
-                doc.text('Build: ' + new Date().toLocaleString('de-AT') + ' · Hub v15.9.159', 20, 55);
-                pdfv2SetProgress(75, 'Render Test-AutoTable…');
-                doc.autoTable({
-                    head: [['Page','Inhalt','Datasource','Status']],
-                    body: [
-                        ['S1','Cover + KPI Cards','MAIN DB','v159b'],
-                        ['S2','Revenue Analytics','MAIN DB','v159c'],
-                        ['S3','Operational Patterns','MAIN DB','v159c'],
-                        ['S4','Funnel & Conversion','MAIN DB','v159c'],
-                        ['S5','Strategic Intelligence','MAIN DB','v159c'],
-                        ['S6','Sales Velocity Curves','NTRY pivot','v159d'],
-                        ['S7','Pattern Detection','NTRY pivot','v159d'],
-                        ['S8','Optimal Push Window','NTRY tagesverteilung','v159d'],
-                        ['S9+','Event Details','MAIN DB','v159b']
-                    ],
-                    startY: 65,
-                    theme: 'striped',
-                    headStyles: { fillColor: [26,14,46], textColor: 255, fontStyle: 'bold' },
-                    styles: { fontSize: 9, cellPadding: 3 }
-                });
-                pdfv2SetProgress(95, 'Speichere PDF…');
+                if (typeof doc.autoTable !== 'function') throw new Error('jsPDF-AutoTable plugin nicht geladen');
+
+                pdfv2SetProgress(8, 'Aggregiere KPIs...');
+                const kpi = pdfv2ComputeKPIs(selRows);
+
+                pdfv2SetProgress(15, 'Render S1 Cover...');
+                pdfv2_renderS1_cover(doc, kpi);
+
+                // S2-S5 placeholders (real impl in v161)
+                pdfv2SetProgress(28, 'Render S2 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S2', 'Revenue Analytics', 'MAIN DB', 'v161');
+                pdfv2SetProgress(36, 'Render S3 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S3', 'Operational Patterns', 'MAIN DB', 'v161');
+                pdfv2SetProgress(44, 'Render S4 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S4', 'Funnel & Conversion', 'MAIN DB', 'v161');
+                pdfv2SetProgress(52, 'Render S5 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S5', 'Strategic Intelligence', 'MAIN DB + Forecast', 'v161');
+
+                // S6-S8 placeholders (real impl in v162)
+                pdfv2SetProgress(60, 'Render S6 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S6', 'Sales Velocity Curves', 'NTRY pivot', 'v162');
+                pdfv2SetProgress(68, 'Render S7 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S7', 'Pattern Detection — Sleeper vs Hype', 'NTRY pivot', 'v162');
+                pdfv2SetProgress(76, 'Render S8 placeholder...');
+                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S8', 'Optimal Push Window', 'NTRY tagesverteilung', 'v162');
+
+                pdfv2SetProgress(85, 'Render S9+ Event-Details (auto-paginated)...');
+                doc.addPage(); pdfv2_renderS9_details(doc, selRows);
+
+                pdfv2SetProgress(96, 'Speichere PDF...');
                 const ts = new Date().toISOString().slice(0,10);
-                doc.save('PDF_V2_Skeleton_' + ts + '.pdf');
-                pdfv2SetProgress(100, '&#10003; Test-PDF erzeugt');
-                setTimeout(() => { const w = document.getElementById('pdfv2-progress'); if (w) w.style.display='none'; }, 2500);
-                showToast('&#128196; Skeleton-PDF erzeugt — jsPDF Pipeline OK');
+                const filename = 'GF_StrategicReport_' + ts + '_' + selRows.length + 'events.pdf';
+                doc.save(filename);
+
+                pdfv2SetProgress(100, '&#10003; PDF erzeugt: ' + filename);
+                setTimeout(() => { const w = document.getElementById('pdfv2-progress'); if (w) w.style.display='none'; }, 3000);
+                showToast('&#128196; ' + filename);
             } catch (err) {
                 console.error('[PDF V2] Fehler:', err);
                 pdfv2SetProgress(0, '&#10005; Fehler: ' + err.message);
@@ -15749,7 +16093,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.159';
+            const HUB_VERSION = 'v15.9.160';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -17553,7 +17897,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.159 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.160 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21257,7 +21601,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.159 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.160 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -21287,7 +21631,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.159',
+                hubVersion: 'v15.9.160',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
