@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.161</title>
+    <title>Turbo Projects Work Hub v15.9.163</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -3638,7 +3638,7 @@
      UMSATZ TICKER MODAL — v15.9.111
      ═══════════════════════════════════════════════════════ -->
 <div class="modal-overlay modal-overlay-app" id="umsatz-ticker-modal">
-    <div class="modal-content" style="max-width:640px;">
+    <div class="modal modal-app" style="max-width:640px;">
         <div class="modal-header">
             <h2 class="modal-title">&#128200; Umsatz Ticker</h2>
             <button class="modal-close" onclick="closeModal('umsatz-ticker-modal')">&times;</button>
@@ -4892,6 +4892,29 @@
                     </div>
                 </div>
 
+                
+                <!-- v162: NTRY Live-Pull Fallback Upload (hidden until needed) -->
+                <div id="pdfv2-ntry-fallback" style="display:none;margin-top:12px;padding:12px;background:#3d1a5b;border:1px solid #ec4899;border-radius:6px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                        <span style="background:#ec4899;color:#fff;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;">FALLBACK</span>
+                        <strong style="color:#fff;font-size:12px;">NTRY Live-Pull fehlgeschlagen — CSVs manuell hochladen</strong>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:11px;">
+                        <label style="color:#fff;">
+                            ntry.csv<br>
+                            <input type="file" id="pdfv2-ntry-file-ntry" accept=".csv" style="width:100%;color:#aaa;font-size:10px;margin-top:3px;">
+                        </label>
+                        <label style="color:#fff;">
+                            tagesverteilung.csv<br>
+                            <input type="file" id="pdfv2-ntry-file-tag" accept=".csv" style="width:100%;color:#aaa;font-size:10px;margin-top:3px;">
+                        </label>
+                        <label style="color:#fff;">
+                            pivot.csv<br>
+                            <input type="file" id="pdfv2-ntry-file-pivot" accept=".csv" style="width:100%;color:#aaa;font-size:10px;margin-top:3px;">
+                        </label>
+                    </div>
+                    <button onclick="(async()=>{const ok=await pdfv2NTRYFromFiles();if(ok){showToast('&#10003; NTRY aus Files geladen — PDF neu erzeugen');pdfv2ShowNTRYFallback(false);}else{showToast('&#9888; Alle 3 CSVs auswaehlen');}})()" style="margin-top:10px;padding:6px 12px;background:#ec4899;color:#fff;border:0;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;">NTRY aus Files laden</button>
+                </div>
                 <!-- Progress -->
                 <div id="pdfv2-progress" style="display:none;margin-top:14px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;">
                     <div style="display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-bottom:6px;">
@@ -6754,7 +6777,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.161</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.163</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7234,7 +7257,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.161</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.163</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -11233,11 +11256,6 @@
             if (p) p.textContent = Math.round(pct) + '%';
         }
 
-        async function pdfv2LoadNTRY() {
-            // Stub v160 — actual fetch in v162
-            return false;
-        }
-
         // ── Selected Events Aggregation ─────────────────────────────────────
         function pdfv2GetSelectedRows() {
             const ids = PDFV2_STATE.selectedEventIds;
@@ -11321,7 +11339,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.163', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -11400,7 +11418,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.161  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.163  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -11481,7 +11499,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -11555,7 +11573,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -11662,7 +11680,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -11746,7 +11764,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.161', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -11903,28 +11921,621 @@
             doc.text('Page S5', W-12, H-7, { align: 'right' });
         }
 
-        // ── Pages S6-S8 placeholders (will be implemented v162) ────────────
-        function pdfv2_renderPlaceholder(doc, pageCode, title, datasource, plannedVersion) {
+
+        // ══════════════════════════════════════════════════════════════════
+        // v15.9.162 — NTRY Data Layer + Pages S6/S7/S8
+        // ══════════════════════════════════════════════════════════════════
+
+        // Generic CSV parser (no Event_ID requirement — dbvParseCSV cannot be reused)
+        function pdfv2ParseCSV(text) {
+            const lines = text.split(/\r?\n/);
+            if (lines.length < 2) return [];
+            function parseLine(line) {
+                const vals = []; let cur = '', inQ = false;
+                for (let i = 0; i < line.length; i++) {
+                    const c = line[i];
+                    if (c === '"') {
+                        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+                        else inQ = !inQ;
+                    } else if (c === ',' && !inQ) { vals.push(cur); cur = ''; }
+                    else cur += c;
+                }
+                vals.push(cur);
+                return vals.map(v => v.trim().replace(/^"|"$/g, ''));
+            }
+            const headers = parseLine(lines[0]);
+            return lines.slice(1).map(line => {
+                if (!line.trim()) return null;
+                const vals = parseLine(line);
+                const obj = {};
+                headers.forEach((h, i) => { if (h) obj[h] = vals[i] || ''; });
+                return obj;
+            }).filter(r => r && Object.values(r).some(v => v && String(v).trim() !== ''));
+        }
+
+        // Normalize event names for matching MAIN DB <-> NTRY
+        function pdfv2NormalizeName(s) {
+            return String(s || '').toLowerCase().trim()
+                .replace(/[^\w\säöüß]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Real NTRY loader (replaces v160 stub)
+        async function pdfv2LoadNTRY(force) {
+            if (PDFV2_STATE.ntryLoaded && !force) return true;
+            const urls = PDFV2_NTRY_URLS;
+            const cb = '&t=' + Date.now();
+            try {
+                const [ntryRes, tagRes, pivotRes] = await Promise.all([
+                    fetch(urls.ntry + cb),
+                    fetch(urls.tagesverteilung + cb),
+                    fetch(urls.pivot + cb)
+                ]);
+                if (!ntryRes.ok || !tagRes.ok || !pivotRes.ok) {
+                    throw new Error('HTTP ' + ntryRes.status + '/' + tagRes.status + '/' + pivotRes.status);
+                }
+                const [ntryTxt, tagTxt, pivotTxt] = await Promise.all([
+                    ntryRes.text(), tagRes.text(), pivotRes.text()
+                ]);
+                PDFV2_STATE.ntryData.ntry = pdfv2ParseCSV(ntryTxt);
+                PDFV2_STATE.ntryData.tagesverteilung = pdfv2ParseCSV(tagTxt);
+                PDFV2_STATE.ntryData.pivot = pdfv2ParseCSV(pivotTxt);
+                PDFV2_STATE.ntryLoaded = true;
+                console.log('[NTRY] Loaded:',
+                    PDFV2_STATE.ntryData.ntry.length, 'events,',
+                    PDFV2_STATE.ntryData.tagesverteilung.length, 'sales rows,',
+                    PDFV2_STATE.ntryData.pivot.length, 'pivot events');
+                return true;
+            } catch (e) {
+                console.error('[NTRY] Live-Pull failed:', e);
+                return false;
+            }
+        }
+
+        // Fallback: load NTRY from manually uploaded files
+        function pdfv2NTRYFromFiles() {
+            return new Promise((resolve) => {
+                const f1 = document.getElementById('pdfv2-ntry-file-ntry');
+                const f2 = document.getElementById('pdfv2-ntry-file-tag');
+                const f3 = document.getElementById('pdfv2-ntry-file-pivot');
+                if (!f1?.files[0] || !f2?.files[0] || !f3?.files[0]) { resolve(false); return; }
+                const reader = (file) => new Promise((res, rej) => {
+                    const r = new FileReader();
+                    r.onload = () => res(r.result);
+                    r.onerror = () => rej(r.error);
+                    r.readAsText(file);
+                });
+                Promise.all([reader(f1.files[0]), reader(f2.files[0]), reader(f3.files[0])])
+                    .then(([n, t, p]) => {
+                        PDFV2_STATE.ntryData.ntry = pdfv2ParseCSV(n);
+                        PDFV2_STATE.ntryData.tagesverteilung = pdfv2ParseCSV(t);
+                        PDFV2_STATE.ntryData.pivot = pdfv2ParseCSV(p);
+                        PDFV2_STATE.ntryLoaded = true;
+                        console.log('[NTRY] Loaded from files:',
+                            PDFV2_STATE.ntryData.ntry.length, '/',
+                            PDFV2_STATE.ntryData.tagesverteilung.length, '/',
+                            PDFV2_STATE.ntryData.pivot.length);
+                        resolve(true);
+                    })
+                    .catch(err => { console.error('[NTRY] File-read failed:', err); resolve(false); });
+            });
+        }
+
+        // Toggle fallback upload UI
+        function pdfv2ShowNTRYFallback(show) {
+            const el = document.getElementById('pdfv2-ntry-fallback');
+            if (el) el.style.display = show ? 'block' : 'none';
+        }
+
+        // Compute cumulative-% array for one pivot row (day -120 → 0). Returns null if row malformed.
+        function pdfv2CumulativeFromPivot(pivotRow) {
+            const dayCols = [];
+            for (let d = 120; d >= 1; d--) dayCols.push('-' + d + 'd');
+            dayCols.push('Tag'); // day 0
+            const daily = dayCols.map(c => {
+                const v = pivotRow[c];
+                if (v === '' || v === undefined || v === null) return 0;
+                const n = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
+                return isNaN(n) ? 0 : n;
+            });
+            const total = daily.reduce((a, b) => a + b, 0);
+            if (total <= 0) return null;
+            const cumPct = []; let running = 0;
+            for (let i = 0; i < daily.length; i++) {
+                running += daily[i];
+                cumPct.push(running / total * 100);
+            }
+            return { dayOffsets: dayCols.map(c => c === 'Tag' ? 0 : -parseInt(c)), dailyAbs: daily, cumPct: cumPct, total: total };
+        }
+
+        // Match selected MAIN-DB rows → NTRY pivot rows by normalized event name
+        function pdfv2MatchSelectedToPivot(selectedRows) {
+            const pivot = PDFV2_STATE.ntryData.pivot || [];
+            const matched = []; const notMatched = [];
+            const pivotIdx = new Map();
+            pivot.forEach(p => pivotIdx.set(pdfv2NormalizeName(p['Event']), p));
+            for (const r of selectedRows) {
+                const name = r['Event Name'] || r['EventName'] || r['event_name'] || '';
+                const norm = pdfv2NormalizeName(name);
+                const p = pivotIdx.get(norm);
+                if (p) matched.push({ db: r, pivot: p, name: name });
+                else notMatched.push(name);
+            }
+            return { matched: matched, notMatched: notMatched };
+        }
+
+        // ── S6 Sales Velocity Curves ───────────────────────────────────────
+        function pdfv2_renderS6_velocity(doc, selectedRows) {
+            const W = 297, H = 210;
+            // Header
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('NTRY pivot · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+
+            const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
+
+            if (!matched.length) {
+                doc.setTextColor(160); doc.setFontSize(11); doc.setFont('helvetica', 'italic');
+                doc.text('Keine selektierten Events in NTRY-Daten gefunden.', W/2, H/2, { align: 'center' });
+                doc.setFontSize(9); doc.setTextColor(140);
+                doc.text('S6 benötigt NTRY-Pivot-Daten. Erst-Verkauf-Datum + Tages-Buckets erforderlich.', W/2, H/2 + 8, { align: 'center' });
+                drawS6Footer();
+                return;
+            }
+
+            // Apply 8-cap: if >8 matched, take Top-8 by total tickets (pivot row sum)
+            let renderSet = matched;
+            let capNote = '';
+            if (matched.length > 8) {
+                const withTotals = matched.map(m => {
+                    const c = pdfv2CumulativeFromPivot(m.pivot);
+                    return { m: m, total: c ? c.total : 0 };
+                });
+                withTotals.sort((a,b) => b.total - a.total);
+                renderSet = withTotals.slice(0, 8).map(x => x.m);
+                capNote = 'Top 8 von ' + matched.length + ' selektierten Events (sortiert nach Tickets verkauft).';
+            }
+
+            // Build Chart.js dataset — cumulative % over -30..0 window
+            const palette = ['#4F8EF7','#ec4899','#fbbf24','#10b981','#a855f7','#ef4444','#06b6d4','#f97316'];
+            const datasets = [];
+            const tipPoints = []; // { name, t25, t50, t75, t90 }
+            renderSet.forEach((m, idx) => {
+                const cum = pdfv2CumulativeFromPivot(m.pivot);
+                if (!cum) return;
+                // Slice last 31 entries → days -30 to 0
+                const sliceStart = cum.dayOffsets.length - 31;
+                const xs = cum.dayOffsets.slice(sliceStart);
+                const ys = cum.cumPct.slice(sliceStart);
+                const data = xs.map((x, i) => ({ x: x, y: ys[i] }));
+                datasets.push({
+                    label: (m.name || '').slice(0, 28),
+                    data: data,
+                    borderColor: palette[idx % palette.length],
+                    backgroundColor: palette[idx % palette.length] + '20',
+                    borderWidth: 2.5, fill: false, tension: 0.15, pointRadius: 0, pointHoverRadius: 4
+                });
+                // Tipping points (full curve, not just last 30 — but compute when crossed thresholds)
+                const tp = { name: m.name, t25: null, t50: null, t75: null, t90: null };
+                for (let i = 0; i < cum.cumPct.length; i++) {
+                    if (tp.t25 === null && cum.cumPct[i] >= 25) tp.t25 = cum.dayOffsets[i];
+                    if (tp.t50 === null && cum.cumPct[i] >= 50) tp.t50 = cum.dayOffsets[i];
+                    if (tp.t75 === null && cum.cumPct[i] >= 75) tp.t75 = cum.dayOffsets[i];
+                    if (tp.t90 === null && cum.cumPct[i] >= 90) tp.t90 = cum.dayOffsets[i];
+                }
+                tipPoints.push(tp);
+            });
+
+            // Chart
+            const lineURL = pdfv2ChartCanvas({
+                type: 'line',
+                data: { datasets: datasets },
+                options: {
+                    plugins: {
+                        legend: { position: 'right', labels: { font: { size: 12 }, color: '#1f2937', boxWidth: 16 } },
+                        title: { display: true, text: 'Kumulativer Ticket-Verkauf (-30d → Event)', font: { size: 18, weight: 'bold' }, color: '#0a0a0a', padding: { top: 5, bottom: 8 } }
+                    },
+                    scales: {
+                        x: { type: 'linear', min: -30, max: 0, reverse: false,
+                             title: { display: true, text: 'Tage vor Event', font: { size: 12 }, color: '#444' },
+                             ticks: { color: '#666', stepSize: 5, callback: v => v === 0 ? 'Event' : v + 'd' }, grid: { color: '#eee' } },
+                        y: { min: 0, max: 100,
+                             title: { display: true, text: '% verkauft (kumulativ)', font: { size: 12 }, color: '#444' },
+                             ticks: { color: '#666', callback: v => v + '%' }, grid: { color: '#eee' } }
+                    }
+                }
+            }, 1400, 600);
+            doc.addImage(lineURL, 'PNG', 12, 20, W-24, 95);
+
+            // Tipping Points table
+            doc.setTextColor(20); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+            doc.text('Tipping Points (Tage vor Event bei Erreichen der Schwelle)', 12, 123);
+            doc.autoTable({
+                head: [['Event', '25% erreicht', '50% erreicht', '75% erreicht', '90% erreicht']],
+                body: tipPoints.map(tp => [
+                    (tp.name || '').slice(0, 40),
+                    tp.t25 !== null ? tp.t25 + 'd' : '—',
+                    tp.t50 !== null ? tp.t50 + 'd' : '—',
+                    tp.t75 !== null ? tp.t75 + 'd' : '—',
+                    tp.t90 !== null ? tp.t90 + 'd' : '—'
+                ]),
+                startY: 127, margin: { left: 12, right: 12 }, theme: 'striped',
+                headStyles: { fillColor: [79,142,247], textColor: 255, fontSize: 8, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 8, cellPadding: 1.4 },
+                alternateRowStyles: { fillColor: [248,248,250] },
+                columnStyles: { 0:{cellWidth:90}, 1:{cellWidth:35,halign:'center'}, 2:{cellWidth:35,halign:'center'}, 3:{cellWidth:35,halign:'center'}, 4:{cellWidth:35,halign:'center'} }
+            });
+
+            // Notes
+            const noteY = (doc.lastAutoTable && doc.lastAutoTable.finalY) ? doc.lastAutoTable.finalY + 4 : 175;
+            if (capNote) {
+                doc.setTextColor(140); doc.setFontSize(8); doc.setFont('helvetica', 'italic');
+                doc.text('Hinweis: ' + capNote, 12, noteY);
+            }
+            if (notMatched.length) {
+                doc.setTextColor(180); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+                doc.text('Nicht in NTRY: ' + notMatched.slice(0, 4).join(' · ') + (notMatched.length > 4 ? ' (+' + (notMatched.length - 4) + ')' : ''),
+                         12, noteY + 4);
+            }
+
+            drawS6Footer();
+            function drawS6Footer() {
+                doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+                doc.setFontSize(8); doc.setTextColor(140);
+                doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+                doc.text('Page S6', W-12, H-7, { align: 'right' });
+            }
+        }
+
+        // ── S7 Pattern Detection (Sleeper vs Hype only) ────────────────────
+        // Classification per event:
+        //  HYPE    = ≥40% sold in first 30% of VVK days (early-loaded curve)
+        //  SLEEPER = >50% sold in last 7 days before event (late-loaded curve)
+        //  OTHER   = neither (excluded from S7 visuals per spec)
+        function pdfv2_classifyEvent(pivotRow) {
+            const cum = pdfv2CumulativeFromPivot(pivotRow);
+            if (!cum) return { type: 'OTHER', last7Pct: 0, first30Pct: 0 };
+            // % sold in last 7 days (= last 8 entries: -7d..0)
+            const last7Sum = cum.dailyAbs.slice(-8).reduce((a, b) => a + b, 0);
+            const last7Pct = (last7Sum / cum.total) * 100;
+            // First 30% of VVK days — find first non-zero day, then take 30% of (event - first sale) days
+            let firstSaleIdx = cum.dailyAbs.findIndex(v => v > 0);
+            if (firstSaleIdx < 0) firstSaleIdx = cum.dailyAbs.length - 1;
+            const vvkDays = cum.dailyAbs.length - firstSaleIdx;
+            const first30Idx = firstSaleIdx + Math.max(1, Math.floor(vvkDays * 0.3));
+            const first30Sum = cum.dailyAbs.slice(firstSaleIdx, first30Idx).reduce((a, b) => a + b, 0);
+            const first30Pct = (first30Sum / cum.total) * 100;
+            let type = 'OTHER';
+            if (last7Pct > 50) type = 'SLEEPER';
+            else if (first30Pct >= 40) type = 'HYPE';
+            return { type: type, last7Pct: last7Pct, first30Pct: first30Pct };
+        }
+
+        function pdfv2_renderS7_pattern(doc, selectedRows) {
             const W = 297, H = 210;
             doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-            doc.text(pageCode + '  ·  ' + title.toUpperCase(), 12, 10.5);
+            doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('Hub v15.9.161 · Datasource: ' + datasource, W-12, 10.5, { align: 'right' });
-            // Watermark
-            doc.setTextColor(230);
-            doc.setFontSize(50); doc.setFont('helvetica', 'bold');
-            doc.text(plannedVersion.toUpperCase(), W/2, H/2, { align: 'center', angle: 25 });
-            doc.setFontSize(11); doc.setFont('helvetica', 'normal'); doc.setTextColor(120);
-            doc.text('Diese Seite wird in Hub-Version ' + plannedVersion + ' implementiert.', W/2, H/2 + 25, { align: 'center' });
-            doc.setFontSize(9); doc.setTextColor(160);
-            doc.text('Skeleton v159 → v160 (S1+S9) → v161 (S2-S5) → v162 (S6-S8) → FINAL', W/2, H/2 + 32, { align: 'center' });
-            // Footer
-            doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
-            doc.setFontSize(8); doc.setTextColor(140);
-            doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
-            doc.text('Page ' + pageCode, W-12, H-7, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+
+            const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
+            if (!matched.length) {
+                doc.setTextColor(160); doc.setFontSize(11); doc.setFont('helvetica', 'italic');
+                doc.text('Keine selektierten Events in NTRY-Daten gefunden.', W/2, H/2, { align: 'center' });
+                drawS7Footer();
+                return;
+            }
+
+            const classified = matched.map(m => ({
+                name: m.name,
+                date: m.pivot['Datum'] || '',
+                cls: pdfv2_classifyEvent(m.pivot)
+            }));
+            const sleepers = classified.filter(c => c.cls.type === 'SLEEPER').sort((a,b) => b.cls.last7Pct - a.cls.last7Pct);
+            const hypes = classified.filter(c => c.cls.type === 'HYPE').sort((a,b) => b.cls.first30Pct - a.cls.first30Pct);
+            const otherCount = classified.length - sleepers.length - hypes.length;
+
+            // Donut: Sleeper vs Hype distribution (SLEEPER + HYPE only per spec)
+            if (sleepers.length || hypes.length) {
+                const donutURL = pdfv2ChartCanvas({
+                    type: 'doughnut',
+                    data: {
+                        labels: ['SLEEPER (>50% letzte 7d)', 'HYPE (≥40% erste 30%)'],
+                        datasets: [{
+                            data: [sleepers.length, hypes.length],
+                            backgroundColor: ['#a855f7', '#ef4444'],
+                            borderColor: '#fff', borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { position: 'bottom', labels: { font: { size: 13 }, color: '#1f2937', padding: 12 } },
+                            title: { display: true, text: 'Selektierte Events: Sleeper vs Hype', font: { size: 16, weight: 'bold' }, color: '#0a0a0a', padding: { top: 5, bottom: 5 } }
+                        }
+                    }
+                }, 600, 500);
+                doc.addImage(donutURL, 'PNG', 12, 20, 80, 70);
+            }
+
+            // KPI box right of donut
+            const kpiX = 100, kpiY = 22;
+            doc.setFillColor(248,248,250); doc.rect(kpiX, kpiY, 90, 68, 'F');
+            doc.setDrawColor(220); doc.rect(kpiX, kpiY, 90, 68, 'S');
+            doc.setTextColor(20); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+            doc.text('Klassifikation Selection', kpiX + 4, kpiY + 7);
+            doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+            const lines = [
+                ['SLEEPER:', sleepers.length + ' (' + Math.round(sleepers.length / classified.length * 100) + '%)', '#a855f7'],
+                ['HYPE:', hypes.length + ' (' + Math.round(hypes.length / classified.length * 100) + '%)', '#ef4444'],
+                ['Other:', otherCount + ' (' + Math.round(otherCount / classified.length * 100) + '%)', '#888'],
+                ['Total Selection:', classified.length + ' Events (NTRY-matched)', '#444']
+            ];
+            lines.forEach((ln, i) => {
+                doc.setTextColor(ln[2]); doc.setFont('helvetica', 'bold');
+                doc.text(ln[0], kpiX + 4, kpiY + 18 + i*11);
+                doc.setTextColor(20); doc.setFont('helvetica', 'normal');
+                doc.text(ln[1], kpiX + 38, kpiY + 18 + i*11);
+            });
+
+            // Definition box right side
+            const defX = 198, defY = 22;
+            doc.setFillColor(255,250,240); doc.rect(defX, defY, 87, 68, 'F');
+            doc.setDrawColor(251,191,36); doc.setLineWidth(0.4); doc.rect(defX, defY, 87, 68, 'S'); doc.setLineWidth(0.2);
+            doc.setTextColor(20); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+            doc.text('Definitionen', defX + 4, defY + 7);
+            doc.setFontSize(7.5); doc.setFont('helvetica', 'normal');
+            const def = [
+                ['SLEEPER', 'Mehr als 50% aller Tickets'],
+                ['', 'in den letzten 7 Tagen verkauft.'],
+                ['', 'Spätstarter, brauchen Final-Push.'],
+                ['', ''],
+                ['HYPE', '≥40% aller Tickets in den'],
+                ['', 'ersten 30% der VVK-Zeit verkauft.'],
+                ['', 'Frühstarter, früh ausverkauft-Risiko.']
+            ];
+            def.forEach((d, i) => {
+                if (d[0]) { doc.setFont('helvetica', 'bold'); doc.setTextColor(d[0] === 'SLEEPER' ? '#a855f7' : '#ef4444'); }
+                else { doc.setFont('helvetica', 'normal'); doc.setTextColor(60); }
+                doc.text(d[0], defX + 4, defY + 16 + i*7);
+                doc.setTextColor(60); doc.setFont('helvetica', 'normal');
+                doc.text(d[1], defX + 22, defY + 16 + i*7);
+            });
+
+            // Sleeper Table
+            doc.setTextColor(168,85,247); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+            doc.text('SLEEPER Events (Top by Last-7d %)', 12, 98);
+            if (sleepers.length) {
+                doc.autoTable({
+                    head: [['Event', 'Datum', '% letzte 7d']],
+                    body: sleepers.slice(0, 8).map(c => [
+                        (c.name || '').slice(0, 38),
+                        c.date,
+                        c.cls.last7Pct.toFixed(1) + '%'
+                    ]),
+                    startY: 102, margin: { left: 12, right: 152 }, theme: 'striped',
+                    headStyles: { fillColor: [168,85,247], textColor: 255, fontSize: 8 },
+                    bodyStyles: { fontSize: 8, cellPadding: 1.4 },
+                    columnStyles: { 0:{cellWidth:80}, 1:{cellWidth:22}, 2:{cellWidth:25,halign:'right'} }
+                });
+            } else {
+                doc.setTextColor(140); doc.setFontSize(9); doc.setFont('helvetica', 'italic');
+                doc.text('Keine Sleeper in der Selektion.', 12, 108);
+            }
+
+            // Hype Table
+            doc.setTextColor(239,68,68); doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+            doc.text('HYPE Events (Top by First-30%-Window)', 152, 98);
+            if (hypes.length) {
+                doc.autoTable({
+                    head: [['Event', 'Datum', '% in erste 30%']],
+                    body: hypes.slice(0, 8).map(c => [
+                        (c.name || '').slice(0, 38),
+                        c.date,
+                        c.cls.first30Pct.toFixed(1) + '%'
+                    ]),
+                    startY: 102, margin: { left: 152, right: 12 }, theme: 'striped',
+                    headStyles: { fillColor: [239,68,68], textColor: 255, fontSize: 8 },
+                    bodyStyles: { fontSize: 8, cellPadding: 1.4 },
+                    columnStyles: { 0:{cellWidth:80}, 1:{cellWidth:22}, 2:{cellWidth:28,halign:'right'} }
+                });
+            } else {
+                doc.setTextColor(140); doc.setFontSize(9); doc.setFont('helvetica', 'italic');
+                doc.text('Keine Hypes in der Selektion.', 152, 108);
+            }
+
+            drawS7Footer();
+            function drawS7Footer() {
+                doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+                doc.setFontSize(8); doc.setTextColor(140);
+                doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+                doc.text('Page S7', W-12, H-7, { align: 'right' });
+            }
         }
+
+        // ── S8 Optimal Push Window (-30d cap, AGGREGATED over ALL NTRY events) ─
+        // Spec: global insight — wann verkaufen Käufer im Schnitt? -30d Cap weil
+        // davor nur ~1% der Tickets fallen (Noise).
+        function pdfv2_renderS8_window(doc) {
+            const W = 297, H = 210;
+            doc.setFillColor(10,10,10); doc.rect(0, 0, W, 16, 'F');
+            doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+            doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
+            doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+
+            const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
+            if (!tag.length) {
+                doc.setTextColor(160); doc.setFontSize(11); doc.setFont('helvetica', 'italic');
+                doc.text('Keine NTRY tagesverteilung-Daten geladen.', W/2, H/2, { align: 'center' });
+                drawS8Footer();
+                return;
+            }
+
+            // Aggregate: sum tickets per "Tage vor Event" across all events
+            const dailyAgg = {}; // dayOffset → tickets
+            let totalTickets = 0;
+            for (const row of tag) {
+                const d = parseInt(String(row['Tage vor Event']).trim(), 10);
+                const t = parseFloat(String(row['Anzahl Tickets']).replace(',', '.'));
+                if (isNaN(d) || isNaN(t) || d < 0) continue;
+                dailyAgg[d] = (dailyAgg[d] || 0) + t;
+                totalTickets += t;
+            }
+            if (totalTickets <= 0) {
+                doc.setTextColor(160); doc.setFontSize(11); doc.setFont('helvetica', 'italic');
+                doc.text('NTRY-Aggregation lieferte 0 Tickets.', W/2, H/2, { align: 'center' });
+                drawS8Footer();
+                return;
+            }
+
+            // Build -30d → 0 series (sum from -30 inclusive)
+            const days = []; const labels = []; const dailyPct = [];
+            for (let d = 30; d >= 0; d--) {
+                const abs = dailyAgg[d] || 0;
+                days.push(-d);
+                labels.push(d === 0 ? 'Event' : '-' + d + 'd');
+                dailyPct.push(abs / totalTickets * 100);
+            }
+            // Cumulative starting from -30d slice (note: pre-30d-Anteil wird im Plot ignoriert; Tipping wird global gerechnet)
+            const cumGlobal = []; let r = 0;
+            const maxD = Math.max(...Object.keys(dailyAgg).map(k => +k));
+            for (let d = maxD; d >= 0; d--) {
+                r += (dailyAgg[d] || 0);
+                cumGlobal.push({ day: -d, cumPct: r / totalTickets * 100 });
+            }
+            // Tipping points (global, alle Daten)
+            const tip = { t25: null, t50: null, t75: null, t90: null };
+            for (const pt of cumGlobal) {
+                if (tip.t25 === null && pt.cumPct >= 25) tip.t25 = pt.day;
+                if (tip.t50 === null && pt.cumPct >= 50) tip.t50 = pt.day;
+                if (tip.t75 === null && pt.cumPct >= 75) tip.t75 = pt.day;
+                if (tip.t90 === null && pt.cumPct >= 90) tip.t90 = pt.day;
+            }
+
+            // Pre-30d share
+            let pre30 = 0;
+            for (const k of Object.keys(dailyAgg)) { if (+k > 30) pre30 += dailyAgg[k]; }
+            const pre30Pct = pre30 / totalTickets * 100;
+
+            // Window aggregations
+            const sumRange = (from, to) => {
+                let s = 0;
+                for (let d = from; d <= to; d++) s += (dailyAgg[d] || 0);
+                return s / totalTickets * 100;
+            };
+            const final3 = sumRange(0, 2);   // -2d, -1d, Tag
+            const final7 = sumRange(0, 6);
+            const final14 = sumRange(0, 13);
+            const final30 = sumRange(0, 30);
+
+            // Front/Mid/Back distribution (within -30d window)
+            const front = sumRange(21, 30); // -30 to -21 = "Front" of 30d window
+            const mid = sumRange(8, 20);    // -20 to -8 = "Mid"
+            const back = sumRange(0, 7);    // -7 to 0 = "Back" (final push)
+
+            // Bar Chart
+            const barURL = pdfv2ChartCanvas({
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '% Tickets verkauft (täglich)',
+                        data: dailyPct,
+                        backgroundColor: dailyPct.map((_, i) => {
+                            // Last 7 = red, last 14 = orange, rest blue
+                            const dayOffset = -days[i]; // 0..30
+                            if (dayOffset <= 6) return '#ef4444';
+                            if (dayOffset <= 13) return '#f97316';
+                            return '#4F8EF7';
+                        })
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Tägliche Verkäufe (% aller Tickets) — Final-30-Tage-Fenster', font: { size: 17, weight: 'bold' }, color: '#0a0a0a', padding: { top: 5, bottom: 8 } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#666', font: { size: 9 }, maxRotation: 60, minRotation: 45 }, grid: { display: false } },
+                        y: { ticks: { color: '#666', callback: v => v.toFixed(1) + '%' }, grid: { color: '#eee' } }
+                    }
+                }
+            }, 1400, 600);
+            doc.addImage(barURL, 'PNG', 12, 20, W-24, 90);
+
+            // Push Window Boxes (4 cells)
+            const boxY = 117, boxH = 30;
+            const boxes = [
+                { label: 'FINAL 3 TAGE', val: final3.toFixed(1) + '%', color: [239,68,68], sub: '-2d bis Event' },
+                { label: 'FINAL 7 TAGE', val: final7.toFixed(1) + '%', color: [249,115,22], sub: '-6d bis Event' },
+                { label: 'FINAL 14 TAGE', val: final14.toFixed(1) + '%', color: [251,191,36], sub: '-13d bis Event' },
+                { label: 'FINAL 30 TAGE', val: final30.toFixed(1) + '%', color: [79,142,247], sub: '-30d bis Event' }
+            ];
+            const boxW = (W - 24 - 9) / 4; // 4 cells, 3 gutters of 3mm
+            boxes.forEach((b, i) => {
+                const x = 12 + i * (boxW + 3);
+                doc.setFillColor(b.color[0], b.color[1], b.color[2]); doc.rect(x, boxY, boxW, 7, 'F');
+                doc.setFillColor(248,248,250); doc.rect(x, boxY + 7, boxW, boxH - 7, 'F');
+                doc.setDrawColor(220); doc.rect(x, boxY, boxW, boxH, 'S');
+                doc.setTextColor(255); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+                doc.text(b.label, x + boxW/2, boxY + 5, { align: 'center' });
+                doc.setTextColor(20); doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+                doc.text(b.val, x + boxW/2, boxY + 18, { align: 'center' });
+                doc.setTextColor(120); doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+                doc.text(b.sub, x + boxW/2, boxY + 25, { align: 'center' });
+            });
+
+            // Tipping Points + Front/Mid/Back side-by-side
+            const tableY = 154;
+            doc.setTextColor(20); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+            doc.text('Tipping Points (global, alle Events)', 12, tableY);
+            doc.autoTable({
+                head: [['Schwelle', 'erreicht bei']],
+                body: [
+                    ['25% verkauft', tip.t25 !== null ? tip.t25 + 'd vor Event' : '—'],
+                    ['50% verkauft', tip.t50 !== null ? tip.t50 + 'd vor Event' : '—'],
+                    ['75% verkauft', tip.t75 !== null ? tip.t75 + 'd vor Event' : '—'],
+                    ['90% verkauft', tip.t90 !== null ? tip.t90 + 'd vor Event' : '—']
+                ],
+                startY: tableY + 3, margin: { left: 12, right: 165 }, theme: 'striped',
+                headStyles: { fillColor: [16,185,129], textColor: 255, fontSize: 8 },
+                bodyStyles: { fontSize: 8, cellPadding: 1.4 },
+                columnStyles: { 0:{cellWidth:55}, 1:{cellWidth:55,halign:'right'} }
+            });
+
+            doc.setTextColor(20); doc.setFontSize(9); doc.setFont('helvetica', 'bold');
+            doc.text('Front / Mid / Back Verteilung (innerhalb -30d)', 145, tableY);
+            doc.autoTable({
+                head: [['Fenster', 'Range', 'Anteil']],
+                body: [
+                    ['FRONT', '-30d bis -21d', front.toFixed(1) + '%'],
+                    ['MID',   '-20d bis -8d',  mid.toFixed(1) + '%'],
+                    ['BACK',  '-7d bis Event', back.toFixed(1) + '%']
+                ],
+                startY: tableY + 3, margin: { left: 145, right: 12 }, theme: 'striped',
+                headStyles: { fillColor: [79,142,247], textColor: 255, fontSize: 8 },
+                bodyStyles: { fontSize: 8, cellPadding: 1.4 },
+                columnStyles: { 0:{cellWidth:30,fontStyle:'bold'}, 1:{cellWidth:50}, 2:{cellWidth:40,halign:'right'} }
+            });
+
+            // Footer note: pre-30d share
+            doc.setTextColor(140); doc.setFontSize(7.5); doc.setFont('helvetica', 'italic');
+            doc.text('Hinweis: ' + pre30Pct.toFixed(1) + '% der Tickets wurden VOR -30d verkauft (Noise, vom Chart ausgeschlossen). Datengrundlage: ALLE NTRY-Events (76).',
+                     12, H - 18);
+
+            drawS8Footer();
+            function drawS8Footer() {
+                doc.setDrawColor(220); doc.line(12, H-12, W-12, H-12);
+                doc.setFontSize(8); doc.setTextColor(140);
+                doc.text('Turbo Projects GmbH  ·  Internal', 12, H-7);
+                doc.text('Page S8', W-12, H-7, { align: 'right' });
+            }
+        }
+        // ── END v15.9.162 NTRY + S6/S7/S8 ──────────────────────────────────
 
         // ── Main orchestrator ──────────────────────────────────────────────
         async function generatePDFV2() {
@@ -11959,13 +12570,24 @@
                 pdfv2SetProgress(58, 'Render S5 Strategic Intelligence...');
                 doc.addPage(); pdfv2_renderS5_strategic(doc, selRows);
 
-                // S6-S8 placeholders (real impl in v162)
-                pdfv2SetProgress(64, 'Render S6 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S6', 'Sales Velocity Curves', 'NTRY pivot', 'v162');
-                pdfv2SetProgress(70, 'Render S7 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S7', 'Pattern Detection — Sleeper vs Hype', 'NTRY pivot', 'v162');
-                pdfv2SetProgress(76, 'Render S8 placeholder...');
-                doc.addPage(); pdfv2_renderPlaceholder(doc, 'S8', 'Optimal Push Window', 'NTRY tagesverteilung', 'v162');
+                // S6-S8 NTRY-driven (v162)
+                pdfv2SetProgress(62, 'Lade NTRY-Daten...');
+                let ntryOk = await pdfv2LoadNTRY();
+                if (!ntryOk) {
+                    // Try fallback: manually uploaded files (if present)
+                    ntryOk = await pdfv2NTRYFromFiles();
+                }
+                if (!ntryOk) {
+                    pdfv2ShowNTRYFallback(true);
+                    pdfv2SetProgress(65, 'NTRY-Daten nicht verfügbar — Upload-Fallback aktiviert');
+                    showToast('&#9888; NTRY Live-Pull fehlgeschlagen — CSV-Upload im Modal nutzen');
+                }
+                pdfv2SetProgress(66, 'Render S6 Sales Velocity...');
+                doc.addPage(); pdfv2_renderS6_velocity(doc, selRows);
+                pdfv2SetProgress(72, 'Render S7 Pattern Detection...');
+                doc.addPage(); pdfv2_renderS7_pattern(doc, selRows);
+                pdfv2SetProgress(78, 'Render S8 Optimal Push Window...');
+                doc.addPage(); pdfv2_renderS8_window(doc);
 
                 pdfv2SetProgress(85, 'Render S9+ Event-Details (auto-paginated)...');
                 doc.addPage(); pdfv2_renderS9_details(doc, selRows);
@@ -16566,7 +17188,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.161';
+            const HUB_VERSION = 'v15.9.163';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18370,7 +18992,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.161 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.163 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -22074,7 +22696,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.161 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.163 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -22104,7 +22726,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.161',
+                hubVersion: 'v15.9.163',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
