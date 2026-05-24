@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.163</title>
+    <title>Turbo Projects Work Hub v15.9.165</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -148,7 +148,7 @@
         [data-theme="light"] .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
         [data-theme="light"] .task-title { color: #000; }
         [data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.7); }
-        [data-theme="light"] .modal-content { background: #fff; border: 2px solid #333; }
+        [data-theme="light"] .modal { background: #fff; border: 2px solid #333; }
         [data-theme="light"] .modal-header { background: #1a1a1a; border-bottom: none; }
         [data-theme="light"] .modal-header h3 { color: #fff; }
         [data-theme="light"] .modal-close { color: #fff; }
@@ -1373,11 +1373,10 @@
         .project-empty { text-align: center; color: #888; padding: 30px; font-size: 13px; }
         
         /* Project Modal Specific */
-        #project-modal .modal-content {
+        #project-modal .modal {
             max-width: 700px;
             background: var(--surface);
             border: 3px solid var(--text-secondary);
-            overflow: hidden;
         }
         #project-modal .modal-header {
             margin: 0;
@@ -5033,8 +5032,8 @@
 
     <!-- MONATSPROGRAMM Modal -->
     <!-- C20 Promo Manager Modal -->
-    <div class="modal-overlay" id="monatsprogramm-modal">
-        <div class="modal-content" style="max-width:760px;height:88vh;display:flex;flex-direction:column;">
+    <div class="modal-overlay modal-overlay-app" id="monatsprogramm-modal">
+        <div class="modal modal-app" style="max-width:760px;height:88vh;">
             <div class="modal-header" style="flex-shrink:0;">
                 <h2>&#127757; Promo Manager</h2>
                 <button class="modal-close" onclick="closeModal('monatsprogramm-modal')">&times;</button>
@@ -5960,7 +5959,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-gard2-time" value="23:15" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>GARDEROBE 3</label>
@@ -5968,7 +5967,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 8px;">
                         <label>Zeit</label>
-                        <input type="text" id="fs-gard3-time" value="00:00" class="time-input" oninput="updateFactsheetPreview()">
+                        <input type="text" id="fs-gard3-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()">
                     </div>
                 </div>
                 
@@ -6777,7 +6776,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.163</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.165</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7257,7 +7256,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.163</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.165</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -7328,7 +7327,7 @@
     
     <!-- Project Modal -->
     <div class="modal-overlay" id="project-modal">
-        <div class="modal-content">
+        <div class="modal modal-app">
             <div class="modal-header">
                 <h3 id="project-modal-title">&#128194; New Project</h3>
                 <button class="modal-close" onclick="closeModal('project-modal')">&times;</button>
@@ -7478,7 +7477,7 @@
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:00", main1: "22:30", main2: "22:30", main3: "23:00", main4: "23:45",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:15", gard3: "00:00", technik: "21:00",
+                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:00", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             MAIN_30: {
@@ -7486,7 +7485,7 @@
                 doors1: "23:00", terrasse: "22:00", doors2_early: "23:00", kitchen: "22:00",
                 doors2_late: "00:30", main1: "23:00", main2: "23:00", main3: "23:30", main4: "00:15",
                 runner1: "21:00", runner2: "21:00", runner3: "21:00", runner4: "22:00", runner5: "00:00", runner6: "00:00",
-                gard1: "22:45", gard2: "23:15", gard3: "00:00", technik: "21:00",
+                gard1: "22:45", gard2: "23:00", gard3: "00:15", technik: "21:00",
                 security: [{ time: "22:45", pax: "1 PAX" }, { time: "23:00", pax: "3 PAX" }, { time: "23:30", pax: "1 PAX" }, { time: "00:30", pax: "3 PAX" }, { time: "01:00", pax: "1 PAX (Abruf)" }]
             },
             CONCERT: {
@@ -11339,7 +11338,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.165', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -11418,7 +11417,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.163  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.165  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -11499,7 +11498,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.165', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -11573,7 +11572,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.165', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -11680,7 +11679,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.165', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -11764,7 +11763,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.165', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -12073,7 +12072,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.165', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -12192,7 +12191,7 @@
 
         // ── S7 Pattern Detection (Sleeper vs Hype only) ────────────────────
         // Classification per event:
-        //  HYPE    = ≥40% sold in first 30% of VVK days (early-loaded curve)
+        //  HYPE    = ≥55% sold in first 30% of VVK days (early-loaded curve)
         //  SLEEPER = >50% sold in last 7 days before event (late-loaded curve)
         //  OTHER   = neither (excluded from S7 visuals per spec)
         function pdfv2_classifyEvent(pivotRow) {
@@ -12210,7 +12209,7 @@
             const first30Pct = (first30Sum / cum.total) * 100;
             let type = 'OTHER';
             if (last7Pct > 50) type = 'SLEEPER';
-            else if (first30Pct >= 40) type = 'HYPE';
+            else if (first30Pct >= 55) type = 'HYPE';
             return { type: type, last7Pct: last7Pct, first30Pct: first30Pct };
         }
 
@@ -12220,7 +12219,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.165', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -12244,7 +12243,7 @@
                 const donutURL = pdfv2ChartCanvas({
                     type: 'doughnut',
                     data: {
-                        labels: ['SLEEPER (>50% letzte 7d)', 'HYPE (≥40% erste 30%)'],
+                        labels: ['SLEEPER (>50% letzte 7d)', 'HYPE (≥55% erste 30%)'],
                         datasets: [{
                             data: [sleepers.length, hypes.length],
                             backgroundColor: ['#a855f7', '#ef4444'],
@@ -12293,7 +12292,7 @@
                 ['', 'in den letzten 7 Tagen verkauft.'],
                 ['', 'Spätstarter, brauchen Final-Push.'],
                 ['', ''],
-                ['HYPE', '≥40% aller Tickets in den'],
+                ['HYPE', '≥55% aller Tickets in den'],
                 ['', 'ersten 30% der VVK-Zeit verkauft.'],
                 ['', 'Frühstarter, früh ausverkauft-Risiko.']
             ];
@@ -12365,7 +12364,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.163', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.165', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -12427,7 +12426,7 @@
                 for (let d = from; d <= to; d++) s += (dailyAgg[d] || 0);
                 return s / totalTickets * 100;
             };
-            const final3 = sumRange(0, 2);   // -2d, -1d, Tag
+            const final3 = sumRange(0, 3);   // -3d, -2d, -1d, Tag (4 Kalendertage)
             const final7 = sumRange(0, 6);
             const final14 = sumRange(0, 13);
             const final30 = sumRange(0, 30);
@@ -12470,7 +12469,7 @@
             // Push Window Boxes (4 cells)
             const boxY = 117, boxH = 30;
             const boxes = [
-                { label: 'FINAL 3 TAGE', val: final3.toFixed(1) + '%', color: [239,68,68], sub: '-2d bis Event' },
+                { label: 'FINAL 3 TAGE', val: final3.toFixed(1) + '%', color: [239,68,68], sub: '-3d bis Event' },
                 { label: 'FINAL 7 TAGE', val: final7.toFixed(1) + '%', color: [249,115,22], sub: '-6d bis Event' },
                 { label: 'FINAL 14 TAGE', val: final14.toFixed(1) + '%', color: [251,191,36], sub: '-13d bis Event' },
                 { label: 'FINAL 30 TAGE', val: final30.toFixed(1) + '%', color: [79,142,247], sub: '-30d bis Event' }
@@ -17188,7 +17187,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.163';
+            const HUB_VERSION = 'v15.9.165';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -18992,7 +18991,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.163 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.165 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -22696,7 +22695,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.163 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.165 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -22726,7 +22725,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.163',
+                hubVersion: 'v15.9.165',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
