@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.170</title>
+    <title>Turbo Projects Work Hub v15.9.171</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -657,7 +657,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.170: adaptive modal — white border, scroll inside */
+        /* v15.9.171: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid rgba(255,255,255,0.75);
@@ -768,16 +768,16 @@
         
         /* Factsheet Preview */
         .factsheet-preview {
-            background: white; color: #333; padding: 30px; border-radius: var(--radius-sm);
-            font-family: Arial, sans-serif; font-size: 14px;
+            background: white; color: #333; padding: 16px; border-radius: var(--radius-sm);
+            font-family: Arial, sans-serif; font-size: 12px;
         }
-        .factsheet-preview h2 { color: #333; margin-bottom: 5px; }
+        .factsheet-preview h2 { color: #333; margin-bottom: 5px; font-size: 14px; }
         .factsheet-preview .event-name { color: var(--danger); font-weight: bold; }
-        .factsheet-preview table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .factsheet-preview table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .factsheet-preview th, .factsheet-preview td {
-            border: 1px solid #333; padding: 8px; text-align: left;
+            border: 1px solid #ccc; padding: 4px 6px; text-align: left; white-space: nowrap;
         }
-        .factsheet-preview th { background: #f0f0f0; }
+        .factsheet-preview th { background: #f0f0f0; font-size: 11px; }
         
         /* Unified Section Header Style */
         .section-box {
@@ -2409,10 +2409,10 @@
                 font-size: 13px;
             }
             
-            .factsheet-preview { padding: 15px; font-size: 12px; }
-            .factsheet-preview table { font-size: 11px; }
+            .factsheet-preview { padding: 10px; font-size: 11px; }
+            .factsheet-preview table { font-size: 10px; }
             .factsheet-preview th, 
-            .factsheet-preview td { padding: 5px; }
+            .factsheet-preview td { padding: 3px 4px; }
         }
         
         /* Large Desktop (min 1200px) */
@@ -3646,7 +3646,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.170 ===== */
+        /* ===== PLANNER WIDGET v15.9.171 ===== */
         
         #planner-widget {
             margin-bottom: 8px;
@@ -3882,16 +3882,16 @@
         .planner-badge-bar    { background: rgba(239,159,39,0.12); color: #EF9F27; }
         .planner-badge-qon    { background: rgba(239,68,68,0.12); color: #ef4444; }
 
-        /* BOTTOM GRID: Events + OQN */
+        /* BOTTOM GRID: Events + Tasks + Quick Actions (B3 3-col) */
         .planner-bottom-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 180px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
         }
         .planner-col {
-            padding: 12px 16px;
+            padding: 12px 14px;
         }
-        .planner-col:first-child { border-right: 1px solid rgba(255,255,255,0.06); }
+        .planner-col:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.06); }
         .planner-col-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 7px;
@@ -3945,6 +3945,45 @@
         .planner-oqn-item:hover { color: rgba(255,255,255,0.75); }
         .planner-oqn-item:last-child { border-bottom: none; }
         .planner-oqn-arrow { color: rgba(239,68,68,0.55); font-size: 9px; flex-shrink: 0; margin-top: 1px; }
+
+        /* QUICK ACTIONS COL (B3 3rd col) */
+        .planner-qa-col {
+            background: rgba(79,142,247,0.02);
+        }
+        .planner-qa-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(79,142,247,0.55);
+            margin-bottom: 8px;
+        }
+        .planner-qa-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            width: 100%;
+            padding: 7px 9px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 4px;
+            color: rgba(255,255,255,0.6);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.12s;
+        }
+        .planner-qa-btn:hover {
+            background: rgba(79,142,247,0.1);
+            border-color: rgba(79,142,247,0.3);
+            color: #fff;
+        }
+        .planner-qa-btn:last-child { margin-bottom: 0; }
+        .planner-qa-icon { font-size: 12px; flex-shrink: 0; }
 
         /* EXPAND BAR */
         .planner-expand-bar {
@@ -4197,7 +4236,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.170 ── */
+        /* ── Factsheet 2-col v15.9.171 ── */
         #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4250,7 +4289,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.170 ── */
+        /* ── Planner Widget compact v15.9.171 ── */
         .planner-hero { padding: 12px 14px 8px; }
         .planner-day-name { font-size: 20px; margin-bottom: 3px; }
         .planner-kw { font-size: 8px; margin-bottom: 2px; }
@@ -4279,157 +4318,6 @@
         }
         /* ── /Planner compact ── */
 
-        
-        /* ── Planner Widget v15.9.170 — Variant A ── */
-        /* Override base planner styles for compact Variant A layout */
-        #planner-widget .planner-card { cursor: default; }
-
-        /* Hero: compact 2-line header */
-        #planner-widget .planner-hero {
-            padding: 8px 14px 6px;
-            background: linear-gradient(140deg, #1c0e00 0%, #0e0e14 55%);
-        }
-        #planner-widget .planner-hero-bg-num { font-size: 50px; }
-        #planner-widget .planner-kw { font-size: 8px; margin-bottom: 1px; }
-        #planner-widget .planner-day-name { font-size: 18px; line-height: 1.1; margin-bottom: 2px; }
-        #planner-widget .planner-day-sub { font-size: 9px; margin-bottom: 5px; }
-        #planner-widget .planner-sprint-row { gap: 6px; }
-        #planner-widget .planner-sprint-label { font-size: 7px; }
-        #planner-widget .planner-sprint-pct { font-size: 9px; }
-
-        /* Status bar: compact */
-        #planner-widget .planner-status-bar { grid-template-columns: repeat(4,1fr); }
-        #planner-widget .planner-stat { padding: 6px 4px; }
-        #planner-widget .planner-stat-val { font-size: 18px; }
-        #planner-widget .planner-stat-label { font-size: 6px; letter-spacing: 0.08em; }
-
-        /* Body: 3-column grid */
-        #planner-widget .planner-body-grid {
-            display: grid;
-            grid-template-columns: 1fr 220px 160px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            min-height: 120px;
-        }
-        #planner-widget .planner-tasks {
-            padding: 8px 12px;
-            border-bottom: none;
-            border-right: 1px solid rgba(255,255,255,0.06);
-        }
-        #planner-widget .planner-tasks-hdr {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.16em;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-        }
-        #planner-widget .planner-tasks-hdr::after { display: none; }
-        #planner-widget .planner-task-row { padding: 4px 0; padding-left: 2px; gap: 6px; }
-        #planner-widget .planner-task-text { font-size: 11px; }
-        #planner-widget .planner-task-badge { font-size: 7px; padding: 1px 5px; flex-shrink: 0; }
-        #planner-widget .planner-task-num { font-size: 10px; width: 12px; }
-
-        /* Overdue */
-        #planner-widget .planner-task-row.overdue { border-left-color: #ef4444; }
-        #planner-widget .planner-task-row.overdue .planner-task-text::after {
-            content: ' ↑'; color: #ef4444; font-size: 9px; font-weight: 800;
-        }
-
-        /* Events col */
-        #planner-widget .planner-events-col {
-            padding: 8px 12px;
-            border-right: 1px solid rgba(255,255,255,0.06);
-            overflow: hidden;
-        }
-        #planner-widget .planner-events-col-hdr {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.16em;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-        #planner-widget .planner-event-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 0;
-            background: transparent;
-            border-radius: 0;
-            border-left: 2px solid #ff6b1a;
-            padding-left: 6px;
-            margin-bottom: 2px;
-        }
-        #planner-widget .planner-event-item.konzert { border-left-color: #a78bfa; }
-        #planner-widget .planner-event-date-lbl {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.4);
-            flex-shrink: 0;
-            min-width: 32px;
-        }
-        #planner-widget .planner-event-name {
-            font-size: 10px;
-            color: rgba(255,255,255,0.65);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex: 1;
-        }
-
-        /* Quick Actions col */
-        #planner-widget .planner-actions-col {
-            padding: 8px 10px;
-        }
-        #planner-widget .planner-actions-col-hdr {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 0.16em;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-        #planner-widget .planner-actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px;
-        }
-        #planner-widget .planner-action-shortcut {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 4px;
-            padding: 5px 7px;
-            cursor: pointer;
-            transition: background 0.12s;
-            text-align: left;
-        }
-        #planner-widget .planner-action-shortcut:hover {
-            background: rgba(255,255,255,0.09);
-            border-color: rgba(255,255,255,0.2);
-        }
-        #planner-widget .planner-action-shortcut-lbl {
-            font-size: 8px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.45);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            line-height: 1.2;
-            display: block;
-        }
-
-        /* Bottom expand bar */
-        #planner-widget .planner-expand-bar { padding: 5px 14px; }
-        #planner-widget .planner-expand-hint { font-size: 7px; }
-
-        /* Hide old bottom-grid since we replaced with body-grid */
-        #planner-widget .planner-bottom-grid { display: none !important; }
-
-        @media (max-width: 600px) {
-            #planner-widget .planner-body-grid { grid-template-columns: 1fr; }
-            #planner-widget .planner-events-col { border-right: none; border-top: 1px solid rgba(255,255,255,0.06); }
-            #planner-widget .planner-actions-col { border-top: 1px solid rgba(255,255,255,0.06); }
-        }
-        /* ── /Planner Variant A ── */
         </style>
 </head>
 <body>
@@ -4595,7 +4483,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.170 ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.171 ==================== -->
     <div id="planner-widget">
 
         <!-- COLLAPSED CARD -->
@@ -4632,39 +4520,34 @@
                 </div>
             </div>
 
-            <div class="planner-body-grid">
-                <!-- Tasks col -->
-                <div class="planner-tasks" id="planner-tasks-list">
-                    <div class="planner-tasks-hdr">Tasks heute</div>
-                    <div id="planner-task-rows" style="font-size:11px;color:rgba(255,255,255,0.3);padding:4px 0;">Lädt…</div>
+            <div class="planner-bottom-grid">
+                <!-- COL 1: BMT Events -->
+                <div class="planner-col">
+                    <div class="planner-col-label">Events · BMT</div>
+                    <div id="planner-events-list"><div class="planner-no-events">Lädt…</div></div>
                 </div>
-
-                <!-- Events col -->
-                <div class="planner-events-col">
-                    <div class="planner-events-col-hdr">Events · BMT</div>
-                    <div id="planner-events-list"><div class="planner-no-events" style="font-size:10px;color:rgba(255,255,255,0.2);">Lädt…</div></div>
+                <!-- COL 2: Tasks heute -->
+                <div class="planner-col">
+                    <div class="planner-tasks-hdr" style="margin-bottom:8px;">Tasks heute</div>
+                    <div id="planner-task-rows" style="font-size:11px;color:rgba(255,255,255,0.3);padding:2px 0;">Lädt…</div>
                 </div>
-
-                <!-- Quick Actions col -->
-                <div class="planner-actions-col">
-                    <div class="planner-actions-col-hdr">Quick Actions</div>
-                    <div class="planner-actions-grid">
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();openModal('factsheet-modal')"><span class="planner-action-shortcut-lbl">📋 Factsheet</span></button>
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();openModal('security-order-modal')"><span class="planner-action-shortcut-lbl">🛡️ Security</span></button>
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();openModal('monatsprogramm-modal')"><span class="planner-action-shortcut-lbl">📣 Promo</span></button>
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();openModal('email-modal')"><span class="planner-action-shortcut-lbl">✉️ Email</span></button>
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();openModal('dtw-modal')"><span class="planner-action-shortcut-lbl">📊 DTW</span></button>
-                        <button class="planner-action-shortcut" onclick="event.stopPropagation();plannerOpen()"><span class="planner-action-shortcut-lbl">📅 Planner</span></button>
-                    </div>
-                    <div style="margin-top:8px;">
-                        <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(239,68,68,0.6);margin-bottom:4px;">⚡ QON</div>
-                        <div id="planner-oqn-list"><div style="font-size:10px;color:rgba(255,255,255,0.2);font-style:italic;">Lädt…</div></div>
-                    </div>
+                <!-- COL 3: Quick Actions -->
+                <div class="planner-col planner-qa-col">
+                    <div class="planner-qa-label">⚡ Aktionen</div>
+                    <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('factsheet-modal')">
+                        <span class="planner-qa-icon">📋</span>Factsheet
+                    </button>
+                    <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('security-orders-modal')">
+                        <span class="planner-qa-icon">🔒</span>Security Order
+                    </button>
+                    <button class="planner-qa-btn" onclick="event.stopPropagation();window.open('https://club.bookmetender.com','_blank')">
+                        <span class="planner-qa-icon">🎫</span>BMT öffnen
+                    </button>
+                    <button class="planner-qa-btn" onclick="event.stopPropagation();plannerSync()">
+                        <span class="planner-qa-icon">↻</span>Tasks sync
+                    </button>
                 </div>
             </div>
-
-            <!-- keep bottom-grid in DOM but hidden via CSS -->
-            <div class="planner-bottom-grid" style="display:none!important;"></div>
 
             <div class="planner-expand-bar">
                 <div class="planner-expand-hint">
@@ -7635,7 +7518,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.170</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.171</span>
     </div>
     
     <!-- Metrics Button -->
@@ -8115,7 +7998,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.170</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.171</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -12207,7 +12090,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.171', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12286,7 +12169,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.170  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.171  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -12367,7 +12250,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -12441,7 +12324,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -12548,7 +12431,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -12632,7 +12515,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -12941,7 +12824,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.171', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13088,7 +12971,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.171', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13233,7 +13116,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.170', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18056,7 +17939,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.170';
+            const HUB_VERSION = 'v15.9.171';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19860,7 +19743,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.170 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.171 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -23564,7 +23447,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.170 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.171 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -23594,7 +23477,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.170',
+                hubVersion: 'v15.9.171',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -26198,7 +26081,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.170 =====
+// ===== PLANNER WIDGET v15.9.171 =====
 (function() {
     'use strict';
 
@@ -26344,20 +26227,13 @@ Spittelauer Lnde 12/1
             if (plannerState.bmtEvents.length === 0) {
                 evEl.innerHTML = '<div class="planner-no-events">Keine bevorstehenden Events</div>';
             } else {
-                // Deduplicate by name+date
-                const seen = new Set();
-                const unique = plannerState.bmtEvents.filter(e => {
-                    const key = (e.name||'') + '|' + (e.dateStr||'');
-                    if (seen.has(key)) return false;
-                    seen.add(key); return true;
-                });
-                evEl.innerHTML = unique.slice(0,5).map(e => {
+                evEl.innerHTML = plannerState.bmtEvents.slice(0,4).map(e => {
                     const cls = e.type === 'konzert' ? ' konzert' : '';
                     const isToday = e.date && e.date.toDateString() === new Date().toDateString();
-                    const dateLbl = isToday ? '<span style="color:#ff6b1a;font-weight:800;">HEUTE</span>' : `<span class="planner-event-date-lbl">${e.dateStr||''}</span>`;
+                    const label = isToday ? 'HEUTE' : (e.dateStr || '');
                     return `<div class="planner-event-item${cls}">
-                        ${dateLbl}
                         <div class="planner-event-name">${e.name}</div>
+                        <div class="planner-event-time" style="${isToday?'color:#ff6b1a;font-weight:700;':''}">${label}</div>
                     </div>`;
                 }).join('');
             }
