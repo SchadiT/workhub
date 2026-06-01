@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.168</title>
+    <title>Turbo Projects Work Hub v15.9.169</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -654,18 +654,23 @@
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;
-            overflow: hidden; padding: 8px;
+            overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
+        /* v15.9.169: adaptive modal — white border, scroll inside */
         .modal {
-            background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg);
-            width: 100%; max-width: 98vw; max-height: 96vh;
+            background: var(--surface);
+            border: 1.5px solid rgba(255,255,255,0.75);
+            border-radius: var(--radius-lg);
+            width: 100%; max-width: 98vw;
+            max-height: min(92vh, fit-content);
             margin: auto; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08);
         }
         .modal-header {
             background: #0f1623;
             padding: 11px 18px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;
         }
         .modal-header.orange { background: var(--warn); }
         .modal-header.purple { background: var(--konzert); }
@@ -674,7 +679,18 @@
         .modal-header h3 { font-size: 16px; font-weight: 700; color: #fff; }
         .modal-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; }
         .modal-close:hover { opacity: 1; }
-        .modal-body { padding: 16px; flex: 1; overflow-y: auto; }
+        .modal-body {
+            padding: 16px; flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            /* Visible scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.35) rgba(255,255,255,0.06);
+        }
+        .modal-body::-webkit-scrollbar { width: 7px; }
+        .modal-body::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
+        .modal-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+        .modal-body::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.55); }
         .modal-footer { padding: 12px 18px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: flex-end; gap: 10px; flex-shrink: 0; }
         /* Small modals override */
         .modal.modal-sm { max-width: 500px; }
@@ -3630,7 +3646,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.168 ===== */
+        /* ===== PLANNER WIDGET v15.9.169 ===== */
         
         #planner-widget {
             margin-bottom: 8px;
@@ -4180,6 +4196,89 @@
         }
         /* ===== /PLANNER WIDGET ===== */
 
+        
+        /* ── Factsheet 2-col v15.9.169 ── */
+        #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
+        #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
+        .fs-two-col {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 0;
+            height: 100%;
+            min-height: 0;
+        }
+        .fs-input-col {
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 0 14px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.25) transparent;
+        }
+        .fs-input-col::-webkit-scrollbar { width: 5px; }
+        .fs-input-col::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        .fs-preview-col {
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.02);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.25) transparent;
+        }
+        .fs-preview-col::-webkit-scrollbar { width: 5px; }
+        .fs-preview-col::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        .fs-preview-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        /* Compact form fields in factsheet */
+        #factsheet-modal .form-group { margin-bottom: 8px; }
+        #factsheet-modal .form-group label { font-size: 10px; margin-bottom: 2px; }
+        #factsheet-modal input[type="text"],
+        #factsheet-modal select { padding: 5px 8px; font-size: 12px; }
+        #factsheet-modal .form-row { gap: 8px; margin-bottom: 8px; }
+        /* Mobile: stack vertically */
+        @media (max-width: 768px) {
+            .fs-two-col { grid-template-columns: 1fr; }
+            .fs-input-col { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); max-height: 45vh; }
+            .fs-preview-col { max-height: 45vh; }
+        }
+        /* ── /Factsheet 2-col ── */
+
+        
+        /* ── Planner Widget compact v15.9.169 ── */
+        .planner-hero { padding: 12px 14px 8px; }
+        .planner-day-name { font-size: 20px; margin-bottom: 3px; }
+        .planner-kw { font-size: 8px; margin-bottom: 2px; }
+        .planner-day-sub { font-size: 9px; margin-bottom: 6px; }
+        .planner-sprint-row { gap: 5px; }
+        .planner-stat { padding: 6px 5px; }
+        .planner-stat-val { font-size: 18px; }
+        .planner-stat-label { font-size: 6px; }
+        .planner-tasks { padding: 8px 12px; }
+        .planner-tasks-hdr { font-size: 7px; margin-bottom: 5px; }
+        .planner-task-row { padding: 5px 0; padding-left: 2px; }
+        .planner-task-text { font-size: 12px; }
+        .planner-task-badge { font-size: 7px; padding: 1px 5px; }
+        .planner-col { padding: 8px 12px; }
+        .planner-col-label { font-size: 7px; margin-bottom: 5px; }
+        .planner-event-name { font-size: 10px; }
+        .planner-event-item { padding: 4px 6px; margin-bottom: 3px; }
+        .planner-hero-bg-num { font-size: 55px; }
+        /* Overdue task styling */
+        .planner-task-row.overdue { border-left-color: #ef4444; }
+        .planner-task-row.overdue .planner-task-text::after {
+            content: ' ↑';
+            color: #ef4444;
+            font-size: 9px;
+            font-weight: 700;
+        }
+        /* ── /Planner compact ── */
+
         </style>
 </head>
 <body>
@@ -4345,7 +4444,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.168 ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.169 ==================== -->
     <div id="planner-widget">
 
         <!-- COLLAPSED CARD -->
@@ -6312,7 +6411,10 @@
                 <h3> Factsheet Generator</h3>
                 <button class="modal-close" onclick="closeModal('factsheet-modal')">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding:0; display:flex; flex-direction:column; height:100%;">
+                <div class="fs-two-col">
+                <div class="fs-input-col">
+                <div style="padding:14px 14px 0;">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Event auswhlen</label>
@@ -6565,10 +6667,15 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;"> Preview</h4>
+                </div><!-- end padding wrapper -->
+            </div><!-- end fs-input-col -->
+            <div class="fs-preview-col">
+                <div class="fs-preview-label">Preview</div>
                 <div class="factsheet-preview" id="fs-preview">
                     <!-- Generated by JS -->
                 </div>
+            </div>
+        </div><!-- end fs-two-col -->
             </div>
             <div class="modal-footer" style="flex-wrap: wrap; gap: 8px;">
                 <button class="modal-btn cancel" onclick="closeModal('factsheet-modal')">Schliessen</button>
@@ -7359,7 +7466,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.168</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.169</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7839,7 +7946,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.168</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.169</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -10690,6 +10797,7 @@
         // 
         
         function openModal(id) {
+            document.body.style.overflow = 'hidden';
             const el = document.getElementById(id);
             if (!el) { console.warn('Modal not found:', id); return; }
             el.classList.add('show');
@@ -10729,7 +10837,16 @@
                 if (isPast) cb.checked = false;
             });
         }
-        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        function closeModal(id) {
+            setTimeout(() => {
+                const anyOpen = document.querySelectorAll('.modal-overlay.show').length > 0;
+                if (!anyOpen) document.body.style.overflow = '';
+            }, 50);
+        // Check if any other modals still open
+        setTimeout(() => {
+            const anyOpen = document.querySelectorAll('.modal-overlay.show').length > 0;
+            if (!anyOpen) document.body.style.overflow = '';
+        }, 50); document.getElementById(id).classList.remove('show'); }
         
         function toggleSection(label) { label.classList.toggle('open'); label.nextElementSibling.classList.toggle('open'); }
         
@@ -11921,7 +12038,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.169', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12000,7 +12117,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.168  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.169  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -12081,7 +12198,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.169', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -12155,7 +12272,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.169', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -12262,7 +12379,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.169', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -12346,7 +12463,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.169', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -12655,7 +12772,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.169', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -12802,7 +12919,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.169', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -12947,7 +13064,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.168', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.169', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -17770,7 +17887,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.168';
+            const HUB_VERSION = 'v15.9.169';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19574,7 +19691,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.168 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.169 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -23278,7 +23395,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.168 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.169 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -23308,7 +23425,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.168',
+                hubVersion: 'v15.9.169',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25912,7 +26029,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.168 =====
+// ===== PLANNER WIDGET v15.9.169 =====
 (function() {
     'use strict';
 
@@ -25992,9 +26109,11 @@ Spittelauer Lnde 12/1
         if (dayNameEl) dayNameEl.textContent = fmt.day;
         const daySubEl = document.getElementById('planner-day-sub');
 
-        // Tasks for today (due today or overdue, not completed)
-        const todayTasks = plannerState.tasks.filter(t => !t.completed && (plannerIsToday(t.dueDate) || plannerIsOverdue(t.dueDate)));
+        // Tasks: today first, then overdue, then done — sorted
+        const todayOpen = plannerState.tasks.filter(t => !t.completed && plannerIsToday(t.dueDate));
+        const overdueOpen = plannerState.tasks.filter(t => !t.completed && plannerIsOverdue(t.dueDate));
         const doneTodayTasks = plannerState.tasks.filter(t => t.completed && plannerIsToday(t.dueDate));
+        const todayTasks = [...todayOpen, ...overdueOpen];
         const allTodayTasks = [...todayTasks, ...doneTodayTasks];
         const totalToday = allTodayTasks.length;
         const doneCount = doneTodayTasks.length;
@@ -26034,11 +26153,12 @@ Spittelauer Lnde 12/1
                 let idx = 1;
                 rowsEl.innerHTML = display.map(t => {
                     const done = t.completed;
+                    const isOvd = plannerIsOverdue(t.dueDate) && !done;
                     const num = done ? '✓' : idx++;
                     const color = deptColor(t.listName);
                     const badge = t.listName ? t.listName.replace('GRELLE FORELLE-','').substring(0,6) : 'ADMIN';
                     const badgeClass = deptBadgeClass(t.listName);
-                    return `<div class="planner-task-row${done?' done':''}" onclick="plannerToggleTask(this,'${t.id}','${t.listId}')">
+                    return `<div class="planner-task-row${done?' done':''}${isOvd?' overdue':''}" onclick="plannerToggleTask(this,'${t.id}','${t.listId}')">
                         <div class="planner-task-num">${num}</div>
                         <div class="planner-task-cb"></div>
                         <div class="planner-task-dot" style="background:${color}"></div>
@@ -26053,13 +26173,15 @@ Spittelauer Lnde 12/1
         const evEl = document.getElementById('planner-events-list');
         if (evEl) {
             if (plannerState.bmtEvents.length === 0) {
-                evEl.innerHTML = '<div class="planner-no-events">Keine Events heute</div>';
+                evEl.innerHTML = '<div class="planner-no-events">Keine bevorstehenden Events</div>';
             } else {
-                evEl.innerHTML = plannerState.bmtEvents.slice(0,3).map(e => {
+                evEl.innerHTML = plannerState.bmtEvents.slice(0,4).map(e => {
                     const cls = e.type === 'konzert' ? ' konzert' : '';
+                    const isToday = e.date && e.date.toDateString() === new Date().toDateString();
+                    const label = isToday ? 'HEUTE' : (e.dateStr || '');
                     return `<div class="planner-event-item${cls}">
                         <div class="planner-event-name">${e.name}</div>
-                        <div class="planner-event-time">${e.time}</div>
+                        <div class="planner-event-time" style="${isToday?'color:#ff6b1a;font-weight:700;':''}">${label}</div>
                     </div>`;
                 }).join('');
             }
@@ -26249,39 +26371,57 @@ Spittelauer Lnde 12/1
         }
     }
 
-    // ── BMT Events: pull from hub's existing BMT data ──
+    // ── BMT Events: pull upcoming events from hub BMT data ──
     function plannerLoadBMTEvents() {
-        const today = new Date();
-        const todayStr = today.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
+        const today = new Date(); today.setHours(0,0,0,0);
         const events = [];
-        // Try to read from hub's rendered BMT cards
-        document.querySelectorAll('.bmt-event-card').forEach(card => {
-            const dateEl = card.querySelector('.bmt-date, [class*="date"]');
-            const nameEl = card.querySelector('.bmt-name, [class*="name"], [class*="title"]');
-            const timeEl = card.querySelector('.bmt-time, [class*="time"]');
-            if (nameEl) {
-                const cardText = card.textContent;
-                // Check if today's date appears in card
-                if (cardText.includes(today.getDate() + '.')) {
-                    const type = card.classList.contains('konzert') ? 'konzert' : 'club';
+
+        // Primary: window.bmtData (set by hub's BMT loader)
+        const sources = [window.bmtData, window.bmtEventsCache, window.allBmtEvents];
+        for (const src of sources) {
+            if (!src || !Array.isArray(src)) continue;
+            src.forEach(e => {
+                if (!e) return;
+                const rawDate = e.date || e.startDate || e.start_date || e.datum || '';
+                if (!rawDate) return;
+                const d = new Date(rawDate); d.setHours(0,0,0,0);
+                if (d >= today) {
                     events.push({
-                        name: nameEl.textContent.trim().substring(0, 30),
-                        time: timeEl ? timeEl.textContent.trim() : '',
-                        type
+                        name: (e.title || e.name || e.eventName || 'Event').substring(0, 32),
+                        time: e.time || e.startTime || e.start_time || '',
+                        type: (e.type || '').toLowerCase().includes('konzert') ? 'konzert' : 'club',
+                        date: d,
+                        dateStr: d.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'})
                     });
                 }
-            }
-        });
-        // Fallback: check hub BMT data object if available
-        if (events.length === 0 && typeof window.bmtEventsCache !== 'undefined') {
-            const todayISO = today.toISOString().split('T')[0];
-            (window.bmtEventsCache || []).forEach(e => {
-                if (e.date && e.date.startsWith(todayISO)) {
-                    events.push({ name: e.title || e.name || 'Event', time: e.time || '', type: e.type || 'club' });
+            });
+            if (events.length > 0) break;
+        }
+
+        // Fallback: scrape BMT event tiles from DOM
+        if (events.length === 0) {
+            document.querySelectorAll('[class*="bmt-event"],[class*="event-tile"],[class*="event-card"]').forEach(card => {
+                const text = card.textContent;
+                const nameEl = card.querySelector('h3,h4,[class*="name"],[class*="title"]');
+                if (!nameEl) return;
+                // Try to extract date from card text
+                const dateMatch = text.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+                if (!dateMatch) return;
+                const d = new Date(+dateMatch[3], +dateMatch[2]-1, +dateMatch[1]);
+                d.setHours(0,0,0,0);
+                if (d >= today) {
+                    events.push({
+                        name: nameEl.textContent.trim().substring(0,32),
+                        time: '', type: 'club', date: d,
+                        dateStr: `${dateMatch[1]}.${dateMatch[2]}`
+                    });
                 }
             });
         }
-        plannerState.bmtEvents = events;
+
+        // Sort ascending, show next 3
+        events.sort((a,b) => a.date - b.date);
+        plannerState.bmtEvents = events.slice(0, 5);
     }
 
     // ── Toggle task (local + MS Graph) ──
