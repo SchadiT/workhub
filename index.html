@@ -3882,16 +3882,83 @@
         .planner-badge-bar    { background: rgba(239,159,39,0.12); color: #EF9F27; }
         .planner-badge-qon    { background: rgba(239,68,68,0.12); color: #ef4444; }
 
-        /* BOTTOM GRID: Events + Tasks + Quick Actions (B3 3-col) */
+        /* BOTTOM GRID: Tasks | BMT+QON | Events+QA (B3 final) */
         .planner-bottom-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 180px;
+            grid-template-columns: 1.4fr 0.9fr 1fr;
             border-bottom: 1px solid rgba(255,255,255,0.06);
         }
         .planner-col {
             padding: 12px 14px;
         }
         .planner-col:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.06); }
+        /* Middle col: BMT stacked over QON */
+        .planner-mid-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .planner-mid-top {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex: 1;
+        }
+        .planner-mid-bot {
+            padding: 10px 14px;
+            background: rgba(239,68,68,0.02);
+        }
+        /* Right col: Events top, QA bottom */
+        .planner-right-col {
+            display: flex;
+            flex-direction: column;
+        }
+        .planner-right-events {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex: 1;
+        }
+        .planner-right-qa {
+            padding: 8px 10px;
+        }
+        /* QA button grid: 2-col */
+        .planner-qa-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .planner-qa-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 7px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 3px;
+            color: rgba(255,255,255,0.55);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            letter-spacing: 0.03em;
+            transition: all 0.12s;
+            white-space: nowrap;
+        }
+        .planner-qa-btn:hover { background: rgba(79,142,247,0.1); border-color: rgba(79,142,247,0.3); color: #fff; }
+        .planner-qa-btn.qa-qon { border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.7); }
+        .planner-qa-btn.qa-qon:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
+        .planner-qa-btn.qa-loor { border-color: rgba(34,212,122,0.2); color: rgba(34,212,122,0.6); }
+        .planner-qa-btn.qa-loor:hover { background: rgba(34,212,122,0.08); border-color: #22d47a; color: #22d47a; }
+        .planner-qa-icon { font-size: 10px; flex-shrink: 0; }
+        /* Task row: icon + due date */
+        .planner-task-due {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: rgba(255,255,255,0.25);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .planner-task-due.overdue { color: #ef4444; }
         .planner-col-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 7px;
@@ -3946,44 +4013,7 @@
         .planner-oqn-item:last-child { border-bottom: none; }
         .planner-oqn-arrow { color: rgba(239,68,68,0.55); font-size: 9px; flex-shrink: 0; margin-top: 1px; }
 
-        /* QUICK ACTIONS COL (B3 3rd col) */
-        .planner-qa-col {
-            background: rgba(79,142,247,0.02);
-        }
-        .planner-qa-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 7px;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: rgba(79,142,247,0.55);
-            margin-bottom: 8px;
-        }
-        .planner-qa-btn {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            width: 100%;
-            padding: 7px 9px;
-            margin-bottom: 5px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 4px;
-            color: rgba(255,255,255,0.6);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.12s;
-        }
-        .planner-qa-btn:hover {
-            background: rgba(79,142,247,0.1);
-            border-color: rgba(79,142,247,0.3);
-            color: #fff;
-        }
-        .planner-qa-btn:last-child { margin-bottom: 0; }
-        .planner-qa-icon { font-size: 12px; flex-shrink: 0; }
+        /* ── /Planner QA inline above ── */
 
         /* EXPAND BAR */
         .planner-expand-bar {
@@ -4229,6 +4259,8 @@
             .planner-day-name { font-size: 36px; }
             .planner-stat-val { font-size: 22px; }
             .planner-bottom-grid { grid-template-columns: 1fr; }
+            .planner-mid-col { border-top: 1px solid rgba(255,255,255,0.06); }
+            .planner-right-col { border-top: 1px solid rgba(255,255,255,0.06); }
             .planner-col:first-child { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
             .planner-weekly-grid { grid-template-columns: repeat(2, 1fr); }
             .planner-overlay-panel { max-height: 95vh; }
@@ -4521,32 +4553,58 @@
             </div>
 
             <div class="planner-bottom-grid">
-                <!-- COL 1: BMT Events -->
-                <div class="planner-col">
-                    <div class="planner-col-label">Events · BMT</div>
-                    <div id="planner-events-list"><div class="planner-no-events">Lädt…</div></div>
-                </div>
-                <!-- COL 2: Tasks heute -->
+
+                <!-- COL 1: TASKS -->
                 <div class="planner-col">
                     <div class="planner-tasks-hdr" style="margin-bottom:8px;">Tasks heute</div>
                     <div id="planner-task-rows" style="font-size:11px;color:rgba(255,255,255,0.3);padding:2px 0;">Lädt…</div>
                 </div>
-                <!-- COL 3: Quick Actions -->
-                <div class="planner-col planner-qa-col">
-                    <div class="planner-qa-label">⚡ Aktionen</div>
-                    <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('factsheet-modal')">
-                        <span class="planner-qa-icon">📋</span>Factsheet
-                    </button>
-                    <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('security-orders-modal')">
-                        <span class="planner-qa-icon">🔒</span>Security Order
-                    </button>
-                    <button class="planner-qa-btn" onclick="event.stopPropagation();window.open('https://club.bookmetender.com','_blank')">
-                        <span class="planner-qa-icon">🎫</span>BMT öffnen
-                    </button>
-                    <button class="planner-qa-btn" onclick="event.stopPropagation();plannerSync()">
-                        <span class="planner-qa-icon">↻</span>Tasks sync
-                    </button>
+
+                <!-- COL 2: BMT (top) + QON (bottom) stacked -->
+                <div class="planner-mid-col">
+                    <div class="planner-mid-top">
+                        <div class="planner-col-label">Events · BMT</div>
+                        <div id="planner-events-list"><div class="planner-no-events">Lädt…</div></div>
+                    </div>
+                    <div class="planner-mid-bot">
+                        <div class="planner-oqn-label">⚡ QON</div>
+                        <div id="planner-oqn-list"><div class="planner-no-events">Lädt…</div></div>
+                    </div>
                 </div>
+
+                <!-- COL 3: Quick Actions grid -->
+                <div class="planner-right-col">
+                    <div class="planner-right-qa">
+                        <div class="planner-qa-label" style="font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(79,142,247,0.55);margin-bottom:7px;">Quick Actions</div>
+                        <div class="planner-qa-grid">
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('factsheet-modal')">
+                                <span class="planner-qa-icon">📋</span>FACTSHEET
+                            </button>
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('security-orders-modal')">
+                                <span class="planner-qa-icon">🔒</span>SECURITY
+                            </button>
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('bar-staffing-modal')">
+                                <span class="planner-qa-icon">🎭</span>PROMO
+                            </button>
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('email-modal')">
+                                <span class="planner-qa-icon">✉</span>EMAIL
+                            </button>
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();document.getElementById('dtw-widget').scrollIntoView({behavior:'smooth'});dtwToggleDept('OFFICE')">
+                                <span class="planner-qa-icon">🏢</span>DTW
+                            </button>
+                            <button class="planner-qa-btn" onclick="event.stopPropagation();plannerOpen()">
+                                <span class="planner-qa-icon">📅</span>PLANNER
+                            </button>
+                            <button class="planner-qa-btn qa-qon" onclick="event.stopPropagation();dtwToggleDept('SPUTNIK')">
+                                <span class="planner-qa-icon">⚡</span>QON
+                            </button>
+                            <button class="planner-qa-btn qa-loor" onclick="event.stopPropagation();openModal('bar-staffing-modal')">
+                                <span class="planner-qa-icon">✓</span>LOOR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="planner-expand-bar">
@@ -26210,11 +26268,32 @@ Spittelauer Lnde 12/1
                     const color = deptColor(t.listName);
                     const badge = t.listName ? t.listName.replace('GRELLE FORELLE-','').substring(0,6) : 'ADMIN';
                     const badgeClass = deptBadgeClass(t.listName);
+                    // Icon based on dept
+                    const deptIcon = (n => {
+                        if (!n) return '●';
+                        const u = n.toUpperCase();
+                        if (u.includes('BAR')) return '🍺';
+                        if (u.includes('RUNNER')) return '🏃';
+                        if (u.includes('TECHNIK')) return '🔧';
+                        if (u.includes('OFFICE')) return '🏢';
+                        if (u.includes('SPUTNIK') || u.includes('QON')) return '⚡';
+                        return '●';
+                    })(t.listName);
+                    // Due date label
+                    let dueHtml = '';
+                    if (t.dueDate && !done) {
+                        const due = new Date(t.dueDate);
+                        const today = new Date(); today.setHours(0,0,0,0);
+                        due.setHours(0,0,0,0);
+                        const diffDays = Math.round((due - today) / 86400000);
+                        const dueLbl = diffDays === 0 ? 'heute' : diffDays === 1 ? 'morgen' : diffDays < 0 ? `${Math.abs(diffDays)}d ↑` : `${diffDays}d`;
+                        const dueClass = diffDays < 0 ? ' overdue' : '';
+                        dueHtml = `<span class="planner-task-due${dueClass}">${dueLbl}</span>`;
+                    }
                     return `<div class="planner-task-row${done?' done':''}${isOvd?' overdue':''}" onclick="plannerToggleTask(this,'${t.id}','${t.listId}')">
-                        <div class="planner-task-num">${num}</div>
-                        <div class="planner-task-cb"></div>
-                        <div class="planner-task-dot" style="background:${color}"></div>
+                        <span style="font-size:11px;flex-shrink:0;width:16px;text-align:center;">${deptIcon}</span>
                         <div class="planner-task-text">${t.title}</div>
+                        ${dueHtml}
                         <div class="planner-task-badge ${badgeClass}">${badge}</div>
                     </div>`;
                 }).join('');
