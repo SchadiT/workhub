@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.171</title>
+    <title>Turbo Projects Work Hub v15.9.172</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -316,6 +316,62 @@
             border-color: rgba(79,142,247,0.4);
             color: #fff;
         }
+        /* ── STATE SYNC v15.9.172 ── */
+        .sync-btn {
+            padding: 5px 9px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-family: 'JetBrains Mono', monospace;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.12s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .sync-btn:hover { background: rgba(34,212,122,0.1); border-color: #22d47a; color: #22d47a; }
+        .sync-btn.import-btn:hover { background: rgba(79,142,247,0.1); border-color: #4f8ef7; color: #4f8ef7; }
+        /* Sync modal */
+        #sync-modal .modal-overlay-inner { max-width: 480px; }
+        .sync-category {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+        }
+        .sync-category:last-child { border-bottom: none; }
+        .sync-category input[type=checkbox] { width: 15px; height: 15px; accent-color: #4f8ef7; cursor: pointer; flex-shrink: 0; }
+        .sync-cat-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); flex: 1; }
+        .sync-cat-detail { font-size: 10px; color: rgba(255,255,255,0.35); font-family: 'JetBrains Mono', monospace; }
+        .sync-cat-warn { font-size: 10px; color: #f5a623; font-family: 'JetBrains Mono', monospace; }
+        .sync-version-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            background: rgba(34,212,122,0.12);
+            color: #22d47a;
+            margin-left: 6px;
+        }
+        .sync-version-badge.warn { background: rgba(245,166,35,0.12); color: #f5a623; }
+        .sync-section-hdr {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+            margin: 10px 0 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* ── /STATE SYNC ── */
         .header-stat {
             font-size: 11px;
             color: var(--text-secondary);
@@ -657,7 +713,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.171: adaptive modal — white border, scroll inside */
+        /* v15.9.172: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid rgba(255,255,255,0.75);
@@ -3646,7 +3702,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.171 ===== */
+        /* ===== PLANNER WIDGET v15.9.172 ===== */
         
         #planner-widget {
             margin-bottom: 8px;
@@ -4268,7 +4324,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.171 ── */
+        /* ── Factsheet 2-col v15.9.172 ── */
         #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4321,7 +4377,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.171 ── */
+        /* ── Planner Widget compact v15.9.172 ── */
         .planner-hero { padding: 12px 14px 8px; }
         .planner-day-name { font-size: 20px; margin-bottom: 3px; }
         .planner-kw { font-size: 8px; margin-bottom: 2px; }
@@ -4498,6 +4554,9 @@
             </div>
         </div>
         <div class="header-right">
+            <button class="sync-btn" onclick="hubExportState()" title="Hub State exportieren">↓ Export</button>
+            <button class="sync-btn import-btn" onclick="document.getElementById('sync-file-input').click()" title="Hub State importieren">↑ Import</button>
+            <input type="file" id="sync-file-input" accept=".json" style="display:none" onchange="hubImportStateParse(event)">
             <button class="header-btn" id="auth-btn" onclick="handleAuth()">Sign in</button>
             <button class="header-btn" onclick="forceResetAuth()">↺</button>
             <button class="header-btn" onclick="toggleTheme()" id="theme-toggle">◑</button>
@@ -4515,7 +4574,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.171 ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.172 ==================== -->
     <div id="planner-widget">
 
         <!-- COLLAPSED CARD -->
@@ -7576,7 +7635,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.171</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.172</span>
     </div>
     
     <!-- Metrics Button -->
@@ -8056,7 +8115,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.171</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.172</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -12148,7 +12207,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.172', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12227,7 +12286,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.171  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.172  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -12308,7 +12367,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.172', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -12382,7 +12441,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.172', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -12489,7 +12548,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.172', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -12573,7 +12632,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.172', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -12882,7 +12941,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.172', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13029,7 +13088,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.172', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13174,7 +13233,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.171', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.172', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -17997,7 +18056,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.171';
+            const HUB_VERSION = 'v15.9.172';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19801,7 +19860,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.171 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.172 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -23505,7 +23564,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.171 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.172 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -23535,7 +23594,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.171',
+                hubVersion: 'v15.9.172',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -26139,7 +26198,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.171 =====
+// ===== PLANNER WIDGET v15.9.172 =====
 (function() {
     'use strict';
 
@@ -26717,7 +26776,330 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
     }
 })();
 // ===== /PLANNER WIDGET =====
+
+// ===== STATE SYNC v15.9.172 =====
+(function() {
+
+    const HUB_VER = 'v15.9.172';
+
+    // All localStorage keys to capture, grouped by category
+    const SYNC_CATEGORIES = [
+        {
+            id: 'linkbar',
+            name: 'Link Bar',
+            icon: '🔗',
+            keys: ['linkbar_v1', 'linktree_links_v1']
+        },
+        {
+            id: 'notes',
+            name: 'Notes & Quick Notes',
+            icon: '📝',
+            keys: ['qn_cards_v1', 'workhub_notepad', 'workhub-quick-notes', 'workhub-office-notes', 'workhub-hubdev']
+        },
+        {
+            id: 'dept_notes',
+            name: 'Department Notes (alle Depts)',
+            icon: '🏢',
+            prefixes: ['workhub-', 'dept_notes_']
+        },
+        {
+            id: 'factsheet',
+            name: 'Factsheet letzte Eingaben',
+            icon: '📋',
+            prefixes: ['fs_last_', 'factsheet_']
+        },
+        {
+            id: 'security',
+            name: 'Security Orders',
+            icon: '🔒',
+            keys: ['securityOrders']
+        },
+        {
+            id: 'shiftplan',
+            name: 'Shiftplan Daten',
+            icon: '👥',
+            keys: ['shiftplan_data', 'bar_data', 'techniker_data', 'barRoster', 'runnerRoster2']
+        },
+        {
+            id: 'bmt',
+            name: 'BMT Token & Cache',
+            icon: '🎫',
+            keys: ['bmtApiToken', 'bmtApiEvents', 'bmtApiCacheDate', 'bmtEvents', 'bmtLastUpdate', 'bmt_cancelled_log']
+        },
+        {
+            id: 'settings',
+            name: 'Settings (Theme, UI-State)',
+            icon: '⚙️',
+            keys: ['hubTheme', 'cpCollapsed', 'cpExpandedDepts', 'quickNotesCollapsed', 'ltCollapsed',
+                   'miniInboxCollapsed', 'invSectionCollapsed', 'dtwTgFilter',
+                   'workhub-last-save', 'workhub-metrics', 'workhub-notes-task-created']
+        },
+        {
+            id: 'tasks_done',
+            name: 'Task Done-Status (lokal)',
+            icon: '✅',
+            prefixes: ['planner_done_', 'task_done_']
+        },
+        {
+            id: 'guestlist',
+            name: 'Guestlist letzte Session',
+            icon: '📃',
+            keys: ['gl_last_saved']
+        }
+    ];
+
+    // Collect all keys for a category from localStorage
+    function collectKeys(cat) {
+        const result = {};
+        // Explicit keys
+        if (cat.keys) {
+            cat.keys.forEach(k => {
+                const v = localStorage.getItem(k);
+                if (v !== null) result[k] = v;
+            });
+        }
+        // Prefix scan
+        if (cat.prefixes) {
+            cat.prefixes.forEach(prefix => {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (k && k.startsWith(prefix)) {
+                        const v = localStorage.getItem(k);
+                        if (v !== null) result[k] = v;
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+    // Also scan dtw_last_tab_ and dtw_open_dept
+    function collectDtwKeys() {
+        const result = {};
+        ['dtw_open_dept'].forEach(k => {
+            const v = localStorage.getItem(k);
+            if (v !== null) result[k] = v;
+        });
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && (k.startsWith('dtw_last_tab_') || k.startsWith('dtw_'))) {
+                const v = localStorage.getItem(k);
+                if (v !== null) result[k] = v;
+            }
+        }
+        return result;
+    }
+
+    window.hubExportState = function() {
+        const state = {
+            _meta: {
+                hubVersion: HUB_VER,
+                exportedAt: new Date().toISOString(),
+                exportedFrom: window.location.hostname || 'local',
+                userAgent: navigator.userAgent.substring(0, 80)
+            }
+        };
+
+        // Collect all categories
+        SYNC_CATEGORIES.forEach(cat => {
+            const data = collectKeys(cat);
+            if (Object.keys(data).length > 0) state[cat.id] = data;
+        });
+
+        // DTW keys (settings category supplement)
+        const dtwData = collectDtwKeys();
+        if (Object.keys(dtwData).length > 0) {
+            state.settings = state.settings || {};
+            Object.assign(state.settings, dtwData);
+        }
+
+        // promo keys
+        const promoData = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && (k.startsWith('promo_') || k.startsWith('inv_'))) {
+                const v = localStorage.getItem(k);
+                if (v !== null) promoData[k] = v;
+            }
+        }
+        if (Object.keys(promoData).length > 0) state.promo = promoData;
+
+        const json = JSON.stringify(state, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `hub_state_${dateStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Toast
+        const t = document.getElementById('toast');
+        if (t) {
+            t.textContent = `✓ State exportiert: hub_state_${dateStr}.json`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    };
+
+    let _importPayload = null;
+
+    window.hubImportStateParse = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        event.target.value = '';
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const state = JSON.parse(e.target.result);
+                _importPayload = state;
+                hubShowImportModal(state);
+            } catch(err) {
+                alert('Fehler beim Lesen der Datei: ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    function hubShowImportModal(state) {
+        const modal = document.getElementById('sync-modal');
+        if (!modal) return;
+
+        // Version badge
+        const versionEl = document.getElementById('sync-modal-version');
+        const fileVer = state._meta && state._meta.hubVersion ? state._meta.hubVersion : 'unbekannt';
+        const exportDate = state._meta && state._meta.exportedAt
+            ? new Date(state._meta.exportedAt).toLocaleDateString('de-AT') + ' ' + new Date(state._meta.exportedAt).toLocaleTimeString('de-AT', {hour:'2-digit',minute:'2-digit'})
+            : '?';
+        if (versionEl) {
+            versionEl.textContent = fileVer + ' · ' + exportDate;
+            versionEl.className = 'sync-version-badge' + (fileVer !== HUB_VER ? ' warn' : '');
+        }
+
+        // Version warning
+        const warnEl = document.getElementById('sync-modal-warn');
+        if (warnEl) {
+            if (fileVer !== HUB_VER) {
+                warnEl.style.display = 'block';
+                warnEl.textContent = `⚠ State von ${fileVer} — aktuelle Version ist ${HUB_VER}. Import trotzdem möglich, aber einzelne Keys könnten inkompatibel sein.`;
+            } else {
+                warnEl.style.display = 'none';
+            }
+        }
+
+        // Build category list
+        const container = document.getElementById('sync-categories');
+        if (!container) return;
+
+        // Build all available categories from the file
+        const availableCats = [];
+
+        SYNC_CATEGORIES.forEach(cat => {
+            const fileData = state[cat.id];
+            if (fileData && Object.keys(fileData).length > 0) {
+                const count = Object.keys(fileData).length;
+                availableCats.push({ id: cat.id, name: cat.name, icon: cat.icon, count, type: 'standard' });
+            }
+        });
+
+        // Promo/inv keys
+        if (state.promo && Object.keys(state.promo).length > 0) {
+            availableCats.push({ id: 'promo', name: 'Promo & Rechnungen', icon: '🎭', count: Object.keys(state.promo).length, type: 'promo' });
+        }
+
+        if (availableCats.length === 0) {
+            container.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,0.35);padding:12px 0;">Keine bekannten Daten in dieser Datei gefunden.</div>';
+        } else {
+            container.innerHTML = availableCats.map(cat => `
+                <div class="sync-category" onclick="this.querySelector('input').click()">
+                    <input type="checkbox" id="sync-cb-${cat.id}" checked>
+                    <span class="sync-cat-name">${cat.icon} ${cat.name}</span>
+                    <span class="sync-cat-detail">${cat.count} Key${cat.count !== 1 ? 's' : ''}</span>
+                </div>
+            `).join('');
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    window.hubSelectAllCategories = function(checked) {
+        document.querySelectorAll('#sync-categories input[type=checkbox]').forEach(cb => cb.checked = checked);
+    };
+
+    window.hubImportStateExecute = function() {
+        if (!_importPayload) return;
+        const state = _importPayload;
+
+        // Get selected category IDs
+        const selected = new Set();
+        document.querySelectorAll('#sync-categories input[type=checkbox]:checked').forEach(cb => {
+            selected.add(cb.id.replace('sync-cb-', ''));
+        });
+
+        if (selected.size === 0) {
+            alert('Keine Kategorie gewählt.');
+            return;
+        }
+
+        let imported = 0;
+
+        // Import standard categories
+        SYNC_CATEGORIES.forEach(cat => {
+            if (!selected.has(cat.id)) return;
+            const data = state[cat.id];
+            if (!data) return;
+            Object.entries(data).forEach(([k, v]) => {
+                try { localStorage.setItem(k, v); imported++; } catch(e) {}
+            });
+        });
+
+        // Import promo
+        if (selected.has('promo') && state.promo) {
+            Object.entries(state.promo).forEach(([k, v]) => {
+                try { localStorage.setItem(k, v); imported++; } catch(e) {}
+            });
+        }
+
+        document.getElementById('sync-modal').style.display = 'none';
+        _importPayload = null;
+
+        const t = document.getElementById('toast');
+        if (t) {
+            t.textContent = `✓ ${imported} Keys importiert — Hub wird neu geladen…`;
+            t.classList.add('show');
+        }
+        setTimeout(() => location.reload(), 1500);
+    };
+
+})();
+// ===== /STATE SYNC =====
 </script>
+
+<!-- ==================== STATE SYNC MODAL v15.9.172 ==================== -->
+<div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+    <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
+        <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
+            <span style="font-size:16px;font-weight:700;color:#f5f0e8;">↑ State importieren</span>
+            <span id="sync-modal-version" class="sync-version-badge"></span>
+            <button onclick="document.getElementById('sync-modal').style.display='none'" style="margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:14px;">×</button>
+        </div>
+        <div style="padding:14px 18px;overflow-y:auto;flex:1;">
+            <div id="sync-modal-warn" style="display:none;padding:8px 12px;background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);border-radius:4px;font-size:11px;color:#f5a623;margin-bottom:12px;"></div>
+            <div class="sync-section-hdr">Was soll importiert werden?</div>
+            <div id="sync-categories"></div>
+        </div>
+        <div style="padding:12px 18px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;justify-content:flex-end;">
+            <button onclick="document.getElementById('sync-modal').style.display='none'" class="modal-btn">Abbrechen</button>
+            <button onclick="hubSelectAllCategories(true)" class="modal-btn">Alle wählen</button>
+            <button onclick="hubSelectAllCategories(false)" class="modal-btn">Keine</button>
+            <button onclick="hubImportStateExecute()" class="modal-btn primary">↑ Importieren & Reload</button>
+        </div>
+    </div>
+</div>
+<!-- ==================== /STATE SYNC MODAL ==================== -->
 
 </body>
 </html>
