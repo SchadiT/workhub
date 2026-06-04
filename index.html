@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.177</title>
+    <title>Turbo Projects Work Hub v15.9.181</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -39,201 +39,194 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-        /* ===== CSS TOKEN SYSTEM - v15.5.2 ===== */
+                /* ===== CSS TOKEN SYSTEM v15.9.181 — Dual Skin ===== */
         :root {
-            --bg: #0c0c12;
-            --surface: #141420;
-            --surface-2: #1c1c2a;
-            --border: rgba(255,255,255,0.08);
-            --border-strong: rgba(255,255,255,0.14);
+            /* DARK SKIN (Default) — Black / Deep Navy / Red */
+            --bg: #060810;
+            --surface: #0d1117;
+            --surface-2: #131a27;
+            --surface-3: #1a2235;
+            --border: #1e2d4a;
+            --border-strong: #2a4066;
 
-            --blue-dark: #0f1623;
-            --blue-medium: #162035;
-            --blue-accent: #1e3a5f;
+            --blue-dark: #0d1117;
+            --blue-medium: #132040;
+            --blue-accent: #1e3a6e;
 
-            --text: #f0f0f8;
+            --text: #e8eef8;
             --text-secondary: rgba(255,255,255,0.45);
             --muted: rgba(255,255,255,0.25);
+            --text-inverse: #060810;
 
             --accent: #4f8ef7;
             --accent-hover: #6ba3ff;
             --good: #22d47a;
             --warn: #f5a623;
-            --danger: #f04747;
+            --danger: #dc2626;
+            --danger-glow: rgba(220,38,38,0.2);
 
             --eigen: #22d47a;
             --fremd: rgba(255,255,255,0.4);
             --konzert: #a78bfa;
             --special: #f5a623;
             --technik: #22d4d4;
-            --feiertag: #f04747;
+            --feiertag: #ef4444;
             --outlook: rgba(255,255,255,0.25);
+
+            /* Component tokens */
+            --header-bg: linear-gradient(90deg, #060810 0%, #0d1f3d 50%, #060810 100%);
+            --header-accent: #b91c1c;
+            --header-text: #e8eef8;
+            --header-btn-bg: rgba(255,255,255,0.05);
+            --header-btn-border: #1e2d4a;
+            --header-btn-text: rgba(255,255,255,0.5);
+
+            --nav-bg: var(--surface);
+            --nav-btn-bg: var(--surface);
+            --nav-btn-border: var(--border);
+            --nav-btn-text: rgba(255,255,255,0.45);
+            --nav-btn-active-bg: var(--blue-medium);
+            --nav-btn-active-text: #c7d8f0;
+            --nav-btn-active-border: var(--blue-accent);
+
+            --panel-bg: var(--surface);
+            --panel-border: var(--border);
+            --panel-title-color: rgba(255,255,255,0.4);
+            --panel-title-line: var(--border);
+
+            --card-bg: var(--bg);
+            --card-border: var(--border);
+            --card-hover-bg: var(--surface-2);
+
+            --ticker-bg: var(--surface);
+            --ticker-border: var(--border);
+            --ticker-bar-bg: rgba(255,255,255,0.08);
+            --ticker-bar-fill: #b91c1c;
+            --ticker-badge-bg: rgba(185,28,28,0.2);
+            --ticker-badge-text: #f87171;
+            --ticker-badge-border: rgba(185,28,28,0.35);
+
+            --modal-bg: var(--surface);
+            --modal-border: rgba(255,255,255,0.15);
+            --modal-header-bg: #0d1f3d;
+            --modal-header-text: #fff;
+            --modal-overlay: rgba(0,0,0,0.85);
+
+            --section-header-bg: var(--blue-dark);
+            --section-header-border: var(--border);
+            --section-header-text: #fff;
+
+            --footer-bg: var(--surface);
+            --footer-border: var(--border);
+            --footer-text: rgba(255,255,255,0.2);
+
+            --input-bg: var(--bg);
+            --input-border: var(--border);
+            --input-text: var(--text);
+            --input-focus-border: var(--accent);
+
+            --scrollbar-thumb: rgba(255,255,255,0.3);
+            --scrollbar-track: rgba(255,255,255,0.04);
 
             --radius: 10px;
             --radius-sm: 7px;
             --radius-lg: 14px;
+
+            /* Skin toggle icon */
+            --skin-icon: "☀";
         }
         
-        /* Light Theme */
+        /* LIGHT SKIN — White / Navy / Red */
         [data-theme="light"] {
-            /* High Contrast Black/Gray/White Theme */
-            --bg: #f5f5f5;
+            --bg: #f0f2f5;
             --surface: #ffffff;
-            --surface-2: #e8e8e8;
-            --border: #333333;
-            
-            --text: #000000;
-            --text-secondary: #333333;
-            --muted: #666666;
-            
-            /* Override blues with grays */
-            --blue-dark: #1a1a1a;
-            --blue-medium: #333333;
-            --blue-light: #4a4a4a;
-            --blue-accent: #2a2a2a;
-            
-            /* Accents - keep some color for important items */
-            --good: #22c55e;
-            --warn: #f59e0b;
-            --danger: #ef4444;
-            --konzert: #8b5cf6;
+            --surface-2: #f7f9fc;
+            --surface-3: #edf1f7;
+            --border: #d1d9e6;
+            --border-strong: #a8b8cf;
+
+            --blue-dark: #1a2540;
+            --blue-medium: #243352;
+            --blue-accent: #1e3a6e;
+
+            --text: #1a2540;
+            --text-secondary: #4a5568;
+            --muted: #6b7280;
+            --text-inverse: #ffffff;
+
+            --accent: #3b6fc9;
+            --accent-hover: #2d5aa8;
+            --good: #16a34a;
+            --warn: #d97706;
+            --danger: #dc2626;
+            --danger-glow: rgba(220,38,38,0.08);
+
+            --eigen: #16a34a;
+            --fremd: #6b7280;
+            --konzert: #7c3aed;
+            --special: #d97706;
+            --technik: #0891b2;
+            --feiertag: #dc2626;
+            --outlook: #9ca3af;
+
+            /* Component tokens */
+            --header-bg: linear-gradient(90deg, #1a2540 0%, #1e3a6e 50%, #1a2540 100%);
+            --header-accent: #dc2626;
+            --header-text: #ffffff;
+            --header-btn-bg: rgba(255,255,255,0.1);
+            --header-btn-border: rgba(255,255,255,0.2);
+            --header-btn-text: rgba(255,255,255,0.7);
+
+            --nav-bg: var(--surface);
+            --nav-btn-bg: #ffffff;
+            --nav-btn-border: var(--border);
+            --nav-btn-text: #1a2540;
+            --nav-btn-active-bg: #1a2540;
+            --nav-btn-active-text: #ffffff;
+            --nav-btn-active-border: #1a2540;
+
+            --panel-bg: #ffffff;
+            --panel-border: var(--border);
+            --panel-title-color: #1a2540;
+            --panel-title-line: #dc2626;
+
+            --card-bg: #f7f9fc;
+            --card-border: var(--border);
+            --card-hover-bg: #edf1f7;
+
+            --ticker-bg: #1a2540;
+            --ticker-border: #1a2540;
+            --ticker-bar-bg: rgba(255,255,255,0.15);
+            --ticker-bar-fill: #dc2626;
+            --ticker-badge-bg: #dc2626;
+            --ticker-badge-text: #ffffff;
+            --ticker-badge-border: #dc2626;
+
+            --modal-bg: #ffffff;
+            --modal-border: var(--border);
+            --modal-header-bg: #1a2540;
+            --modal-header-text: #ffffff;
+            --modal-overlay: rgba(0,0,0,0.6);
+
+            --section-header-bg: #1a2540;
+            --section-header-border: #1a2540;
+            --section-header-text: #ffffff;
+
+            --footer-bg: #1a2540;
+            --footer-border: #1a2540;
+            --footer-text: rgba(255,255,255,0.4);
+
+            --input-bg: #ffffff;
+            --input-border: var(--border);
+            --input-text: #1a2540;
+            --input-focus-border: var(--accent);
+
+            --scrollbar-thumb: rgba(0,0,0,0.2);
+            --scrollbar-track: rgba(0,0,0,0.05);
+
+            /* Skin toggle icon */
+            --skin-icon: "🌙";
         }
-        
-        /* Light Theme Specific Overrides - High Contrast */
-        [data-theme="light"] .header-bar { background: #1a1a1a; border-color: #000; }
-        [data-theme="light"] .header-logo { color: #fff; }
-        [data-theme="light"] .header-btn { background: #333; border-color: #555; color: #fff; }
-        [data-theme="light"] .header-btn:hover { background: #555; }
-        [data-theme="light"] .bmt-header { background: #1a1a1a; border-color: #000; }
-        [data-theme="light"] .bmt-title { color: #fff; }
-        [data-theme="light"] .bmt-link { color: #fff; }
-        [data-theme="light"] .bmt-badge { border-color: #ef4444; color: #ef4444; }
-        [data-theme="light"] .bmt-btn { background: #333; border-color: #555; color: #fff; }
-        [data-theme="light"] .bmt-btn:hover { background: #555; }
-        [data-theme="light"] .bmt-month-btn { background: #333; border-color: #555; color: #fff; }
-        
-        /* Tools Toggle Buttons - CRITICAL FIX */
-        [data-theme="light"] .tools-toggle { background: #1a1a1a !important; border: 2px solid #333 !important; color: #fff !important; }
-        [data-theme="light"] .tools-toggle:hover { background: #333 !important; border-color: #555 !important; }
-        [data-theme="light"] .tools-toggle.unified { background: #1a1a1a !important; border: 2px solid #333 !important; }
-        [data-theme="light"] .tools-toggle span { color: #fff !important; }
-        [data-theme="light"] .tools-toggle .arrow { color: #fff !important; }
-        [data-theme="light"] .tools-section { background: #fff; border: 2px solid #333; padding: 15px; }
-        [data-theme="light"] .tools-grid { background: #fff; padding: 15px; gap: 10px; }
-        
-        [data-theme="light"] .tool-btn { background: #fff !important; border: 2px solid #333 !important; color: #000 !important; }
-        [data-theme="light"] .tool-btn:hover { background: #333 !important; color: #fff !important; border-color: #333 !important; }
-        [data-theme="light"] .tool-btn.border-blue,
-        [data-theme="light"] .tool-btn.border-white,
-        [data-theme="light"] .tool-btn.border-green,
-        [data-theme="light"] .tool-btn.border-red { border-color: #333 !important; }
-        [data-theme="light"] .tool-btn .tool-icon { filter: none; }
-        [data-theme="light"] .dept { background: #fff; border: 2px solid #333; }
-        [data-theme="light"] .dept-header { background: #1a1a1a; }
-        [data-theme="light"] .dept-header-left { color: #fff; }
-        [data-theme="light"] .dept-toggle { color: #fff; }
-        [data-theme="light"] .task-count { border-color: #fff; color: #fff; background: transparent; }
-        [data-theme="light"] .projects-count { border-color: #f59e0b; color: #f59e0b; background: transparent; }
-        [data-theme="light"] .notes-count { border-color: #3b82f6; color: #3b82f6; background: transparent; }
-        [data-theme="light"] .dept-tabs { background: #e8e8e8; }
-        [data-theme="light"] .dept-tab { background: #ddd; color: #333; border: 1px solid #999; }
-        [data-theme="light"] .dept-tab.active { background: #333; color: #fff; border-color: #333; }
-        [data-theme="light"] .dept-tab:hover { background: #444; color: #fff; }
-        [data-theme="light"] .tab-count { background: rgba(0,0,0,0.15); color: inherit; }
-        [data-theme="light"] .dept-content { background: #fff; }
-        [data-theme="light"] .tasks-btn { background: #333; color: #fff; border: none; }
-        [data-theme="light"] .tasks-btn:hover { background: #555; }
-        [data-theme="light"] .task-item { background: #f8f8f8; border-bottom: 1px solid #ddd; }
-        [data-theme="light"] .task-checkbox { border-color: #333; background: #fff; }
-        [data-theme="light"] .task-checkbox.checked { background: #22c55e; border-color: #22c55e; }
-        [data-theme="light"] .task-title { color: #000; }
-        [data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.7); }
-        [data-theme="light"] .modal { background: #fff; border: 2px solid #333; }
-        [data-theme="light"] .modal-header { background: #1a1a1a; border-bottom: none; }
-        [data-theme="light"] .modal-header h3 { color: #fff; }
-        [data-theme="light"] .modal-close { color: #fff; }
-        [data-theme="light"] .modal-close:hover { color: #ccc; }
-        [data-theme="light"] .modal-body { background: #fff; color: #000; }
-        [data-theme="light"] .modal-footer { background: #f5f5f5; border-top: 1px solid #ddd; }
-        [data-theme="light"] .modal-btn { background: #333; color: #fff; border: none; }
-        [data-theme="light"] .modal-btn:hover { background: #555; }
-        [data-theme="light"] .modal-btn.cancel { background: #666; }
-        [data-theme="light"] .modal-btn.success { background: #22c55e; }
-        [data-theme="light"] .modal-btn.primary { background: #333; border: 1px solid #000; }
-        [data-theme="light"] .calendar-box { background: #fff; border: 2px solid #333; }
-        [data-theme="light"] .calendar-header { color: #000; background: #f5f5f5; }
-        [data-theme="light"] .calendar-day { color: #333; }
-        [data-theme="light"] .calendar-day.today { background: #333; color: #fff; }
-        [data-theme="light"] .calendar-day.has-event { background: #1a1a1a; color: #fff; }
-        [data-theme="light"] .calendar-day.has-event::after { background: #22c55e; }
-        [data-theme="light"] .event-card { background: #f8f8f8; border: 1px solid #ddd; border-left: 4px solid #333; }
-        [data-theme="light"] .event-date { color: #333; font-weight: 700; }
-        [data-theme="light"] .event-name { color: #000; }
-        [data-theme="light"] .quick-notes { background: #fff; border: 2px solid #333; }
-        [data-theme="light"] .quick-notes textarea { background: #e8e8e8; color: #000; border: 1px solid #999; }
-        [data-theme="light"] .quick-notes textarea:focus { background: #f5f5f5; border-color: #333; }
-        [data-theme="light"] .quick-notes textarea::placeholder { color: #666; }
-        [data-theme="light"] .quick-notes-header { background: #1a1a1a; color: #fff; }
-        [data-theme="light"] .quick-btn { background: #333; color: #fff; border: none; }
-        [data-theme="light"] .quick-btn:hover { background: #555; }
-        [data-theme="light"] .footer a { background: #333; color: #fff; }
-        [data-theme="light"] .footer a:hover { background: #555; }
-        [data-theme="light"] .metrics-btn { background: #333; border-color: #555; color: #fff; }
-        [data-theme="light"] .metrics-btn:hover { background: #555; }
-        [data-theme="light"] .metrics-card { background: #f8f8f8; border: 1px solid #ddd; }
-        [data-theme="light"] .metrics-card-header { color: #000; border-bottom-color: #ddd; }
-        [data-theme="light"] .metrics-row { color: #333; }
-        [data-theme="light"] .metrics-value { color: #000; }
-        [data-theme="light"] .metrics-value.good { color: #22c55e; }
-        [data-theme="light"] .metrics-app { background: #e8e8e8; }
-        [data-theme="light"] .metrics-app span:first-child { color: #666; }
-        [data-theme="light"] .metrics-app span:last-child { color: #000; }
-        [data-theme="light"] .upcoming-section-header { background: #1a1a1a; border-color: #000; }
-        [data-theme="light"] .upcoming-title { color: #fff; }
-        [data-theme="light"] .upcoming-count { border-color: #ef4444; color: #ef4444; }
-        [data-theme="light"] .upcoming-toggle { color: #fff; }
-        [data-theme="light"] .shiftplan-table { background: #fff; }
-        [data-theme="light"] .shiftplan-table th { background: #333; color: #fff; }
-        [data-theme="light"] .shiftplan-table td { color: #000; border-color: #ddd; }
-        [data-theme="light"] .shiftplan-table tr:hover { background: #f0f0f0; }
-        [data-theme="light"] .cvd-col { color: #f59e0b !important; }
-        [data-theme="light"] .dropdown-content { background: #fff; border: 1px solid #333; }
-        [data-theme="light"] .dropdown-item { color: #000; }
-        [data-theme="light"] .dropdown-item:hover { background: #333; color: #fff; }
-        [data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea { 
-            background: #fff; color: #000; border: 1px solid #999; 
-        }
-        [data-theme="light"] input:focus, [data-theme="light"] select:focus, [data-theme="light"] textarea:focus { 
-            border-color: #333; outline: 2px solid #333; 
-        }
-        [data-theme="light"] .dept-notes { background: #e8e8e8; color: #000; border: 1px solid #999; }
-        [data-theme="light"] .dept-notes:focus { background: #f5f5f5; border-color: #333; }
-        [data-theme="light"] .form-group label { color: #000; }
-        [data-theme="light"] .version { color: #666; }
-        [data-theme="light"] .upload-btn { background: #333 !important; border-color: #555 !important; color: #fff !important; }
-        
-        /* Projects in light theme */
-        [data-theme="light"] .projects-add-btn { background: #333; color: #fff; border-color: #333; }
-        [data-theme="light"] .projects-add-btn:hover { background: #555; }
-        [data-theme="light"] .project-card { background: #f8f8f8; border-color: #ccc; }
-        [data-theme="light"] .project-card:hover { background: #e8e8e8; border-color: #333; }
-        [data-theme="light"] .project-card-title { color: #000; }
-        [data-theme="light"] .project-card-notes { color: #333; }
-        [data-theme="light"] .project-attachment-badge { background: #333; color: #fff; }
-        
-        /* Metrics charts in light theme */
-        [data-theme="light"] .metrics-summary-card { background: #f8f8f8; border-color: #ccc; }
-        [data-theme="light"] .metrics-summary-value { color: #000; }
-        [data-theme="light"] .metrics-summary-label { color: #666; }
-        [data-theme="light"] .chart-bar { background: linear-gradient(180deg, #333 0%, #555 100%); }
-        [data-theme="light"] .chart-bar.today { background: linear-gradient(180deg, #22c55e 0%, #15803d 100%); }
-        [data-theme="light"] .chart-label { color: #666; }
-        [data-theme="light"] .tool-bar { background: linear-gradient(90deg, #333 0%, #555 100%); }
-        [data-theme="light"] .tool-bar-bg { background: #e0e0e0; }
-        [data-theme="light"] .tool-name { color: #333; }
-        [data-theme="light"] .tool-count { color: #000; }
-        [data-theme="light"] .metrics-table th { background: #333; color: #fff; }
-        [data-theme="light"] .metrics-table td { color: #000; border-color: #ddd; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -242,7 +235,7 @@
             min-height: 100vh;
             padding: 20px;
             color: var(--text);
-            transition: background 0.3s, color 0.3s;
+            transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
         
@@ -251,9 +244,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(90deg, #0a0a0f 0%, #3b82f6 50%, #0a0a0f 100%);
+            background: var(--header-bg);
             border: none;
-            border-bottom: 1px solid rgba(59,130,246,0.4);
+            border-bottom: 3px solid var(--header-accent);
             padding: 8px 16px;
             margin-bottom: 8px;
             border-radius: 0;
@@ -299,11 +292,11 @@
             justify-content: flex-end;
         }
         .header-btn {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--header-btn-bg);
+            border: 1px solid var(--header-btn-border);
             border-radius: 8px;
             padding: 5px 12px;
-            color: rgba(255,255,255,0.7);
+            color: var(--header-btn-text);
             font-size: 10px;
             font-weight: 600;
             cursor: pointer;
@@ -313,10 +306,10 @@
         }
         .header-btn:hover {
             background: rgba(79,142,247,0.15);
-            border-color: rgba(79,142,247,0.4);
+            border-color: var(--header-accent);
             color: #fff;
         }
-        /* ── STATE SYNC v15.9.177 ── */
+        /* ── STATE SYNC v15.9.181 ── */
         .sync-btn {
             padding: 5px 9px;
             font-size: 10px;
@@ -645,20 +638,20 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
+            color: var(--text-secondary);
         }
         .app-dock-header-line {
             flex: 1;
             height: 1px;
-            background: rgba(255,255,255,0.08);
+            background: var(--border);
         }
-        [data-theme="light"] .app-dock-header-title { color: rgba(0,0,0,0.55); }
-        [data-theme="light"] .app-dock-header-line { background: rgba(0,0,0,0.1); }
+        [data-theme="light"] .app-dock-header-title { color: var(--muted); }
+        [data-theme="light"] .app-dock-header-line { background: var(--border); }
 
         /* Light theme: dock blends with light bg — add a soft tint */
         [data-theme="light"] .app-dock {
-            background: #ffffff;
-            border-color: #d4d4dc;
+            background: var(--surface);
+            border-color: var(--border);
             box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
 
@@ -674,10 +667,10 @@
         }
         
         .quick-btn {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
+            background: var(--section-header-bg);
+            border: 1px solid var(--border-strong);
             padding: 12px 8px;
-            color: #fff; text-decoration: none; text-align: center;
+            color: var(--section-header-text); text-decoration: none; text-align: center;
             font-weight: 600; font-size: 11px; cursor: pointer;
             transition: all 0.2s; display: block;
             text-transform: uppercase;
@@ -709,14 +702,14 @@
         /* Modal Styles */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;
+            background: var(--modal-overlay); z-index: 1000; justify-content: center; align-items: center;
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.177: adaptive modal — white border, scroll inside */
+        /* v15.9.181: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
-            border: 1.5px solid rgba(255,255,255,0.75);
+            border: 1.5px solid var(--modal-border);
             border-radius: var(--radius-lg);
             width: 100%; max-width: 98vw;
             max-height: min(92vh, fit-content);
@@ -724,14 +717,14 @@
             box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08);
         }
         .modal-header {
-            background: #0f1623;
+            background: var(--modal-header-bg);
             padding: 11px 18px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;
+            border-bottom: 1px solid var(--border); flex-shrink: 0;
         }
         .modal-header.orange { background: var(--warn); }
         .modal-header.purple { background: var(--konzert); }
         .modal-header.green { background: var(--good); }
-        .modal-header.blue { background: #1e3a5f; }
+        .modal-header.blue { background: var(--blue-accent); }
         .modal-header h3 { font-size: 16px; font-weight: 700; color: #fff; }
         .modal-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; }
         .modal-close:hover { opacity: 1; }
@@ -741,7 +734,7 @@
             overflow-x: hidden;
             /* Visible scrollbar */
             scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.35) rgba(255,255,255,0.06);
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
         }
         .modal-body::-webkit-scrollbar { width: 7px; }
         .modal-body::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
@@ -840,8 +833,8 @@
             margin-bottom: 16px;
         }
         .section-header {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
+            background: var(--section-header-bg);
+            border: 1.5px solid var(--section-header-border);
             padding: 14px 20px;
             display: flex;
             justify-content: space-between;
@@ -961,8 +954,8 @@
         /* Calendar Section */
         .calendar-section { margin-bottom: 0; }
         .calendar-section-header {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
+            background: var(--section-header-bg);
+            border: 1.5px solid var(--section-header-border);
             padding: 14px 20px;
             display: flex;
             justify-content: space-between;
@@ -1011,11 +1004,11 @@
             margin-bottom: 12px;
         }
         .calendar-nav-btn {
-            background: var(--blue-dark); border: 1px solid #fff; color: #fff;
+            background: var(--section-header-bg); border: 1px solid var(--border-strong); color: var(--section-header-text);
             padding: 8px 16px; cursor: pointer;
             font-size: 11px; font-weight: 600;
         }
-        .calendar-nav-btn:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
+        .calendar-nav-btn:hover { background: var(--blue-medium); border-color: var(--accent); color: #fff; }
         .calendar-month-title { font-size: 15px; font-weight: 600; color: #fff; }
         .calendar-grid {
             display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
@@ -1151,29 +1144,29 @@
         .vvk-days { background: var(--surface-2); border: 1px solid var(--border); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; color: var(--text-secondary); }
         .vvk-progress-bar { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
         .vvk-progress { height: 100%; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #22c55e 100%); border-radius: 4px; transition: width 0.3s ease; }
-        .vvk-benchmark { font-size: 11px; color: #888; text-align: center; }
+        .vvk-benchmark { font-size: 11px; color: var(--muted); text-align: center; }
         
         .auto-projection {
-            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
-            border: 1px solid #3b82f6; border-radius: 0; padding: 12px 15px; margin: 12px 0;
+            background: var(--surface-2);
+            border: 1px solid var(--accent); border-radius: 0; padding: 12px 15px; margin: 12px 0;
         }
         .projection-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-        .proj-box { background: #1a1a2e; padding: 10px; border-radius: 0; text-align: center; }
-        .proj-box-label { font-size: 10px; color: #888; margin-bottom: 3px; text-transform: uppercase; }
+        .proj-box { background: var(--surface); padding: 10px; border-radius: 0; text-align: center; }
+        .proj-box-label { font-size: 10px; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; }
         .proj-box-value { font-size: 16px; font-weight: 700; color: #22c55e; }
         .proj-box-value.tickets { color: #3b82f6; }
         .proj-box-value.bar { color: #f59e0b; }
-        .projection-basis { font-size: 11px; color: #888; text-align: center; padding-top: 8px; border-top: 1px solid #3d3d54; }
+        .projection-basis { font-size: 11px; color: var(--muted); text-align: center; padding-top: 8px; border-top: 1px solid var(--border); }
         
         .cvd-badge { display: inline-flex; align-items: center; gap: 5px; background: #43A047; color: white; padding: 5px 10px; border-radius: 0; font-size: 12px; font-weight: 600; margin: 10px 0; }
         
         .event-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
         .event-action-btn {
-            flex: 1; min-width: 100px; background: #3d3d54; border: none; border-radius: 0;
-            padding: 10px; color: white; font-size: 12px; font-weight: 600;
+            flex: 1; min-width: 100px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 0;
+            padding: 10px; color: var(--text); font-size: 12px; font-weight: 600;
             cursor: pointer; transition: all 0.2s;
         }
-        .event-action-btn:hover { background: #4d4d64; }
+        .event-action-btn:hover { background: var(--surface-3); }
         .event-action-btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         
         /* Toast */
@@ -1233,7 +1226,7 @@
                 flex: 0 0 100% !important;
                 width: 100% !important;
                 order: 10;
-                border-top: 1px solid #1e3a5f;
+                border-top: 1px solid var(--border);
                 margin: 0 -10px;
                 padding: 0;
             }
@@ -1308,11 +1301,11 @@
         .cp-dept-icon { font-size: 14px; flex-shrink: 0; }
         .cp-dept-row-name { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; min-width: 60px; }
         .cp-open-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; }
-        .cp-dept-minibar { flex: 1; height: 3px; background: #1e2a3a; border-radius: 2px; overflow: hidden; min-width: 40px; }
+        .cp-dept-minibar { flex: 1; height: 3px; background: var(--surface-2); border-radius: 2px; overflow: hidden; min-width: 40px; }
         .cp-dept-minibar-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
         .cp-dept-row-pct { font-size: 11px; color: #4b5563; min-width: 32px; text-align: right; flex-shrink: 0; }
         .cp-dept-row-body { border-top: 1px solid rgba(255,255,255,0.04); }
-        #cp-alerts-bar { background: #08080f; border-bottom: 1px solid rgba(239,68,68,0.15); padding: 5px 14px; display: flex; align-items: center; gap: 10px; }
+        #cp-alerts-bar { background: var(--bg); border-bottom: 1px solid rgba(239,68,68,0.15); padding: 5px 14px; display: flex; align-items: center; gap: 10px; }
         .cp-alert-label { font-size: 10px; letter-spacing: 1px; color: #ef4444; text-transform: uppercase; font-weight: 600; flex-shrink: 0; }
         .cp-alert-pill { font-size: 10px; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
         .cp-alert-pill-red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; }
@@ -1321,8 +1314,8 @@
         .cp-task-item:last-child { border-bottom: none; }
         .cp-task-cb { margin-top: 2px; width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; accent-color: #3b82f6; }
         .cp-task-title { font-size: 12px; color: var(--text); flex: 1; line-height: 1.4; }
-        .cp-task-title.done { text-decoration: line-through; color: #555; }
-        .cp-task-due { font-size: 10px; color: #888; white-space: nowrap; margin-top: 2px; }
+        .cp-task-title.done { text-decoration: line-through; color: var(--muted); }
+        .cp-task-due { font-size: 10px; color: var(--muted); white-space: nowrap; margin-top: 2px; }
         .cp-task-due.overdue { color: #ef4444; font-weight: 600; }
         /* Calendar full width */
         #calendar-full-width { border: 1px solid var(--border); overflow: hidden; }
@@ -1334,10 +1327,10 @@
             border: 1px solid var(--border);
         }
         .dept-header {
-            padding: 14px 20px; color: #fff; font-weight: 600; font-size: 12px;
+            padding: 14px 20px; color: var(--section-header-text); font-weight: 600; font-size: 12px;
             display: flex; align-items: center; justify-content: space-between;
             letter-spacing: 1px; cursor: pointer;
-            background: var(--blue-dark);
+            background: var(--section-header-bg);
             text-transform: uppercase;
             border-left: 3px solid var(--border);
         }
@@ -1355,7 +1348,7 @@
         .dept-tabs {
             display: flex;
             gap: 0;
-            background: var(--blue-dark);
+            background: var(--section-header-bg);
             border-bottom: 2px solid var(--border);
             overflow-x: auto;
             padding: 0;
@@ -1400,25 +1393,25 @@
             padding: 12px;
             font-size: 13px;
             font-family: inherit;
-            background: #2a2a2a;
-            border: 1px solid #555;
-            color: #fff;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--input-text);
             resize: vertical;
         }
         .dept-notes:focus {
             outline: none;
-            border-color: #fff;
-            background: #333;
+            border-color: var(--accent);
+            background: var(--surface-2);
         }
         .dept-notes::placeholder {
-            color: #888;
+            color: var(--muted);
         }
         
         /* Projects System */
         .projects-container { padding: 10px; }
         .projects-header { margin-bottom: 12px; }
         .projects-add-btn { 
-            background: var(--blue-dark); border: 1px solid #fff; color: #fff; 
+            background: var(--section-header-bg); border: 1px solid var(--border-strong); color: var(--section-header-text); 
             padding: 8px 16px; cursor: pointer; font-size: 12px; 
         }
         .projects-add-btn:hover { background: var(--blue-medium); }
@@ -1442,7 +1435,7 @@
             background: var(--blue-dark); padding: 2px 8px; font-size: 10px; 
             color: #fff; border: 1px solid var(--border); 
         }
-        .project-empty { text-align: center; color: #888; padding: 30px; font-size: 13px; }
+        .project-empty { text-align: center; color: var(--muted); padding: 30px; font-size: 13px; }
         
         /* Project Modal Specific */
         #project-modal .modal {
@@ -1550,7 +1543,7 @@
         .dept-header-left { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
         .dept-toggle { font-size: 10px; color: #fff; transition: transform 0.3s; }
         .dept.open .dept-toggle { transform: rotate(180deg); }
-        .task-count { background: transparent; border: 1px solid #fff; color: #fff; padding: 2px 8px; font-size: 10px; }
+        .task-count { background: transparent; border: 1px solid var(--border-strong); color: var(--section-header-text); padding: 2px 8px; font-size: 10px; }
         .projects-count { background: transparent; border: 1px solid #f59e0b; color: #f59e0b; padding: 2px 8px; font-size: 10px; }
         .notes-count { background: transparent; border: 1px solid #3b82f6; color: #3b82f6; padding: 2px 8px; font-size: 10px; }
         .shiftplan-countdown { font-size: 9px; margin-left: 6px; color: #fff; white-space: nowrap; flex-shrink: 0; display: inline-block; }
@@ -1638,7 +1631,7 @@
         .tasks-list.open { display: block; }
         .task-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 20px; border-bottom: 1px solid var(--border); }
         .task-item:last-child { border-bottom: none; }
-        .task-checkbox { width: 18px; height: 18px; border: 2px solid #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: center; background: transparent; flex-shrink: 0; margin-top: 2px; }
+        .task-checkbox { width: 18px; height: 18px; border: 2px solid var(--border-strong); cursor: pointer; display: flex; align-items: center; justify-content: center; background: transparent; flex-shrink: 0; margin-top: 2px; }
         .task-checkbox:hover { border-color: var(--good); }
         .task-checkbox.checked { background: var(--good); border-color: var(--good); }
         .task-checkbox.checked::after { content: '\2714'; color: white; font-size: 12px; }
@@ -1654,7 +1647,7 @@
         .tasks-login-prompt { padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
         .tasks-login-prompt button { margin-top: 10px; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; }
         
-        .tasks-btn { color: #fff; padding: 12px; font-size: 11px; text-align: center; display: block; width: 100%; font-weight: 600; margin-top: 12px; border: 1px solid #fff; cursor: pointer; background: var(--blue-dark); text-transform: uppercase; letter-spacing: 0.5px; }
+        .tasks-btn { color: var(--section-header-text); padding: 12px; font-size: 11px; text-align: center; display: block; width: 100%; font-weight: 600; margin-top: 12px; border: 1px solid var(--border-strong); cursor: pointer; background: var(--section-header-bg); text-transform: uppercase; letter-spacing: 0.5px; }
         .tasks-btn:hover { background: var(--blue-medium); border-color: #fff; color: #fff; }
         
         .cleaning-list { padding: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -1701,7 +1694,7 @@
             font-weight: 700;
         }
         .tag-club { background: #ef4444; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; margin-left: 8px; font-weight: 600; }
-        .calendar-time { color: #666; font-size: 12px; min-width: 50px; }
+        .calendar-time { color: var(--muted); font-size: 12px; min-width: 50px; }
         .calendar-pax { background: #8E24AA; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
         
         /* BMT Events Section */
@@ -1709,8 +1702,8 @@
             margin-bottom: 16px;
         }
         .bmt-header {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
+            background: var(--section-header-bg);
+            border: 1.5px solid var(--section-header-border);
             padding: 14px 20px;
             display: flex;
             justify-content: space-between;
@@ -1748,10 +1741,10 @@
             flex-wrap: wrap;
         }
         .bmt-btn {
-            background: var(--blue-dark);
-            border: 1px solid #fff;
+            background: var(--section-header-bg);
+            border: 1px solid var(--border-strong);
             padding: 8px 12px;
-            color: #fff;
+            color: var(--section-header-text);
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
@@ -1793,7 +1786,7 @@
             background: var(--border);
         }
         .bmt-event-card {
-            background: linear-gradient(135deg, #252542 0%, #1a1a2e 100%);
+            background: var(--surface-2);
             border-radius: 0;
             padding: 10px;
             border-left: 3px solid #3b82f6;
@@ -1814,7 +1807,7 @@
         
         .bmt-event-date {
             font-size: 10px;
-            color: #888;
+            color: var(--muted);
             margin-bottom: 2px;
         }
         .bmt-event-name {
@@ -1840,14 +1833,14 @@
         
         .bmt-event-time {
             font-size: 10px;
-            color: #666;
+            color: var(--muted);
             margin-top: 4px;
         }
         
         /* Cleaning Schedule Section */
         .cleaning-section {
-            background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%);
-            border: 1px solid #22c55e;
+            background: var(--surface-2);
+            border: 1px solid var(--good);
             border-radius: 0;
             padding: 20px;
             margin-bottom: 20px;
@@ -1869,7 +1862,7 @@
             gap: 10px;
         }
         .cleaning-item {
-            background: #252542;
+            background: var(--surface);
             border-radius: 0;
             padding: 12px 15px;
             display: flex;
@@ -1882,7 +1875,7 @@
         }
         .cleaning-day {
             font-size: 11px;
-            color: #888;
+            color: var(--muted);
         }
         .cleaning-type {
             padding: 4px 10px;
@@ -1895,13 +1888,13 @@
         .cleaning-type.standard { background: #22c55e; color: white; }
         .cleaning-event {
             font-size: 11px;
-            color: #888;
+            color: var(--muted);
             margin-top: 4px;
         }
         
         .bmt-status {
             font-size: 12px;
-            color: #888;
+            color: var(--muted);
             text-align: center;
             padding: 20px;
         }
@@ -1925,10 +1918,10 @@
         .cleaning-table th, .cleaning-table td {
             padding: 10px 12px;
             text-align: left;
-            border-bottom: 1px solid #3d3d54;
+            border-bottom: 1px solid var(--border);
         }
         .cleaning-table th {
-            color: #888;
+            color: var(--muted);
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
@@ -1938,8 +1931,8 @@
         }
         
         .footer { margin-top: 25px; text-align: center; }
-        .footer a { background: #2d2d44; color: white; padding: 15px 30px; border-radius: 0; text-decoration: none; display: inline-block; }
-        .version { color: #555; font-size: 11px; text-align: center; margin-top: 15px; }
+        .footer a { background: var(--footer-bg); border: 1px solid var(--footer-border); color: var(--section-header-text); padding: 15px 30px; border-radius: 0; text-decoration: none; display: inline-block; }
+        .version { color: var(--muted); font-size: 11px; text-align: center; margin-top: 15px; }
         
         /* Top Stats Dashboard */
         .top-stats-dashboard {
@@ -1958,8 +1951,8 @@
         /* Metrics Button */
         .metrics-button-container { text-align: center; margin: 20px 0; }
         .metrics-btn { 
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
-            border: 1px solid #3b82f6; color: #fff; padding: 12px 30px; 
+            background: var(--section-header-bg);
+            border: 1px solid var(--accent); color: var(--section-header-text); padding: 12px 30px; 
             font-size: 14px; font-weight: 600; cursor: pointer; 
             transition: all 0.3s;
         }
@@ -2018,34 +2011,34 @@
         .metrics-table tr:last-child td { border-bottom: none; }
         .metrics-table td:last-child { text-align: right; font-weight: 700; color: #fff; }
         
-        .loading-spinner { text-align: center; padding: 40px; color: #888; }
+        .loading-spinner { text-align: center; padding: 40px; color: var(--muted); }
 
         /* Month Filter Dropdown */
         .bmt-month-filter { position: relative; margin-left: 15px; }
         .bmt-month-btn {
-            background: #3d3d54; border: 1px solid #4d4d64; border-radius: 0;
-            padding: 6px 12px; color: #fff; font-size: 12px; cursor: pointer;
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 0;
+            padding: 6px 12px; color: var(--text); font-size: 12px; cursor: pointer;
         }
-        .bmt-month-btn:hover { background: #4d4d64; }
+        .bmt-month-btn:hover { background: var(--surface-3); }
         .month-dropdown {
             display: none; position: absolute; top: 100%; left: 0; margin-top: 5px;
-            background: #252542; border: 1px solid #3d3d54; border-radius: 0;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 0;
             padding: 10px; z-index: 100; min-width: 280px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .month-dropdown.show { display: block; }
-        .month-dropdown-header { display: flex; gap: 5px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #3d3d54; }
+        .month-dropdown-header { display: flex; gap: 5px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .month-select-btn {
-            flex: 1; background: #3d3d54; border: none; border-radius: 4px;
-            padding: 5px 8px; color: #fff; font-size: 11px; cursor: pointer;
+            flex: 1; background: var(--surface-2); border: none; border-radius: 4px;
+            padding: 5px 8px; color: var(--text); font-size: 11px; cursor: pointer;
         }
-        .month-select-btn:hover { background: #4d4d64; }
+        .month-select-btn:hover { background: var(--surface-3); }
         .month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .month-grid label {
             display: flex; align-items: center; gap: 4px; font-size: 12px;
             padding: 4px 6px; border-radius: 4px; cursor: pointer;
         }
-        .month-grid label:hover { background: #3d3d54; }
+        .month-grid label:hover { background: var(--surface-2); }
         .month-grid input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
         
         /* Cleaning Checkboxes */
@@ -2108,8 +2101,8 @@
 
         /* Quick Notes */
         .quick-notes {
-            background: var(--blue-dark); padding: 14px 16px; margin-bottom: 16px;
-            border: 1px solid #fff;
+            background: var(--section-header-bg); padding: 14px 16px; margin-bottom: 16px;
+            border: 1.5px solid var(--section-header-border);
         }
         .quick-notes-header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
@@ -2119,15 +2112,15 @@
         .quick-notes-header .save-indicator.show { opacity: 1; }
         .quick-notes textarea {
             width: 100%; min-height: 60px; padding: 12px;
-            border: 1px solid #555; background: #2a2a2a; color: #fff;
+            border: 1px solid var(--border); background: var(--input-bg); color: var(--input-text);
             font-size: 13px; font-family: inherit; resize: vertical;
         }
-        .quick-notes textarea:focus { outline: none; border-color: #fff; background: #333; }
-        .quick-notes textarea::placeholder { color: #999; }
+        .quick-notes textarea:focus { outline: none; border-color: var(--accent); background: var(--surface-2); }
+        .quick-notes textarea::placeholder { color: var(--muted); }
         
         /* Deep Analysis Button */
-        .btn-analysis { background: var(--blue-dark); border: 1px solid #fff; }
-        .btn-analysis:hover { background: var(--blue-medium); border-color: #fff; }
+        .btn-analysis { background: var(--section-header-bg); border: 1px solid var(--border-strong); }
+        .btn-analysis:hover { background: var(--blue-medium); border-color: var(--accent); }
         
         /* Agenda Legend */
         .agenda-legend {
@@ -2159,6 +2152,150 @@
         .legend-dot.eigen { background: var(--eigen); }
         .legend-dot.fremd { background: var(--fremd); }
         .legend-dot.konzert { background: var(--konzert); }
+
+
+        /* ===== LIGHT SKIN — Component Overrides ===== */
+        [data-theme="light"] .header-bar { border-bottom: 3px solid var(--header-accent); }
+        [data-theme="light"] .section-header-title { color: #fff; }
+        [data-theme="light"] .section-header-count { border-color: #dc2626; color: #dc2626; }
+        [data-theme="light"] .bmt-title { color: #fff; }
+        [data-theme="light"] .bmt-link { color: #fff; }
+        [data-theme="light"] .bmt-toggle { color: #fff; }
+        [data-theme="light"] .calendar-title { color: #fff; }
+        [data-theme="light"] .calendar-toggle { color: #fff; }
+        [data-theme="light"] .calendar-day-header { color: var(--text); }
+        [data-theme="light"] .calendar-day { background: #fff; border-color: var(--border); }
+        [data-theme="light"] .calendar-day.other-month { background: var(--surface-2); }
+        [data-theme="light"] .calendar-day-number { color: var(--text); }
+        [data-theme="light"] .calendar-month-title { color: var(--text); }
+        [data-theme="light"] .dept-header { color: #fff; }
+        [data-theme="light"] .dept-toggle { color: #fff; }
+        [data-theme="light"] .dept-tab { color: rgba(255,255,255,0.7); }
+        [data-theme="light"] .dept-tab.active { color: #fff; }
+        [data-theme="light"] .dept-tab:hover { color: #fff; }
+        [data-theme="light"] .quick-notes-header span { color: var(--section-header-text); }
+        [data-theme="light"] .bmt-event-card { background: var(--card-bg); border: 1px solid var(--border); }
+        [data-theme="light"] .bmt-event-name { color: var(--text); }
+        [data-theme="light"] .bmt-event-date { color: var(--muted); }
+        [data-theme="light"] .bmt-event-time { color: var(--muted); }
+        [data-theme="light"] .upcoming-event-name { color: var(--text); }
+        [data-theme="light"] .upcoming-event-date-badge { background: var(--surface-2); border-color: var(--border); }
+        [data-theme="light"] .event-date { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+        [data-theme="light"] .event-name { color: var(--text); }
+        [data-theme="light"] .modal { border-color: var(--border); }
+        [data-theme="light"] .modal-header h3 { color: #fff; }
+        [data-theme="light"] .modal-close { color: #fff; }
+        [data-theme="light"] .header-stat span { color: #fff; }
+        [data-theme="light"] .header-stat { color: rgba(255,255,255,0.6); }
+        [data-theme="light"] .auth-user { color: #fff; }
+        [data-theme="light"] .sync-cat-name { color: var(--text); }
+        [data-theme="light"] .sync-cat-detail { color: var(--muted); }
+        [data-theme="light"] .sync-section-hdr { color: var(--muted); }
+        [data-theme="light"] .ticker-section { color: #fff; }
+        [data-theme="light"] .factsheet-preview { background: #fff; color: #333; }
+        [data-theme="light"] .factsheet-preview th { background: #f0f0f0; }
+        [data-theme="light"] .task-checkbox { border-color: var(--border-strong); }
+        [data-theme="light"] .cp-dept-tab { color: var(--muted); border-left-color: var(--border); }
+        [data-theme="light"] .cp-dept-tab:hover { background: var(--surface-2); color: var(--text); }
+        [data-theme="light"] .cp-tab-count { background: var(--surface-2); color: var(--text-secondary); }
+        [data-theme="light"] .cp-tab-bar { background: var(--border); }
+        [data-theme="light"] .cp-tab-pct { color: var(--muted); }
+        [data-theme="light"] .cp-chev { color: var(--muted); }
+        [data-theme="light"] .cp-dept-row-pct { color: var(--muted); }
+        [data-theme="light"] .cp-dept-minibar { background: var(--border); }
+        [data-theme="light"] .project-card-title { color: var(--text); }
+        [data-theme="light"] .project-card:hover { background: var(--surface-2); border-color: var(--accent); }
+        [data-theme="light"] .project-attachment-badge { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+        [data-theme="light"] .tools-toggle { background: var(--surface); border-color: var(--border); color: var(--text); }
+        [data-theme="light"] .tools-toggle:hover { background: var(--surface-2); border-color: var(--accent); }
+        [data-theme="light"] .tools-content { background: var(--surface); border-color: var(--border); }
+        [data-theme="light"] .tool-btn { background: var(--surface); border-color: var(--border); color: var(--text); }
+        [data-theme="light"] .tool-btn:hover { background: var(--section-header-bg); color: #fff; border-color: var(--section-header-bg); }
+        [data-theme="light"] .metrics-btn { background: var(--section-header-bg); border-color: var(--accent); }
+        [data-theme="light"] .metrics-btn:hover { background: var(--blue-medium); }
+        [data-theme="light"] .shiftplan-table th { background: var(--section-header-bg); color: #fff; }
+        [data-theme="light"] .shiftplan-table td { color: var(--text); border-color: var(--border); }
+        [data-theme="light"] .app-tile { color: var(--text); background: var(--surface-2); }
+        [data-theme="light"] .app-tile:hover { background: #fff; border-color: var(--border); }
+        [data-theme="light"] .app-tile-badge { box-shadow: 0 0 0 2px var(--surface); }
+        [data-theme="light"] .checklist-item { color: var(--text-secondary); }
+        [data-theme="light"] .checklist-item.checked { color: var(--muted); }
+        [data-theme="light"] .metrics-card { background: var(--surface-2); border-color: var(--border); }
+        [data-theme="light"] .metrics-card-header { color: var(--text); border-bottom-color: var(--border); }
+        [data-theme="light"] .metrics-value { color: var(--text); }
+        [data-theme="light"] .metrics-summary-card { background: var(--surface-2); border-color: var(--border); }
+        [data-theme="light"] .metrics-summary-value { color: var(--text); }
+        [data-theme="light"] .chart-bar { background: var(--accent); }
+        [data-theme="light"] .chart-bar.today { background: var(--good); }
+        [data-theme="light"] .tool-bar { background: var(--accent); }
+        [data-theme="light"] .tool-bar-bg { background: var(--surface-2); }
+        [data-theme="light"] .tool-count { color: var(--text); }
+        [data-theme="light"] .metrics-table th { background: var(--section-header-bg); color: #fff; }
+        [data-theme="light"] .metrics-table td { color: var(--text); border-color: var(--border); }
+        [data-theme="light"] #calendar-container { background: var(--surface); }
+        [data-theme="light"] .calendar-filter-item { color: var(--text); }
+
+
+        /* ===== PLANNER WIDGET — Light Skin ===== */
+        [data-theme="light"] .planner-card { background: #fff; border-color: var(--border); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        [data-theme="light"] .planner-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 0 0 1px rgba(220,38,38,0.25); }
+        [data-theme="light"] .planner-hero { background: linear-gradient(140deg, #fff5f5 0%, #ffffff 55%); border-bottom-color: var(--border); }
+        [data-theme="light"] .planner-hero-bg-num { color: rgba(220,38,38,0.06); }
+        [data-theme="light"] .planner-kw { color: #dc2626; }
+        [data-theme="light"] .planner-day-name { color: #1a2540; }
+        [data-theme="light"] .planner-day-sub { color: var(--muted); }
+        [data-theme="light"] .planner-sprint-label { color: var(--muted); }
+        [data-theme="light"] .planner-sprint-track { background: var(--border); }
+        [data-theme="light"] .planner-sprint-fill { background: linear-gradient(90deg, #dc2626, #f59e0b); }
+        [data-theme="light"] .planner-sprint-pct { color: #dc2626; }
+        [data-theme="light"] .planner-sprint-note { color: var(--good); }
+        [data-theme="light"] .planner-status-bar { border-bottom-color: var(--border); }
+        [data-theme="light"] .planner-stat { border-right-color: var(--border); }
+        [data-theme="light"] .planner-stat:hover { background: var(--surface-2); }
+        [data-theme="light"] .planner-stat-val { color: #1a2540; }
+        [data-theme="light"] .planner-stat-val.orange { color: #dc2626; }
+        [data-theme="light"] .planner-stat-label { color: var(--muted); }
+        [data-theme="light"] .planner-tasks { border-bottom-color: var(--border); }
+        [data-theme="light"] .planner-tasks-hdr { color: var(--muted); }
+        [data-theme="light"] .planner-tasks-hdr::after { background: var(--border); }
+        [data-theme="light"] .planner-task-row { border-bottom-color: var(--border); }
+        [data-theme="light"] .planner-task-row:hover { background: var(--surface-2); }
+        [data-theme="light"] .planner-task-row.done .planner-task-text { color: var(--muted); }
+        [data-theme="light"] .planner-task-num { color: var(--muted); }
+        [data-theme="light"] .planner-task-cb { border-color: var(--border); }
+        [data-theme="light"] .planner-task-text { color: #1a2540; }
+        [data-theme="light"] .planner-task-due { color: var(--muted); }
+        [data-theme="light"] .planner-col:not(:last-child) { border-right-color: var(--border); }
+        [data-theme="light"] .planner-col-label { color: var(--muted); }
+        [data-theme="light"] .planner-notes-label { color: var(--warn); }
+        [data-theme="light"] .planner-notes-area { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+        [data-theme="light"] .planner-notes-area::placeholder { color: var(--muted); }
+        [data-theme="light"] .planner-qa-btn { background: var(--surface-2); border-color: var(--border); color: #1a2540; }
+        [data-theme="light"] .planner-qa-btn:hover { background: #1a2540; border-color: #1a2540; color: #fff; }
+        [data-theme="light"] .planner-qa-btn.qa-qon { border-color: rgba(220,38,38,0.4); color: #dc2626; background: rgba(220,38,38,0.05); }
+        [data-theme="light"] .planner-qa-btn.qa-qon:hover { background: #dc2626; color: #fff; }
+        [data-theme="light"] .planner-qa-btn.qa-loor { border-color: rgba(22,163,74,0.4); color: #16a34a; background: rgba(22,163,74,0.05); }
+        [data-theme="light"] .planner-qa-btn.qa-loor:hover { background: #16a34a; color: #fff; }
+        [data-theme="light"] .planner-event-strip { border-top-color: var(--border); border-bottom-color: var(--border); }
+        [data-theme="light"] .planner-strip-card { background: var(--surface-2); border-left-color: #dc2626; }
+        [data-theme="light"] .planner-strip-card:hover { background: var(--card-hover-bg); }
+        [data-theme="light"] .planner-strip-card.konzert { border-left-color: var(--konzert); }
+        [data-theme="light"] .planner-strip-date { color: var(--muted); }
+        [data-theme="light"] .planner-strip-name { color: #1a2540; }
+        [data-theme="light"] .planner-event-item { background: var(--surface-2); border-left-color: #dc2626; }
+        [data-theme="light"] .planner-event-item:hover { background: var(--card-hover-bg); }
+        [data-theme="light"] .planner-event-item.konzert { border-left-color: var(--konzert); }
+        [data-theme="light"] .planner-event-name { color: #1a2540; }
+        [data-theme="light"] .planner-event-time { color: var(--muted); }
+        [data-theme="light"] .planner-no-events { color: var(--muted); }
+        [data-theme="light"] .planner-badge-admin { background: var(--surface-2); color: var(--muted); }
+        
+        /* ===== TICKER — Light Skin ===== */
+        [data-theme="light"] .ticker-section { background: #1a2540; }
+        
+        /* ===== DTW — Light Skin ===== */
+        [data-theme="light"] #dtw-master-header { background: #1a2540; border-bottom-color: #dc2626; }
+        [data-theme="light"] .dtw-notes-add { background: var(--surface-2); border-color: var(--accent); color: var(--accent); }
 
         /* =========================================================================== */
         /* RESPONSIVE DESIGN */
@@ -2551,7 +2688,7 @@
             font-size: 14px;
         }
         .bar-preview {
-            background: #1a1a2e;
+            background: var(--surface);
             border: 1px solid #3d3d4d;
             border-radius: 0;
             padding: 15px;
@@ -2608,7 +2745,7 @@
         .bar-roster-table td input[type="text"],
         .bar-roster-table td input[type="number"],
         .bar-roster-table td select {
-            background: #1a1a2e;
+            background: var(--surface);
             border: 1px solid #3d3d4d;
             border-radius: 4px;
             padding: 6px 10px;
@@ -2646,7 +2783,7 @@
         .widgets-row { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
         .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; height: 380px; min-width: 0; overflow: hidden; }
         /* v15.9.122 — Lean Gradient Header (Inbox + QN — same style as DTW) */
-        .widget-block-hdr { background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%); padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+        .widget-block-hdr { background: var(--surface-2); border-left: 3px solid var(--danger); padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-bottom: 1px solid var(--border); }
         .widget-block-hdr .wbh-title { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1.2px; display: flex; align-items: center; gap: 8px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
         .widget-block-body { flex: 1; overflow-y: auto; }
@@ -2697,7 +2834,7 @@
         .qn-input-area { padding: 8px; border-top: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
         .qn-input-area textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 56px; box-sizing: border-box; }
         .qn-input-area textarea:focus { border-color: #3b82f6; }
-        .qn-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
+        .qn-save-btn { margin-top: 5px; width: 100%; padding: 6px; background: var(--surface-2); border: 1px solid var(--accent); color: #3b82f6; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
         .qn-save-btn:hover { background: #3b82f6; color: #fff; }
         /* ===== QN DEPT — v15.9.122 always-colored (input selector + filter pills) ===== */
         .qn-dept-row { display: flex; gap: 3px; margin-bottom: 5px; flex-wrap: wrap; }
@@ -2741,10 +2878,10 @@
         #dtw-widget { border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
 
         /* Master Header — v15.9.122 red gradient (matching QN + Inbox) */
-        #dtw-master-header { position: relative; background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%); padding: 16px 22px 16px 28px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #dc2626; }
+        #dtw-master-header { position: relative; background: var(--surface-2); border-left: 3px solid var(--danger); padding: 16px 22px 16px 28px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #dc2626; }
         #dtw-master-header::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #dc2626; }
         #dtw-master-header .dtw-title { font-size: 19px; font-weight: 800; letter-spacing: 4px; color: #fff; text-transform: uppercase; }
-        #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #888; margin-left: auto; text-transform: uppercase; padding: 5px 12px; border: 1px solid #5d2424; background: rgba(220,38,38,0.08); }
+        #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: var(--muted); margin-left: auto; text-transform: uppercase; padding: 5px 12px; border: 1px solid #5d2424; background: rgba(220,38,38,0.08); }
 
         /* Dept buttons — Parallelogram, permanent dept-colors */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 14px; background: #0a1420; border-bottom: 1px solid var(--border); }
@@ -2822,14 +2959,14 @@
         #dtw-office-layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; background: var(--surface); }
         #dtw-office-main { min-width: 0; border-right: 1px solid var(--border); }
         #dtw-office-apps-sidebar { background: #0a1420; padding: 16px; }
-        #dtw-office-apps-sidebar .dtw-apps-title { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; color: #3b82f6; padding: 4px 4px 10px; border-bottom: 1px solid #1e3a5f; margin-bottom: 10px; text-transform: uppercase; }
+        #dtw-office-apps-sidebar .dtw-apps-title { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; color: #3b82f6; padding: 4px 4px 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; text-transform: uppercase; }
         #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 14px 8px; background: transparent; border: 1px solid #1e3a5f; color: #85B7EB; cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 6px; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: #1e3a5f; color: #fff; border-color: #378ADD; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 14px 8px; background: transparent; border: 1px solid var(--border); color: var(--accent); cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 6px; }
+        #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: var(--surface-2); color: #fff; border-color: #378ADD; }
         #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
 
         #dtw-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #0a1220; overflow-x: auto; }
-        .dtw-tab { padding: 11px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: #666; cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+        .dtw-tab { padding: 11px 18px; font-size: 11px; font-weight: 700; letter-spacing: 0.6px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-family: inherit; text-transform: uppercase; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
         .dtw-tab:hover { color: #ccc; }
         .dtw-tab.active { color: #fff; background: rgba(255,255,255,0.03); }
         .dtw-tab.active.c-OFFICE   { border-bottom-color: #185FA5; color: #85B7EB; }
@@ -2841,15 +2978,15 @@
 
         /* Tab content — scrollable, ~6 rows visible */
         #dtw-tab-content, #dtw-tab-content-office { min-height: 160px; max-height: 280px; overflow-y: auto; padding: 0; }
-        .dtw-empty { padding: 28px 14px; font-size: 11px; color: #555; text-align: center; }
+        .dtw-empty { padding: 28px 14px; font-size: 11px; color: var(--muted); text-align: center; }
 
         /* Tasks list */
         .dtw-task { display: flex; align-items: flex-start; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
         .dtw-task:last-child { border-bottom: none; }
         .dtw-task-cb { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: #3b82f6; }
         .dtw-task-title { flex: 1; color: #ddd; line-height: 1.4; word-break: break-word; }
-        .dtw-task.done .dtw-task-title { color: #555; text-decoration: line-through; }
-        .dtw-task-due { font-size: 9px; color: #888; padding: 2px 6px; border: 1px solid #333; border-radius: 3px; flex-shrink: 0; white-space: nowrap; }
+        .dtw-task.done .dtw-task-title { color: var(--muted); text-decoration: line-through; }
+        .dtw-task-due { font-size: 9px; color: var(--muted); padding: 2px 6px; border: 1px solid #333; border-radius: 3px; flex-shrink: 0; white-space: nowrap; }
         .dtw-task-due.overdue { color: #ef4444; border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.08); }
         .dtw-task-due.today { color: #f59e0b; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
 
@@ -2861,14 +2998,14 @@
         .dtw-qn-prio.P2 { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .dtw-qn-prio.P3 { background: rgba(100,116,139,0.18); color: #94a3b8; }
         .dtw-qn-body { flex: 1; min-width: 0; }
-        .dtw-qn-ts { font-size: 9px; color: #555; margin-bottom: 2px; }
+        .dtw-qn-ts { font-size: 9px; color: var(--muted); margin-bottom: 2px; }
         .dtw-qn-text { color: #ccc; line-height: 1.4; word-break: break-word; }
 
         /* Notes input */
         .dtw-notes-input-wrap { padding: 8px; border-bottom: 1px solid var(--border); background: var(--surface-2); display: flex; gap: 6px; }
         .dtw-notes-input { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; font-family: inherit; outline: none; box-sizing: border-box; }
         .dtw-notes-input:focus { border-color: #3b82f6; }
-        .dtw-notes-add { padding: 0 12px; font-size: 11px; font-weight: 700; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; cursor: pointer; font-family: inherit; }
+        .dtw-notes-add { padding: 0 12px; font-size: 11px; font-weight: 700; background: var(--surface-2); border: 1px solid var(--accent); color: #3b82f6; cursor: pointer; font-family: inherit; }
         .dtw-notes-add:hover { background: #3b82f6; color: #fff; }
         .dtw-note { padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: #ccc; display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
         .dtw-note:last-child { border-bottom: none; }
@@ -2891,10 +3028,10 @@
         .dtw-res:last-child { border-bottom: none; }
         .dtw-res-date { font-size: 10px; color: #f87171; font-weight: 700; letter-spacing: 0.8px; margin-bottom: 3px; }
         .dtw-res-title { color: #ddd; line-height: 1.4; }
-        .dtw-res-time { font-size: 10px; color: #888; margin-top: 2px; }
+        .dtw-res-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
         /* Loading state */
-        .dtw-loading { padding: 20px; font-size: 11px; color: #666; text-align: center; }
+        .dtw-loading { padding: 20px; font-size: 11px; color: var(--muted); text-align: center; }
 
         @media (max-width: 860px) {
             #dtw-office-layout { grid-template-columns: 1fr; }
@@ -2920,7 +3057,7 @@
             background: var(--surface);
         }
         #myday-header {
-            background: linear-gradient(90deg, #5d2424 0%, #1a1a2e 100%);
+            background: var(--surface-2);
             padding: 8px 14px;
             display: flex;
             align-items: center;
@@ -3012,7 +3149,7 @@
             padding: 1px 6px;
             border-radius: 4px;
             font-size: 9px;
-            color: #888;
+            color: var(--muted);
         }
         .myday-divider.is-overdue .myday-divider-count {
             background: rgba(239,68,68,0.18);
@@ -3123,7 +3260,7 @@
             padding: 14px;
             text-align: center;
             font-size: 11px;
-            color: #555;
+            color: var(--muted);
             font-style: italic;
         }
 
@@ -3223,7 +3360,7 @@
         .linkbar-edit-toggle {
             background: transparent;
             border: 1px solid rgba(255,255,255,0.15);
-            color: #999;
+            color: var(--muted);
             padding: 6px 9px;
             border-radius: 6px;
             cursor: pointer;
@@ -3413,7 +3550,7 @@
             align-items: center;
             gap: 14px;
             cursor: pointer;
-            border: 1px solid #1e3a5f;
+            border: 1px solid var(--border);
         }
         .cp-group-row {
             display: flex;
@@ -3427,7 +3564,7 @@
         }
         .cp-group-row:hover { background: var(--surface-2, #1a1a1a); }
         .cp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-        .cp-mini-bar { width: 80px; height: 3px; background: #2d2d44; border-radius: 2px; overflow: hidden; }
+        .cp-mini-bar { width: 80px; height: 3px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
         .cp-mini-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
         .cockpit-task-row {
             display: flex;
@@ -3442,7 +3579,7 @@
         /* 1: Custom scrollbars */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: #060606; }
-        ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
         /* 6: Button hierarchy */
@@ -3515,7 +3652,7 @@
         .cn-msg.user { align-self: flex-end; align-items: flex-end; }
         .cn-msg.assistant { align-self: flex-start; align-items: flex-start; }
         .cn-bubble { padding: 9px 13px; border-radius: 10px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
-        .cn-msg.user .cn-bubble { background: #1e3a5f; color: #e0eaff; border: 1px solid #3b82f6; border-bottom-right-radius: 3px; }
+        .cn-msg.user .cn-bubble { background: var(--surface-2); color: var(--text); border: 1px solid var(--accent); border-bottom-right-radius: 3px; }
         .cn-msg.assistant .cn-bubble { background: #111; color: #ddd; border: 1px solid #222; border-bottom-left-radius: 3px; }
         .cn-meta { font-size: 9px; color: #444; margin-top: 3px; padding: 0 3px; }
         .cn-typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
@@ -3526,14 +3663,14 @@
         .cn-input-bar { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--surface-2); flex-shrink: 0; }
         .cn-input-bar textarea { flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 8px 10px; resize: none; font-family: inherit; outline: none; height: 52px; border-radius: 4px; box-sizing: border-box; }
         .cn-input-bar textarea:focus { border-color: #3b82f6; }
-        .cn-send-btn { padding: 0 16px; background: #1e3a5f; border: 1px solid #3b82f6; color: #3b82f6; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; border-radius: 4px; white-space: nowrap; }
+        .cn-send-btn { padding: 0 16px; background: var(--surface-2); border: 1px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; border-radius: 4px; white-space: nowrap; }
         .cn-send-btn:hover { background: #3b82f6; color: #fff; }
         .cn-send-btn:disabled { opacity: 0.4; cursor: default; }
         .cn-key-bar { display: flex; gap: 6px; padding: 6px 12px; border-top: 1px solid var(--border); background: #0a0a0a; flex-shrink: 0; align-items: center; }
         .cn-key-bar input { flex: 1; background: #111; border: 1px solid #333; color: #aaa; font-size: 11px; padding: 5px 8px; font-family: inherit; outline: none; border-radius: 3px; }
         .cn-key-bar input:focus { border-color: #3b82f6; }
-        .cn-key-btn { padding: 5px 10px; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: #666; cursor: pointer; font-family: inherit; border-radius: 3px; white-space: nowrap; }
-        .cn-key-btn:hover { color: #fff; border-color: #555; }
+        .cn-key-btn { padding: 5px 10px; font-size: 10px; font-weight: 700; border: 1px solid #333; background: transparent; color: var(--muted); cursor: pointer; font-family: inherit; border-radius: 3px; white-space: nowrap; }
+        .cn-key-btn:hover { color: #fff; border-color: var(--muted); }
         .cn-key-btn.active { background: rgba(34,197,94,0.15); color: #22c55e; border-color: rgba(34,197,94,0.4); }
         .cn-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; font-size: 12px; gap: 6px; }
         .cn-empty-icon { font-size: 28px; opacity: 0.4; }
@@ -3570,7 +3707,7 @@
         #archive-modal { z-index: 1010; } /* v15.9.124 — above other modals so it opens on top */
         #archive-modal .modal { display: flex; flex-direction: column; height: 100%; }
         #archive-modal .modal-header {
-            background: linear-gradient(135deg, #5d2424 0%, #1a1a2e 100%) !important;
+            background: var(--surface-2) !important;
             padding: 10px 16px !important; display: flex; align-items: center; gap: 10px;
             border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
         }
@@ -3702,7 +3839,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.177 ===== */
+        /* ===== PLANNER WIDGET v15.9.181 ===== */
         
         #planner-widget {
             margin-bottom: 8px;
@@ -4356,7 +4493,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.177 ── */
+        /* ── Factsheet 2-col v15.9.181 ── */
         #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4409,7 +4546,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.177 ── */
+        /* ── Planner Widget compact v15.9.181 ── */
         .planner-hero { padding: 12px 14px 8px; }
         .planner-day-name { font-size: 20px; margin-bottom: 3px; }
         .planner-kw { font-size: 8px; margin-bottom: 2px; }
@@ -4460,7 +4597,7 @@
             <div style="display:grid;grid-template-columns:80px 80px 1fr;gap:10px;margin-bottom:12px;">
                 <div>
                     <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Std</label>
-                    <select id="ut-hour" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;">
+                    <select id="ut-hour" style="width:100%;padding:10px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:14px;">
                         <option value="23">23</option>
                         <option value="0">00</option>
                         <option value="1" selected>01</option>
@@ -4472,11 +4609,11 @@
                 </div>
                 <div>
                     <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Min</label>
-                    <input type="number" id="ut-min" min="0" max="59" step="1" value="0" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;box-sizing:border-box;">
+                    <input type="number" id="ut-min" min="0" max="59" step="1" value="0" style="width:100%;padding:10px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:14px;box-sizing:border-box;">
                 </div>
                 <div>
                     <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Kassenstand brutto €</label>
-                    <input type="number" id="ut-cash" min="0" step="1" placeholder="z.B. 5500" style="width:100%;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:14px;box-sizing:border-box;">
+                    <input type="number" id="ut-cash" min="0" step="1" placeholder="z.B. 5500" style="width:100%;padding:10px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:14px;box-sizing:border-box;">
                 </div>
             </div>
 
@@ -4485,7 +4622,7 @@
                 <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Event-Typ</label>
                 <div style="display:flex;gap:6px;">
                     <button id="ut-typ-eigen" onclick="utSetTyp('eigen')" style="flex:1;padding:10px;background:rgba(34,212,122,0.15);border:1px solid rgba(34,212,122,0.5);color:#22d47a;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">EIGEN</button>
-                    <button id="ut-typ-fremd" onclick="utSetTyp('fremd')" style="flex:1;padding:10px;background:#0d1b2a;border:1px solid #1e3a5f;color:#888;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">FREMD</button>
+                    <button id="ut-typ-fremd" onclick="utSetTyp('fremd')" style="flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);color:#888;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;">FREMD</button>
                 </div>
             </div>
 
@@ -4493,7 +4630,7 @@
             <div id="ut-eigen-block" style="background:rgba(34,212,122,0.05);border:1px solid rgba(34,212,122,0.2);padding:12px;margin-bottom:14px;">
                 <div style="margin-bottom:10px;">
                     <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Serie</label>
-                    <select id="ut-serie" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;">
+                    <select id="ut-serie" style="width:100%;padding:8px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:13px;">
                         <option value="turbo" selected>TURBO (€15.30/Kopf)</option>
                         <option value="selected">Selected (€16.90/Kopf)</option>
                         <option value="halloween">Halloween (€16.40/Kopf)</option>
@@ -4506,15 +4643,15 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
                     <div>
                         <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">VVK verkauft</label>
-                        <input type="number" id="ut-vvk" min="0" step="1" placeholder="320" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                        <input type="number" id="ut-vvk" min="0" step="1" placeholder="320" style="width:100%;padding:8px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:13px;box-sizing:border-box;">
                     </div>
                     <div>
                         <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">VVK gescannt</label>
-                        <input type="number" id="ut-scan" min="0" step="1" placeholder="285" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                        <input type="number" id="ut-scan" min="0" step="1" placeholder="285" style="width:100%;padding:8px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:13px;box-sizing:border-box;">
                     </div>
                     <div>
                         <label style="display:block;font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">FOH bisher</label>
-                        <input type="number" id="ut-foh" min="0" step="1" placeholder="47" style="width:100%;padding:8px;background:#0d1b2a;border:1px solid #1e3a5f;color:#fff;font-size:13px;box-sizing:border-box;">
+                        <input type="number" id="ut-foh" min="0" step="1" placeholder="47" style="width:100%;padding:8px;background:var(--surface);border:1px solid var(--border);color:#fff;font-size:13px;box-sizing:border-box;">
                     </div>
                 </div>
             </div>
@@ -4523,18 +4660,18 @@
 
             <div id="ut-result" style="display:none;">
                 <!-- Aktueller Stand -->
-                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;margin-bottom:10px;">
+                <div style="background:var(--surface);border:1px solid var(--border);padding:12px;margin-bottom:10px;">
                     <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Aktuell — <span id="ut-now-time"></span></div>
                     <div id="ut-now-info" style="font-size:12px;color:#aaa;line-height:1.6;"></div>
                 </div>
 
                 <!-- Progress Bar -->
-                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;margin-bottom:10px;">
+                <div style="background:var(--surface);border:1px solid var(--border);padding:12px;margin-bottom:10px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                         <span style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;">Nacht gelaufen</span>
                         <span id="ut-progress-pct" style="font-size:13px;font-weight:700;color:#22d47a;">0%</span>
                     </div>
-                    <div style="height:8px;background:#111827;border:1px solid #1e3a5f;overflow:hidden;">
+                    <div style="height:8px;background:#111827;border:1px solid var(--border);overflow:hidden;">
                         <div id="ut-progress-bar" style="height:100%;background:linear-gradient(90deg,#22d47a,#16a34a);width:0%;transition:width 0.5s;"></div>
                     </div>
                 </div>
@@ -4562,7 +4699,7 @@
                 <div id="ut-crosscheck" style="display:none;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.3);padding:10px;margin-bottom:10px;font-size:11px;color:#aaa;line-height:1.5;"></div>
 
                 <!-- Stunden-Forecast -->
-                <div style="background:#0d1b2a;border:1px solid #1e3a5f;padding:12px;">
+                <div style="background:var(--surface);border:1px solid var(--border);padding:12px;">
                     <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Erwartete Stunden (realistisch, kumuliert)</div>
                     <div id="ut-hours" style="font-size:12px;color:#fff;line-height:1.8;font-family:monospace;"></div>
                 </div>
@@ -4591,7 +4728,7 @@
             <input type="file" id="sync-file-input" accept=".json" style="display:none" onchange="hubImportStateParse(event)">
             <button class="header-btn" id="auth-btn" onclick="handleAuth()">Sign in</button>
             <button class="header-btn" onclick="forceResetAuth()">↺</button>
-            <button class="header-btn" onclick="toggleTheme()" id="theme-toggle">◑</button>
+            <button class="header-btn" onclick="toggleTheme()" id="theme-toggle" title="Skin Toggle">☀</button>
         </div>
     </div>
     
@@ -4606,7 +4743,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.177 ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.181 ==================== -->
     <div id="planner-widget">
 
         <!-- COLLAPSED CARD -->
@@ -4792,9 +4929,9 @@
     <!-- COCKPIT — DEPT ROWS v15.9.96 — AUSKOMMENTIERT v15.9.113 (ersetzt durch DEPARTMENT TOOLS WIDGET) -->
     <!--
     <div id="cockpit-widget" style="margin-bottom:8px;">
-        <div id="cockpit-header" style="background:#0f1623;border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
+        <div id="cockpit-header" style="background:var(--section-header-bg);border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
             <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
-            <div style="height:4px;background:#111827;border-radius:2px;overflow:hidden;border:1px solid #1e3a5f;width:100px;flex-shrink:0;">
+            <div style="height:4px;background:#111827;border-radius:2px;overflow:hidden;border:1px solid var(--border);width:100px;flex-shrink:0;">
                 <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:2px;width:0%;transition:width 0.5s;"></div>
             </div>
             <span id="cp-pct" style="font-size:13px;font-weight:800;color:#3b82f6;min-width:38px;text-align:right;flex-shrink:0;">—</span>
@@ -4865,7 +5002,7 @@
             </div>
         </div>
     </div>
-    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid #1e3a5f;font-size:12px;color:#888;background:#0d1b2a;">
+    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:#888;background:var(--surface);">
         &#9888;&#65039; Microsoft Login erforderlich f&#252;r COCKPIT.
     </div>
     -->
@@ -4903,7 +5040,7 @@
     <!-- E13 RECHNUNGEN MODAL APP -->
     <style>
         .inv-wrap{margin-bottom:8px;border:1px solid var(--border);overflow:hidden;background:var(--surface);}
-        .inv-header{background:#0d1b2a;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;}
+        .inv-header{background:var(--surface);padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;}
         .inv-body{display:block;}
         .inv-body.collapsed{display:none;}
         .inv-file-pill{display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(255,255,255,0.05);border:0.5px solid #333;border-radius:20px;font-size:11px;color:#888;}
@@ -5000,7 +5137,7 @@
 
     <div class="modal-overlay modal-overlay-app" id="rechnungen-modal">
         <div class="modal modal-app">
-            <div class="modal-header" style="background:#0d1b2a;border-bottom:1px solid #f59e0b22;">
+            <div class="modal-header" style="background:var(--surface);border-bottom:1px solid #f59e0b22;">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <span style="font-size:14px;font-weight:700;letter-spacing:1px;color:#f59e0b;">&#128179; RECHNUNGEN</span>
                     <span id="inv-hdr-info" style="font-size:11px;color:#888;"></span>
@@ -5168,11 +5305,11 @@
                 <div id="cleaning-container">
                     <div class="bmt-status">Warte auf BMT Events...</div>
                 </div>
-                <div id="cleaning-summary" style="margin-top: 15px; padding: 15px; background: #1a1a2e; border-radius: 0;">
+                <div id="cleaning-summary" style="margin-top: 15px; padding: 15px; background: var(--surface); border-radius: 0;">
                 </div>
                 
                 <!-- Email Section (hidden by default) -->
-                <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a2e; border-radius: 0; border: 1px solid #3b82f6;">
+                <div id="cleaning-email-section" style="display: none; margin-top: 20px; padding: 15px; background: var(--surface); border-radius: 0; border: 1px solid #3b82f6;">
                     <h4 style="color: #3b82f6; margin-bottom: 15px;">&#9993; Cleaning Schedule versenden</h4>
                     <div class="form-group">
                         <label>Empfnger</label>
@@ -5214,7 +5351,7 @@
                 <button class="modal-close" onclick="closeModal('cleaning-preview-modal')">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="font-size: 12px; color: #888; margin-bottom: 10px;">Bearbeite den Text vor dem Download:</p>
+                <p style="font-size: 12px; color: var(--muted); margin-bottom: 10px;">Bearbeite den Text vor dem Download:</p>
                 <textarea id="cleaning-preview-text" style="width: 100%; height: 400px; font-family: monospace; font-size: 12px; background: #0a0a14; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 4px; resize: vertical;"></textarea>
             </div>
             <div class="modal-footer">
@@ -5252,31 +5389,31 @@
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
-                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #f59e0b;">
-                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">PRESALE</div>
+                    <div style="background: var(--surface-2); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #f59e0b;">
+                        <div style="font-size: 12px; color: var(--muted); margin-bottom: 5px;">PRESALE</div>
                         <div id="nye-presale" style="font-size: 28px; font-weight: 700; color: #f59e0b;">560</div>
                     </div>
-                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #3b82f6;">
-                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">FOH</div>
+                    <div style="background: var(--surface-2); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #3b82f6;">
+                        <div style="font-size: 12px; color: var(--muted); margin-bottom: 5px;">FOH</div>
                         <div id="nye-foh" style="font-size: 28px; font-weight: 700; color: #3b82f6;">536</div>
                     </div>
-                    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #252542 100%); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #22c55e;">
-                        <div style="font-size: 12px; color: #888; margin-bottom: 5px;">TOTAL PAX</div>
+                    <div style="background: var(--surface-2); padding: 20px; border-radius: 0; text-align: center; border: 2px solid #22c55e;">
+                        <div style="font-size: 12px; color: var(--muted); margin-bottom: 5px;">TOTAL PAX</div>
                         <div id="nye-total" style="font-size: 28px; font-weight: 700; color: #22c55e;">1,096</div>
                     </div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
-                    <div style="background: #1a1a2e; padding: 15px; border-radius: 0; text-align: center;">
-                        <div style="font-size: 11px; color: #888;">FOH Revenue</div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 0; text-align: center;">
+                        <div style="font-size: 11px; color: var(--muted);">FOH Revenue</div>
                         <div id="nye-foh-revenue" style="font-size: 20px; font-weight: 600; color: #3b82f6;">13,392</div>
                     </div>
-                    <div style="background: #1a1a2e; padding: 15px; border-radius: 0; text-align: center;">
-                        <div style="font-size: 11px; color: #888;">Bar Revenue</div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 0; text-align: center;">
+                        <div style="font-size: 11px; color: var(--muted);">Bar Revenue</div>
                         <div id="nye-bar-revenue" style="font-size: 20px; font-weight: 600; color: #22c55e;">24,000</div>
                     </div>
-                    <div style="background: #1a1a2e; padding: 15px; border-radius: 0; text-align: center;">
-                        <div style="font-size: 11px; color: #888;">TOTAL Revenue</div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 0; text-align: center;">
+                        <div style="font-size: 11px; color: var(--muted);">TOTAL Revenue</div>
                         <div id="nye-total-revenue" style="font-size: 20px; font-weight: 600; color: #f59e0b;">37,392</div>
                     </div>
                 </div>
@@ -5333,14 +5470,14 @@
             <div class="modal-body" style="padding: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <div>
-                        <span style="font-size: 12px; color: #888;">Live Monitoring fr</span>
+                        <span style="font-size: 12px; color: var(--muted);">Live Monitoring fr</span>
                         <span style="font-weight: 700; color: #ef4444;"> Silvester 31.12.</span>
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <span class="cleaning-type gross" style="font-size: 11px;">MAX</span>
                         <span class="cleaning-type mittel" style="font-size: 11px;">HIGH</span>
                         <span class="cleaning-type standard" style="font-size: 11px;">MED</span>
-                        <span style="background: #3d3d54; padding: 2px 8px; border-radius: 4px; font-size: 11px;">LOW</span>
+                        <span style="background: var(--surface-2); padding: 2px 8px; border-radius: 4px; font-size: 11px;">LOW</span>
                     </div>
                 </div>
                 
@@ -5362,16 +5499,16 @@
                 </div>
                 
                 <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                    <div style="background: linear-gradient(135deg, #1e3a5f 0%, #1a1a2e 100%); padding: 15px; border-radius: 0; border-left: 3px solid #3b82f6;">
+                    <div style="background: var(--surface-2); padding: 15px; border-radius: 0; border-left: 3px solid #3b82f6;">
                         <div style="font-weight: 700; color: #3b82f6; margin-bottom: 10px;"> Tub Strategy</div>
                         <div style="font-size: 12px; line-height: 1.8;">
                             <div><span style="color: #f59e0b;">23:45-00:00</span> Initial Fill (BEFORE midnight!)</div>
                             <div><span style="color: #ef4444; font-weight: 700;">01:15-01:30</span> <strong>MANDATORY REFILL</strong></div>
-                            <div><span style="color: #888;">02:45-03:00</span> Final Refill (if needed)</div>
-                            <div><span style="color: #888;">After 03:30</span> STOP - normal restock</div>
+                            <div><span style="color: var(--muted);">02:45-03:00</span> Final Refill (if needed)</div>
+                            <div><span style="color: var(--muted);">After 03:30</span> STOP - normal restock</div>
                         </div>
                     </div>
-                    <div style="background: linear-gradient(135deg, #3d1a1a 0%, #1a1a2e 100%); padding: 15px; border-radius: 0; border-left: 3px solid #ef4444;">
+                    <div style="background: var(--surface-2); padding: 15px; border-radius: 0; border-left: 3px solid #ef4444;">
                         <div style="font-weight: 700; color: #ef4444; margin-bottom: 10px;"> Peak Rules</div>
                         <div style="font-size: 12px; line-height: 1.8;">
                             <div> <strong>00:30-02:30:</strong> Both lanes do EVERYTHING</div>
@@ -5383,25 +5520,25 @@
                 </div>
                 
                 <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center;">
-                    <div style="background: #1a1a2e; padding: 12px; border-radius: 0;">
-                        <div style="font-size: 10px; color: #888;">Max Occupancy</div>
+                    <div style="background: var(--surface); padding: 12px; border-radius: 0;">
+                        <div style="font-size: 10px; color: var(--muted);">Max Occupancy</div>
                         <div style="font-size: 20px; font-weight: 700; color: #ef4444;">~1,450</div>
-                        <div style="font-size: 10px; color: #666;">@ 02:00</div>
+                        <div style="font-size: 10px; color: var(--muted);">@ 02:00</div>
                     </div>
-                    <div style="background: #1a1a2e; padding: 12px; border-radius: 0;">
-                        <div style="font-size: 10px; color: #888;">Peak Arrivals</div>
+                    <div style="background: var(--surface); padding: 12px; border-radius: 0;">
+                        <div style="font-size: 10px; color: var(--muted);">Peak Arrivals</div>
                         <div style="font-size: 20px; font-weight: 700; color: #f59e0b;">328</div>
-                        <div style="font-size: 10px; color: #666;">@ 01:00-02:00</div>
+                        <div style="font-size: 10px; color: var(--muted);">@ 01:00-02:00</div>
                     </div>
-                    <div style="background: #1a1a2e; padding: 12px; border-radius: 0;">
-                        <div style="font-size: 10px; color: #888;">Peak Bar </div>
+                    <div style="background: var(--surface); padding: 12px; border-radius: 0;">
+                        <div style="font-size: 10px; color: var(--muted);">Peak Bar </div>
                         <div style="font-size: 20px; font-weight: 700; color: #22c55e;">4,000</div>
-                        <div style="font-size: 10px; color: #666;">@ 02:00-03:00</div>
+                        <div style="font-size: 10px; color: var(--muted);">@ 02:00-03:00</div>
                     </div>
-                    <div style="background: #1a1a2e; padding: 12px; border-radius: 0;">
-                        <div style="font-size: 10px; color: #888;">FOH Pricing</div>
+                    <div style="background: var(--surface); padding: 12px; border-radius: 0;">
+                        <div style="font-size: 10px; color: var(--muted);">FOH Pricing</div>
                         <div style="font-size: 20px; font-weight: 700; color: #3b82f6;">22/26</div>
-                        <div style="font-size: 10px; color: #666;">pre/post 00:00</div>
+                        <div style="font-size: 10px; color: var(--muted);">pre/post 00:00</div>
                     </div>
                 </div>
             </div>
@@ -5438,7 +5575,7 @@
                             <label style="font-size:11px;color:#888;">EVENT NAME (optional)</label>
                             <input type="text" id="gl-event-name" placeholder="MixedVienna" class="pm-input">
                         </div>
-                        <button class="modal-btn" onclick="glData={gl:[]};document.getElementById('gl-status').style.display='none';document.getElementById('gl-results').style.display='none';document.getElementById('gl-chat-input').value='';showToast('Guestlist geleert');" style="background:#3d3d54;font-size:12px;height:36px;">OK</button>
+                        <button class="modal-btn" onclick="glData={gl:[]};document.getElementById('gl-status').style.display='none';document.getElementById('gl-results').style.display='none';document.getElementById('gl-chat-input').value='';showToast('Guestlist geleert');" style="background:var(--surface-2);font-size:12px;height:36px;">OK</button>
                     </div>
                 </div>
 
@@ -5449,7 +5586,7 @@
                     <div style="display:flex;gap:8px;margin-top:8px;">
                         <input type="file" id="gl-xlsx-upload" accept=".xlsx,.xls" onchange="glMergeXlsx(event)" style="display:none;">
                         <button class="modal-btn" onclick="document.getElementById('gl-xlsx-upload').click()" style="background:#3b82f6;color:#fff;font-size:12px;">&#128196; .xlsx zusammenführen</button>
-                        <button class="modal-btn" onclick="document.getElementById('gl-chat-input').value=''" style="background:#3d3d54;font-size:12px;">Leeren</button>
+                        <button class="modal-btn" onclick="document.getElementById('gl-chat-input').value=''" style="background:var(--surface-2);font-size:12px;">Leeren</button>
                         <button class="modal-btn success" onclick="glExtract()" style="flex:1;font-weight:700;">&#129302; Namen extrahieren</button>
                     </div>
                 </div>
@@ -5461,11 +5598,11 @@
                 <div id="gl-results" style="display:none;flex-direction:column;gap:12px;">
                     <!-- Summary — v5.0 single list -->
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                        <div style="background:#1a1a2e;border:1px solid #22c55e;padding:12px;text-align:center;">
+                        <div style="background:var(--surface);border:1px solid #22c55e;padding:12px;text-align:center;">
                             <div id="gl-count-gl" style="font-size:24px;font-weight:700;color:#22c55e;">0</div>
                             <div style="font-size:11px;color:#888;">NAMEN</div>
                         </div>
-                        <div style="background:#1a1a2e;border:1px solid #22c55e;padding:12px;text-align:center;">
+                        <div style="background:var(--surface);border:1px solid #22c55e;padding:12px;text-align:center;">
                             <div id="gl-count-pax" style="font-size:24px;font-weight:700;color:#22c55e;">0</div>
                             <div style="font-size:11px;color:#888;">PAX TOTAL (inkl. +N)</div>
                         </div>
@@ -5483,7 +5620,7 @@
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
                             <span style="font-size:11px;font-weight:700;color:#22c55e;letter-spacing:1px;">GÄSTELISTE</span>
                             <div style="display:flex;gap:4px;">
-                                <input id="gl-add-gl" type="text" placeholder="Name oder Name +N..." style="width:200px;padding:2px 6px;background:#1a1a2e;border:1px solid #22c55e55;color:#fff;font-size:12px;">
+                                <input id="gl-add-gl" type="text" placeholder="Name oder Name +N..." style="width:200px;padding:2px 6px;background:var(--surface);border:1px solid #22c55e55;color:#fff;font-size:12px;">
                                 <button onclick="glAddName('gl')" style="background:#22c55e;color:#000;border:none;padding:2px 10px;cursor:pointer;font-size:12px;font-weight:700;">+ Hinzufügen</button>
                             </div>
                         </div>
@@ -6117,7 +6254,7 @@
         .pm-tab.active { color:var(--text);border-bottom-color:#f472b6;font-weight:600; }
         .pm-tab:hover { color:var(--text); }
         .pm-tab-content { display:flex;flex-direction:column; }
-        .pm-field-group { background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);border-radius:6px;padding:12px 14px; }
+        .pm-field-group { background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px; }
         .pm-field-label { font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase; }
         .pm-input { width:100%;background:var(--bg,#0f0f1a);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:4px;font-size:13px;font-family:inherit;box-sizing:border-box; }
         .pm-copy-btn,.pm-open-btn { background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:5px 9px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;transition:all 0.1s; }
@@ -6471,8 +6608,8 @@
                 <!-- Mode Toggle -->
                 <div style="display:flex;gap:6px;margin-bottom:14px;">
                     <button id="ep-btn-fremd" onclick="epSetMode('fremd')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #7c3aed;background:#7c3aed;color:#fff;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">FREMD Promoter</button>
-                    <button id="ep-btn-eigen" onclick="epSetMode('eigen')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #3d3d54;background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">EIGEN Serie</button>
-                    <button id="ep-btn-freitext" onclick="epSetMode('freitext')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid #3d3d54;background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">Freitext</button>
+                    <button id="ep-btn-eigen" onclick="epSetMode('eigen')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid var(--border);background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">EIGEN Serie</button>
+                    <button id="ep-btn-freitext" onclick="epSetMode('freitext')" style="flex:1;padding:8px 4px;border-radius:6px;border:2px solid var(--border);background:transparent;color:#999;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;">Freitext</button>
                 </div>
 
                 <!-- DB Status line -->
@@ -6660,7 +6797,7 @@
                     </div>
                 </div>
                 
-                <h4 style="color: #667eea; margin: 20px 0 10px;"> Personal + Zeiten <span style="font-size: 11px; color: #888; font-weight: normal;">(Zeiten anpassbar)</span></h4>
+                <h4 style="color: #667eea; margin: 20px 0 10px;"> Personal + Zeiten <span style="font-size: 11px; color: var(--muted); font-weight: normal;">(Zeiten anpassbar)</span></h4>
                 
                 <!-- CVD & Tech -->
                 <div class="form-row" style="grid-template-columns: 1fr 80px 1fr 80px;">
@@ -6691,7 +6828,7 @@
                                 <input type="radio" id="kassa-radio-eigen" name="kassa-type" value="eigen" checked onchange="updateKassaUI(); updateFactsheetPreview()">
                                 EIGEN
                             </label>
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #888; font-weight: 600; font-size: 13px;">
+                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--muted); font-weight: 600; font-size: 13px;">
                                 <input type="radio" id="kassa-radio-fremd" name="kassa-type" value="fremd" onchange="updateKassaUI(); updateFactsheetPreview()">
                                 FREMD
                             </label>
@@ -6714,7 +6851,7 @@
                                 <input type="text" id="kassa-manual-name" placeholder="Name..." oninput="if(this.value.trim()){document.getElementById('kassa-manual-cb').checked=true;} updateFactsheetPreview();" style="background:#1a1a1a; color:#fff; border:1px solid #444; padding:4px 8px; font-size:13px; width:100px;">
                             </label>
                         </div>
-                        <div id="kassa-fremd-label" style="display: none; color: #888; font-size: 13px; margin-top: 4px;">→ Wird als <strong style="color:#fff">FREMD</strong> eingetragen</div>
+                        <div id="kassa-fremd-label" style="display: none; color: var(--muted); font-size: 13px; margin-top: 4px;">→ Wird als <strong style="color:#fff">FREMD</strong> eingetragen</div>
                     </div>
                 </div>
                 
@@ -6933,15 +7070,15 @@
             <div id="inbox-tab-compose" class="inbox-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
                 <div class="form-group" style="margin-bottom:12px;">
                     <label style="font-size:12px;color:var(--text-muted);">AN</label>
-                    <input type="email" id="email-to" placeholder="empfaenger@example.com" style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
+                    <input type="email" id="email-to" placeholder="empfaenger@example.com" style="width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
                 </div>
                 <div class="form-group" style="margin-bottom:12px;">
                     <label style="font-size:12px;color:var(--text-muted);">BETREFF</label>
-                    <input type="text" id="email-subject" placeholder="Betreff" style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
+                    <input type="text" id="email-subject" placeholder="Betreff" style="width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:4px;font-size:13px;">
                 </div>
                 <div class="form-group" style="margin-bottom:12px;">
                     <label style="font-size:12px;color:var(--text-muted);">NACHRICHT</label>
-                    <textarea id="email-body" rows="10" placeholder="Nachricht..." style="width:100%;padding:8px 10px;background:var(--surface-alt,#1a1a2e);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit;font-size:13px;resize:vertical;"></textarea>
+                    <textarea id="email-body" rows="10" placeholder="Nachricht..." style="width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit;font-size:13px;resize:vertical;"></textarea>
                 </div>
                 <p id="email-status" style="color:#888;font-size:12px;margin-bottom:10px;"></p>
                 <div style="display:flex;gap:8px;">
@@ -6951,7 +7088,7 @@
             </div>
 
             <!-- REPLY PANEL (slides in) -->
-            <div id="inbox-reply-panel" style="display:none;flex-shrink:0;border-top:1px solid var(--border);padding:12px 16px;background:var(--surface-alt,#1a1a2e);">
+            <div id="inbox-reply-panel" style="display:none;flex-shrink:0;border-top:1px solid var(--border);padding:12px 16px;background:var(--surface);">
                 <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Antwort an: <span id="reply-to-label" style="color:var(--text);"></span></div>
                 <textarea id="reply-body" rows="3" placeholder="Antwort..." style="width:100%;padding:8px;background:var(--bg,#0f0f1a);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit;font-size:13px;resize:none;"></textarea>
                 <div style="display:flex;gap:8px;margin-top:8px;">
@@ -6990,7 +7127,7 @@
             cursor: pointer;
             transition: background 0.1s;
         }
-        .email-row:hover { background: var(--surface-alt, #1a1a2e); }
+        .email-row:hover { background: var(--surface); }
         .email-row.unread { border-left: 3px solid #3b82f6; }
         .email-row.overdue { border-left: 3px solid #ef4444; }
         .email-row.flagged-row { border-left: 3px solid #f59e0b; }
@@ -7014,7 +7151,7 @@
         .email-overdue-tag { background: #7f1d1d; color: #fca5a5; font-size: 10px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
         .email-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .email-body-panel {
-            background: var(--surface-alt, #1a1a2e);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
             border-left: 3px solid #3b82f6;
             padding: 16px 20px;
@@ -7669,7 +7806,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.177</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.181</span>
     </div>
     
     <!-- Metrics Button -->
@@ -7683,7 +7820,7 @@
         <div class="modal modal-app">
             <div class="modal-header" style="flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 16px;">
                 <span style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.5px;">&#129302; CLAUDE NOTEPAD</span>
-                <span id="cn-model-badge" style="font-size:9px;color:#3b82f6;border:1px solid #1e3a5f;padding:2px 7px;border-radius:10px;background:rgba(59,130,246,0.1);">claude-sonnet-4-5</span>
+                <span id="cn-model-badge" style="font-size:9px;color:#3b82f6;border:1px solid var(--border);padding:2px 7px;border-radius:10px;background:rgba(59,130,246,0.1);">claude-sonnet-4-5</span>
                 <div style="margin-left:auto;display:flex;gap:6px;">
                     <button class="cn-arc-btn" onclick="archiveSaveClaude('manual')" title="Aktuellen Chat archivieren">&#128230; Archive</button>
                     <button class="cn-arc-btn view" onclick="archiveOpen()" title="Archiv öffnen">&#128218; Archiv</button>
@@ -8149,7 +8286,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.177</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.181</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -8238,7 +8375,7 @@
                             <div style="position: relative;">
                                 <input type="text" id="project-due-date-display" placeholder="TT.MM.JJJJ" style="width: 100%; padding-right: 35px;">
                                 <input type="date" id="project-due-date" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; opacity: 0; cursor: pointer;" onchange="updateDueDateDisplay()">
-                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #888;">&#128197;</span>
+                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted);">&#128197;</span>
                             </div>
                         </div>
                         <div class="project-form-group" style="flex:1;">
@@ -8269,7 +8406,7 @@
                         <div style="display: flex; gap: 8px; margin-bottom: 8px;">
                             <input type="file" id="project-file-upload" style="display: none;" onchange="addProjectFile(this)" multiple>
                             <button type="button" class="modal-btn" onclick="document.getElementById('project-file-upload').click()" style="padding: 8px 16px; background: #6b7280;">&#128206; Upload File</button>
-                            <span style="color: #888; font-size: 12px; align-self: center;">or add link:</span>
+                            <span style="color: var(--muted); font-size: 12px; align-self: center;">or add link:</span>
                             <input type="text" id="project-link-name" placeholder="Name" style="flex: 1;">
                             <input type="url" id="project-link-url" placeholder="URL" style="flex: 1;">
                             <button type="button" class="modal-btn" onclick="addProjectLink()" style="padding: 8px 12px;">+ Link</button>
@@ -8862,7 +8999,7 @@
             try {
                 const listId = await getOrCreateNotesList();
                 if (!listId) {
-                    listEl.innerHTML = '<div class="task-item" style="color: #888;">Notes list not found</div>';
+                    listEl.innerHTML = '<div class="task-item" style="color: var(--muted);">Notes list not found</div>';
                     return;
                 }
                 
@@ -8876,7 +9013,7 @@
                 countEl.textContent = notes.length;
                 
                 if (notes.length === 0) {
-                    listEl.innerHTML = '<div class="task-item" style="color: #888;">Keine Notes vorhanden</div>';
+                    listEl.innerHTML = '<div class="task-item" style="color: var(--muted);">Keine Notes vorhanden</div>';
                     return;
                 }
                 
@@ -8933,7 +9070,7 @@
                     html += '</div></div>';
                     
                     if (hasDetails) {
-                        html += '<div class="note-details-box" style="display:none; background:#1a1a2e; border-left:3px solid #8b5cf6; margin-left:30px; padding:10px 12px; border-radius:0 6px 6px 0; margin-bottom:5px;">';
+                        html += '<div class="note-details-box" style="display:none; background:var(--surface); border-left:3px solid #8b5cf6; margin-left:30px; padding:10px 12px; border-radius:0 6px 6px 0; margin-bottom:5px;">';
                         if (body) {
                             html += '<div style="color:#9ca3af; font-size:12px; line-height:1.5; margin-bottom:8px; white-space:pre-wrap;">' + body + '</div>';
                         }
@@ -9103,7 +9240,7 @@
                 if (!btn) return;
                 const active = m === mode;
                 btn.style.background = active ? '#7c3aed' : 'transparent';
-                btn.style.borderColor = active ? '#7c3aed' : '#3d3d54';
+                btn.style.borderColor = active ? '#7c3aed' : 'var(--border)';
                 btn.style.color = active ? '#fff' : '#999';
             });
             // sections
@@ -10311,7 +10448,7 @@
             futureEvents.sort((a, b) => a.date - b.date);
             
             if (futureEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Shiftplan-Daten</p>';
+                container.innerHTML = '<p style="color: var(--muted); padding: 15px;">Keine Shiftplan-Daten</p>';
                 return;
             }
             
@@ -10432,7 +10569,7 @@
             futureEvents.sort((a, b) => a.date - b.date);
             
             if (futureEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px;">Keine Bar-Daten</p>';
+                container.innerHTML = '<p style="color: var(--muted); padding: 15px;">Keine Bar-Daten</p>';
                 return;
             }
             
@@ -10544,7 +10681,7 @@
             futureEvents.sort((a, b) => a.date - b.date);
             
             if (futureEvents.length === 0) {
-                container.innerHTML = '<p style="color: #888; padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke &#128190; Refresh oder lade eine ICS-Datei hoch.</p>';
+                container.innerHTML = '<p style="color: var(--muted); padding: 15px; font-size: 12px;">Keine Techniker-Daten.<br>Klicke &#128190; Refresh oder lade eine ICS-Datei hoch.</p>';
                 return;
             }
             
@@ -12241,7 +12378,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.181', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12320,7 +12457,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.177  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.181  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -12401,7 +12538,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.181', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -12475,7 +12612,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.181', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -12582,7 +12719,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.181', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -12666,7 +12803,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.181', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -12975,7 +13112,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.181', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13122,7 +13259,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.181', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13267,7 +13404,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.177', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.181', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -13606,7 +13743,7 @@
                     </tr>
                 `;
             }).join('') + `
-                <tr style="background: #252542; font-weight: 700;">
+                <tr style="background: var(--surface-2); font-weight: 700;">
                     <td>TOTAL</td>
                     <td>${scenario.presale}</td>
                     <td>${scenario.foh}</td>
@@ -13669,7 +13806,7 @@
         
         function getLevelBadge(level) {
             const colors = {
-                'low': 'background: #3d3d54;',
+                'low': 'background: var(--surface-2);',
                 'med': 'background: #22c55e; color: white;',
                 'high': 'background: #f59e0b; color: white;',
                 'max': 'background: #ef4444; color: white; font-weight: 700;'
@@ -13706,10 +13843,10 @@
                 <head>
                     <title>NYE Peak Grid - Grelle Forelle</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: white; }
+                        body { font-family: Arial, sans-serif; padding: 20px; background: var(--surface); color: white; }
                         table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                        th, td { padding: 8px; border: 1px solid #3d3d54; text-align: left; }
-                        th { background: #252542; }
+                        th, td { padding: 8px; border: 1px solid var(--border); text-align: left; }
+                        th { background: var(--surface-2); }
                         @media print { body { background: white; color: black; } }
                     </style>
                 </head>
@@ -14211,7 +14348,7 @@
                 return;
             }
             container.innerHTML = glData.gl.map((n,i) =>
-                `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #1a1a2e;">
+                `<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--border);">
                     <span style="color:#555;font-size:11px;min-width:22px;">${i+1}.</span>
                     <input type="text" value="${escapeHtml(n)}"
                         onchange="glData.gl[${i}]=this.value.trim();glData.gl.sort((a,b)=>a.localeCompare(b));glRender();"
@@ -15473,40 +15610,40 @@
                     <div class="vvk-event-tracker" style="padding-top: 12px;">
                         <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
                             <div>
-                                <label style="font-size: 9px; color: #888; display: block;">VVK aktuell</label>
+                                <label style="font-size: 9px; color: var(--muted); display: block;">VVK aktuell</label>
                                 <input type="number" id="vvk-current-${idx}" value="0" oninput="calcEventProj(${idx})" 
-                                    style="width: 60px; background: #1a1a2e; border: 1px solid #f59e0b; color: #f59e0b; padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                                    style="width: 60px; background: var(--surface); border: 1px solid #f59e0b; color: #f59e0b; padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600;">
                             </div>
                             <div>
-                                <label style="font-size: 9px; color: #888; display: block;">Ziel</label>
+                                <label style="font-size: 9px; color: var(--muted); display: block;">Ziel</label>
                                 <input type="number" id="vvk-goal-${idx}" value="450" oninput="calcEventProj(${idx})" 
                                     style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
                             </div>
                             <div>
-                                <label style="font-size: 9px; color: #888; display: block;">Max</label>
+                                <label style="font-size: 9px; color: var(--muted); display: block;">Max</label>
                                 <input type="number" id="vvk-max-${idx}" value="550" oninput="calcEventProj(${idx})" 
                                     style="width: 55px; background: #2d2d3d; border: 1px solid #3d3d4d; color: white; padding: 4px; border-radius: 4px; font-size: 12px;">
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
-                                <div style="font-size: 8px; color: #888;">VVK</div>
+                            <div style="background: var(--surface); padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: var(--muted);">VVK</div>
                                 <div id="proj-vvk-${idx}" style="font-size: 14px; font-weight: 700; color: #f59e0b;">~450</div>
                             </div>
-                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
-                                <div style="font-size: 8px; color: #888;">FOH</div>
+                            <div style="background: var(--surface); padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: var(--muted);">FOH</div>
                                 <div id="proj-foh-${idx}" style="font-size: 14px; font-weight: 700; color: #3b82f6;">~350</div>
                             </div>
-                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
-                                <div style="font-size: 8px; color: #888;">Bar</div>
+                            <div style="background: var(--surface); padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: var(--muted);">Bar</div>
                                 <div id="proj-bar-${idx}" style="font-size: 14px; font-weight: 700; color: #22c55e;">~13k</div>
                             </div>
-                            <div style="background: #1a1a2e; padding: 6px; border-radius: 4px; text-align: center;">
-                                <div style="font-size: 8px; color: #888;">Total</div>
+                            <div style="background: var(--surface); padding: 6px; border-radius: 4px; text-align: center;">
+                                <div style="font-size: 8px; color: var(--muted);">Total</div>
                                 <div id="proj-total-${idx}" style="font-size: 14px; font-weight: 700; color: #8b5cf6;">~28k</div>
                             </div>
                         </div>
-                        <div id="vvk-benchmark-${idx}" style="font-size: 9px; color: #888; margin-top: 6px; text-align: center;">Benchmark wird berechnet...</div>
+                        <div id="vvk-benchmark-${idx}" style="font-size: 9px; color: var(--muted); margin-top: 6px; text-align: center;">Benchmark wird berechnet...</div>
                     </div>
                 ` : '<div style="padding-top: 12px; text-align: center; font-size: 11px; color: #8b5cf6;">Konzert - keine VVK Projektion</div>';
                 
@@ -15953,15 +16090,15 @@
                 <div style="display: flex; justify-content: space-around; text-align: center;">
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #ef4444;">${grossCount}</div>
-                        <div style="font-size: 12px; color: #888;">GROSS</div>
+                        <div style="font-size: 12px; color: var(--muted);">GROSS</div>
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">${mittelCount}</div>
-                        <div style="font-size: 12px; color: #888;">MITTEL</div>
+                        <div style="font-size: 12px; color: var(--muted);">MITTEL</div>
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #22c55e;">${uniqueCleanings.length}</div>
-                        <div style="font-size: 12px; color: #888;">TOTAL</div>
+                        <div style="font-size: 12px; color: var(--muted);">TOTAL</div>
                     </div>
                 </div>
             `;
@@ -16543,15 +16680,15 @@ Spittelauer Lnde 12/1
                 <div style="display: flex; justify-content: space-around; text-align: center;">
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #ef4444;">${grossCount}</div>
-                        <div style="font-size: 12px; color: #888;">GROSS</div>
+                        <div style="font-size: 12px; color: var(--muted);">GROSS</div>
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">${mittelCount}</div>
-                        <div style="font-size: 12px; color: #888;">MITTEL</div>
+                        <div style="font-size: 12px; color: var(--muted);">MITTEL</div>
                     </div>
                     <div>
                         <div style="font-size: 24px; font-weight: 700; color: #22c55e;">${grossCount + mittelCount}</div>
-                        <div style="font-size: 12px; color: #888;">AUSGEWHLT</div>
+                        <div style="font-size: 12px; color: var(--muted);">AUSGEWHLT</div>
                     </div>
                 </div>
             `;
@@ -16652,7 +16789,7 @@ Spittelauer Lnde 12/1
                 if (!existingMsg) {
                     const msg = document.createElement('div');
                     msg.id = 'no-upcoming-msg';
-                    msg.style.cssText = 'text-align: center; padding: 20px; color: #888; font-size: 14px;';
+                    msg.style.cssText = 'text-align: center; padding: 20px; color: var(--muted); font-size: 14px;';
                     msg.innerHTML = ' Keine anstehenden Events. Nchste Events in BMT Calendar.';
                     upcomingSection.appendChild(msg);
                 }
@@ -18065,22 +18202,25 @@ Spittelauer Lnde 12/1
             const btn = document.getElementById('theme-toggle');
             if (html.getAttribute('data-theme') === 'light') {
                 html.removeAttribute('data-theme');
-                btn.textContent = 'Dark';
+                btn.textContent = '☀';
+                btn.title = 'Switch to Light Skin';
                 localStorage.setItem('hubTheme', 'dark');
             } else {
                 html.setAttribute('data-theme', 'light');
-                btn.textContent = 'Light';
+                btn.textContent = '🌙';
+                btn.title = 'Switch to Dark Skin';
                 localStorage.setItem('hubTheme', 'light');
             }
         }
         
-        // Load saved theme on startup
+        // Load saved theme on startup — default = dark
         (function() {
             const savedTheme = localStorage.getItem('hubTheme');
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 document.addEventListener('DOMContentLoaded', () => {
-                    document.getElementById('theme-toggle').textContent = 'Light';
+                    const btn = document.getElementById('theme-toggle');
+                    if (btn) { btn.textContent = '🌙'; btn.title = 'Switch to Dark Skin'; }
                 });
             }
         })();
@@ -18090,7 +18230,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.177';
+            const HUB_VERSION = 'v15.9.181';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19199,7 +19339,7 @@ Spittelauer Lnde 12/1
         <div style="color: #aaa; font-size: 12px; margin-top: 5px;">${formattedDate} | ${subject}</div>
     </div>
     <div style="color: #fff;">
-        ${formatBriefingText(text) || '<span style="color: #666;">No content yet...</span>'}
+        ${formatBriefingText(text) || '<span style="color: var(--muted);">No content yet...</span>'}
     </div>
 </div>`;
             } else {
@@ -19225,14 +19365,14 @@ Spittelauer Lnde 12/1
             <h3 style="color: #3b82f6; margin: 0 0 5px 0;">&#128188; FRIDAY ${formattedFri}</h3>
             ${friEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + friEvent + '</div>' : ''}
             <div style="color: #fff; font-size: 13px;">
-                ${formatBriefingText(friText) || '<span style="color: #666;">...</span>'}
+                ${formatBriefingText(friText) || '<span style="color: var(--muted);">...</span>'}
             </div>
         </div>
         <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-left: 3px solid #f59e0b;">
             <h3 style="color: #f59e0b; margin: 0 0 5px 0;">&#128188; SATURDAY ${formattedSat}</h3>
             ${satEvent ? '<div style="color: #fff; font-weight: bold; margin-bottom: 10px;">' + satEvent + '</div>' : ''}
             <div style="color: #fff; font-size: 13px;">
-                ${formatBriefingText(satText) || '<span style="color: #666;">...</span>'}
+                ${formatBriefingText(satText) || '<span style="color: var(--muted);">...</span>'}
             </div>
         </div>
     </div>
@@ -19774,7 +19914,7 @@ Spittelauer Lnde 12/1
                         body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #333; padding: 10mm; }
                         .header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #153D63; }
                         .header h1 { color: #153D63; font-size: 24pt; margin-bottom: 5px; }
-                        .header .subtitle { color: #666; font-size: 10pt; }
+                        .header .subtitle { color: var(--muted); font-size: 10pt; }
                         .section { margin-bottom: 20px; }
                         .section-title { background: #153D63; color: #fff; padding: 8px 12px; font-size: 12pt; font-weight: bold; margin-bottom: 10px; }
                         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -19784,12 +19924,12 @@ Spittelauer Lnde 12/1
                         .stat-value.good { color: #22c55e; }
                         .stat-value.warning { color: #f59e0b; }
                         .stat-value.danger { color: #ef4444; }
-                        .stat-label { font-size: 9pt; color: #666; margin-top: 4px; text-transform: uppercase; }
+                        .stat-label { font-size: 9pt; color: var(--muted); margin-top: 4px; text-transform: uppercase; }
                         table { width: 100%; border-collapse: collapse; font-size: 10pt; }
                         th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
                         th { background: #f0f0f0; font-weight: 600; }
                         .text-right { text-align: right; }
-                        .footer { margin-top: 30px; text-align: center; font-size: 9pt; color: #999; border-top: 1px solid #ddd; padding-top: 10px; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 9pt; color: var(--muted); border-top: 1px solid #ddd; padding-top: 10px; }
                     </style>
                 </head>
                 <body>
@@ -19894,7 +20034,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.177 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.181 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -23598,7 +23738,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.177 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.181 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -23628,7 +23768,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.177',
+                hubVersion: 'v15.9.181',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -24195,7 +24335,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.177
+     UMSATZ TICKER JS — v15.9.181
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -26094,7 +26234,7 @@ Spittelauer Lnde 12/1
         host.innerHTML = `
         <div style="padding:0;">
             <iframe src="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub?embedded=true" style="width:100%;height:520px;border:none;background:#fff;"></iframe>
-            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;background:var(--surface-2,#0f1623);">
+            <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;background:var(--surface-2);">
                 <span style="font-size:10px;color:#888;">Sputnik Shiftplan (Google Doc)</span>
                 <a href="https://docs.google.com/document/d/e/2PACX-1vTayJTFCmEUh8Nh3QWQS6EfC15Q0dHBpc8GH_iC8A-yOlqIn6ARYW5XF0TmGQnWWgKqqfDMQp19i7iw/pub" target="_blank" style="margin-left:auto;font-size:10px;color:#f87171;text-decoration:none;">Im neuen Tab öffnen ↗</a>
             </div>
@@ -26255,7 +26395,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.177 =====
+// ===== PLANNER WIDGET v15.9.181 =====
 (function() {
     'use strict';
 
@@ -26826,10 +26966,10 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /PLANNER WIDGET =====
 
-// ===== STATE SYNC v15.9.177 =====
+// ===== STATE SYNC v15.9.181 =====
 (function() {
 
-    const HUB_VER = 'v15.9.177';
+    const HUB_VER = 'v15.9.181';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -27127,7 +27267,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== /STATE SYNC =====
 </script>
 
-<!-- ==================== STATE SYNC MODAL v15.9.177 ==================== -->
+<!-- ==================== STATE SYNC MODAL v15.9.181 ==================== -->
 <div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
         <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
