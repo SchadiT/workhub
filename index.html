@@ -47,7 +47,7 @@
             --canvas: #0b0b0d;
             --raised: #161618;
             --raised2: #1d1d20;
-            --hair: rgba(255,255,255,0.07);
+            --hair: rgba(255,255,255,0.12);
             --sub: rgba(235,235,245,0.55);
             --faint: rgba(235,235,245,0.3);
             --accent-soft: rgba(255,69,58,0.12);
@@ -160,15 +160,15 @@
         
         /* LIGHT SKIN — Cohesive (White / Soft Grey / Red Accent) */
         [data-theme="light"] {
-            /* Cohesive primitives (Mockup-spec) */
-            --outer: #d8d8de;
+            /* Cohesive primitives (Mockup-spec) — high-contrast tuned */
+            --outer: #d4d4d8;
             --canvas: #ffffff;
-            --raised: #f2f2f5;
-            --raised2: #e6e6ea;
-            --hair: rgba(0,0,0,0.12);
-            --sub: rgba(60,60,67,0.65);
-            --faint: rgba(60,60,67,0.4);
-            --accent-soft: rgba(255,59,48,0.1);
+            --raised: #f0f0f3;
+            --raised2: #e2e2e6;
+            --hair: rgba(0,0,0,0.18);
+            --sub: #2c2c2e;
+            --faint: #6e6e72;
+            --accent-soft: rgba(255,59,48,0.12);
 
             /* Legacy tokens (re-mapped to Cohesive values) */
             --bg: var(--canvas);
@@ -182,7 +182,7 @@
             --blue-medium: var(--raised2);
             --blue-accent: rgba(0,0,0,0.18);
 
-            --text: #1d1d1f;
+            --text: #000000;
             --text-secondary: var(--sub);
             --muted: var(--faint);
             --text-inverse: #ffffff;
@@ -274,7 +274,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, sans-serif;
             background: var(--outer);
             min-height: 100vh;
-            padding: 20px;
+            padding: 12px;
             color: var(--text);
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
@@ -294,11 +294,11 @@
             align-items: center;
             gap: 12px;
             background: var(--canvas);
-            border: 0.5px solid var(--hair);
-            border-bottom: 0.5px solid var(--hair);
-            padding: 15px 24px;
-            margin-bottom: 8px;
-            border-radius: 18px;
+            border: 1px solid var(--hair);
+            border-bottom: 1px solid var(--hair);
+            padding: 13px 22px;
+            margin-bottom: 4px;
+            border-radius: 14px;
         }
         .header-left {
             display: flex;
@@ -2867,7 +2867,7 @@
         .widgets-row { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
         .widget-block { background: var(--surface); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); display: flex; flex-direction: column; height: 380px; min-width: 0; overflow: hidden; }
         /* v15.9.122 — Lean Gradient Header (Inbox + QN — same style as DTW) */
-        .widget-block-hdr { background: var(--canvas); border-left: none; border-bottom: 0.5px solid var(--hair); padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; position: relative; }
+        .widget-block-hdr { background: var(--canvas); border-left: none; border-bottom: 1px solid var(--hair); padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; position: relative; }
         .widget-block-hdr::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; background: var(--accent); border-radius: 0 2px 2px 0; }
         .widget-block-hdr .wbh-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; text-transform: none; display: flex; align-items: center; gap: 9px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
@@ -2976,17 +2976,17 @@
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
         /* ===== DEPARTMENT TOOLS WIDGET v15.9.184 (Cohesive) ===== */
-        #dtw-widget { border: 0.5px solid var(--hair); border-radius: 18px; overflow: hidden; background: var(--canvas); box-shadow: 0 14px 50px rgba(0,0,0,0.15); }
+        #dtw-widget { border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 4px; }
 
         /* Master Header — Cohesive (v15.9.184) */
-        #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 0.5px solid var(--hair); }
+        #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--hair); }
         #dtw-master-header::before { content: ''; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
         #dtw-master-header .dtw-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
         #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: auto; text-transform: none; padding: 4px 11px; border: none; border-radius: 20px; background: var(--accent-soft); }
 
         /* Dept buttons — Cohesive pill with color dot (v15.9.184) */
-        #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 0.5px solid var(--hair); }
-        .dtw-dept-btn { padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 0.5px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
+        #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 1px solid var(--hair); }
+        .dtw-dept-btn { padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
         .dtw-dept-btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--faint); }
         .dtw-dept-btn[data-dept="OFFICE"]::before  { background: #0a84ff; }
         .dtw-dept-btn[data-dept="BAR"]::before     { background: #ff9f0a; }
@@ -3076,8 +3076,8 @@
         #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: var(--surface-2); color: #fff; border-color: #378ADD; }
         #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
 
-        #dtw-tab-bar { display: flex; gap: 6px; border-bottom: 0.5px solid var(--hair); background: var(--canvas); overflow-x: auto; padding: 10px 18px; }
-        .dtw-tab { padding: 6px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 0.5px solid var(--hair); background: var(--raised); color: var(--sub); cursor: pointer; font-family: inherit; text-transform: none; white-space: nowrap; border-radius: 20px; transition: all 0.12s; }
+        #dtw-tab-bar { display: flex; gap: 6px; border-bottom: 1px solid var(--hair); background: var(--canvas); overflow-x: auto; padding: 10px 18px; }
+        .dtw-tab { padding: 6px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); color: var(--sub); cursor: pointer; font-family: inherit; text-transform: none; white-space: nowrap; border-radius: 20px; transition: all 0.12s; }
         .dtw-tab:hover { color: var(--text); background: var(--raised2); border-color: transparent; }
         .dtw-tab.active { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
         .dtw-tab.active.c-OFFICE,
@@ -3651,12 +3651,12 @@
 
         /* ===== COCKPIT WIDGET — Cohesive ===== */
         #cockpit-widget {
-            border: 0.5px solid var(--hair);
-            border-radius: 18px;
+            border: 1px solid var(--hair);
+            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             background: var(--canvas);
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         #cockpit-header {
             background: var(--canvas);
@@ -3666,14 +3666,14 @@
             gap: 14px;
             cursor: pointer;
             border: none;
-            border-bottom: 0.5px solid var(--hair);
+            border-bottom: 1px solid var(--hair);
         }
         .cp-group-row {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 9px 22px;
-            border-bottom: 0.5px solid var(--hair);
+            border-bottom: 1px solid var(--hair);
             font-size: 13px;
             cursor: pointer;
             transition: background 0.12s;
@@ -3960,13 +3960,13 @@
         /* ── COLLAPSED CARD — Cohesive Canvas Sektion ── */
         .planner-card {
             background: var(--canvas);
-            border: 0.5px solid var(--hair);
-            border-radius: 18px;
+            border: 1px solid var(--hair);
+            border-radius: 14px;
             overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             transition: box-shadow 0.2s;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .planner-card:hover {
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
@@ -4703,12 +4703,12 @@
         /* ── LINKBAR — Cohesive pills on canvas ── */
         .linkbar-strip {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             padding: 12px 18px !important;
-            margin-bottom: 8px !important;
+            margin-bottom: 4px !important;
             gap: 8px !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .linkbar-label {
             font-family: inherit !important;
@@ -4722,7 +4722,7 @@
         .linkbar-strip a.linkbar-btn,
         .linkbar-strip .linkbar-btn {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 20px !important;
             padding: 6px 13px !important;
@@ -4752,7 +4752,7 @@
         .linkbar-add-btn:hover { filter: brightness(1.15); }
         .linkbar-edit-toggle {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--sub) !important;
             border-radius: 20px !important;
             padding: 6px 10px !important;
@@ -4789,7 +4789,7 @@
         .ck-header {
             background: var(--canvas) !important;
             border: none !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             color: var(--text) !important;
             padding: 14px 24px !important;
             border-radius: 0 !important;
@@ -4838,11 +4838,11 @@
         .bmt-section,
         .calendar-section {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
-            margin-bottom: 8px !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            margin-bottom: 4px !important;
         }
         .bmt-link {
             color: var(--text) !important;
@@ -4856,23 +4856,23 @@
         }
         .widget-block {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
 
         /* ── DTW (Department Tools Widget) ── */
         #dtw-widget {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         #dtw-master-header {
             background: var(--canvas) !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             background-image: none !important;
             padding: 14px 24px !important;
         }
@@ -4889,13 +4889,13 @@
         .dtw-tabs,
         .dtw-tab-row {
             background: var(--canvas) !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             padding: 10px 18px !important;
             gap: 6px !important;
         }
         .dtw-tab {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--sub) !important;
             border-radius: 20px !important;
             padding: 6px 14px !important;
@@ -4921,7 +4921,7 @@
         .dtw-section { padding: 16px 24px !important; }
         .dtw-notes-add {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 10px !important;
         }
@@ -4929,7 +4929,7 @@
         .dtw-tg-card,
         .dtw-card {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             border-radius: 11px !important;
             padding: 12px 14px !important;
         }
@@ -4939,10 +4939,10 @@
         /* ── COCKPIT ── */
         #cockpit-widget {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .cockpit-content,
         .cp-row,
@@ -4952,13 +4952,13 @@
         .cp-pill,
         .cp-dept-pill {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 20px !important;
         }
         #cp-signin-hint {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             border-radius: 11px !important;
             color: var(--sub) !important;
         }
@@ -4972,10 +4972,10 @@
         .dept-block,
         .dept-pill {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             color: var(--text) !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .dept-card:hover,
         .dept-block:hover { background: var(--raised2) !important; }
@@ -4983,7 +4983,7 @@
         .dept-block-header {
             background: var(--canvas) !important;
             background-image: none !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             color: var(--text) !important;
             padding: 12px 18px !important;
         }
@@ -5003,11 +5003,11 @@
         .tools-expander,
         .expander-group {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
-            margin-bottom: 8px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
+            margin-bottom: 4px !important;
             overflow: hidden !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .tools-toggle,
         .expander-toggle {
@@ -5015,7 +5015,7 @@
             background-image: none !important;
             color: var(--text) !important;
             border: none !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             padding: 14px 24px !important;
             font-size: 14px !important;
             font-weight: 600 !important;
@@ -5029,7 +5029,7 @@
         .quick-action,
         .quick-action-btn {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             border-radius: 11px !important;
             color: var(--text) !important;
             font-family: inherit !important;
@@ -5041,13 +5041,13 @@
         /* ── FOOTER ── */
         .footer {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             color: var(--sub) !important;
             padding: 16px 24px !important;
-            margin-top: 8px !important;
+            margin-top: 4px !important;
             text-align: center !important;
-            box-shadow: 0 14px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .footer * { color: var(--sub) !important; }
 
@@ -5059,15 +5059,15 @@
         .modal,
         .modal-app {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
             box-shadow: 0 24px 80px rgba(0,0,0,0.5) !important;
         }
         .modal-header {
             background: var(--canvas) !important;
             background-image: none !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             padding: 16px 24px !important;
             color: var(--text) !important;
         }
@@ -5083,7 +5083,7 @@
         }
         .modal-close {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--sub) !important;
             border-radius: 50% !important;
             width: 30px !important;
@@ -5109,7 +5109,7 @@
         textarea,
         select {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 10px !important;
             font-family: inherit !important;
@@ -5134,7 +5134,7 @@
         .qn-master-header {
             background: var(--canvas) !important;
             background-image: none !important;
-            border-bottom: 0.5px solid var(--hair) !important;
+            border-bottom: 1px solid var(--hair) !important;
             color: var(--text) !important;
         }
         .qn-title {
@@ -5146,7 +5146,7 @@
         .qn-card,
         .qn-row {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             border-radius: 11px !important;
             color: var(--text) !important;
         }
@@ -5156,7 +5156,7 @@
         .qn-filter-pill,
         .qn-dept-pill {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--sub) !important;
             border-radius: 20px !important;
             font-family: inherit !important;
@@ -5202,7 +5202,7 @@
         /* ── Toast ── */
         .toast {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 12px !important;
             box-shadow: 0 14px 50px rgba(0,0,0,0.4) !important;
@@ -5222,7 +5222,7 @@
         .card,
         .info-card {
             background: var(--raised) !important;
-            border: 0.5px solid var(--hair) !important;
+            border: 1px solid var(--hair) !important;
             border-radius: 11px !important;
             color: var(--text) !important;
         }
@@ -5248,7 +5248,7 @@
         [data-theme="light"] .modal-app,
         [data-theme="light"] .header-bar,
         [data-theme="light"] .planner-card {
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06) !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
         [data-theme="light"] .toast {
             box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
@@ -5257,8 +5257,8 @@
         /* ── Ticker / running revenue strips — Cohesive ── */
         .ticker-section {
             background: var(--canvas) !important;
-            border: 0.5px solid var(--hair) !important;
-            border-radius: 18px !important;
+            border: 1px solid var(--hair) !important;
+            border-radius: 14px !important;
             overflow: hidden !important;
         }
         .ticker-bar { background: var(--ticker-bar-bg) !important; }
@@ -5762,8 +5762,8 @@
 
     <!-- E13 RECHNUNGEN MODAL APP -->
     <style>
-        .inv-wrap{margin-bottom:8px;border:0.5px solid var(--hair);overflow:hidden;background:var(--canvas);border-radius:18px;box-shadow:0 14px 50px rgba(0,0,0,0.1);}
-        .inv-header{background:var(--canvas);padding:14px 22px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;border-bottom:0.5px solid var(--hair);}
+        .inv-wrap{margin-bottom:4px;border:1px solid var(--hair);overflow:hidden;background:var(--canvas);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+        .inv-header{background:var(--canvas);padding:14px 22px;display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;user-select:none;border-bottom:1px solid var(--hair);}
         .inv-body{display:block;padding:14px 22px;}
         .inv-body.collapsed{display:none;}
         .inv-file-pill{display:flex;align-items:center;gap:6px;padding:5px 11px;background:var(--raised);border:0.5px solid var(--hair);border-radius:20px;font-size:11px;color:var(--sub);}
