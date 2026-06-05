@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.194</title>
+    <title>Turbo Projects Work Hub v15.9.195</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -39,7 +39,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-                /* ===== CSS TOKEN SYSTEM v15.9.194 — Cohesive Dual Skin ===== */
+                /* ===== CSS TOKEN SYSTEM v15.9.195 — Cohesive Dual Skin ===== */
         :root {
             /* DARK SKIN (Default) — Cohesive (Canvas/Raised/Hair/Red Accent) */
             /* Cohesive primitives (Mockup-spec) */
@@ -279,7 +279,7 @@
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
-        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.194) ── */
+        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.195) ── */
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         ::-webkit-scrollbar { width: 9px; height: 9px; }
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
@@ -288,7 +288,7 @@
         ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
         
-        /* ===== COHESIVE TOPBAR v15.9.194 ===== */
+        /* ===== COHESIVE TOPBAR v15.9.195 ===== */
         .header-bar {
             display: flex;
             align-items: center;
@@ -389,7 +389,7 @@
             color: var(--text);
             border-color: transparent;
         }
-        /* ── STATE SYNC v15.9.194 ── */
+        /* ── STATE SYNC v15.9.195 ── */
         .sync-btn {
             padding: 7px 14px;
             font-size: 13px;
@@ -798,7 +798,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.194: adaptive modal — white border, scroll inside */
+        /* v15.9.195: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid var(--modal-border);
@@ -909,16 +909,18 @@
         
         /* Factsheet Preview */
         .factsheet-preview {
-            background: white; color: #333; padding: 16px; border-radius: var(--radius-sm);
-            font-family: Arial, sans-serif; font-size: 12px;
+            background: white; color: #222; padding: 12px 14px; border-radius: var(--radius-sm);
+            font-family: 'Courier New', 'Courier', monospace; font-size: 10px; line-height: 1.4;
         }
-        .factsheet-preview h2 { color: #333; margin-bottom: 5px; font-size: 14px; }
+        .factsheet-preview h2 { color: #111; margin-bottom: 3px; font-size: 11px; font-family: Arial, sans-serif; font-weight: 700; letter-spacing: 0.05em; }
         .factsheet-preview .event-name { color: var(--danger); font-weight: bold; }
-        .factsheet-preview table { width: auto; border-collapse: collapse; margin-top: 10px; }
+        .factsheet-preview p { font-size: 10px; color: #333; margin-bottom: 1px; font-family: Arial, sans-serif; }
+        .factsheet-preview strong { font-size: 10px; font-family: Arial, sans-serif; }
+        .factsheet-preview table { width: auto; border-collapse: collapse; margin-top: 6px; }
         .factsheet-preview th, .factsheet-preview td {
-            border: 1px solid #ccc; padding: 4px 6px; text-align: left; white-space: nowrap;
+            border: 1px solid #bbb; padding: 2px 5px; text-align: left; white-space: nowrap;
         }
-        .factsheet-preview th { background: #f0f0f0; font-size: 11px; }
+        .factsheet-preview th { background: #e8e8e8; font-size: 9px; font-family: Arial, sans-serif; font-weight: 700; letter-spacing: 0.05em; }
         
         /* Unified Section Header Style */
         .section-box {
@@ -2136,7 +2138,7 @@
         
         .loading-spinner { text-align: center; padding: 40px; color: var(--muted); }
 
-        /* Month Filter Dropdown — Cohesive (v15.9.194) */
+        /* Month Filter Dropdown — Cohesive (v15.9.195) */
         .bmt-month-filter { position: relative; margin-left: 15px; }
         .bmt-month-btn {
             background: var(--raised); border: 1px solid var(--hair); border-radius: 20px;
@@ -2292,7 +2294,7 @@
 
 
         /* ===== LIGHT SKIN — Component Overrides ===== */
-        /* Cohesive: header-bar hairline border handled by tokens (v15.9.194) */
+        /* Cohesive: header-bar hairline border handled by tokens (v15.9.195) */
         [data-theme="light"] .section-header-title { color: var(--text); }
         [data-theme="light"] .section-header-count { border-color: var(--accent); color: var(--accent); }
         [data-theme="light"] .bmt-title { color: var(--text); }
@@ -2374,7 +2376,7 @@
 
 
         /* ===== PLANNER WIDGET — Light Skin (Cohesive: tokens handle most) ===== */
-        /* Light overrides handled via CSS var tokens in v15.9.194 — no per-prop overrides needed */
+        /* Light overrides handled via CSS var tokens in v15.9.195 — no per-prop overrides needed */
         
         /* ===== TICKER — Light Skin ===== */
         [data-theme="light"] .ticker-section { background: var(--raised); }
@@ -2392,7 +2394,7 @@
             body { padding: 12px; }
             .header h1 { font-size: 24px; }
             
-            /* Mobile Header — Cohesive (v15.9.194) */
+            /* Mobile Header — Cohesive (v15.9.195) */
             .header-bar {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -2509,7 +2511,7 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
-            /* Mobile Header - Small screens — Cohesive (v15.9.194) */
+            /* Mobile Header - Small screens — Cohesive (v15.9.195) */
             .header-bar {
                 flex-direction: column;
                 gap: 8px;
@@ -2929,7 +2931,7 @@
         .qn-input-area textarea:focus { border-color: var(--accent); }
         .qn-save-btn { margin-top: 6px; width: 100%; padding: 8px; background: var(--accent); border: none; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 10px; }
         .qn-save-btn:hover { filter: brightness(1.1); }
-        /* ===== QN DEPT — Cohesive v15.9.194 (dept color as dot only) ===== */
+        /* ===== QN DEPT — Cohesive v15.9.195 (dept color as dot only) ===== */
         .qn-dept-row { display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap; }
         .qn-dept-btn { flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 20px; transition: all 0.12s; text-align: center; color: var(--text); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .qn-dept-btn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -2983,16 +2985,16 @@
         .qn-card.dept-NONE    { border-left-color: var(--faint); }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.194 (Cohesive) ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.195 (Cohesive) ===== */
         #dtw-widget { border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 4px; }
 
-        /* Master Header — Cohesive (v15.9.194) */
+        /* Master Header — Cohesive (v15.9.195) */
         #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--hair); }
         #dtw-master-header::before { content: ''; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
         #dtw-master-header .dtw-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
         #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: auto; text-transform: none; padding: 4px 11px; border: none; border-radius: 20px; background: var(--accent-soft); }
 
-        /* Dept buttons — Cohesive pill with color dot (v15.9.194) */
+        /* Dept buttons — Cohesive pill with color dot (v15.9.195) */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 1px solid var(--hair); }
         .dtw-dept-btn { padding: 11px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
         .dtw-dept-btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--faint); }
@@ -3016,7 +3018,7 @@
 
         #dtw-panel { background: var(--canvas); }
 
-        /* === v15.9.194 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
+        /* === v15.9.195 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
         .dtw-tg-filterbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:6px; padding:10px 18px; background:var(--canvas); border-bottom:0.5px solid var(--hair); }
         .dtw-tg-deptbtn { padding:8px 14px; font-size:12px; font-weight:600; letter-spacing:0; border:0.5px solid var(--hair); cursor:pointer; font-family:inherit; text-transform:none; transition:all 0.15s ease; clip-path:none; color:var(--text); background:var(--raised); border-radius:20px; display:inline-flex; align-items:center; gap:7px; }
         .dtw-tg-deptbtn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -3075,14 +3077,8 @@
         .dtw-tg-empty { text-align:center; padding:50px 20px; color:var(--faint); font-size:12px; }
 
         /* OFFICE 2-column layout: Tab area + permanent Apps sidebar */
-        #dtw-office-layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; background: var(--canvas); }
-        #dtw-office-main { min-width: 0; border-right: 0.5px solid var(--hair); }
-        #dtw-office-apps-sidebar { background: var(--canvas); padding: 16px; border-left: 0.5px solid var(--hair); }
-        #dtw-office-apps-sidebar .dtw-apps-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--faint); padding: 4px 4px 10px; border-bottom: 0.5px solid var(--hair); margin-bottom: 10px; text-transform: uppercase; }
-        #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side { padding: 14px 8px; background: transparent; border: 1px solid var(--border); color: var(--accent); cursor: pointer; font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.15s; border-radius: 6px; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side:hover { background: var(--surface-2); color: #fff; border-color: #378ADD; }
-        #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
+        #dtw-office-layout { display: grid; grid-template-columns: 1fr; gap: 0; background: var(--canvas); }
+        #dtw-office-main { min-width: 0; }
 
         #dtw-tab-bar { display: flex; gap: 6px; border-bottom: 1px solid var(--hair); background: var(--canvas); overflow-x: auto; padding: 10px 18px; }
         .dtw-tab { padding: 7px 16px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); color: var(--text); cursor: pointer; font-family: inherit; text-transform: none; white-space: nowrap; border-radius: 20px; transition: all 0.12s; }
@@ -3155,8 +3151,6 @@
 
         @media (max-width: 860px) {
             #dtw-office-layout { grid-template-columns: 1fr; }
-            #dtw-office-apps-sidebar { border-top: 1px solid var(--border); }
-            #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(4, 1fr); }
         }
         @media (max-width: 700px) {
             #dtw-master-header { padding: 12px 14px 12px 22px; }
@@ -3165,7 +3159,6 @@
             .dtw-dept-btn { font-size: 10px; padding: 10px 2px; letter-spacing: 1px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
             .dtw-cal-wrap iframe { height: 360px; }
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
-            #dtw-office-apps-sidebar .dtw-apps-grid-sidebar { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* ===== MEIN TAG WIDGET v15.9.130 ===== */
@@ -3958,7 +3951,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.194 — Cohesive ===== */
+        /* ===== PLANNER WIDGET v15.9.195 — Cohesive ===== */
         
         #planner-widget {
             margin-bottom: 0;
@@ -3991,9 +3984,9 @@
             overflow: visible;
         }
         .planner-hero-day {
-            padding: 18px 24px;
+            padding: 10px 20px;
             border-right: 0.5px solid var(--hair);
-            min-width: 230px;
+            min-width: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -4007,7 +4000,7 @@
         .planner-sprint-row { display: none; }
 
         .planner-kw {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 800;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -4043,7 +4036,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 18px 8px;
+            padding: 8px 6px;
             text-align: center;
             border-right: 0.5px solid var(--hair);
             transition: background 0.12s;
@@ -4051,7 +4044,7 @@
         .planner-stat:last-child { border-right: none; }
         .planner-stat:hover { background: var(--raised); }
         .planner-stat-val {
-            font-size: 24px;
+            font-size: 22px;
             line-height: 1;
             font-weight: 700;
             letter-spacing: -0.02em;
@@ -4062,12 +4055,12 @@
         .planner-stat-val.purple { color: var(--text); }
         .planner-stat-label {
             font-family: inherit;
-            font-size: 10px;
+            font-size: 8px;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--text);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         /* TASKS LIST (legacy wrapper, kept for layout compat) */
@@ -4189,6 +4182,30 @@
             margin-bottom: 6px;
             margin-top: 12px;
         }
+        .planner-notes-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+        .planner-notes-header .planner-notes-label {
+            margin: 0;
+        }
+        .planner-notes-add-btn {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 1px solid var(--hair);
+            background: var(--raised);
+            color: var(--sub);
+            font-size: 14px;
+            line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.12s, color 0.12s;
+        }
+        .planner-notes-add-btn:hover { background: var(--raised2); color: var(--text); border-color: transparent; }
         .planner-notes-area {
             width: 100%;
             background: var(--raised);
@@ -4624,7 +4641,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.194 ── */
+        /* ── Factsheet 2-col v15.9.195 ── */
         #factsheet-modal .modal { max-width: min(1280px, 96vw); max-height: 92vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4687,7 +4704,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.194 (Cohesive) ── */
+        /* ── Planner Widget compact v15.9.195 (Cohesive) ── */
         @media (max-width: 768px) {
             .planner-hero { flex-direction: column; }
             .planner-hero-day { border-right: none; border-bottom: 0.5px solid var(--hair); min-width: 0; padding: 14px 16px; }
@@ -4716,7 +4733,7 @@
         /* ── /Planner compact ── */
 
         /* ═══════════════════════════════════════════════════════════════════
-           COHESIVE OVERRIDE LAYER v15.9.194
+           COHESIVE OVERRIDE LAYER v15.9.195
            Final pass: unifies all remaining sections to the Cohesive spec.
            Overrides any legacy hardcoded colors with token-driven values.
            ═══════════════════════════════════════════════════════════════════ */
@@ -4881,6 +4898,20 @@
             border-radius: 14px !important;
             overflow: hidden !important;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        /* ── DTW + Inbox Split v15.9.195 ── */
+        #dtw-inbox-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: start;
+        }
+        #dtw-inbox-split #dtw-widget { margin-bottom: 0; }
+        #dtw-inbox-split .widget-block { height: auto; min-height: 200px; }
+        @media (max-width: 860px) {
+            #dtw-inbox-split { grid-template-columns: 1fr; }
         }
 
         /* ── DTW (Department Tools Widget) ── */
@@ -5309,7 +5340,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════════
-           /COHESIVE OVERRIDE LAYER v15.9.194
+           /COHESIVE OVERRIDE LAYER v15.9.195
            ═══════════════════════════════════════════════════════════════════ */
 
         </style>
@@ -5486,7 +5517,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.194 — Cohesive ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.195 — Cohesive ==================== -->
     <div id="planner-widget">
 
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
@@ -5533,7 +5564,10 @@
                 <div class="planner-col">
                     <div class="planner-col-label">Tasks heute</div>
                     <div id="planner-task-rows" style="font-size:12px;color:var(--faint);padding:2px 0;">Lädt…</div>
-                    <div class="planner-notes-label">Quick Notes</div>
+                    <div class="planner-notes-header">
+                        <div class="planner-notes-label">Quick Notes</div>
+                        <button class="planner-notes-add-btn" onclick="event.stopPropagation();openEditor('notepad')" title="Neue Notiz">+</button>
+                    </div>
                     <textarea class="planner-notes-area" rows="3" placeholder="Notiz eingeben…" onclick="event.stopPropagation()" id="planner-quick-notes"></textarea>
                 </div>
 
@@ -5548,14 +5582,14 @@
                     <!-- APPS -->
                     <div class="planner-qa-panel active" data-qa-panel="apps">
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('factsheet-modal')"><span class="planner-qa-icon">📋</span>Factsheet</button>
-                        <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('security-orders-modal')"><span class="planner-qa-icon">🔒</span>Security</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openQuickSecOrder()"><span class="planner-qa-icon">⚡</span>Quick Sec</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('email-modal')"><span class="planner-qa-icon">✉</span>Email</button>
-                        <button class="planner-qa-btn" onclick="event.stopPropagation();openInbox()"><span class="planner-qa-icon">📥</span>Inbox</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('db-viewer-modal');dbvLoad();"><span class="planner-qa-icon">🗄</span>DB Viewer</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openEditor('notepad')"><span class="planner-qa-icon">📝</span>Notepad</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openPromoManager()"><span class="planner-qa-icon">📣</span>Promo Mgr</button>
-                        <button class="planner-qa-btn" onclick="event.stopPropagation();document.getElementById('dtw-widget').scrollIntoView({behavior:'smooth'});dtwToggleDept('OFFICE')"><span class="planner-qa-icon">🏢</span>DTW</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('umsatz-ticker-modal');umsatzTickerOnOpen();"><span class="planner-qa-icon">💰</span>Umsatz Ticker</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();plannerOpen()"><span class="planner-qa-icon">📅</span>Planner</button>
+                        <button class="planner-qa-btn qa-placeholder" onclick="event.stopPropagation()"><span class="planner-qa-icon">＋</span>—</button>
                     </div>
                     <!-- CLUB -->
                     <div class="planner-qa-panel" data-qa-panel="club">
@@ -5651,18 +5685,21 @@
 
     
 
+    <!-- DTW + INBOX — 50/50 SPLIT v15.9.195 -->
+    <div id="dtw-inbox-split">
+
     <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.116 ==================== -->
-    <div id="dtw-widget" style="margin-bottom:8px;">
+    <div id="dtw-widget">
         <div id="dtw-master-header">
             <span class="dtw-title">🎛 DEPARTMENT TOOLS</span>
             <span id="dtw-active-label" class="dtw-active-label"></span>
         </div>
         <div id="dtw-dept-row">
-            <button class="dtw-dept-btn" data-dept="OFFICE"  onclick="dtwToggleDept('OFFICE')">OFFICE</button>
-            <button class="dtw-dept-btn" data-dept="BAR"     onclick="dtwToggleDept('BAR')">BAR</button>
-            <button class="dtw-dept-btn" data-dept="RUNNER"  onclick="dtwToggleDept('RUNNER')">RUNNER</button>
-            <button class="dtw-dept-btn" data-dept="TECHNIK" onclick="dtwToggleDept('TECHNIK')">TECHNIK</button>
-            <button class="dtw-dept-btn" data-dept="SPUTNIK" onclick="dtwToggleDept('SPUTNIK')">QON</button>
+            <button class="dtw-dept-btn" data-dept="OFFICE"  onclick="dtwToggleDept('OFFICE')">🏢 OFFICE</button>
+            <button class="dtw-dept-btn" data-dept="BAR"     onclick="dtwToggleDept('BAR')">🍺 BAR</button>
+            <button class="dtw-dept-btn" data-dept="RUNNER"  onclick="dtwToggleDept('RUNNER')">🏃 RUNNER</button>
+            <button class="dtw-dept-btn" data-dept="TECHNIK" onclick="dtwToggleDept('TECHNIK')">⚙️ TECHNIK</button>
+            <button class="dtw-dept-btn" data-dept="SPUTNIK" onclick="dtwToggleDept('SPUTNIK')">⚡ QON</button>
         </div>
         <div id="dtw-panel" style="display:none;">
             <div id="dtw-office-layout" style="display:none;">
@@ -5670,10 +5707,6 @@
                     <div id="dtw-tab-bar-office"></div>
                     <div id="dtw-tab-content-office"></div>
                 </div>
-                <aside id="dtw-office-apps-sidebar">
-                    <div class="dtw-apps-title">APPLICATIONS</div>
-                    <div class="dtw-apps-grid-sidebar" id="dtw-office-apps-grid"></div>
-                </aside>
             </div>
             <div id="dtw-standard-layout">
                 <div id="dtw-tab-bar"></div>
@@ -5682,7 +5715,25 @@
         </div>
     </div>
 
-    <!-- COCKPIT — DEPT ROWS v15.9.96 — AUSKOMMENTIERT v15.9.113 (ersetzt durch DEPARTMENT TOOLS WIDGET) -->
+    <!-- INBOX BLOCK -->
+    <div class="widget-block" id="mini-inbox-widget">
+        <div class="widget-block-hdr">
+            <div class="wbh-title">
+                &#9993; INBOX
+                <span id="mini-inbox-badge" style="display:none;background:#ef4444;color:#fff;padding:1px 8px;font-size:10px;font-weight:700;"></span>
+                <span id="mini-inbox-status" style="font-size:9px;color:#555;font-weight:400;"></span>
+            </div>
+            <div class="wbh-actions">
+                <button class="quick-notes-add" onclick="miniInboxLoad()" title="Refresh">&#8635;</button>
+                <button class="quick-notes-add" onclick="openInbox()" title="Vollansicht">&#8599;</button>
+            </div>
+        </div>
+        <div class="widget-block-body" id="mini-inbox-body">
+            <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:14px;">Lädt…</div>
+        </div>
+    </div>
+
+    </div><!-- end dtw-inbox-split -->
     <!--
     <div id="cockpit-widget" style="margin-bottom:8px;">
         <div id="cockpit-header" style="background:var(--section-header-bg);border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
@@ -5768,30 +5819,6 @@
 
     <!-- HEUTE BANNER — DEAKTIVIERT v15.9.96 (wird nach 30.04 neu gebaut mit korrektem Filter) -->
 
-    <!-- INBOX + QUICK NOTES — 2 BIG BLOCKS -->
-    <div class="widgets-row">
-
-        <!-- INBOX BLOCK -->
-        <div class="widget-block" id="mini-inbox-widget">
-            <div class="widget-block-hdr">
-                <div class="wbh-title">
-                    &#9993; INBOX
-                    <span id="mini-inbox-badge" style="display:none;background:#ef4444;color:#fff;padding:1px 8px;font-size:10px;font-weight:700;"></span>
-                    <span id="mini-inbox-status" style="font-size:9px;color:#555;font-weight:400;"></span>
-                </div>
-                <div class="wbh-actions">
-                    <button class="quick-notes-add" onclick="miniInboxLoad()" title="Refresh">&#8635;</button>
-                    <button class="quick-notes-add" onclick="openInbox()" title="Vollansicht">&#8599;</button>
-                </div>
-            </div>
-            <div class="widget-block-body" id="mini-inbox-body">
-                <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:14px;">Lädt…</div>
-            </div>
-        </div>
-
-        
-
-    </div><!-- end widgets-row -->
 
     <!-- E13 RECHNUNGEN MODAL APP -->
     <style>
@@ -8562,7 +8589,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.194</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.195</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9042,7 +9069,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.194</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.195</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13134,7 +13161,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.195', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13213,7 +13240,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.194  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.195  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -13294,7 +13321,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.195', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13368,7 +13395,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.195', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13475,7 +13502,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.195', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13559,7 +13586,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.195', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13868,7 +13895,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.195', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14015,7 +14042,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.195', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14160,7 +14187,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.194', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.195', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18993,7 +19020,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.194';
+            const HUB_VERSION = 'v15.9.195';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20698,7 +20725,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.194</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.195</div>
                     </div>
                     
                     <div class="section">
@@ -20797,7 +20824,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.194 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.195 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24501,7 +24528,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.194 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.195 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24531,7 +24558,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.194',
+                hubVersion: 'v15.9.195',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25098,7 +25125,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.194
+     UMSATZ TICKER JS — v15.9.195
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -26272,7 +26299,6 @@ Spittelauer Lnde 12/1
         if (open === 'OFFICE') {
             if (officeLayout) officeLayout.style.display = 'grid';
             if (standardLayout) standardLayout.style.display = 'none';
-            dtwRenderOfficeAppsSidebar();
             dtwRenderTabBar(open);
             const tab = dtwGetLastTab(open);
             dtwRenderTabContent(open, tab);
@@ -26285,25 +26311,6 @@ Spittelauer Lnde 12/1
         }
     }
 
-    function dtwRenderOfficeAppsSidebar() {
-        const grid = document.getElementById('dtw-office-apps-grid');
-        if (!grid) return;
-        const apps = [
-            { ico: '📋', label: 'Factsheet',     action: "openModal('factsheet-modal')" },
-            { ico: '🛡️', label: 'Security',      action: "openModal('security-orders-modal')" },
-            { ico: '🧹', label: 'Cleaning',      action: "openModal('cleaning-modal')" },
-            { ico: '🧾', label: 'Rechnungen',    action: "invScrollTo()" },
-            { ico: '📧', label: 'Email Hub',     action: "openModal('email-modal')" },
-            { ico: '🤖', label: 'Claude Notepad', action: "openModal('claude-notepad-modal')" },
-            { ico: '📝', label: 'Editor',        action: "openModal('editor-modal')" },
-            { ico: '📚', label: 'Archiv',        action: "archiveOpen()" }
-        ];
-        let html = '';
-        apps.forEach(a => {
-            html += `<button class="dtw-app-btn-side" onclick="${a.action}"><span class="dtw-app-ico">${a.ico}</span>${a.label}</button>`;
-        });
-        grid.innerHTML = html;
-    }
 
     function dtwRenderTabBar(dept) {
         const barId = (dept === 'OFFICE') ? 'dtw-tab-bar-office' : 'dtw-tab-bar';
@@ -27158,7 +27165,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.194 =====
+// ===== PLANNER WIDGET v15.9.195 =====
 (function() {
     'use strict';
 
@@ -27174,7 +27181,7 @@ Spittelauer Lnde 12/1
     };
     let plannerCurrentTab = 'daily';
 
-    // ── QA Tabs (v15.9.194) ──
+    // ── QA Tabs (v15.9.195) ──
     window.plannerQATab = function(tab, btn) {
         document.querySelectorAll('.planner-qa-tab').forEach(t => t.classList.remove('active'));
         if (btn) btn.classList.add('active');
@@ -27311,7 +27318,7 @@ Spittelauer Lnde 12/1
                         const u = n.toUpperCase();
                         if (u.includes('BAR')) return '🍺';
                         if (u.includes('RUNNER')) return '🏃';
-                        if (u.includes('TECHNIK')) return '🔧';
+                        if (u.includes('TECHNIK')) return '⚙️';
                         if (u.includes('OFFICE')) return '🏢';
                         if (u.includes('SPUTNIK') || u.includes('QON')) return '⚡';
                         return '●';
@@ -27747,10 +27754,10 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /PLANNER WIDGET =====
 
-// ===== STATE SYNC v15.9.194 =====
+// ===== STATE SYNC v15.9.195 =====
 (function() {
 
-    const HUB_VER = 'v15.9.194';
+    const HUB_VER = 'v15.9.195';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28048,7 +28055,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== /STATE SYNC =====
 </script>
 
-<!-- ==================== STATE SYNC MODAL v15.9.194 ==================== -->
+<!-- ==================== STATE SYNC MODAL v15.9.195 ==================== -->
 <div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
         <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
