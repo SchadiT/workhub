@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.184</title>
+    <title>Turbo Projects Work Hub v15.9.189</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -39,7 +39,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-                /* ===== CSS TOKEN SYSTEM v15.9.184 — Cohesive Dual Skin ===== */
+                /* ===== CSS TOKEN SYSTEM v15.9.189 — Cohesive Dual Skin ===== */
         :root {
             /* DARK SKIN (Default) — Cohesive (Canvas/Raised/Hair/Red Accent) */
             /* Cohesive primitives (Mockup-spec) */
@@ -279,7 +279,7 @@
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
-        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.184) ── */
+        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.189) ── */
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         ::-webkit-scrollbar { width: 9px; height: 9px; }
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
@@ -288,7 +288,7 @@
         ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
         
-        /* ===== COHESIVE TOPBAR v15.9.184 ===== */
+        /* ===== COHESIVE TOPBAR v15.9.189 ===== */
         .header-bar {
             display: flex;
             align-items: center;
@@ -330,16 +330,16 @@
             gap: 8px;
         }
         .header-logo {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             color: var(--text);
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
             text-transform: none;
         }
         .header-title {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--sub);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
             letter-spacing: -0.005em;
         }
         .topnav {
@@ -348,19 +348,20 @@
             margin-left: 18px;
         }
         .navitem {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--sub);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
             padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.12s, color 0.12s;
             user-select: none;
         }
-        .navitem:hover { background: var(--raised); color: var(--text); }
+        .navitem:hover { background: var(--raised); }
         .navitem.active {
             background: var(--accent-soft);
             color: var(--accent);
+            font-weight: 700;
         }
         .header-right {
             display: flex;
@@ -371,12 +372,12 @@
         }
         .header-btn {
             background: var(--raised);
-            border: 0.5px solid var(--hair);
+            border: 1px solid var(--hair);
             border-radius: 20px;
-            padding: 6px 13px;
-            color: var(--sub);
-            font-size: 12px;
-            font-weight: 500;
+            padding: 7px 14px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.12s;
             text-transform: none;
@@ -388,16 +389,16 @@
             color: var(--text);
             border-color: transparent;
         }
-        /* ── STATE SYNC v15.9.184 ── */
+        /* ── STATE SYNC v15.9.189 ── */
         .sync-btn {
-            padding: 6px 13px;
-            font-size: 12px;
-            font-weight: 500;
+            padding: 7px 14px;
+            font-size: 13px;
+            font-weight: 600;
             letter-spacing: 0;
             font-family: inherit;
             background: var(--raised);
-            border: 0.5px solid var(--hair);
-            color: var(--sub);
+            border: 1px solid var(--hair);
+            color: var(--text);
             cursor: pointer;
             border-radius: 20px;
             transition: all 0.12s;
@@ -412,6 +413,7 @@
             background: var(--accent-soft);
             color: var(--accent);
             border-color: transparent;
+            font-weight: 700;
         }
         #theme-toggle:hover {
             background: var(--accent-soft);
@@ -796,7 +798,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.184: adaptive modal — white border, scroll inside */
+        /* v15.9.189: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid var(--modal-border);
@@ -2284,7 +2286,7 @@
 
 
         /* ===== LIGHT SKIN — Component Overrides ===== */
-        /* Cohesive: header-bar hairline border handled by tokens (v15.9.184) */
+        /* Cohesive: header-bar hairline border handled by tokens (v15.9.189) */
         [data-theme="light"] .section-header-title { color: var(--text); }
         [data-theme="light"] .section-header-count { border-color: var(--accent); color: var(--accent); }
         [data-theme="light"] .bmt-title { color: var(--text); }
@@ -2366,7 +2368,7 @@
 
 
         /* ===== PLANNER WIDGET — Light Skin (Cohesive: tokens handle most) ===== */
-        /* Light overrides handled via CSS var tokens in v15.9.184 — no per-prop overrides needed */
+        /* Light overrides handled via CSS var tokens in v15.9.189 — no per-prop overrides needed */
         
         /* ===== TICKER — Light Skin ===== */
         [data-theme="light"] .ticker-section { background: var(--raised); }
@@ -2384,7 +2386,7 @@
             body { padding: 12px; }
             .header h1 { font-size: 24px; }
             
-            /* Mobile Header — Cohesive (v15.9.184) */
+            /* Mobile Header — Cohesive (v15.9.189) */
             .header-bar {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -2501,7 +2503,7 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
-            /* Mobile Header - Small screens — Cohesive (v15.9.184) */
+            /* Mobile Header - Small screens — Cohesive (v15.9.189) */
             .header-bar {
                 flex-direction: column;
                 gap: 8px;
@@ -2869,7 +2871,7 @@
         /* v15.9.122 — Lean Gradient Header (Inbox + QN — same style as DTW) */
         .widget-block-hdr { background: var(--canvas); border-left: none; border-bottom: 1px solid var(--hair); padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; position: relative; }
         .widget-block-hdr::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; background: var(--accent); border-radius: 0 2px 2px 0; }
-        .widget-block-hdr .wbh-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; text-transform: none; display: flex; align-items: center; gap: 9px; }
+        .widget-block-hdr .wbh-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; text-transform: none; display: flex; align-items: center; gap: 9px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
         .widget-block-body { flex: 1; overflow-y: auto; }
         /* v15.9.122 — Single-line entry: dot-pair + title (ellipsis) + date + x */
@@ -2921,7 +2923,7 @@
         .qn-input-area textarea:focus { border-color: var(--accent); }
         .qn-save-btn { margin-top: 6px; width: 100%; padding: 8px; background: var(--accent); border: none; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 10px; }
         .qn-save-btn:hover { filter: brightness(1.1); }
-        /* ===== QN DEPT — Cohesive v15.9.184 (dept color as dot only) ===== */
+        /* ===== QN DEPT — Cohesive v15.9.189 (dept color as dot only) ===== */
         .qn-dept-row { display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap; }
         .qn-dept-btn { flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 20px; transition: all 0.12s; text-align: center; color: var(--text); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .qn-dept-btn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -2975,18 +2977,18 @@
         .qn-card.dept-NONE    { border-left-color: var(--faint); }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.184 (Cohesive) ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.189 (Cohesive) ===== */
         #dtw-widget { border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 4px; }
 
-        /* Master Header — Cohesive (v15.9.184) */
+        /* Master Header — Cohesive (v15.9.189) */
         #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--hair); }
         #dtw-master-header::before { content: ''; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
-        #dtw-master-header .dtw-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
+        #dtw-master-header .dtw-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
         #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: auto; text-transform: none; padding: 4px 11px; border: none; border-radius: 20px; background: var(--accent-soft); }
 
-        /* Dept buttons — Cohesive pill with color dot (v15.9.184) */
+        /* Dept buttons — Cohesive pill with color dot (v15.9.189) */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 1px solid var(--hair); }
-        .dtw-dept-btn { padding: 10px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
+        .dtw-dept-btn { padding: 11px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
         .dtw-dept-btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--faint); }
         .dtw-dept-btn[data-dept="OFFICE"]::before  { background: #0a84ff; }
         .dtw-dept-btn[data-dept="BAR"]::before     { background: #ff9f0a; }
@@ -3008,7 +3010,7 @@
 
         #dtw-panel { background: var(--canvas); }
 
-        /* === v15.9.184 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
+        /* === v15.9.189 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
         .dtw-tg-filterbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:6px; padding:10px 18px; background:var(--canvas); border-bottom:0.5px solid var(--hair); }
         .dtw-tg-deptbtn { padding:8px 14px; font-size:12px; font-weight:600; letter-spacing:0; border:0.5px solid var(--hair); cursor:pointer; font-family:inherit; text-transform:none; transition:all 0.15s ease; clip-path:none; color:var(--text); background:var(--raised); border-radius:20px; display:inline-flex; align-items:center; gap:7px; }
         .dtw-tg-deptbtn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -3077,7 +3079,7 @@
         #dtw-office-apps-sidebar .dtw-app-btn-side .dtw-app-ico { font-size: 18px; }
 
         #dtw-tab-bar { display: flex; gap: 6px; border-bottom: 1px solid var(--hair); background: var(--canvas); overflow-x: auto; padding: 10px 18px; }
-        .dtw-tab { padding: 6px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); color: var(--sub); cursor: pointer; font-family: inherit; text-transform: none; white-space: nowrap; border-radius: 20px; transition: all 0.12s; }
+        .dtw-tab { padding: 7px 16px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); color: var(--text); cursor: pointer; font-family: inherit; text-transform: none; white-space: nowrap; border-radius: 20px; transition: all 0.12s; }
         .dtw-tab:hover { color: var(--text); background: var(--raised2); border-color: transparent; }
         .dtw-tab.active { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
         .dtw-tab.active.c-OFFICE,
@@ -3950,7 +3952,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.184 — Cohesive ===== */
+        /* ===== PLANNER WIDGET v15.9.189 — Cohesive ===== */
         
         #planner-widget {
             margin-bottom: 0;
@@ -3999,27 +4001,28 @@
         .planner-sprint-row { display: none; }
 
         .planner-kw {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             font-family: inherit;
         }
         .planner-day-name {
-            font-size: 26px;
+            font-size: 28px;
             line-height: 1.05;
             color: var(--text);
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: -0.03em;
             margin: 3px 0;
         }
         .planner-day-sub {
-            font-size: 12px;
-            color: var(--faint);
+            font-size: 13px;
+            color: var(--text);
             margin-bottom: 0;
             line-height: 1.3;
+            font-weight: 500;
         }
 
         /* STATUS BAR — flat strip embedded in hero, hairline dividers */
@@ -4042,9 +4045,9 @@
         .planner-stat:last-child { border-right: none; }
         .planner-stat:hover { background: var(--raised); }
         .planner-stat-val {
-            font-size: 22px;
+            font-size: 24px;
             line-height: 1;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: -0.02em;
             color: var(--text);
         }
@@ -4053,12 +4056,12 @@
         .planner-stat-val.purple { color: var(--text); }
         .planner-stat-label {
             font-family: inherit;
-            font-size: 9px;
-            font-weight: 500;
-            letter-spacing: 0.08em;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--faint);
-            margin-top: 3px;
+            color: var(--text);
+            margin-top: 4px;
         }
 
         /* TASKS LIST (legacy wrapper, kept for layout compat) */
@@ -4132,7 +4135,7 @@
             flex-shrink: 0;
         }
         .planner-task-text {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text);
             flex: 1;
             line-height: 1.3;
@@ -4141,22 +4144,23 @@
             white-space: nowrap;
             min-width: 0;
             letter-spacing: -0.005em;
+            font-weight: 600;
         }
         .planner-task-badge {
             font-family: inherit;
-            font-size: 9px;
-            font-weight: 600;
-            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
             border-radius: 10px;
             flex-shrink: 0;
             letter-spacing: 0;
             text-transform: none;
         }
-        .planner-badge-ops    { background: rgba(255,159,10,0.12); color: #ff9f0a; }
-        .planner-badge-office { background: rgba(10,132,255,0.12); color: #0a84ff; }
-        .planner-badge-admin  { background: var(--raised); color: var(--sub); }
-        .planner-badge-bar    { background: rgba(255,159,10,0.12); color: #ff9f0a; }
-        .planner-badge-qon    { background: var(--accent-soft); color: var(--accent); }
+        .planner-badge-ops,
+        .planner-badge-office,
+        .planner-badge-admin,
+        .planner-badge-bar,
+        .planner-badge-qon { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
 
         /* BOTTOM GRID: Tasks left | QA right — 2 cols, hairline divider */
         .planner-bottom-grid {
@@ -4208,17 +4212,17 @@
         }
         .planner-qa-tab {
             flex: 0 0 auto;
-            padding: 6px 14px;
+            padding: 7px 16px;
             font-family: inherit;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             letter-spacing: 0;
             text-transform: none;
             text-align: center;
             background: var(--raised);
-            border: 0.5px solid var(--hair);
+            border: 1px solid var(--hair);
             border-radius: 20px;
-            color: var(--sub);
+            color: var(--text);
             cursor: pointer;
             transition: all 0.12s;
         }
@@ -4240,12 +4244,12 @@
             gap: 6px;
             padding: 14px 6px;
             background: var(--raised);
-            border: 0.5px solid var(--hair);
+            border: 1px solid var(--hair);
             border-radius: 11px;
             color: var(--text);
             font-family: inherit;
-            font-size: 10px;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
             letter-spacing: -0.01em;
             transition: background 0.12s, transform 0.06s;
@@ -4298,19 +4302,20 @@
         .planner-task-due {
             font-family: inherit;
             font-size: 12px;
-            color: var(--faint);
+            color: var(--text);
             white-space: nowrap;
             flex-shrink: 0;
             font-variant-numeric: tabular-nums;
+            font-weight: 600;
         }
-        .planner-task-due.overdue { color: var(--accent); }
+        .planner-task-due.overdue { color: var(--accent); font-weight: 700; }
         .planner-col-label {
             font-family: inherit;
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 800;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--faint);
+            color: var(--text);
             margin-bottom: 11px;
         }
         .planner-event-item {
@@ -4613,7 +4618,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.184 ── */
+        /* ── Factsheet 2-col v15.9.189 ── */
         #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4671,7 +4676,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.184 (Cohesive) ── */
+        /* ── Planner Widget compact v15.9.189 (Cohesive) ── */
         @media (max-width: 768px) {
             .planner-hero { flex-direction: column; }
             .planner-hero-day { border-right: none; border-bottom: 0.5px solid var(--hair); min-width: 0; padding: 14px 16px; }
@@ -4700,7 +4705,7 @@
         /* ── /Planner compact ── */
 
         /* ═══════════════════════════════════════════════════════════════════
-           COHESIVE OVERRIDE LAYER v15.9.184
+           COHESIVE OVERRIDE LAYER v15.9.189
            Final pass: unifies all remaining sections to the Cohesive spec.
            Overrides any legacy hardcoded colors with token-driven values.
            ═══════════════════════════════════════════════════════════════════ */
@@ -4717,10 +4722,10 @@
         }
         .linkbar-label {
             font-family: inherit !important;
-            font-size: 10px !important;
-            font-weight: 700 !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
             letter-spacing: 0.1em !important;
-            color: var(--faint) !important;
+            color: var(--text) !important;
             text-transform: uppercase !important;
         }
         .linkbar-btn,
@@ -4730,9 +4735,9 @@
             border: 1px solid var(--hair) !important;
             color: var(--text) !important;
             border-radius: 20px !important;
-            padding: 6px 13px !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
+            padding: 7px 14px !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
             font-family: inherit !important;
             letter-spacing: -0.005em !important;
             text-transform: none !important;
@@ -4807,8 +4812,8 @@
         .ck-title,
         h2.section-title {
             color: var(--text) !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
+            font-size: 15px !important;
+            font-weight: 700 !important;
             letter-spacing: -0.01em !important;
             text-transform: none !important;
             text-shadow: none !important;
@@ -5281,7 +5286,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════════
-           /COHESIVE OVERRIDE LAYER v15.9.184
+           /COHESIVE OVERRIDE LAYER v15.9.189
            ═══════════════════════════════════════════════════════════════════ */
 
         </style>
@@ -5458,7 +5463,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.184 — Cohesive ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.189 — Cohesive ==================== -->
     <div id="planner-widget">
 
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
@@ -8534,7 +8539,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.184</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.189</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9014,7 +9019,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.184</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.189</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13106,7 +13111,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.189', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13185,7 +13190,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.184  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.189  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -13266,7 +13271,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13340,7 +13345,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13447,7 +13452,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13531,7 +13536,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13840,7 +13845,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.189', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13987,7 +13992,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.189', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14132,7 +14137,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.184', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18958,7 +18963,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.184';
+            const HUB_VERSION = 'v15.9.189';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20762,7 +20767,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.184 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.189 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24466,7 +24471,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.184 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.189 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24496,7 +24501,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.184',
+                hubVersion: 'v15.9.189',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25063,7 +25068,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.184
+     UMSATZ TICKER JS — v15.9.189
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -27123,7 +27128,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.184 =====
+// ===== PLANNER WIDGET v15.9.189 =====
 (function() {
     'use strict';
 
@@ -27139,7 +27144,7 @@ Spittelauer Lnde 12/1
     };
     let plannerCurrentTab = 'daily';
 
-    // ── QA Tabs (v15.9.184) ──
+    // ── QA Tabs (v15.9.189) ──
     function plannerQATab(tab, btn) {
         document.querySelectorAll('.planner-qa-tab').forEach(t => t.classList.remove('active'));
         if (btn) btn.classList.add('active');
@@ -27703,10 +27708,10 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /PLANNER WIDGET =====
 
-// ===== STATE SYNC v15.9.184 =====
+// ===== STATE SYNC v15.9.189 =====
 (function() {
 
-    const HUB_VER = 'v15.9.184';
+    const HUB_VER = 'v15.9.189';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28004,7 +28009,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== /STATE SYNC =====
 </script>
 
-<!-- ==================== STATE SYNC MODAL v15.9.184 ==================== -->
+<!-- ==================== STATE SYNC MODAL v15.9.189 ==================== -->
 <div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
         <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
