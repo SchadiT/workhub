@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.189</title>
+    <title>Turbo Projects Work Hub v15.9.190</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -39,7 +39,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-                /* ===== CSS TOKEN SYSTEM v15.9.189 — Cohesive Dual Skin ===== */
+                /* ===== CSS TOKEN SYSTEM v15.9.190 — Cohesive Dual Skin ===== */
         :root {
             /* DARK SKIN (Default) — Cohesive (Canvas/Raised/Hair/Red Accent) */
             /* Cohesive primitives (Mockup-spec) */
@@ -279,7 +279,7 @@
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
-        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.189) ── */
+        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.190) ── */
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         ::-webkit-scrollbar { width: 9px; height: 9px; }
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
@@ -288,7 +288,7 @@
         ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
         
-        /* ===== COHESIVE TOPBAR v15.9.189 ===== */
+        /* ===== COHESIVE TOPBAR v15.9.190 ===== */
         .header-bar {
             display: flex;
             align-items: center;
@@ -389,7 +389,7 @@
             color: var(--text);
             border-color: transparent;
         }
-        /* ── STATE SYNC v15.9.189 ── */
+        /* ── STATE SYNC v15.9.190 ── */
         .sync-btn {
             padding: 7px 14px;
             font-size: 13px;
@@ -501,48 +501,48 @@
             margin-top: 20px;
         }
         .tools-expander {
-            margin-bottom: 16px;
+            margin-bottom: 4px;
         }
         .tools-toggle {
             width: 100%;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: var(--radius);
-            padding: 10px 16px;
-            color: rgba(255,255,255,0.6); font-weight: 600; font-size: 11px; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            background: var(--canvas);
+            border: 1px solid var(--hair);
+            border-radius: 14px;
+            padding: 14px 22px;
+            color: var(--text); font-weight: 700; font-size: 15px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
             transition: all 0.15s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-transform: none;
+            letter-spacing: -0.01em;
+            font-family: inherit;
         }
         .tools-toggle:hover {
-            background: rgba(79,142,247,0.08);
-            border-color: rgba(79,142,247,0.3);
-            color: #fff;
+            background: var(--raised);
+            color: var(--text);
         }
         .tools-toggle .arrow {
             transition: transform 0.3s ease;
-            font-size: 10px;
+            font-size: 11px;
+            color: var(--accent);
         }
         .tools-toggle.open .arrow { transform: rotate(180deg); }
         .tools-content {
             display: none;
-            background: rgba(255,255,255,0.02);
-            padding: 10px;
-            margin-top: 2px;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: var(--radius);
+            background: var(--canvas);
+            padding: 16px 22px;
+            margin-top: 4px;
+            border: 1px solid var(--hair);
+            border-radius: 14px;
         }
         .tools-content.show { display: block; }
         .tools-toggle.unified {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            color: rgba(255,255,255,0.5);
+            background: var(--canvas);
+            border: 1px solid var(--hair);
+            color: var(--text);
         }
         .tools-toggle.unified:hover {
-            background: rgba(79,142,247,0.08);
-            border-color: rgba(79,142,247,0.25);
-            color: #fff;
+            background: var(--raised);
+            color: var(--text);
         }
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
@@ -628,15 +628,15 @@
 
         .app-tile {
             position: relative;
-            padding: 14px 8px 10px;
-            background: #f7f7f8;
-            border: 1px solid transparent;
-            border-radius: 10px;
+            padding: 18px 8px 14px;
+            background: var(--raised);
+            border: 1px solid var(--hair);
+            border-radius: 12px;
             cursor: pointer;
-            color: #18181b;
+            color: var(--text);
             font-family: inherit;
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             letter-spacing: -0.005em;
             text-align: center;
             text-transform: none;
@@ -645,22 +645,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            gap: 6px;
+            gap: 8px;
             line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
+            min-height: 86px;
         }
         .app-tile:hover {
-            background: #ffffff;
-            border-color: #d4d4dc;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.07);
+            background: var(--raised2);
+            border-color: transparent;
+            transform: translateY(-1px);
         }
         .app-tile:active { transform: translateY(0); }
         .app-tile .app-icon {
-            font-size: 22px;
+            font-size: 26px;
             line-height: 1;
             display: block;
         }
@@ -798,7 +798,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.189: adaptive modal — white border, scroll inside */
+        /* v15.9.190: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid var(--modal-border);
@@ -2136,33 +2136,39 @@
         
         .loading-spinner { text-align: center; padding: 40px; color: var(--muted); }
 
-        /* Month Filter Dropdown */
+        /* Month Filter Dropdown — Cohesive (v15.9.190) */
         .bmt-month-filter { position: relative; margin-left: 15px; }
         .bmt-month-btn {
-            background: var(--surface-2); border: 1px solid var(--border); border-radius: 0;
-            padding: 6px 12px; color: var(--text); font-size: 12px; cursor: pointer;
+            background: var(--raised); border: 1px solid var(--hair); border-radius: 20px;
+            padding: 7px 14px; color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer;
+            font-family: inherit;
         }
-        .bmt-month-btn:hover { background: var(--surface-3); }
+        .bmt-month-btn:hover { background: var(--raised2); border-color: transparent; }
         .month-dropdown {
-            display: none; position: absolute; top: 100%; left: 0; margin-top: 5px;
-            background: var(--surface); border: 1px solid var(--border); border-radius: 0;
-            padding: 10px; z-index: 100; min-width: 280px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none; position: absolute; top: 100%; left: 0; margin-top: 6px;
+            background: var(--canvas); border: 1px solid var(--hair); border-radius: 14px;
+            padding: 14px; z-index: 100; min-width: 320px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         .month-dropdown.show { display: block; }
-        .month-dropdown-header { display: flex; gap: 5px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .month-dropdown-header { display: flex; gap: 6px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); }
         .month-select-btn {
-            flex: 1; background: var(--surface-2); border: none; border-radius: 4px;
-            padding: 5px 8px; color: var(--text); font-size: 11px; cursor: pointer;
+            flex: 1; background: var(--raised); border: 1px solid var(--hair); border-radius: 20px;
+            padding: 6px 10px; color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer;
+            font-family: inherit;
         }
-        .month-select-btn:hover { background: var(--surface-3); }
-        .month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .month-select-btn:hover { background: var(--raised2); border-color: transparent; }
+        .month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .month-grid label {
-            display: flex; align-items: center; gap: 4px; font-size: 12px;
-            padding: 4px 6px; border-radius: 4px; cursor: pointer;
+            display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+            padding: 7px 10px; border-radius: 8px; cursor: pointer;
+            background: var(--raised); border: 1px solid var(--hair); color: var(--text);
+            transition: background 0.12s;
         }
-        .month-grid label:hover { background: var(--surface-2); }
-        .month-grid input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
+        .month-grid label:hover { background: var(--raised2); border-color: transparent; }
+        .month-grid input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent); }
+        .month-grid input[type="checkbox"]:checked + span,
+        .month-grid label:has(input:checked) { color: var(--accent); font-weight: 700; }
         
         /* Cleaning Checkboxes */
         .cleaning-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: #22c55e; }
@@ -2286,7 +2292,7 @@
 
 
         /* ===== LIGHT SKIN — Component Overrides ===== */
-        /* Cohesive: header-bar hairline border handled by tokens (v15.9.189) */
+        /* Cohesive: header-bar hairline border handled by tokens (v15.9.190) */
         [data-theme="light"] .section-header-title { color: var(--text); }
         [data-theme="light"] .section-header-count { border-color: var(--accent); color: var(--accent); }
         [data-theme="light"] .bmt-title { color: var(--text); }
@@ -2368,7 +2374,7 @@
 
 
         /* ===== PLANNER WIDGET — Light Skin (Cohesive: tokens handle most) ===== */
-        /* Light overrides handled via CSS var tokens in v15.9.189 — no per-prop overrides needed */
+        /* Light overrides handled via CSS var tokens in v15.9.190 — no per-prop overrides needed */
         
         /* ===== TICKER — Light Skin ===== */
         [data-theme="light"] .ticker-section { background: var(--raised); }
@@ -2386,7 +2392,7 @@
             body { padding: 12px; }
             .header h1 { font-size: 24px; }
             
-            /* Mobile Header — Cohesive (v15.9.189) */
+            /* Mobile Header — Cohesive (v15.9.190) */
             .header-bar {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -2503,7 +2509,7 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
-            /* Mobile Header - Small screens — Cohesive (v15.9.189) */
+            /* Mobile Header - Small screens — Cohesive (v15.9.190) */
             .header-bar {
                 flex-direction: column;
                 gap: 8px;
@@ -2923,7 +2929,7 @@
         .qn-input-area textarea:focus { border-color: var(--accent); }
         .qn-save-btn { margin-top: 6px; width: 100%; padding: 8px; background: var(--accent); border: none; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 10px; }
         .qn-save-btn:hover { filter: brightness(1.1); }
-        /* ===== QN DEPT — Cohesive v15.9.189 (dept color as dot only) ===== */
+        /* ===== QN DEPT — Cohesive v15.9.190 (dept color as dot only) ===== */
         .qn-dept-row { display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap; }
         .qn-dept-btn { flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 20px; transition: all 0.12s; text-align: center; color: var(--text); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .qn-dept-btn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -2977,16 +2983,16 @@
         .qn-card.dept-NONE    { border-left-color: var(--faint); }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.189 (Cohesive) ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.190 (Cohesive) ===== */
         #dtw-widget { border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 4px; }
 
-        /* Master Header — Cohesive (v15.9.189) */
+        /* Master Header — Cohesive (v15.9.190) */
         #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--hair); }
         #dtw-master-header::before { content: ''; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
         #dtw-master-header .dtw-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
         #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: auto; text-transform: none; padding: 4px 11px; border: none; border-radius: 20px; background: var(--accent-soft); }
 
-        /* Dept buttons — Cohesive pill with color dot (v15.9.189) */
+        /* Dept buttons — Cohesive pill with color dot (v15.9.190) */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 1px solid var(--hair); }
         .dtw-dept-btn { padding: 11px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
         .dtw-dept-btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--faint); }
@@ -3010,7 +3016,7 @@
 
         #dtw-panel { background: var(--canvas); }
 
-        /* === v15.9.189 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
+        /* === v15.9.190 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
         .dtw-tg-filterbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:6px; padding:10px 18px; background:var(--canvas); border-bottom:0.5px solid var(--hair); }
         .dtw-tg-deptbtn { padding:8px 14px; font-size:12px; font-weight:600; letter-spacing:0; border:0.5px solid var(--hair); cursor:pointer; font-family:inherit; text-transform:none; transition:all 0.15s ease; clip-path:none; color:var(--text); background:var(--raised); border-radius:20px; display:inline-flex; align-items:center; gap:7px; }
         .dtw-tg-deptbtn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -3952,7 +3958,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.189 — Cohesive ===== */
+        /* ===== PLANNER WIDGET v15.9.190 — Cohesive ===== */
         
         #planner-widget {
             margin-bottom: 0;
@@ -4241,20 +4247,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 14px 6px;
+            gap: 8px;
+            padding: 18px 8px;
             background: var(--raised);
             border: 1px solid var(--hair);
-            border-radius: 11px;
+            border-radius: 12px;
             color: var(--text);
             font-family: inherit;
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             letter-spacing: -0.01em;
             transition: background 0.12s, transform 0.06s;
             white-space: nowrap;
-            min-height: 64px;
+            min-height: 86px;
             text-transform: none;
         }
         .planner-qa-btn:hover { background: var(--raised2); }
@@ -4265,7 +4271,7 @@
         .planner-qa-btn.qa-loor:hover { background: var(--raised2); }
         .planner-qa-btn.qa-placeholder { opacity: 0.3; border-style: dashed; cursor: default; }
         .planner-qa-btn.qa-placeholder:hover { background: var(--raised); }
-        .planner-qa-icon { font-size: 18px; opacity: 1; }
+        .planner-qa-icon { font-size: 26px; opacity: 1; }
 
         /* Event strip — gleiche raised tiles, accent border-left */
         .planner-event-strip {
@@ -4618,12 +4624,12 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.189 ── */
-        #factsheet-modal .modal { max-width: min(1200px, 96vw); max-height: 90vh; }
+        /* ── Factsheet 2-col v15.9.190 ── */
+        #factsheet-modal .modal { max-width: min(1280px, 96vw); max-height: 92vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
             display: grid;
-            grid-template-columns: 420px 1fr;
+            grid-template-columns: 480px 1fr;
             gap: 0;
             height: 100%;
             min-height: 0;
@@ -4632,7 +4638,7 @@
             border-right: 1px solid var(--hair);
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 16px 18px 14px;
+            padding: 18px 22px 16px;
             background: var(--raised);
             scrollbar-width: thin;
             scrollbar-color: var(--hair) transparent;
@@ -4642,13 +4648,17 @@
         .fs-preview-col {
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 16px 22px;
+            padding: 18px 22px;
             background: var(--canvas);
             scrollbar-width: thin;
             scrollbar-color: var(--hair) transparent;
         }
         .fs-preview-col::-webkit-scrollbar { width: 6px; }
         .fs-preview-col::-webkit-scrollbar-thumb { background: var(--hair); border-radius: 3px; }
+        /* Preview table: tighter columns */
+        .fs-preview-col table { width: 100%; font-size: 12px; }
+        .fs-preview-col table td:nth-child(2) { width: 80px; text-align: center; white-space: nowrap; }
+        .fs-preview-col table td:nth-child(3) { width: 130px; }
         .fs-preview-label {
             font-size: 10px;
             font-weight: 700;
@@ -4676,7 +4686,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.189 (Cohesive) ── */
+        /* ── Planner Widget compact v15.9.190 (Cohesive) ── */
         @media (max-width: 768px) {
             .planner-hero { flex-direction: column; }
             .planner-hero-day { border-right: none; border-bottom: 0.5px solid var(--hair); min-width: 0; padding: 14px 16px; }
@@ -4705,7 +4715,7 @@
         /* ── /Planner compact ── */
 
         /* ═══════════════════════════════════════════════════════════════════
-           COHESIVE OVERRIDE LAYER v15.9.189
+           COHESIVE OVERRIDE LAYER v15.9.190
            Final pass: unifies all remaining sections to the Cohesive spec.
            Overrides any legacy hardcoded colors with token-driven values.
            ═══════════════════════════════════════════════════════════════════ */
@@ -5061,10 +5071,10 @@
         }
         .footer * { color: var(--sub) !important; }
 
-        /* ── MODALS — Cohesive header style ── */
+        /* ── MODALS — Cohesive matching Hub style ── */
         .modal-overlay {
-            background: rgba(0,0,0,0.7) !important;
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.65) !important;
+            backdrop-filter: blur(10px);
         }
         .modal,
         .modal-app {
@@ -5072,35 +5082,47 @@
             border: 1px solid var(--hair) !important;
             border-radius: 14px !important;
             overflow: hidden !important;
-            box-shadow: 0 24px 80px rgba(0,0,0,0.5) !important;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.06) !important;
         }
         .modal-header {
             background: var(--canvas) !important;
             background-image: none !important;
             border-bottom: 1px solid var(--hair) !important;
-            padding: 16px 24px !important;
+            padding: 16px 22px !important;
             color: var(--text) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
         }
+        .modal-header h2,
+        .modal-header h3,
         .modal-title {
             color: var(--text) !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
+            font-size: 17px !important;
+            font-weight: 700 !important;
             letter-spacing: -0.01em !important;
             text-transform: none !important;
             background: none !important;
             -webkit-text-fill-color: var(--text) !important;
             text-shadow: none !important;
+            margin: 0 !important;
         }
         .modal-close {
             background: var(--raised) !important;
             border: 1px solid var(--hair) !important;
-            color: var(--sub) !important;
+            color: var(--text) !important;
             border-radius: 50% !important;
-            width: 30px !important;
-            height: 30px !important;
-            font-size: 16px !important;
-            font-weight: 400 !important;
-            transition: background 0.12s, color 0.12s;
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            line-height: 1 !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: all 0.12s !important;
+            opacity: 1 !important;
         }
         .modal-close:hover {
             background: var(--accent-soft) !important;
@@ -5286,7 +5308,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════════════
-           /COHESIVE OVERRIDE LAYER v15.9.189
+           /COHESIVE OVERRIDE LAYER v15.9.190
            ═══════════════════════════════════════════════════════════════════ */
 
         </style>
@@ -5463,7 +5485,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.189 — Cohesive ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.190 — Cohesive ==================== -->
     <div id="planner-widget">
 
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
@@ -8539,7 +8561,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.189</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.190</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9019,7 +9041,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.189</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.190</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13111,7 +13133,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.190', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13190,7 +13212,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.189  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.190  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -13271,7 +13293,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.190', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13345,7 +13367,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.190', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13452,7 +13474,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.190', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13536,7 +13558,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.190', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13845,7 +13867,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.190', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13992,7 +14014,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.190', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14137,7 +14159,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.189', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.190', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18963,7 +18985,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.189';
+            const HUB_VERSION = 'v15.9.190';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20767,7 +20789,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.189 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.190 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24471,7 +24493,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.189 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.190 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24501,7 +24523,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.189',
+                hubVersion: 'v15.9.190',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25068,7 +25090,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.189
+     UMSATZ TICKER JS — v15.9.190
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -27128,7 +27150,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.189 =====
+// ===== PLANNER WIDGET v15.9.190 =====
 (function() {
     'use strict';
 
@@ -27144,7 +27166,7 @@ Spittelauer Lnde 12/1
     };
     let plannerCurrentTab = 'daily';
 
-    // ── QA Tabs (v15.9.189) ──
+    // ── QA Tabs (v15.9.190) ──
     function plannerQATab(tab, btn) {
         document.querySelectorAll('.planner-qa-tab').forEach(t => t.classList.remove('active'));
         if (btn) btn.classList.add('active');
@@ -27708,10 +27730,10 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /PLANNER WIDGET =====
 
-// ===== STATE SYNC v15.9.189 =====
+// ===== STATE SYNC v15.9.190 =====
 (function() {
 
-    const HUB_VER = 'v15.9.189';
+    const HUB_VER = 'v15.9.190';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28009,7 +28031,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== /STATE SYNC =====
 </script>
 
-<!-- ==================== STATE SYNC MODAL v15.9.189 ==================== -->
+<!-- ==================== STATE SYNC MODAL v15.9.190 ==================== -->
 <div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
         <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
