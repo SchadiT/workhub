@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.198</title>
+    <title>Turbo Projects Work Hub v15.9.203</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -39,7 +39,7 @@
         'https://cdnjs.cloudflare.com/ajax/libs/msal-browser/2.38.3/msal-browser.min.js'
     ], 0)"></script>
     <style>
-                /* ===== CSS TOKEN SYSTEM v15.9.198 — Cohesive Dual Skin ===== */
+                /* ===== CSS TOKEN SYSTEM v15.9.203 — Cohesive Dual Skin ===== */
         :root {
             /* DARK SKIN (Default) — Cohesive (Canvas/Raised/Hair/Red Accent) */
             /* Cohesive primitives (Mockup-spec) */
@@ -279,7 +279,7 @@
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
-        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.198) ── */
+        /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.203) ── */
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         ::-webkit-scrollbar { width: 9px; height: 9px; }
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 5px; }
@@ -288,7 +288,7 @@
         ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
 
         
-        /* ===== COHESIVE TOPBAR v15.9.198 ===== */
+        /* ===== COHESIVE TOPBAR v15.9.203 ===== */
         .header-bar {
             display: flex;
             align-items: center;
@@ -389,7 +389,7 @@
             color: var(--text);
             border-color: transparent;
         }
-        /* ── STATE SYNC v15.9.198 ── */
+        /* ── STATE SYNC v15.9.203 ── */
         .sync-btn {
             padding: 7px 14px;
             font-size: 13px;
@@ -798,7 +798,7 @@
             overflow: hidden; padding: 12px;
         }
         .modal-overlay.show { display: flex; }
-        /* v15.9.198: adaptive modal — white border, scroll inside */
+        /* v15.9.203: adaptive modal — white border, scroll inside */
         .modal {
             background: var(--surface);
             border: 1.5px solid var(--modal-border);
@@ -2138,7 +2138,7 @@
         
         .loading-spinner { text-align: center; padding: 40px; color: var(--muted); }
 
-        /* Month Filter Dropdown — Cohesive (v15.9.198) */
+        /* Month Filter Dropdown — Cohesive (v15.9.203) */
         .bmt-month-filter { position: relative; margin-left: 15px; }
         .bmt-month-btn {
             background: var(--raised); border: 1px solid var(--hair); border-radius: 20px;
@@ -2294,7 +2294,7 @@
 
 
         /* ===== LIGHT SKIN — Component Overrides ===== */
-        /* Cohesive: header-bar hairline border handled by tokens (v15.9.198) */
+        /* Cohesive: header-bar hairline border handled by tokens (v15.9.203) */
         [data-theme="light"] .section-header-title { color: var(--text); }
         [data-theme="light"] .section-header-count { border-color: var(--accent); color: var(--accent); }
         [data-theme="light"] .bmt-title { color: var(--text); }
@@ -2376,7 +2376,7 @@
 
 
         /* ===== PLANNER WIDGET — Light Skin (Cohesive: tokens handle most) ===== */
-        /* Light overrides handled via CSS var tokens in v15.9.198 — no per-prop overrides needed */
+        /* Light overrides handled via CSS var tokens in v15.9.203 — no per-prop overrides needed */
         
         /* ===== TICKER — Light Skin ===== */
         [data-theme="light"] .ticker-section { background: var(--raised); }
@@ -2394,7 +2394,7 @@
             body { padding: 12px; }
             .header h1 { font-size: 24px; }
             
-            /* Mobile Header — Cohesive (v15.9.198) */
+            /* Mobile Header — Cohesive (v15.9.203) */
             .header-bar {
                 flex-wrap: wrap;
                 gap: 8px;
@@ -2511,7 +2511,7 @@
             .header h1 { font-size: 20px; }
             .header p { font-size: 12px; }
             
-            /* Mobile Header - Small screens — Cohesive (v15.9.198) */
+            /* Mobile Header - Small screens — Cohesive (v15.9.203) */
             .header-bar {
                 flex-direction: column;
                 gap: 8px;
@@ -2881,7 +2881,7 @@
         .widget-block-hdr::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; background: var(--accent); border-radius: 0 2px 2px 0; }
         .widget-block-hdr .wbh-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; text-transform: none; display: flex; align-items: center; gap: 9px; }
         .widget-block-hdr .wbh-actions { display: flex; align-items: center; gap: 6px; }
-        .widget-block-body { flex: 1; overflow-y: auto; }
+        .widget-block-body { flex: 1; overflow-y: auto; max-height: 304px; }
         /* v15.9.122 — Single-line entry: dot-pair + title (ellipsis) + date + x */
         .qn-card { padding: 7px 10px 7px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; border-left: 3px solid transparent; }
         .qn-dot-pair { display: flex; gap: 3px; flex-shrink: 0; }
@@ -2931,7 +2931,7 @@
         .qn-input-area textarea:focus { border-color: var(--accent); }
         .qn-save-btn { margin-top: 6px; width: 100%; padding: 8px; background: var(--accent); border: none; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 10px; }
         .qn-save-btn:hover { filter: brightness(1.1); }
-        /* ===== QN DEPT — Cohesive v15.9.198 (dept color as dot only) ===== */
+        /* ===== QN DEPT — Cohesive v15.9.203 (dept color as dot only) ===== */
         .qn-dept-row { display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap; }
         .qn-dept-btn { flex: 1; min-width: 0; padding: 6px 10px; font-size: 11px; font-weight: 600; border: 0.5px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; letter-spacing: 0; border-radius: 20px; transition: all 0.12s; text-align: center; color: var(--text); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .qn-dept-btn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -2985,16 +2985,16 @@
         .qn-card.dept-NONE    { border-left-color: var(--faint); }
         @media (max-width: 600px) { .widgets-row { grid-template-columns: 1fr; } .widget-block { height: 320px; } }
 
-        /* ===== DEPARTMENT TOOLS WIDGET v15.9.198 (Cohesive) ===== */
+        /* ===== DEPARTMENT TOOLS WIDGET v15.9.203 (Cohesive) ===== */
         #dtw-widget { border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; background: var(--canvas); box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 4px; }
 
-        /* Master Header — Cohesive (v15.9.198) */
+        /* Master Header — Cohesive (v15.9.203) */
         #dtw-master-header { position: relative; background: var(--canvas); padding: 14px 22px 14px 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--hair); }
         #dtw-master-header::before { content: ''; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
         #dtw-master-header .dtw-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-transform: none; }
         #dtw-master-header .dtw-active-label { font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--accent); margin-left: auto; text-transform: none; padding: 4px 11px; border: none; border-radius: 20px; background: var(--accent-soft); }
 
-        /* Dept buttons — Cohesive pill with color dot (v15.9.198) */
+        /* Dept buttons — Cohesive pill with color dot (v15.9.203) */
         #dtw-dept-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 12px 18px; background: var(--canvas); border-bottom: 1px solid var(--hair); }
         .dtw-dept-btn { padding: 11px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0; border: 1px solid var(--hair); background: var(--raised); cursor: pointer; font-family: inherit; text-transform: none; transition: all 0.15s ease; clip-path: none; border-radius: 20px; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; }
         .dtw-dept-btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--faint); }
@@ -3018,7 +3018,7 @@
 
         #dtw-panel { background: var(--canvas); }
 
-        /* === v15.9.198 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
+        /* === v15.9.203 OFFICE Tasks-Grid Cohesive (.dtw-tg-*) === */
         .dtw-tg-filterbar { display:flex; flex-wrap:wrap; align-items:stretch; gap:6px; padding:10px 18px; background:var(--canvas); border-bottom:0.5px solid var(--hair); }
         .dtw-tg-deptbtn { padding:8px 14px; font-size:12px; font-weight:600; letter-spacing:0; border:0.5px solid var(--hair); cursor:pointer; font-family:inherit; text-transform:none; transition:all 0.15s ease; clip-path:none; color:var(--text); background:var(--raised); border-radius:20px; display:inline-flex; align-items:center; gap:7px; }
         .dtw-tg-deptbtn::before { content:''; width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--faint); }
@@ -3951,7 +3951,7 @@
         .cn-arc-btn.view { border-color: #4F8EF7; color: #4F8EF7; }
         .cn-arc-btn:hover { filter: brightness(1.25); }
 
-        /* ===== PLANNER WIDGET v15.9.198 — Cohesive ===== */
+        /* ===== PLANNER WIDGET v15.9.203 — Cohesive ===== */
         
         #planner-widget {
             margin-bottom: 0;
@@ -4641,7 +4641,7 @@
         /* ===== /PLANNER WIDGET ===== */
 
         
-        /* ── Factsheet 2-col v15.9.198 ── */
+        /* ── Factsheet 2-col v15.9.203 ── */
         #factsheet-modal .modal { max-width: min(1280px, 96vw); max-height: 92vh; }
         #factsheet-modal .modal-body { flex: 1; overflow: hidden; padding: 0; }
         .fs-two-col {
@@ -4704,7 +4704,7 @@
         /* ── /Factsheet 2-col ── */
 
         
-        /* ── Planner Widget compact v15.9.198 (Cohesive) ── */
+        /* ── Planner Widget compact v15.9.203 (Cohesive) ── */
         @media (max-width: 768px) {
             .planner-hero { flex-direction: column; }
             .planner-hero-day { border-right: none; border-bottom: 0.5px solid var(--hair); min-width: 0; padding: 14px 16px; }
@@ -4733,7 +4733,7 @@
         /* ── /Planner compact ── */
 
         /* ═══════════════════════════════════════════════════════════════════
-           COHESIVE OVERRIDE LAYER v15.9.198
+           COHESIVE OVERRIDE LAYER v15.9.203
            Final pass: unifies all remaining sections to the Cohesive spec.
            Overrides any legacy hardcoded colors with token-driven values.
            ═══════════════════════════════════════════════════════════════════ */
@@ -4900,7 +4900,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
 
-        /* ── DTW + Inbox Split v15.9.198 ── */
+        /* ── DTW + Inbox Split v15.9.203 ── */
         #dtw-inbox-split {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -5339,8 +5339,228 @@
             background: var(--canvas) !important;
         }
 
+
         /* ═══════════════════════════════════════════════════════════════════
-           /COHESIVE OVERRIDE LAYER v15.9.198
+           MOBILE RESPONSIVE — v15.9.203
+           Breakpoint: ≤768px → single column, touch-friendly
+           ═══════════════════════════════════════════════════════════════════ */
+
+        @media (max-width: 768px) {
+
+            /* ── GLOBAL ── */
+            body { font-size: 14px; }
+            * { -webkit-tap-highlight-color: transparent; }
+
+            /* ── NAVIGATION ── */
+            .nav-bar, .top-nav, #top-nav, .navbar {
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                flex-wrap: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .nav-bar::-webkit-scrollbar, .top-nav::-webkit-scrollbar { display: none; }
+            .navitem, .nav-link, .nav-tab {
+                flex-shrink: 0 !important;
+                padding: 10px 14px !important;
+                font-size: 12px !important;
+            }
+
+            /* ── MAIN CONTENT PADDING ── */
+            .section-content, .dtw-section, .tools-grid,
+            .cockpit-content, .calendar-content,
+            .bmt-section, .calendar-section {
+                padding: 12px !important;
+            }
+            .section-header, .bmt-section-header, .calendar-header,
+            .cockpit-header, .ck-header, .widget-header {
+                padding: 12px 14px !important;
+            }
+
+            /* ── DAY PLANNER / COCKPIT ── */
+            .cockpit-layout, .day-planner-layout, .planner-grid,
+            #cockpit-layout, .cockpit-two-col {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            .cockpit-left, .cockpit-right, .planner-left, .planner-right {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            /* ── QA TILES ── */
+            .qa-grid, .qa-tiles, #qa-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 6px !important;
+            }
+            .qa-tile, .quick-action-tile {
+                padding: 14px 10px !important;
+                min-height: 64px !important;
+            }
+            .qa-tile .qa-label, .quick-action-tile span {
+                font-size: 11px !important;
+            }
+
+            /* ── WIDGETS ROW (Inbox + QN) ── */
+            .widgets-row {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+            .widget-block {
+                height: auto !important;
+                min-height: unset !important;
+                max-height: 320px !important;
+            }
+            .widget-block-body {
+                max-height: 260px !important;
+                overflow-y: auto !important;
+            }
+
+            /* ── DTW + INBOX SPLIT ── */
+            #dtw-inbox-split {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+
+            /* ── DTW WIDGET ── */
+            #dtw-widget, .dtw-widget {
+                margin-bottom: 0 !important;
+            }
+
+            /* ── INBOX EMAIL ROWS ── */
+            .mini-email-row {
+                padding: 10px 12px !important;
+                gap: 8px !important;
+            }
+            .mini-email-sender { min-width: 90px !important; max-width: 110px !important; font-size: 12px !important; }
+            .mini-email-subject { font-size: 11px !important; }
+            .mini-email-date { font-size: 10px !important; min-width: 36px !important; }
+
+            /* ── FULL INBOX VIEW ── */
+            #inbox-view, .inbox-view { padding: 0 !important; }
+            .inbox-tab { padding: 8px 12px !important; font-size: 11px !important; }
+            #inbox-list .email-row, .email-row {
+                padding: 10px 12px !important;
+                font-size: 12px !important;
+            }
+
+            /* ── BMT CALENDAR ── */
+            .bmt-event-row, .calendar-event-row {
+                padding: 8px 12px !important;
+                font-size: 12px !important;
+            }
+            .bmt-event-row .bmt-event-title { font-size: 12px !important; }
+
+            /* ── BUTTONS — touch targets ── */
+            button, .btn, .action-btn, .quick-btn {
+                min-height: 40px !important;
+            }
+            .modal-close {
+                width: 36px !important; height: 36px !important;
+                font-size: 20px !important;
+            }
+
+            /* ── MODALS — full screen on mobile ── */
+            .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+            .modal {
+                max-width: 100vw !important;
+                max-height: 96vh !important;
+                border-radius: 16px 16px 0 0 !important;
+                width: 100vw !important;
+            }
+            .modal-body { padding: 12px !important; }
+            .modal-footer { padding: 10px 14px !important; }
+
+            /* ── FACTSHEET MODAL — stack vertically ── */
+            #factsheet-modal .modal {
+                max-height: 100vh !important;
+                height: 100vh !important;
+                border-radius: 0 !important;
+            }
+            #factsheet-modal .fs-main {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto 1fr !important;
+                overflow-y: auto !important;
+            }
+            #factsheet-modal .fs-left {
+                border-right: none !important;
+                border-bottom: 1px solid #1e2736 !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
+            #factsheet-modal .fs-cg {
+                grid-template-rows: auto auto !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            #factsheet-modal .fs-c {
+                overflow: visible !important;
+                min-height: unset !important;
+            }
+            #factsheet-modal .fs-cb {
+                overflow: visible !important;
+                justify-content: flex-start !important;
+                gap: 6px !important;
+            }
+            #factsheet-modal .fs-right {
+                min-height: 400px !important;
+            }
+            #factsheet-modal .fs-pvb {
+                grid-template-columns: 1fr 80px !important;
+            }
+            #factsheet-modal .fs-shell {
+                grid-template-rows: 44px 1fr 44px !important;
+                overflow-y: auto !important;
+            }
+
+            /* ── SECURITY ORDER / OTHER MODALS ── */
+            .modal-app {
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                height: 100vh !important;
+                border-radius: 0 !important;
+            }
+
+            /* ── FORMS / INPUTS ── */
+            input, select, textarea {
+                font-size: 16px !important; /* prevents iOS zoom */
+            }
+            .form-group { margin-bottom: 10px !important; }
+
+            /* ── TABLES ── */
+            table { font-size: 12px !important; }
+            th, td { padding: 6px 8px !important; }
+
+            /* ── EVENT STRIP / TICKER ── */
+            .event-strip, .umsatz-ticker, #event-strip {
+                font-size: 11px !important;
+                padding: 6px 10px !important;
+            }
+
+            /* ── FOOTER ── */
+            .hub-footer, #hub-footer, footer.hub {
+                padding: 10px 14px !important;
+                font-size: 10px !important;
+                flex-wrap: wrap !important;
+                gap: 6px !important;
+            }
+        }
+
+        /* ── EXTRA SMALL (phones < 480px) ── */
+        @media (max-width: 480px) {
+            .qa-grid, .qa-tiles, #qa-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .mini-email-sender { display: none !important; }
+            .mini-email-subject { font-size: 12px !important; }
+            #factsheet-modal .fs-pvb {
+                grid-template-columns: 1fr 64px !important;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           /COHESIVE OVERRIDE LAYER v15.9.203
            ═══════════════════════════════════════════════════════════════════ */
 
         </style>
@@ -5517,7 +5737,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== PLANNER WIDGET v15.9.198 — Cohesive ==================== -->
+    <!-- ==================== PLANNER WIDGET v15.9.203 — Cohesive ==================== -->
     <div id="planner-widget">
 
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
@@ -5685,7 +5905,7 @@
 
     
 
-    <!-- DTW + INBOX — 50/50 SPLIT v15.9.198 -->
+    <!-- DTW + INBOX — 50/50 SPLIT v15.9.203 -->
     <div id="dtw-inbox-split">
 
     <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.116 ==================== -->
@@ -7532,91 +7752,137 @@
         <div class="modal modal-app" style="display:flex;flex-direction:column;padding:0;overflow:hidden;max-width:min(1360px,97vw);max-height:94vh;width:97vw;height:94vh;">
             <!-- FS CMD WORKSPACE STYLES (scoped) -->
             <style>
+            /* ═══ FACTSHEET CMD WORKSPACE — v15.9.203 ═══ */
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:44px 1fr 44px;width:100%;height:100%;overflow:hidden;background:#080b11}
-            #factsheet-modal .fs-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #232b38;flex-shrink:0}
-            #factsheet-modal .fs-hdr h3{font-size:14px;font-weight:700;letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:8px;color:#f6f8fc}
-            #factsheet-modal .fs-hdr h3 span{font-size:9.5px;font-weight:600;color:#667085;letter-spacing:.07em;text-transform:uppercase}
-            #factsheet-modal .fs-sync{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#667085}
+
+            /* Header */
+            #factsheet-modal .fs-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #1e2736;flex-shrink:0}
+            #factsheet-modal .fs-hdr h3{font-size:13.5px;font-weight:700;letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:8px;color:#f6f8fc}
+            #factsheet-modal .fs-hdr h3 span{font-size:9px;font-weight:600;color:#4b5a6e;letter-spacing:.08em;text-transform:uppercase}
+            #factsheet-modal .fs-sync{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:#4b5a6e}
             #factsheet-modal .fs-sync::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
-            #factsheet-modal main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);min-height:0;overflow:hidden;flex:1}
-            #factsheet-modal .fs-left{padding:7px;border-right:1px solid #232b38;display:flex;flex-direction:column;gap:5px;overflow:hidden}
-            #factsheet-modal .fs-ss{display:flex;gap:5px;padding:6px 10px;background:#0d1119;border:1px solid #232b38;border-radius:10px;align-items:end;flex-shrink:0}
+
+            /* Main 2-col grid */
+            #factsheet-modal .fs-main{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);min-height:0;overflow:hidden;height:100%}
+
+            /* Left panel */
+            #factsheet-modal .fs-left{padding:8px;border-right:1px solid #1e2736;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+
+            /* Setup strip */
+            #factsheet-modal .fs-ss{display:flex;gap:6px;padding:7px 12px;background:#0c1018;border:1px solid #1e2736;border-radius:10px;align-items:end;flex-shrink:0}
             #factsheet-modal .fs-ss>div{flex:1;min-width:0}
-            #factsheet-modal .fs-ss>div.w{flex:1.5}
-            #factsheet-modal .fs-ss label{display:block;font-size:7.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#667085;margin-bottom:2px}
-            #factsheet-modal .fs-ss select,#factsheet-modal .fs-ss input{width:100%;height:25px;border-radius:5px;border:1px solid #232b38;background:#080b10;color:#f6f8fc;font-size:10.5px;font-weight:700;padding:0 6px;font-family:inherit}
-            #factsheet-modal .fs-mf{display:flex;gap:2px}
-            #factsheet-modal .fs-mf .o{padding:3px 8px;border-radius:5px;font-size:9.5px;font-weight:700;cursor:pointer;border:1px solid transparent;user-select:none}
-            #factsheet-modal .fs-mf .o.on{background:#ef4444;color:#fff}
-            #factsheet-modal .fs-mf .o.off{background:#101620;color:#98a3b6;border-color:#232b38}
-            #factsheet-modal .fs-cg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,0.85fr) minmax(0,1.15fr);gap:5px;flex:1;min-height:0;overflow:hidden}
-            #factsheet-modal .fs-c{background:#0d1119;border:1px solid #232b38;border-radius:10px;padding:6px 9px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
-            #factsheet-modal .fs-ch{font-size:11px;font-weight:700;margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;color:#f6f8fc}
-            #factsheet-modal .fs-bk{font-size:7.5px;padding:2px 6px;border-radius:8px;font-weight:700}
-            #factsheet-modal .fs-bk.ok{background:rgba(34,197,94,.1);color:#22c55e}
-            #factsheet-modal .fs-bk.warn{background:rgba(234,179,8,.1);color:#eab308}
-            #factsheet-modal .fs-sca{display:flex;gap:2px}
-            #factsheet-modal .fs-sca button{width:18px;height:18px;border-radius:4px;border:1px solid #232b38;background:#101620;font-size:12px;cursor:pointer;display:grid;place-items:center;color:#98a3b6;line-height:1;font-family:inherit}
-            #factsheet-modal .fs-sca button.add:hover{background:rgba(34,197,94,.15);color:#22c55e}
-            #factsheet-modal .fs-sca button.rem:hover{background:rgba(239,68,68,.15);color:#ef4444}
-            #factsheet-modal .fs-cb{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:5px;padding-top:2px;min-height:0;overflow:hidden}
-            #factsheet-modal .fs-r{display:flex;gap:4px;align-items:end;flex-shrink:0}
+            #factsheet-modal .fs-ss>div.w{flex:1.4}
+            #factsheet-modal .fs-ss label{display:block;font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4b5a6e;margin-bottom:3px}
+            #factsheet-modal .fs-ss select,#factsheet-modal .fs-ss input{width:100%;height:28px;border-radius:6px;border:1px solid #1e2736;background:#070a0f;color:#e8edf5;font-size:11px;font-weight:600;padding:0 8px;font-family:inherit;transition:border-color .15s}
+            #factsheet-modal .fs-ss select:focus,#factsheet-modal .fs-ss input:focus{border-color:#3b5bdb;outline:none}
+            #factsheet-modal .fs-mf{display:flex;gap:3px}
+            #factsheet-modal .fs-mf .o{padding:4px 10px;border-radius:6px;font-size:9.5px;font-weight:700;cursor:pointer;border:1px solid transparent;user-select:none;transition:all .12s}
+            #factsheet-modal .fs-mf .o.on{background:#dc2626;color:#fff;box-shadow:0 0 0 1px #dc2626}
+            #factsheet-modal .fs-mf .o.off{background:#0c1018;color:#667085;border-color:#1e2736}
+
+            /* 2×2 card grid */
+            #factsheet-modal .fs-cg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1.2fr);gap:6px;flex:1;min-height:0;overflow:hidden}
+
+            /* Card */
+            #factsheet-modal .fs-c{background:#0c1018;border:1px solid #1e2736;border-radius:10px;padding:8px 11px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+            #factsheet-modal .fs-ch{font-size:10.5px;font-weight:700;letter-spacing:.01em;margin-bottom:0;padding-bottom:5px;border-bottom:1px solid #1a2332;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;color:#c8d4e8}
+            #factsheet-modal .fs-bk{font-size:7px;padding:2px 7px;border-radius:8px;font-weight:700;letter-spacing:.04em}
+            #factsheet-modal .fs-bk.ok{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2)}
+            #factsheet-modal .fs-bk.warn{background:rgba(234,179,8,.1);color:#d4a017;border:1px solid rgba(234,179,8,.2)}
+            #factsheet-modal .fs-sca{display:flex;gap:3px}
+            #factsheet-modal .fs-sca button{width:20px;height:20px;border-radius:5px;border:1px solid #1e2736;background:#111826;font-size:13px;cursor:pointer;display:grid;place-items:center;color:#667085;line-height:1;font-family:inherit;transition:all .12s}
+            #factsheet-modal .fs-sca button.add:hover{background:rgba(34,197,94,.12);color:#22c55e;border-color:rgba(34,197,94,.3)}
+            #factsheet-modal .fs-sca button.rem:hover{background:rgba(220,38,38,.12);color:#ef4444;border-color:rgba(220,38,38,.3)}
+
+            /* Card body — compact, top-aligned, even spacing */
+            #factsheet-modal .fs-cb{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;min-height:0;overflow:hidden;padding-top:4px}
+
+            /* Field rows */
+            #factsheet-modal .fs-r{display:flex;gap:5px;align-items:end;flex-shrink:0}
             #factsheet-modal .fs-f{flex:1;min-width:0}
-            #factsheet-modal .fs-t{flex:0 0 50px}
-            #factsheet-modal .fs-f label,#factsheet-modal .fs-t label{display:block;font-size:7px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#667085;margin-bottom:2px;white-space:nowrap}
-            #factsheet-modal .fs-f input,#factsheet-modal .fs-t input,#factsheet-modal .fs-f select{width:100%;height:25px;border-radius:5px;border:1px solid #232b38;background:#080b10;color:#f6f8fc;font-size:10.5px;font-weight:700;padding:0 6px;font-family:inherit}
-            #factsheet-modal .fs-t input{font-family:'JetBrains Mono',monospace;text-align:center;padding:0;background:#101620}
-            #factsheet-modal .fs-kr{display:flex;gap:10px;font-size:9.5px;color:#98a3b6;font-weight:600;flex-shrink:0}
-            #factsheet-modal .fs-kr label{display:flex;align-items:center;gap:3px;cursor:pointer}
-            #factsheet-modal .fs-kr input[type=radio]{accent-color:#ef4444;width:11px;height:11px}
+            #factsheet-modal .fs-t{flex:0 0 52px}
+            #factsheet-modal .fs-f label,#factsheet-modal .fs-t label{display:block;font-size:6.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4b5a6e;margin-bottom:2px;white-space:nowrap}
+            #factsheet-modal .fs-f input,#factsheet-modal .fs-t input,#factsheet-modal .fs-f select{width:100%;height:27px;border-radius:6px;border:1px solid #1e2736;background:#070a0f;color:#e8edf5;font-size:11px;font-weight:600;padding:0 8px;font-family:inherit;transition:border-color .15s}
+            #factsheet-modal .fs-f input:focus,#factsheet-modal .fs-t input:focus{border-color:#3b5bdb;outline:none}
+            #factsheet-modal .fs-t input{font-family:'JetBrains Mono','Courier New',monospace;text-align:center;padding:0;background:#111826;color:#93c5fd;font-size:10.5px}
+
+            /* Kassa radio */
+            #factsheet-modal .fs-kr{display:flex;gap:12px;font-size:9.5px;color:#667085;font-weight:600;flex-shrink:0;padding-top:1px}
+            #factsheet-modal .fs-kr label{display:flex;align-items:center;gap:4px;cursor:pointer}
+            #factsheet-modal .fs-kr input[type=radio]{accent-color:#dc2626;width:11px;height:11px}
+
+            /* Pills */
             #factsheet-modal .fs-pills{display:flex;gap:3px;flex-wrap:wrap;flex-shrink:0}
-            #factsheet-modal .fs-pills span{padding:2px 6px;background:#101620;border:1px solid #232b38;border-radius:9px;font-size:7.5px;color:#98a3b6}
-            #factsheet-modal .fs-pills span b{color:#f6f8fc;font-weight:700;margin-left:2px}
-            #factsheet-modal .fs-dv{border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
-            #factsheet-modal .fs-sr{display:flex;flex-direction:column;gap:3px;flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#232b38 transparent}
-            #factsheet-modal .fs-srow{display:grid;grid-template-columns:15px 54px 1fr;gap:3px;align-items:center;flex-shrink:0}
-            #factsheet-modal .fs-srow .sn{font-size:8.5px;font-weight:700;color:#667085;text-align:right}
-            #factsheet-modal .fs-srow input{height:25px;border-radius:5px;border:1px solid #232b38;background:#080b10;color:#f6f8fc;font-size:10.5px;font-weight:700;padding:0 6px;font-family:inherit}
-            #factsheet-modal .fs-srow input.ti{font-family:'JetBrains Mono',monospace;text-align:center;padding:0;background:#101620}
-            #factsheet-modal .fs-right{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-            #factsheet-modal .fs-ph{height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #232b38;flex-shrink:0;background:#0d1119}
-            #factsheet-modal .fs-ph span{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#98a3b6}
+            #factsheet-modal .fs-pills span{padding:2px 7px;background:#111826;border:1px solid #1e2736;border-radius:9px;font-size:7.5px;color:#667085}
+            #factsheet-modal .fs-pills span b{color:#c8d4e8;font-weight:700;margin-left:2px}
+
+            /* Divider */
+            #factsheet-modal .fs-dv{border-top:1px solid #1a2332;flex-shrink:0;margin:1px 0}
+
+            /* Security rows */
+            #factsheet-modal .fs-sr{display:flex;flex-direction:column;gap:4px;flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#1e2736 transparent;padding-top:2px}
+            #factsheet-modal .fs-srow{display:grid;grid-template-columns:16px 56px 1fr;gap:4px;align-items:center;flex-shrink:0}
+            #factsheet-modal .fs-srow .sn{font-size:8px;font-weight:700;color:#4b5a6e;text-align:right}
+            #factsheet-modal .fs-srow input{height:27px;border-radius:6px;border:1px solid #1e2736;background:#070a0f;color:#e8edf5;font-size:11px;font-weight:600;padding:0 8px;font-family:inherit;transition:border-color .15s}
+            #factsheet-modal .fs-srow input.ti{font-family:'JetBrains Mono',monospace;text-align:center;padding:0;background:#111826;color:#93c5fd}
+
+            /* Right panel */
+            #factsheet-modal .fs-right{display:flex;flex-direction:column;min-height:0;overflow:hidden;background:#080c12}
+
+            /* Preview header */
+            #factsheet-modal .fs-ph{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #1e2736;flex-shrink:0;background:#0c1018}
+            #factsheet-modal .fs-ph span{font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4b5a6e}
             #factsheet-modal .fs-ph-b{display:flex;gap:3px}
-            #factsheet-modal .fs-ph-b i{padding:2px 7px;border-radius:4px;font-style:normal;font-size:8.5px;font-weight:700;background:#101620;border:1px solid #232b38;color:#98a3b6}
-            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 76px;min-height:0;overflow:hidden}
-            #factsheet-modal .fs-dz{position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0b0f1a 0%,#04060b 100%);overflow:hidden}
-            #factsheet-modal .fs-pframe{position:relative;flex-shrink:0;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 4px 40px rgba(0,0,0,.8),0 0 80px rgba(0,0,0,.5);border-radius:3px;overflow:hidden;margin:auto}
-            #factsheet-modal .fs-paper{width:420px;background:#fff;color:#111;padding:16px 14px;transform-origin:top left;display:block}
-            #factsheet-modal .fs-paper .p-evt{font-family:Inter,sans-serif;font-size:15px;font-weight:800;margin-bottom:2px;letter-spacing:-.02em}
-            #factsheet-modal .fs-paper .p-evt span{color:#ef4444}
+            #factsheet-modal .fs-ph-b i{padding:2px 8px;border-radius:5px;font-style:normal;font-size:8.5px;font-weight:700;background:#111826;border:1px solid #1e2736;color:#667085}
+
+            /* Preview body grid */
+            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 130px;min-height:0;overflow:hidden}
+
+            /* Document zone */
+            #factsheet-modal .fs-dz{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0e1520 0%,#050709 100%)}
+
+            /* Paper frame */
+            #factsheet-modal .fs-pframe{position:relative;flex-shrink:0;border-radius:3px;overflow:hidden;margin:auto;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 48px rgba(0,0,0,.85),0 2px 16px rgba(0,0,0,.6)}
+            #factsheet-modal .fs-paper{width:420px;background:#fff;color:#111;padding:18px 16px;transform-origin:top left;display:block}
+
+            /* Paper content */
+            #factsheet-modal .fs-paper .p-evt{font-family:Inter,sans-serif;font-size:16px;font-weight:800;margin-bottom:3px;letter-spacing:-.02em}
+            #factsheet-modal .fs-paper .p-evt span{color:#dc2626}
             #factsheet-modal .fs-paper .p-meta{font-family:Inter,sans-serif;font-size:8.5px;color:#555;margin-bottom:1px}
-            #factsheet-modal .fs-paper .p-auf{font-family:Inter,sans-serif;font-size:8.5px;font-weight:700;margin-bottom:4px;color:#333}
+            #factsheet-modal .fs-paper .p-auf{font-family:Inter,sans-serif;font-size:9px;font-weight:700;margin-bottom:5px;color:#222;margin-top:4px}
             #factsheet-modal .fs-paper table{width:100%;border-collapse:collapse;font-size:8.5px}
-            #factsheet-modal .fs-paper th,#factsheet-modal .fs-paper td{border:.5px solid #bbb;padding:2.5px 5px;text-align:left;vertical-align:top}
-            #factsheet-modal .fs-paper th{background:#e8e8e8;font-family:Inter,sans-serif;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-            #factsheet-modal .fs-paper .sh td{background:#f0f0f0;font-family:Inter,sans-serif;font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#333;padding:2.5px 5px}
+            #factsheet-modal .fs-paper th,#factsheet-modal .fs-paper td{border:.5px solid #d0d0d0;padding:2.5px 5px;text-align:left;vertical-align:top}
+            #factsheet-modal .fs-paper th{background:#ebebeb;font-family:Inter,sans-serif;font-size:6.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#444}
+            #factsheet-modal .fs-paper .sh td{background:#f2f2f2;font-family:Inter,sans-serif;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#333;padding:3px 5px}
             #factsheet-modal .fs-paper .br td:first-child{font-weight:700;font-family:Inter,sans-serif}
-            #factsheet-modal .fs-rail{border-left:1px solid #232b38;padding:7px 5px;display:flex;flex-direction:column;gap:3px;align-items:center;overflow:hidden;background:#0d1119}
-            #factsheet-modal .rk{font-size:7px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#667085;text-align:center}
-            #factsheet-modal .rv{font-size:11px;font-weight:700;color:#f6f8fc;text-align:center}
-            #factsheet-modal .fs-rail hr{width:100%;border:0;border-top:1px solid #232b38;margin:1px 0}
-            #factsheet-modal .rbtn{width:100%;padding:5px 0;border-radius:5px;border:none;font-size:8px;font-weight:700;cursor:pointer;font-family:inherit}
-            #factsheet-modal .rbtn:hover{opacity:.82}
-            #factsheet-modal .rbtn.pdf{background:#ef4444;color:#fff}
-            #factsheet-modal .rbtn.docx{background:#3b82f6;color:#fff}
-            #factsheet-modal .rbtn.cfm{background:#eab308;color:#111}
-            #factsheet-modal .rbtn.cpy{background:#101620;color:#f6f8fc;border:1px solid #232b38}
-            #factsheet-modal .rbtn.prt{background:#22c55e;color:#fff}
-            #factsheet-modal .ci{display:flex;align-items:center;gap:4px;font-size:7px;color:#667085;width:100%}
+
+            /* Rail */
+            #factsheet-modal .fs-rail{border-left:1px solid #1e2736;padding:10px 6px;display:flex;flex-direction:column;gap:5px;align-items:center;overflow:hidden;background:#0c1018}
+            #factsheet-modal .rk{font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4b5a6e;text-align:center}
+            #factsheet-modal .rv{font-size:14px;font-weight:700;color:#c8d4e8;text-align:center;letter-spacing:-.01em}
+            #factsheet-modal .fs-rail hr{width:calc(100% + 0px);border:0;border-top:1px solid #1a2332;margin:2px 0}
+            #factsheet-modal .rbtn{width:100%;padding:8px 0;border-radius:7px;border:none;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .12s,transform .08s}
+            #factsheet-modal .rbtn:hover{opacity:.88}
+            #factsheet-modal .rbtn:active{transform:scale(.96)}
+            #factsheet-modal .rbtn.pdf{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff}
+            #factsheet-modal .rbtn.docx{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+            #factsheet-modal .rbtn.cfm{background:linear-gradient(135deg,#d97706,#b45309);color:#fff}
+            #factsheet-modal .rbtn.cpy{background:#111826;color:#c8d4e8;border:1px solid #1e2736}
+            #factsheet-modal .rbtn.prt{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+
+            /* Status dots */
+            #factsheet-modal .ci{display:flex;align-items:center;gap:5px;font-size:9px;color:#4b5a6e;width:100%}
             #factsheet-modal .cd{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
-            #factsheet-modal .cd.ok{background:#22c55e}
-            #factsheet-modal .cd.er{background:#ef4444}
-            #factsheet-modal .fs-ftr{display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-top:1px solid #232b38;flex-shrink:0;background:#080b11}
-            #factsheet-modal .fs-ftr .fl{display:flex;gap:6px}
-            #factsheet-modal .fs-ftr button{padding:5px 12px;border-radius:6px;font-size:9px;font-weight:700;background:#0d1119;border:1px solid #232b38;color:#98a3b6;cursor:pointer;font-family:inherit}
-            #factsheet-modal .fs-ftr button:hover{background:#101620;color:#f6f8fc}
-            #factsheet-modal .fs-ftr button.pri{background:#ef4444;border-color:transparent;color:#fff}
-            #factsheet-modal .fs-ftr small{font-size:8px;color:#667085;font-family:'JetBrains Mono',monospace}
+            #factsheet-modal .cd.ok{background:#22c55e;box-shadow:0 0 4px rgba(34,197,94,.4)}
+            #factsheet-modal .cd.er{background:#dc2626;box-shadow:0 0 4px rgba(220,38,38,.3)}
+
+            /* Footer */
+            #factsheet-modal .fs-ftr{display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-top:1px solid #1e2736;flex-shrink:0;background:#080b11}
+            #factsheet-modal .fs-ftr .fl{display:flex;gap:7px}
+            #factsheet-modal .fs-ftr button{padding:6px 14px;border-radius:7px;font-size:9px;font-weight:700;background:#0c1018;border:1px solid #1e2736;color:#667085;cursor:pointer;font-family:inherit;transition:all .12s;letter-spacing:.02em}
+            #factsheet-modal .fs-ftr button:hover{background:#111826;color:#c8d4e8}
+            #factsheet-modal .fs-ftr button.pri{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:transparent;color:#fff}
+            #factsheet-modal .fs-ftr small{font-size:7.5px;color:#2d3a4a;font-family:'JetBrains Mono',monospace}
             </style>
 
             <div class="fs-shell">
@@ -7630,7 +7896,7 @@
             </div>
 
             <!-- MAIN -->
-            <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);min-height:0;overflow:hidden;flex:1;">
+            <div class="fs-main">
 
             <!-- LEFT -->
             <div class="fs-left">
@@ -7717,7 +7983,7 @@
                     <button onclick="fs2Reset()">Reset</button>
                     <button class="pri" onclick="confirmSecurityFromFactsheet()">Confirm &amp; Export</button>
                 </div>
-                <small>Factsheet Generator · v15.9.198</small>
+                <small>Factsheet Generator · v15.9.203</small>
             </div>
             </div><!-- /fs-shell -->
         </div>
@@ -8498,7 +8764,7 @@
     
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.198</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.203</span>
     </div>
     
     <!-- Metrics Button -->
@@ -8978,7 +9244,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.198</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.203</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13070,7 +13336,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.203', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13149,7 +13415,7 @@
                 doc.setTextColor(255); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
                 doc.text('S9+  ·  EVENT DETAILS', 12, 8);
                 doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(200);
-                doc.text('Hub v15.9.198  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
+                doc.text('Hub v15.9.203  ·  ' + new Date().toLocaleDateString('de-AT') + '  ·  ' + sorted.length + ' Events', W-12, 8, { align: 'right' });
             };
             const drawPageFooter = (data) => {
                 doc.setDrawColor(220); doc.line(12, H-9, W-12, H-9);
@@ -13230,7 +13496,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.203', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13304,7 +13570,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.203', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13411,7 +13677,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.203', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13495,7 +13761,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.203', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13804,7 +14070,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.203', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13951,7 +14217,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.203', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14096,7 +14362,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.198', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.203', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18929,7 +19195,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.198';
+            const HUB_VERSION = 'v15.9.203';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20634,7 +20900,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.198</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.203</div>
                     </div>
                     
                     <div class="section">
@@ -20733,7 +20999,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.198 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.203 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24437,7 +24703,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.198 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.203 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24467,7 +24733,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.198',
+                hubVersion: 'v15.9.203',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25034,7 +25300,7 @@ Spittelauer Lnde 12/1
         </script>
 
 <!-- ═══════════════════════════════════════════════════════
-     UMSATZ TICKER JS — v15.9.198
+     UMSATZ TICKER JS — v15.9.203
      Stundenkurve + PAX-Cross-Validation
      Datenbasis: Stunden-DB 2023-2026, EIGEN-Master 76 Events
      ═══════════════════════════════════════════════════════ -->
@@ -27074,7 +27340,7 @@ Spittelauer Lnde 12/1
 </script>
 
 <script>
-// ===== PLANNER WIDGET v15.9.198 =====
+// ===== PLANNER WIDGET v15.9.203 =====
 (function() {
     'use strict';
 
@@ -27090,7 +27356,7 @@ Spittelauer Lnde 12/1
     };
     let plannerCurrentTab = 'daily';
 
-    // ── QA Tabs (v15.9.198) ──
+    // ── QA Tabs (v15.9.203) ──
     window.plannerQATab = function(tab, btn) {
         document.querySelectorAll('.planner-qa-tab').forEach(t => t.classList.remove('active'));
         if (btn) btn.classList.add('active');
@@ -27663,10 +27929,10 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /PLANNER WIDGET =====
 
-// ===== STATE SYNC v15.9.198 =====
+// ===== STATE SYNC v15.9.203 =====
 (function() {
 
-    const HUB_VER = 'v15.9.198';
+    const HUB_VER = 'v15.9.203';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -27964,7 +28230,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== /STATE SYNC =====
 </script>
 
-<!-- ==================== STATE SYNC MODAL v15.9.198 ==================== -->
+<!-- ==================== STATE SYNC MODAL v15.9.203 ==================== -->
 <div class="modal-overlay" id="sync-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:#0e0e14;border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:min(480px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8);">
         <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0a1628,#0e0e14);">
@@ -27989,7 +28255,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 
 
     <script>
-    // ═══ FACTSHEET COMMAND WORKSPACE v15.9.198 ═══
+    // ═══ FACTSHEET COMMAND WORKSPACE v15.9.203 ═══
     var fs2MF = '00:00';
     var fs2Sec = [
         {z:'22:45',p:'1 PAX'},{z:'23:00',p:'3 PAX'},{z:'23:30',p:'1 PAX'},
