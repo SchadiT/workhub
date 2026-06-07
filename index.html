@@ -5472,6 +5472,18 @@
                     <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Erwartete Stunden (realistisch, kumuliert)</div>
                     <div id="ut-hours" style="font-size:12px;color:#fff;line-height:1.8;font-family:monospace;"></div>
                 </div>
+
+                <!-- Save Button -->
+                <button id="ut-save-btn" onclick="utSaveSnapshot()" style="width:100%;margin-top:10px;padding:10px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.4);color:#818cf8;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">&#128190; Snapshot speichern</button>
+            </div>
+
+            <!-- Snapshot Protocol -->
+            <div id="ut-snap-section" style="display:none;margin-top:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px;">&#128203; Nacht-Protokoll</span>
+                    <button onclick="utClearSnapshots()" style="background:none;border:1px solid #1e2736;color:#4b5a6e;font-size:10px;padding:3px 8px;cursor:pointer;border-radius:4px;">Alle l&#246;schen</button>
+                </div>
+                <div id="ut-snap-list"></div>
             </div>
         </div>
     </div>
@@ -25219,6 +25231,8 @@ Spittelauer Lnde 12/1
     const UT_NO_SHOW = 0.10;
 
     let ut_typ = 'eigen';
+    let utLastResult = null;
+    const UT_SNAP_KEY = 'utSnapshots';
 
     function utInterp(anchors, x, key) {
         if (x <= anchors[0].min) return anchors[0][key];
@@ -25286,6 +25300,7 @@ Spittelauer Lnde 12/1
         utSetTyp('eigen');
         const result = document.getElementById('ut-result');
         if (result) result.style.display = 'none';
+        utRenderSnapshots();
     };
 
     window.umsatzTickerCalc = function() {
@@ -25488,8 +25503,120 @@ Spittelauer Lnde 12/1
             hoursDiv.innerHTML = html;
         }
 
+        // Store snapshot data for save function
+        utLastResult = {
+            timeLabel: utClockFromMin(minSinceStart),
+            cash,
+            realistic: realisticForecast,
+            low: isNaN(low) ? null : low,
+            high: isNaN(high) ? null : high,
+            pctDone,
+            typ: ut_typ,
+            serie: ut_typ === 'eigen' ? (document.getElementById('ut-serie') ? document.getElementById('ut-serie').value : null) : null
+        };
+
         document.getElementById('ut-result').style.display = 'block';
     };
+
+    // ── Snapshot Functions ─────────────────────────────────
+    function utRenderSnapshots() {
+        const section = document.getElementById('ut-snap-section');
+        const list = document.getElementById('ut-snap-list');
+        if (!section || !list) return;
+        const snaps = JSON.parse(localStorage.getItem(UT_SNAP_KEY) || '[]');
+        if (snaps.length === 0) { section.style.display = 'none'; return; }
+        section.style.display = 'block';
+        list.innerHTML = snaps.map((s, i) => {
+            const prev = i > 0 ? snaps[i - 1] : null;
+            const dKasse = prev ? s.cash - prev.cash : null;
+            const dForecast = (prev && s.realistic != null && prev.realistic != null) ? s.realistic - prev.realistic : null;
+            const serieLabel = s.serie ? s.serie.toUpperCase() : '';
+            const typLabel = s.typ === 'eigen' ? ('EIGEN' + (serieLabel ? ' / ' + serieLabel : '')) : 'FREMD';
+            const pctColor = s.pctDone > 0.7 ? '#22d47a' : s.pctDone > 0.35 ? '#f59e0b' : '#888';
+            const realVal = (s.realistic != null && !isNaN(s.realistic)) ? utFmtEUR(s.realistic) : '— zu fr\u00FCh —';
+            const realColor = (s.realistic != null && !isNaN(s.realistic)) ? '#22d47a' : '#555';
+            const lowVal = (s.low != null && !isNaN(s.low)) ? utFmtEUR(s.low) : '—';
+            const highVal = (s.high != null && !isNaN(s.high)) ? utFmtEUR(s.high) : '—';
+            let deltaHtml = '';
+            if (dKasse !== null) {
+                const kSign = dKasse >= 0 ? '+' : '';
+                const kCol = dKasse >= 0 ? '#22d47a' : '#ef4444';
+                let fPart = '';
+                if (dForecast !== null) {
+                    const fSign = dForecast >= 0 ? '+' : '';
+                    const fCol = dForecast >= 0 ? '#22d47a' : '#ef4444';
+                    fPart = ` &nbsp;\u00B7 Prognose: <span style="color:${fCol}">${fSign}${utFmtEUR(dForecast)}</span>`;
+                }
+                deltaHtml = `<div style="font-size:10px;color:#3a4a5e;margin-top:5px;padding-top:5px;border-top:1px solid #121c2a;">
+                    \u25B3 Kasse: <span style="color:${kCol}">${kSign}${utFmtEUR(dKasse)}</span>${fPart}
+                </div>`;
+            }
+            return `<div style="background:#06090f;border:1px solid #1a2432;border-radius:6px;padding:10px 12px;margin-bottom:6px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+                    <div style="font-size:9.5px;color:#3d5470;font-weight:700;letter-spacing:.04em;">
+                        <span style="color:#5a7fa8;">${s.timeLabel}</span> Venue
+                        &nbsp;·&nbsp; ${s.wallTime} Uhr
+                        &nbsp;·&nbsp; <span style="color:#5a6a7e;">${typLabel}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="font-size:10px;font-weight:800;color:${pctColor};">${(s.pctDone * 100).toFixed(0)}%</span>
+                        <button onclick="utDeleteSnapshot(${i})" title="Eintrag l\u00F6schen" style="background:none;border:none;color:#1e2a38;font-size:13px;cursor:pointer;padding:0 3px;line-height:1;transition:color .15s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#1e2a38'">\u2715</button>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div>
+                        <div style="font-size:8.5px;color:#3d5470;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">Kassenstand</div>
+                        <div style="font-size:16px;font-weight:800;color:#c8d4e8;">${utFmtEUR(s.cash)}</div>
+                    </div>
+                    <div>
+                        <div style="font-size:8.5px;color:#3d5470;text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">Prognose Endstand</div>
+                        <div style="font-size:16px;font-weight:800;color:${realColor};">${realVal}</div>
+                    </div>
+                </div>
+                <div style="font-size:10px;color:#3a4a5e;margin-top:5px;">
+                    Range: <span style="color:#ef4444;">${lowVal}</span> &ndash; <span style="color:#f59e0b;">${highVal}</span>
+                </div>
+                ${deltaHtml}
+            </div>`;
+        }).join('');
+    }
+
+    window.utSaveSnapshot = function() {
+        if (!utLastResult) return;
+        const snaps = JSON.parse(localStorage.getItem(UT_SNAP_KEY) || '[]');
+        const now = new Date();
+        const wallTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        snaps.push(Object.assign({}, utLastResult, { wallTime, savedAt: Date.now() }));
+        localStorage.setItem(UT_SNAP_KEY, JSON.stringify(snaps));
+        utRenderSnapshots();
+        const btn = document.getElementById('ut-save-btn');
+        if (btn) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '&#10003; Gespeichert';
+            btn.style.color = '#22d47a';
+            btn.style.borderColor = 'rgba(34,212,122,0.5)';
+            btn.style.background = 'rgba(34,212,122,0.08)';
+            setTimeout(() => {
+                btn.innerHTML = orig;
+                btn.style.color = '#818cf8';
+                btn.style.borderColor = 'rgba(99,102,241,0.4)';
+                btn.style.background = 'rgba(99,102,241,0.12)';
+            }, 1400);
+        }
+    };
+
+    window.utClearSnapshots = function() {
+        localStorage.removeItem(UT_SNAP_KEY);
+        utRenderSnapshots();
+    };
+
+    window.utDeleteSnapshot = function(idx) {
+        const snaps = JSON.parse(localStorage.getItem(UT_SNAP_KEY) || '[]');
+        snaps.splice(idx, 1);
+        localStorage.setItem(UT_SNAP_KEY, JSON.stringify(snaps));
+        utRenderSnapshots();
+    };
+
 })();
 
 // ═══════════════════════════════════════════════════════
