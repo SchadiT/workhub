@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TURBO Projects — ToDo Dashboard v4.14</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --surface3: #222222;
+    --border: #2a2a2a;
+    --text: #f0f0f0;
+    --muted: #666;
+    --dim: #444;
+    --red: #e53935;
+    --red-dim: #1a0a0a;
+    --amber: #f59e0b;
+    --amber-dim: #1a1200;
+    --green: #22c55e;
+    --green-dim: #0a1a0a;
+    --blue: #3b82f6;
+    --blue-dim: #0a0f1a;
+    --purple: #a855f7;
+    --purple-dim: #130a1a;
+    --cyan: #06b6d4;
+    --accent: #e53935;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .version-badge {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 2px 8px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .header-date {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* ── METRICS BAR ── */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border-bottom: 1px solid var(--border);
+  }
+  .metric {
+    padding: 14px 16px;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .metric:last-child { border-right: none; }
+  .metric:hover { background: var(--surface2); }
+  .metric.active { background: var(--surface2); border-bottom: 2px solid var(--accent); }
+  .metric-val {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-val.red { color: var(--red); }
+  .metric-val.amber { color: var(--amber); }
+  .metric-val.green { color: var(--green); }
+  .metric-val.blue { color: var(--blue); }
+  .metric-val.purple { color: var(--purple); }
+  .metric-val.cyan { color: var(--cyan); }
+  .metric-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 110px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+  }
+  .sidebar-section {
+    margin-bottom: 8px;
+  }
+  .sidebar-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    padding: 0 16px 6px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { background: var(--surface2); }
+  .nav-item.active {
+    background: var(--surface2);
+    border-left-color: var(--accent);
+    color: var(--text);
+  }
+  .nav-item-text { font-size: 11px; }
+  .nav-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+  .badge-red { background: var(--red); color: #fff; }
+  .badge-amber { background: var(--amber); color: #000; }
+  .badge-green { background: var(--green); color: #000; }
+  .badge-blue { background: var(--blue); color: #fff; }
+  .badge-purple { background: var(--purple); color: #fff; }
+  .badge-muted { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 16px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    padding: 20px 24px;
+    overflow-y: auto;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title span { color: var(--text); font-size: 12px; }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .card:hover { border-color: var(--dim); background: var(--surface2); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .card-id {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .card-title.done {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+  .card-meta {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .tag-red { background: var(--red-dim); color: var(--red); border: 1px solid #3a1010; }
+  .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid #3a2800; }
+  .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid #0a2a0a; }
+  .tag-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid #0a1a3a; }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid #1a0a2a; }
+  .tag-muted { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
+  .tag-cyan { background: #050f12; color: var(--cyan); border: 1px solid #0a2530; }
+
+  .card-owner {
+    font-size: 9px;
+    color: var(--dim);
+    margin-left: auto;
+  }
+  .card-effort {
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  /* ── STATUS PILL ── */
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  .dot-red { background: var(--red); box-shadow: 0 0 4px var(--red); }
+  .dot-amber { background: var(--amber); }
+  .dot-green { background: var(--green); }
+  .dot-blue { background: var(--blue); }
+  .dot-muted { background: var(--dim); }
+
+  /* ── BLOCKER ALERT ── */
+  .blocker-alert {
+    background: var(--red-dim);
+    border: 1px solid #3a1010;
+    border-left: 3px solid var(--red);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .blocker-alert-icon { color: var(--red); font-size: 14px; }
+  .blocker-alert-text { font-size: 11px; color: #ff6b6b; }
+  .blocker-alert-label { font-size: 9px; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+
+  /* ── WEEK PLAN ── */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .day-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    min-height: 200px;
+  }
+  .day-header {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .day-header.today { color: var(--accent); border-bottom-color: var(--accent); }
+  .day-date { font-size: 10px; color: var(--dim); }
+  .day-task {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    cursor: pointer;
+    transition: background 0.1s;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .day-task:hover { background: var(--surface2); }
+  .day-task:last-child { border-bottom: none; }
+  .day-task-dot { margin-top: 4px; flex-shrink: 0; }
+  .day-task-text { line-height: 1.3; }
+  .day-empty {
+    padding: 16px 10px;
+    color: var(--dim);
+    font-size: 10px;
+    text-align: center;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-row {
+    margin-bottom: 12px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .progress-label span { color: var(--text); }
+  .progress-track {
+    height: 3px;
+    background: var(--surface3);
+  }
+  .progress-fill {
+    height: 100%;
+    transition: width 0.4s;
+  }
+
+  /* ── SKILL TABLE ── */
+  .skill-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .skill-table th {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+    text-transform: uppercase;
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-table td {
+    padding: 8px 8px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .skill-table tr:hover td { background: var(--surface2); }
+  .skill-code {
+    font-family: 'SF Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+  }
+
+  /* ── DONE SECTION ── */
+  .done-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .done-check { color: var(--green); font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+  .done-text { font-size: 11px; color: var(--muted); text-decoration: line-through; }
+  .done-sub { font-size: 10px; color: var(--dim); margin-top: 2px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* ── ACTION BUTTON ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 10px;
+    font-family: inherit;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--surface3); border-color: var(--dim); }
+  .btn-red { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+  .btn-red:hover { background: #2a0a0a; }
+
+  .action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ── TOOLTIP ── */
+  .tooltip-wrap { position: relative; }
+  .tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    font-size: 10px;
+    color: var(--text);
+    white-space: nowrap;
+    z-index: 10;
+    margin-bottom: 4px;
+  }
+  .tooltip-wrap:hover .tooltip { display: block; }
+
+  /* ── FINANZ LANE ── */
+  .finanz-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 10px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .flow-step.done-step { border-color: var(--green); color: var(--green); }
+  .flow-step.active-step { border-color: var(--amber); color: var(--amber); }
+  .flow-step.locked-step { color: var(--dim); }
+  .flow-arrow {
+    color: var(--dim);
+    font-size: 14px;
+    padding: 0 4px;
+  }
+  .flow-label { font-size: 9px; color: var(--dim); margin-top: 3px; }
+
+  @media (max-width: 768px) {
+    .metrics-bar { grid-template-columns: repeat(3, 1fr); }
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .week-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">TURBO</div>
+    <div class="version-badge">ToDo v4.14</div>
+  </div>
+  <div class="header-date">10.06.2026 · Hub v15.9.204 LIVE</div>
+</div>
+
+<!-- METRICS BAR -->
+<div class="metrics-bar">
+  <div class="metric" onclick="setView('blocker')" id="m-blocker">
+    <div class="metric-val red">3</div>
+    <div class="metric-label">P1 Blocker</div>
+  </div>
+  <div class="metric" onclick="setView('week')" id="m-week">
+    <div class="metric-val amber">5</div>
+    <div class="metric-label">Diese Woche</div>
+  </div>
+  <div class="metric" onclick="setView('skills')" id="m-skills">
+    <div class="metric-val green">5</div>
+    <div class="metric-label">Skills Live</div>
+  </div>
+  <div class="metric" onclick="setView('skills')" id="m-skills2">
+    <div class="metric-val blue">11</div>
+    <div class="metric-label">Skills Geplant</div>
+  </div>
+  <div class="metric" onclick="setView('finanz')" id="m-finanz">
+    <div class="metric-val amber">2/6</div>
+    <div class="metric-label">Finanz Lane</div>
+  </div>
+  <div class="metric" onclick="setView('done')" id="m-done">
+    <div class="metric-val green">8</div>
+    <div class="metric-label">Done ✓</div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Ansicht</div>
+      <div class="nav-item active" id="nav-blocker" onclick="setView('blocker')">
+        <span class="nav-item-text">🔴 P1 Blocker</span>
+        <span class="nav-badge badge-red">3</span>
+      </div>
+      <div class="nav-item" id="nav-week" onclick="setView('week')">
+        <span class="nav-item-text">📅 Diese Woche</span>
+        <span class="nav-badge badge-amber">5</span>
+      </div>
+      <div class="nav-item" id="nav-all" onclick="setView('all')">
+        <span class="nav-item-text">📋 Alle Lanes</span>
+        <span class="nav-badge badge-muted">24</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Lanes</div>
+      <div class="nav-item" id="nav-lane1" onclick="setView('lane1')">
+        <span class="nav-item-text">L1 Blocker</span>
+        <span class="nav-badge badge-red">3</span>
+      </div>
+      <div class="nav-item" id="nav-lane2" onclick="setView('lane2')">
+        <span class="nav-item-text">L2 Claude-baubar</span>
+        <span class="nav-badge badge-blue">4</span>
+      </div>
+      <div class="nav-item" id="nav-lane3" onclick="setView('lane3')">
+        <span class="nav-item-text">L3 Wartet</span>
+        <span class="nav-badge badge-muted">5</span>
+      </div>
+      <div class="nav-item" id="nav-finanz" onclick="setView('finanz')">
+        <span class="nav-item-text">F Finanz</span>
+        <span class="nav-badge badge-amber">6</span>
+      </div>
+      <div class="nav-item" id="nav-marketing" onclick="setView('marketing')">
+        <span class="nav-item-text">M Marketing</span>
+        <span class="nav-badge badge-purple">4</span>
+      </div>
+      <div class="nav-item" id="nav-skills" onclick="setView('skills')">
+        <span class="nav-item-text">S Skills</span>
+        <span class="nav-badge badge-cyan" style="background:#050f12;color:#06b6d4;border:1px solid #0a2530;">16</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Archiv</div>
+      <div class="nav-item" id="nav-done" onclick="setView('done')">
+        <span class="nav-item-text">✅ Done</span>
+        <span class="nav-badge badge-green">8</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <div style="padding: 12px 16px;">
+      <div style="font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">SCHNELLSTER HEBEL</div>
+      <div style="font-size:10px;color:var(--amber);padding:4px 0;cursor:pointer;" onclick="setView('lane1')">→ L1.3 Meta (~30min)</div>
+      <div style="font-size:10px;color:var(--blue);padding:4px 0;cursor:pointer;" onclick="setView('finanz')">→ F6 Domain-Fakten</div>
+      <div style="font-size:10px;color:var(--blue);padding:4px 0;cursor:pointer;" onclick="setView('lane2')">→ L5.11 DB #NAME?</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── VIEW: BLOCKER ── -->
+    <div class="view active" id="view-blocker">
+      <div class="section-title">🔴 P1 BLOCKER — <span>Schadi freischaufeln</span></div>
+
+      <div class="blocker-alert">
+        <div class="blocker-alert-icon">⚠</div>
+        <div>
+          <div class="blocker-alert-label">Prioritäts-Regel</div>
+          <div class="blocker-alert-text">ZUERST Blocker abräumen → DANN Cowork + Promo. Alle Marketing/Social-Items warten auf L1.3.</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-id">L1.3 · SCHADI ACTION</div>
+              <div class="card-title">Meta D1–D4 Cleanup</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Hypehunters+Johannes+JohnWilliam aus Business Manager · Sputnik Payment fix · Pixel+CAPI installieren</div>
+          <div class="card-meta">
+            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
+            <span class="tag tag-amber">~30min</span>
+            <span class="card-owner">Schadi (Login)</span>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-red">Jetzt erledigen</button>
+            <div class="tooltip-wrap">
+              <button class="btn">Checkliste</button>
+              <div class="tooltip">D1: Hypehunters raus · D2: Johannes raus · D3: JohnWilliam raus · D4: Sputnik Payment + Pixel/CAPI</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-id">L1.4 · SCHADI + CLAUDE</div>
+              <div class="card-title">E2 Fixkosten eintragen</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Monatliche Fixkosten in Kostenuebersicht v2 → Finanz-Reporting freischalten</div>
+          <div class="card-meta">
+            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
+            <span class="tag tag-muted">? Aufwand</span>
+          </div>
+          <div class="action-row">
+            <button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-id">L1.5 · SCHADI + CLAUDE</div>
+              <div class="card-title">E3 Variable Kosten eintragen</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Variable Kosten vervollständigen → Break-Even-Analyse möglich</div>
+          <div class="card-meta">
+            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
+            <span class="tag tag-muted">? Aufwand</span>
+          </div>
+          <div class="action-row">
+            <button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-id">DB2 / DB3 · SCHADI CHECK</div>
+              <div class="card-title">OE + RTO Auto-Email-Delivery prüfen</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Automatische Export-Emails von OE Ticket + RTO — kommen die an? DB Update Workflow abhängig davon.</div>
+          <div class="card-meta">
+            <span class="tag tag-amber">🟡 pending</span>
+            <span class="tag tag-muted">Tier 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: WOCHE ── -->
+    <div class="view" id="view-week">
+      <div class="section-title">📅 DIESE WOCHE — <span>KW 24 · 09–13.06.2026</span></div>
+
+      <div class="week-grid">
+        <div class="day-col">
+          <div class="day-header today">DI <span class="day-date">10.06</span></div>
+          <div class="day-task" onclick="setView('finanz')">
+            <span class="status-dot dot-amber day-task-dot"></span>
+            <span class="day-task-text">F1 Kostenuebersicht fertig</span>
+          </div>
+          <div class="day-task" onclick="setView('finanz')">
+            <span class="status-dot dot-blue day-task-dot"></span>
+            <span class="day-task-text">F6 Domain-Fakten eintragen</span>
+          </div>
+          <div class="day-task">
+            <span class="status-dot dot-amber day-task-dot"></span>
+            <span class="day-task-text">ToDo v4.14 → Project Files</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-header">MI <span class="day-date">11.06</span></div>
+          <div class="day-task" onclick="setView('lane1')">
+            <span class="status-dot dot-red day-task-dot"></span>
+            <span class="day-task-text">L1.3 Meta Cleanup (~30min)</span>
+          </div>
+          <div class="day-task" onclick="setView('lane2')">
+            <span class="status-dot dot-blue day-task-dot"></span>
+            <span class="day-task-text">L5.11 MAIN DB #NAME? fix</span>
+          </div>
+          <div class="day-empty">+ BWA-Export von Tiefenböck</div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-header">DO <span class="day-date">12.06</span></div>
+          <div class="day-task" onclick="setView('finanz')">
+            <span class="status-dot dot-amber day-task-dot"></span>
+            <span class="day-task-text">F2 Stundensätze ermitteln</span>
+          </div>
+          <div class="day-task" onclick="setView('skills')">
+            <span class="status-dot dot-blue day-task-dot"></span>
+            <span class="day-task-text">S16 db-update-check Skill</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-header">FR <span class="day-date">13.06</span></div>
+          <div class="day-task" onclick="setView('finanz')">
+            <span class="status-dot dot-amber day-task-dot"></span>
+            <span class="day-task-text">F3 Break-Even-Analyse</span>
+          </div>
+          <div class="day-task" onclick="setView('skills')">
+            <span class="status-dot dot-blue day-task-dot"></span>
+            <span class="day-task-text">ChatGPT Import vorbereiten</span>
+          </div>
+        </div>
+
+        <div class="day-col">
+          <div class="day-header">SA/SO <span class="day-date">14–15.06</span></div>
+          <div class="day-empty">Event-Wochenende</div>
+          <div class="day-task">
+            <span class="status-dot dot-muted day-task-dot"></span>
+            <span class="day-task-text">DB Update nach Events</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:8px;">FORTSCHRITT DIESE WOCHE</div>
+      <div class="progress-row">
+        <div class="progress-label"><span>P1 Blocker</span> <span style="color:var(--red)">0 / 3</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:0%;background:var(--red)"></div></div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label"><span>Finanz Lane</span> <span style="color:var(--amber)">2 / 6</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:33%;background:var(--amber)"></div></div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-label"><span>Skills Live</span> <span style="color:var(--green)">5 / 15</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:33%;background:var(--green)"></div></div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: ALLE LANES ── -->
+    <div class="view" id="view-all">
+      <div class="section-title">📋 ALLE LANES — <span>Gesamtübersicht</span></div>
+      <div class="card-grid">
+        <div class="card" onclick="setView('lane1')" style="cursor:pointer;">
+          <div class="card-id">LANE 1</div>
+          <div class="card-title">Blocker abräumen</div>
+          <div class="card-meta"><span class="tag tag-red">3 offen</span><span class="tag tag-muted">Schadi-Action</span></div>
+        </div>
+        <div class="card" onclick="setView('lane2')" style="cursor:pointer;">
+          <div class="card-id">LANE 2</div>
+          <div class="card-title">Claude-baubar</div>
+          <div class="card-meta"><span class="tag tag-blue">4 offen</span><span class="tag tag-muted">sofort baubar</span></div>
+        </div>
+        <div class="card" onclick="setView('lane3')" style="cursor:pointer;">
+          <div class="card-id">LANE 3</div>
+          <div class="card-title">Wartet auf Lane 1</div>
+          <div class="card-meta"><span class="tag tag-muted">5 blockiert</span></div>
+        </div>
+        <div class="card" onclick="setView('skills')" style="cursor:pointer;">
+          <div class="card-id">LANE 4</div>
+          <div class="card-title">Skills Roadmap</div>
+          <div class="card-meta"><span class="tag tag-green">5 live</span><span class="tag tag-blue">10 geplant</span></div>
+        </div>
+        <div class="card" onclick="setView('finanz')" style="cursor:pointer;">
+          <div class="card-id">LANE 6 — NEU</div>
+          <div class="card-title">Finanz-Steuerung</div>
+          <div class="card-meta"><span class="tag tag-amber">2/6 done</span><span class="tag tag-muted">Kostenuebersicht v2</span></div>
+        </div>
+        <div class="card" onclick="setView('marketing')" style="cursor:pointer;">
+          <div class="card-id">LANE 7 — NEU</div>
+          <div class="card-title">Marketing / Meta / Social</div>
+          <div class="card-meta"><span class="tag tag-purple">4 items</span><span class="tag tag-red">blockiert L1.3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: LANE 1 ── -->
+    <div class="view" id="view-lane1">
+      <div class="section-title">🎯 LANE 1 — <span>Blocker abräumen</span></div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-id">L1.3 · P1</div>
+          <div class="card-title">Meta D1–D4 Cleanup</div>
+          <div style="font-size:10px;color:var(--muted);margin:8px 0;">Hypehunters + Johannes + JohnWilliam aus BM · Sputnik Payment · Pixel + CAPI</div>
+          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="tag tag-amber">~30min</span><span class="card-owner">Schadi (Login)</span></div>
+          <div style="font-size:10px;color:var(--dim);margin-top:8px;">Entblockt: Marketing P1 + Meta Ads MCP + gesamte Lane 7</div>
+        </div>
+        <div class="card">
+          <div class="card-id">L1.3.a</div>
+          <div class="card-title">Meta Account Restriction Appeal</div>
+          <div class="card-meta"><span class="tag tag-red">🔴 pending</span><span class="card-owner">Schadi</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L1.4</div>
+          <div class="card-title">E2 Fixkosten eintragen</div>
+          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="card-owner">Schadi + Claude</span></div>
+          <div class="action-row"><button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L1.5</div>
+          <div class="card-title">E3 Variable Kosten eintragen</div>
+          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="card-owner">Schadi + Claude</span></div>
+          <div class="action-row"><button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: LANE 2 ── -->
+    <div class="view" id="view-lane2">
+      <div class="section-title">🛠 LANE 2 — <span>Claude-lieferbar</span></div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-id">L2.2</div>
+          <div class="card-title">Alert / Reminder-System</div>
+          <div class="card-meta"><span class="tag tag-amber">🟡 3 Fragen offen</span><span class="card-effort">mittel</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L2.5</div>
+          <div class="card-title">Mailchimp Reaktivierung</div>
+          <div class="card-meta"><span class="tag tag-amber">🟡 wartet</span><span class="card-effort">klein→mittel</span></div>
+          <div style="font-size:10px;color:var(--dim);margin-top:6px;">Trigger: "Mailchimp Screenshot"</div>
+        </div>
+        <div class="card">
+          <div class="card-id">L2.6</div>
+          <div class="card-title">Meta Ads MCP connecten</div>
+          <div class="card-meta"><span class="tag tag-amber">🟡 blockiert</span><span class="tag tag-muted">wartet L1.3</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L2.9</div>
+          <div class="card-title">Hub Metrics-Sektion entfernen</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">~935 Zeilen raus aus Hub-Code</div>
+          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~20min</span></div>
+          <div class="action-row"><button class="btn">Jetzt bauen</button></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L5.11</div>
+          <div class="card-title">MAIN DB #NAME? Errors fixen</div>
+          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~15min</span></div>
+          <div class="action-row"><button class="btn">Jetzt fixen</button></div>
+        </div>
+        <div class="card">
+          <div class="card-id">F6</div>
+          <div class="card-title">Domain-Fakten → Business_Context_v2</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">3 KST · WJ Aug–Jul · Miete-Logik · LNK 27,3%</div>
+          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~10min</span></div>
+          <div class="action-row"><button class="btn">Jetzt eintragen</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: LANE 3 ── -->
+    <div class="view" id="view-lane3">
+      <div class="section-title">⏸ LANE 3 — <span>Wartet auf Lane 1</span></div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-id">L3.1</div>
+          <div class="card-title">Spec Update Event Promo Card v2.0</div>
+          <div class="card-meta"><span class="tag tag-muted">wartet auf Trigger</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L3.2</div>
+          <div class="card-title">Promo-Manager Struktur / SOP</div>
+          <div class="card-meta"><span class="tag tag-muted">L3.1 + Lineup-Quelle</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L3.3</div>
+          <div class="card-title">Cowork fertig einrichten + aktivieren</div>
+          <div class="card-meta"><span class="tag tag-muted">L3.1 + L3.2 + L1.3–L1.5</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L3.4</div>
+          <div class="card-title">Event Promo Card Build</div>
+          <div class="card-meta"><span class="tag tag-muted">~6h · L3.1</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L3.5</div>
+          <div class="card-title">Promo Manager Rebuild (6 Tabs)</div>
+          <div class="card-meta"><span class="tag tag-muted">L3.3 + Lineup-Quelle</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">L3.6 · NEU</div>
+          <div class="card-title">Promo Manager — Spec + SOP</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Eigenständiger Eintrag — Struktur, Ablauf, Integration mit Cowork</div>
+          <div class="card-meta"><span class="tag tag-muted">L3.2 + L3.3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: FINANZ ── -->
+    <div class="view" id="view-finanz">
+      <div class="section-title">💰 FINANZ-STEUERUNG — <span>Lane 6</span></div>
+
+      <div style="margin-bottom:16px;">
+        <div class="finanz-flow">
+          <div class="flow-step done-step">✓ F1<div class="flow-label">Kostenuebersicht v2</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step active-step">⬤ F2<div class="flow-label">Stundensätze</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step locked-step">F3<div class="flow-label">Break-Even</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step locked-step">F4<div class="flow-label">Ablage-Struktur</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step locked-step">F5<div class="flow-label">Files Update</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step locked-step">F6<div class="flow-label">Domain-Fakten</div></div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-id">F1 · DONE ✓</div>
+          <div class="card-title done">Kostenuebersicht v2 bauen</div>
+          <div class="card-meta"><span class="tag tag-green">✓ erledigt</span></div>
+          <div style="font-size:10px;color:var(--dim);margin-top:6px;">4 Tabs: Kosten-Übersicht · Nacht-Kalkulator · Personal · Deckungsbeitrag</div>
+        </div>
+        <div class="card">
+          <div class="card-id">F2 · OFFEN</div>
+          <div class="card-title">Stundensätze ermitteln</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">GF Bar (€14 oder €15?) · TZ Brutto alle Rollen · Camillo raus einbauen</div>
+          <div class="card-meta"><span class="tag tag-amber">🟡 in Arbeit</span><span class="card-owner">Schadi</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">F3 · NACH F2</div>
+          <div class="card-title">Break-Even-Analyse</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Kosten/Nacht vs. Umsatz/Nacht → wann profitable?</div>
+          <div class="card-meta"><span class="tag tag-muted">🔲 wartet F2</span><span class="card-owner">Claude</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">F4</div>
+          <div class="card-title">Ablage-Struktur definieren</div>
+          <div class="card-meta"><span class="tag tag-muted">🔲 nach F3</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">F5</div>
+          <div class="card-title">Alle Files updaten</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Business_Context · Master_Context · Hub</div>
+          <div class="card-meta"><span class="tag tag-muted">🔲 nach F4</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">HUB · FEATURE</div>
+          <div class="card-title">Umsatz-Ticker → neue DB-Daten</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Ticker-Daten auf neue MAIN DB Felder (WBV/RTO/OE) anpassen</div>
+          <div class="card-meta"><span class="tag tag-blue">🔲 geplant</span><span class="card-owner">Claude</span></div>
+          <div class="action-row"><button class="btn">Jetzt bauen</button></div>
+        </div>
+        <div class="card">
+          <div class="card-id">F6 · SOFORT BAUBAR</div>
+          <div class="card-title">Domain-Fakten eintragen</div>
+          <div style="font-size:10px;color:var(--muted);margin:6px 0;">3 KST (30/50/20%) · WJ Aug–Jul · Miete €15.481 netto · LNK 27,3%</div>
+          <div class="card-meta"><span class="tag tag-blue">🔲 10min</span><span class="card-owner">Claude</span></div>
+          <div class="action-row"><button class="btn">Jetzt eintragen</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: MARKETING ── -->
+    <div class="view" id="view-marketing">
+      <div class="section-title">📣 MARKETING / META / SOCIAL — <span>Lane 7</span></div>
+
+      <div class="blocker-alert">
+        <div class="blocker-alert-icon">⛔</div>
+        <div>
+          <div class="blocker-alert-label">Blocked</div>
+          <div class="blocker-alert-text">Gesamte Marketing-Lane wartet auf L1.3 Meta Cleanup. Erst Pixel/CAPI live → dann Ads sinnvoll.</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-id">M1 · BLOCKER</div>
+          <div class="card-title">Meta Cleanup L1.3</div>
+          <div class="card-meta"><span class="tag tag-red">Schadi Login</span></div>
+          <div class="action-row"><button class="btn btn-red" onclick="setView('lane1')">→ Zu L1.3</button></div>
+        </div>
+        <div class="card">
+          <div class="card-id">M2 · NACH M1</div>
+          <div class="card-title">Meta Ads MCP connecten</div>
+          <div class="card-meta"><span class="tag tag-muted">wartet M1</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">M3 · NACH M2</div>
+          <div class="card-title">Social Media Integration (IG/FB)</div>
+          <div class="card-meta"><span class="tag tag-muted">wartet M2</span></div>
+        </div>
+        <div class="card">
+          <div class="card-id">M4 · NACH M2+M3</div>
+          <div class="card-title">Marketing-Strategie aktivieren</div>
+          <div class="card-meta"><span class="tag tag-muted">wartet M2 + M3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW: SKILLS ── -->
+    <div class="view" id="view-skills">
+      <div class="section-title">⚡ SKILLS ROADMAP — <span>Lane 4</span></div>
+
+      <div style="font-size:10px;color:var(--muted);margin-bottom:16px;">5 Skills live · 10 geplant · HARDRULE: kein web_fetch/MCP im Skill — Chat-Layer fetcht, Skill baut Output</div>
+
+      <div class="section-title" style="margin-top:0;">LIVE ✓</div>
+      <table class="skill-table">
+        <thead><tr><th>#</th><th>Skill</th><th>Trigger</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>—</td><td class="skill-code">session-handoff</td><td>„EOD" / „Session beenden"</td><td><span class="tag tag-green">✅ live</span></td></tr>
+          <tr><td>—</td><td class="skill-code">create-factsheet v2</td><td>„Factsheet für [Datum]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
+          <tr><td>—</td><td class="skill-code">create-security-order</td><td>„Security Order für [Datum]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
+          <tr><td>—</td><td class="skill-code">monatsprogramm-upload</td><td>„Monatsprogramm [Monat]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
+          <tr><td>—</td><td class="skill-code">db-update</td><td>„DB Update [Monat]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">BATCH 1 — Sofort baubar</div>
+      <table class="skill-table">
+        <thead><tr><th>#</th><th>Skill</th><th>Use Case</th><th>Aufwand</th></tr></thead>
+        <tbody>
+          <tr><td>S1</td><td class="skill-code">bar-shiftplan</td><td>10er-Roster, PRIO1/2-Logic</td><td>~30min</td></tr>
+          <tr><td>S2</td><td class="skill-code">runner-shiftplan</td><td>Runner-Plan, Minimums</td><td>~20min</td></tr>
+          <tr><td>S3</td><td class="skill-code">hub-version-bump</td><td>7 Ref-Updates + Grep-Check</td><td>~10min</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">BATCH 3 — Neu (10.06.)</div>
+      <table class="skill-table">
+        <thead><tr><th>#</th><th>Skill</th><th>Use Case</th><th>Aufwand</th></tr></thead>
+        <tbody>
+          <tr><td>S16</td><td class="skill-code">db-update-check</td><td>Session-Start: Events seit letztem Update? → Upload-Anweisung</td><td>~30min</td></tr>
+          <tr><td>S17</td><td class="skill-code">chatgpt-import</td><td>Business-Kontext aus ChatGPT-Chats extrahieren</td><td>~45min</td></tr>
+          <tr><td>S18</td><td class="skill-code">break-even-analyse</td><td>Break-Even + Marge/Event</td><td>~1h</td></tr>
+          <tr><td>S19</td><td class="skill-code">???</td><td>Offen — Schadi erinnert sich</td><td>TBD</td></tr>
+          <tr><td>S20</td><td class="skill-code">dienstplan-abgleich</td><td>Abgleich Dienstpläne — Spec kommt</td><td>TBD</td></tr>
+          <tr><td>S21</td><td class="skill-code">bmt-grafik-upload</td><td>Event-Grafiken via neue BMT API hochladen</td><td>TBD</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── VIEW: DONE ── -->
+    <div class="view" id="view-done">
+      <div class="section-title">✅ DONE — <span>Archiv</span></div>
+
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">TURBO_Kostenuebersicht_v2.xlsx</div><div class="done-sub">4-Tab Kostenstruktur · NZ · VK/Std · Personal</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">Hub v15.9.204 LIVE</div><div class="done-sub">Factsheet Visual Polish + Umsatz-Ticker Snapshot</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">L2.8 Hub Mobile-View Fixes</div><div class="done-sub">v15.9.196 responsive</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">L1.1 Bitly Custom Domain (grelle.club)</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">L1.2 API Credits Auto-Reload</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">L1.6 IG-Bio + FB-Page</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">L1.7 Sales Intelligence DB Setup</div><div class="done-sub">83 EIGEN Events · v0.11</div></div>
+      </div>
+      <div class="done-item">
+        <div class="done-check">✓</div>
+        <div><div class="done-text">Drive Migration v2</div><div class="done-sub">124 Ops · 0 Failed · 100% File-ID Preservation</div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+function setView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.metric').forEach(m => m.classList.remove('active'));
+
+  const el = document.getElementById('view-' + id);
+  if (el) el.classList.add('active');
+
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+
+  const m = document.getElementById('m-' + id);
+  if (m) m.classList.add('active');
+}
+
+// Set today marker
+const days = document.querySelectorAll('.day-header');
+// already hardcoded DI 10.06 as today
+
+// Init
+setView('blocker');
+</script>
+</body>
+</html>
