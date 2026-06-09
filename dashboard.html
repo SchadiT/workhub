@@ -3,1115 +3,1019 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TURBO Projects — ToDo Dashboard v4.14</title>
+<title>Schadi's Claude Cheatsheet · 174 Shortcuts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* ═══ DESIGN TOKENS ═══ */
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --surface3: #222222;
-    --border: #2a2a2a;
-    --text: #f0f0f0;
-    --muted: #666;
-    --dim: #444;
-    --red: #e53935;
-    --red-dim: #1a0a0a;
-    --amber: #f59e0b;
-    --amber-dim: #1a1200;
-    --green: #22c55e;
-    --green-dim: #0a1a0a;
-    --blue: #3b82f6;
-    --blue-dim: #0a0f1a;
-    --purple: #a855f7;
-    --purple-dim: #130a1a;
-    --cyan: #06b6d4;
-    --accent: #e53935;
+    --bg: #0a0a0f;
+    --bg-elev: #14141c;
+    --bg-card: #1a1a26;
+    --border: #2a2a3a;
+    --border-soft: #1f1f2e;
+    --text: #e8e8f0;
+    --text-dim: #9090a8;
+    --text-faint: #5a5a70;
+    --accent: #ff5722;
+    --accent-soft: rgba(255, 87, 34, 0.12);
+    --cat-ops: #ff5722;
+    --cat-mail: #60a5fa;
+    --cat-think: #c084fc;
+    --cat-write: #f59e0b;
+    --cat-daily: #4ade80;
+    --cat-hub: #ec4899;
+    --cat-data: #06b6d4;
+    --cat-meta: #a3a3a3;
+    --cat-drive: #22d3ee;
+    --cat-skills: #a78bfa;
+    --cat-cowork: #34d399;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [data-theme="light"] {
+    --bg: #fffdf7;
+    --bg-elev: #f8f4ea;
+    --bg-card: #ffffff;
+    --border: #d4c8b0;
+    --border-soft: #e8dfc8;
+    --text: #1a1410;
+    --text-dim: #5a4f40;
+    --text-faint: #8a7e6a;
+    --accent: #c2410c;
+    --accent-soft: rgba(194, 65, 12, 0.08);
+  }
 
-  body {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    font-size: 12px;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 14px;
     line-height: 1.5;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+    letter-spacing: -0.01em;
   }
 
-  /* ── HEADER ── */
-  .header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  body {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 87, 34, 0.06), transparent 70%),
+      var(--bg);
+    background-attachment: fixed;
   }
-  .header-left { display: flex; align-items: center; gap: 16px; }
-  .logo {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
+
+  [data-theme="light"] body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(194, 65, 12, 0.05), transparent 70%),
+      var(--bg);
+  }
+
+  /* ═══ LAYOUT ═══ */
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ═══ TOP BAR ═══ */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
     color: var(--accent);
-    text-transform: uppercase;
-  }
-  .version-badge {
-    background: var(--surface3);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 2px 8px;
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-  .header-date {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-
-  /* ── METRICS BAR ── */
-  .metrics-bar {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    border-bottom: 1px solid var(--border);
-  }
-  .metric {
-    padding: 14px 16px;
-    border-right: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .metric:last-child { border-right: none; }
-  .metric:hover { background: var(--surface2); }
-  .metric.active { background: var(--surface2); border-bottom: 2px solid var(--accent); }
-  .metric-val {
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .metric-val.red { color: var(--red); }
-  .metric-val.amber { color: var(--amber); }
-  .metric-val.green { color: var(--green); }
-  .metric-val.blue { color: var(--blue); }
-  .metric-val.purple { color: var(--purple); }
-  .metric-val.cyan { color: var(--cyan); }
-  .metric-label {
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  /* ── LAYOUT ── */
-  .layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: calc(100vh - 110px);
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 16px 0;
-  }
-  .sidebar-section {
-    margin-bottom: 8px;
-  }
-  .sidebar-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--dim);
-    text-transform: uppercase;
-    padding: 0 16px 6px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background 0.12s;
-    border-left: 2px solid transparent;
-  }
-  .nav-item:hover { background: var(--surface2); }
-  .nav-item.active {
-    background: var(--surface2);
-    border-left-color: var(--accent);
-    color: var(--text);
-  }
-  .nav-item-text { font-size: 11px; }
-  .nav-badge {
-    font-size: 9px;
-    padding: 1px 5px;
-    border-radius: 2px;
+    margin-bottom: 6px;
     font-weight: 700;
   }
-  .badge-red { background: var(--red); color: #fff; }
-  .badge-amber { background: var(--amber); color: #000; }
-  .badge-green { background: var(--green); color: #000; }
-  .badge-blue { background: var(--blue); color: #fff; }
-  .badge-purple { background: var(--purple); color: #fff; }
-  .badge-muted { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
 
-  .sidebar-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 8px 16px;
+  h1 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
   }
 
-  /* ── MAIN CONTENT ── */
-  .content {
-    padding: 20px 24px;
-    overflow-y: auto;
+  h1 .accent {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 700;
   }
 
-  .view { display: none; }
-  .view.active { display: block; }
-
-  .section-title {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
+  .controls {
     display: flex;
-    align-items: center;
     gap: 8px;
-  }
-  .section-title span { color: var(--text); font-size: 12px; }
-
-  /* ── CARDS ── */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 14px 16px;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .card:hover { border-color: var(--dim); background: var(--surface2); }
-
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .card-id {
-    font-size: 9px;
-    color: var(--dim);
-    letter-spacing: 1px;
-    margin-bottom: 2px;
-  }
-  .card-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .card-title.done {
-    text-decoration: line-through;
-    color: var(--muted);
-  }
-  .card-meta {
-    display: flex;
-    gap: 6px;
-    margin-top: 8px;
     flex-wrap: wrap;
-    align-items: center;
   }
-  .tag {
-    font-size: 9px;
-    padding: 2px 6px;
-    letter-spacing: 0.5px;
+
+  .btn {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
     font-weight: 600;
   }
-  .tag-red { background: var(--red-dim); color: var(--red); border: 1px solid #3a1010; }
-  .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid #3a2800; }
-  .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid #0a2a0a; }
-  .tag-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid #0a1a3a; }
-  .tag-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid #1a0a2a; }
-  .tag-muted { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
-  .tag-cyan { background: #050f12; color: var(--cyan); border: 1px solid #0a2530; }
 
-  .card-owner {
-    font-size: 9px;
-    color: var(--dim);
-    margin-left: auto;
-  }
-  .card-effort {
-    font-size: 9px;
-    color: var(--muted);
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
   }
 
-  /* ── STATUS PILL ── */
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 4px;
-    flex-shrink: 0;
+  .btn.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
   }
-  .dot-red { background: var(--red); box-shadow: 0 0 4px var(--red); }
-  .dot-amber { background: var(--amber); }
-  .dot-green { background: var(--green); }
-  .dot-blue { background: var(--blue); }
-  .dot-muted { background: var(--dim); }
 
-  /* ── BLOCKER ALERT ── */
-  .blocker-alert {
-    background: var(--red-dim);
-    border: 1px solid #3a1010;
-    border-left: 3px solid var(--red);
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .blocker-alert-icon { color: var(--red); font-size: 14px; }
-  .blocker-alert-text { font-size: 11px; color: #ff6b6b; }
-  .blocker-alert-label { font-size: 9px; color: var(--red); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
-
-  /* ── WEEK PLAN ── */
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  .day-col {
-    background: var(--surface);
+  /* ═══ INTRO ═══ */
+  .intro {
+    background: var(--bg-elev);
     border: 1px solid var(--border);
-    min-height: 200px;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
   }
-  .day-header {
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--border);
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+  .intro strong { color: var(--text); }
+
+  .intro code {
+    background: var(--bg-card);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    border: 1px solid var(--border-soft);
   }
-  .day-header.today { color: var(--accent); border-bottom-color: var(--accent); }
-  .day-date { font-size: 10px; color: var(--dim); }
-  .day-task {
-    padding: 7px 10px;
-    border-bottom: 1px solid var(--border);
-    font-size: 10px;
-    cursor: pointer;
-    transition: background 0.1s;
+
+  /* ═══ FILTER BAR ═══ */
+  .filters {
     display: flex;
-    align-items: flex-start;
     gap: 6px;
-  }
-  .day-task:hover { background: var(--surface2); }
-  .day-task:last-child { border-bottom: none; }
-  .day-task-dot { margin-top: 4px; flex-shrink: 0; }
-  .day-task-text { line-height: 1.3; }
-  .day-empty {
-    padding: 16px 10px;
-    color: var(--dim);
-    font-size: 10px;
-    text-align: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 10px;
   }
 
-  /* ── PROGRESS BAR ── */
-  .progress-row {
-    margin-bottom: 12px;
-  }
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .progress-label span { color: var(--text); }
-  .progress-track {
-    height: 3px;
-    background: var(--surface3);
-  }
-  .progress-fill {
-    height: 100%;
-    transition: width 0.4s;
-  }
-
-  /* ── SKILL TABLE ── */
-  .skill-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-  .skill-table th {
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    color: var(--dim);
-    text-transform: uppercase;
-    padding: 6px 8px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .skill-table td {
-    padding: 8px 8px;
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 5px 11px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-family: inherit;
     font-size: 11px;
-    border-bottom: 1px solid var(--border);
+    transition: all 0.15s ease;
+    font-weight: 500;
+  }
+
+  .filter-btn:hover {
+    color: var(--text);
+  }
+
+  .filter-btn.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+
+  [data-theme="light"] .filter-btn.active {
+    color: #fff;
+  }
+
+  /* ═══ SEARCH ═══ */
+  .search {
+    width: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    margin-bottom: 20px;
+    transition: border 0.2s ease;
+  }
+
+  .search:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* ═══ CATEGORY GRID ═══ */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 20px;
+  }
+
+  @media print {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+  /* ═══ CATEGORY CARD ═══ */
+  .cat {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px 16px;
+    transition: all 0.2s ease;
+    break-inside: avoid;
+  }
+
+  .cat:hover {
+    border-color: var(--accent);
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--border);
+  }
+
+  .cat-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .cat-title {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    flex: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .cat-count {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--bg-card);
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+  }
+
+  /* ═══ SHORTCUT ROW ═══ */
+  .row {
+    display: flex;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 12px;
+    align-items: baseline;
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row:hover .cmd {
+    color: var(--accent);
+  }
+
+  .cmd {
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg-card);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border-soft);
+    white-space: nowrap;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+    letter-spacing: 0;
+  }
+
+  .row[data-business="1"] .cmd {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .desc {
+    color: var(--text-dim);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .biz-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 6px;
+    font-weight: 700;
     vertical-align: middle;
   }
-  .skill-table tr:hover td { background: var(--surface2); }
-  .skill-code {
-    font-family: 'SF Mono', monospace;
-    font-size: 10px;
-    color: var(--cyan);
+
+  [data-theme="light"] .biz-tag {
+    color: #fff;
   }
 
-  /* ── DONE SECTION ── */
-  .done-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .done-check { color: var(--green); font-size: 12px; margin-top: 1px; flex-shrink: 0; }
-  .done-text { font-size: 11px; color: var(--muted); text-decoration: line-through; }
-  .done-sub { font-size: 10px; color: var(--dim); margin-top: 2px; }
+  /* ═══ CATEGORY ACCENTS ═══ */
+  .cat[data-cat="ops"] .cat-icon { color: var(--cat-ops); }
+  .cat[data-cat="mail"] .cat-icon { color: var(--cat-mail); }
+  .cat[data-cat="think"] .cat-icon { color: var(--cat-think); }
+  .cat[data-cat="write"] .cat-icon { color: var(--cat-write); }
+  .cat[data-cat="daily"] .cat-icon { color: var(--cat-daily); }
+  .cat[data-cat="hub"] .cat-icon { color: var(--cat-hub); }
+  .cat[data-cat="data"] .cat-icon { color: var(--cat-data); }
+  .cat[data-cat="meta"] .cat-icon { color: var(--cat-meta); }
+  .cat[data-cat="drive"] .cat-icon { color: var(--cat-drive); }
+  .cat[data-cat="skills"] .cat-icon { color: var(--cat-skills); }
+  .cat[data-cat="cowork"] .cat-icon { color: var(--cat-cowork); }
 
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); }
-
-  /* ── ACTION BUTTON ── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    font-size: 10px;
-    font-family: inherit;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text);
-    transition: all 0.15s;
-  }
-  .btn:hover { background: var(--surface3); border-color: var(--dim); }
-  .btn-red { border-color: var(--red); color: var(--red); background: var(--red-dim); }
-  .btn-red:hover { background: #2a0a0a; }
-
-  .action-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
+  /* ═══ FOOTER ═══ */
+  footer code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
   }
 
-  /* ── TOOLTIP ── */
-  .tooltip-wrap { position: relative; }
-  .tooltip {
-    display: none;
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    background: var(--surface3);
-    border: 1px solid var(--border);
-    padding: 6px 10px;
-    font-size: 10px;
-    color: var(--text);
-    white-space: nowrap;
-    z-index: 10;
-    margin-bottom: 4px;
-  }
-  .tooltip-wrap:hover .tooltip { display: block; }
-
-  /* ── FINANZ LANE ── */
-  .finanz-flow {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-  .flow-step {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 10px 14px;
-    font-size: 10px;
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-size: 11px;
     text-align: center;
-    min-width: 110px;
   }
-  .flow-step.done-step { border-color: var(--green); color: var(--green); }
-  .flow-step.active-step { border-color: var(--amber); color: var(--amber); }
-  .flow-step.locked-step { color: var(--dim); }
-  .flow-arrow {
-    color: var(--dim);
-    font-size: 14px;
-    padding: 0 4px;
-  }
-  .flow-label { font-size: 9px; color: var(--dim); margin-top: 3px; }
 
-  @media (max-width: 768px) {
-    .metrics-bar { grid-template-columns: repeat(3, 1fr); }
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .week-grid { grid-template-columns: 1fr; }
-    .card-grid { grid-template-columns: 1fr; }
+  /* ═══ PRINT STYLES ═══ */
+  @media print {
+    @page {
+      size: A4;
+      margin: 1cm;
+    }
+
+    body {
+      background: white !important;
+      color: black !important;
+      font-size: 9pt !important;
+    }
+
+    .wrap {
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .controls, .filters, .search, footer {
+      display: none !important;
+    }
+
+    .topbar {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 18pt;
+    }
+
+    .intro {
+      display: none;
+    }
+
+    .cat {
+      background: white !important;
+      border: 1px solid #888 !important;
+      padding: 8px 10px !important;
+      margin-bottom: 6px !important;
+    }
+
+    .cat-title {
+      font-size: 11pt !important;
+    }
+
+    .row {
+      padding: 2px 0 !important;
+      font-size: 8pt !important;
+    }
+
+    .cmd {
+      background: #f0f0f0 !important;
+      color: black !important;
+      border: 1px solid #aaa !important;
+      font-size: 7pt !important;
+    }
+
+    .desc {
+      color: #333 !important;
+    }
+
+    .biz-tag {
+      background: #c2410c !important;
+      color: white !important;
+    }
+
+    .row[data-business="1"] .cmd {
+      background: #fff3e0 !important;
+      color: #c2410c !important;
+      border-color: #c2410c !important;
+    }
+  }
+
+  /* ═══ STATUS BADGES ═══ */
+  .status {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-left: 6px;
+    font-weight: 700;
+    vertical-align: middle;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .status-ready {
+    background: rgba(74, 222, 128, 0.18);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+
+  .status-mixed {
+    background: rgba(96, 165, 250, 0.18);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+  }
+
+  .status-pending {
+    background: rgba(251, 191, 36, 0.18);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+
+  [data-theme="light"] .status-ready {
+    background: #d1fae5;
+    color: #047857;
+    border-color: #6ee7b7;
+  }
+
+  [data-theme="light"] .status-mixed {
+    background: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+  }
+
+  [data-theme="light"] .status-pending {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fcd34d;
+  }
+
+  @media print {
+    .status-ready { background: #d1fae5 !important; color: #047857 !important; border: 1px solid #047857 !important; }
+    .status-mixed { background: #dbeafe !important; color: #1e40af !important; border: 1px solid #1e40af !important; }
+    .status-pending { background: #fef3c7 !important; color: #92400e !important; border: 1px solid #92400e !important; }
+  }
+
+  /* ═══ HIDDEN STATE ═══ */
+  .cat.hidden { display: none; }
+  .row.hidden { display: none; }
+
+  /* ═══ EMPTY STATE ═══ */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-faint);
   }
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <div class="logo">TURBO</div>
-    <div class="version-badge">ToDo v4.14</div>
+<div class="wrap">
+
+  <!-- ═══ TOP BAR ═══ -->
+  <div class="topbar">
+    <div class="brand">
+      <span class="eyebrow">Schadi's Claude Cheatsheet · v1.1 · 28.05.2026</span>
+      <h1>174 Shortcuts <span class="accent">für deinen Workflow.</span></h1>
+    </div>
+    <div class="controls">
+      <button class="btn active" id="themeDark">Dark</button>
+      <button class="btn" id="themeLight">Light</button>
+      <button class="btn" onclick="window.print()">Drucken</button>
+    </div>
   </div>
-  <div class="header-date">10.06.2026 · Hub v15.9.204 LIVE</div>
+
+  <!-- ═══ INTRO ═══ -->
+  <div class="intro">
+    <strong>Wie funktioniert das?</strong> Tippe einfach den Shortcut + dein Input in einen Claude-Chat. Beispiel:
+    <code>/ELI5 Wareneingangsbuchhaltung</code> → Claude erklärt es dir wie einem 5-Jährigen.
+    <code>/MAIL_SANDRA Lärmbeschwerde</code> → formelle Mail-Draft an Vermieterin, ready zum Senden.<br><br>
+    <strong style="color:var(--accent);">🔥 Orange markierte</strong> Shortcuts sind <strong>auf Grelle Forelle / Turbo Projects</strong> zugeschnitten — alles andere ist allgemein nützlich.<br><br>
+    <strong>Tipp:</strong> Such oder filtere unten. Druck-Button rechts oben → A4-optimiert (verstecks Filter & Controls automatisch).
+  </div>
+
+  <!-- ═══ SEARCH ═══ -->
+  <input class="search" id="searchInput" placeholder="🔍 Such nach Shortcut, Kategorie oder Beschreibung..." />
+
+  <!-- ═══ FILTERS ═══ -->
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">Alle</button>
+    <button class="filter-btn" data-filter="business">🔥 Nur Grelle Forelle</button>
+    <button class="filter-btn" data-filter="ops">🎤 Ops</button>
+    <button class="filter-btn" data-filter="mail">📧 Email</button>
+    <button class="filter-btn" data-filter="db">🗄️ Datenbank</button>
+    <button class="filter-btn" data-filter="finance">💰 Financial</button>
+    <button class="filter-btn" data-filter="strategy">🎯 Strategy</button>
+    <button class="filter-btn" data-filter="think">🧠 Denken</button>
+    <button class="filter-btn" data-filter="write">✍️ Schreiben</button>
+    <button class="filter-btn" data-filter="daily">📊 Daily</button>
+    <button class="filter-btn" data-filter="hub">🎨 Hub & Build</button>
+    <button class="filter-btn" data-filter="data">🔍 Recherche</button>
+    <button class="filter-btn" data-filter="meta">⚙️ Meta</button>
+    <button class="filter-btn" data-filter="drive">📁 Drive</button>
+    <button class="filter-btn" data-filter="skills">⚡ Skills</button>
+    <button class="filter-btn" data-filter="cowork">🖥 Cowork</button>
+  </div>
+
+  <!-- ═══ GRID ═══ -->
+  <div class="grid" id="grid">
+
+    <!-- ═══ OPS — GRELLE FORELLE ═══ -->
+    <div class="cat" data-cat="ops">
+      <div class="cat-header">
+        <span class="cat-icon">🎤</span>
+        <span class="cat-title">Grelle Forelle Ops</span>
+        <span class="cat-count">12</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/FACTSHEET [Datum]</span><span class="desc">Triggert Factsheet-Skill (MAIN_00/MAIN_30/CONCERT)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/SECURITY [Datum]</span><span class="desc">Generiert Security-Order für Wochenende</span></div>
+      <div class="row" data-business="1"><span class="cmd">/HANDOFF</span><span class="desc">Session-Handoff mit Token-Count + Stand</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BRIEFING</span><span class="desc">Daily Briefing (Events + Tasks + Reminders)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/HEUTE</span><span class="desc">Was steht heute an? (Operational, NICHT Hub-Dev)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/WOCHE</span><span class="desc">Wochen-Überblick + nächste Events</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BLOCKER</span><span class="desc">Was hält mich gerade auf? (Meta D1-D4, E2/E3, etc.)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/META_STATUS</span><span class="desc">Status Meta-Setup: Hypehunters, Pixel, CAPI</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BMT_NEXT</span><span class="desc">Nächste 7 Events aus BookMeTender</span></div>
+      <div class="row" data-business="1"><span class="cmd">/RUNNER_MIN [Event-Typ]</span><span class="desc">Min Runner: Konzert=4, FREMD=5, EIGEN=6</span></div>
+      <div class="row" data-business="1"><span class="cmd">/STAFFING [Datum]</span><span class="desc">Bar/Runner/CVD/Technik für ein Event</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BRAIN</span><span class="desc">BRAIN-System öffnen (NOTE/REMIND/INFO/TODO)</span></div>
+    </div>
+
+    <!-- ═══ EMAIL ═══ -->
+    <div class="cat" data-cat="mail">
+      <div class="cat-header">
+        <span class="cat-icon">📧</span>
+        <span class="cat-title">Email & Messages</span>
+        <span class="cat-count">14</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/MAIL_SANDRA [Thema]</span><span class="desc">Formelle Mail an Vermieterin (Hochachtungsvoll)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/MAIL_PROMOTER [Thema]</span><span class="desc">Mail an Promoter (Du-Form, Ganz liebe Grüße)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/MAIL_MATTHAEUS [Thema]</span><span class="desc">Mail an CFO (sachlich, knapp)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/MAIL_TEAM [Thema]</span><span class="desc">Interne Team-Nachricht (direkt, Du-Form)</span></div>
+      <div class="row"><span class="cmd">/EMAIL_FROM [Notes]</span><span class="desc">Stichpunkte → polierte Mail</span></div>
+      <div class="row"><span class="cmd">/REPLY_TO [Email]</span><span class="desc">Antwort auf empfangene Mail draften</span></div>
+      <div class="row"><span class="cmd">/SUBJECT_FOR [Mail]</span><span class="desc">Starke Betreffzeile generieren</span></div>
+      <div class="row"><span class="cmd">/FOLLOWUP [Thema]</span><span class="desc">Höfliche Nachfass-Mail</span></div>
+      <div class="row"><span class="cmd">/DECLINE [Situation]</span><span class="desc">Höfliche Absage ohne Brücken zu verbrennen</span></div>
+      <div class="row"><span class="cmd">/APOLOGY_FOR [Situation]</span><span class="desc">Echte Entschuldigung ohne Kriechen</span></div>
+      <div class="row"><span class="cmd">/THANKYOU [Grund]</span><span class="desc">Warme Dankes-Nachricht, nicht robotisch</span></div>
+      <div class="row"><span class="cmd">/CONGRATS [Anlass]</span><span class="desc">Persönliche Glückwünsche</span></div>
+      <div class="row"><span class="cmd">/CONDOLENCE [Situation]</span><span class="desc">Beileid in passender Form</span></div>
+      <div class="row"><span class="cmd">/COLD_OUTREACH [Ziel]</span><span class="desc">Kalt-Akquise-Mail die nicht spammy klingt</span></div>
+    </div>
+
+    <!-- ═══ THINK & DECIDE ═══ -->
+    <div class="cat" data-cat="think">
+      <div class="cat-header">
+        <span class="cat-icon">🧠</span>
+        <span class="cat-title">Denken & Entscheiden</span>
+        <span class="cat-count">12</span>
+      </div>
+      <div class="row"><span class="cmd">/ELI5 [Topic]</span><span class="desc">Erklärung wie für 5-Jährigen, ohne Jargon</span></div>
+      <div class="row"><span class="cmd">/PROS_CONS [Topic]</span><span class="desc">Vor/Nachteile als ausgewogene Liste</span></div>
+      <div class="row"><span class="cmd">/COMPARE [A] vs [B]</span><span class="desc">Side-by-side Vergleich zwei Optionen</span></div>
+      <div class="row"><span class="cmd">/SWOT [Topic]</span><span class="desc">Strengths/Weaknesses/Opportunities/Threats</span></div>
+      <div class="row"><span class="cmd">/RISKS_OF [Plan]</span><span class="desc">Was könnte schiefgehen? Gut-Check</span></div>
+      <div class="row"><span class="cmd">/DEVIL [Position]</span><span class="desc">Devil's Advocate — Schwachstellen aufzeigen</span></div>
+      <div class="row"><span class="cmd">/STEP_BY_STEP [Task]</span><span class="desc">Komplexe Task in nummerierte Schritte</span></div>
+      <div class="row"><span class="cmd">/CHECKLIST [Task]</span><span class="desc">Abhakbare Liste für wiederkehrende Tasks</span></div>
+      <div class="row"><span class="cmd">/DECISION_MATRIX [Optionen]</span><span class="desc">Scoring-Grid mit Kriterien-Gewichtung</span></div>
+      <div class="row"><span class="cmd">/RED_FLAGS [Situation]</span><span class="desc">Warnsignale finden (Verträge, Deals, Hires)</span></div>
+      <div class="row"><span class="cmd">/QUESTIONS_BEFORE [Entscheidung]</span><span class="desc">Was müsstest du wissen bevor du entscheidest?</span></div>
+      <div class="row"><span class="cmd">/FACT_CHECK [Claim]</span><span class="desc">Behauptung prüfen — was ist supportet, was nicht?</span></div>
+    </div>
+
+    <!-- ═══ WRITING ═══ -->
+    <div class="cat" data-cat="write">
+      <div class="cat-header">
+        <span class="cat-icon">✍️</span>
+        <span class="cat-title">Schreiben & Umformulieren</span>
+        <span class="cat-count">11</span>
+      </div>
+      <div class="row"><span class="cmd">/SHORTER [Text]</span><span class="desc">Kürzer ohne Inhalt zu verlieren</span></div>
+      <div class="row"><span class="cmd">/LONGER [Text]</span><span class="desc">Mit mehr Detail + Beispielen ausbauen</span></div>
+      <div class="row"><span class="cmd">/CLEARER [Text]</span><span class="desc">Klarer + verständlicher umformulieren</span></div>
+      <div class="row"><span class="cmd">/FIX_GRAMMAR [Text]</span><span class="desc">Grammatik korrigieren, Stimme bleibt</span></div>
+      <div class="row"><span class="cmd">/PROOFREAD [Text]</span><span class="desc">Tippfehler + Grammatik + Stilbrüche</span></div>
+      <div class="row"><span class="cmd">/MORE_FORMAL [Text]</span><span class="desc">Förmlicher (Kunden, Boss, Behörden)</span></div>
+      <div class="row"><span class="cmd">/MORE_CASUAL [Text]</span><span class="desc">Lockerer (Posts, Friends, Chat)</span></div>
+      <div class="row"><span class="cmd">/MORE_DIRECT [Text]</span><span class="desc">Höflicher wenn was zu blunt rüberkommt</span></div>
+      <div class="row"><span class="cmd">/MORE_POLITE [Text]</span><span class="desc">Höflicher ohne unterwürfig zu wirken</span></div>
+      <div class="row"><span class="cmd">/MORE_CONFIDENT [Text]</span><span class="desc">Hedging entfernen ("vielleicht", "evtl.")</span></div>
+      <div class="row"><span class="cmd">/CHANGE_TONE [Tone] [Text]</span><span class="desc">Ton ändern (witty/empathisch/urgent/warm)</span></div>
+    </div>
+
+    <!-- ═══ HUB & BUILD ═══ -->
+    <div class="cat" data-cat="hub">
+      <div class="cat-header">
+        <span class="cat-icon">🎨</span>
+        <span class="cat-title">Hub & Build</span>
+        <span class="cat-count">10</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/MOCKUP_FIRST [Feature]</span><span class="desc">UI-Mockup bevor implementiert wird</span></div>
+      <div class="row" data-business="1"><span class="cmd">/PLAN_FIRST [Task]</span><span class="desc">Plan zeigen, auf Go warten, dann bauen</span></div>
+      <div class="row" data-business="1"><span class="cmd">/VERSION_CHECK</span><span class="desc">Alle 7 Hub-Refs auf neue Version prüfen</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BUMP [next-version]</span><span class="desc">Hub-Version bumpen (sequenziell, no letters)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/HUB_REVIEW</span><span class="desc">Aktuelle Hub-Version review + Issues</span></div>
+      <div class="row"><span class="cmd">/ARTIFACT_HTML [Was]</span><span class="desc">HTML-Artifact bauen (single-file, ready)</span></div>
+      <div class="row"><span class="cmd">/ARTIFACT_REACT [Was]</span><span class="desc">React-Artifact mit State + Tailwind</span></div>
+      <div class="row"><span class="cmd">/SKILL_FOR [Workflow]</span><span class="desc">Sollte das ein Skill werden? Ehrliche Analyse</span></div>
+      <div class="row"><span class="cmd">/MCP_FOR [Task]</span><span class="desc">Welcher MCP/Connector passt zu Aufgabe?</span></div>
+      <div class="row"><span class="cmd">/COWORK_TASK [Beschreibung]</span><span class="desc">Cowork-Task-Plan (Folder, Plan, Safety)</span></div>
+    </div>
+
+    <!-- ═══ DAILY OPS ═══ -->
+    <div class="cat" data-cat="daily">
+      <div class="cat-header">
+        <span class="cat-icon">📊</span>
+        <span class="cat-title">Daily Operations</span>
+        <span class="cat-count">8</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/EVENT_PREP [Datum]</span><span class="desc">Full Event-Prep: Factsheet + Security + Staffing</span></div>
+      <div class="row" data-business="1"><span class="cmd">/PROMOTER_FOLLOWUP</span><span class="desc">Welche Promoter brauchen Follow-up?</span></div>
+      <div class="row"><span class="cmd">/MEETING_AGENDA [Topic]</span><span class="desc">Strukturierte Agenda mit Zeitblöcken</span></div>
+      <div class="row"><span class="cmd">/ACTION_ITEMS [Notes]</span><span class="desc">Meeting-Notes → klare Next-Steps</span></div>
+      <div class="row"><span class="cmd">/EXEC_SUMMARY [Text]</span><span class="desc">Ein-Absatz-Version für Entscheider</span></div>
+      <div class="row"><span class="cmd">/QUICK_DECISION [Topic]</span><span class="desc">Schnelle Entscheidungshilfe (3 Optionen)</span></div>
+      <div class="row"><span class="cmd">/PRIORITY [Liste]</span><span class="desc">Tasks nach Impact × Effort sortieren</span></div>
+      <div class="row"><span class="cmd">/DELEGATE [Task]</span><span class="desc">Wer im Team sollte das machen? + Briefing</span></div>
+    </div>
+
+    <!-- ═══ DATA & RESEARCH ═══ -->
+    <div class="cat" data-cat="data">
+      <div class="cat-header">
+        <span class="cat-icon">🔍</span>
+        <span class="cat-title">Recherche & Textanalyse</span>
+        <span class="cat-count">8</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/BITLY_STATS [Link]</span><span class="desc">Bitly-Klicks + Performance</span></div>
+      <div class="row" data-business="1"><span class="cmd">/CAL_CHECK [Zeitraum]</span><span class="desc">Kalender-Konflikte finden (alle Calendars)</span></div>
+      <div class="row"><span class="cmd">/TLDR [Long Text]</span><span class="desc">Lange Texte/PDFs auf Kern reduzieren</span></div>
+      <div class="row"><span class="cmd">/SUMMARIZE [Doc]</span><span class="desc">Standard-Zusammenfassung mit Hauptpunkten</span></div>
+      <div class="row"><span class="cmd">/KEY_POINTS [Text]</span><span class="desc">Nur die wichtigsten Takeaways</span></div>
+      <div class="row"><span class="cmd">/EXPAND [Topic]</span><span class="desc">Mehr Tiefe wenn Antwort zu kurz war</span></div>
+      <div class="row"><span class="cmd">/EXAMPLE_OF [Concept]</span><span class="desc">Konkretes Beispiel statt Theorie</span></div>
+      <div class="row"><span class="cmd">/ANALOGY_FOR [Concept]</span><span class="desc">Mit was Bekanntem vergleichen ("wie X")</span></div>
+    </div>
+
+    <!-- ═══ DATENBANK ═══ -->
+    <div class="cat" data-cat="db">
+      <div class="cat-header">
+        <span class="cat-icon">🗄️</span>
+        <span class="cat-title">Datenbank</span>
+        <span class="cat-count">12</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/DB_QUERY [Frage]</span><span class="desc">Freitext-Query auf MAIN DB (460+ Events)<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_EVENT [Datum]</span><span class="desc">Single Event Deep-Dive: PAX, Promoter, Umsatz, Vergleich Avg<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_PROMOTER [Name]</span><span class="desc">Promoter-Performance: Total Events, Avg PAX, Avg Bar/PAX, Trend<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_PAX_TRENDS [Eventtyp]</span><span class="desc">PAX-Trends EIGEN vs FREMD, monatlich, Saisonal<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_TOP_EVENTS [Filter]</span><span class="desc">Top-10 Events nach PAX/Bar-Revenue, filterbar nach Genre/Promoter<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_COMPARE [A] vs [B]</span><span class="desc">Side-by-Side Events (z.B. "Halloween 2024 vs 2025")<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_GAPS</span><span class="desc">Daten-Lücken finden (EIGEN VVK/FOH bei 18% complete)<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DB_DUPLIKATE</span><span class="desc">Duplikat-Check (Backlog-Item!), EIGEN-5-Wort-Lock<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/ARTIKEL_STATS [Zeitraum]</span><span class="desc">Top/Flop-Artikel, Mengen, Verbrauch pro Event<span class="status status-pending">Pending</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/ZAHLUNGSART [Zeitraum]</span><span class="desc">Payment-Mix: Bar / Karte / VVK-Anbieter — % Split + Trend<span class="status status-pending">Pending</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DRIVE_FIND [Suche]</span><span class="desc">Google Drive durchsuchen (alle TURBO Files)<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/SHEET_STATUS</span><span class="desc">Hub-DB-Health: Native Sheet, Publish-URL, Stale-Detection<span class="status status-ready">Ready</span></span></div>
+    </div>
+
+    <!-- ═══ FINANCIAL ═══ -->
+    <div class="cat" data-cat="finance">
+      <div class="cat-header">
+        <span class="cat-icon">💰</span>
+        <span class="cat-title">Financial Analysis</span>
+        <span class="cat-count">14</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/BAR_REVENUE [Zeitraum]</span><span class="desc">Bar-Umsatz + Marge (mit Wareneingang-Cost), pro Event, Trend<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/BAR_AVG_PAX [Filter]</span><span class="desc">Avg Bar-Spend pro Gast (nach Event-Typ/Promoter/Genre)<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/BAR_TOP_EVENTS [Zeitraum]</span><span class="desc">Top-10 Events nach Bar-Revenue<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/VVK_REVENUE [Zeitraum]</span><span class="desc">VVK-Umsatz wo Daten vorhanden<span class="status status-mixed">Mixed</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/VVK_QUANTITY [Zeitraum]</span><span class="desc">VVK-Tickets verkauft, Conversion-Rate VVK→PAX<span class="status status-mixed">Mixed</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/VVK_CURVE [Event]</span><span class="desc">Verkaufsverlauf vor Event-Datum (Pre-Sale-Curve)<span class="status status-mixed">Mixed</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/VVK_VS_FOH [Event/Zeitraum]</span><span class="desc">VVK-Anteil vs Walk-Ins, Verhältnis<span class="status status-mixed">Mixed</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/LOSUNG [Monat]</span><span class="desc">Losungs-Übersicht + Vergleich Vormonat/Vorjahr, Anomalien<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/CC_STATEMENT [Monat]</span><span class="desc">CC-Statement strukturieren (Buch 1), Top-5, Outliers<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/KOSTENSTELLE [Split]</span><span class="desc">Turbo 30% / Gastro 50% / Sputnik 20% Drift-Check<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/MARGE [Event]</span><span class="desc">Event-Margin: Door + Bar - (Acts + Tech + Staff + Marketing)<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/REVENUE_MIX [Zeitraum]</span><span class="desc">Bar % / VVK % / FOH % / Andere — Splits<span class="status status-mixed">Mixed</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/WARENEINGANG [Frage]</span><span class="desc">Top-Lieferanten, Preisentwicklung, Verbrauch pro Event-Typ<span class="status status-ready">Ready</span></span></div>
+      <div class="row" data-business="1"><span class="cmd">/DASHBOARD</span><span class="desc">Financial Snapshot (KPI-Übersicht, CashFlow, Outstanding)<span class="status status-ready">Ready</span></span></div>
+    </div>
+
+    <!-- ═══ STRATEGY ═══ -->
+    <div class="cat" data-cat="strategy">
+      <div class="cat-header">
+        <span class="cat-icon">🎯</span>
+        <span class="cat-title">Strategy</span>
+        <span class="cat-count">10</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">/MARKETING_PHASE</span><span class="desc">Aktuelle P1-P4 Phase + nächster konkreter Step</span></div>
+      <div class="row" data-business="1"><span class="cmd">/PROMO_PLAN [Event]</span><span class="desc">Channel-Plan + Asset-Brief + Timing für ein Event</span></div>
+      <div class="row" data-business="1"><span class="cmd">/BOOKING_REVIEW [Künstler]</span><span class="desc">Pricing + Audience-Fit + Historical Performance</span></div>
+      <div class="row" data-business="1"><span class="cmd">/COMPETITOR [Venue]</span><span class="desc">Wien-Wettbewerb (Pratersauna, Flex, etc.) Vergleich</span></div>
+      <div class="row" data-business="1"><span class="cmd">/AUDIENCE_FIT [Event]</span><span class="desc">Zielgruppe + welche Channels + welche Promoter</span></div>
+      <div class="row" data-business="1"><span class="cmd">/STRATEGY_DECISION [Topic]</span><span class="desc">Framework-Based Entscheidung (Pros/Cons/Risks/Recommend)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/30_60_90 [Topic]</span><span class="desc">30/60/90-Tage-Roadmap für ein Vorhaben</span></div>
+      <div class="row" data-business="1"><span class="cmd">/CHANNEL_MIX</span><span class="desc">Marketing-Channel-Mix Review (Meta, Newsletter, Bitly, IG)</span></div>
+      <div class="row" data-business="1"><span class="cmd">/COWORK_READY</span><span class="desc">Blocker-Check für Cowork-Aktivierung</span></div>
+      <div class="row" data-business="1"><span class="cmd">/Q_REVIEW</span><span class="desc">Quarterly Business Review Template</span></div>
+    </div>
+
+    <!-- ═══ META & WORKFLOW ═══ -->
+    <div class="cat" data-cat="meta">
+      <div class="cat-header">
+        <span class="cat-icon">⚙️</span>
+        <span class="cat-title">Meta & Workflow</span>
+        <span class="cat-count">10</span>
+      </div>
+      <div class="row"><span class="cmd">/CONTEXT [Topic]</span><span class="desc">Hintergrund warum was wichtig ist</span></div>
+      <div class="row"><span class="cmd">/HISTORY_OF [Topic]</span><span class="desc">Kurze Origin-Story / Entwicklung</span></div>
+      <div class="row"><span class="cmd">/TIMELINE [Topic]</span><span class="desc">Events chronologisch auflisten</span></div>
+      <div class="row"><span class="cmd">/GLOSSARY [Topic]</span><span class="desc">Mini-Wörterbuch der Fachbegriffe</span></div>
+      <div class="row"><span class="cmd">/DEFINE [Word]</span><span class="desc">Quick-Definition mit Kontext</span></div>
+      <div class="row"><span class="cmd">/SIMPLIFY [Text]</span><span class="desc">Komplizierten Text in Plain Language</span></div>
+      <div class="row"><span class="cmd">/REWRITE [Text]</span><span class="desc">Frische Version desselben Inhalts</span></div>
+      <div class="row"><span class="cmd">/COMMON_MISTAKES [Task]</span><span class="desc">Was Leute oft falsch machen</span></div>
+      <div class="row"><span class="cmd">/CHEAT_SHEET [Topic]</span><span class="desc">Dichte 1-Pager-Übersicht</span></div>
+      <div class="row"><span class="cmd">/BEGINNER_GUIDE [Topic]</span><span class="desc">Einsteiger-freundliche Intro</span></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+
+    <!-- ═══ DEINE SKILLS ═══ -->
+    <div class="cat" data-cat="skills">
+      <div class="cat-header">
+        <span class="cat-icon">⚡</span>
+        <span class="cat-title">Deine Skills (Live)</span>
+        <span class="cat-count">18</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">Factsheet für [Datum]</span><span class="desc">Generiert LOCKED Factsheet (Bar/Runner/CVD/Technik/Security/Garderobe) — Techniker live via GCal</span></div>
+      <div class="row" data-business="1"><span class="cmd">Aufstellung für [Datum]</span><span class="desc">Alternativer Trigger für Factsheet-Skill</span></div>
+      <div class="row" data-business="1"><span class="cmd">Security Order für [Datum]</span><span class="desc">LOCKED Security-Bestellung für Wochenende — mehrere Events werden gebündelt</span></div>
+      <div class="row" data-business="1"><span class="cmd">Security bestellen</span><span class="desc">Alternativer Trigger für Security-Order-Skill</span></div>
+      <div class="row" data-business="1"><span class="cmd">Monatsprogramm / Programm für [Monat]</span><span class="desc">Event-Liste → LOCKED IG-Format → Drive archivieren → IG + FB Post + Story</span></div>
+      <div class="row" data-business="1"><span class="cmd">DB Update [Monat]</span><span class="desc">Post-Event Revenue eintragen: WBV + RTO + OE → MAIN DB. Skill legt Zeilen an + schreibt Revenue vollautomatisch via Web App. Zuerst WBV in Drive hochladen!</span></div>
+      <div class="row" data-business="1"><span class="cmd">Umsätze eintragen</span><span class="desc">Alternativer Trigger für DB-Update-Skill</span></div>
+      <div class="row" data-business="1"><span class="cmd">EOD / Session beenden / Handoff</span><span class="desc">Erstellt Session-Handoff-Dokument mit Token-Count, Accomplishments, Next Steps → /mnt/user-data/outputs/</span></div>
+      <div class="row"><span class="cmd">DB Update — welche Files?</span><span class="desc">EIGEN: WBV (01_WORK_HUB/wbv_berichte/) + RTO (rto/) + OE (oe_ticket_berichte/) · FREMD: nur WBV</span></div>
+      <div class="row"><span class="cmd">DB Update — File-Namen</span><span class="desc">WBV: Tagesumsatz_YYYYMMDD_YYYYMMDD.xlsx · RTO: turboprojects..._export-YYYY-MM-DD.xlsx · OE: *_Report_*.xlsx + *_customer_access_list_*.xlsx</span></div>
+      <div class="row"><span class="cmd">Factsheet Vorlage MAIN_00</span><span class="desc">Standard Club-Nacht (Main Floor offen ab 00:00)</span></div>
+      <div class="row"><span class="cmd">Factsheet Vorlage MAIN_30</span><span class="desc">Club-Nacht (Main Floor offen ab 00:30)</span></div>
+      <div class="row"><span class="cmd">Factsheet Vorlage CONCERT</span><span class="desc">Konzert-Aufstellung (andere Zeiten, andere Besetzung)</span></div>
+      <div class="row"><span class="cmd">Factsheet KASSA-Regel</span><span class="desc">EIGEN (TURBO/Selected/Halloween/NYE etc.) → Matthäus/Schadi/Isa · FREMD → "FREMD"</span></div>
+      <div class="row"><span class="cmd">Besetzung pro Nacht</span><span class="desc">1 CVD · 1 Techniker · 6 Bar · 5 Runner · 2 Klo · Security extern</span></div>
+      <div class="row"><span class="cmd">Runner Minimum</span><span class="desc">Konzert=4 · Club FREMD=5 · Club EIGEN=6</span></div>
+      <div class="row" data-business="1"><span class="cmd">MAIN DB Web App</span><span class="desc">Apps Script Web App für automatisches DB-Schreiben. URL: script.google.com/macros/s/AKfycbz...exec · Secret: turbo_db_2026 · Actions: batch_add_and_write / find_row / write_revenue</span></div>
+      <div class="row"><span class="cmd">NOTE [Text] / REMIND [Text] [Zeit]</span><span class="desc">NOTE = Email (sofort) + Alarm · REMIND = nur Alarm · Zeit optional</span></div>
+    </div>
+
+    <!-- ═══ COWORK ═══ -->
+    <div class="cat" data-cat="cowork">
+      <div class="cat-header">
+        <span class="cat-icon">🖥</span>
+        <span class="cat-title">Cowork — Was kannst du damit?</span>
+        <span class="cat-count">15</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">Drive: Umbenennen / Verschieben</span><span class="desc">Drive MCP kann das NICHT — Cowork (PowerShell via Drive Stream) macht rename/move/delete auf G:\</span></div>
+      <div class="row" data-business="1"><span class="cmd">Drive: Masse-Operationen</span><span class="desc">100+ Files auf einmal verschieben, umbenennen, sortieren — Cowork via Robocopy/PowerShell</span></div>
+      <div class="row" data-business="1"><span class="cmd">Promo Assets verwalten</span><span class="desc">Grafiken downloaden, umbenennen (ISO-Format), in Drive hochladen, in Ordner sortieren</span></div>
+      <div class="row" data-business="1"><span class="cmd">Bitly / UTM / QR generieren</span><span class="desc">grelle.club Short-Links mit UTM-Parametern + QR-Code — Cowork via Bitly MCP</span></div>
+      <div class="row" data-business="1"><span class="cmd">Captions schreiben + archivieren</span><span class="desc">IG/FB Caption im LOCKED Style → direkt als .txt in Drive archivieren</span></div>
+      <div class="row" data-business="1"><span class="cmd">SOPs erstellen + lokal speichern</span><span class="desc">Standard Operating Procedures → C:\Users\schad\WorkHub\ lokal speichern</span></div>
+      <div class="row" data-business="1"><span class="cmd">Performance-Pulls</span><span class="desc">Meta / Supermetrics Daten ziehen + als Report speichern — post Pixel/CAPI Setup</span></div>
+      <div class="row" data-business="1"><span class="cmd">Lokale File-Arbeit</span><span class="desc">xlsx/csv/pdf lokal bearbeiten, konvertieren, zusammenführen — ohne Cloud-Umweg</span></div>
+      <div class="row"><span class="cmd">Cowork starten</span><span class="desc">Claude Code Desktop App öffnen → Cowork-Plugin laden → Aufgabe beschreiben</span></div>
+      <div class="row"><span class="cmd">Cowork Workspace</span><span class="desc">C:\Users\schad\WorkHub\ — Scripts, Logs, Outputs landen hier</span></div>
+      <div class="row"><span class="cmd">Cowork vs Chat-Claude</span><span class="desc">Chat = Strategy/Ops/Docs · Cowork = File-Operationen, Drive-Moves, lokale Scripts</span></div>
+      <div class="row"><span class="cmd">Cowork NOT für</span><span class="desc">Hub-Feature-Dev (→ MAIN Chat). Alles was Project Files braucht (→ Chat).</span></div>
+      <div class="row"><span class="cmd">Cowork Gates</span><span class="desc">Erst aktiv wenn: Meta D1–D4 erledigt + Promo Manager Struktur definiert</span></div>
+      <div class="row"><span class="cmd">/COWORK_TASK [Beschreibung]</span><span class="desc">Cowork-Task-Plan vorbereiten: Folder, Schritte, Safety-Check, Rollback</span></div>
+      <div class="row"><span class="cmd">Cowork Plugin-Pfad</span><span class="desc">C:\Users\schad\WorkHub\ · Plugin-Files unter mnt/.local-plugins/ im Cowork-Container</span></div>
+    </div>
+
+
+    <div class="cat" data-cat="drive">
+      <div class="cat-header">
+        <span class="cat-icon">📁</span>
+        <span class="cat-title">Drive &amp; Ablage</span>
+        <span class="cat-count">20</span>
+      </div>
+      <div class="row" data-business="1"><span class="cmd">Hub-Build</span><span class="desc">01_WORK_HUB/ in Drive + GitHub Pages deploy (index.html + dashboard.html)</span></div>
+      <div class="row" data-business="1"><span class="cmd">Strategy / Master-Docs</span><span class="desc">Claude.ai Project Files (canonical) — Mirror nach 00_MAINSTRATEGY/_meta/ erlaubt</span></div>
+      <div class="row" data-business="1"><span class="cmd">MAIN DB</span><span class="desc">00_MAINSTRATEGY/X-78/05_DATABASE/_main_db/ — Google Sheet, nie xlsx</span></div>
+      <div class="row" data-business="1"><span class="cmd">DB-Pipeline (WBV/RTO/OE)</span><span class="desc">05_DATABASE/pipelines/wbv_berichte/ · rto/ · oe_ticket_berichte/</span></div>
+      <div class="row" data-business="1"><span class="cmd">Factsheet / Security / Shiftplan</span><span class="desc">02_GRELLE_FORELLE/{factsheets|security_orders|shiftplans}/</span></div>
+      <div class="row" data-business="1"><span class="cmd">Promo-Asset / Flyer / Story</span><span class="desc">02_GRELLE_FORELLE/promo/{PROMOTER}/{YYYY-MM-DD}_{event}/</span></div>
+      <div class="row" data-business="1"><span class="cmd">Vertrag / Rechnung</span><span class="desc">04_ADMINISTRATION/{vertraege|finanzen}/...</span></div>
+      <div class="row" data-business="1"><span class="cmd">Sputnik-Files</span><span class="desc">03_SPUTNIK/{shiftplans|dokumente}/</span></div>
+      <div class="row" data-business="1"><span class="cmd">Unklar / Unsortiert</span><span class="desc">07_ARCHIVE/_to_review/{YYYY-MM-DD}_{kontext}/ — kein Drama, später sortieren</span></div>
+      <div class="row"><span class="cmd">G:\ = Cloud-Fenster</span><span class="desc">KEIN lokaler Speicher — Live-Sync. Löschen in G:\ = löschen in Cloud + allen Devices!</span></div>
+      <div class="row"><span class="cmd">C:\Backups\TURBO_robocopy_2026-05-27\</span><span class="desc">Snapshot vor Migration v2. 701 Items eingefroren. Echte Festplatte, kein Sync.</span></div>
+      <div class="row"><span class="cmd">C:\Users\schad\WorkHub\</span><span class="desc">Cowork-Workspace. Migration-Scripts + Logs. Lokal, kein Sync.</span></div>
+      <div class="row"><span class="cmd">Drive Trash Recovery</span><span class="desc">Bis 26.06.2026 — danach weg. Robocopy-Backup als Fallback.</span></div>
+      <div class="row"><span class="cmd">Datum-Format</span><span class="desc">ISO überall: YYYY-MM-DD (Folder UND File). z.B. turbo_2026-06-26_story.jpg</span></div>
+      <div class="row"><span class="cmd">Sprach-Regel</span><span class="desc">Operativ=DE · Tech=EN · Top-Level=UPPERCASE_SNAKE · Eigennamen original · keine Umlaute</span></div>
+      <div class="row"><span class="cmd">Scope-Suffix §K</span><span class="desc">Aggregat-Files MÜSSEN Suffix: _club_only / _all_events / _concerts_only</span></div>
+      <div class="row"><span class="cmd">Drive MCP</span><span class="desc">Read / Copy / Create only — kein Rename/Move/Delete (PowerShell via Drive Stream)</span></div>
+      <div class="row"><span class="cmd">Max Tiefe</span><span class="desc">6 Levels max. Files zählen nicht als Level. Kein künstliches Schachteln.</span></div>
+      <div class="row"><span class="cmd">Project vs Drive (G3)</span><span class="desc">Project Files = canonical für Strategy. Drive = canonical für Operational/Data.</span></div>
+      <div class="row"><span class="cmd">9 Top-Level Folders</span><span class="desc">00_MAINSTRATEGY · 01_WORK_HUB · 02_GRELLE_FORELLE · 03_SPUTNIK · 04_ADMINISTRATION · 05_DATABASE · 06_PERSONAL · 07_ARCHIVE · X-78</span></div>
+    </div>
+
+  <footer>
+    Schadi's Cheatsheet v1.1 · 28.05.2026 · Turbo Projects GmbH · 121 Shortcuts<br>
+    Companion: <code>Schadi_Cheatsheet_v1.md</code> in Project Files
+  </footer>
+
 </div>
-
-<!-- METRICS BAR -->
-<div class="metrics-bar">
-  <div class="metric" onclick="setView('blocker')" id="m-blocker">
-    <div class="metric-val red">3</div>
-    <div class="metric-label">P1 Blocker</div>
-  </div>
-  <div class="metric" onclick="setView('week')" id="m-week">
-    <div class="metric-val amber">5</div>
-    <div class="metric-label">Diese Woche</div>
-  </div>
-  <div class="metric" onclick="setView('skills')" id="m-skills">
-    <div class="metric-val green">5</div>
-    <div class="metric-label">Skills Live</div>
-  </div>
-  <div class="metric" onclick="setView('skills')" id="m-skills2">
-    <div class="metric-val blue">11</div>
-    <div class="metric-label">Skills Geplant</div>
-  </div>
-  <div class="metric" onclick="setView('finanz')" id="m-finanz">
-    <div class="metric-val amber">2/6</div>
-    <div class="metric-label">Finanz Lane</div>
-  </div>
-  <div class="metric" onclick="setView('done')" id="m-done">
-    <div class="metric-val green">8</div>
-    <div class="metric-label">Done ✓</div>
-  </div>
-</div>
-
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Ansicht</div>
-      <div class="nav-item active" id="nav-blocker" onclick="setView('blocker')">
-        <span class="nav-item-text">🔴 P1 Blocker</span>
-        <span class="nav-badge badge-red">3</span>
-      </div>
-      <div class="nav-item" id="nav-week" onclick="setView('week')">
-        <span class="nav-item-text">📅 Diese Woche</span>
-        <span class="nav-badge badge-amber">5</span>
-      </div>
-      <div class="nav-item" id="nav-all" onclick="setView('all')">
-        <span class="nav-item-text">📋 Alle Lanes</span>
-        <span class="nav-badge badge-muted">24</span>
-      </div>
-    </div>
-
-    <div class="sidebar-divider"></div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-label">Lanes</div>
-      <div class="nav-item" id="nav-lane1" onclick="setView('lane1')">
-        <span class="nav-item-text">L1 Blocker</span>
-        <span class="nav-badge badge-red">3</span>
-      </div>
-      <div class="nav-item" id="nav-lane2" onclick="setView('lane2')">
-        <span class="nav-item-text">L2 Claude-baubar</span>
-        <span class="nav-badge badge-blue">4</span>
-      </div>
-      <div class="nav-item" id="nav-lane3" onclick="setView('lane3')">
-        <span class="nav-item-text">L3 Wartet</span>
-        <span class="nav-badge badge-muted">5</span>
-      </div>
-      <div class="nav-item" id="nav-finanz" onclick="setView('finanz')">
-        <span class="nav-item-text">F Finanz</span>
-        <span class="nav-badge badge-amber">6</span>
-      </div>
-      <div class="nav-item" id="nav-marketing" onclick="setView('marketing')">
-        <span class="nav-item-text">M Marketing</span>
-        <span class="nav-badge badge-purple">4</span>
-      </div>
-      <div class="nav-item" id="nav-skills" onclick="setView('skills')">
-        <span class="nav-item-text">S Skills</span>
-        <span class="nav-badge badge-cyan" style="background:#050f12;color:#06b6d4;border:1px solid #0a2530;">16</span>
-      </div>
-    </div>
-
-    <div class="sidebar-divider"></div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-label">Archiv</div>
-      <div class="nav-item" id="nav-done" onclick="setView('done')">
-        <span class="nav-item-text">✅ Done</span>
-        <span class="nav-badge badge-green">8</span>
-      </div>
-    </div>
-
-    <div class="sidebar-divider"></div>
-    <div style="padding: 12px 16px;">
-      <div style="font-size:9px;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">SCHNELLSTER HEBEL</div>
-      <div style="font-size:10px;color:var(--amber);padding:4px 0;cursor:pointer;" onclick="setView('lane1')">→ L1.3 Meta (~30min)</div>
-      <div style="font-size:10px;color:var(--blue);padding:4px 0;cursor:pointer;" onclick="setView('finanz')">→ F6 Domain-Fakten</div>
-      <div style="font-size:10px;color:var(--blue);padding:4px 0;cursor:pointer;" onclick="setView('lane2')">→ L5.11 DB #NAME?</div>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- ── VIEW: BLOCKER ── -->
-    <div class="view active" id="view-blocker">
-      <div class="section-title">🔴 P1 BLOCKER — <span>Schadi freischaufeln</span></div>
-
-      <div class="blocker-alert">
-        <div class="blocker-alert-icon">⚠</div>
-        <div>
-          <div class="blocker-alert-label">Prioritäts-Regel</div>
-          <div class="blocker-alert-text">ZUERST Blocker abräumen → DANN Cowork + Promo. Alle Marketing/Social-Items warten auf L1.3.</div>
-        </div>
-      </div>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-id">L1.3 · SCHADI ACTION</div>
-              <div class="card-title">Meta D1–D4 Cleanup</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Hypehunters+Johannes+JohnWilliam aus Business Manager · Sputnik Payment fix · Pixel+CAPI installieren</div>
-          <div class="card-meta">
-            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
-            <span class="tag tag-amber">~30min</span>
-            <span class="card-owner">Schadi (Login)</span>
-          </div>
-          <div class="action-row">
-            <button class="btn btn-red">Jetzt erledigen</button>
-            <div class="tooltip-wrap">
-              <button class="btn">Checkliste</button>
-              <div class="tooltip">D1: Hypehunters raus · D2: Johannes raus · D3: JohnWilliam raus · D4: Sputnik Payment + Pixel/CAPI</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-id">L1.4 · SCHADI + CLAUDE</div>
-              <div class="card-title">E2 Fixkosten eintragen</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Monatliche Fixkosten in Kostenuebersicht v2 → Finanz-Reporting freischalten</div>
-          <div class="card-meta">
-            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
-            <span class="tag tag-muted">? Aufwand</span>
-          </div>
-          <div class="action-row">
-            <button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-id">L1.5 · SCHADI + CLAUDE</div>
-              <div class="card-title">E3 Variable Kosten eintragen</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Variable Kosten vervollständigen → Break-Even-Analyse möglich</div>
-          <div class="card-meta">
-            <span class="tag tag-red">🔴 ÜBERFÄLLIG</span>
-            <span class="tag tag-muted">? Aufwand</span>
-          </div>
-          <div class="action-row">
-            <button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-id">DB2 / DB3 · SCHADI CHECK</div>
-              <div class="card-title">OE + RTO Auto-Email-Delivery prüfen</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">Automatische Export-Emails von OE Ticket + RTO — kommen die an? DB Update Workflow abhängig davon.</div>
-          <div class="card-meta">
-            <span class="tag tag-amber">🟡 pending</span>
-            <span class="tag tag-muted">Tier 1</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: WOCHE ── -->
-    <div class="view" id="view-week">
-      <div class="section-title">📅 DIESE WOCHE — <span>KW 24 · 09–13.06.2026</span></div>
-
-      <div class="week-grid">
-        <div class="day-col">
-          <div class="day-header today">DI <span class="day-date">10.06</span></div>
-          <div class="day-task" onclick="setView('finanz')">
-            <span class="status-dot dot-amber day-task-dot"></span>
-            <span class="day-task-text">F1 Kostenuebersicht fertig</span>
-          </div>
-          <div class="day-task" onclick="setView('finanz')">
-            <span class="status-dot dot-blue day-task-dot"></span>
-            <span class="day-task-text">F6 Domain-Fakten eintragen</span>
-          </div>
-          <div class="day-task">
-            <span class="status-dot dot-amber day-task-dot"></span>
-            <span class="day-task-text">ToDo v4.14 → Project Files</span>
-          </div>
-        </div>
-
-        <div class="day-col">
-          <div class="day-header">MI <span class="day-date">11.06</span></div>
-          <div class="day-task" onclick="setView('lane1')">
-            <span class="status-dot dot-red day-task-dot"></span>
-            <span class="day-task-text">L1.3 Meta Cleanup (~30min)</span>
-          </div>
-          <div class="day-task" onclick="setView('lane2')">
-            <span class="status-dot dot-blue day-task-dot"></span>
-            <span class="day-task-text">L5.11 MAIN DB #NAME? fix</span>
-          </div>
-          <div class="day-empty">+ BWA-Export von Tiefenböck</div>
-        </div>
-
-        <div class="day-col">
-          <div class="day-header">DO <span class="day-date">12.06</span></div>
-          <div class="day-task" onclick="setView('finanz')">
-            <span class="status-dot dot-amber day-task-dot"></span>
-            <span class="day-task-text">F2 Stundensätze ermitteln</span>
-          </div>
-          <div class="day-task" onclick="setView('skills')">
-            <span class="status-dot dot-blue day-task-dot"></span>
-            <span class="day-task-text">S16 db-update-check Skill</span>
-          </div>
-        </div>
-
-        <div class="day-col">
-          <div class="day-header">FR <span class="day-date">13.06</span></div>
-          <div class="day-task" onclick="setView('finanz')">
-            <span class="status-dot dot-amber day-task-dot"></span>
-            <span class="day-task-text">F3 Break-Even-Analyse</span>
-          </div>
-          <div class="day-task" onclick="setView('skills')">
-            <span class="status-dot dot-blue day-task-dot"></span>
-            <span class="day-task-text">ChatGPT Import vorbereiten</span>
-          </div>
-        </div>
-
-        <div class="day-col">
-          <div class="day-header">SA/SO <span class="day-date">14–15.06</span></div>
-          <div class="day-empty">Event-Wochenende</div>
-          <div class="day-task">
-            <span class="status-dot dot-muted day-task-dot"></span>
-            <span class="day-task-text">DB Update nach Events</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:8px;">FORTSCHRITT DIESE WOCHE</div>
-      <div class="progress-row">
-        <div class="progress-label"><span>P1 Blocker</span> <span style="color:var(--red)">0 / 3</span></div>
-        <div class="progress-track"><div class="progress-fill" style="width:0%;background:var(--red)"></div></div>
-      </div>
-      <div class="progress-row">
-        <div class="progress-label"><span>Finanz Lane</span> <span style="color:var(--amber)">2 / 6</span></div>
-        <div class="progress-track"><div class="progress-fill" style="width:33%;background:var(--amber)"></div></div>
-      </div>
-      <div class="progress-row">
-        <div class="progress-label"><span>Skills Live</span> <span style="color:var(--green)">5 / 15</span></div>
-        <div class="progress-track"><div class="progress-fill" style="width:33%;background:var(--green)"></div></div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: ALLE LANES ── -->
-    <div class="view" id="view-all">
-      <div class="section-title">📋 ALLE LANES — <span>Gesamtübersicht</span></div>
-      <div class="card-grid">
-        <div class="card" onclick="setView('lane1')" style="cursor:pointer;">
-          <div class="card-id">LANE 1</div>
-          <div class="card-title">Blocker abräumen</div>
-          <div class="card-meta"><span class="tag tag-red">3 offen</span><span class="tag tag-muted">Schadi-Action</span></div>
-        </div>
-        <div class="card" onclick="setView('lane2')" style="cursor:pointer;">
-          <div class="card-id">LANE 2</div>
-          <div class="card-title">Claude-baubar</div>
-          <div class="card-meta"><span class="tag tag-blue">4 offen</span><span class="tag tag-muted">sofort baubar</span></div>
-        </div>
-        <div class="card" onclick="setView('lane3')" style="cursor:pointer;">
-          <div class="card-id">LANE 3</div>
-          <div class="card-title">Wartet auf Lane 1</div>
-          <div class="card-meta"><span class="tag tag-muted">5 blockiert</span></div>
-        </div>
-        <div class="card" onclick="setView('skills')" style="cursor:pointer;">
-          <div class="card-id">LANE 4</div>
-          <div class="card-title">Skills Roadmap</div>
-          <div class="card-meta"><span class="tag tag-green">5 live</span><span class="tag tag-blue">10 geplant</span></div>
-        </div>
-        <div class="card" onclick="setView('finanz')" style="cursor:pointer;">
-          <div class="card-id">LANE 6 — NEU</div>
-          <div class="card-title">Finanz-Steuerung</div>
-          <div class="card-meta"><span class="tag tag-amber">2/6 done</span><span class="tag tag-muted">Kostenuebersicht v2</span></div>
-        </div>
-        <div class="card" onclick="setView('marketing')" style="cursor:pointer;">
-          <div class="card-id">LANE 7 — NEU</div>
-          <div class="card-title">Marketing / Meta / Social</div>
-          <div class="card-meta"><span class="tag tag-purple">4 items</span><span class="tag tag-red">blockiert L1.3</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: LANE 1 ── -->
-    <div class="view" id="view-lane1">
-      <div class="section-title">🎯 LANE 1 — <span>Blocker abräumen</span></div>
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-id">L1.3 · P1</div>
-          <div class="card-title">Meta D1–D4 Cleanup</div>
-          <div style="font-size:10px;color:var(--muted);margin:8px 0;">Hypehunters + Johannes + JohnWilliam aus BM · Sputnik Payment · Pixel + CAPI</div>
-          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="tag tag-amber">~30min</span><span class="card-owner">Schadi (Login)</span></div>
-          <div style="font-size:10px;color:var(--dim);margin-top:8px;">Entblockt: Marketing P1 + Meta Ads MCP + gesamte Lane 7</div>
-        </div>
-        <div class="card">
-          <div class="card-id">L1.3.a</div>
-          <div class="card-title">Meta Account Restriction Appeal</div>
-          <div class="card-meta"><span class="tag tag-red">🔴 pending</span><span class="card-owner">Schadi</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L1.4</div>
-          <div class="card-title">E2 Fixkosten eintragen</div>
-          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="card-owner">Schadi + Claude</span></div>
-          <div class="action-row"><button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L1.5</div>
-          <div class="card-title">E3 Variable Kosten eintragen</div>
-          <div class="card-meta"><span class="tag tag-red">🔴 ÜBERFÄLLIG</span><span class="card-owner">Schadi + Claude</span></div>
-          <div class="action-row"><button class="btn" onclick="setView('finanz')">→ Finanz-Lane</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: LANE 2 ── -->
-    <div class="view" id="view-lane2">
-      <div class="section-title">🛠 LANE 2 — <span>Claude-lieferbar</span></div>
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-id">L2.2</div>
-          <div class="card-title">Alert / Reminder-System</div>
-          <div class="card-meta"><span class="tag tag-amber">🟡 3 Fragen offen</span><span class="card-effort">mittel</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L2.5</div>
-          <div class="card-title">Mailchimp Reaktivierung</div>
-          <div class="card-meta"><span class="tag tag-amber">🟡 wartet</span><span class="card-effort">klein→mittel</span></div>
-          <div style="font-size:10px;color:var(--dim);margin-top:6px;">Trigger: "Mailchimp Screenshot"</div>
-        </div>
-        <div class="card">
-          <div class="card-id">L2.6</div>
-          <div class="card-title">Meta Ads MCP connecten</div>
-          <div class="card-meta"><span class="tag tag-amber">🟡 blockiert</span><span class="tag tag-muted">wartet L1.3</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L2.9</div>
-          <div class="card-title">Hub Metrics-Sektion entfernen</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">~935 Zeilen raus aus Hub-Code</div>
-          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~20min</span></div>
-          <div class="action-row"><button class="btn">Jetzt bauen</button></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L5.11</div>
-          <div class="card-title">MAIN DB #NAME? Errors fixen</div>
-          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~15min</span></div>
-          <div class="action-row"><button class="btn">Jetzt fixen</button></div>
-        </div>
-        <div class="card">
-          <div class="card-id">F6</div>
-          <div class="card-title">Domain-Fakten → Business_Context_v2</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">3 KST · WJ Aug–Jul · Miete-Logik · LNK 27,3%</div>
-          <div class="card-meta"><span class="tag tag-blue">🔲 baubar</span><span class="card-effort">~10min</span></div>
-          <div class="action-row"><button class="btn">Jetzt eintragen</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: LANE 3 ── -->
-    <div class="view" id="view-lane3">
-      <div class="section-title">⏸ LANE 3 — <span>Wartet auf Lane 1</span></div>
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-id">L3.1</div>
-          <div class="card-title">Spec Update Event Promo Card v2.0</div>
-          <div class="card-meta"><span class="tag tag-muted">wartet auf Trigger</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L3.2</div>
-          <div class="card-title">Promo-Manager Struktur / SOP</div>
-          <div class="card-meta"><span class="tag tag-muted">L3.1 + Lineup-Quelle</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L3.3</div>
-          <div class="card-title">Cowork fertig einrichten + aktivieren</div>
-          <div class="card-meta"><span class="tag tag-muted">L3.1 + L3.2 + L1.3–L1.5</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L3.4</div>
-          <div class="card-title">Event Promo Card Build</div>
-          <div class="card-meta"><span class="tag tag-muted">~6h · L3.1</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L3.5</div>
-          <div class="card-title">Promo Manager Rebuild (6 Tabs)</div>
-          <div class="card-meta"><span class="tag tag-muted">L3.3 + Lineup-Quelle</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">L3.6 · NEU</div>
-          <div class="card-title">Promo Manager — Spec + SOP</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Eigenständiger Eintrag — Struktur, Ablauf, Integration mit Cowork</div>
-          <div class="card-meta"><span class="tag tag-muted">L3.2 + L3.3</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: FINANZ ── -->
-    <div class="view" id="view-finanz">
-      <div class="section-title">💰 FINANZ-STEUERUNG — <span>Lane 6</span></div>
-
-      <div style="margin-bottom:16px;">
-        <div class="finanz-flow">
-          <div class="flow-step done-step">✓ F1<div class="flow-label">Kostenuebersicht v2</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step active-step">⬤ F2<div class="flow-label">Stundensätze</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step locked-step">F3<div class="flow-label">Break-Even</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step locked-step">F4<div class="flow-label">Ablage-Struktur</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step locked-step">F5<div class="flow-label">Files Update</div></div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step locked-step">F6<div class="flow-label">Domain-Fakten</div></div>
-        </div>
-      </div>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-id">F1 · DONE ✓</div>
-          <div class="card-title done">Kostenuebersicht v2 bauen</div>
-          <div class="card-meta"><span class="tag tag-green">✓ erledigt</span></div>
-          <div style="font-size:10px;color:var(--dim);margin-top:6px;">4 Tabs: Kosten-Übersicht · Nacht-Kalkulator · Personal · Deckungsbeitrag</div>
-        </div>
-        <div class="card">
-          <div class="card-id">F2 · OFFEN</div>
-          <div class="card-title">Stundensätze ermitteln</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">GF Bar (€14 oder €15?) · TZ Brutto alle Rollen · Camillo raus einbauen</div>
-          <div class="card-meta"><span class="tag tag-amber">🟡 in Arbeit</span><span class="card-owner">Schadi</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">F3 · NACH F2</div>
-          <div class="card-title">Break-Even-Analyse</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Kosten/Nacht vs. Umsatz/Nacht → wann profitable?</div>
-          <div class="card-meta"><span class="tag tag-muted">🔲 wartet F2</span><span class="card-owner">Claude</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">F4</div>
-          <div class="card-title">Ablage-Struktur definieren</div>
-          <div class="card-meta"><span class="tag tag-muted">🔲 nach F3</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">F5</div>
-          <div class="card-title">Alle Files updaten</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Business_Context · Master_Context · Hub</div>
-          <div class="card-meta"><span class="tag tag-muted">🔲 nach F4</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">HUB · FEATURE</div>
-          <div class="card-title">Umsatz-Ticker → neue DB-Daten</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">Ticker-Daten auf neue MAIN DB Felder (WBV/RTO/OE) anpassen</div>
-          <div class="card-meta"><span class="tag tag-blue">🔲 geplant</span><span class="card-owner">Claude</span></div>
-          <div class="action-row"><button class="btn">Jetzt bauen</button></div>
-        </div>
-        <div class="card">
-          <div class="card-id">F6 · SOFORT BAUBAR</div>
-          <div class="card-title">Domain-Fakten eintragen</div>
-          <div style="font-size:10px;color:var(--muted);margin:6px 0;">3 KST (30/50/20%) · WJ Aug–Jul · Miete €15.481 netto · LNK 27,3%</div>
-          <div class="card-meta"><span class="tag tag-blue">🔲 10min</span><span class="card-owner">Claude</span></div>
-          <div class="action-row"><button class="btn">Jetzt eintragen</button></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: MARKETING ── -->
-    <div class="view" id="view-marketing">
-      <div class="section-title">📣 MARKETING / META / SOCIAL — <span>Lane 7</span></div>
-
-      <div class="blocker-alert">
-        <div class="blocker-alert-icon">⛔</div>
-        <div>
-          <div class="blocker-alert-label">Blocked</div>
-          <div class="blocker-alert-text">Gesamte Marketing-Lane wartet auf L1.3 Meta Cleanup. Erst Pixel/CAPI live → dann Ads sinnvoll.</div>
-        </div>
-      </div>
-
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-id">M1 · BLOCKER</div>
-          <div class="card-title">Meta Cleanup L1.3</div>
-          <div class="card-meta"><span class="tag tag-red">Schadi Login</span></div>
-          <div class="action-row"><button class="btn btn-red" onclick="setView('lane1')">→ Zu L1.3</button></div>
-        </div>
-        <div class="card">
-          <div class="card-id">M2 · NACH M1</div>
-          <div class="card-title">Meta Ads MCP connecten</div>
-          <div class="card-meta"><span class="tag tag-muted">wartet M1</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">M3 · NACH M2</div>
-          <div class="card-title">Social Media Integration (IG/FB)</div>
-          <div class="card-meta"><span class="tag tag-muted">wartet M2</span></div>
-        </div>
-        <div class="card">
-          <div class="card-id">M4 · NACH M2+M3</div>
-          <div class="card-title">Marketing-Strategie aktivieren</div>
-          <div class="card-meta"><span class="tag tag-muted">wartet M2 + M3</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── VIEW: SKILLS ── -->
-    <div class="view" id="view-skills">
-      <div class="section-title">⚡ SKILLS ROADMAP — <span>Lane 4</span></div>
-
-      <div style="font-size:10px;color:var(--muted);margin-bottom:16px;">5 Skills live · 10 geplant · HARDRULE: kein web_fetch/MCP im Skill — Chat-Layer fetcht, Skill baut Output</div>
-
-      <div class="section-title" style="margin-top:0;">LIVE ✓</div>
-      <table class="skill-table">
-        <thead><tr><th>#</th><th>Skill</th><th>Trigger</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>—</td><td class="skill-code">session-handoff</td><td>„EOD" / „Session beenden"</td><td><span class="tag tag-green">✅ live</span></td></tr>
-          <tr><td>—</td><td class="skill-code">create-factsheet v2</td><td>„Factsheet für [Datum]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
-          <tr><td>—</td><td class="skill-code">create-security-order</td><td>„Security Order für [Datum]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
-          <tr><td>—</td><td class="skill-code">monatsprogramm-upload</td><td>„Monatsprogramm [Monat]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
-          <tr><td>—</td><td class="skill-code">db-update</td><td>„DB Update [Monat]"</td><td><span class="tag tag-green">✅ live</span></td></tr>
-        </tbody>
-      </table>
-
-      <div class="section-title">BATCH 1 — Sofort baubar</div>
-      <table class="skill-table">
-        <thead><tr><th>#</th><th>Skill</th><th>Use Case</th><th>Aufwand</th></tr></thead>
-        <tbody>
-          <tr><td>S1</td><td class="skill-code">bar-shiftplan</td><td>10er-Roster, PRIO1/2-Logic</td><td>~30min</td></tr>
-          <tr><td>S2</td><td class="skill-code">runner-shiftplan</td><td>Runner-Plan, Minimums</td><td>~20min</td></tr>
-          <tr><td>S3</td><td class="skill-code">hub-version-bump</td><td>7 Ref-Updates + Grep-Check</td><td>~10min</td></tr>
-        </tbody>
-      </table>
-
-      <div class="section-title">BATCH 3 — Neu (10.06.)</div>
-      <table class="skill-table">
-        <thead><tr><th>#</th><th>Skill</th><th>Use Case</th><th>Aufwand</th></tr></thead>
-        <tbody>
-          <tr><td>S16</td><td class="skill-code">db-update-check</td><td>Session-Start: Events seit letztem Update? → Upload-Anweisung</td><td>~30min</td></tr>
-          <tr><td>S17</td><td class="skill-code">chatgpt-import</td><td>Business-Kontext aus ChatGPT-Chats extrahieren</td><td>~45min</td></tr>
-          <tr><td>S18</td><td class="skill-code">break-even-analyse</td><td>Break-Even + Marge/Event</td><td>~1h</td></tr>
-          <tr><td>S19</td><td class="skill-code">???</td><td>Offen — Schadi erinnert sich</td><td>TBD</td></tr>
-          <tr><td>S20</td><td class="skill-code">dienstplan-abgleich</td><td>Abgleich Dienstpläne — Spec kommt</td><td>TBD</td></tr>
-          <tr><td>S21</td><td class="skill-code">bmt-grafik-upload</td><td>Event-Grafiken via neue BMT API hochladen</td><td>TBD</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ── VIEW: DONE ── -->
-    <div class="view" id="view-done">
-      <div class="section-title">✅ DONE — <span>Archiv</span></div>
-
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">TURBO_Kostenuebersicht_v2.xlsx</div><div class="done-sub">4-Tab Kostenstruktur · NZ · VK/Std · Personal</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">Hub v15.9.204 LIVE</div><div class="done-sub">Factsheet Visual Polish + Umsatz-Ticker Snapshot</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">L2.8 Hub Mobile-View Fixes</div><div class="done-sub">v15.9.196 responsive</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">L1.1 Bitly Custom Domain (grelle.club)</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">L1.2 API Credits Auto-Reload</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">L1.6 IG-Bio + FB-Page</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">L1.7 Sales Intelligence DB Setup</div><div class="done-sub">83 EIGEN Events · v0.11</div></div>
-      </div>
-      <div class="done-item">
-        <div class="done-check">✓</div>
-        <div><div class="done-text">Drive Migration v2</div><div class="done-sub">124 Ops · 0 Failed · 100% File-ID Preservation</div></div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /layout -->
 
 <script>
-function setView(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.metric').forEach(m => m.classList.remove('active'));
+  // ═══ THEME-TOGGLE ═══
+  const body = document.body;
+  const btnDark = document.getElementById('themeDark');
+  const btnLight = document.getElementById('themeLight');
 
-  const el = document.getElementById('view-' + id);
-  if (el) el.classList.add('active');
+  btnDark.addEventListener('click', () => {
+    body.setAttribute('data-theme', 'dark');
+    btnDark.classList.add('active');
+    btnLight.classList.remove('active');
+    saveTheme('dark');
+  });
 
-  const nav = document.getElementById('nav-' + id);
-  if (nav) nav.classList.add('active');
+  btnLight.addEventListener('click', () => {
+    body.setAttribute('data-theme', 'light');
+    btnLight.classList.add('active');
+    btnDark.classList.remove('active');
+    saveTheme('light');
+  });
 
-  const m = document.getElementById('m-' + id);
-  if (m) m.classList.add('active');
-}
+  async function saveTheme(theme) {
+    try {
+      await window.storage.set('cheatsheet_theme', theme);
+    } catch (err) {
+      // Storage not available, ignore
+    }
+  }
 
-// Set today marker
-const days = document.querySelectorAll('.day-header');
-// already hardcoded DI 10.06 as today
+  async function loadTheme() {
+    try {
+      const result = await window.storage.get('cheatsheet_theme');
+      if (result && result.value === 'light') {
+        body.setAttribute('data-theme', 'light');
+        btnLight.classList.add('active');
+        btnDark.classList.remove('active');
+      }
+    } catch (err) {
+      // First time, no saved theme — that's fine
+    }
+  }
 
-// Init
-setView('blocker');
+  loadTheme();
+
+  // ═══ FILTER ═══
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const allCats = document.querySelectorAll('.cat');
+  const allRows = document.querySelectorAll('.row');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      applyFilter(filter);
+    });
+  });
+
+  function applyFilter(filter) {
+    if (filter === 'all') {
+      allCats.forEach(c => c.classList.remove('hidden'));
+      allRows.forEach(r => r.classList.remove('hidden'));
+    } else if (filter === 'business') {
+      // Show only rows tagged as business — within categories that have at least one
+      allRows.forEach(r => {
+        if (r.dataset.business === '1') {
+          r.classList.remove('hidden');
+        } else {
+          r.classList.add('hidden');
+        }
+      });
+      // Hide categories without visible business rows
+      allCats.forEach(c => {
+        const visible = c.querySelectorAll('.row:not(.hidden)').length;
+        c.classList.toggle('hidden', visible === 0);
+      });
+    } else {
+      // Show only one category
+      allCats.forEach(c => {
+        c.classList.toggle('hidden', c.dataset.cat !== filter);
+      });
+      allRows.forEach(r => r.classList.remove('hidden'));
+    }
+    document.getElementById('searchInput').value = '';
+  }
+
+  // ═══ SEARCH ═══
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+
+    if (!q) {
+      // Reset filters
+      const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+      applyFilter(activeFilter);
+      return;
+    }
+
+    // Disable filter active state during search
+    filterBtns.forEach(b => b.classList.remove('active'));
+    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+
+    allRows.forEach(r => {
+      const cmd = r.querySelector('.cmd').textContent.toLowerCase();
+      const desc = r.querySelector('.desc').textContent.toLowerCase();
+      const match = cmd.includes(q) || desc.includes(q);
+      r.classList.toggle('hidden', !match);
+    });
+
+    allCats.forEach(c => {
+      const title = c.querySelector('.cat-title').textContent.toLowerCase();
+      const titleMatch = title.includes(q);
+      const visibleRows = c.querySelectorAll('.row:not(.hidden)').length;
+      // Show cat if title matches OR has visible rows
+      if (titleMatch) {
+        // Show all rows in this cat if title matches
+        c.querySelectorAll('.row').forEach(r => r.classList.remove('hidden'));
+        c.classList.remove('hidden');
+      } else {
+        c.classList.toggle('hidden', visibleRows === 0);
+      }
+    });
+  });
 </script>
+
 </body>
 </html>
