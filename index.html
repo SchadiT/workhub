@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.208</title>
+    <title>Turbo Projects Work Hub v15.9.209</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.208: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.209: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.208: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.209: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3975,7 +3975,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — day-tag left | 4 stats right, hairline-separated */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.209) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -3986,12 +3986,18 @@
             overflow: visible;
         }
         .planner-hero-day {
-            padding: 10px 20px;
+            padding: 7px 18px;
             border-right: 0.5px solid var(--hair);
-            min-width: 200px;
+            min-width: 220px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        .planner-hero-day-inner {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 1px;
         }
         .planner-hero-stats {
             flex: 1;
@@ -4002,31 +4008,33 @@
         .planner-sprint-row { display: none; }
 
         .planner-kw {
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 800;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 4px;
+            margin-bottom: 0;
             font-family: inherit;
         }
         .planner-day-name {
-            font-size: 28px;
+            font-size: 20px;
             line-height: 1.05;
             color: var(--text);
             font-weight: 800;
             letter-spacing: -0.03em;
-            margin: 3px 0;
+            margin: 0;
         }
         .planner-day-sub {
-            font-size: 13px;
-            color: var(--text);
+            font-size: 11px;
+            color: var(--sub);
             margin-bottom: 0;
-            line-height: 1.3;
+            line-height: 1;
             font-weight: 500;
+            padding-left: 10px;
+            border-left: 0.5px solid var(--hair);
         }
 
-        /* STATUS BAR — flat strip embedded in hero, hairline dividers */
+        /* STATUS BAR — only Offen + Quick Notes + Events */
         .planner-status-bar {
             display: flex;
             border-bottom: none;
@@ -4038,7 +4046,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px 6px;
+            padding: 6px 6px;
             text-align: center;
             border-right: 0.5px solid var(--hair);
             transition: background 0.12s;
@@ -4046,7 +4054,7 @@
         .planner-stat:last-child { border-right: none; }
         .planner-stat:hover { background: var(--raised); }
         .planner-stat-val {
-            font-size: 22px;
+            font-size: 18px;
             line-height: 1;
             font-weight: 700;
             letter-spacing: -0.02em;
@@ -4057,11 +4065,11 @@
         .planner-stat-val.purple { color: var(--text); }
         .planner-stat-label {
             font-family: inherit;
-            font-size: 8px;
+            font-size: 7px;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--text);
+            color: var(--sub);
             margin-top: 2px;
         }
 
@@ -4189,7 +4197,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 6px;
-            margin-top: 12px;
+            margin-top: 20px;
         }
         .planner-notes-header .planner-notes-label {
             margin: 0;
@@ -4258,28 +4266,28 @@
             color: var(--accent);
         }
         .planner-qa-panel { display: none; }
-        .planner-qa-panel.active { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .planner-qa-panel.active { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 
-        /* Unified QA Tile */
+        /* Unified QA Tile — compact */
         .planner-qa-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 18px 8px;
+            gap: 5px;
+            padding: 10px 4px;
             background: var(--raised);
             border: 1px solid var(--hair);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text);
             font-family: inherit;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             letter-spacing: -0.01em;
             transition: background 0.12s, transform 0.06s;
             white-space: nowrap;
-            min-height: 86px;
+            min-height: 62px;
             text-transform: none;
         }
         .planner-qa-btn:hover { background: var(--raised2); }
@@ -4290,7 +4298,7 @@
         .planner-qa-btn.qa-loor:hover { background: var(--raised2); }
         .planner-qa-btn.qa-placeholder { opacity: 0.3; border-style: dashed; cursor: default; }
         .planner-qa-btn.qa-placeholder:hover { background: var(--raised); }
-        .planner-qa-icon { font-size: 26px; opacity: 1; }
+        .planner-qa-icon { font-size: 20px; opacity: 1; }
 
         /* Event strip — gleiche raised tiles, accent border-left */
         .planner-event-strip {
@@ -5537,11 +5545,13 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day-tag left | 4 stats right -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.209) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
-                    <div class="planner-kw" id="planner-kw-label">KW — · 2026</div>
-                    <div class="planner-day-name" id="planner-day-name">LADEN…</div>
+                    <div class="planner-hero-day-inner">
+                        <div class="planner-kw" id="planner-kw-label">KW — · 2026</div>
+                        <div class="planner-day-name" id="planner-day-name">LADEN…</div>
+                    </div>
                     <div class="planner-day-sub" id="planner-day-sub">Synchronisiere…</div>
                 </div>
                 <div class="planner-hero-stats">
@@ -5551,12 +5561,8 @@
                             <div class="planner-stat-label">Offen</div>
                         </div>
                         <div class="planner-stat">
-                            <div class="planner-stat-val green" id="planner-s-done">—</div>
-                            <div class="planner-stat-label">Done</div>
-                        </div>
-                        <div class="planner-stat">
-                            <div class="planner-stat-val" id="planner-s-pct">—</div>
-                            <div class="planner-stat-label">Heute</div>
+                            <div class="planner-stat-val" id="planner-s-qnotes">—</div>
+                            <div class="planner-stat-label">Quick Notes</div>
                         </div>
                         <div class="planner-stat">
                             <div class="planner-stat-val purple" id="planner-s-events">—</div>
@@ -5564,7 +5570,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- legacy IDs kept hidden for JS compat (sprint bar removed visually) -->
+                <!-- legacy IDs kept hidden for JS compat -->
+                <span id="planner-s-done" style="display:none"></span>
+                <span id="planner-s-pct" style="display:none"></span>
                 <span id="planner-bg-num" style="display:none"></span>
                 <span id="planner-sprint-fill" style="display:none"></span>
                 <span id="planner-sprint-pct" style="display:none"></span>
@@ -7832,7 +7840,7 @@
                 <div class="fl">
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small>Factsheet Generator · v15.9.208</small>
+                <small>Factsheet Generator · v15.9.209</small>
             </div>
             </div>
         </div>
@@ -8614,7 +8622,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.208</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.209</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9094,7 +9102,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.208</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.209</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13281,7 +13289,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.209', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13441,7 +13449,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.209', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13515,7 +13523,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.209', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13622,7 +13630,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.209', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13706,7 +13714,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.209', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14015,7 +14023,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.209', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14162,7 +14170,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.209', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14307,7 +14315,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.208', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.209', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19140,7 +19148,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.208';
+            const HUB_VERSION = 'v15.9.209';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20845,7 +20853,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.208</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.209</div>
                     </div>
                     
                     <div class="section">
@@ -20944,7 +20952,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.208 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.209 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24648,7 +24656,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.208 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.209 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24678,7 +24686,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.208',
+                hubVersion: 'v15.9.209',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27821,9 +27829,15 @@ Spittelauer Lnde 12/1
             });
         }
 
-        // Sort ascending, show next 3
+        // Sort ascending, deduplicate by name+date, show next 5
         events.sort((a,b) => a.date - b.date);
-        plannerState.bmtEvents = events.slice(0, 5);
+        const seen = new Set();
+        const deduped = events.filter(e => {
+            const key = e.name + '|' + e.date.toDateString();
+            if (seen.has(key)) return false;
+            seen.add(key); return true;
+        });
+        plannerState.bmtEvents = deduped.slice(0, 5);
     }
 
     // ── Toggle task (local + MS Graph) ──
@@ -27863,9 +27877,16 @@ Spittelauer Lnde 12/1
         const sOpen = document.getElementById('planner-s-open');
         const sDone = document.getElementById('planner-s-done');
         const sPct = document.getElementById('planner-s-pct');
+        const sQnotes = document.getElementById('planner-s-qnotes');
         if (sOpen) sOpen.textContent = open;
         if (sDone) sDone.textContent = done;
         if (sPct) sPct.textContent = pct + '%';
+        // Quick Notes count
+        if (sQnotes) {
+            const saved = localStorage.getItem('workhub-quick-notes') || '';
+            const lines = saved.split('\n').filter(l => l.trim().length > 0);
+            sQnotes.textContent = lines.length || '—';
+        }
     }
 
     // ── Open / Close / Tabs ──
@@ -27992,7 +28013,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.208';
+    const HUB_VER = 'v15.9.209';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
