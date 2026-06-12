@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.211</title>
+    <title>Turbo Projects Work Hub v15.9.212</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.211: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.212: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.211: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.212: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -281,6 +281,18 @@
             transition: background-color 0.25s ease, color 0.25s ease;
             overflow-x: hidden;
         }
+        /* ③ Black border around entire hub — via body outline */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            border: 2px solid #111;
+            border-radius: 0;
+            pointer-events: none;
+            z-index: 99999;
+        }
+        [data-theme="light"] body::after { border-color: #111; }
+        [data-theme="dark"] body::after  { border-color: #333; }
         /* ── GLOBAL SCROLLBAR — Cohesive (v15.9.204) ── */
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         ::-webkit-scrollbar { width: 9px; height: 9px; }
@@ -3975,7 +3987,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.211) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.212) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -4197,7 +4209,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 6px;
-            margin-top: 20px;
+            margin-top: 28px;
         }
         .planner-notes-header .planner-notes-label {
             margin: 0;
@@ -5325,7 +5337,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.211) ── */
+        /* ── Planner Overlay Light Theme (v15.9.212) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5374,6 +5386,22 @@
             border-color: rgba(239,68,68,0.35);
             color: rgba(239,68,68,0.85);
         }
+
+        /* ── Light skin contrast boost (v15.9.212) ── */
+        [data-theme="light"] .planner-col-label { color: #888; }
+        [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
+        [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
+        [data-theme="light"] .planner-card { border-color: #d0d0d0 !important; }
+        [data-theme="light"] .planner-hero { border-bottom-color: #d0d0d0; }
+        [data-theme="light"] .planner-hero-day { border-right-color: #d0d0d0; }
+        [data-theme="light"] .planner-stat { border-right-color: #d8d8d8; }
+        [data-theme="light"] .planner-event-strip { border-top-color: #d0d0d0; }
+        [data-theme="light"] .planner-strip-card { border-color: #d0d0d0; background: #f8f8f8; }
+        [data-theme="light"] .planner-strip-name { color: #1a1a1a; }
+        [data-theme="light"] .planner-day-sub { border-left-color: #d0d0d0; color: #444; }
+        [data-theme="light"] .planner-day-name { color: #111; }
+        [data-theme="light"] .planner-kw { color: #e8660a; }
+        [data-theme="light"] .planner-stat-label { color: #999; }
         [data-theme="light"] .toast {
             box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
         }
@@ -5595,7 +5623,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.211) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.212) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -5614,9 +5642,13 @@
                             <div class="planner-stat-val" id="planner-s-qnotes">—</div>
                             <div class="planner-stat-label">Quick Notes</div>
                         </div>
-                        <div class="planner-stat">
-                            <div class="planner-stat-val purple" id="planner-s-events">—</div>
-                            <div class="planner-stat-label">Events</div>
+                        <div class="planner-stat" style="cursor:pointer;" onclick="switchTab('inbox')" title="Ungelesene Mails">
+                            <div class="planner-stat-val" id="planner-s-unread" style="color:#ef4444">—</div>
+                            <div class="planner-stat-label">Unread Mail</div>
+                        </div>
+                        <div class="planner-stat" style="cursor:pointer;" onclick="switchTab('inbox')" title="Markierte Mails">
+                            <div class="planner-stat-val" id="planner-s-flagged" style="color:#3b82f6">—</div>
+                            <div class="planner-stat-label">Flagged</div>
                         </div>
                     </div>
                 </div>
@@ -7890,7 +7922,7 @@
                 <div class="fl">
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small>Factsheet Generator · v15.9.211</small>
+                <small>Factsheet Generator · v15.9.212</small>
             </div>
             </div>
         </div>
@@ -8672,7 +8704,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.211</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.212</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9152,7 +9184,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.211</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.212</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13339,7 +13371,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.212', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13499,7 +13531,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13573,7 +13605,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13680,7 +13712,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13764,7 +13796,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14073,7 +14105,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.212', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14220,7 +14252,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.212', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14365,7 +14397,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.211', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19198,7 +19230,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.211';
+            const HUB_VERSION = 'v15.9.212';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20903,7 +20935,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.211</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.212</div>
                     </div>
                     
                     <div class="section">
@@ -21002,7 +21034,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.211 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.212 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -22973,7 +23005,8 @@ Spittelauer Lnde 12/1
                 let emails = data.emails || [];
                 if (unreadOnly) emails = emails.filter(e => !e.read);
                 const unreadCount = emails.filter(e => !e.read).length;
-                inboxUpdateBadge(unreadCount);
+                const flaggedCount = emails.filter(e => e.flagged || e.isFlagged || e.importance === 'high').length;
+                inboxUpdateBadge(unreadCount, flaggedCount);
                 if (status) status.textContent = `${emails.length} Email${emails.length !== 1 ? 's' : ''}`;
                 if (emails.length === 0) {
                     list.innerHTML = '<div style="padding:30px;color:var(--text-muted);text-align:center;">&#10003; ' + (unreadOnly ? 'Keine ungelesenen Emails' : 'Keine Emails gefunden') + '</div>';
@@ -23156,7 +23189,7 @@ Spittelauer Lnde 12/1
             } catch(e) {}
         }
 
-        function inboxUpdateBadge(count) {
+        function inboxUpdateBadge(count, flagged) {
             const badge = document.getElementById('inbox-unread-badge');
             const headerBadge = document.getElementById('inbox-header-badge');
             if (badge) {
@@ -23167,6 +23200,11 @@ Spittelauer Lnde 12/1
                 headerBadge.textContent = count + ' ungelesen';
                 headerBadge.style.display = count > 0 ? 'inline' : 'none';
             }
+            // Update hero stat tiles
+            const sUnread = document.getElementById('planner-s-unread');
+            const sFlagged = document.getElementById('planner-s-flagged');
+            if (sUnread) sUnread.textContent = count > 0 ? count : '0';
+            if (sFlagged && flagged !== undefined) sFlagged.textContent = flagged > 0 ? flagged : '0';
         }
 
         function inboxFormatDate(date) {
@@ -24706,7 +24744,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.211 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.212 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24736,7 +24774,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.211',
+                hubVersion: 'v15.9.212',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27584,11 +27622,9 @@ Spittelauer Lnde 12/1
         const sOpen = document.getElementById('planner-s-open');
         const sDone = document.getElementById('planner-s-done');
         const sPct = document.getElementById('planner-s-pct');
-        const sEv = document.getElementById('planner-s-events');
         if (sOpen) sOpen.textContent = openCount;
         if (sDone) sDone.textContent = doneCount;
         if (sPct) sPct.textContent = pct + '%';
-        if (sEv) sEv.textContent = plannerState.bmtEvents.length;
 
         // Task rows (max 6)
         const rowsEl = document.getElementById('planner-task-rows');
@@ -28063,7 +28099,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.211';
+    const HUB_VER = 'v15.9.212';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
