@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.213</title>
+    <title>Turbo Projects Work Hub v15.9.214</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.213: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.214: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.213: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.214: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3987,7 +3987,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.213) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.214) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5337,7 +5337,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.213) ── */
+        /* ── Planner Overlay Light Theme (v15.9.214) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5387,7 +5387,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.213) ── */
+        /* ── Light skin contrast boost (v15.9.214) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5623,7 +5623,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.213) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.214) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -7636,105 +7636,100 @@
         <div class="modal modal-app fs-cmd-modal">
             <style>
             /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.204 (UI only, IDs preserved) ═══ */
-            #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1360px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
-            #factsheet-modal .fs-shell{display:grid;grid-template-rows:44px 1fr 38px;width:100%;height:100%;overflow:hidden}
+            #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
+            #factsheet-modal .fs-shell{display:grid;grid-template-rows:40px 1fr 36px;width:100%;height:100%;overflow:hidden}
             /* Header */
-            #factsheet-modal .fs-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #1e2736;flex-shrink:0}
-            #factsheet-modal .fs-hdr h3{font-size:13.5px;font-weight:700;letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:8px;color:#f6f8fc}
+            #factsheet-modal .fs-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #1e2736;flex-shrink:0}
+            #factsheet-modal .fs-hdr h3{font-size:13px;font-weight:700;letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:8px;color:#f6f8fc}
             #factsheet-modal .fs-hdr h3 small{font-size:9px;font-weight:600;color:#4b5a6e;letter-spacing:.08em;text-transform:uppercase}
-            #factsheet-modal .fs-sync{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:#4b5a6e}
+            #factsheet-modal .fs-sync{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:#4b5a6e}
             #factsheet-modal .fs-sync::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
-            /* Main grid: left input | right preview */
-            #factsheet-modal .fs-main{display:grid;grid-template-columns:minmax(0,.68fr) minmax(0,1fr);min-height:0;overflow:hidden;height:100%}
-            /* Left */
-            #factsheet-modal .fs-left{padding:6px;border-right:1px solid #1e2736;display:flex;flex-direction:column;gap:4px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e2736 transparent;min-height:0}
-            #factsheet-modal .fs-left::-webkit-scrollbar{width:5px}
-            #factsheet-modal .fs-left::-webkit-scrollbar-thumb{background:#1e2736;border-radius:3px}
+            /* Main grid */
+            #factsheet-modal .fs-main{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);min-height:0;overflow:hidden;height:100%}
+            /* LEFT — no scroll, fits in viewport */
+            #factsheet-modal .fs-left{padding:7px 8px;border-right:1px solid #1e2736;display:flex;flex-direction:column;gap:5px;overflow:hidden;min-height:0;background:#070b13}
             /* Setup strip */
-            #factsheet-modal .fs-ss{display:flex;gap:5px;padding:6px 10px;background:#0c1018;border:1px solid #1e2736;border-radius:8px;align-items:end;flex-shrink:0}
-            #factsheet-modal .fs-ss>div{flex:1;min-width:0}
-            #factsheet-modal .fs-ss>div.w{flex:1.4}
-            #factsheet-modal .fs-ss label{display:block;font-size:7px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4b5a6e;margin-bottom:2px}
-            #factsheet-modal .fs-ss select,#factsheet-modal .fs-ss input{width:100%;height:25px;border-radius:5px;border:1px solid #2d4460;background:#0a1828;color:#e8edf5;font-size:11px;font-weight:600;padding:0 8px;font-family:inherit}
+            #factsheet-modal .fs-ss{display:grid;grid-template-columns:1.6fr .8fr 1.3fr .9fr;gap:5px;padding:5px 8px;background:#0a0f1a;border:1px solid #1a2436;border-radius:7px;align-items:end;flex-shrink:0}
+            #factsheet-modal .fs-ss label{display:block;font-size:7px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#3d5470;margin-bottom:3px}
+            #factsheet-modal .fs-ss select,#factsheet-modal .fs-ss input{width:100%;height:28px;border-radius:5px;border:1px solid #2a3f58;background:#0c1828;color:#dce6f5;font-size:11px;font-weight:600;padding:0 8px;font-family:inherit}
             #factsheet-modal .fs-ss select:focus,#factsheet-modal .fs-ss input:focus{border-color:#3b82f6;outline:none}
-            /* Cards */
-            #factsheet-modal .fs-card{background:#0c1018;border:1px solid #1e2736;border-radius:8px;padding:7px 10px;flex-shrink:0;overflow:hidden}
-            #factsheet-modal .fs-card-h{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#3d5470;background:#060c16;margin:-7px -10px 7px;padding:5px 10px;border-bottom:1px solid #142030;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center}
-            #factsheet-modal .fs-card-h .sec-add{display:flex;gap:3px}
-            #factsheet-modal .fs-card-h .sec-add button{width:18px;height:18px;border-radius:4px;border:1px solid #1e2736;background:#111826;font-size:12px;cursor:pointer;display:grid;place-items:center;color:#667085;line-height:1;font-family:inherit}
-            #factsheet-modal .fs-card-h .sec-add button:hover{color:#f6f8fc;border-color:#3b5bdb}
-            /* form rows inside cards — preserve original .form-row/.form-group but restyle */
-            #factsheet-modal .fs-card .form-row{display:grid;gap:5px;margin-bottom:5px}
-            #factsheet-modal .fs-card .form-row:last-child{margin-bottom:0}
-            #factsheet-modal .fs-card .form-group{margin-bottom:0!important;min-width:0}
-            #factsheet-modal .fs-card .form-group label{display:block;font-size:6.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4b5a6e;margin-bottom:2px}
-            #factsheet-modal .fs-card .form-group input[type=text]{width:100%;height:24px;border-radius:5px;border:1px solid #2d4460;background:#0a1828;color:#e8edf5;font-size:10.5px;font-weight:600;padding:0 7px;font-family:inherit}
-            #factsheet-modal .fs-card .form-group input[type=text]:focus{border-color:#3b82f6;outline:none}
-            #factsheet-modal .fs-card .form-group input.time-input{font-family:'JetBrains Mono','Courier New',monospace;text-align:center;padding:0;background:#0d1f36;color:#7dd3fc;border-color:#1a3a5c;font-size:10.5px}
-            /* Kassa radios + checkboxes */
-            #factsheet-modal .fs-card input[type=radio]{accent-color:#dc2626;width:12px;height:12px}
-            #factsheet-modal .fs-card input[type=checkbox]{accent-color:#22c55e;width:13px;height:13px}
-            #factsheet-modal #kassa-row label{font-size:11px!important;color:#c8d4e8!important}
-            #factsheet-modal #kassa-eigen-options label{color:#c8d4e8!important}
-            #factsheet-modal #kassa-eigen-options span{color:#c8d4e8!important}
-            #factsheet-modal #kassa-manual-name{background:#070a0f!important;color:#e8edf5!important;border:1px solid #1e2736!important;border-radius:6px!important;height:24px}
-            #factsheet-modal #main-floor-row{padding:5px 10px;background:#080e18;border-color:#142030;border-radius:6px}
+            /* Section blocks — no card chrome, just grouped sections */
+            #factsheet-modal .fs-sec{padding:5px 8px;background:#0a0e18;border:1px solid #151f2e;border-radius:7px;flex-shrink:0}
+            #factsheet-modal .fs-sec-h{font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#3d5470;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
+            #factsheet-modal .fs-sec-h::before{content:'';display:inline-block;width:2px;height:9px;border-radius:1px;background:#f97316;margin-right:5px;flex-shrink:0}
+            /* Grid layouts */
+            #factsheet-modal .fg2{display:grid;grid-template-columns:1fr 62px 1fr 62px;gap:5px;margin-bottom:4px}
+            #factsheet-modal .fg3{display:grid;grid-template-columns:1fr 58px 1fr 58px 1fr 58px;gap:4px;margin-bottom:4px}
+            #factsheet-modal .fg2:last-child,#factsheet-modal .fg3:last-child{margin-bottom:0}
+            #factsheet-modal .fg{min-width:0}
+            #factsheet-modal .fg label{display:block;font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3d5470;margin-bottom:2px}
+            #factsheet-modal .fg input[type=text]{width:100%;height:26px;border-radius:5px;border:1px solid #2a3f58;background:#0c1828;color:#dce6f5;font-size:11px;font-weight:600;padding:0 7px;font-family:inherit}
+            #factsheet-modal .fg input[type=text]:focus{border-color:#3b82f6;outline:none;background:#0c1f35}
+            #factsheet-modal .fg input.ti{font-family:'Courier New',monospace;text-align:center;background:#0a1e32;color:#7dd3fc;border-color:#1a3f60;padding:0}
+            /* Kassa */
+            #factsheet-modal .kassa-block{background:#0c1828;border:1px solid #1e3050;border-radius:6px;padding:6px 8px;margin-top:3px}
+            #factsheet-modal .kassa-block input[type=radio]{accent-color:#dc2626;width:12px;height:12px}
+            #factsheet-modal .kassa-block input[type=checkbox]{accent-color:#22c55e;width:12px;height:12px}
+            #factsheet-modal #kassa-row label,#factsheet-modal #kassa-eigen-options label,#factsheet-modal #kassa-eigen-options span{font-size:11px!important;color:#c8d4e8!important}
+            #factsheet-modal #kassa-manual-name{background:#070a0f!important;color:#e8edf5!important;border:1px solid #1e2736!important;border-radius:5px!important;height:24px}
+            #factsheet-modal #main-floor-row{padding:4px 8px;background:#0a0e18;border:1px solid #151f2e;border-radius:7px;flex-shrink:0}
             #factsheet-modal #main-floor-row .form-group{margin-bottom:0}
-            #factsheet-modal #main-floor-row .form-group>label{font-size:6.5px;font-weight:700;letter-spacing:.08em;color:#4b5a6e;text-transform:uppercase}
-            #factsheet-modal #main-floor-row label span{color:#c8d4e8!important;font-size:10.5px}
-            /* Security rows container */
-            #factsheet-modal #fs-security-rows input[type=text]{height:24px;border-radius:5px;border:1px solid #2d4460;background:#0a1828;color:#e8edf5;font-size:10.5px;font-weight:600;font-family:inherit}
-            #factsheet-modal #fs-security-rows input.time-input{font-family:'JetBrains Mono',monospace;text-align:center;background:#0d1f36;color:#7dd3fc;border-color:#1a3a5c;padding:0}
-            #factsheet-modal #fs-security-rows span{color:#4b5a6e!important}
-            /* Right */
-            #factsheet-modal .fs-right{display:flex;flex-direction:column;min-height:0;overflow:hidden;background:#080c12}
-            #factsheet-modal .fs-ph{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #1e2736;flex-shrink:0;background:#060c16}
-            #factsheet-modal .fs-ph span{font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4b5a6e}
+            #factsheet-modal #main-floor-row .form-group>label{font-size:7px;font-weight:700;letter-spacing:.09em;color:#3d5470;text-transform:uppercase;display:block;margin-bottom:3px}
+            #factsheet-modal #main-floor-row label span{color:#c8d4e8!important;font-size:11px!important}
+            /* Security — fills remaining space */
+            #factsheet-modal .fs-sec.sec-grow{flex:1;min-height:0;display:flex;flex-direction:column}
+            #factsheet-modal #fs-security-rows{flex:1;min-height:0;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+            #factsheet-modal .sec-row-item{display:grid;grid-template-columns:70px 1fr;gap:5px}
+            #factsheet-modal #fs-security-rows input[type=text]{width:100%;height:26px;border-radius:5px;border:1px solid #2a3f58;background:#0c1828;color:#dce6f5;font-size:11px;font-weight:600;padding:0 7px;font-family:inherit}
+            #factsheet-modal #fs-security-rows input.time-input{font-family:'Courier New',monospace;text-align:center;background:#0a1e32;color:#7dd3fc;border-color:#1a3f60;padding:0}
+            #factsheet-modal #fs-security-rows span{color:#3d5470!important}
+            /* ── RIGHT ── */
+            #factsheet-modal .fs-right{display:flex;flex-direction:column;min-height:0;overflow:hidden;background:#050709}
+            #factsheet-modal .fs-ph{height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid #1a2436;flex-shrink:0;background:#070b14}
+            #factsheet-modal .fs-ph span{font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#3d5470}
             #factsheet-modal .fs-ph-b{display:flex;gap:3px}
-            #factsheet-modal .fs-ph-b i{padding:2px 8px;border-radius:5px;font-style:normal;font-size:8.5px;font-weight:700;background:#111826;border:1px solid #1e2736;color:#667085}
-            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 160px;min-height:0;overflow:hidden}
-            /* Document zone — uses original #fs-preview, scaled to fit */
-            #factsheet-modal .fs-dz{position:relative;display:flex;align-items:center;justify-content:center;overflow:auto;background:radial-gradient(ellipse at 50% 40%,#0e1520 0%,#050709 100%);padding:20px}
-            #factsheet-modal .fs-paper-wrap{position:relative;flex-shrink:0;border-radius:3px;overflow:visible;margin:auto;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 48px rgba(0,0,0,.85),0 2px 16px rgba(0,0,0,.6);background:#fff;width:min(560px,100%)}
-            #factsheet-modal #fs-preview{width:100%;background:#fff;color:#111;padding:18px 16px;transform-origin:top center;display:block;overflow:visible}
-            /* Rail */
-            #factsheet-modal .fs-rail{border-left:1px solid #1e2736;padding:8px 7px;display:flex;flex-direction:column;gap:4px;align-items:center;overflow-y:auto;background:#0c1018;scrollbar-width:none}
-            #factsheet-modal .fs-rail::-webkit-scrollbar{display:none}
-            #factsheet-modal .fs-rail .rk{font-size:7px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4b5a6e;text-align:center}
-            #factsheet-modal .fs-rail .rv{font-size:13px;font-weight:700;color:#c8d4e8;text-align:center;letter-spacing:-.01em}
-            #factsheet-modal .fs-rail hr{width:100%;border:0;border-top:1px solid #1a2332;margin:3px 0}
-            #factsheet-modal .fs-rail .rbtn{width:100%;padding:8px 4px;border-radius:6px;border:none;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .12s,transform .08s}
-            #factsheet-modal .fs-rail .rbtn:hover{opacity:.88}
-            #factsheet-modal .fs-rail .rbtn:active{transform:scale(.96)}
-            #factsheet-modal .fs-rail .rbtn.pdf{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff}
-            #factsheet-modal .fs-rail .rbtn.docx{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
-            #factsheet-modal .fs-rail .rbtn.cfm{background:linear-gradient(135deg,#d97706,#b45309);color:#fff}
-            #factsheet-modal .fs-rail .rbtn.cpy{background:#111826;color:#c8d4e8;border:1px solid #1e2736}
-            #factsheet-modal .fs-rail .rbtn.prt{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
-            #factsheet-modal .fs-rail .ci{display:flex;align-items:center;gap:5px;font-size:9px;color:#667085;width:100%}
-            #factsheet-modal .fs-rail .cd{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0;background:#3a4656}
-            /* Footer */
-            #factsheet-modal .fs-ftr{display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-top:1px solid #1e2736;flex-shrink:0;background:#080b11}
-            #factsheet-modal .fs-ftr .fl{display:flex;gap:7px}
-            #factsheet-modal .fs-ftr button{padding:6px 14px;border-radius:7px;font-size:9px;font-weight:700;background:#0c1018;border:1px solid #1e2736;color:#667085;cursor:pointer;font-family:inherit}
-            #factsheet-modal .fs-ftr button:hover{background:#111826;color:#c8d4e8}
-            #factsheet-modal .fs-ftr small{font-size:7.5px;color:#2d3a4a;font-family:'JetBrains Mono',monospace}
-            /* Preview content sizing inside 420px paper */
-            #factsheet-modal #fs-preview{font-family:'Courier New',monospace;font-size:11px;line-height:1.45}
-            #factsheet-modal #fs-preview h2{font-size:17px;font-family:Inter,Arial,sans-serif;font-weight:800;letter-spacing:-.01em;margin-bottom:4px;color:#111}
-            #factsheet-modal #fs-preview p{font-size:10.5px;font-family:Inter,Arial,sans-serif;color:#444;margin-bottom:2px}
-            #factsheet-modal #fs-preview strong{font-size:10.5px}
-            #factsheet-modal #fs-preview table{width:100%;border-collapse:collapse;margin-top:8px;table-layout:fixed}
-            #factsheet-modal #fs-preview th,#factsheet-modal #fs-preview td{border:.5px solid #ccc;padding:3px 6px;font-size:10px;overflow:hidden;text-overflow:ellipsis}
+            #factsheet-modal .fs-ph-b i{padding:2px 7px;border-radius:4px;font-style:normal;font-size:8px;font-weight:700;background:#111826;border:1px solid #1e2736;color:#667085}
+            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 152px;min-height:0;overflow:hidden}
+            /* Preview zone — centered */
+            #factsheet-modal .fs-dz{display:flex;align-items:center;justify-content:center;overflow:auto;background:radial-gradient(ellipse at 50% 35%,#0e1828 0%,#050709 100%);padding:24px}
+            #factsheet-modal .fs-paper-wrap{flex-shrink:0;border-radius:2px;overflow:visible;margin:auto;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 16px 80px rgba(0,0,0,.95);background:#fff;width:min(520px,100%)}
+            #factsheet-modal #fs-preview{width:100%;background:#fff;color:#111;padding:20px 18px;display:block;overflow:visible}
+            /* Preview typography */
+            #factsheet-modal #fs-preview{font-family:'Courier New',monospace;font-size:10.5px;line-height:1.4}
+            #factsheet-modal #fs-preview h2{font-family:Arial,sans-serif;font-size:17px;font-weight:900;letter-spacing:-.01em;margin-bottom:3px;color:#cc0000}
+            #factsheet-modal #fs-preview h2 span.ev-label{color:#111;font-size:17px}
+            #factsheet-modal #fs-preview h2 span.event-name{color:#cc0000}
+            #factsheet-modal #fs-preview p{font-size:10px;font-family:Arial,sans-serif;color:#444;margin-bottom:2px}
+            #factsheet-modal #fs-preview table{width:100%;border-collapse:collapse;margin-top:6px;table-layout:fixed}
+            #factsheet-modal #fs-preview th,#factsheet-modal #fs-preview td{border:.5px solid #ccc;padding:3px 6px;font-size:9.5px;overflow:hidden;text-overflow:ellipsis}
             #factsheet-modal #fs-preview td:nth-child(1){width:38%}
             #factsheet-modal #fs-preview td:nth-child(2){width:18%}
             #factsheet-modal #fs-preview td:nth-child(3){width:44%}
-            #factsheet-modal #fs-preview th{background:#ebebeb;font-family:Inter,Arial,sans-serif;font-size:8px;font-weight:700}
+            #factsheet-modal #fs-preview th{background:#ebebeb;font-family:Arial,sans-serif;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+            /* Rail */
+            #factsheet-modal .fs-rail{border-left:1px solid #1a2436;padding:9px 7px;display:flex;flex-direction:column;gap:4px;align-items:stretch;overflow-y:auto;background:#0a0e18;scrollbar-width:none}
+            #factsheet-modal .fs-rail::-webkit-scrollbar{display:none}
+            #factsheet-modal .fs-rail .rk{font-size:7px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#2d4060;text-align:center}
+            #factsheet-modal .fs-rail .rv{font-size:13px;font-weight:700;color:#8aa4c4;text-align:center}
+            #factsheet-modal .fs-rail hr{border:0;border-top:1px solid #141e2e;margin:2px 0}
+            #factsheet-modal .fs-rail .rbtn{width:100%;padding:8px 5px;border-radius:6px;border:none;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .12s}
+            #factsheet-modal .fs-rail .rbtn:hover{opacity:.85}
+            #factsheet-modal .fs-rail .rbtn.pdf{background:#dc2626;color:#fff}
+            #factsheet-modal .fs-rail .rbtn.docx{background:#2563eb;color:#fff}
+            #factsheet-modal .fs-rail .rbtn.cfm{background:#d97706;color:#fff}
+            #factsheet-modal .fs-rail .rbtn.cpy{background:#111826;color:#c8d4e8;border:1px solid #1e2736}
+            #factsheet-modal .fs-rail .rbtn.prt{background:#15803d;color:#fff}
+            /* Footer */
+            #factsheet-modal .fs-ftr{display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-top:1px solid #1a2436;flex-shrink:0;background:#070b11}
+            #factsheet-modal .fs-ftr .fl{display:flex;gap:6px}
+            #factsheet-modal .fs-ftr button{padding:5px 14px;border-radius:6px;font-size:9px;font-weight:700;background:#0c1018;border:1px solid #1e2736;color:#667085;cursor:pointer;font-family:inherit}
+            #factsheet-modal .fs-ftr button:hover{background:#111826;color:#c8d4e8}
+            #factsheet-modal .fs-ftr small{font-size:7px;color:#1e2a3a;font-family:'Courier New',monospace}
             /* Mobile */
             @media (max-width:768px){
                 #factsheet-modal .fs-cmd-modal{width:100vw;height:100vh;max-width:100vw;max-height:100vh;border-radius:0}
                 #factsheet-modal .fs-main{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow-y:auto}
-                #factsheet-modal .fs-left{border-right:none;border-bottom:1px solid #1e2736}
+                #factsheet-modal .fs-left{border-right:none;border-bottom:1px solid #1e2736;overflow-y:auto}
                 #factsheet-modal .fs-right{min-height:420px}
                 #factsheet-modal .fs-pvb{grid-template-columns:1fr 96px}
             }
@@ -7761,7 +7756,6 @@
                             <label>Event auswählen</label>
                             <select id="fs-event-select" onchange="loadEventData()">
                                 <option value="">-- Event waehlen --</option>
-                                <!-- Dynamic via populateFactsheetDropdown() -->
                             </select>
                         </div>
                         <div>
@@ -7781,117 +7775,103 @@
                         </div>
                     </div>
 
-                    <!-- Main Floor toggle (kept as form-row, hidden for concert) -->
-                    <div class="fs-card" id="main-floor-row">
+                    <!-- Main Floor toggle -->
+                    <div id="main-floor-row">
                         <div class="form-group" style="margin-bottom:0;">
                             <label>Main Floor Öffnung</label>
-                            <div style="display:flex;gap:14px;margin-top:4px;">
-                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
-                                    <input type="radio" name="main-floor-time" value="00:00" checked onchange="onMainFloorRadioChange()">
-                                    <span>00:00</span>
-                                </label>
-                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
-                                    <input type="radio" name="main-floor-time" value="00:30" onchange="onMainFloorRadioChange()">
-                                    <span>00:30</span>
-                                </label>
+                            <div style="display:flex;gap:14px;margin-top:3px;">
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="radio" name="main-floor-time" value="00:00" checked onchange="onMainFloorRadioChange()"><span>00:00</span></label>
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="radio" name="main-floor-time" value="00:30" onchange="onMainFloorRadioChange()"><span>00:30</span></label>
                             </div>
                         </div>
                     </div>
 
                     <!-- 01 Core Team -->
-                    <div class="fs-card">
-                        <div class="fs-card-h"><span>01 Core Team</span></div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>CVD</label><input type="text" id="fs-cvd" value="Alain" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-cvd-time" value="20:30" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Tech</label><input type="text" id="fs-technik" value="Simon" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-technik-time" value="21:00" class="time-input" oninput="updateFactsheetPreview()"></div>
+                    <div class="fs-sec">
+                        <div class="fs-sec-h">01 Core Team</div>
+                        <div class="fg2">
+                            <div class="fg"><label>CVD</label><input type="text" id="fs-cvd" value="Alain" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-cvd-time" value="20:30" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Techniker</label><input type="text" id="fs-technik" value="Simon" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-technik-time" value="21:00" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
-                        <!-- KASSA -->
-                        <div class="form-row" id="kassa-row" style="grid-template-columns:1fr;margin-top:5px;">
-                            <div class="form-group">
-                                <label>🎫 Kassa</label>
-                                <div style="display:flex;gap:12px;margin-top:4px;margin-bottom:5px;">
-                                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;">
-                                        <input type="radio" id="kassa-radio-eigen" name="kassa-type" value="eigen" checked onchange="updateKassaUI(); updateFactsheetPreview()"> EIGEN
-                                    </label>
-                                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;">
-                                        <input type="radio" id="kassa-radio-fremd" name="kassa-type" value="fremd" onchange="updateKassaUI(); updateFactsheetPreview()"> FREMD
-                                    </label>
-                                </div>
-                                <div id="kassa-eigen-options" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
-                                    <label style="display:flex;align-items:center;gap:7px;cursor:pointer;"><input type="checkbox" id="kassa-matthaeus" checked onchange="updateFactsheetPreview()"><span>Matthäus</span></label>
-                                    <label style="display:flex;align-items:center;gap:7px;cursor:pointer;"><input type="checkbox" id="kassa-schadi" checked onchange="updateFactsheetPreview()"><span>Schadi</span></label>
-                                    <label style="display:flex;align-items:center;gap:7px;cursor:pointer;"><input type="checkbox" id="kassa-isa" checked onchange="updateFactsheetPreview()"><span>Isa</span></label>
-                                    <label style="display:flex;align-items:center;gap:7px;cursor:pointer;"><input type="checkbox" id="kassa-manual-cb" onchange="updateFactsheetPreview()"><input type="text" id="kassa-manual-name" placeholder="Name..." oninput="if(this.value.trim()){document.getElementById('kassa-manual-cb').checked=true;} updateFactsheetPreview();" style="padding:4px 8px;font-size:11px;width:90px;"></label>
-                                </div>
-                                <div id="kassa-fremd-label" style="display:none;color:#667085;font-size:11px;margin-top:4px;">→ Wird als <strong style="color:#e8edf5">FREMD</strong> eingetragen</div>
+                        <div id="kassa-row" class="kassa-block">
+                            <div style="display:flex;gap:12px;margin-bottom:5px;">
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:11px;color:#c8d4e8"><input type="radio" id="kassa-radio-eigen" name="kassa-type" value="eigen" checked onchange="updateKassaUI(); updateFactsheetPreview()"> EIGEN</label>
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:11px;color:#c8d4e8"><input type="radio" id="kassa-radio-fremd" name="kassa-type" value="fremd" onchange="updateKassaUI(); updateFactsheetPreview()"> FREMD</label>
                             </div>
+                            <div id="kassa-eigen-options" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="kassa-matthaeus" checked onchange="updateFactsheetPreview()"><span>Matthäus</span></label>
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="kassa-schadi" checked onchange="updateFactsheetPreview()"><span>Schadi</span></label>
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="kassa-isa" checked onchange="updateFactsheetPreview()"><span>Isa</span></label>
+                                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="kassa-manual-cb" onchange="updateFactsheetPreview()"><input type="text" id="kassa-manual-name" placeholder="Name..." oninput="if(this.value.trim()){document.getElementById('kassa-manual-cb').checked=true;} updateFactsheetPreview();" style="padding:4px 8px;font-size:11px;width:80px;"></label>
+                            </div>
+                            <div id="kassa-fremd-label" style="display:none;color:#667085;font-size:11px;">→ Wird als <strong style="color:#e8edf5">FREMD</strong> eingetragen</div>
                         </div>
                     </div>
 
                     <!-- 02 Bar Positions -->
-                    <div class="fs-card">
-                        <div class="fs-card-h"><span>02 Bar Positions</span></div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>Terrasse</label><input type="text" id="fs-terrasse" value="-" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-terrasse-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Kitchen</label><input type="text" id="fs-kitchen" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-kitchen-time" value="22:00" class="time-input" oninput="updateFactsheetPreview()"></div>
+                    <div class="fs-sec">
+                        <div class="fs-sec-h">02 Bar Positionen</div>
+                        <div class="fg2">
+                            <div class="fg"><label>Terrasse</label><input type="text" id="fs-terrasse" value="-" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-terrasse-time" value="22:00" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Kitchen</label><input type="text" id="fs-kitchen" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-kitchen-time" value="22:00" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>Main 1</label><input type="text" id="fs-main1" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-main1-time" value="22:30" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Main 2</label><input type="text" id="fs-main2" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-main2-time" value="22:30" class="time-input" oninput="updateFactsheetPreview()"></div>
+                        <div class="fg2">
+                            <div class="fg"><label>Main 1</label><input type="text" id="fs-main1" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-main1-time" value="22:30" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Main 2</label><input type="text" id="fs-main2" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-main2-time" value="22:30" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>Main 3</label><input type="text" id="fs-main3" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-main3-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Main 4</label><input type="text" id="fs-main4" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-main4-time" value="23:45" class="time-input" oninput="updateFactsheetPreview()"></div>
+                        <div class="fg2">
+                            <div class="fg"><label>Main 3</label><input type="text" id="fs-main3" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-main3-time" value="23:00" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Main 4</label><input type="text" id="fs-main4" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-main4-time" value="23:45" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
                     </div>
 
                     <!-- 03 Runner + Garderobe -->
-                    <div class="fs-card">
-                        <div class="fs-card-h"><span>03 Runner + Garderobe</span></div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>Runner 1</label><input type="text" id="fs-runner1" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner1-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Runner 2</label><input type="text" id="fs-runner2" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner2-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Runner 3</label><input type="text" id="fs-runner3" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner3-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
+                    <div class="fs-sec">
+                        <div class="fs-sec-h">03 Runner + Garderobe</div>
+                        <div class="fg3">
+                            <div class="fg"><label>Runner 1</label><input type="text" id="fs-runner1" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner1-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Runner 2</label><input type="text" id="fs-runner2" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner2-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Runner 3</label><input type="text" id="fs-runner3" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner3-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px 1fr 56px;">
-                            <div class="form-group"><label>Runner 4</label><input type="text" id="fs-runner4" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner4-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Runner 5</label><input type="text" id="fs-runner5" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner5-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Runner 6</label><input type="text" id="fs-runner6" value="" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-runner6-time" value="" class="time-input" oninput="updateFactsheetPreview()"></div>
+                        <div class="fg3">
+                            <div class="fg"><label>Runner 4</label><input type="text" id="fs-runner4" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner4-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Runner 5</label><input type="text" id="fs-runner5" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner5-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Runner 6</label><input type="text" id="fs-runner6" value="" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-runner6-time" value="" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
-                        <div class="form-row" style="grid-template-columns:1fr 56px 1fr 56px 1fr 56px;border-top:1px solid #1a2332;padding-top:5px;">
-                            <div class="form-group"><label>Gard. 1</label><input type="text" id="fs-gard1" value="Sofia" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-gard1-time" value="22:45" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Gard. 2</label><input type="text" id="fs-gard2" value="Fayez" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-gard2-time" value="23:00" class="time-input" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Gard. 3</label><input type="text" id="fs-gard3" value="Nico" oninput="updateFactsheetPreview()"></div>
-                            <div class="form-group"><label>Zeit</label><input type="text" id="fs-gard3-time" value="00:15" class="time-input" oninput="updateFactsheetPreview()"></div>
+                        <div style="height:1px;background:#151f2e;margin:3px 0"></div>
+                        <div class="fg3">
+                            <div class="fg"><label>Gard. 1</label><input type="text" id="fs-gard1" value="Sofia" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-gard1-time" value="22:45" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Gard. 2</label><input type="text" id="fs-gard2" value="Fayez" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-gard2-time" value="23:00" class="ti" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Gard. 3</label><input type="text" id="fs-gard3" value="Nico" oninput="updateFactsheetPreview()"></div>
+                            <div class="fg"><label>Zeit</label><input type="text" id="fs-gard3-time" value="00:15" class="ti" oninput="updateFactsheetPreview()"></div>
                         </div>
                     </div>
 
                     <!-- 04 Security -->
-                    <div class="fs-card" style="flex:1;min-height:120px;display:flex;flex-direction:column;">
-                        <div class="fs-card-h">
-                            <span>04 Security</span>
-                            <div class="sec-add">
-                                <button type="button" onclick="fsAddSecurityRow()">+</button>
-                                <button type="button" onclick="fsRemoveSecurityRow()">&minus;</button>
+                    <div class="fs-sec sec-grow">
+                        <div class="fs-sec-h">04 Security
+                            <div class="sec-add" style="display:flex;gap:3px;margin-left:auto">
+                                <button type="button" style="width:20px;height:20px;border-radius:4px;border:1px solid #1e2736;background:#111826;font-size:13px;cursor:pointer;display:grid;place-items:center;color:#667085;font-family:inherit" onclick="fsAddSecurityRow()">+</button>
+                                <button type="button" style="width:20px;height:20px;border-radius:4px;border:1px solid #1e2736;background:#111826;font-size:13px;cursor:pointer;display:grid;place-items:center;color:#667085;font-family:inherit" onclick="fsRemoveSecurityRow()">&minus;</button>
                             </div>
                         </div>
-                        <div id="fs-security-rows" style="display:flex;flex-direction:column;gap:6px;flex:1;"></div>
+                        <div id="fs-security-rows" style="display:flex;flex-direction:column;gap:4px;flex:1;min-height:0;overflow:hidden;"></div>
                     </div>
                 </div>
 
@@ -7925,7 +7905,7 @@
                 <div class="fl">
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small>Factsheet Generator · v15.9.213</small>
+                <small>Factsheet Generator · v15.9.214</small>
             </div>
             </div>
         </div>
@@ -8707,7 +8687,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.213</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.214</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9187,7 +9167,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.213</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.214</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -10769,7 +10749,7 @@
             const secRows = _secData.map((s, i) => `<tr><td>${i === 0 ? 'SECURITY:' : ''}</td><td>${s.time}</td><td>${s.pax}</td></tr>`).join('');
             
             document.getElementById('fs-preview').innerHTML = `
-                <h2>EVENT: <span class="event-name">${eventName.toUpperCase()}</span></h2>
+                <h2><span class="ev-label">EVENT: </span><span class="event-name">${eventName.toUpperCase()}</span></h2>
                 <p>Datum: ${datum}</p>
                 <p><strong>AUFSTELLUNG:</strong></p>
                 <table>
@@ -13374,7 +13354,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.214', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13534,7 +13514,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.214', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13608,7 +13588,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.214', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13715,7 +13695,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.214', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13799,7 +13779,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.214', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14108,7 +14088,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.214', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14255,7 +14235,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.214', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14400,7 +14380,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.214', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19233,7 +19213,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.213';
+            const HUB_VERSION = 'v15.9.214';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20938,7 +20918,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.213</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.214</div>
                     </div>
                     
                     <div class="section">
@@ -21037,7 +21017,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.213 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.214 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24747,7 +24727,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.213 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.214 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24777,7 +24757,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.213',
+                hubVersion: 'v15.9.214',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -28102,7 +28082,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.213';
+    const HUB_VER = 'v15.9.214';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
