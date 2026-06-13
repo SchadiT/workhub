@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.212</title>
+    <title>Turbo Projects Work Hub v15.9.213</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.212: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.213: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.212: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.213: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3987,7 +3987,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.212) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.213) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5337,7 +5337,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.212) ── */
+        /* ── Planner Overlay Light Theme (v15.9.213) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5387,7 +5387,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.212) ── */
+        /* ── Light skin contrast boost (v15.9.213) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5623,7 +5623,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.212) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.213) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -7647,7 +7647,7 @@
             /* Main grid: left input | right preview */
             #factsheet-modal .fs-main{display:grid;grid-template-columns:minmax(0,.68fr) minmax(0,1fr);min-height:0;overflow:hidden;height:100%}
             /* Left */
-            #factsheet-modal .fs-left{padding:6px;border-right:1px solid #1e2736;display:flex;flex-direction:column;gap:4px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e2736 transparent}
+            #factsheet-modal .fs-left{padding:6px;border-right:1px solid #1e2736;display:flex;flex-direction:column;gap:4px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e2736 transparent;min-height:0}
             #factsheet-modal .fs-left::-webkit-scrollbar{width:5px}
             #factsheet-modal .fs-left::-webkit-scrollbar-thumb{background:#1e2736;border-radius:3px}
             /* Setup strip */
@@ -7694,9 +7694,9 @@
             #factsheet-modal .fs-ph-b i{padding:2px 8px;border-radius:5px;font-style:normal;font-size:8.5px;font-weight:700;background:#111826;border:1px solid #1e2736;color:#667085}
             #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 160px;min-height:0;overflow:hidden}
             /* Document zone — uses original #fs-preview, scaled to fit */
-            #factsheet-modal .fs-dz{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0e1520 0%,#050709 100%);padding:20px}
-            #factsheet-modal .fs-paper-wrap{position:relative;flex-shrink:0;border-radius:3px;overflow:hidden;margin:auto;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 48px rgba(0,0,0,.85),0 2px 16px rgba(0,0,0,.6);background:#fff;width:100%;max-width:520px}
-            #factsheet-modal #fs-preview{width:100%;background:#fff;color:#111;padding:18px 16px;transform-origin:top center;display:block}
+            #factsheet-modal .fs-dz{position:relative;display:flex;align-items:center;justify-content:center;overflow:auto;background:radial-gradient(ellipse at 50% 40%,#0e1520 0%,#050709 100%);padding:20px}
+            #factsheet-modal .fs-paper-wrap{position:relative;flex-shrink:0;border-radius:3px;overflow:visible;margin:auto;box-shadow:0 0 0 1px rgba(255,255,255,.05),0 8px 48px rgba(0,0,0,.85),0 2px 16px rgba(0,0,0,.6);background:#fff;width:min(560px,100%)}
+            #factsheet-modal #fs-preview{width:100%;background:#fff;color:#111;padding:18px 16px;transform-origin:top center;display:block;overflow:visible}
             /* Rail */
             #factsheet-modal .fs-rail{border-left:1px solid #1e2736;padding:8px 7px;display:flex;flex-direction:column;gap:4px;align-items:center;overflow-y:auto;background:#0c1018;scrollbar-width:none}
             #factsheet-modal .fs-rail::-webkit-scrollbar{display:none}
@@ -7724,8 +7724,11 @@
             #factsheet-modal #fs-preview h2{font-size:17px;font-family:Inter,Arial,sans-serif;font-weight:800;letter-spacing:-.01em;margin-bottom:4px;color:#111}
             #factsheet-modal #fs-preview p{font-size:10.5px;font-family:Inter,Arial,sans-serif;color:#444;margin-bottom:2px}
             #factsheet-modal #fs-preview strong{font-size:10.5px}
-            #factsheet-modal #fs-preview table{width:100%;border-collapse:collapse;margin-top:8px}
-            #factsheet-modal #fs-preview th,#factsheet-modal #fs-preview td{border:.5px solid #ccc;padding:3px 6px;font-size:10px}
+            #factsheet-modal #fs-preview table{width:100%;border-collapse:collapse;margin-top:8px;table-layout:fixed}
+            #factsheet-modal #fs-preview th,#factsheet-modal #fs-preview td{border:.5px solid #ccc;padding:3px 6px;font-size:10px;overflow:hidden;text-overflow:ellipsis}
+            #factsheet-modal #fs-preview td:nth-child(1){width:38%}
+            #factsheet-modal #fs-preview td:nth-child(2){width:18%}
+            #factsheet-modal #fs-preview td:nth-child(3){width:44%}
             #factsheet-modal #fs-preview th{background:#ebebeb;font-family:Inter,Arial,sans-serif;font-size:8px;font-weight:700}
             /* Mobile */
             @media (max-width:768px){
@@ -7880,7 +7883,7 @@
                     </div>
 
                     <!-- 04 Security -->
-                    <div class="fs-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
+                    <div class="fs-card" style="flex:1;min-height:120px;display:flex;flex-direction:column;">
                         <div class="fs-card-h">
                             <span>04 Security</span>
                             <div class="sec-add">
@@ -7922,7 +7925,7 @@
                 <div class="fl">
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small>Factsheet Generator · v15.9.212</small>
+                <small>Factsheet Generator · v15.9.213</small>
             </div>
             </div>
         </div>
@@ -8704,7 +8707,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.212</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.213</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9184,7 +9187,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.212</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.213</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -13371,7 +13374,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.213', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13531,7 +13534,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13605,7 +13608,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13712,7 +13715,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13796,7 +13799,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14105,7 +14108,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.213', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14252,7 +14255,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.213', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14397,7 +14400,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.212', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.213', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19230,7 +19233,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.212';
+            const HUB_VERSION = 'v15.9.213';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20935,7 +20938,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.212</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.213</div>
                     </div>
                     
                     <div class="section">
@@ -21034,7 +21037,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.212 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.213 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24744,7 +24747,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.212 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.213 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24774,7 +24777,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.212',
+                hubVersion: 'v15.9.213',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -28099,7 +28102,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.212';
+    const HUB_VER = 'v15.9.213';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
