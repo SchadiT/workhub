@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.215</title>
+    <title>Turbo Projects Work Hub v15.9.218</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.215: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.218: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.215: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.218: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3987,7 +3987,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.215) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.218) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5337,7 +5337,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.215) ── */
+        /* ── Planner Overlay Light Theme (v15.9.218) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5387,7 +5387,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.215) ── */
+        /* ── Light skin contrast boost (v15.9.218) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5623,7 +5623,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.215) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.218) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -7635,7 +7635,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.215 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.218 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -7689,10 +7689,11 @@
             #factsheet-modal .fs-ph span{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#2e4460}
             #factsheet-modal .fs-ph-b{display:flex;gap:4px}
             #factsheet-modal .fs-ph-b i{padding:3px 8px;border-radius:4px;font-style:normal;font-size:9px;font-weight:700;background:#0e1624;border:0.5px solid #1a2436;color:#2e4460}
-            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 88px;min-height:0;overflow:hidden}
-            /* Preview zone — paper scrollable, not fixed square */
-            #factsheet-modal .fs-dz{display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;overflow-x:hidden;background:radial-gradient(ellipse at 50% 35%,#0d1826 0%,#050709 100%);padding:20px;scrollbar-width:thin;scrollbar-color:#1a2a3a transparent}
-            #factsheet-modal .fs-paper-wrap{flex-shrink:0;border-radius:2px;overflow:visible;width:100%;max-width:420px;box-shadow:0 0 0 0.5px rgba(255,255,255,.04),0 12px 60px rgba(0,0,0,.95);background:#fff}
+            #factsheet-modal .fs-pvb{flex:1;display:grid;grid-template-columns:1fr 140px;min-height:0;overflow:hidden}
+            /* Preview zone — centered */
+            #factsheet-modal .fs-dz{display:flex;align-items:center;justify-content:center;overflow-y:auto;overflow-x:hidden;background:radial-gradient(ellipse at 50% 35%,#0d1826 0%,#050709 100%);padding:28px 36px;scrollbar-width:thin;scrollbar-color:#1a2a3a transparent}
+            #factsheet-modal .fs-dz-inner{display:flex;align-items:center;justify-content:center;min-height:100%;width:100%}
+            #factsheet-modal .fs-paper-wrap{flex-shrink:0;border-radius:2px;overflow:visible;width:min(620px,100%);box-shadow:0 0 0 0.5px rgba(255,255,255,.04),0 12px 60px rgba(0,0,0,.95);background:#fff;margin:0 auto}
             #factsheet-modal #fs-preview{width:100%;background:#fff;color:#111;padding:20px 18px;display:block;overflow:visible}
             /* Preview typography */
             #factsheet-modal #fs-preview{font-family:'Courier New',monospace;font-size:10.5px;line-height:1.4}
@@ -7712,7 +7713,7 @@
             #factsheet-modal .fs-rail .rk{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1a2d3e;text-align:center}
             #factsheet-modal .fs-rail .rv{font-size:13px;font-weight:700;color:#3d5470;text-align:center}
             #factsheet-modal .fs-rail hr{border:0;border-top:0.5px solid #101820;margin:1px 0}
-            #factsheet-modal .fs-rail .rbtn{width:100%;padding:9px 5px;border-radius:6px;border:none;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .12s;text-align:center}
+            #factsheet-modal .fs-rail .rbtn{width:100%;padding:10px 5px;border-radius:6px;border:none;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .12s;text-align:center}
             #factsheet-modal .fs-rail .rbtn:hover{opacity:.85}
             #factsheet-modal .fs-rail .rbtn.pdf{background:#dc2626;color:#fff}
             #factsheet-modal .fs-rail .rbtn.docx{background:#2563eb;color:#fff}
@@ -7732,7 +7733,7 @@
                 #factsheet-modal .fs-main{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow-y:auto}
                 #factsheet-modal .fs-left{border-right:none;border-bottom:0.5px solid rgba(255,255,255,0.06);overflow-y:auto}
                 #factsheet-modal .fs-right{min-height:420px}
-                #factsheet-modal .fs-pvb{grid-template-columns:1fr 72px}
+                #factsheet-modal .fs-pvb{grid-template-columns:1fr 96px}
             }
             </style>
 
@@ -7886,8 +7887,10 @@
                     <div class="fs-ph"><span>05 Document Preview</span><div class="fs-ph-b"><i>A4</i><i>Auto-Scale</i></div></div>
                     <div class="fs-pvb">
                         <div class="fs-dz" id="fs-dz">
+                            <div class="fs-dz-inner">
                             <div class="fs-paper-wrap" id="fs-paper-wrap">
                                 <div class="factsheet-preview" id="fs-preview"><!-- Generated by updateFactsheetPreview() --></div>
+                            </div>
                             </div>
                         </div>
                         <div class="fs-rail">
@@ -7912,7 +7915,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.215</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.218</small>
             </div>
             </div>
         </div>
@@ -8694,7 +8697,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.215</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.218</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9174,7 +9177,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.215</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.218</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -12104,7 +12107,7 @@
             }
         }
 
-        // v15.9.215: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.218: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -13352,7 +13355,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.218', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13512,7 +13515,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.218', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13586,7 +13589,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.218', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13693,7 +13696,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.218', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13777,7 +13780,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.218', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14086,7 +14089,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.218', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14233,7 +14236,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.218', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14378,7 +14381,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.215', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.218', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19211,7 +19214,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.215';
+            const HUB_VERSION = 'v15.9.218';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20916,7 +20919,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.215</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.218</div>
                     </div>
                     
                     <div class="section">
@@ -21015,7 +21018,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.215 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.218 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24725,7 +24728,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.215 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.218 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24755,7 +24758,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.215',
+                hubVersion: 'v15.9.218',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -28080,7 +28083,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.215';
+    const HUB_VER = 'v15.9.218';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
