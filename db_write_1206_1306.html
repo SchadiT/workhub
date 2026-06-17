@@ -111,12 +111,18 @@ async function writeDB() {
 
   try {
     const payload = JSON.stringify({ secret: SECRET, action: 'batch_add_and_write', events: EVENTS });
-    const res = await fetch(PROXY, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: payload
-    });
+    // Try text/plain first (avoids preflight CORS issues on some servers)
+    let res;
+    try {
+      res = await fetch(PROXY, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: payload
+      });
+    } catch(fetchErr) {
+      throw new Error('Network error: ' + fetchErr.message);
+    }
     const text = await res.text();
     let data;
     try { data = JSON.parse(text); }
