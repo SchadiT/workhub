@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.219</title>
+    <title>Turbo Projects Work Hub v15.9.220</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.219: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.220: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.219: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.220: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3987,7 +3987,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.219) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.220) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5337,7 +5337,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.219) ── */
+        /* ── Planner Overlay Light Theme (v15.9.220) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5387,7 +5387,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.219) ── */
+        /* ── Light skin contrast boost (v15.9.220) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5623,7 +5623,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.219) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.220) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -6689,7 +6689,8 @@
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
                     <!-- v15.9.161: PDF Report from DBV Selection -->
                     <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
-
+                    <!-- v15.9.220: DB Update Button -->
+                    <button id="dbv-update-btn" onclick="dbUpdateOpen()" style="background:linear-gradient(135deg,#0a2a1a,#051a0f);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="Revenue-Daten in DB schreiben">&#8659; DB Update</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
                         <div style="display:flex;align-items:center;gap:6px;">
@@ -7636,7 +7637,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.219 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.220 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -7916,7 +7917,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.219</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.220</small>
             </div>
             </div>
         </div>
@@ -8698,7 +8699,7 @@
     <div class="footer">
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.219</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.220</span>
     </div>
     
     <!-- Metrics Button -->
@@ -9178,7 +9179,7 @@
                         <div class="metrics-card-body">
                             <div class="metrics-row">
                                 <span>Work Hub Version</span>
-                                <span class="metrics-value" id="metrics-version">v15.9.219</span>
+                                <span class="metrics-value" id="metrics-version">v15.9.220</span>
                             </div>
                             <div class="metrics-row">
                                 <span>Last Data Save</span>
@@ -12108,7 +12109,7 @@
             }
         }
 
-        // v15.9.219: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.220: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -13356,7 +13357,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.220', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13516,7 +13517,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.220', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13590,7 +13591,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.220', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13697,7 +13698,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.220', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13781,7 +13782,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.220', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14090,7 +14091,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.220', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14237,7 +14238,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.220', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14382,7 +14383,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.219', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.220', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19215,7 +19216,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.219';
+            const HUB_VERSION = 'v15.9.220';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20920,7 +20921,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.219</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.220</div>
                     </div>
                     
                     <div class="section">
@@ -21019,7 +21020,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.219 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.220 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24729,7 +24730,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.219 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.220 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24759,7 +24760,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.219',
+                hubVersion: 'v15.9.220',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -28084,7 +28085,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.219';
+    const HUB_VER = 'v15.9.220';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28381,6 +28382,363 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /STATE SYNC =====
 
+// ===== DB UPDATE v15.9.220 =====
+(function() {
+
+const DB_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
+const DB_SECRET = 'turbo_db_2026';
+
+// EIGEN promoter keywords (LOCKED 5-word set)
+const EIGEN_KEYWORDS = ['turbo','in house','selected','halloween','polyamor'];
+
+let dbuQueue   = [];   // Array of event objects in queue
+let dbuExpanded = {};  // { idx: bool }
+
+function isEigenPromoter(category, summary) {
+    const cat = (category || '').toLowerCase();
+    const sum = (summary  || '').toLowerCase();
+    if (EIGEN_KEYWORDS.some(k => cat.includes(k) || sum.includes(k))) return true;
+    if (cat === 'eigen') return true;
+    return false;
+}
+
+// ── Open / Close ──────────────────────────────────────────────────────────────
+window.dbUpdateOpen = function() {
+    dbuQueue   = [];
+    dbuExpanded = {};
+    // Step 1 active
+    document.getElementById('dbu2-step1').style.display = 'block';
+    document.getElementById('dbu2-step2').style.display = 'none';
+    document.getElementById('dbu2-step3').style.display = 'none';
+    dbuBuildDropdown();
+    dbuRender();
+    dbuSummaryBar();
+    const modal = document.getElementById('db-update-modal');
+    modal.style.display = 'flex';
+};
+
+window.dbUpdateClose = function() {
+    document.getElementById('db-update-modal').style.display = 'none';
+};
+
+// ── BMT Dropdown ──────────────────────────────────────────────────────────────
+function dbuBuildDropdown() {
+    const sel = document.getElementById('dbu2-event-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">— Event auswählen —</option>';
+    const evs = typeof bmtEvents !== 'undefined' ? bmtEvents : [];
+    const now = new Date();
+    const sixWeeksAgo = new Date(now.getTime() - 42 * 24 * 60 * 60 * 1000);
+    const recent = evs.filter(ev => {
+        const d = ev.dtstart instanceof Date ? ev.dtstart : new Date(ev.dtstart);
+        const cat = (ev.category || '').toLowerCase();
+        return d >= sixWeeksAgo && d <= now &&
+               !cat.includes('konzert') && !cat.includes('concert') &&
+               (ev.status || 'CONFIRMED') !== 'CANCELLED';
+    }).sort((a, b) => new Date(b.dtstart) - new Date(a.dtstart));
+    if (!recent.length) {
+        sel.innerHTML += '<option disabled>— Keine Events gefunden (BMT laden?) —</option>';
+        return;
+    }
+    recent.forEach((ev, idx) => {
+        const d  = ev.dtstart instanceof Date ? ev.dtstart : new Date(ev.dtstart);
+        const ds = d.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
+        const isEigen = isEigenPromoter(ev.category, ev.summary);
+        const typ = isEigen ? 'EIGEN' : 'FREMD';
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = ds + '  ·  ' + (ev.summary || 'Unbekannt') + '  [' + typ + ']';
+        sel.appendChild(opt);
+    });
+    sel._recent = recent;
+}
+
+window.dbuAddEvent = function() {
+    const sel  = document.getElementById('dbu2-event-select');
+    const idx  = parseInt(sel.value);
+    const recent = sel._recent || [];
+    if (isNaN(idx) || !recent[idx]) return;
+    const ev = recent[idx];
+    const d  = ev.dtstart instanceof Date ? ev.dtstart : new Date(ev.dtstart);
+    const ds = d.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
+    const isEigen = isEigenPromoter(ev.category, ev.summary);
+
+    // Headliner from bookings
+    const headliners = (ev.bookings || [])
+        .filter(b => b.performance_type === 'headliner' || b.performance_type === 'main')
+        .map(b => b.name || (b.names||[]).join(' b2b '));
+    const headliner = headliners.join(', ') || '';
+
+    dbuQueue.push({
+        datum:           ds,
+        event_name:      ev.summary || '',
+        headliner:       headliner,
+        typ:             isEigen ? 'EIGEN' : 'FREMD',
+        promoter:        isEigen ? 'IN HOUSE' : (ev.raw && ev.raw.organizer ? ev.raw.organizer : ''),
+        bar_revenue:     '',
+        bar_status:      'manual',   // 'auto' | 'manual'
+        foh_revenue:     '',
+        foh_tickets:     '',
+        foh_status:      'manual',
+        presale_revenue: '',
+        presale_tickets: '',
+        presale_status:  'manual',
+        miete:           2940,
+    });
+    const newIdx = dbuQueue.length - 1;
+    dbuExpanded[newIdx] = true;  // expand new card
+    sel.value = '';
+    dbuRender();
+    dbuSummaryBar();
+};
+
+// ── Card Render ───────────────────────────────────────────────────────────────
+function dbuStatusBadge(status) {
+    if (status === 'auto') return '<span style="background:#14532d;color:#22c55e;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;">AUTO</span>';
+    return '<span style="background:#2a1a06;color:#f59e0b;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;">MANUELL</span>';
+}
+
+function dbuRevInput(qi, field, label, color, val, status, placeholder) {
+    return `
+    <div style="flex:1;min-width:110px;">
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+            <label style="font-size:10px;color:${color};font-weight:600;">${label}</label>
+            ${dbuStatusBadge(status)}
+        </div>
+        <input type="number" step="0.01" placeholder="${placeholder||'0.00'}"
+            value="${val}"
+            oninput="dbuQueue[${qi}].${field}=this.value;dbuSummaryBar();"
+            style="background:#111;border:1px solid #2a2a2a;color:${color};padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+    </div>`;
+}
+
+function dbuRender() {
+    const c = document.getElementById('dbu2-queue');
+    if (!c) return;
+    if (!dbuQueue.length) {
+        c.innerHTML = '<div style="text-align:center;padding:24px;color:var(--sub);font-size:12px;">Noch keine Events in der Queue.<br>Event aus Dropdown wählen und hinzufügen.</div>';
+        return;
+    }
+    c.innerHTML = dbuQueue.map((ev, qi) => {
+        const expanded = !!dbuExpanded[qi];
+        const isEigen  = ev.typ === 'EIGEN';
+        const typColor = isEigen ? '#22c55e' : '#60a5fa';
+        const typBg    = isEigen ? '#14532d' : '#1e3a5f';
+
+        // Revenue for collapsed summary
+        const totalRev = (parseFloat(ev.bar_revenue)||0) +
+            (isEigen ? (parseFloat(ev.foh_revenue)||0) + (parseFloat(ev.presale_revenue)||0) : (parseFloat(ev.miete)||0));
+
+        const collapsedHtml = `
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;"
+             onclick="dbuExpanded[${qi}]=!dbuExpanded[${qi}];dbuRender();">
+            <div style="flex:1;min-width:0;">
+                <div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ev.event_name||'—'}</div>
+                <div style="font-size:11px;color:var(--sub);margin-top:2px;">${ev.datum} ${ev.headliner ? '· '+ev.headliner : ''}</div>
+            </div>
+            <span style="background:${typBg};color:${typColor};padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;flex-shrink:0;">${ev.typ}</span>
+            ${totalRev > 0 ? '<span style="color:#f59e0b;font-size:11px;font-weight:700;flex-shrink:0;">€ '+totalRev.toLocaleString('de-AT',{minimumFractionDigits:2})+'</span>' : ''}
+            <span style="color:var(--faint);font-size:14px;">${expanded ? '▲' : '▼'}</span>
+        </div>`;
+
+        const expandedHtml = expanded ? `
+        <div style="padding:0 14px 14px;border-top:1px solid var(--hair);">
+            <!-- Row 1: Datum + Name + Typ toggle + Headliner -->
+            <div style="display:grid;grid-template-columns:130px 1fr 100px;gap:8px;margin-top:12px;margin-bottom:10px;">
+                <div>
+                    <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">DATUM</label>
+                    <input type="text" value="${ev.datum}"
+                        oninput="dbuQueue[${qi}].datum=this.value;"
+                        style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">EVENT NAME</label>
+                    <input type="text" value="${ev.event_name}"
+                        oninput="dbuQueue[${qi}].event_name=this.value;"
+                        style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">TYP</label>
+                    <select oninput="dbuQueue[${qi}].typ=this.value;dbuRender();"
+                        style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+                        <option value="EIGEN" ${isEigen?'selected':''}>EIGEN</option>
+                        <option value="FREMD" ${!isEigen?'selected':''}>FREMD</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">HEADLINER / MAIN ACT</label>
+                <input type="text" value="${ev.headliner||''}" placeholder="Headliner Name"
+                    oninput="dbuQueue[${qi}].headliner=this.value;"
+                    style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+            </div>
+            <!-- Revenue Cards -->
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
+                ${dbuRevInput(qi,'bar_revenue','BAR (WBV) €','#f59e0b',ev.bar_revenue,ev.bar_status,'')}
+                ${isEigen ? `
+                ${dbuRevInput(qi,'foh_revenue','FOH REVENUE €','#60a5fa',ev.foh_revenue,ev.foh_status,'')}
+                <div style="flex:1;min-width:80px;">
+                    <label style="font-size:10px;color:#60a5fa;font-weight:600;display:block;margin-bottom:3px;">FOH TICKETS</label>
+                    <input type="number" placeholder="0" value="${ev.foh_tickets}"
+                        oninput="dbuQueue[${qi}].foh_tickets=this.value;dbuSummaryBar();"
+                        style="background:#111;border:1px solid #2a2a2a;color:#60a5fa;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;margin-top:17px;">
+                </div>
+                ${dbuRevInput(qi,'presale_revenue','PRESALE €','#a78bfa',ev.presale_revenue,ev.presale_status,'')}
+                <div style="flex:1;min-width:80px;">
+                    <label style="font-size:10px;color:#a78bfa;font-weight:600;display:block;margin-bottom:3px;">PRESALE TICKETS</label>
+                    <input type="number" placeholder="0" value="${ev.presale_tickets}"
+                        oninput="dbuQueue[${qi}].presale_tickets=this.value;dbuSummaryBar();"
+                        style="background:#111;border:1px solid #2a2a2a;color:#a78bfa;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;margin-top:17px;">
+                </div>
+                ` : `
+                <div style="flex:1;min-width:110px;">
+                    <label style="font-size:10px;color:#22c55e;font-weight:600;display:block;margin-bottom:3px;">MIETE €</label>
+                    <input type="number" step="0.01" value="${ev.miete||2940}"
+                        oninput="dbuQueue[${qi}].miete=parseFloat(this.value)||2940;dbuSummaryBar();"
+                        style="background:#111;border:1px solid #2a2a2a;color:#22c55e;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;margin-top:17px;">
+                </div>
+                `}
+            </div>
+        </div>` : '';
+
+        return `
+        <div style="background:var(--raised);border:1px solid var(--hair);border-radius:8px;margin-bottom:8px;overflow:hidden;position:relative;">
+            <button onclick="dbuQueue.splice(${qi},1);delete dbuExpanded[${qi}];dbuRender();dbuSummaryBar();"
+                style="position:absolute;top:10px;right:12px;background:none;border:none;color:var(--faint);cursor:pointer;font-size:16px;z-index:2;line-height:1;" title="Entfernen">×</button>
+            ${collapsedHtml}
+            ${expandedHtml}
+        </div>`;
+    }).join('');
+}
+
+// ── Summary Bar ───────────────────────────────────────────────────────────────
+window.dbuSummaryBar = function() {
+    const bar = document.getElementById('dbu2-summary-bar');
+    const btn = document.getElementById('dbu2-review-btn');
+    if (!bar || !btn) return;
+    if (!dbuQueue.length) {
+        bar.innerHTML = '<span style="color:var(--sub);font-size:12px;">Keine Events in Queue</span>';
+        btn.style.display = 'none';
+        return;
+    }
+    const total = dbuQueue.reduce((sum, ev) => {
+        const isEigen = ev.typ === 'EIGEN';
+        return sum + (parseFloat(ev.bar_revenue)||0) +
+            (isEigen ? (parseFloat(ev.foh_revenue)||0) + (parseFloat(ev.presale_revenue)||0) : (parseFloat(ev.miete)||0));
+    }, 0);
+    const count = dbuQueue.length;
+    bar.innerHTML = `
+        <span style="font-size:12px;color:var(--sub);">${count} Event${count!==1?'s':''} in Queue</span>
+        <span style="font-size:13px;font-weight:700;color:#f59e0b;">∑ € ${total.toLocaleString('de-AT',{minimumFractionDigits:2})}</span>`;
+    btn.style.display = 'inline-flex';
+    btn.textContent = 'Review ' + count + ' Event' + (count!==1?'s':'') + ' →';
+};
+
+// ── Step 2: Review ────────────────────────────────────────────────────────────
+window.dbuGoReview = function() {
+    const invalid = dbuQueue.filter(ev => !ev.datum || !ev.event_name || (!ev.bar_revenue && ev.bar_revenue !== 0));
+    if (invalid.length) { showToast('⚠ Datum, Name + Bar Revenue bei allen Events ausfüllen'); return; }
+    const c = document.getElementById('dbu2-review-list');
+    c.innerHTML = dbuQueue.map((ev, qi) => {
+        const isEigen = ev.typ === 'EIGEN';
+        const typColor = isEigen ? '#22c55e' : '#60a5fa';
+        const typBg    = isEigen ? '#14532d' : '#1e3a5f';
+        const totalRev = (parseFloat(ev.bar_revenue)||0) +
+            (isEigen ? (parseFloat(ev.foh_revenue)||0) + (parseFloat(ev.presale_revenue)||0) : (parseFloat(ev.miete)||0));
+        return `
+        <div style="background:var(--raised);border:1px solid ${isEigen?'#22c55e33':'#3b82f633'};border-radius:8px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div>
+                    <div style="font-size:13px;font-weight:700;color:var(--text);">${ev.event_name}</div>
+                    <div style="font-size:11px;color:var(--sub);">${ev.datum}${ev.headliner ? ' · ' + ev.headliner : ''}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="background:${typBg};color:${typColor};padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;">${ev.typ}</span>
+                    <span style="color:#f59e0b;font-size:13px;font-weight:700;">€ ${totalRev.toLocaleString('de-AT',{minimumFractionDigits:2})}</span>
+                </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:12px;">
+                <div><span style="color:var(--sub);">Bar:</span> <span style="color:#f59e0b;font-weight:600;">€ ${Number(ev.bar_revenue||0).toLocaleString('de-AT',{minimumFractionDigits:2})}</span></div>
+                ${isEigen ? `
+                <div><span style="color:var(--sub);">FOH:</span> <span style="color:#60a5fa;">€ ${Number(ev.foh_revenue||0).toLocaleString('de-AT',{minimumFractionDigits:2})} / ${ev.foh_tickets||0} Tkts</span></div>
+                <div><span style="color:var(--sub);">PreSale:</span> <span style="color:#a78bfa;">€ ${Number(ev.presale_revenue||0).toLocaleString('de-AT',{minimumFractionDigits:2})} / ${ev.presale_tickets||0} Tkts</span></div>
+                ` : `
+                <div><span style="color:var(--sub);">Miete:</span> <span style="color:#22c55e;">€ ${Number(ev.miete||2940).toLocaleString('de-AT',{minimumFractionDigits:2})}</span></div>
+                `}
+            </div>
+        </div>`;
+    }).join('');
+    document.getElementById('dbu2-step1').style.display = 'none';
+    document.getElementById('dbu2-step2').style.display = 'block';
+};
+
+window.dbuBackToQueue = function() {
+    document.getElementById('dbu2-step2').style.display = 'none';
+    document.getElementById('dbu2-step1').style.display = 'block';
+};
+
+// ── Step 3: Execute Write ─────────────────────────────────────────────────────
+window.dbuExecute = async function() {
+    const btn = document.getElementById('dbu2-confirm-btn');
+    btn.textContent = '⏳ Schreibe...';
+    btn.disabled = true;
+
+    const events = dbuQueue.map(ev => {
+        const obj = {
+            datum:      ev.datum,
+            event_name: ev.event_name,
+            headliner:  ev.headliner || '',
+            typ:        ev.typ,
+            promoter:   ev.promoter || '',
+            bar_revenue: parseFloat(ev.bar_revenue) || 0
+        };
+        if (ev.typ === 'FREMD') {
+            obj.miete = parseFloat(ev.miete) || 2940;
+        } else {
+            obj.foh_revenue      = parseFloat(ev.foh_revenue) || 0;
+            obj.foh_tickets_sold = parseInt(ev.foh_tickets)   || 0;
+            obj.presale_revenue  = parseFloat(ev.presale_revenue) || 0;
+            obj.presale_tickets  = parseInt(ev.presale_tickets)   || 0;
+        }
+        return obj;
+    });
+
+    try {
+        // mode: 'no-cors' — no response reading, fire-and-forget
+        await fetch(DB_AS_URL, {
+            method: 'POST',
+            mode:   'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ secret: DB_SECRET, action: 'batch_add_and_write', events })
+        });
+        document.getElementById('dbu2-step2').style.display = 'none';
+        document.getElementById('dbu2-step3').style.display = 'block';
+        document.getElementById('dbu2-result-msg').innerHTML = `
+            <div style="text-align:center;padding:20px 0;">
+                <div style="font-size:32px;margin-bottom:12px;">✅</div>
+                <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Write abgeschickt</div>
+                <div style="font-size:12px;color:var(--sub);">Fetch mit mode:'no-cors' — kein Response-Feedback möglich.<br>DB Viewer wird neu geladen — Event visuell verifizieren.</div>
+                <div style="margin-top:16px;font-size:12px;color:#f59e0b;">${events.length} Event${events.length!==1?'s':''} an Apps Script gesendet</div>
+            </div>`;
+    } catch(err) {
+        document.getElementById('dbu2-step2').style.display = 'none';
+        document.getElementById('dbu2-step3').style.display = 'block';
+        document.getElementById('dbu2-result-msg').innerHTML = `
+            <div style="background:#0a0a0a;border:1px solid #ef4444;border-radius:6px;padding:14px;color:#ef4444;">
+                ❌ Fehler: ${err.message}
+            </div>`;
+    }
+};
+
+window.dbuFinish = function() {
+    dbUpdateClose();
+    // Reload DB Viewer
+    if (typeof dbvRefresh === 'function') dbvRefresh();
+    else if (typeof dbvLoad === 'function') { dbvLoaded = false; dbvLoad(); }
+};
+
+})();
+// ===== /DB UPDATE v15.9.220 =====
 </script>
 
 <!-- ==================== STATE SYNC MODAL v15.9.204 ==================== -->
@@ -28406,6 +28764,59 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 </div>
 <!-- ==================== /STATE SYNC MODAL ==================== -->
 
+<!-- ==================== DB UPDATE MODAL (v15.9.220) ==================== -->
+<div id="db-update-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+    <div style="background:var(--raised);border:1px solid var(--hair);border-radius:10px;width:min(680px,96vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--hair);flex-shrink:0;">
+            <span style="font-size:14px;font-weight:700;color:#22c55e;letter-spacing:.5px;">⬇ DB Update</span>
+            <span id="dbu2-step-indicator" style="font-size:11px;color:var(--sub);margin-left:4px;"></span>
+            <button onclick="dbUpdateClose()" style="margin-left:auto;background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1;">×</button>
+        </div>
+
+        <!-- STEP 1: Queue Builder -->
+        <div id="dbu2-step1" style="display:flex;flex-direction:column;overflow:hidden;flex:1;">
+            <!-- Dropdown row -->
+            <div style="padding:14px 18px 10px;border-bottom:1px solid var(--hair);flex-shrink:0;">
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <select id="dbu2-event-select" style="flex:1;background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:7px 10px;border-radius:6px;font-size:12px;">
+                        <option value="">— BMT laden, dann Event wählen —</option>
+                    </select>
+                    <button onclick="dbuAddEvent()" style="background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">+ Hinzufügen</button>
+                </div>
+                <div style="font-size:11px;color:var(--faint);margin-top:6px;">Events der letzten 6 Wochen · KONZERT ausgeblendet · EIGEN/FREMD aus BMT Kategorie auto-detect</div>
+            </div>
+            <!-- Queue -->
+            <div id="dbu2-queue" style="overflow-y:auto;flex:1;padding:12px 18px;"></div>
+            <!-- Summary Bar -->
+            <div style="padding:12px 18px;border-top:1px solid var(--hair);background:var(--canvas);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;">
+                <div id="dbu2-summary-bar" style="display:flex;align-items:center;gap:16px;flex:1;"></div>
+                <button id="dbu2-review-btn" onclick="dbuGoReview()" style="display:none;background:linear-gradient(135deg,#14532d,#0a2a1a);border:1px solid #22c55e;color:#22c55e;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;"></button>
+            </div>
+        </div>
+
+        <!-- STEP 2: Review -->
+        <div id="dbu2-step2" style="display:none;flex-direction:column;overflow:hidden;flex:1;">
+            <div style="padding:12px 18px 8px;flex-shrink:0;">
+                <div style="font-size:12px;color:var(--sub);">Review — bitte vor dem Schreiben prüfen:</div>
+            </div>
+            <div id="dbu2-review-list" style="overflow-y:auto;flex:1;padding:0 18px 12px;"></div>
+            <div style="padding:12px 18px;border-top:1px solid var(--hair);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;">
+                <button onclick="dbuBackToQueue()" style="background:var(--raised2);border:1px solid var(--hair);color:var(--sub);padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;">← Zurück</button>
+                <button id="dbu2-confirm-btn" onclick="dbuExecute()" style="background:linear-gradient(135deg,#14532d,#0a2a1a);border:1px solid #22c55e;color:#22c55e;padding:7px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;">✓ In DB schreiben</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: Result -->
+        <div id="dbu2-step3" style="display:none;flex:1;overflow-y:auto;">
+            <div id="dbu2-result-msg" style="padding:20px 18px;"></div>
+            <div style="padding:0 18px 18px;display:flex;justify-content:flex-end;">
+                <button onclick="dbuFinish()" style="background:linear-gradient(135deg,#14532d,#0a2a1a);border:1px solid #22c55e;color:#22c55e;padding:7px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;">✓ Fertig — DB Viewer öffnen</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==================== /DB UPDATE MODAL ==================== -->
 
 </body>
 </html>
