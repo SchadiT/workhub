@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #fff; font-family: -apple-system, sans-serif; padding: 16px; }
+  .event { background: #111; border: 1px solid #222; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .event.eigen { border-color: #22c55e22; }
+  .event.fremd { border-color: #3b82f622; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 8px; }
+  .badge.eigen { background: #14532d; color: #22c55e; }
+  .badge.fremd { background: #1e3a5f; color: #60a5fa; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; }
+  .field { display: flex; flex-direction: column; gap: 2px; }
+  .field label { color: #555; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+  .field span { color: #fff; font-weight: 600; }
+  .field span.bar { color: #f59e0b; }
+  .field span.foh { color: #60a5fa; }
+  .field span.pre { color: #a78bfa; }
+  .field span.miete { color: #22c55e; }
+  .btn-confirm {
+    width: 100%; margin-top: 16px; padding: 14px;
+    background: linear-gradient(135deg, #0a2a1a, #051a0f);
+    border: 1px solid #22c55e; border-radius: 8px;
+    color: #22c55e; font-size: 14px; font-weight: 700;
+    cursor: pointer; letter-spacing: .5px;
+    transition: background .2s;
+  }
+  .btn-confirm:hover { background: linear-gradient(135deg, #14532d, #0a2a1a); }
+  .btn-confirm:disabled { opacity: .5; cursor: not-allowed; }
+  .status { margin-top: 12px; padding: 12px; border-radius: 6px; font-size: 13px; display: none; }
+  .status.ok { background: #0a2a1a; border: 1px solid #22c55e; color: #22c55e; }
+  .status.err { background: #2a0a0a; border: 1px solid #ef4444; color: #ef4444; }
+  .result-row { padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 12px; }
+  .result-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div id="preview"></div>
+<button class="btn-confirm" id="btn" onclick="writeDB()">✓ In DB schreiben</button>
+<div class="status" id="status"></div>
+
+<script>
+const PROXY = 'https://www.grelleforelle.com/hub-proxy/db_proxy.php';
+const SECRET = 'turbo_db_2026';
+
+// ── PAYLOAD — wird von Claude befüllt ────────────────────────────────────────
+const EVENTS = [
+  {
+    "datum": "12.06.2026",
+    "event_name": "Pre-Pride-Party by Grelle x MEAT Market x Rhinoplasty",
+    "typ": "EIGEN",
+    "promoter": "IN HOUSE",
+    "bar_revenue": 6238.40,
+    "foh_revenue": 1145.00,
+    "foh_tickets_sold": 119,
+    "presale_revenue": 2640.00,
+    "presale_tickets": 264
+  },
+  {
+    "datum": "13.06.2026",
+    "event_name": "FISH MARKET – Official Pride Afterparty w/ Boris, Gerald VDH",
+    "typ": "FREMD",
+    "promoter": "FISH MARKET",
+    "bar_revenue": 17370.10,
+    "miete": 2940
+  }
+];
+
+// ── Render Preview ────────────────────────────────────────────────────────────
+function render() {
+  const container = document.getElementById('preview');
+  container.innerHTML = EVENTS.map(ev => {
+    const isEigen = ev.typ === 'EIGEN';
+    return `
+    <div class="event ${isEigen?'eigen':'fremd'}">
+      <div style="display:flex;align-items:center;">
+        <strong style="font-size:13px;">${ev.event_name}</strong>
+        <span class="badge ${isEigen?'eigen':'fremd'}">${ev.typ}</span>
+        <span style="margin-left:auto;color:#555;font-size:12px;">${ev.datum}</span>
+      </div>
+      <div class="row">
+        <div class="field"><label>Bar Revenue</label><span class="bar">€ ${fmt(ev.bar_revenue)}</span></div>
+        ${isEigen ? `
+        <div class="field"><label>FOH Revenue</label><span class="foh">€ ${fmt(ev.foh_revenue)}</span></div>
+        <div class="field"><label>FOH Tickets</label><span class="foh">${ev.foh_tickets_sold}</span></div>
+        <div class="field"><label>PreSale Revenue</label><span class="pre">€ ${fmt(ev.presale_revenue)}</span></div>
+        <div class="field"><label>PreSale Tickets</label><span class="pre">${ev.presale_tickets}</span></div>
+        ` : `
+        <div class="field"><label>Miete</label><span class="miete">€ ${fmt(ev.miete||2940)}</span></div>
+        `}
+        <div class="field"><label>Promoter</label><span style="color:#aaa;">${ev.promoter||'—'}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function fmt(n) {
+  return Number(n||0).toLocaleString('de-AT', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ── Write ─────────────────────────────────────────────────────────────────────
+async function writeDB() {
+  const btn = document.getElementById('btn');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+  btn.textContent = '⏳ Schreibe...';
+  status.style.display = 'none';
+
+  try {
+    const res = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: SECRET, action: 'batch_add_and_write', events: EVENTS })
+    });
+    const data = await res.json();
+    const rows = data.results || [];
+    const ok = rows.filter(r => r.ok).length;
+
+    status.className = 'status ' + (data.ok ? 'ok' : 'err');
+    status.style.display = 'block';
+    status.innerHTML = `<strong>${ok} von ${rows.length} Events geschrieben</strong><br>` +
+      rows.map(r => `<div class="result-row">${r.ok?'✅':'❌'} ${r.event_name||r.datum} — ${r.message||r.error||''}</div>`).join('');
+
+    if (data.ok) btn.textContent = '✅ Fertig';
+    else { btn.textContent = '✓ Retry'; btn.disabled = false; }
+
+  } catch(err) {
+    status.className = 'status err';
+    status.style.display = 'block';
+    status.innerHTML = '❌ ' + err.message;
+    btn.textContent = '✓ Retry';
+    btn.disabled = false;
+  }
+}
+
+render();
+</script>
+</body>
+</html>
