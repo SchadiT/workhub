@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Mastery — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e11; --bg-card: #16161a; --bg-code: #111114;
+      --border: #2a2a30; --border-soft: #222228;
+      --accent: #7c6af7; --accent-soft: rgba(124,106,247,0.1);
+      --accent2: #4fc4a0; --text: #e8e8f0; --text-dim: #9898aa; --text-faint: #55555f;
+      --yellow: #f5c542; --red: #f27059; --green: #4fc4a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* HEADER */
+    .header { padding: 48px 56px 32px; border-bottom: 1px solid var(--border); }
+    .header-eyebrow { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+    .header-title { font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 12px; }
+    .header-title span { color: var(--accent); }
+    .header-sub { color: var(--text-dim); font-size: 16px; max-width: 600px; line-height: 1.5; }
+
+    /* STATS BAR */
+    .stats-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+    .stat { flex: 1; padding: 20px 56px; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    .stat-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+    @media (max-width: 768px) { .stats-bar { flex-wrap: wrap; } .stat { padding: 16px 24px; min-width: 50%; } }
+
+    /* PROGRESS */
+    .progress-section { padding: 24px 56px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
+    .progress-label { font-size: 12px; color: var(--text-faint); white-space: nowrap; }
+    .progress-track { flex: 1; background: var(--border); border-radius: 99px; height: 6px; }
+    .progress-fill { background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; height: 6px; width: 16.7%; transition: width 0.3s ease; }
+    .progress-pct { font-size: 12px; color: var(--accent); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+
+    /* MAIN LAYOUT */
+    .main { display: flex; min-height: calc(100vh - 280px); }
+    .sidebar { width: 240px; min-width: 240px; background: var(--bg-card); border-right: 1px solid var(--border); padding: 28px 20px; }
+    .sidebar-section { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin: 20px 0 8px; }
+    .sidebar-section:first-child { margin-top: 0; }
+    .filter-btn { display: block; width: 100%; text-align: left; padding: 8px 12px; background: transparent; border: none; color: var(--text-dim); font-family: 'Space Grotesk', sans-serif; font-size: 13px; border-radius: 6px; cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; margin-bottom: 2px; }
+    .filter-btn:hover { color: var(--text); background: var(--bg); }
+    .filter-btn.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* GRID */
+    .grid-area { flex: 1; padding: 32px 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+    /* MODULE CARDS */
+    .module-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 0; overflow: hidden; transition: all 0.2s ease; text-decoration: none; display: block; position: relative; }
+    .module-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,106,247,0.15); }
+    .module-card.locked { opacity: 0.45; cursor: default; pointer-events: none; }
+    .module-card.locked:hover { transform: none; box-shadow: none; }
+    .module-card.done { border-color: rgba(79,196,160,0.3); }
+    .card-top { height: 4px; }
+    .card-top.ready { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .card-top.done { background: var(--green); }
+    .card-top.locked { background: var(--border); }
+    .card-top.reference { background: var(--yellow); }
+    .card-body { padding: 20px; }
+    .card-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); margin-bottom: 6px; }
+    .card-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 6px; }
+    .card-sub { font-size: 12px; color: var(--text-dim); line-height: 1.4; margin-bottom: 14px; }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px; }
+    .tag-ready { background: var(--accent-soft); color: var(--accent); }
+    .tag-done { background: rgba(79,196,160,0.12); color: var(--green); }
+    .tag-locked { background: rgba(255,255,255,0.05); color: var(--text-faint); }
+    .tag-ref { background: rgba(245,197,66,0.12); color: var(--yellow); }
+    .tag-format { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+    .card-time { font-size: 11px; color: var(--text-faint); }
+    .card-files { display: flex; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); }
+    .file-badge { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text-faint); background: var(--bg-code); border: 1px solid var(--border-soft); padding: 3px 8px; border-radius: 4px; }
+    .file-badge.available { color: var(--accent); border-color: rgba(124,106,247,0.3); }
+
+    /* SECTION HEADERS */
+    .section-header { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .section-title { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-dim); }
+    .section-count { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+
+    /* PHASE GROUPS */
+    .phase { margin-bottom: 40px; }
+
+    /* NOTEBOOKLM BOX */
+    .nlm-box { background: var(--bg-card); border: 1px solid rgba(245,197,66,0.25); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+    .nlm-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--yellow); margin-bottom: 6px; }
+    .nlm-text { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+    @media (max-width: 900px) { .main { flex-direction: column; } .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); } .grid-area { padding: 24px 20px; } .header { padding: 32px 20px 24px; } .stats-bar .stat { padding: 16px 20px; } .progress-section { padding: 16px 20px; } }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-eyebrow">Claude Mastery Curriculum</div>
+  <h1 class="header-title">Lern-<span>Dashboard.</span></h1>
+  <p class="header-sub">18 Module. Alle Lernmaterialien gesammelt — HTML zum Lesen, PDF für iPad, TXT für NotebookLM.</p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" id="stat-done">3</div>
+    <div class="stat-label">Module bereit</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">18</div>
+    <div class="stat-label">Module gesamt</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">9</div>
+    <div class="stat-label">Dateien verfügbar</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">~7h</div>
+    <div class="stat-label">Content bereit</div>
+  </div>
+</div>
+
+<div class="progress-section">
+  <span class="progress-label">Gesamtfortschritt</span>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <span class="progress-pct">3 / 18</span>
+</div>
+
+<div class="main">
+  <aside class="sidebar">
+    <div class="sidebar-section">Filter</div>
+    <button class="filter-btn active" onclick="filterCards('all')">Alle Module</button>
+    <button class="filter-btn" onclick="filterCards('ready')">Bereit zum Lernen</button>
+    <button class="filter-btn" onclick="filterCards('locked')">Noch nicht bereit</button>
+
+    <div class="sidebar-section">Status-Legende</div>
+    <div class="legend-item"><div class="legend-dot" style="background: linear-gradient(90deg, #7c6af7, #4fc4a0)"></div> Bereit — alle Formate</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #f5c542"></div> Referenz-Modul</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #2a2a30"></div> Noch nicht gebaut</div>
+
+    <div class="sidebar-section">Formate</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #7c6af7"></div> .html — Browser lesen</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #4fc4a0"></div> .pdf — iPad / Print</div>
+    <div class="legend-item"><div class="legend-dot" style="background: #f5c542"></div> .txt — NotebookLM</div>
+
+    <div class="sidebar-section">Lernpfad</div>
+    <div style="font-size:11px; color:var(--text-faint); line-height:1.7;">
+      01 → 02 → 03<br>
+      → 05 → 07 → 08<br>
+      → 10 → 11 → ...<br>
+      → 16 → 17 → 18
+    </div>
+  </aside>
+
+  <div class="grid-area">
+
+    <div class="nlm-box">
+      <div class="nlm-label">🎧 NotebookLM Audio-Learning</div>
+      <div class="nlm-text">Alle .txt Dateien sind für NotebookLM optimiert. Lade die TXT-Files in NotebookLM hoch → Audio-Podcast generieren → während Commute/Sport hören.</div>
+    </div>
+
+    <!-- PHASE 1: BEREIT -->
+    <div class="phase">
+      <div class="section-header">
+        <div class="section-title">✅ Phase 1 — Bereit zum Lernen</div>
+        <div class="section-count">3 Module mit je HTML + PDF + TXT</div>
+      </div>
+      <div class="grid" id="grid-ready">
+
+        <a class="module-card" href="Modul_01_Modelle_v1.html">
+          <div class="card-top ready"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 01</div>
+            <div class="card-title">Modelle verstehen</div>
+            <div class="card-sub">Opus, Sonnet, Haiku — wann nutzt du welches und warum macht die Wahl einen Unterschied.</div>
+            <div class="card-meta">
+              <div class="card-tags">
+                <span class="tag tag-ready">Bereit</span>
+                <span class="tag tag-format">Einsteiger</span>
+              </div>
+              <span class="card-time">45 Min</span>
+            </div>
+            <div class="card-files">
+              <span class="file-badge available">.html</span>
+              <span class="file-badge available">.pdf</span>
+              <span class="file-badge available">.txt</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="module-card" href="Modul_02_Memory_v1.html">
+          <div class="card-top ready"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 02</div>
+            <div class="card-title">Memory verstehen</div>
+            <div class="card-sub">Global, Project, Context Window — was Claude wirklich speichert und wie du es steuerst.</div>
+            <div class="card-meta">
+              <div class="card-tags">
+                <span class="tag tag-ready">Bereit</span>
+                <span class="tag tag-format">Einsteiger</span>
+              </div>
+              <span class="card-time">60 Min</span>
+            </div>
+            <div class="card-files">
+              <span class="file-badge available">.html</span>
+              <span class="file-badge available">.pdf</span>
+              <span class="file-badge available">.txt</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="module-card" href="Modul_03_Projects_v1.html">
+          <div class="card-top ready"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 03</div>
+            <div class="card-title">Projects richtig nutzen</div>
+            <div class="card-sub">Wann ein Projekt erstellen, wie strukturieren — und warum Turbo vs. Mastery die richtige Trennung ist.</div>
+            <div class="card-meta">
+              <div class="card-tags">
+                <span class="tag tag-ready">Bereit</span>
+                <span class="tag tag-format">Einsteiger</span>
+              </div>
+              <span class="card-time">75 Min</span>
+            </div>
+            <div class="card-files">
+              <span class="file-badge available">.html</span>
+              <span class="file-badge available">.pdf</span>
+              <span class="file-badge available">.txt</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- PHASE 2: REFERENZ -->
+    <div class="phase">
+      <div class="section-header">
+        <div class="section-title">📖 Referenz — Bereits vorhanden</div>
+        <div class="section-count">1 Referenz-Modul (aus früherer Session)</div>
+      </div>
+      <div class="grid">
+        <a class="module-card" href="Modul_07_Integrations_v1.html" style="opacity:0.85;">
+          <div class="card-top reference"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 07</div>
+            <div class="card-title">Integrations Deep-Dive</div>
+            <div class="card-sub">Native MCPs, Zapier, n8n — Format-Referenz für alle Lese-Module. LOCKED.</div>
+            <div class="card-meta">
+              <div class="card-tags">
+                <span class="tag tag-ref">Referenz</span>
+                <span class="tag tag-format">Format-Ref</span>
+              </div>
+              <span class="card-time">90 Min</span>
+            </div>
+            <div class="card-files">
+              <span class="file-badge available">.html</span>
+              <span class="file-badge available">.md</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PHASE 3: UPCOMING -->
+    <div class="phase">
+      <div class="section-header">
+        <div class="section-title">🔒 Noch nicht gebaut — In Lernpfad-Reihenfolge</div>
+        <div class="section-count">14 Module folgen nach Bedarf</div>
+      </div>
+      <div class="grid" id="grid-locked">
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 04</div>
+            <div class="card-title">Prompt Engineering</div>
+            <div class="card-sub">Wie man Claude präzise anweist — positive/negative Beispiele, Chain-of-Thought, XML-Tags.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~60 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 05</div>
+            <div class="card-title">Artifacts Deep-Dive</div>
+            <div class="card-sub">HTML, React, SVG, Mermaid — wann was, wie bauen, was ist LOCKED.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~75 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 06</div>
+            <div class="card-title">Skills bauen</div>
+            <div class="card-sub">Custom Skills erstellen, SKILL.md-Format, Trigger-Logik, testen und deployen.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~90 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 08</div>
+            <div class="card-title">Cowork Tiefe</div>
+            <div class="card-sub">Claude in tiefem Kooperations-Modus — wie man komplexe Projekte gemeinsam aufbaut.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~60 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 09</div>
+            <div class="card-title">Cowork Dispatch</div>
+            <div class="card-sub">Aufgaben delegieren, Kontext übergeben, Ergebnisse integrieren.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~45 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 10</div>
+            <div class="card-title">Multi-AI Workflows</div>
+            <div class="card-sub">Claude + andere KIs kombinieren — wann sinnvoll, wie koordinieren.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~60 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 11</div>
+            <div class="card-title">Scheduled Tasks</div>
+            <div class="card-sub">Automatische Aufgaben planen und triggern — ohne manuelles Eingreifen.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~45 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 12</div>
+            <div class="card-title">Claude Code</div>
+            <div class="card-sub">Code-spezifische Workflows, Debugging, Architektur-Entscheidungen mit Claude.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~90 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 13</div>
+            <div class="card-title">API Grundlagen</div>
+            <div class="card-sub">Direkte API-Nutzung — Parameter, Models, Streaming, Kosten-Kontrolle.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~75 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 14</div>
+            <div class="card-title">Automation Patterns</div>
+            <div class="card-sub">Wiederkehrende Workflows automatisieren — Trigger, Actions, Conditionals.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~90 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 15</div>
+            <div class="card-title">n8n Deep-Dive</div>
+            <div class="card-sub">n8n als Automation-Layer — Nodes, Flows, Claude als Processor.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~120 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 16</div>
+            <div class="card-title">Synthese</div>
+            <div class="card-sub">Alle Konzepte verbinden — wie die Module zusammenspielen.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~60 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 17</div>
+            <div class="card-title">Decision Framework</div>
+            <div class="card-sub">Wann welches Tool, welches Modell, welche Strategie — systematisch entscheiden.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~45 Min</span></div>
+          </div>
+        </div>
+
+        <div class="module-card locked">
+          <div class="card-top locked"></div>
+          <div class="card-body">
+            <div class="card-num">MODUL 18</div>
+            <div class="card-title">Roadmap</div>
+            <div class="card-sub">Dein persönlicher Claude-Mastery-Plan — nächste 90 Tage konkret.</div>
+            <div class="card-meta"><div class="card-tags"><span class="tag tag-locked">Ausstehend</span></div><span class="card-time">~30 Min</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function filterCards(type) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    const phases = document.querySelectorAll('.phase');
+    phases.forEach(p => {
+      if (type === 'all') { p.style.display = ''; }
+      else if (type === 'ready') { p.style.display = p.querySelector('[class*="ready"], .tag-ref') ? '' : 'none'; }
+      else if (type === 'locked') { p.style.display = p.querySelector('.locked') ? '' : 'none'; }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul 02 — Memory | Claude Mastery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e11; --bg-card: #16161a; --bg-code: #111114;
+      --border: #2a2a30; --border-soft: #222228;
+      --accent: #7c6af7; --accent-soft: rgba(124,106,247,0.1);
+      --accent2: #4fc4a0; --text: #e8e8f0; --text-dim: #9898aa; --text-faint: #55555f;
+      --yellow: #f5c542; --red: #f27059; --green: #4fc4a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; font-size: 15px; line-height: 1.7; }
+    .sidebar { width: 260px; min-width: 260px; background: var(--bg-card); border-right: 1px solid var(--border); padding: 32px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sidebar-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+    .sidebar-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .sidebar-meta { font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+    .nav-section { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin: 24px 0 8px; }
+    .nav-link { display: block; padding: 8px 12px; color: var(--text-dim); text-decoration: none; font-size: 13px; border-radius: 6px; transition: all 0.15s ease; border-left: 2px solid transparent; margin-bottom: 2px; }
+    .nav-link:hover { color: var(--text); background: var(--bg); }
+    .nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+    .progress-bar { background: var(--border); border-radius: 99px; height: 4px; margin-top: 16px; }
+    .progress-fill { background: var(--accent); border-radius: 99px; height: 4px; }
+    .main { flex: 1; padding: 48px 56px; max-width: 880px; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+    .module-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .module-eyebrow { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+    h1 .accent { color: var(--accent); }
+    .subtitle { color: var(--text-dim); font-size: 16px; line-height: 1.5; max-width: 680px; }
+    .meta-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+    .meta-item { font-size: 12px; color: var(--text-faint); }
+    .meta-item strong { color: var(--text-dim); }
+    section { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .section-num { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 28px; font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 20px; }
+    h3 { font-size: 20px; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; margin: 32px 0 14px; }
+    p { color: var(--text); margin-bottom: 16px; }
+    strong { font-weight: 700; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    code { font-family: 'JetBrains Mono', monospace; background: var(--bg-card); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; border: 1px solid var(--border-soft); }
+    pre { background: var(--bg-code); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 16px 20px; margin: 16px 0; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--text); }
+    .ascii-diagram { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; color: var(--text-dim); overflow-x: auto; white-space: pre; }
+    .callout { border-radius: 8px; padding: 16px 20px; margin: 20px 0; border: 1px solid; }
+    .callout-label { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+    .callout-tip { background: var(--accent-soft); border-color: rgba(124,106,247,0.3); }
+    .callout-tip .callout-label { color: var(--accent); }
+    .callout-warn { background: rgba(245,197,66,0.08); border-color: rgba(245,197,66,0.3); }
+    .callout-warn .callout-label { color: var(--yellow); }
+    .callout-success { background: rgba(79,196,160,0.08); border-color: rgba(79,196,160,0.3); }
+    .callout-success .callout-label { color: var(--green); }
+    .example { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin: 20px 0; overflow: hidden; }
+    .example-header { background: var(--accent-soft); border-bottom: 1px solid rgba(124,106,247,0.2); padding: 10px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .example-body { padding: 16px; }
+    .example-user { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--yellow); }
+    .example-user::before { content: "DU TIPPST: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    .example-claude { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--green); }
+    .example-claude::before { content: "CLAUDE MACHT: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    .memory-type { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 12px 0; }
+    .memory-type-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .memory-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; }
+    .badge-global { background: rgba(124,106,247,0.15); color: var(--accent); }
+    .badge-project { background: rgba(79,196,160,0.15); color: var(--green); }
+    .badge-context { background: rgba(245,197,66,0.15); color: var(--yellow); }
+    .memory-title { font-size: 17px; font-weight: 700; }
+    .anti { background: rgba(242,112,89,0.06); border: 1px solid rgba(242,112,89,0.2); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+    .anti-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+    .achievement { background: linear-gradient(135deg, rgba(124,106,247,0.12), rgba(79,196,160,0.08)); border: 1px solid rgba(124,106,247,0.3); border-radius: 12px; padding: 28px 32px; margin: 40px 0; }
+    .achievement-title { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 16px; }
+    .achievement ul { list-style: none; padding: 0; }
+    .achievement li { padding: 6px 0; }
+    .achievement li::before { content: "✅ "; }
+    .handson { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+    .handson-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+    .handson-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .cheatsheet { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+    .cheatsheet h4 { color: var(--green); margin-bottom: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .cheat-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-soft); font-size: 13px; }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-key { color: var(--text-dim); }
+    .cheat-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    th { background: var(--bg-card); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border-soft); color: var(--text-dim); }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { color: var(--text); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-label">Claude Mastery</div>
+  <div class="sidebar-title">Modul 02<br>Memory</div>
+  <div class="sidebar-meta">Global · Project · Context</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:11%"></div></div>
+  <div style="font-size:11px; color:var(--text-faint); margin-top:6px;">2 / 18 Module</div>
+
+  <div class="nav-section">Inhalt</div>
+  <a class="nav-link active" href="#objectives">📋 Lernziele</a>
+  <a class="nav-link" href="#mental-model">🧠 Mental Model</a>
+  <a class="nav-link" href="#drei-typen">📦 3 Memory-Typen</a>
+  <a class="nav-link" href="#global">🌐 Global Memory</a>
+  <a class="nav-link" href="#project">📁 Project Memory</a>
+  <a class="nav-link" href="#context">💬 Context Window</a>
+  <a class="nav-link" href="#editieren">✏️ Editieren & Löschen</a>
+  <a class="nav-link" href="#anti-patterns">🚨 Anti-Patterns</a>
+  <a class="nav-link" href="#cheatsheet">📋 Cheatsheet</a>
+  <a class="nav-link" href="#handson">🛠️ Hands-on</a>
+  <a class="nav-link" href="#achievement">🎓 Was du kannst</a>
+
+  <div class="nav-section">Andere Module</div>
+  <a class="nav-link" href="Modul_01_Modelle_v1.html">01: Modelle</a>
+  <a class="nav-link" href="Modul_03_Projects_v1.html">03: Projects nutzen</a>
+  <a class="nav-link" href="Modul_07_Integrations_v1.html" style="opacity:0.5">07: Integrations</a>
+</aside>
+
+<main class="main">
+
+  <header class="module-header">
+    <div class="module-eyebrow">Modul 02 · Claude Mastery Curriculum</div>
+    <h1>Memory <span class="accent">verstehen.</span></h1>
+    <p class="subtitle">Was Claude wirklich speichert, was er vergisst, und wie du die drei Memory-Typen gezielt einsetzt — damit Claude dich kennt ohne alles jedes Mal neu erklären zu müssen.</p>
+    <div class="meta-row">
+      <span class="meta-item"><strong>Reading:</strong> 30 Min</span>
+      <span class="meta-item"><strong>Hands-on:</strong> 30 Min</span>
+      <span class="meta-item"><strong>Schwierigkeit:</strong> Einsteiger</span>
+    </div>
+  </header>
+
+  <section id="objectives">
+    <div class="section-num">Lernziele</div>
+    <h2>📋 Was du nach diesem Modul kannst</h2>
+    <div class="callout callout-success">
+      <span class="callout-label">Ziele</span>
+      <ul style="margin-bottom:0">
+        <li><strong>Erklären</strong> warum Claude nach jedem Chat "alles vergisst" — und was stimmt daran nicht</li>
+        <li><strong>Unterscheiden</strong> zwischen Global Memory, Project Memory und Context Window</li>
+        <li><strong>Editieren</strong> und löschen was Claude über dich gespeichert hat</li>
+        <li><strong>Optimieren</strong> deine bestehenden 21 Memory-Edits für bessere Ergebnisse</li>
+        <li><strong>Verstehen</strong> warum das Turbo-Projects Projekt und das Mastery-Projekt getrennte Memories haben</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="mental-model">
+    <div class="section-num">Sektion 1</div>
+    <h2>🧠 Mental Model — Das Gedächtnis-Paradox</h2>
+
+    <p>Die häufigste Aussage über Claude: <em>"Claude vergisst alles nach jedem Chat."</em></p>
+    <p>Das stimmt — und stimmt nicht. Hier ist was wirklich passiert:</p>
+
+    <div class="ascii-diagram">WAS DU GLAUBST:
+
+  Chat 1          Chat 2          Chat 3
+  ──────          ──────          ──────
+  "Ich bin        "Wer bist       "Hallo?"
+  Schadi"         du nochmal?"
+  
+  → Claude vergisst alles zwischen Chats ❌ (nur teilweise wahr)
+
+─────────────────────────────────────────────────────────────
+
+WAS WIRKLICH PASSIERT:
+
+  ┌─────────────────────────────────────────────────────┐
+  │  GLOBAL MEMORY (persistent, chat-übergreifend)      │
+  │  "Schadi = CEO Grelle Forelle, Wien, Du-Form"       │
+  │  Wird in JEDEN Chat geladen, automatisch            │
+  └────────────────────────┬────────────────────────────┘
+                           │
+            ┌──────────────┴──────────────┐
+            ▼                             ▼
+  ┌──────────────────┐         ┌──────────────────────┐
+  │  PROJECT MEMORY  │         │   PROJECT MEMORY     │
+  │  Turbo Projects  │         │   Claude Mastery     │
+  │  (Hub, MCPs,     │         │   (Module, Lernplan, │
+  │   Operations)    │         │    Format-Specs)     │
+  └──────────────────┘         └──────────────────────┘
+            │                             │
+            ▼                             ▼
+  ┌──────────────────────────────────────────────────┐
+  │           CONTEXT WINDOW (pro Chat)              │
+  │   Das aktuelle Gespräch — verschwindet wenn      │
+  │   der Chat endet oder das Fenster voll ist       │
+  └──────────────────────────────────────────────────┘</div>
+
+    <p><strong>Die Wahrheit:</strong> Claude vergisst den Inhalt einzelner Chats — aber nicht was du als Memory gespeichert hast. Diese drei Schichten funktionieren zusammen.</p>
+  </section>
+
+  <section id="drei-typen">
+    <div class="section-num">Sektion 2</div>
+    <h2>📦 Die drei Memory-Typen</h2>
+
+    <div class="memory-type">
+      <div class="memory-type-header">
+        <span class="memory-badge badge-global">Global</span>
+        <span class="memory-title">Global Memory — Dein dauerhaftes Profil</span>
+      </div>
+      <p>Gilt in <strong>jedem Chat</strong>, in <strong>jedem Projekt</strong>. Claude lädt es automatisch am Start jeder Konversation. Das ist das Fundament — wer du bist, wie du kommunizierst, was deine Präferenzen sind.</p>
+      <p><strong>Dein Beispiel:</strong> Deine 21 Memory-Edits (Du-Form, kein Fluff, Token-Count am Ende, Voice-to-Text, etc.) sind Global Memory.</p>
+    </div>
+
+    <div class="memory-type">
+      <div class="memory-type-header">
+        <span class="memory-badge badge-project">Project</span>
+        <span class="memory-title">Project Memory — Projekt-spezifischer Kontext</span>
+      </div>
+      <p>Gilt <strong>nur innerhalb eines Projekts</strong>. Wenn du im Turbo-Projects Projekt bist, hat Claude Zugriff auf die Project Instructions, die hochgeladenen Files, und den Kontext dieses Projekts — aber <em>nicht</em> auf die des Mastery-Projekts.</p>
+      <p><strong>Dein Beispiel:</strong> Im Turbo-Projects Projekt kennt Claude Hub-Struktur, MCPs, Skill-Definitionen. Im Mastery-Projekt kennt Claude den Lernplan, Module, Format-Specs.</p>
+    </div>
+
+    <div class="memory-type">
+      <div class="memory-type-header">
+        <span class="memory-badge badge-context">Context</span>
+        <span class="memory-title">Context Window — Das aktuelle Gespräch</span>
+      </div>
+      <p>Alles was in <strong>diesem Chat</strong> gesagt wurde. Temporär — endet wenn der Chat endet oder das Fenster (200k Token) voll ist. Claude "erinnert" sich an alles was im aktuellen Chat steht, auch wenn du es vor 50 Nachrichten gesagt hast.</p>
+      <p><strong>Wichtig:</strong> Beim Start eines neuen Chats beginnt das Context Window bei null — nur Global + Project Memory bleiben.</p>
+    </div>
+  </section>
+
+  <section id="global">
+    <div class="section-num">Sektion 3</div>
+    <h2>🌐 Global Memory — Dein dauerhaftes Profil</h2>
+
+    <h3>Was Claude über dich gespeichert hat</h3>
+    <p>In <strong>Settings → Memory</strong> siehst du was Claude global gespeichert hat. Das sind automatisch generierte Zusammenfassungen aus deinen Gesprächen — plus was du explizit als Edits hinzugefügt hast.</p>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Deine Situation</span>
+      <p style="margin:0">Du hast 21 aktive Memory-Edits. Das ist die Summe aus User Preferences (deine Profile-Settings) und was Claude automatisch aus Gesprächen extrahiert hat. Diese 21 Einträge werden in <em>jeden</em> deiner Chats geladen.</p>
+    </div>
+
+    <h3>Was macht gutes Global Memory aus?</h3>
+    <table>
+      <tr><th>Gut</th><th>Schlecht</th></tr>
+      <tr><td>Kommunikationsstil</td><td>Spezifische Task-Details</td></tr>
+      <tr><td>Sprach-Präferenzen</td><td>Event-spezifische Infos</td></tr>
+      <tr><td>Format-Anforderungen</td><td>Temporäre Zustände</td></tr>
+      <tr><td>Rolle / Kontext (CEO, Wien)</td><td>Einmalige Entscheidungen</td></tr>
+      <tr><td>Wiederkehrende Präferenzen</td><td>Zu spezifische Regeln</td></tr>
+    </table>
+
+    <div class="example">
+      <div class="example-header">Beispiel · Global Memory in Action</div>
+      <div class="example-body">
+        <div class="example-user">Schreib mir einen kurzen Text für die Website.</div>
+        <div class="example-claude">Claude weiß (aus Global Memory):
+→ Du-Form, kein Fluff
+→ Du bist CEO Grelle Forelle, Wien
+→ Direct, business, keine langen Intros
+→ Token-Count am Ende
+
+Ergebnis: Antwort ohne "Gerne!", ohne Intro-Geschwätz, 
+direkt auf den Punkt — ohne dass du es jedes Mal sagst.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="project">
+    <div class="section-num">Sektion 4</div>
+    <h2>📁 Project Memory — Projekt-spezifischer Kontext</h2>
+
+    <h3>Wie Project Memory funktioniert</h3>
+    <p>Jedes Claude-Projekt hat seinen eigenen Kontext-Raum. Das besteht aus drei Elementen:</p>
+
+    <ol>
+      <li><strong>Project Instructions</strong> — Was du in "Edit Project → Instructions" geschrieben hast. Wird in jeden Chat in diesem Projekt geladen. (Wie dieser System-Prompt hier.)</li>
+      <li><strong>Project Files</strong> — Files die du ins Projekt hochgeladen hast. Claude kann sie durchsuchen und referenzieren.</li>
+      <li><strong>Claude's Memory (project-scoped)</strong> — Was Claude automatisch aus Chats in diesem Projekt extrahiert hat — aber nur für dieses Projekt.</li>
+    </ol>
+
+    <div class="ascii-diagram">TURBO PROJECTS PROJEKT          CLAUDE MASTERY PROJEKT
+────────────────────────        ────────────────────────
+Project Instructions:           Project Instructions:
+  - Hub-Dev Kontext              - Learn-Only Modus
+  - Skill-Definitionen           - Module-Format LOCKED
+  - MCP-Setup                    - No operative Tasks
+
+Project Files:                  Project Files:
+  - SKILL.md files               - Lernplan_Index.md
+  - Hub-Code                     - Business_Context_Lite.md
+  - Business Context             - Module (Modul_07, etc.)
+
+Memory (project-scoped):        Memory (project-scoped):
+  - "Hub hat Sections X,Y,Z"     - "18 Module, Status 0/18"
+  - "Aktive MCPs: 11"            - "Format-Ref = Modul 7"
+
+         ↓ SICHTBAR HIER                ↓ SICHTBAR HIER
+         ✅ Turbo Chats                  ✅ Mastery Chats
+         ❌ Mastery Chats                ❌ Turbo Chats</div>
+
+    <p><strong>Warum die Trennung?</strong> Das ist kein Bug — das ist Design. Operative ToDos aus Turbo Projects sollen nicht in dein Lern-Projekt bluten. Und Modul-Specs aus Mastery sollen nicht in Daily Operations stören.</p>
+
+    <div class="callout callout-warn">
+      <span class="callout-label">⚠️ Wichtig</span>
+      <p style="margin:0">Project Files sind <strong>read-only Referenz</strong> — Claude liest sie, ändert sie aber nicht. Wenn du ein File updatest musst du es manuell ersetzen.</p>
+    </div>
+  </section>
+
+  <section id="context">
+    <div class="section-num">Sektion 5</div>
+    <h2>💬 Context Window — Das aktuelle Gespräch</h2>
+
+    <h3>Was ist das Context Window?</h3>
+    <p>Das Context Window ist der "Arbeitsspeicher" eines Chats. Alles was in diesem Gespräch steht — deine Nachrichten, Claudes Antworten, hochgeladene Files, Tool-Ergebnisse — das ist im Context Window.</p>
+
+    <p>Bei Claude: <strong>200.000 Token</strong> = ca. 150.000 Wörter = ein sehr langer Roman. Das reicht für lange, komplexe Gespräche.</p>
+
+    <div class="ascii-diagram">Chat Start                    Chat Ende
+    │                                 │
+    ▼                                 ▼
+┌───────────────────────────────────────────────────┐
+│  Context Window (200k Token)                      │
+│                                                   │
+│  [Global Memory geladen]                          │
+│  [Project Memory geladen]                         │
+│  Nachricht 1: "Bau mir ein Factsheet für..."      │
+│  Antwort 1: [Factsheet]                           │
+│  Nachricht 2: "Ändere den Zeitplan auf..."        │
+│  Antwort 2: [Updated Factsheet]                   │
+│  ...                                              │
+│  Nachricht N: [bis 200k Token voll]               │
+│                                                   │
+└───────────────────────────────────────────────────┘
+         │
+         ▼
+  Chat endet → Context Window geleert
+  Global Memory bleibt ✅
+  Project Memory bleibt ✅
+  Gesprächsinhalt weg ❌</div>
+
+    <h3>Wann ist das Context Window relevant für dich?</h3>
+
+    <div class="example">
+      <div class="example-header">Beispiel · Hub-Dev Session</div>
+      <div class="example-body">
+        <div class="example-user">Ich arbeite 3 Stunden am Hub-Code in einem Chat. Am Ende: "Fass nochmal zusammen was wir heute gemacht haben."</div>
+        <div class="example-claude">Claude hat alles im Context Window → kann perfekte Zusammenfassung geben.
+Nächster Tag, neuer Chat → Context weg.
+Deshalb: Session Handoff am Ende jeder Session → 
+die wichtigsten Infos landen als File in Project Files.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="editieren">
+    <div class="section-num">Sektion 6</div>
+    <h2>✏️ Memory editieren und löschen</h2>
+
+    <h3>Global Memory editieren</h3>
+    <ol>
+      <li>Geh zu <strong>Settings → Memory</strong> in claude.ai</li>
+      <li>Du siehst alle gespeicherten Memory-Einträge</li>
+      <li>Klick auf einen Eintrag → Edit oder Delete</li>
+      <li>Oder sag direkt im Chat: <em>"Bitte merke dir dass ich ab jetzt immer auf Englisch antworten will"</em></li>
+    </ol>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Direkt sagen</span>
+      <p style="margin:0">Du kannst Claude im Chat direkt sagen was er sich merken soll: <em>"Merke dir: Matthäus ist unser CFO und bevorzugt Zahlen in Tabellenform"</em> — Claude speichert das automatisch in Global Memory.</p>
+    </div>
+
+    <h3>Was du löschen solltest</h3>
+    <p>Geh durch deine 21 Memory-Edits und lösche:</p>
+    <ul>
+      <li>Einträge die veraltet sind (alte Projekte, Personen die nicht mehr relevant sind)</li>
+      <li>Zu spezifische Einzel-Infos die das Memory aufblähen</li>
+      <li>Widersprüchliche Einträge (wenn du früher "immer formal" und später "casual" gesagt hast)</li>
+    </ul>
+
+    <h3>User Preferences vs. Memory-Edits</h3>
+    <p>Es gibt zwei Orte für globale Präferenzen:</p>
+    <table>
+      <tr><th>Ort</th><th>Was rein</th><th>Wie ändern</th></tr>
+      <tr><td>Settings → Profile → User Preferences</td><td>Permanente Verhaltens-Regeln (Kommunikationsstil, Format)</td><td>Settings → Profile bearbeiten</td></tr>
+      <tr><td>Settings → Memory</td><td>Auto-generierte + explizit gesetzte Infos über dich</td><td>Memory Settings → einzeln editieren/löschen</td></tr>
+    </table>
+  </section>
+
+  <section id="anti-patterns">
+    <div class="section-num">Sektion 7</div>
+    <h2>🚨 Anti-Patterns — Was du vermeiden sollst</h2>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #1</div>
+      <strong>Alles im Chat immer wieder erklären</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du erklärst in jedem Chat neu wer du bist, was Grelle Forelle ist, wie du kommunizieren willst. Das gehört ein einziges Mal in Global Memory oder User Preferences — dann nie wieder.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #2</div>
+      <strong>Operative Details in Global Memory</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du speicherst sehr spezifische operative Infos (Event-Daten, aktuelle Preise, einzelne Entscheidungen) in Global Memory. Das gehört in Project Files oder Context — nicht in ein dauerhaftes Profil das für jeden Chat gilt.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #3</div>
+      <strong>Nie Memory aufräumen</strong>
+      <p style="margin-top:8px; margin-bottom:0">Memory akkumuliert über Zeit. Veraltete Einträge, Widersprüche, redundante Infos — das verwirrt Claude. Alle 2-3 Monate: Memory-Audit machen, aufräumen.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #4</div>
+      <strong>Glauben Projekt-Memory ist global</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du sagst im Mastery-Projekt "merke dir dass der Hub Section X hat" — und wunderst dich warum Claude das im Turbo-Chat nicht weiß. Project Memory ist projekt-isoliert. Globales geht in Global Memory.</p>
+    </div>
+  </section>
+
+  <section id="cheatsheet">
+    <div class="section-num">Quick Reference</div>
+    <h2>📋 Cheatsheet — Memory</h2>
+    <div class="cheatsheet">
+      <h4>Memory Typen</h4>
+      <div class="cheat-row"><span class="cheat-key">Global Memory</span><span class="cheat-val">Settings → Memory · gilt überall</span></div>
+      <div class="cheat-row"><span class="cheat-key">Project Memory</span><span class="cheat-val">Nur im jeweiligen Projekt</span></div>
+      <div class="cheat-row"><span class="cheat-key">Context Window</span><span class="cheat-val">Aktueller Chat · 200k Token</span></div>
+      <div class="cheat-row"><span class="cheat-key">Memory editieren</span><span class="cheat-val">Settings → Memory → Edit</span></div>
+      <div class="cheat-row"><span class="cheat-key">Memory im Chat setzen</span><span class="cheat-val">"Merke dir dass..."</span></div>
+      <div class="cheat-row"><span class="cheat-key">Project Instructions</span><span class="cheat-val">Edit Project → Instructions</span></div>
+      <div class="cheat-row"><span class="cheat-key">Project Files</span><span class="cheat-val">Edit Project → Files hochladen</span></div>
+      <div class="cheat-row"><span class="cheat-key">Wann Memory-Audit?</span><span class="cheat-val">Alle 2-3 Monate</span></div>
+    </div>
+  </section>
+
+  <section id="handson">
+    <div class="section-num">Hands-on Übung</div>
+    <h2>🛠️ Memory-Audit — 30 Minuten</h2>
+    <div class="handson">
+      <div class="handson-label">Übung · Dein Memory aufräumen</div>
+      <div class="handson-title">3 Aufgaben</div>
+      <ol>
+        <li style="margin-bottom:12px"><strong>Global Memory checken:</strong> Geh zu Settings → Memory. Lies alle 21 Einträge durch. Markiere mental: welche sind veraltet? Welche sind zu spezifisch? Lösche mindestens 2 die nicht mehr passen.</li>
+        <li style="margin-bottom:12px"><strong>Memory setzen im Chat:</strong> Schreib in diesem Chat: "Merke dir: [eine echte Info über dich oder deinen Workflow die noch fehlt]". Schau danach in Settings → Memory ob es gespeichert wurde.</li>
+        <li style="margin-bottom:12px"><strong>Project Memory verstehen:</strong> Geh in dein Turbo-Projects Projekt und schau dir die Project Instructions an. Vergleiche mit den Instructions hier im Mastery-Projekt. Siehst du den Unterschied im Kontext?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="achievement">
+    <div class="achievement">
+      <div class="achievement-title">🎓 Was du jetzt kannst</div>
+      <ul>
+        <li>Die drei Memory-Typen unterscheiden und erklären</li>
+        <li>Global Memory editieren und aufräumen</li>
+        <li>Project Memory von Global Memory trennen</li>
+        <li>Verstehen warum Turbo Projects und Mastery getrennte Kontexte haben</li>
+        <li>Die 4 häufigsten Memory-Fehler vermeiden</li>
+      </ul>
+      <p style="margin-top:16px; color:var(--text-faint); font-size:13px;">Weiter mit → <strong>Modul 03: Projects richtig nutzen</strong></p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

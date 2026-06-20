@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul 03 — Projects | Claude Mastery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e11; --bg-card: #16161a; --bg-code: #111114;
+      --border: #2a2a30; --border-soft: #222228;
+      --accent: #7c6af7; --accent-soft: rgba(124,106,247,0.1);
+      --accent2: #4fc4a0; --text: #e8e8f0; --text-dim: #9898aa; --text-faint: #55555f;
+      --yellow: #f5c542; --red: #f27059; --green: #4fc4a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; font-size: 15px; line-height: 1.7; }
+    .sidebar { width: 260px; min-width: 260px; background: var(--bg-card); border-right: 1px solid var(--border); padding: 32px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sidebar-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+    .sidebar-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .sidebar-meta { font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+    .nav-section { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin: 24px 0 8px; }
+    .nav-link { display: block; padding: 8px 12px; color: var(--text-dim); text-decoration: none; font-size: 13px; border-radius: 6px; transition: all 0.15s ease; border-left: 2px solid transparent; margin-bottom: 2px; }
+    .nav-link:hover { color: var(--text); background: var(--bg); }
+    .nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+    .progress-bar { background: var(--border); border-radius: 99px; height: 4px; margin-top: 16px; }
+    .progress-fill { background: var(--accent); border-radius: 99px; height: 4px; }
+    .main { flex: 1; padding: 48px 56px; max-width: 880px; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+    .module-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .module-eyebrow { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+    h1 .accent { color: var(--accent); }
+    .subtitle { color: var(--text-dim); font-size: 16px; line-height: 1.5; max-width: 680px; }
+    .meta-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+    .meta-item { font-size: 12px; color: var(--text-faint); }
+    .meta-item strong { color: var(--text-dim); }
+    section { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .section-num { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 28px; font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 20px; }
+    h3 { font-size: 20px; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; margin: 32px 0 14px; }
+    p { color: var(--text); margin-bottom: 16px; }
+    strong { font-weight: 700; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    code { font-family: 'JetBrains Mono', monospace; background: var(--bg-card); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; border: 1px solid var(--border-soft); }
+    .ascii-diagram { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; color: var(--text-dim); overflow-x: auto; white-space: pre; }
+    .callout { border-radius: 8px; padding: 16px 20px; margin: 20px 0; border: 1px solid; }
+    .callout-label { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+    .callout-tip { background: var(--accent-soft); border-color: rgba(124,106,247,0.3); }
+    .callout-tip .callout-label { color: var(--accent); }
+    .callout-warn { background: rgba(245,197,66,0.08); border-color: rgba(245,197,66,0.3); }
+    .callout-warn .callout-label { color: var(--yellow); }
+    .callout-success { background: rgba(79,196,160,0.08); border-color: rgba(79,196,160,0.3); }
+    .callout-success .callout-label { color: var(--green); }
+    .example { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin: 20px 0; overflow: hidden; }
+    .example-header { background: var(--accent-soft); border-bottom: 1px solid rgba(124,106,247,0.2); padding: 10px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .example-body { padding: 16px; }
+    .example-user { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--yellow); }
+    .example-user::before { content: "DU TIPPST: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    .example-claude { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--green); }
+    .example-claude::before { content: "CLAUDE MACHT: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    .decision-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 12px 0; display: flex; gap: 16px; align-items: flex-start; }
+    .decision-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+    .decision-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .decision-desc { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
+    .anti { background: rgba(242,112,89,0.06); border: 1px solid rgba(242,112,89,0.2); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+    .anti-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+    .achievement { background: linear-gradient(135deg, rgba(124,106,247,0.12), rgba(79,196,160,0.08)); border: 1px solid rgba(124,106,247,0.3); border-radius: 12px; padding: 28px 32px; margin: 40px 0; }
+    .achievement-title { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 16px; }
+    .achievement ul { list-style: none; padding: 0; }
+    .achievement li { padding: 6px 0; }
+    .achievement li::before { content: "✅ "; }
+    .handson { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+    .handson-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+    .handson-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .cheatsheet { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+    .cheatsheet h4 { color: var(--green); margin-bottom: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .cheat-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-soft); font-size: 13px; }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-key { color: var(--text-dim); }
+    .cheat-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    th { background: var(--bg-card); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border-soft); color: var(--text-dim); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { color: var(--text); font-weight: 600; }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no { color: var(--red); font-weight: 700; }
+    .tag-maybe { color: var(--yellow); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-label">Claude Mastery</div>
+  <div class="sidebar-title">Modul 03<br>Projects</div>
+  <div class="sidebar-meta">Wann · Warum · Wie</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:17%"></div></div>
+  <div style="font-size:11px; color:var(--text-faint); margin-top:6px;">3 / 18 Module</div>
+
+  <div class="nav-section">Inhalt</div>
+  <a class="nav-link active" href="#objectives">📋 Lernziele</a>
+  <a class="nav-link" href="#mental-model">🧠 Mental Model</a>
+  <a class="nav-link" href="#wann-projekt">🎯 Wann ein Projekt?</a>
+  <a class="nav-link" href="#aufbau">🏗️ Aufbau eines Projekts</a>
+  <a class="nav-link" href="#deine-projekte">📁 Deine Projekte</a>
+  <a class="nav-link" href="#instructions">📝 Gute Instructions</a>
+  <a class="nav-link" href="#anti-patterns">🚨 Anti-Patterns</a>
+  <a class="nav-link" href="#cheatsheet">📋 Cheatsheet</a>
+  <a class="nav-link" href="#handson">🛠️ Hands-on</a>
+  <a class="nav-link" href="#achievement">🎓 Was du kannst</a>
+
+  <div class="nav-section">Andere Module</div>
+  <a class="nav-link" href="Modul_01_Modelle_v1.html">01: Modelle</a>
+  <a class="nav-link" href="Modul_02_Memory_v1.html">02: Memory</a>
+  <a class="nav-link" href="Modul_07_Integrations_v1.html" style="opacity:0.5">07: Integrations</a>
+</aside>
+
+<main class="main">
+
+  <header class="module-header">
+    <div class="module-eyebrow">Modul 03 · Claude Mastery Curriculum</div>
+    <h1>Projects <span class="accent">richtig nutzen.</span></h1>
+    <p class="subtitle">Wann brauchst du ein eigenes Projekt, wann reicht ein Chat? Was gehört in Instructions, was in Files, was in Memory? Und warum ist deine aktuelle Trennung (Turbo vs. Mastery) genau richtig.</p>
+    <div class="meta-row">
+      <span class="meta-item"><strong>Reading:</strong> 45 Min</span>
+      <span class="meta-item"><strong>Hands-on:</strong> 30 Min</span>
+      <span class="meta-item"><strong>Schwierigkeit:</strong> Einsteiger</span>
+    </div>
+  </header>
+
+  <section id="objectives">
+    <div class="section-num">Lernziele</div>
+    <h2>📋 Was du nach diesem Modul kannst</h2>
+    <div class="callout callout-success">
+      <span class="callout-label">Ziele</span>
+      <ul style="margin-bottom:0">
+        <li><strong>Entscheiden</strong> ob eine Aufgabe ein Projekt oder einen normalen Chat braucht</li>
+        <li><strong>Strukturieren</strong> ein neues Projekt: Instructions, Files, Memory richtig befüllen</li>
+        <li><strong>Verstehen</strong> warum du aktuell zwei Projekte hast — und warum das richtig ist</li>
+        <li><strong>Verbessern</strong> deine bestehenden Projekt-Instructions für bessere Ergebnisse</li>
+        <li><strong>Erkennen</strong> wann ein drittes Projekt Sinn macht (und wann nicht)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="mental-model">
+    <div class="section-num">Sektion 1</div>
+    <h2>🧠 Mental Model — Projekt vs. Chat vs. Raum</h2>
+
+    <p>Denk so: Ein Claude-Projekt ist wie ein <strong>dedizierter Arbeitsraum</strong> — mit eigenen Regeln an der Wand, eigenen Files auf dem Schreibtisch, und einem Assistenten der genau weiß was in diesem Raum passiert.</p>
+    <p>Ein normaler Chat ist wie ein <strong>Meeting im Flur</strong>. Schnell, pragmatisch, aber ohne persistenten Kontext und ohne dedizierte Files.</p>
+
+    <div class="ascii-diagram">OHNE PROJEKT:
+┌────────────────────────────────────────────────────────┐
+│  Normaler Chat                                         │
+│                                                        │
+│  Du: "Ich bin Schadi, CEO Grelle Forelle, hier ist    │
+│       was du über meinen Hub wissen musst: ..."        │
+│  [15 Minuten Kontext setzen]                           │
+│  [Ende des Chats → alles weg]                          │
+│  [Nächster Chat → alles neu erklären]                  │
+└────────────────────────────────────────────────────────┘
+
+MIT PROJEKT:
+┌────────────────────────────────────────────────────────┐
+│  TURBO PROJECTS PROJEKT                                │
+│  ───────────────────────────────────────────           │
+│  Instructions: [Wer du bist, wie Grelle Forelle        │
+│                 funktioniert, Kommunikations-Regeln]   │
+│  Files: [SKILL.md, Hub-Code, Business-Context]         │
+│  Memory: [Auto-extrahierter Kontext]                   │
+│                                                        │
+│  Neuer Chat im Projekt:                                │
+│  Du: "Bau mir ein Factsheet für Samstag"               │
+│  Claude: [weiß sofort alles] → direkt loslegen        │
+└────────────────────────────────────────────────────────┘</div>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Core Insight</span>
+      <p style="margin:0">Ein Projekt spart dir bei jedem neuen Chat das Kontext-Setup. Bei 5 Chats pro Tag × 5 Minuten Setup = 25 Minuten täglich verschwendet. Mit Projekt: 0 Minuten.</p>
+    </div>
+  </section>
+
+  <section id="wann-projekt">
+    <div class="section-num">Sektion 2</div>
+    <h2>🎯 Wann brauchst du ein Projekt?</h2>
+
+    <div class="decision-card">
+      <div class="decision-icon">✅</div>
+      <div>
+        <div class="decision-title">Projekt: JA</div>
+        <div class="decision-desc">Wenn du einen wiederkehrenden Workflow hast der immer denselben Kontext braucht. Wenn du Files hast die Claude regelmäßig referenzieren soll. Wenn du spezifische Verhaltens-Regeln für diesen Kontext brauchst die sich von anderen unterscheiden.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-icon">❌</div>
+      <div>
+        <div class="decision-title">Projekt: NEIN</div>
+        <div class="decision-desc">Wenn es eine Einzel-Task ist die nie wieder vorkommt. Wenn kein persistenter Kontext nötig ist. Wenn Global Memory + User Preferences ausreichen um den gewünschten Stil zu bekommen.</div>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="decision-icon">🤔</div>
+      <div>
+        <div class="decision-title">Projekt: VIELLEICHT</div>
+        <div class="decision-desc">Wenn du 3+ Mal in Folge den gleichen Kontext erklärt hast — dann ist es Zeit für ein Projekt. Wenn du einen neuen Workflow aufbaust der sich wiederholen wird.</div>
+      </div>
+    </div>
+
+    <h3>Die Entscheidungs-Frage</h3>
+    <p style="font-size:18px; color: var(--accent); font-weight:600;">"Werde ich das mehr als 5 Mal brauchen, mit ähnlichem Kontext?"</p>
+    <p>Ja → Projekt. Nein → normaler Chat.</p>
+
+    <table>
+      <tr><th>Task</th><th>Projekt nötig?</th><th>Warum</th></tr>
+      <tr><td>Hub weiterentwickeln</td><td><span class="tag-yes">JA</span></td><td>Wiederkehrend, viel Kontext, Files</td></tr>
+      <tr><td>Claude Curriculum lernen</td><td><span class="tag-yes">JA</span></td><td>18 Module, eigene Format-Rules, lange Dauer</td></tr>
+      <tr><td>Einmalige Sandra-Mail</td><td><span class="tag-no">NEIN</span></td><td>Einmalig, Global Memory reicht</td></tr>
+      <tr><td>Regelmäßige Promoter-Emails</td><td><span class="tag-maybe">VIELLEICHT</span></td><td>Wenn immer gleiches Template + Kontext</td></tr>
+      <tr><td>Quick Fakten-Check</td><td><span class="tag-no">NEIN</span></td><td>Kein Kontext nötig</td></tr>
+      <tr><td>Neues Automation-Projekt</td><td><span class="tag-yes">JA</span></td><td>Eigener Kontext, eigene Files, andere Rules</td></tr>
+    </table>
+  </section>
+
+  <section id="aufbau">
+    <div class="section-num">Sektion 3</div>
+    <h2>🏗️ Aufbau eines Projekts — Die 3 Elemente</h2>
+
+    <h3>Element 1: Project Instructions</h3>
+    <p>Das ist der System-Prompt des Projekts. Wird in jeden Chat im Projekt geladen. Hier definierst du:</p>
+    <ul>
+      <li><strong>Zweck des Projekts</strong> — Was passiert hier, was passiert nicht</li>
+      <li><strong>Kommunikations-Regeln</strong> — Ton, Format, Sprache</li>
+      <li><strong>Kontext</strong> — Wer du bist in diesem Kontext, relevante Personen, Systeme</li>
+      <li><strong>Verhaltens-Regeln</strong> — Was Claude tun und lassen soll</li>
+    </ul>
+
+    <h3>Element 2: Project Files</h3>
+    <p>Dateien die Claude referenzieren soll. Read-only. Claude liest sie, ändert sie nicht. Gut für:</p>
+    <ul>
+      <li>Skill-Definitionen (<code>SKILL.md</code> Files)</li>
+      <li>Templates und Locked-Formats</li>
+      <li>Business-Context Dokumente</li>
+      <li>Referenz-Daten (Preislisten, Kontakte, etc.)</li>
+      <li>Fertige Module / Lernmaterialien</li>
+    </ul>
+
+    <div class="callout callout-warn">
+      <span class="callout-label">⚠️ File-Limit</span>
+      <p style="margin:0">Es gibt ein Größen-Limit für Project Files. Halte Files kompakt und relevant. Nicht alles reinladen — nur was Claude wirklich braucht.</p>
+    </div>
+
+    <h3>Element 3: Project Memory</h3>
+    <p>Was Claude automatisch aus Gesprächen in diesem Projekt extrahiert. Du kannst es in Settings → Memory filtern nach Projekt. Manuell hinzufügen: im Chat direkt sagen "Merke dir für dieses Projekt..."</p>
+
+    <div class="ascii-diagram">EIN PROJEKT — DREI ELEMENTE:
+
+┌──────────────────────────────────────────────────────┐
+│  PROJECT INSTRUCTIONS                                │
+│  "Zweck: Hub-Dev. Kein operative ToDos. ..."         │
+│  → geladen in JEDEN Chat in diesem Projekt           │
+├──────────────────────────────────────────────────────┤
+│  PROJECT FILES                                       │
+│  create-factsheet/SKILL.md    (5 KB)                 │
+│  create-security-order/SKILL.md (4 KB)               │
+│  Business_Context_Lite.md    (3 KB)                  │
+│  → Claude kann durchsuchen + referenzieren           │
+├──────────────────────────────────────────────────────┤
+│  PROJECT MEMORY                                      │
+│  "Hub hat 8 Hauptsektionen"                         │
+│  "LOCKED Format = v15.9.165"                         │
+│  → auto-extrahiert + manuell gesetzt                 │
+└──────────────────────────────────────────────────────┘
+              │
+              ▼
+     NEUER CHAT im Projekt:
+     Alle drei Elemente sofort verfügbar ✅</div>
+  </section>
+
+  <section id="deine-projekte">
+    <div class="section-num">Sektion 4</div>
+    <h2>📁 Deine aktuellen Projekte — Warum die Trennung richtig ist</h2>
+
+    <p>Du hast aktuell zwei Projekte: <strong>Turbo Projects</strong> und <strong>Claude Mastery</strong>. Das ist eine bewusste Entscheidung die gut funktioniert.</p>
+
+    <div class="example">
+      <div class="example-header">Ohne Trennung — Was schief geht</div>
+      <div class="example-body">
+        <div class="example-user">Alles in einem Projekt: Hub-Dev + Lernmaterial + Daily Ops</div>
+        <div class="example-claude">Problem: Claude bekommt conflicting Instructions.
+"Baue den Hub" vs "Erkläre mir Konzepte" vs "Mach Daily Briefing"
+→ Instructions werden zu lang und verwässert
+→ Claude weiß nicht welche Regel gerade gilt
+→ Format-Fehler, falsche Tonalität, verwischte Grenzen
+→ Du musst mehr erklären, nicht weniger</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header">Mit Trennung — Was richtig läuft</div>
+      <div class="example-body">
+        <div class="example-user">Turbo Projects: Hub-Dev, Daily Ops, MCPs, Skills</div>
+        <div class="example-claude">Claude weiß: "Hier baue ich, hier helfe ich operativ, hier nutze ich MCP-Tools"
+→ Präzise Instructions, klarer Scope
+→ Kein Kontext-Bleeding zwischen Lernmaterial und Produktivarbeit
+→ Jeder Chat startet mit dem richtigen Mind-Set</div>
+      </div>
+    </div>
+
+    <h3>Wann solltest du ein drittes Projekt erstellen?</h3>
+    <p>Wenn ein neuer, dauerhafter Workflow entsteht der eigenen Kontext, eigene Files, und andere Verhaltens-Regeln braucht als die bestehenden Projekte.</p>
+
+    <p><strong>Mögliche zukünftige Projekte für dich:</strong></p>
+    <ul>
+      <li><strong>Email-Projekt</strong> — Wenn du systematisch Promoter-Mails / Sandra-Mails / Team-Kommunikation mit Claude managst</li>
+      <li><strong>Analytics-Projekt</strong> — Wenn du tief in MAIN DB Analysen gehst mit eigenem Kontext</li>
+      <li><strong>Automation-Projekt</strong> — Wenn n8n + Zapier-Workflows einen eigenen Kontext-Raum brauchen</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Regel</span>
+      <p style="margin:0">Starte kein neues Projekt bevor du nicht 5+ Mal denselben Kontext in einem normalen Chat erklärt hast. Dann weißt du genau was rein muss.</p>
+    </div>
+  </section>
+
+  <section id="instructions">
+    <div class="section-num">Sektion 5</div>
+    <h2>📝 Gute Project Instructions schreiben</h2>
+
+    <h3>Struktur einer guten Instruction</h3>
+    <p>Deine aktuellen Instructions (das was am Anfang dieses Chats stand) sind ein gutes Beispiel. Hier das Prinzip:</p>
+
+    <div class="ascii-diagram">GUTE INSTRUCTIONS STRUKTUR:
+
+1. ZWECK (1-3 Sätze)
+   Was passiert in diesem Projekt?
+   Was passiert NICHT in diesem Projekt?
+   → Setzt Scope sofort
+
+2. KONTEXT (3-5 Zeilen)
+   Wer bist du in diesem Kontext?
+   Welche Personen/Systeme sind relevant?
+   → Claude braucht keine Erklärungen mehr
+
+3. VERHALTENS-REGELN (Liste)
+   Was soll Claude tun?
+   Was soll Claude NICHT tun?
+   → Verhindert häufige Fehler
+
+4. FORMAT-REGELN (wenn nötig)
+   Wie sollen Outputs aussehen?
+   Welche Formate sind LOCKED?
+   → Konsistenz ohne Wiederholung
+
+5. WORKFLOW (optional)
+   Plan-First? Build-Go Signale?
+   Session-Regeln?
+   → Prozess-Effizienz</div>
+
+    <div class="example">
+      <div class="example-header">Beispiel · Schwache vs. Starke Instructions</div>
+      <div class="example-body">
+        <div class="example-user">SCHWACH: "Du hilfst mir mit meinem Club-Geschäft in Wien. Sei professionell und direkt."</div>
+        <div class="example-claude">STARK: "Dies ist das Turbo Projects Projekt für Grelle Forelle (Club, Wien).
+HIER: Hub-Dev, Daily Ops, MCPs, Skills.
+NICHT HIER: Lernmaterial, akademische Erklärungen.
+Kontext: Schadi = CEO, ~30 Staff, 5 Departments.
+Regeln: Du-Form, kein Fluff, LOCKED Formats nie ändern.
+Build-Go: 'mach'/'ok'/'go' = direkt ausführen.
+Token-Count am Ende jeder Antwort."</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anti-patterns">
+    <div class="section-num">Sektion 6</div>
+    <h2>🚨 Anti-Patterns</h2>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #1</div>
+      <strong>Ein Projekt für alles</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du packst Hub-Dev, Lernmaterial, Daily Ops und Email-Drafts in ein Projekt. Instructions werden lang, widersprüchlich, ineffektiv. Trenne by function — nicht by convenience.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #2</div>
+      <strong>Instructions zu vage</strong>
+      <p style="margin-top:8px; margin-bottom:0">"Sei ein hilfreicher Assistent für mein Business." Claude kennt dein Business nicht, kennt die Rules nicht, kennt den Scope nicht. Instructions müssen spezifisch sein — Scope, Kontext, Regeln, Signale.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #3</div>
+      <strong>Zu viele Files hochladen</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du lädst alles in Project Files — jedes Email-Template, jeden Event-Plan, jede alte Version. Das erhöht Konfusion. Nur was Claude wirklich regelmäßig braucht: Skills, Locked-Formats, Business-Context.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #4</div>
+      <strong>Projekt nie updaten</strong>
+      <p style="margin-top:8px; margin-bottom:0">Dein Workflow ändert sich — neue Skills, neue MCPs, neue Personen im Team — aber Instructions bleiben veraltet. Quartals-Review: Instructions updaten, veraltete Files ersetzen.</p>
+    </div>
+  </section>
+
+  <section id="cheatsheet">
+    <div class="section-num">Quick Reference</div>
+    <h2>📋 Cheatsheet — Projects</h2>
+    <div class="cheatsheet">
+      <h4>Project Setup</h4>
+      <div class="cheat-row"><span class="cheat-key">Projekt erstellen</span><span class="cheat-val">claude.ai → New Project</span></div>
+      <div class="cheat-row"><span class="cheat-key">Instructions editieren</span><span class="cheat-val">Edit Project → Instructions</span></div>
+      <div class="cheat-row"><span class="cheat-key">Files hochladen</span><span class="cheat-val">Edit Project → Add Files</span></div>
+      <div class="cheat-row"><span class="cheat-key">Wann Projekt?</span><span class="cheat-val">5+ Mal gleichen Kontext erklärt</span></div>
+      <div class="cheat-row"><span class="cheat-key">Wann KEIN Projekt?</span><span class="cheat-val">Einmal-Tasks, kein Kontext nötig</span></div>
+      <div class="cheat-row"><span class="cheat-key">Instructions-Update</span><span class="cheat-val">Quartals-Review</span></div>
+      <div class="cheat-row"><span class="cheat-key">Projekt-Limit</span><span class="cheat-val">Pro Claude.ai Account mehrere möglich</span></div>
+      <div class="cheat-row"><span class="cheat-key">Deins aktuell</span><span class="cheat-val">Turbo Projects + Claude Mastery</span></div>
+    </div>
+  </section>
+
+  <section id="handson">
+    <div class="section-num">Hands-on Übung</div>
+    <h2>🛠️ Deine Instructions verbessern — 30 Minuten</h2>
+    <div class="handson">
+      <div class="handson-label">Übung · Instructions Audit</div>
+      <div class="handson-title">3 Aufgaben</div>
+      <ol>
+        <li style="margin-bottom:12px"><strong>Turbo Projects Instructions lesen:</strong> Öffne das Turbo-Projects Projekt. Lies die Instructions durch. Gibt es etwas das veraltet ist? Fehlt etwas Wichtiges? Mach dir Notizen.</li>
+        <li style="margin-bottom:12px"><strong>Vergleich mit Mastery:</strong> Schau dir diese Instructions an (oben im System-Prompt dieses Projekts). Wie unterscheiden sie sich? Was definiert den anderen Scope?</li>
+        <li style="margin-bottom:12px"><strong>Test:</strong> Stell dir vor du baust morgen ein "Email-Projekt" für systematische Promoter-Kommunikation. Was würde in die Instructions? Schreib 5-7 Zeilen als Draft.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="achievement">
+    <div class="achievement">
+      <div class="achievement-title">🎓 Was du jetzt kannst</div>
+      <ul>
+        <li>Entscheiden ob eine Aufgabe ein Projekt oder einen Chat braucht</li>
+        <li>Ein Projekt strukturieren: Instructions, Files, Memory richtig befüllen</li>
+        <li>Erklären warum Turbo Projects und Mastery getrennt sind</li>
+        <li>Schwache von starken Project Instructions unterscheiden</li>
+        <li>Erkennen wann ein drittes Projekt Sinn macht</li>
+      </ul>
+      <p style="margin-top:16px; color:var(--text-faint); font-size:13px;">Weiter mit → <strong>Modul 05: Artifacts Deep-Dive</strong></p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

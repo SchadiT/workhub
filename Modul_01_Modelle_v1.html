@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul 01 — Modelle | Claude Mastery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e11;
+      --bg-card: #16161a;
+      --bg-code: #111114;
+      --border: #2a2a30;
+      --border-soft: #222228;
+      --accent: #7c6af7;
+      --accent-soft: rgba(124,106,247,0.1);
+      --accent2: #4fc4a0;
+      --text: #e8e8f0;
+      --text-dim: #9898aa;
+      --text-faint: #55555f;
+      --yellow: #f5c542;
+      --red: #f27059;
+      --green: #4fc4a0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      padding: 32px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+    .sidebar-title { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .sidebar-meta { font-size: 11px; color: var(--text-faint); margin-top: 8px; }
+    .nav-section { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin: 24px 0 8px; }
+    .nav-link { display: block; padding: 8px 12px; color: var(--text-dim); text-decoration: none; font-size: 13px; border-radius: 6px; transition: all 0.15s ease; border-left: 2px solid transparent; margin-bottom: 2px; }
+    .nav-link:hover { color: var(--text); background: var(--bg); }
+    .nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+    .progress-bar { background: var(--border); border-radius: 99px; height: 4px; margin-top: 16px; }
+    .progress-fill { background: var(--accent); border-radius: 99px; height: 4px; width: 5%; }
+    /* MAIN */
+    .main { flex: 1; padding: 48px 56px; max-width: 880px; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+    /* HEADER */
+    .module-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .module-eyebrow { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
+    h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+    h1 .accent { color: var(--accent); }
+    .subtitle { color: var(--text-dim); font-size: 16px; line-height: 1.5; max-width: 680px; }
+    .meta-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+    .meta-item { font-size: 12px; color: var(--text-faint); }
+    .meta-item strong { color: var(--text-dim); }
+    /* SECTIONS */
+    section { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .section-num { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 28px; font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 20px; }
+    h3 { font-size: 20px; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; margin: 32px 0 14px; color: var(--text); }
+    h4 { font-size: 13px; font-weight: 700; margin: 24px 0 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+    p { color: var(--text); margin-bottom: 16px; }
+    strong { color: var(--text); font-weight: 700; }
+    em { color: var(--text-dim); font-style: italic; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { margin-bottom: 6px; color: var(--text); }
+    /* CODE */
+    code { font-family: 'JetBrains Mono', monospace; background: var(--bg-card); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; border: 1px solid var(--border-soft); }
+    pre { background: var(--bg-code); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 16px 20px; margin: 16px 0; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--text); }
+    pre code { background: transparent; color: inherit; padding: 0; border: none; }
+    /* ASCII */
+    .ascii-diagram { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; color: var(--text-dim); overflow-x: auto; white-space: pre; }
+    /* CALLOUTS */
+    .callout { border-radius: 8px; padding: 16px 20px; margin: 20px 0; border: 1px solid; }
+    .callout-label { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+    .callout-tip { background: var(--accent-soft); border-color: rgba(124,106,247,0.3); }
+    .callout-tip .callout-label { color: var(--accent); }
+    .callout-warn { background: rgba(245,197,66,0.08); border-color: rgba(245,197,66,0.3); }
+    .callout-warn .callout-label { color: var(--yellow); }
+    .callout-success { background: rgba(79,196,160,0.08); border-color: rgba(79,196,160,0.3); }
+    .callout-success .callout-label { color: var(--green); }
+    .callout-danger { background: rgba(242,112,89,0.08); border-color: rgba(242,112,89,0.3); }
+    .callout-danger .callout-label { color: var(--red); }
+    /* EXAMPLE BOXES */
+    .example { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin: 20px 0; overflow: hidden; }
+    .example-header { background: var(--accent-soft); border-bottom: 1px solid rgba(124,106,247,0.2); padding: 10px 16px; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .example-body { padding: 16px; }
+    .example-user { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--yellow); }
+    .example-user::before { content: "DU TIPPST: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    .example-claude { background: var(--bg-code); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--green); }
+    .example-claude::before { content: "CLAUDE MACHT: "; color: var(--text-faint); font-size: 10px; display: block; margin-bottom: 4px; }
+    /* MODEL CARDS */
+    .model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+    .model-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .model-card.opus { border-top: 3px solid var(--accent); }
+    .model-card.sonnet { border-top: 3px solid var(--green); }
+    .model-card.haiku { border-top: 3px solid var(--yellow); }
+    .model-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .model-card.opus .model-name { color: var(--accent); }
+    .model-card.sonnet .model-name { color: var(--green); }
+    .model-card.haiku .model-name { color: var(--yellow); }
+    .model-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 12px; }
+    .model-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+    .model-use { font-size: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); color: var(--text-faint); }
+    .model-use strong { color: var(--text-dim); }
+    /* COMPARISON TABLE */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    th { background: var(--bg-card); color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border-soft); color: var(--text-dim); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { color: var(--text); font-weight: 600; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+    .tag-opus { background: var(--accent-soft); color: var(--accent); }
+    .tag-sonnet { background: rgba(79,196,160,0.1); color: var(--green); }
+    .tag-haiku { background: rgba(245,197,66,0.1); color: var(--yellow); }
+    /* ANTI-PATTERN */
+    .anti { background: rgba(242,112,89,0.06); border: 1px solid rgba(242,112,89,0.2); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+    .anti-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+    /* ACHIEVEMENT */
+    .achievement { background: linear-gradient(135deg, rgba(124,106,247,0.12), rgba(79,196,160,0.08)); border: 1px solid rgba(124,106,247,0.3); border-radius: 12px; padding: 28px 32px; margin: 40px 0; }
+    .achievement-title { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 16px; }
+    .achievement ul { list-style: none; padding: 0; }
+    .achievement li { padding: 6px 0; color: var(--text); }
+    .achievement li::before { content: "✅ "; }
+    /* HANDS ON */
+    .handson { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin: 32px 0; }
+    .handson-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+    .handson-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    /* CHEATSHEET */
+    .cheatsheet { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+    .cheatsheet h4 { color: var(--green); margin-top: 0; }
+    .cheat-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-soft); font-size: 13px; }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-key { color: var(--text-dim); }
+    .cheat-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-label">Claude Mastery</div>
+  <div class="sidebar-title">Modul 01<br>Modelle</div>
+  <div class="sidebar-meta">Opus · Sonnet · Haiku</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
+  <div style="font-size:11px; color:var(--text-faint); margin-top:6px;">1 / 18 Module</div>
+
+  <div class="nav-section">Inhalt</div>
+  <a class="nav-link active" href="#objectives">📋 Lernziele</a>
+  <a class="nav-link" href="#mental-model">🧠 Mental Model</a>
+  <a class="nav-link" href="#drei-modelle">🤖 Die 3 Modelle</a>
+  <a class="nav-link" href="#wann-was">🎯 Wann was nutzen</a>
+  <a class="nav-link" href="#wechseln">🔄 Modell wechseln</a>
+  <a class="nav-link" href="#anti-patterns">🚨 Anti-Patterns</a>
+  <a class="nav-link" href="#cheatsheet">📋 Cheatsheet</a>
+  <a class="nav-link" href="#handson">🛠️ Hands-on</a>
+  <a class="nav-link" href="#achievement">🎓 Was du kannst</a>
+
+  <div class="nav-section">Andere Module</div>
+  <a class="nav-link" href="Modul_02_Memory_v1.html">02: Memory verstehen</a>
+  <a class="nav-link" href="Modul_03_Projects_v1.html">03: Projects nutzen</a>
+  <a class="nav-link" href="Modul_05_Artifacts_v1.html" style="opacity:0.5">05: Artifacts</a>
+  <a class="nav-link" href="Modul_07_Integrations_v1.html" style="opacity:0.5">07: Integrations</a>
+</aside>
+
+<main class="main">
+
+  <header class="module-header">
+    <div class="module-eyebrow">Modul 01 · Claude Mastery Curriculum</div>
+    <h1>Modelle <span class="accent">verstehen.</span></h1>
+    <p class="subtitle">Opus, Sonnet, Haiku — wann nutzt du welches, was kostet es, und warum macht die Wahl einen echten Unterschied in deinem Workflow.</p>
+    <div class="meta-row">
+      <span class="meta-item"><strong>Reading:</strong> 30 Min</span>
+      <span class="meta-item"><strong>Hands-on:</strong> 15 Min</span>
+      <span class="meta-item"><strong>Schwierigkeit:</strong> Einsteiger</span>
+    </div>
+  </header>
+
+  <!-- OBJECTIVES -->
+  <section id="objectives">
+    <div class="section-num">Lernziele</div>
+    <h2>📋 Was du nach diesem Modul kannst</h2>
+    <div class="callout callout-success">
+      <span class="callout-label">Ziele</span>
+      <ul style="margin-bottom:0">
+        <li><strong>Erklären</strong> was den Unterschied zwischen Opus, Sonnet und Haiku ausmacht</li>
+        <li><strong>Entscheiden</strong> in 10 Sekunden welches Modell für welchen Task richtig ist</li>
+        <li><strong>Wechseln</strong> zwischen Modellen im Chat — und wissen wann das sinnvoll ist</li>
+        <li><strong>Vermeiden</strong> die häufigsten Fehler (Opus für alles = teuer + langsam)</li>
+        <li><strong>Anwenden</strong> die richtige Modell-Wahl auf deine Grelle Forelle Workflows</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MENTAL MODEL -->
+  <section id="mental-model">
+    <div class="section-num">Sektion 1</div>
+    <h2>🧠 Mental Model — Drei Mitarbeiter, ein Büro</h2>
+
+    <p>Stell dir vor du hast drei Mitarbeiter. Alle drei können schreiben, analysieren, planen. Aber sie haben unterschiedliche Stärken, unterschiedliche Geschwindigkeit, und unterschiedliche Kosten.</p>
+
+    <div class="ascii-diagram">DEIN TASK
+     │
+     ▼
+┌─────────────────────────────────────────────────────┐
+│                                                     │
+│   OPUS 4            SONNET 4.6        HAIKU 4.5     │
+│   ─────────         ──────────        ─────────     │
+│   Der Senior        Der Allrounder    Der Runner     │
+│   Consultant        ✅ Default        ⚡ Blitz       │
+│                                                     │
+│   Langsam           Mittel            Schnell        │
+│   Teuer             Moderat           Günstig        │
+│   Tiefste Analyse   Stark + Effizient Quick Tasks    │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+     │                    │                    │
+     ▼                    ▼                    ▼
+Hub-Code bauen       Sandra-Mail          "Was kostet
+Strategie-Analyse    Factsheet erstellen   Heineken?"
+Komplexe Prompts     Daily Briefing       Kurze Checks</div>
+
+    <p>Der Fehler den die meisten machen: <strong>Opus für alles</strong>. Das ist so als würdest du den Senior Consultant beauftragen, dir einen Kaffee zu holen. Er kann's — aber es ist Verschwendung.</p>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Key Insight</span>
+      <p style="margin:0">Für 80% deiner täglichen Tasks ist <strong>Sonnet</strong> die richtige Wahl. Opus brauchst du nur wenn Sonnet wirklich an seine Grenzen stößt. Haiku für alles was unter 30 Sekunden erledigt sein muss.</p>
+    </div>
+  </section>
+
+  <!-- DIE 3 MODELLE -->
+  <section id="drei-modelle">
+    <div class="section-num">Sektion 2</div>
+    <h2>🤖 Die drei Modelle im Detail</h2>
+
+    <div class="model-grid">
+      <div class="model-card opus">
+        <div class="model-name">Opus</div>
+        <div class="model-badge">claude-opus-4-6 · Flagship</div>
+        <div class="model-desc">Stärkstes Reasoning. Komplexe mehrstufige Aufgaben. Lange Kontexte mit vielen Abhängigkeiten. Der einzige der wirklich tief denkt und unerwartete Verbindungen zieht.</div>
+        <div class="model-use"><strong>Einsatz wenn:</strong> Code-Architektur, Strategie-Analyse, komplexe Workflows bauen, wenn Sonnet zweimal falsch liegt.</div>
+      </div>
+      <div class="model-card sonnet">
+        <div class="model-name">Sonnet</div>
+        <div class="model-badge">claude-sonnet-4-6 · Default ✅</div>
+        <div class="model-desc">Bestes Preis-Leistungs-Verhältnis. Stark genug für 80% aller Tasks. Schneller als Opus. Das Arbeitspferd deines Workflows — zuverlässig, intelligent, effizient.</div>
+        <div class="model-use"><strong>Einsatz wenn:</strong> Emails, Factsheets, Analysen, Content, Planung, Code-Fixes, Daily Operations.</div>
+      </div>
+      <div class="model-card haiku">
+        <div class="model-name">Haiku</div>
+        <div class="model-badge">claude-haiku-4-5 · Speed</div>
+        <div class="model-desc">Blitzschnell. Günstigste Option. Für einfache, klare Tasks die keine Tiefe brauchen. Wenn du in 5 Sekunden eine Antwort willst und die Frage simpel ist.</div>
+        <div class="model-use"><strong>Einsatz wenn:</strong> Kurze Fakten, einfache Übersetzungen, schnelle Checks, Routing-Entscheidungen in Automationen.</div>
+      </div>
+    </div>
+
+    <h3>Was sich wirklich unterscheidet</h3>
+    <table>
+      <tr>
+        <th>Eigenschaft</th>
+        <th><span class="tag tag-opus">Opus</span></th>
+        <th><span class="tag tag-sonnet">Sonnet</span></th>
+        <th><span class="tag tag-haiku">Haiku</span></th>
+      </tr>
+      <tr>
+        <td>Reasoning-Tiefe</td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>⭐⭐⭐⭐</td>
+        <td>⭐⭐</td>
+      </tr>
+      <tr>
+        <td>Geschwindigkeit</td>
+        <td>Langsam</td>
+        <td>Mittel</td>
+        <td>Sehr schnell</td>
+      </tr>
+      <tr>
+        <td>Kontext-Fenster</td>
+        <td>200k Token</td>
+        <td>200k Token</td>
+        <td>200k Token</td>
+      </tr>
+      <tr>
+        <td>Beste für</td>
+        <td>Komplexe Analyse</td>
+        <td>Daily Work</td>
+        <td>Quick Tasks</td>
+      </tr>
+      <tr>
+        <td>Kosten (relativ)</td>
+        <td>Hoch</td>
+        <td>Moderat</td>
+        <td>Niedrig</td>
+      </tr>
+    </table>
+
+    <div class="callout callout-warn">
+      <span class="callout-label">⚠️ Wichtig zu wissen</span>
+      <p style="margin:0">Alle drei Modelle haben das gleiche <strong>Kontext-Fenster (200k Token)</strong> und die gleichen MCP-Integrationen. Der Unterschied liegt im <em>Reasoning</em>, nicht im Zugriff auf Tools.</p>
+    </div>
+  </section>
+
+  <!-- WANN WAS -->
+  <section id="wann-was">
+    <div class="section-num">Sektion 3</div>
+    <h2>🎯 Wann was nutzen — Grelle Forelle Kontext</h2>
+
+    <h3>Deine häufigsten Tasks, richtig zugeordnet</h3>
+
+    <div class="example">
+      <div class="example-header">Beispiel 1 · Sandra-Mail (Vermieterin)</div>
+      <div class="example-body">
+        <div class="example-user">Schreib eine formelle Mail an Sandra wegen der Heizungsreparatur.</div>
+        <div class="example-claude">→ SONNET ist richtig. Kein Opus nötig. Sandra-Mails brauchen Tonalität + Struktur, keine Deep-Reasoning-Kapazität. Sonnet liefert das perfekt — schneller, gleich gut.</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header">Beispiel 2 · Hub-Code bauen</div>
+      <div class="example-body">
+        <div class="example-user">Bau mir eine neue Factsheet-Sektion im Hub mit Drag-and-Drop Staffing.</div>
+        <div class="example-claude">→ OPUS. Komplexer Code mit vielen Abhängigkeiten, State-Management, und Edge Cases. Hier zahlt sich Opus aus — Sonnet macht mehr Fehler bei großen Code-Bases.</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header">Beispiel 3 · Quick Check während Event</div>
+      <div class="example-body">
+        <div class="example-user">Was ist der Unterschied zwischen GEMA und AKM?</div>
+        <div class="example-claude">→ HAIKU. Faktenfrage, kurze Antwort, kein Reasoning nötig. In 3 Sekunden fertig statt 15.</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header">Beispiel 4 · Promoter-Performance Analyse</div>
+      <div class="example-body">
+        <div class="example-user">Analysiere die letzten 12 Events von Toni vs. Sasha — Revenue, Kosten, Auslastung, Trend.</div>
+        <div class="example-claude">→ SONNET (oder Opus wenn Daten sehr komplex). Analyse-Task mit Daten aus MAIN DB. Sonnet ist stark genug und deutlich schneller als Opus für strukturierte Datenanalyse.</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-header">Beispiel 5 · Daily Briefing</div>
+      <div class="example-body">
+        <div class="example-user">Was steht heute an? Check Kalender, Mails, offene Tasks.</div>
+        <div class="example-claude">→ SONNET. Multi-Tool-Task (Calendar + Gmail + Drive MCPs), aber kein komplexes Reasoning. Sonnet handled das perfekt, schneller als Opus.</div>
+      </div>
+    </div>
+
+    <h3>Die Entscheidungs-Regel in 10 Sekunden</h3>
+
+    <div class="ascii-diagram">Task kommt rein
+      │
+      ▼
+Ist es ein einfacher Fakt / kurze Übersetzung / Quick-Check?
+      │
+     JA ──────────────────────────────► HAIKU ⚡
+      │
+      NEIN
+      │
+      ▼
+Ist es Code-Architektur / Strategie / hat Sonnet bereits
+versagt / sehr langer komplexer Kontext?
+      │
+     JA ──────────────────────────────► OPUS 🧠
+      │
+      NEIN
+      │
+      ▼
+                                    SONNET ✅ (Default)</div>
+  </section>
+
+  <!-- WECHSELN -->
+  <section id="wechseln">
+    <div class="section-num">Sektion 4</div>
+    <h2>🔄 Modell wechseln — So geht's</h2>
+
+    <h3>In claude.ai (Web/Mobile)</h3>
+    <p>Oben im Chat-Interface siehst du den Modell-Selector (aktuell steht da vermutlich "Claude Sonnet 4.6"). Klick drauf → Dropdown → wählen.</p>
+
+    <div class="callout callout-tip">
+      <span class="callout-label">💡 Wichtig</span>
+      <p style="margin:0">Du kannst das Modell <strong>mitten in einem Gespräch wechseln</strong>. Der Kontext bleibt erhalten. Wenn Sonnet bei einem Code-Problem feststeckt, wechsel zu Opus — das Gespräch läuft nahtlos weiter.</p>
+    </div>
+
+    <h3>Wann mid-conversation wechseln?</h3>
+    <ul>
+      <li><strong>Sonnet → Opus:</strong> Wenn Sonnet den gleichen Fehler zweimal macht oder ein komplexes Reasoning-Problem auftaucht</li>
+      <li><strong>Opus → Sonnet:</strong> Nach komplexem Code-Build — für Follow-up-Fragen und Erklärungen reicht Sonnet</li>
+      <li><strong>→ Haiku:</strong> Wenn du nach einem langen Chat nur noch eine kurze Faktenfrage hast</li>
+    </ul>
+
+    <h3>Im API / Automation-Kontext</h3>
+    <p>Wenn du später Automationen baust (Modul 13+), setzt du das Modell per <code>model</code>-Parameter:</p>
+    <pre><code>model: "claude-opus-4-6"      // Tiefe Analyse
+model: "claude-sonnet-4-6"   // Default
+model: "claude-haiku-4-5-20251001"  // Speed</code></pre>
+  </section>
+
+  <!-- ANTI-PATTERNS -->
+  <section id="anti-patterns">
+    <div class="section-num">Sektion 5</div>
+    <h2>🚨 Anti-Patterns — Was du vermeiden sollst</h2>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #1</div>
+      <strong>Opus für alles</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du nutzt immer Opus weil "der ist ja am besten". Ergebnis: langsamer, und kein echter Qualitäts-Unterschied bei 80% der Tasks. Sonnet ist für Daily Operations gleichwertig — nur schneller.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #2</div>
+      <strong>Haiku für komplexe Tasks</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du nutzt Haiku weil es "schnell genug" ist — für einen komplexen Security-Order mit 4 Events und 3 Zeitslots. Haiku übersieht Details, macht Logik-Fehler. Für alles was Präzision braucht: Sonnet mindestens.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #3</div>
+      <strong>Nicht wechseln wenn's nicht klappt</strong>
+      <p style="margin-top:8px; margin-bottom:0">Sonnet macht zum dritten Mal den gleichen Fehler beim Hub-Code. Du probierst weiter mit Sonnet. Falsch — das ist das Signal für Opus. Modell-Wechsel ist kein Versagen, sondern richtiges Tool-Selection.</p>
+    </div>
+
+    <div class="anti">
+      <div class="anti-label">Anti-Pattern #4</div>
+      <strong>Modell-Wechsel = neuer Chat</strong>
+      <p style="margin-top:8px; margin-bottom:0">Du glaubst du musst einen neuen Chat starten um das Modell zu wechseln. Nein — du wechselst mid-conversation. Kontext bleibt, Modell ändert sich. Kein Reset nötig.</p>
+    </div>
+  </section>
+
+  <!-- CHEATSHEET -->
+  <section id="cheatsheet">
+    <div class="section-num">Quick Reference</div>
+    <h2>📋 Cheatsheet — Modelle</h2>
+    <div class="cheatsheet">
+      <h4>Model Selector</h4>
+      <div class="cheat-row"><span class="cheat-key">Hub-Code / Architektur</span><span class="cheat-val">Opus</span></div>
+      <div class="cheat-row"><span class="cheat-key">Emails / Factsheets / Analyse</span><span class="cheat-val">Sonnet ✅</span></div>
+      <div class="cheat-row"><span class="cheat-key">Kurze Fakten / Quick-Check</span><span class="cheat-val">Haiku</span></div>
+      <div class="cheat-row"><span class="cheat-key">Sonnet schlägt 2x fehl</span><span class="cheat-val">→ Wechsel zu Opus</span></div>
+      <div class="cheat-row"><span class="cheat-key">Default wenn unsicher</span><span class="cheat-val">Sonnet</span></div>
+      <div class="cheat-row"><span class="cheat-key">Modell-Wechsel im Chat</span><span class="cheat-val">Dropdown oben — Kontext bleibt</span></div>
+      <div class="cheat-row"><span class="cheat-key">API Model String Opus</span><span class="cheat-val">claude-opus-4-6</span></div>
+      <div class="cheat-row"><span class="cheat-key">API Model String Sonnet</span><span class="cheat-val">claude-sonnet-4-6</span></div>
+    </div>
+  </section>
+
+  <!-- HANDS-ON -->
+  <section id="handson">
+    <div class="section-num">Hands-on Übung</div>
+    <h2>🛠️ Üben — 15 Minuten</h2>
+    <div class="handson">
+      <div class="handson-label">Übung · Modell-Entscheidung</div>
+      <div class="handson-title">5 Tasks, 5 Entscheidungen</div>
+      <p>Geh in dein Turbo-Projects Projekt. Mach für jeden der folgenden Tasks bewusst eine Modell-Entscheidung <em>bevor</em> du anfängst:</p>
+      <ol>
+        <li><strong>Task:</strong> "Schreib einen kurzen Insta-Caption für das nächste Turbo-Event." → Welches Modell?</li>
+        <li><strong>Task:</strong> "Analysiere meine letzten 6 EIGEN-Events nach Revenue-Trend." → Welches Modell?</li>
+        <li><strong>Task:</strong> "Was bedeutet 'Headliner-Fee' auf einer Bookingrechnung?" → Welches Modell?</li>
+        <li><strong>Task:</strong> "Bau mir einen neuen Revenue-Calculator als Hub-Sektion mit Live-Berechnung." → Welches Modell?</li>
+        <li><strong>Task:</strong> "Draft eine formelle Mail an Sandra wegen Renovierungszeitplan." → Welches Modell?</li>
+      </ol>
+      <p style="margin-top:16px; color:var(--text-faint); font-size:13px;">Lösung: 1=Sonnet, 2=Sonnet, 3=Haiku, 4=Opus, 5=Sonnet</p>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENT -->
+  <section id="achievement">
+    <div class="achievement">
+      <div class="achievement-title">🎓 Was du jetzt kannst</div>
+      <ul>
+        <li>Den Unterschied zwischen Opus, Sonnet und Haiku erklären</li>
+        <li>In 10 Sekunden das richtige Modell für einen Task bestimmen</li>
+        <li>Modelle mid-conversation wechseln ohne Kontext-Verlust</li>
+        <li>Deine Grelle Forelle Tasks korrekt zuordnen</li>
+        <li>Die 4 häufigsten Anti-Patterns vermeiden</li>
+      </ul>
+      <p style="margin-top:16px; color:var(--text-faint); font-size:13px;">Weiter mit → <strong>Modul 02: Memory verstehen</strong></p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

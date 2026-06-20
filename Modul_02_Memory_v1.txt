@@ -1,0 +1,135 @@
+CLAUDE MASTERY CURRICULUM
+Modul 02: Memory verstehen — Global, Project, Context
+Für Audio-Learning optimiert | NotebookLM-Format
+================================================================
+
+LERNZIELE
+
+Nach diesem Modul kannst du:
+- Erklären warum Claude nach jedem Chat "vergisst" — und was stimmt daran nicht
+- Unterscheiden zwischen Global Memory, Project Memory und Context Window
+- Editieren und löschen was Claude über dich gespeichert hat
+- Deine bestehenden Memory-Edits optimieren
+- Verstehen warum Turbo Projects und Mastery getrennte Memories haben
+
+================================================================
+
+SEKTION 1: DAS MEMORY-PARADOX
+
+Die häufigste Aussage über Claude lautet: Claude vergisst alles nach jedem Chat. Das stimmt — und stimmt nicht.
+
+Hier ist die Wahrheit: Claude hat drei verschiedene Memory-Typen die zusammenspielen.
+
+Typ eins ist das GLOBAL MEMORY. Das sind Infos die Claude dauerhaft über dich speichert — und die in jeden Chat geladen werden, egal ob du im Turbo-Projects Projekt bist, im Mastery-Projekt, oder in einem völlig neuen Chat. Dein Name, dein Kommunikationsstil, deine Präferenzen — das ist Global Memory.
+
+Typ zwei ist das PROJECT MEMORY. Das gilt nur innerhalb eines bestimmten Projekts. Im Turbo-Projects Projekt kennt Claude den Hub, die MCPs, die Skill-Definitionen. Im Mastery-Projekt kennt Claude den Lernplan, die Module, das Format. Diese Kontexte mischen sich nicht.
+
+Typ drei ist das CONTEXT WINDOW. Das ist der aktuelle Chat — alles was du und Claude in diesem Gespräch geschrieben haben. Es fasst 200.000 Token — das entspricht einem sehr langen Roman. Wenn der Chat endet, ist das Context Window geleert. Aber Global und Project Memory bleiben.
+
+================================================================
+
+SEKTION 2: GLOBAL MEMORY — DEIN DAUERHAFTES PROFIL
+
+Global Memory speichert wer du bist und wie du arbeitest. Du findest es unter Settings dann Memory in claude.ai.
+
+Du hast aktuell 21 aktive Memory-Edits. Das sind deine Kommunikationsregeln — Du-Form, kein Fluff, Token-Count am Ende, Voice-to-Text Toleranz, Deutsch-Englisch gemischt, und so weiter. Diese 21 Einträge werden automatisch in jeden deiner Chats geladen.
+
+Was gehört gut in Global Memory? Kommunikationsstil, Sprach-Präferenzen, Format-Anforderungen, deine Rolle als CEO der Grelle Forelle in Wien, wiederkehrende Präferenzen die immer gelten.
+
+Was gehört nicht in Global Memory? Spezifische Task-Details, event-spezifische Infos, temporäre Zustände, einmalige Entscheidungen. Das gehört in Project Files oder bleibt im Context.
+
+Ein konkretes Beispiel: Du schreibst in einem Chat einfach "Schreib mir einen kurzen Text für die Website." Claude weiß aus deinem Global Memory dass du Du-Form willst, kein Fluff, dass du CEO der Grelle Forelle in Wien bist, und dass du direkten Business-Ton bevorzugst. Das Ergebnis ist sofort passend — ohne dass du es neu erklärst.
+
+================================================================
+
+SEKTION 3: PROJECT MEMORY — PROJEKT-SPEZIFISCHER KONTEXT
+
+Jedes Claude-Projekt hat drei Elemente die zusammen das Project Memory bilden.
+
+Element eins: Project Instructions. Das ist was du unter Edit Project dann Instructions eingegeben hast. Dieser Text wird in jeden Chat in diesem Projekt geladen — wie ein System-Prompt.
+
+Element zwei: Project Files. Files die du ins Projekt hochgeladen hast. Claude kann sie durchsuchen und referenzieren. In deinem Mastery-Projekt sind das Lernplan Index, Business Context, die fertigen Module, und so weiter.
+
+Element drei: Project-scoped Memory. Was Claude automatisch aus Gesprächen in diesem Projekt extrahiert hat — aber nur für dieses Projekt.
+
+Dein Turbo-Projects Projekt hat andere Instructions als das Mastery-Projekt. Im Turbo-Projekt: Hub-Dev Kontext, Skill-Definitionen, MCP-Setup. Im Mastery-Projekt: Learn-Only Modus, Module-Format LOCKED, keine operativen Tasks.
+
+Warum die Trennung? Weil operative ToDos aus Turbo Projects nicht in dein Lern-Projekt bluten sollen. Und Modul-Specs aus Mastery sollen nicht Daily Operations stören. Das ist kein Bug — das ist sauberes Design.
+
+Wichtig: Project Files sind read-only Referenz. Claude liest sie, ändert sie aber nicht. Wenn du ein File updatest musst du es manuell ersetzen.
+
+================================================================
+
+SEKTION 4: CONTEXT WINDOW — DAS AKTUELLE GESPRÄCH
+
+Das Context Window ist der Arbeitsspeicher eines Chats. Alles was in diesem Gespräch steht — deine Nachrichten, Claudes Antworten, hochgeladene Files, Tool-Ergebnisse — das ist im Context Window.
+
+200.000 Token entsprechen ungefähr 150.000 Wörtern. Das reicht für sehr lange, komplexe Gespräche.
+
+Was passiert beim Chat-Start? Claude lädt Global Memory und Project Memory. Das Context Window beginnt bei null.
+
+Was passiert während des Chats? Alles was gesagt wird akkumuliert im Context Window. Claude kann alles aus dem aktuellen Gespräch referenzieren — auch was du vor 50 Nachrichten gesagt hast.
+
+Was passiert am Chat-Ende? Das Context Window wird geleert. Global Memory bleibt. Project Memory bleibt. Der Gesprächsinhalt ist weg.
+
+Das ist der Grund warum du in langen Hub-Dev-Sessions am Ende einen Session-Handoff machst. Die wichtigsten Entscheidungen und Erkenntnisse landen als File in Project Files — damit sie beim nächsten Chat wieder verfügbar sind.
+
+================================================================
+
+SEKTION 5: MEMORY EDITIEREN UND LÖSCHEN
+
+Global Memory editieren: Geh zu Settings dann Memory in claude.ai. Du siehst alle gespeicherten Memory-Einträge. Klick auf einen Eintrag für Edit oder Delete.
+
+Direkter Weg im Chat: Sag einfach "Merke dir dass Matthäus unser CFO ist und Zahlen in Tabellenform bevorzugt." Claude speichert das automatisch in Global Memory.
+
+Was solltest du löschen? Einträge die veraltet sind — alte Projekte, Personen die nicht mehr relevant sind. Einträge die zu spezifisch sind und das Memory aufblähen. Widersprüchliche Einträge die Claude verwirren.
+
+User Preferences versus Memory-Edits: Es gibt zwei Orte für globale Präferenzen. Unter Settings dann Profile hinterlegst du permanente Verhaltens-Regeln — Kommunikationsstil, Format-Regeln, alles was immer gilt. Unter Settings dann Memory siehst du auto-generierte und explizit gesetzte Infos über dich.
+
+================================================================
+
+SEKTION 6: DIE VIER HÄUFIGSTEN FEHLER
+
+Fehler eins: Alles im Chat immer wieder erklären. Du erklärst in jedem Chat neu wer du bist, was Grelle Forelle ist, wie du kommunizieren willst. Das gehört einmalig in Global Memory oder User Preferences.
+
+Fehler zwei: Operative Details in Global Memory. Du speicherst sehr spezifische operative Infos wie Event-Daten oder aktuelle Preise in Global Memory. Das gehört in Project Files oder bleibt im Context — nicht in ein dauerhaftes Profil.
+
+Fehler drei: Memory nie aufräumen. Memory akkumuliert über Zeit. Veraltete Einträge, Widersprüche, redundante Infos verwirren Claude. Alle zwei bis drei Monate: Memory-Audit machen.
+
+Fehler vier: Glauben dass Project-Memory global ist. Du sagst im Mastery-Projekt "merke dir dass der Hub Section X hat" — und wunderst dich warum Claude das im Turbo-Chat nicht weiß. Project Memory ist projekt-isoliert.
+
+================================================================
+
+QUICK REFERENCE — CHEATSHEET
+
+Global Memory: Settings dann Memory — gilt in jedem Chat überall
+Project Memory: Nur im jeweiligen Projekt sichtbar
+Context Window: Aktueller Chat — 200.000 Token
+Memory editieren: Settings dann Memory dann Edit
+Memory im Chat setzen: "Merke dir dass..."
+Project Instructions: Edit Project dann Instructions
+Project Files: Edit Project dann Files hochladen
+Memory-Audit Intervall: Alle zwei bis drei Monate
+
+================================================================
+
+HANDS-ON ÜBUNG — 30 MINUTEN
+
+Aufgabe eins: Geh zu Settings dann Memory. Lies alle 21 Einträge durch. Lösche mindestens zwei die veraltet oder zu spezifisch sind.
+
+Aufgabe zwei: Schreib in diesem Chat: "Merke dir dass [eine echte Info über dich oder deinen Workflow die noch fehlt]." Schau danach in Settings dann Memory ob es gespeichert wurde.
+
+Aufgabe drei: Geh in dein Turbo-Projects Projekt und schau dir die Project Instructions an. Vergleiche mit den Instructions hier im Mastery-Projekt. Der Kontext-Unterschied ist sofort sichtbar.
+
+================================================================
+
+ZUSAMMENFASSUNG
+
+Memory ist kein Alles-oder-Nichts. Claude hat drei Schichten: Global Memory das immer gilt, Project Memory das nur im jeweiligen Projekt gilt, und das Context Window das nur im aktuellen Chat gilt.
+
+Gutes Memory-Management bedeutet: die richtige Information am richtigen Ort, regelmäßig aufgeräumt, ohne Widersprüche.
+
+Weiter mit Modul 03: Projects richtig nutzen.
+
+================================================================
+Ende Modul 02 | Claude Mastery Curriculum
