@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.238</title>
+    <title>Turbo Projects Work Hub v15.9.239</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.238: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.239: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.238: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.239: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3904,7 +3904,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.238) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.239) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5254,7 +5254,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.238) ── */
+        /* ── Planner Overlay Light Theme (v15.9.239) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5304,7 +5304,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.238) ── */
+        /* ── Light skin contrast boost (v15.9.239) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5540,7 +5540,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.238) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.239) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -6620,7 +6620,7 @@
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
                     <!-- v15.9.161: PDF Report from DBV Selection -->
                     <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
-                    <!-- v15.9.238: DB Update Button -->
+                    <!-- v15.9.239: DB Update Button -->
                     <button id="dbv-update-btn" onclick="dbUpdateOpen()" style="background:linear-gradient(135deg,#0a2a1a,#051a0f);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="Revenue-Daten in DB schreiben">&#8659; DB Update</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
@@ -7139,18 +7139,35 @@
 
                 <!-- TAB 2: Shiftplan Generator -->
                 <div class="bar-tab-content" id="runner-content-shiftplan">
-                    <h4 style="margin-bottom: 15px;">Upload Filled Availability Sheet</h4>
-                    <div class="bar-upload-zone" id="runner-upload-zone" onclick="document.getElementById('runner-availability-upload').click()">
-                        <input type="file" id="runner-availability-upload" accept=".xlsx,.xls" style="display: none;" onchange="handleRunnerAvailabilityUpload(event)">
-                        <div class="bar-upload-icon"></div>
-                        <p>Click or drag filled Availability Sheet here</p>
-                        <small>Supports .xlsx files</small>
+
+                    <!-- SECTION A: Auto-Generate from Availability -->
+                    <div style="border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:16px;">
+                        <label style="display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🤖 Auto-Generate aus Availability Sheet</label>
+                        <div class="bar-upload-zone" id="runner-upload-zone" onclick="document.getElementById('runner-availability-upload').click()">
+                            <input type="file" id="runner-availability-upload" accept=".xlsx,.xls" style="display: none;" onchange="handleRunnerAvailabilityUpload(event)">
+                            <div class="bar-upload-icon"></div>
+                            <p>Click or drag filled Availability Sheet here</p>
+                            <small>Supports .xlsx files</small>
+                        </div>
+                        <div id="runner-availability-status" class="bar-status" style="display: none;"></div>
+                        <div id="runner-shiftplan-preview" class="bar-preview" style="display: none;"></div>
+                        <button class="modal-btn primary" onclick="generateRunnerShiftplan()" id="btn-generate-runner-shiftplan" style="width: 100%; margin-top: 15px; display: none;">
+                            ⚡ Generate Shiftplan
+                        </button>
                     </div>
-                    <div id="runner-availability-status" class="bar-status" style="display: none;"></div>
-                    <div id="runner-shiftplan-preview" class="bar-preview" style="display: none;"></div>
-                    <button class="modal-btn primary" onclick="generateRunnerShiftplan()" id="btn-generate-runner-shiftplan" style="width: 100%; margin-top: 15px; display: none;">
-                        &#9889; Generate & Download Shiftplan (.xlsx)
-                    </button>
+
+                    <!-- SECTION B: Manual Upload -->
+                    <div style="border:1px solid var(--border);border-radius:6px;padding:14px;">
+                        <label style="display:block;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">📋 Manueller Upload (Schadi)</label>
+                        <div class="bar-upload-zone" id="runner-manual-upload-zone" onclick="document.getElementById('runner-manual-upload').click()" style="border-color:rgba(139,92,246,0.4);">
+                            <input type="file" id="runner-manual-upload" accept=".xlsx,.xls" style="display: none;" onchange="handleManualRunnerUpload(event)">
+                            <div class="bar-upload-icon" style="filter:hue-rotate(200deg);"></div>
+                            <p>Fertigen Runner-Plan hochladen (.xlsx)</p>
+                            <small>Format: DATUM · EVENT · R1 · R2 · R3 · R4 · R5 · R6</small>
+                        </div>
+                        <div id="runner-manual-status" class="bar-status" style="display: none;"></div>
+                    </div>
+
                 </div>
 
                 <!-- TAB 3: Roster -->
@@ -7568,7 +7585,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.238 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.239 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -7848,7 +7865,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.238</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.239</small>
             </div>
             </div>
         </div>
@@ -8631,7 +8648,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.238</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.239</span>
     </div>
     
     
@@ -11728,7 +11745,7 @@
             }
         }
 
-        // v15.9.238: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.239: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -12976,7 +12993,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.239', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13136,7 +13153,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.239', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13210,7 +13227,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.239', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13317,7 +13334,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.239', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13401,7 +13418,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.239', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13710,7 +13727,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.239', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13857,7 +13874,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.239', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14002,7 +14019,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.238', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.239', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18311,7 +18328,10 @@ Spittelauer Lnde 12/1
             }
 
             function isUnavailable(name, date) {
-                return unavailable.some(u => u.name.toLowerCase() === name.toLowerCase() && u.date === date);
+                return unavailable.some(u => u.name.toLowerCase() === name.toLowerCase() && u.date === date && u.type === 'FREI');
+            }
+            function isOptRunner(name, date) {
+                return unavailable.some(u => u.name.toLowerCase() === name.toLowerCase() && u.date === date && u.type === 'OPT');
             }
 
             // Position index: R1=0, R2=1, ... R6=5
@@ -18467,6 +18487,12 @@ Spittelauer Lnde 12/1
                             const skipB = prefersSkip(b) ? 1 : 0;
                             if (skipA !== skipB) return skipA - skipB;
                         }
+                        // Due shifts minimum: below target gets priority
+                        const aDueMin = parseInt((a.due_shifts || '0').toString().split('-')[0]) || 0;
+                        const bDueMin = parseInt((b.due_shifts || '0').toString().split('-')[0]) || 0;
+                        const aBelowMin = shiftsTotal[a.name] < aDueMin ? 1 : 0;
+                        const bBelowMin = shiftsTotal[b.name] < bDueMin ? 1 : 0;
+                        if (aBelowMin !== bBelowMin) return bBelowMin - aBelowMin;
                         const rotA = positionsWorked[a.name][position] || 0;
                         const rotB = positionsWorked[b.name][position] || 0;
                         if (rotA !== rotB) return rotA - rotB;
@@ -18527,11 +18553,27 @@ Spittelauer Lnde 12/1
                     if (assignment.positions[pos]) return;
                     if (posIdx >= fillUpTo) return; // reserve for letzte runners
                     const posNum = posIdx + 1;
+                    // Tier 1: fully available (no FREI, no OPT)
                     let candidates = runnerRoster.filter(p =>
                         !assignedThisEvent.includes(p.name) &&
                         canWorkEvent(p, pos) &&
+                        !isOptRunner(p.name, event.date) &&
                         posNum >= (p.prio_min_pos || 1)
                     );
+                    let isOptAssignment = false;
+                    // Tier 2: OPT (soft-block) — only if no normal candidate
+                    if (candidates.length === 0) {
+                        candidates = runnerRoster.filter(p =>
+                            !assignedThisEvent.includes(p.name) &&
+                            !isUnavailable(p.name, event.date) &&
+                            isOptRunner(p.name, event.date) &&
+                            !isLetzterForEvent(p) &&
+                            !(p.no_konzert && isConcert) &&
+                            !hasConsecutiveConflict(p.name, event.date) &&
+                            posNum >= (p.prio_min_pos || 1)
+                        );
+                        isOptAssignment = candidates.length > 0;
+                    }
                     // Fallback: relax feiertag but keep prio_min_pos hard
                     if (candidates.length === 0) {
                         candidates = runnerRoster.filter(p =>
@@ -18547,7 +18589,7 @@ Spittelauer Lnde 12/1
                     candidates = sortCandidatesExt(candidates, pos);
                     if (candidates.length > 0) {
                         const person = candidates[0];
-                        assignment.positions[pos] = person.name;
+                        assignment.positions[pos] = isOptAssignment ? person.name + '*' : person.name;
                         assign(person, event, pos);
                         assignedThisEvent.push(person.name);
                     }
@@ -18603,6 +18645,32 @@ Spittelauer Lnde 12/1
                 assignments.push(assignment);
             });
 
+            // Write to SHIFTPLAN_DATABASE (localStorage) so Hub displays it
+            const newShiftplanDB = {};
+            assignments.forEach(a => {
+                const times = getTemplateTimes(a.type);
+                newShiftplanDB[a.date] = {
+                    event:        a.event,
+                    cvd:          '',
+                    runner1:      a.positions['R1'] || '',
+                    runner1_time: times?.runner1 || '',
+                    runner2:      a.positions['R2'] || '',
+                    runner2_time: times?.runner2 || '',
+                    runner3:      a.positions['R3'] || '',
+                    runner3_time: times?.runner3 || '',
+                    runner4:      a.positions['R4'] || '',
+                    runner4_time: times?.runner4 || '',
+                    runner5:      a.positions['R5'] || '',
+                    runner5_time: times?.runner5 || '',
+                    runner6:      a.positions['R6'] || '',
+                    runner6_time: times?.runner6 || ''
+                };
+            });
+            SHIFTPLAN_DATABASE = newShiftplanDB;
+            localStorage.setItem('shiftplan_data', JSON.stringify(SHIFTPLAN_DATABASE));
+            shiftplanLoaded = true;
+            renderRunnerShiftplan();
+
             // Build Excel
             const wb = XLSX.utils.book_new();
             const wsData = [['RUNNER SHIFTPLAN'], ['DATUM', 'EVENT', 'TYP', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'INFO']];
@@ -18634,6 +18702,86 @@ Spittelauer Lnde 12/1
             } else {
                 showToast(`${fileName} downloaded!`);
             }
+        }
+
+        // Manual runner shiftplan upload (from Schadi)
+        function handleManualRunnerUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const ws = workbook.Sheets[workbook.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+                    let headerIdx = -1, colMap = {};
+                    for (let i = 0; i < Math.min(rows.length, 5); i++) {
+                        const r = rows[i].map(c => (c || '').toString().toLowerCase().trim());
+                        if (r.some(c => c.includes('datum') || c.includes('date'))) {
+                            headerIdx = i;
+                            r.forEach((c, ci) => {
+                                if (c.includes('datum') || c.includes('date')) colMap.datum = ci;
+                                else if (c.includes('event') || c.includes('name')) colMap.event = ci;
+                                else if (c === 'r1' || c === 'runner1' || c === 'runner 1') colMap.r1 = ci;
+                                else if (c === 'r2' || c === 'runner2' || c === 'runner 2') colMap.r2 = ci;
+                                else if (c === 'r3' || c === 'runner3' || c === 'runner 3') colMap.r3 = ci;
+                                else if (c === 'r4' || c === 'runner4' || c === 'runner 4') colMap.r4 = ci;
+                                else if (c === 'r5' || c === 'runner5' || c === 'runner 5') colMap.r5 = ci;
+                                else if (c === 'r6' || c === 'runner6' || c === 'runner 6') colMap.r6 = ci;
+                            });
+                            break;
+                        }
+                    }
+
+                    if (headerIdx === -1 || colMap.datum === undefined) throw new Error('Kein DATUM-Header gefunden.');
+
+                    const newDB = {};
+                    let count = 0;
+                    for (let i = headerIdx + 1; i < rows.length; i++) {
+                        const r = rows[i];
+                        if (!r || !r[colMap.datum]) continue;
+                        let datum = r[colMap.datum].toString().trim();
+                        if (!datum.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
+                            const d = new Date(datum);
+                            if (!isNaN(d)) datum = String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + d.getFullYear();
+                            else continue;
+                        }
+                        const g = (ci) => ci !== undefined ? (r[ci] || '').toString().trim() : '';
+                        newDB[datum] = {
+                            event: g(colMap.event), cvd: '',
+                            runner1: g(colMap.r1), runner1_time: '',
+                            runner2: g(colMap.r2), runner2_time: '',
+                            runner3: g(colMap.r3), runner3_time: '',
+                            runner4: g(colMap.r4), runner4_time: '',
+                            runner5: g(colMap.r5), runner5_time: '',
+                            runner6: g(colMap.r6), runner6_time: ''
+                        };
+                        count++;
+                    }
+
+                    if (count === 0) throw new Error('Keine Datenzeilen gefunden.');
+
+                    SHIFTPLAN_DATABASE = newDB;
+                    localStorage.setItem('shiftplan_data', JSON.stringify(SHIFTPLAN_DATABASE));
+                    shiftplanLoaded = true;
+                    renderRunnerShiftplan();
+
+                    const statusDiv = document.getElementById('runner-manual-status');
+                    statusDiv.className = 'bar-status success';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `<p>✓ <strong>${file.name}</strong> geladen — ${count} Events in Hub übertragen.</p>`;
+                    showToast(`✓ Runner-Plan geladen · ${count} Events`);
+
+                } catch (err) {
+                    const statusDiv = document.getElementById('runner-manual-status');
+                    statusDiv.className = 'bar-status error';
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `<p>⚠ Fehler: ${err.message}</p>`;
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         function renderRunnerRoster() {
@@ -18985,7 +19133,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.238';
+            const HUB_VERSION = 'v15.9.239';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20690,7 +20838,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.238</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.239</div>
                     </div>
                     
                     <div class="section">
@@ -20789,7 +20937,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.238 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.239 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21615,7 +21763,7 @@ Spittelauer Lnde 12/1
         openModal = function(id) {
             originalOpenModal(id);
             if (id === 'metrics-modal') {
-                // metrics modal removed v15.9.238
+                // metrics modal removed v15.9.239
             }
             // Track app usage
             const appMap = {
@@ -24506,7 +24654,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.238 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.239 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24536,7 +24684,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.238',
+                hubVersion: 'v15.9.239',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27861,7 +28009,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.238';
+    const HUB_VER = 'v15.9.239';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28158,7 +28306,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /STATE SYNC =====
 
-// ===== DB UPDATE v15.9.238 =====
+// ===== DB UPDATE v15.9.239 =====
 (function() {
 
 const DB_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
@@ -28787,7 +28935,7 @@ window.dbuFinish = function() {
 };
 
 })();
-// ===== /DB UPDATE v15.9.238 =====
+// ===== /DB UPDATE v15.9.239 =====
 </script>
 
 <!-- ==================== STATE SYNC MODAL v15.9.204 ==================== -->
@@ -28813,7 +28961,7 @@ window.dbuFinish = function() {
 </div>
 <!-- ==================== /STATE SYNC MODAL ==================== -->
 
-<!-- ==================== DB UPDATE MODAL (v15.9.238) ==================== -->
+<!-- ==================== DB UPDATE MODAL (v15.9.239) ==================== -->
 <div id="db-update-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:var(--raised);border:1px solid var(--hair);border-radius:10px;width:min(680px,96vw);height:min(90vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);">
         <!-- Header -->
