@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.249</title>
+    <title>Turbo Projects Work Hub v15.9.250</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.249: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.250: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.249: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.250: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3092,7 +3092,7 @@
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ===== ALERT STRIP v15.9.249 ===== */
+        /* ===== ALERT STRIP v15.9.250 ===== */
         #alert-strip {
             display: flex;
             align-items: center;
@@ -3463,7 +3463,7 @@
         .linkbar-add-btn:hover { background: rgba(245,158,11,0.2); }
         /* ===== /v15.9.145 LINK BAR ===== */
 
-        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.249: theme-tokenized) ===== */
+        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.250: theme-tokenized) ===== */
         .myday-row {
             background: var(--surface-2);
             color: var(--text);
@@ -3933,7 +3933,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.249) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.250) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5283,7 +5283,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.249) ── */
+        /* ── Planner Overlay Light Theme (v15.9.250) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5333,7 +5333,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.249) ── */
+        /* ── Light skin contrast boost (v15.9.250) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5376,6 +5376,70 @@
         /* ═══════════════════════════════════════════════════════════════════
            /COHESIVE OVERRIDE LAYER v15.9.204
            ═══════════════════════════════════════════════════════════════════ */
+
+        /* ═══ PROMO CATALOGUE v15.9.250 ═══ */
+        .promo-section { background: var(--raised); border: 0.5px solid var(--hair); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+        .promo-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px 8px; flex-wrap: wrap; }
+        .promo-title { font-size: 14px; font-weight: 600; color: var(--text); }
+        .promo-search { flex: 1; max-width: 240px; background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; padding: 5px 10px; font-size: 12px; color: var(--text); outline: none; }
+        .promo-search::placeholder { color: var(--faint); }
+        .promo-refresh { background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; color: var(--sub); font-size: 13px; padding: 4px 10px; cursor: pointer; }
+        .promo-refresh:hover { color: var(--accent); border-color: var(--accent); }
+        .promo-ql { display: flex; align-items: center; gap: 6px; padding: 6px 14px 8px; flex-wrap: wrap; border-bottom: 0.5px solid var(--hair); }
+        .promo-ql-label { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; margin-right: 2px; }
+        .promo-ql-chip { font-size: 11px; color: var(--text); background: var(--raised2); border-radius: 6px; padding: 4px 10px; text-decoration: none; cursor: pointer; }
+        .promo-ql-chip:hover { color: var(--accent); }
+        .promo-filters { display: flex; gap: 5px; padding: 9px 14px 11px; flex-wrap: wrap; }
+        .promo-filter-btn { font-size: 11px; color: var(--sub); background: var(--raised2); border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+        .promo-filter-btn.active { color: #0b0b0d; background: var(--accent); font-weight: 600; }
+        .promo-card { display: flex; background: var(--raised); border: 0.5px solid var(--hair); border-radius: 10px; overflow: hidden; margin: 0 14px 8px; }
+        .promo-card:last-child { margin-bottom: 14px; }
+        .promo-edge { width: 7px; flex-shrink: 0; }
+        .promo-card.st-green { border-color: rgba(151,196,89,0.35); } .promo-card.st-green .promo-edge { background: #97C459; }
+        .promo-card.st-amber { border-color: rgba(239,159,39,0.35); } .promo-card.st-amber .promo-edge { background: #EF9F27; } .promo-card.st-amber .promo-chead { background: rgba(239,159,39,0.07); }
+        .promo-card.st-red { border-color: rgba(226,75,74,0.4); } .promo-card.st-red .promo-edge { background: #E24B4A; } .promo-card.st-red .promo-chead { background: rgba(226,75,74,0.07); }
+        .promo-cmain { flex: 1; min-width: 0; }
+        .promo-chead { display: flex; align-items: center; gap: 11px; padding: 9px 12px; cursor: pointer; flex-wrap: wrap; }
+        .promo-datechip { width: 44px; flex-shrink: 0; background: var(--raised2); border-radius: 8px; padding: 5px 0; text-align: center; }
+        .promo-datechip .pdw { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 0.5px; line-height: 1.2; }
+        .promo-datechip .pdd { font-size: 17px; color: var(--text); font-weight: 600; line-height: 1.1; }
+        .promo-datechip .pdm { font-size: 9px; color: var(--sub); line-height: 1.3; }
+        .promo-cinfo { flex: 1; min-width: 0; }
+        .promo-cname { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .promo-cmeta { font-size: 11px; color: var(--sub); margin-top: 2px; }
+        .promo-tag-eigen { font-size: 10px; color: #0b0b0d; background: var(--accent); border-radius: 5px; padding: 1px 7px; font-weight: 600; }
+        .promo-tag-fremd { font-size: 10px; color: var(--text); background: var(--raised2); border-radius: 5px; padding: 1px 7px; }
+        .promo-stpill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; border-radius: 6px; padding: 4px 9px; flex-shrink: 0; }
+        .promo-stpill .pdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .promo-stpill.green { color: #C0DD97; background: rgba(151,196,89,0.15); } .promo-stpill.green .pdot { background: #97C459; }
+        .promo-stpill.amber { color: #FAC775; background: rgba(239,159,39,0.15); } .promo-stpill.amber .pdot { background: #EF9F27; }
+        .promo-stpill.red { color: #F7C1C1; background: rgba(226,75,74,0.18); } .promo-stpill.red .pdot { background: #E24B4A; }
+        [data-theme="light"] .promo-stpill.green { color: #27500A; } [data-theme="light"] .promo-stpill.amber { color: #633806; } [data-theme="light"] .promo-stpill.red { color: #791F1F; }
+        .promo-missbadge { font-size: 11px; font-weight: 600; border-radius: 6px; padding: 4px 9px; flex-shrink: 0; }
+        .promo-missbadge.amber { color: #412402; background: #EF9F27; }
+        .promo-missbadge.red { color: #501313; background: #F09595; }
+        .promo-chev { font-size: 13px; color: var(--sub); flex-shrink: 0; }
+        .promo-cbody { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr) minmax(0,0.9fr); border-top: 0.5px solid var(--hair); }
+        .promo-col { padding: 10px 12px; }
+        .promo-col + .promo-col { border-left: 0.5px solid var(--hair); }
+        .promo-collabel { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; margin-bottom: 7px; display: flex; align-items: center; }
+        .promo-collabel span { flex: 1; }
+        .promo-linkrow { display: flex; align-items: center; gap: 7px; background: var(--raised2); border-radius: 7px; padding: 6px 10px; margin-bottom: 6px; }
+        .promo-linkrow input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; font-size: 11px; color: var(--text); }
+        .promo-linkrow input::placeholder { color: var(--faint); }
+        .promo-copybtn { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; padding: 0 2px; flex-shrink: 0; }
+        .promo-openbtn { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; padding: 0 2px; flex-shrink: 0; text-decoration: none; }
+        .promo-textarea { width: 100%; box-sizing: border-box; background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; padding: 9px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text); line-height: 1.6; resize: vertical; min-height: 110px; outline: none; }
+        .promo-textarea.notes { font-family: inherit; min-height: 60px; }
+        .promo-textarea::placeholder { color: var(--faint); }
+        .promo-autosave { font-size: 10px; color: var(--faint); margin-top: 5px; }
+        .promo-cfoot { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-top: 0.5px solid var(--hair); flex-wrap: wrap; }
+        .promo-cfoot .pfl { font-size: 10px; color: var(--faint); }
+        .promo-openchip { font-size: 11px; color: var(--text); border: 0.5px solid var(--hair); border-radius: 6px; padding: 3px 9px; text-decoration: none; cursor: pointer; }
+        .promo-openchip:hover { color: var(--accent); border-color: var(--accent); }
+        .promo-empty { padding: 20px 14px; font-size: 12px; color: var(--sub); }
+        @media (max-width: 768px) { .promo-cbody { grid-template-columns: 1fr; } .promo-col + .promo-col { border-left: none; border-top: 0.5px solid var(--hair); } }
+        /* ═══ /PROMO CATALOGUE ═══ */
 
         </style>
 
@@ -5534,6 +5598,7 @@
             <div class="topnav">
                 <span class="navitem active">Planner</span>
                 <span class="navitem" onclick="document.getElementById('calendar-full-width')?.scrollIntoView({behavior:'smooth'})">BMT Calendar</span>
+                <span class="navitem" onclick="document.getElementById('promo-widget')?.scrollIntoView({behavior:'smooth'})">Promo</span>
                 <span class="navitem" onclick="document.getElementById('dtw-widget')?.scrollIntoView({behavior:'smooth'})">Department</span>
                 <span class="navitem" onclick="openInbox()">Inbox</span>
             </div>
@@ -5563,7 +5628,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== ALERT LAYER v15.9.249 ==================== -->
+    <!-- ==================== ALERT LAYER v15.9.250 ==================== -->
     <div id="alert-strip" style="display:none;" onclick="alertStripGo()">
         <span class="alert-strip-pulse"></span>
         <span class="alert-strip-text" id="alert-strip-text"></span>
@@ -5592,7 +5657,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.249) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.250) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -6673,7 +6738,7 @@
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
                     <!-- v15.9.161: PDF Report from DBV Selection -->
                     <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
-                    <!-- v15.9.249: DB Update Button -->
+                    <!-- v15.9.250: DB Update Button -->
                     <button id="dbv-update-btn" onclick="dbUpdateOpen()" style="background:linear-gradient(135deg,#0a2a1a,#051a0f);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="Revenue-Daten in DB schreiben">&#8659; DB Update</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
@@ -7638,7 +7703,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.249 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.250 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -7918,7 +7983,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.249</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.250</small>
             </div>
             </div>
         </div>
@@ -8524,6 +8589,35 @@
         </div>
     </div>
     
+    <!-- ==================== PROMO CATALOGUE v15.9.250 ==================== -->
+    <div class="promo-section" id="promo-widget">
+        <div class="promo-head">
+            <span class="promo-title">Promo Catalogue</span>
+            <input class="promo-search" id="promo-search" placeholder="Event suchen…" oninput="promoRender()">
+            <button class="promo-refresh" onclick="promoRender()" title="Neu rendern">&#8635;</button>
+        </div>
+        <div class="promo-ql">
+            <span class="promo-ql-label">QUICK LAUNCH</span>
+            <a class="promo-ql-chip" href="https://www.instagram.com/grelle_forelle" target="_blank" rel="noopener">IG</a>
+            <a class="promo-ql-chip" href="https://www.facebook.com/grelleforelle" target="_blank" rel="noopener">FB</a>
+            <a class="promo-ql-chip" href="https://business.facebook.com/latest/home" target="_blank" rel="noopener">Meta Suite</a>
+            <a class="promo-ql-chip" href="https://linktr.ee/grelletickets" target="_blank" rel="noopener">Linktree</a>
+            <a class="promo-ql-chip" href="https://app.bitly.com" target="_blank" rel="noopener">Bitly</a>
+            <a class="promo-ql-chip" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener">Drive</a>
+            <a class="promo-ql-chip" href="https://www.oeticket.com" target="_blank" rel="noopener">OE</a>
+            <a class="promo-ql-chip" href="https://club.bookmetender.com" target="_blank" rel="noopener">BMT</a>
+        </div>
+        <div class="promo-filters" id="promo-filters">
+            <button class="promo-filter-btn active" data-pf="all" onclick="promoSetFilter('all')">All</button>
+            <button class="promo-filter-btn" data-pf="missingpics" onclick="promoSetFilter('missingpics')">Missing Pics</button>
+            <button class="promo-filter-btn" data-pf="noshort" onclick="promoSetFilter('noshort')">No Shortlink</button>
+            <button class="promo-filter-btn" data-pf="eigen" onclick="promoSetFilter('eigen')">EIGEN</button>
+            <button class="promo-filter-btn" data-pf="fremd" onclick="promoSetFilter('fremd')">FREMD</button>
+        </div>
+        <div id="promo-cards"><div class="promo-empty">Lade Events…</div></div>
+    </div>
+    <!-- ==================== /PROMO CATALOGUE ==================== -->
+
     <!-- COCKPIT moved to top v15.9.87 -->
 
     <!-- DEPARTMENTS (DEPRECATED v15.9.116 — ersetzt durch DTW oben; display:none damit alte Render-Funktionen IDs behalten falls sie eigenständig getriggert werden) -->
@@ -8705,7 +8799,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.249</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.250</span>
     </div>
     
     
@@ -10612,7 +10706,7 @@
             }
         }
         
-        // v15.9.249 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
+        // v15.9.250 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
         async function loadShiftplansLive(manual = false) {
             let okR = false, okB = false;
             try {
@@ -11826,7 +11920,7 @@
             }
         }
 
-        // v15.9.249: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.250: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -13074,7 +13168,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.250', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13234,7 +13328,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13308,7 +13402,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13415,7 +13509,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13499,7 +13593,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13808,7 +13902,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.250', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13955,7 +14049,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.250', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14100,7 +14194,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.249', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -15401,14 +15495,14 @@
             try {
                 const today = new Date();
                 const from = new Date(today);
-                from.setDate(from.getDate() - 45); // v15.9.249 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
+                from.setDate(from.getDate() - 45); // v15.9.250 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
                 const fromStr = from.toISOString().split('T')[0];
                 const until = new Date(today);
                 until.setDate(until.getDate() + 90);
                 const untilStr = until.toISOString().split('T')[0];
 
                 const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=60';
-                // v15.9.249: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
+                // v15.9.250: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
                 // CORS-Proxys entfernt (strippten den Auth-Header → 401/leer).
                 let data = null;
                 const controller = new AbortController();
@@ -19189,7 +19283,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.249';
+            const HUB_VERSION = 'v15.9.250';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19200,7 +19294,7 @@ Spittelauer Lnde 12/1
             initMsal();
             loadShiftplanFromStorage();
             loadBarFromStorage();
-            loadShiftplansLive(false); // v15.9.249 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
+            loadShiftplansLive(false); // v15.9.250 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
             loadTechnikerFromGoogleCalendar();
             updateProjection('turbo');
             updateProjection('nye');
@@ -20895,7 +20989,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.249</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.250</div>
                     </div>
                     
                     <div class="section">
@@ -20994,7 +21088,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.249 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.250 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21820,7 +21914,7 @@ Spittelauer Lnde 12/1
         openModal = function(id) {
             originalOpenModal(id);
             if (id === 'metrics-modal') {
-                // metrics modal removed v15.9.249
+                // metrics modal removed v15.9.250
             }
             // Track app usage
             const appMap = {
@@ -24714,7 +24808,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.249 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.250 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24744,7 +24838,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.249',
+                hubVersion: 'v15.9.250',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -24986,7 +25080,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        // v15.9.249 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
+        // v15.9.250 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
         window.graphFetch = async function(url, opts, maxRetries = 2) {
             for (let attempt = 0; ; attempt++) {
                 const res = await fetch(url, opts);
@@ -24999,7 +25093,7 @@ Spittelauer Lnde 12/1
         };
 
         async function cockpitLoad() {
-            // v15.9.249 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
+            // v15.9.250 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
             if (window.__cockpitInflight) return window.__cockpitInflight;
             window.__cockpitInflight = _cockpitLoadInner();
             try { return await window.__cockpitInflight; }
@@ -25043,7 +25137,7 @@ Spittelauer Lnde 12/1
                 CP_DEPTS.forEach(d => cockpitData.byDept[d.key] = []);
 
                 // Fetch tasks for ALL lists, assign to dept by name
-                // v15.9.249 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
+                // v15.9.250 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
                 for (const list of allLists) {
                     const name = (list.displayName || '').toLowerCase();
                     let deptKey = null;
@@ -25061,7 +25155,7 @@ Spittelauer Lnde 12/1
                         const data = await res.json();
                         const tasks = data.value || [];
                         tasks.forEach(t => t.listId = list.id); // store listId on task
-                        // v15.9.249 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
+                        // v15.9.250 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
                         const existingIds = new Set(cockpitData.byDept[deptKey].map(t => t.id));
                         cockpitData.byDept[deptKey].push(...tasks.filter(t => !existingIds.has(t.id)));
                         TODO_LISTS[deptKey] = list.id; // update for toggleTask
@@ -25776,7 +25870,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// ALERT LAYER v15.9.249 — Strip-Aggregator + Shiftplan-Gap-Detection
+// ALERT LAYER v15.9.250 — Strip-Aggregator + Shiftplan-Gap-Detection
 // ═══════════════════════════════════════════════════════
 window.alertGetShiftplanGaps = function() {
     const gaps = [];
@@ -26011,7 +26105,7 @@ window.alertOpenStaffing = function() {
         const todayTasks = [];
 
         if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
-            const seenIds = new Set(); // v15.9.249 — Dedupe safety net
+            const seenIds = new Set(); // v15.9.250 — Dedupe safety net
             for (const dept of MYDAY_DEPTS) {
                 const tasks = cockpitData.byDept[dept] || [];
                 tasks.forEach(t => {
@@ -26266,7 +26360,7 @@ window.alertOpenStaffing = function() {
 
         const daysOld = oldestOpenDate ? Math.floor((today - oldestOpenDate) / 86400000) : 0;
 
-        // v15.9.249 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
+        // v15.9.250 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
         let bmtMissing = 0;
         let bmtOldest = null;
         try {
@@ -26359,7 +26453,7 @@ window.alertOpenStaffing = function() {
         setPill('myday-pill-today', 'myday-pill-today-count', todayCount);
         setPill('myday-pill-overdue', 'myday-pill-overdue-count', overdueCount);
 
-        // Empty state (v15.9.249 — inkl. Flagged + Gaps)
+        // Empty state (v15.9.250 — inkl. Flagged + Gaps)
         const _flaggedN = (window.__alertFlagged || []).length;
         const _gapsN = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps().length : 0;
         if (eventCount + todayCount + overdueCount + _flaggedN + _gapsN === 0 && !hasDbAlert) {
@@ -26398,7 +26492,7 @@ window.alertOpenStaffing = function() {
             overdue.forEach(t => { html += mydayBuildTaskRow(t, true); });
         }
 
-        // ---- Section 4: Geflaggte Mails (v15.9.249) ----
+        // ---- Section 4: Geflaggte Mails (v15.9.250) ----
         const flaggedMails = window.__alertFlagged || [];
         if (flaggedMails.length > 0) {
             html += `<div class="myday-divider"><span>Geflaggte Mails</span><span class="myday-divider-count">${flaggedMails.length}</span></div>`;
@@ -26416,7 +26510,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Section 5: Shiftplan-Gaps (v15.9.249) ----
+        // ---- Section 5: Shiftplan-Gaps (v15.9.250) ----
         const gaps = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps() : [];
         if (gaps.length > 0) {
             html += `<div class="myday-divider is-overdue"><span>Shiftplan-Gaps</span><span class="myday-divider-count">${gaps.length}</span></div>`;
@@ -26432,7 +26526,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Alert-Strip Sync (v15.9.249) ----
+        // ---- Alert-Strip Sync (v15.9.250) ----
         window.__mydayCounts = { overdue: overdueCount, today: todayCount };
         window.__mydayLastRender = { events: events, taskBuckets: taskBuckets, qnItems: qnItems };
         if (typeof alertLayerUpdate === 'function') alertLayerUpdate();
@@ -26440,7 +26534,7 @@ window.alertOpenStaffing = function() {
         body.innerHTML = html;
     }
 
-    // ---- Rerender ohne Task-Refetch (v15.9.249 — für Flagged-Updates) ----
+    // ---- Rerender ohne Task-Refetch (v15.9.250 — für Flagged-Updates) ----
     window.mydayRerender = function() {
         const last = window.__mydayLastRender;
         if (!last) return;
@@ -28252,7 +28346,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.249';
+    const HUB_VER = 'v15.9.250';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28549,7 +28643,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /STATE SYNC =====
 
-// ===== DB UPDATE v15.9.249 =====
+// ===== DB UPDATE v15.9.250 =====
 (function() {
 
 const DB_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
@@ -28758,7 +28852,7 @@ window.dbuAddEvent = function() {
     dbuSummaryBar();
 };
 
-// ── v15.9.249: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
+// ── v15.9.250: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
 window.dbuAddManual = function() {
     const dateEl = document.getElementById('dbu2-man-date');
     const nameEl = document.getElementById('dbu2-man-name');
@@ -29221,7 +29315,7 @@ window.dbuFinish = function() {
 };
 
 })();
-// ===== /DB UPDATE v15.9.249 =====
+// ===== /DB UPDATE v15.9.250 =====
 </script>
 
 <!-- ==================== STATE SYNC MODAL v15.9.204 ==================== -->
@@ -29247,7 +29341,7 @@ window.dbuFinish = function() {
 </div>
 <!-- ==================== /STATE SYNC MODAL ==================== -->
 
-<!-- ==================== DB UPDATE MODAL (v15.9.249) ==================== -->
+<!-- ==================== DB UPDATE MODAL (v15.9.250) ==================== -->
 <div id="db-update-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:var(--raised);border:1px solid var(--hair);border-radius:10px;width:min(680px,96vw);height:min(90vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);">
         <!-- Header -->
@@ -29269,7 +29363,7 @@ window.dbuFinish = function() {
                     <button onclick="dbuAddEvent()" style="background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">+ Hinzufügen</button>
                 </div>
                 <div style="font-size:11px;color:var(--faint);margin-top:6px;">Events der letzten 6 Wochen · KONZERT ausgeblendet · EIGEN/FREMD aus BMT Kategorie auto-detect</div>
-                <!-- v15.9.249: Manueller Event-Eintrag (BMT-unabhängig) -->
+                <!-- v15.9.250: Manueller Event-Eintrag (BMT-unabhängig) -->
                 <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap;">
                     <input type="date" id="dbu2-man-date" style="background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 8px;border-radius:6px;font-size:12px;">
                     <input type="text" id="dbu2-man-name" placeholder="Event-Name (manuell)" style="flex:1;min-width:140px;background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 10px;border-radius:6px;font-size:12px;">
@@ -29330,6 +29424,129 @@ window.dbuFinish = function() {
     </div>
 </div>
 <!-- ==================== /DB UPDATE MODAL ==================== -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// PROMO CATALOGUE v15.9.250 — Phase 1 (Spec v2.1)
+// Self-contained: eigene Helper, keine IIFE-Dependencies (§45.9)
+// Persistenz: localStorage gf_promo_<YYYY-MM-DD>_<slug>
+// ═══════════════════════════════════════════════════════
+const PROMO_LS_PREFIX = 'gf_promo_';
+const PROMO_EIGEN_WORDS = ['turbo', 'in house', 'selected', 'halloween', 'polyamor', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
+const PROMO_WD = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
+const PROMO_MON = ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ'];
+const PROMO_LINEUP_TPL = 'DD.MM EVENT_NAME w/ HEADLINER\n\u25BA HEADLINER\n\u25BA Support Act (promoter)\n\u25BA Support Act 2\n----\nSTAGENAME by XYZ\n\u25BA Artist\n----\nTICKET LINK IN BIO \uD83C\uDF9F\n----\n#grelleforelle #wien #vienna #viennanightlife #techno';
+let promoFilter = 'all';
+const promoOpenSet = new Set();
+let promoInitTries = 0;
+
+function promoEsc(s) { const d = document.createElement('div'); d.textContent = String(s == null ? '' : s); return d.innerHTML; }
+function promoEscAttr(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function promoSlug(name) { return String(name || 'event').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'event'; }
+function promoDateStr(d) { const p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+function promoKey(ev) { return PROMO_LS_PREFIX + promoDateStr(ev.dtstart) + '_' + promoSlug(ev.summary); }
+function promoGetData(key) { try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; } }
+function promoSave(key, field, value) { try { const d = promoGetData(key); d[field] = value; localStorage.setItem(key, JSON.stringify(d)); } catch (e) { console.error('promoSave', e); } }
+function promoIsEigen(ev) { if (ev.category === 'eigen') return true; const n = String(ev.summary || '').toLowerCase(); return PROMO_EIGEN_WORDS.some(w => n.includes(w)); }
+function promoMissing(d) { const m = []; if (!d.drive) m.push('Pics'); if (!d.short) m.push('Shortlink'); if (!d.fb) m.push('FB'); return m; }
+function promoToastMsg(msg) { if (typeof showToast === 'function') { showToast(msg); } }
+function promoCopy(btn) { const row = btn.closest('.promo-linkrow'); const inp = row ? row.querySelector('input') : null; const val = inp ? inp.value.trim() : ''; if (!val) { promoToastMsg('Feld ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Kopiert: ' + val.slice(0, 40))).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
+function promoCopyLineup(key) { const d = promoGetData(key); const val = (d.lineup || '').trim(); if (!val) { promoToastMsg('Lineup ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Lineup kopiert')).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
+function promoToggle(key) { if (promoOpenSet.has(key)) { promoOpenSet.delete(key); } else { promoOpenSet.add(key); } promoRender(); }
+function promoSetFilter(f) { promoFilter = f; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === f)); promoRender(); }
+function promoOpenUrl(key, field) { const d = promoGetData(key); const url = (d[field] || '').trim(); if (!url) { promoToastMsg('Kein Link hinterlegt'); return; } window.open(/^https?:\/\//i.test(url) ? url : 'https://' + url, '_blank', 'noopener'); }
+
+function promoEventList() {
+    if (typeof bmtEvents === 'undefined' || !Array.isArray(bmtEvents)) return [];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return bmtEvents
+        .filter(ev => ev && ev.dtstart instanceof Date && !isNaN(ev.dtstart) && ev.dtstart >= today)
+        .filter(ev => ev.status !== 'CANCELLED' && ev.category !== 'termin' && ev.category !== 'holiday')
+        .sort((a, b) => a.dtstart - b.dtstart);
+}
+
+function promoCardHTML(ev) {
+    const key = promoKey(ev);
+    const d = promoGetData(key);
+    const missing = promoMissing(d);
+    const st = missing.length === 0 ? 'green' : (missing.length === 1 ? 'amber' : 'red');
+    const open = promoOpenSet.has(key);
+    const eigen = promoIsEigen(ev);
+    const dt = ev.dtstart;
+    const timeStr = String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0');
+    const badgeCls = st === 'red' ? 'red' : 'amber';
+    const missBadges = missing.map(m => '<span class="promo-missbadge ' + badgeCls + '">' + m + '</span>').join('');
+    const pill = st === 'green'
+        ? '<span class="promo-stpill green"><span class="pdot"></span>Ready</span>'
+        : '<span class="promo-stpill ' + st + '"><span class="pdot"></span>' + missing.length + ' offen</span>';
+    const head =
+        '<div class="promo-chead" onclick="promoToggle(\'' + key + '\')">' +
+            '<div class="promo-datechip"><div class="pdw">' + PROMO_WD[dt.getDay()] + '</div><div class="pdd">' + String(dt.getDate()).padStart(2, '0') + '</div><div class="pdm">' + PROMO_MON[dt.getMonth()] + '</div></div>' +
+            '<div class="promo-cinfo"><div class="promo-cname">' + promoEsc(ev.summary || 'Unbenannt') + '</div>' +
+            '<div class="promo-cmeta">' + timeStr + ' · ' + (eigen ? '<span class="promo-tag-eigen">EIGEN</span>' : '<span class="promo-tag-fremd">FREMD</span>') + '</div></div>' +
+            pill + missBadges +
+            '<span class="promo-chev">' + (open ? '&#9660;' : '&#9654;') + '</span>' +
+        '</div>';
+    if (!open) return '<div class="promo-card st-' + st + '" data-pkey="' + key + '"><div class="promo-edge"></div><div class="promo-cmain">' + head + '</div></div>';
+    const body =
+        '<div class="promo-cbody">' +
+            '<div class="promo-col">' +
+                '<div class="promo-collabel"><span>LINKS</span></div>' +
+                '<div class="promo-linkrow"><input placeholder="FB Event Link" value="' + promoEscAttr(d.fb || '') + '" oninput="promoSave(\'' + key + '\',\'fb\',this.value)" onchange="promoRender()"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
+                '<div class="promo-linkrow"><input placeholder="VVK Link (OE)" value="' + promoEscAttr(d.vvk || '') + '" oninput="promoSave(\'' + key + '\',\'vvk\',this.value)"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
+                '<div class="promo-linkrow"><input placeholder="Shortlink grelle.club/…" value="' + promoEscAttr(d.short || '') + '" oninput="promoSave(\'' + key + '\',\'short\',this.value)" onchange="promoRender()"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
+                '<div class="promo-linkrow"><input placeholder="Drive Folder Link" value="' + promoEscAttr(d.drive || '') + '" oninput="promoSave(\'' + key + '\',\'drive\',this.value)" onchange="promoRender()"><button class="promo-openbtn" onclick="promoOpenUrl(\'' + key + '\',\'drive\')" title="Öffnen">&#8599;</button></div>' +
+            '</div>' +
+            '<div class="promo-col">' +
+                '<div class="promo-collabel"><span>LINEUP</span><button class="promo-copybtn" onclick="promoCopyLineup(\'' + key + '\')" title="Lineup kopieren">&#10064;</button></div>' +
+                '<textarea class="promo-textarea" placeholder="' + promoEscAttr(PROMO_LINEUP_TPL) + '" oninput="promoSave(\'' + key + '\',\'lineup\',this.value)">' + promoEsc(d.lineup || '') + '</textarea>' +
+                '<div class="promo-autosave">Autosave · localStorage</div>' +
+            '</div>' +
+            '<div class="promo-col">' +
+                '<div class="promo-collabel"><span>NOTES</span></div>' +
+                '<textarea class="promo-textarea notes" placeholder="Notes (Sofie, Assets, Deadlines…)" oninput="promoSave(\'' + key + '\',\'notes\',this.value)">' + promoEsc(d.notes || '') + '</textarea>' +
+            '</div>' +
+        '</div>';
+    const foot =
+        '<div class="promo-cfoot"><span class="pfl">Open &#8594;</span>' +
+            '<a class="promo-openchip" href="https://www.instagram.com/grelle_forelle" target="_blank" rel="noopener">Instagram</a>' +
+            '<a class="promo-openchip" href="https://www.facebook.com/grelleforelle" target="_blank" rel="noopener">Facebook</a>' +
+            '<a class="promo-openchip" href="https://www.grelleforelle.com/programm/" target="_blank" rel="noopener">Website</a>' +
+            '<a class="promo-openchip" href="https://linktr.ee/grelletickets" target="_blank" rel="noopener">Linktree</a>' +
+            '<span class="promo-openchip" onclick="promoOpenUrl(\'' + key + '\',\'drive\')">Drive</span>' +
+            '<a class="promo-openchip" href="https://club.bookmetender.com" target="_blank" rel="noopener">BMT</a>' +
+            '<a class="promo-openchip" href="https://app.bitly.com" target="_blank" rel="noopener">QR</a>' +
+        '</div>';
+    return '<div class="promo-card st-' + st + '" data-pkey="' + key + '"><div class="promo-edge"></div><div class="promo-cmain">' + head + body + foot + '</div></div>';
+}
+
+function promoRender() {
+    const wrap = document.getElementById('promo-cards');
+    if (!wrap) return;
+    let list = promoEventList();
+    const q = (document.getElementById('promo-search')?.value || '').toLowerCase().trim();
+    if (q) list = list.filter(ev => String(ev.summary || '').toLowerCase().includes(q));
+    if (promoFilter === 'eigen') list = list.filter(ev => promoIsEigen(ev));
+    if (promoFilter === 'fremd') list = list.filter(ev => !promoIsEigen(ev));
+    if (promoFilter === 'missingpics') list = list.filter(ev => !promoGetData(promoKey(ev)).drive);
+    if (promoFilter === 'noshort') list = list.filter(ev => !promoGetData(promoKey(ev)).short);
+    if (!list.length) {
+        const anyEvents = promoEventList().length > 0;
+        wrap.innerHTML = '<div class="promo-empty">' + (anyEvents ? 'Keine Events für diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). &#8635; im BMT-Block laden.') + '</div>';
+        return;
+    }
+    wrap.innerHTML = list.map(ev => promoCardHTML(ev)).join('');
+}
+
+function promoInitPoll() {
+    promoInitTries++;
+    const has = typeof bmtEvents !== 'undefined' && Array.isArray(bmtEvents) && bmtEvents.length > 0;
+    if (has || promoInitTries >= 30) { promoRender(); if (has) return; }
+    if (promoInitTries < 30) setTimeout(promoInitPoll, 1000);
+}
+document.addEventListener('DOMContentLoaded', () => { setTimeout(promoInitPoll, 500); });
+// ═══ /PROMO CATALOGUE ═══
+</script>
 
 </body>
 </html>
