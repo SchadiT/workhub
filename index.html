@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.250</title>
+    <title>Turbo Projects Work Hub v15.9.251</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.250: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.251: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.250: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.251: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -3092,7 +3092,7 @@
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ===== ALERT STRIP v15.9.250 ===== */
+        /* ===== ALERT STRIP v15.9.251 ===== */
         #alert-strip {
             display: flex;
             align-items: center;
@@ -3463,7 +3463,7 @@
         .linkbar-add-btn:hover { background: rgba(245,158,11,0.2); }
         /* ===== /v15.9.145 LINK BAR ===== */
 
-        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.250: theme-tokenized) ===== */
+        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.251: theme-tokenized) ===== */
         .myday-row {
             background: var(--surface-2);
             color: var(--text);
@@ -3933,7 +3933,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.250) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.251) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -5283,7 +5283,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.250) ── */
+        /* ── Planner Overlay Light Theme (v15.9.251) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5333,7 +5333,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.250) ── */
+        /* ── Light skin contrast boost (v15.9.251) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5377,11 +5377,17 @@
            /COHESIVE OVERRIDE LAYER v15.9.204
            ═══════════════════════════════════════════════════════════════════ */
 
-        /* ═══ PROMO CATALOGUE v15.9.250 ═══ */
+        /* ═══ PROMO CATALOGUE v15.9.251 — Kompakt/Accordion + Sheet-Sync (§43) ═══ */
         .promo-section { background: var(--raised); border: 0.5px solid var(--hair); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
-        .promo-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px 8px; flex-wrap: wrap; }
-        .promo-title { font-size: 14px; font-weight: 600; color: var(--text); }
-        .promo-search { flex: 1; max-width: 240px; background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; padding: 5px 10px; font-size: 12px; color: var(--text); outline: none; }
+        .promo-head { display: flex; align-items: center; gap: 8px; padding: 11px 14px; flex-wrap: wrap; }
+        .promo-title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .promo-count { font-size: 11px; color: var(--faint); }
+        .promo-sync { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--sub); cursor: pointer; margin-left: auto; }
+        .promo-sync .psdot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+        .promo-sync.ok .psdot { background: #32d74b; }
+        .promo-sync.sync .psdot { background: #ffd60a; }
+        .promo-sync.cache .psdot { background: var(--faint); }
+        .promo-search { max-width: 180px; background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; padding: 5px 10px; font-size: 12px; color: var(--text); outline: none; }
         .promo-search::placeholder { color: var(--faint); }
         .promo-refresh { background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; color: var(--sub); font-size: 13px; padding: 4px 10px; cursor: pointer; }
         .promo-refresh:hover { color: var(--accent); border-color: var(--accent); }
@@ -5389,56 +5395,49 @@
         .promo-ql-label { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; margin-right: 2px; }
         .promo-ql-chip { font-size: 11px; color: var(--text); background: var(--raised2); border-radius: 6px; padding: 4px 10px; text-decoration: none; cursor: pointer; }
         .promo-ql-chip:hover { color: var(--accent); }
-        .promo-filters { display: flex; gap: 5px; padding: 9px 14px 11px; flex-wrap: wrap; }
-        .promo-filter-btn { font-size: 11px; color: var(--sub); background: var(--raised2); border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
-        .promo-filter-btn.active { color: #0b0b0d; background: var(--accent); font-weight: 600; }
-        .promo-card { display: flex; background: var(--raised); border: 0.5px solid var(--hair); border-radius: 10px; overflow: hidden; margin: 0 14px 8px; }
-        .promo-card:last-child { margin-bottom: 14px; }
-        .promo-edge { width: 7px; flex-shrink: 0; }
-        .promo-card.st-green { border-color: rgba(151,196,89,0.35); } .promo-card.st-green .promo-edge { background: #97C459; }
-        .promo-card.st-amber { border-color: rgba(239,159,39,0.35); } .promo-card.st-amber .promo-edge { background: #EF9F27; } .promo-card.st-amber .promo-chead { background: rgba(239,159,39,0.07); }
-        .promo-card.st-red { border-color: rgba(226,75,74,0.4); } .promo-card.st-red .promo-edge { background: #E24B4A; } .promo-card.st-red .promo-chead { background: rgba(226,75,74,0.07); }
-        .promo-cmain { flex: 1; min-width: 0; }
-        .promo-chead { display: flex; align-items: center; gap: 11px; padding: 9px 12px; cursor: pointer; flex-wrap: wrap; }
-        .promo-datechip { width: 44px; flex-shrink: 0; background: var(--raised2); border-radius: 8px; padding: 5px 0; text-align: center; }
-        .promo-datechip .pdw { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 0.5px; line-height: 1.2; }
-        .promo-datechip .pdd { font-size: 17px; color: var(--text); font-weight: 600; line-height: 1.1; }
-        .promo-datechip .pdm { font-size: 9px; color: var(--sub); line-height: 1.3; }
-        .promo-cinfo { flex: 1; min-width: 0; }
-        .promo-cname { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .promo-cmeta { font-size: 11px; color: var(--sub); margin-top: 2px; }
-        .promo-tag-eigen { font-size: 10px; color: #0b0b0d; background: var(--accent); border-radius: 5px; padding: 1px 7px; font-weight: 600; }
-        .promo-tag-fremd { font-size: 10px; color: var(--text); background: var(--raised2); border-radius: 5px; padding: 1px 7px; }
-        .promo-stpill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; border-radius: 6px; padding: 4px 9px; flex-shrink: 0; }
-        .promo-stpill .pdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .promo-stpill.green { color: #C0DD97; background: rgba(151,196,89,0.15); } .promo-stpill.green .pdot { background: #97C459; }
-        .promo-stpill.amber { color: #FAC775; background: rgba(239,159,39,0.15); } .promo-stpill.amber .pdot { background: #EF9F27; }
-        .promo-stpill.red { color: #F7C1C1; background: rgba(226,75,74,0.18); } .promo-stpill.red .pdot { background: #E24B4A; }
-        [data-theme="light"] .promo-stpill.green { color: #27500A; } [data-theme="light"] .promo-stpill.amber { color: #633806; } [data-theme="light"] .promo-stpill.red { color: #791F1F; }
-        .promo-missbadge { font-size: 11px; font-weight: 600; border-radius: 6px; padding: 4px 9px; flex-shrink: 0; }
-        .promo-missbadge.amber { color: #412402; background: #EF9F27; }
-        .promo-missbadge.red { color: #501313; background: #F09595; }
-        .promo-chev { font-size: 13px; color: var(--sub); flex-shrink: 0; }
-        .promo-cbody { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr) minmax(0,0.9fr); border-top: 0.5px solid var(--hair); }
-        .promo-col { padding: 10px 12px; }
-        .promo-col + .promo-col { border-left: 0.5px solid var(--hair); }
-        .promo-collabel { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; margin-bottom: 7px; display: flex; align-items: center; }
+        .promo-filters { display: none; gap: 5px; padding: 9px 14px; flex-wrap: wrap; border-bottom: 0.5px solid var(--hair); }
+        .promo-filters.expanded { display: flex; }
+        .promo-filter-btn { font-size: 11px; color: var(--sub); background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 20px; padding: 4px 11px; cursor: pointer; }
+        .promo-filter-btn.active { color: var(--text); border-color: var(--accent); }
+        /* Kompakt-Zeile */
+        .promo-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 0.5px solid var(--hair); cursor: pointer; }
+        .promo-row:active { background: var(--raised2); }
+        .promo-row.open { background: var(--raised2); border-left: 2px solid var(--accent); padding-left: 12px; }
+        .promo-rdate { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 12.5px; width: 62px; flex-shrink: 0; color: var(--text); line-height: 1.25; }
+        .promo-rdow { display: block; color: var(--faint); font-weight: 400; font-size: 10.5px; }
+        .promo-rname { flex: 1; min-width: 0; font-weight: 500; font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
+        .promo-rsub { display: block; font-size: 10.5px; color: var(--sub); font-weight: 400; }
+        .promo-rtag { font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; }
+        .promo-rtag.eigen { color: var(--accent); background: var(--accent-soft); }
+        .promo-rtag.fremd { color: var(--sub); background: var(--raised2); }
+        .promo-dots { display: flex; gap: 4px; flex-shrink: 0; }
+        .promo-dot { width: 7px; height: 7px; border-radius: 50%; }
+        .promo-dot.ok { background: #32d74b; }
+        .promo-dot.miss { background: var(--accent); }
+        .promo-chevron { color: var(--faint); font-size: 11px; flex-shrink: 0; }
+        .promo-monthhead { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--raised2); border-bottom: 0.5px solid var(--hair); font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sub); }
+        .promo-monthhead .pmc { margin-left: auto; color: var(--faint); font-weight: 400; letter-spacing: 0; text-transform: none; }
+        .promo-showall { display: block; width: 100%; padding: 10px; background: none; border: none; border-top: 0.5px solid var(--hair); color: var(--sub); font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
+        .promo-showall:active { background: var(--raised2); }
+        /* Aufgeklappte Card */
+        .promo-xbody { padding: 4px 14px 13px 14px; border-bottom: 0.5px solid var(--hair); background: var(--raised2); border-left: 2px solid var(--accent); }
+        .promo-collabel { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; margin: 11px 0 6px; display: flex; align-items: center; }
         .promo-collabel span { flex: 1; }
-        .promo-linkrow { display: flex; align-items: center; gap: 7px; background: var(--raised2); border-radius: 7px; padding: 6px 10px; margin-bottom: 6px; }
+        .promo-linkrow { display: flex; align-items: center; gap: 7px; background: var(--raised); border: 0.5px solid var(--hair); border-radius: 7px; padding: 6px 10px; margin-bottom: 5px; }
         .promo-linkrow input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; font-size: 11px; color: var(--text); }
         .promo-linkrow input::placeholder { color: var(--faint); }
         .promo-copybtn { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; padding: 0 2px; flex-shrink: 0; }
+        .promo-fixbtn { background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 6px; color: var(--accent); font-size: 10.5px; font-weight: 600; cursor: pointer; padding: 3px 9px; flex-shrink: 0; }
         .promo-openbtn { background: none; border: none; color: var(--accent); font-size: 13px; cursor: pointer; padding: 0 2px; flex-shrink: 0; text-decoration: none; }
-        .promo-textarea { width: 100%; box-sizing: border-box; background: var(--raised2); border: 0.5px solid var(--hair); border-radius: 7px; padding: 9px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text); line-height: 1.6; resize: vertical; min-height: 110px; outline: none; }
+        .promo-textarea { width: 100%; box-sizing: border-box; background: var(--raised); border: 0.5px solid var(--hair); border-radius: 7px; padding: 9px 10px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text); line-height: 1.6; resize: vertical; min-height: 110px; outline: none; }
         .promo-textarea.notes { font-family: inherit; min-height: 60px; }
         .promo-textarea::placeholder { color: var(--faint); }
         .promo-autosave { font-size: 10px; color: var(--faint); margin-top: 5px; }
-        .promo-cfoot { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-top: 0.5px solid var(--hair); flex-wrap: wrap; }
-        .promo-cfoot .pfl { font-size: 10px; color: var(--faint); }
-        .promo-openchip { font-size: 11px; color: var(--text); border: 0.5px solid var(--hair); border-radius: 6px; padding: 3px 9px; text-decoration: none; cursor: pointer; }
+        .promo-cfoot { display: flex; align-items: center; gap: 6px; padding: 11px 0 0; flex-wrap: wrap; }
+        .promo-cfoot .pfl { font-size: 10px; color: var(--faint); letter-spacing: 0.5px; }
+        .promo-openchip { font-size: 10.5px; font-weight: 500; color: var(--sub); background: var(--raised); border: 0.5px solid var(--hair); border-radius: 20px; padding: 5px 11px; cursor: pointer; text-decoration: none; }
         .promo-openchip:hover { color: var(--accent); border-color: var(--accent); }
         .promo-empty { padding: 20px 14px; font-size: 12px; color: var(--sub); }
-        @media (max-width: 768px) { .promo-cbody { grid-template-columns: 1fr; } .promo-col + .promo-col { border-left: none; border-top: 0.5px solid var(--hair); } }
         /* ═══ /PROMO CATALOGUE ═══ */
 
         </style>
@@ -5628,7 +5627,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== ALERT LAYER v15.9.250 ==================== -->
+    <!-- ==================== ALERT LAYER v15.9.251 ==================== -->
     <div id="alert-strip" style="display:none;" onclick="alertStripGo()">
         <span class="alert-strip-pulse"></span>
         <span class="alert-strip-text" id="alert-strip-text"></span>
@@ -5657,7 +5656,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.250) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.251) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -5724,7 +5723,7 @@
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('email-modal')"><span class="planner-qa-icon">✉</span>Email</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('db-viewer-modal');dbvLoad();"><span class="planner-qa-icon">🗄</span>DB Viewer</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openEditor('notepad')"><span class="planner-qa-icon">📝</span>Notepad</button>
-                        <button class="planner-qa-btn" onclick="event.stopPropagation();openPromoManager()"><span class="planner-qa-icon">📣</span>Promo Mgr</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();openPromoManager()"><span class="planner-qa-icon">📰</span>Monatsprogramm</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();dbUpdateOpen()"><span class="planner-qa-icon">&#8659;</span>DB Update</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('umsatz-ticker-modal');umsatzTickerOnOpen();"><span class="planner-qa-icon">💰</span>Umsatz Ticker</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();plannerOpen()"><span class="planner-qa-icon">📅</span>Planner</button>
@@ -6738,7 +6737,7 @@
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
                     <!-- v15.9.161: PDF Report from DBV Selection -->
                     <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
-                    <!-- v15.9.250: DB Update Button -->
+                    <!-- v15.9.251: DB Update Button -->
                     <button id="dbv-update-btn" onclick="dbUpdateOpen()" style="background:linear-gradient(135deg,#0a2a1a,#051a0f);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="Revenue-Daten in DB schreiben">&#8659; DB Update</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
@@ -7011,9 +7010,7 @@
             </div>
             <!-- Tab Bar -->
             <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface,#12122a);">
-                <button class="pm-tab active" id="pm-tab-monthly" onclick="pmSwitchTab('monthly')">&#128240; Monatsprogramm</button>
-                <button class="pm-tab" id="pm-tab-assets" onclick="pmSwitchTab('assets')">&#128279; Event Assets</button>
-                <button class="pm-tab" id="pm-tab-checklist" onclick="pmSwitchTab('checklist')">&#9989; Promo Checklist</button>
+                <button class="pm-tab active" id="pm-tab-monthly">&#128240; Monatsprogramm</button>
             </div>
 
             <!-- TAB 1: MONATSPROGRAMM (existing) -->
@@ -7029,161 +7026,7 @@
                 <div style="font-size:11px;color:var(--text-secondary);">Events aus BMT (EIGEN + FREMD, kein Konzert). Text direkt editierbar vor dem Kopieren.</div>
             </div>
 
-            <!-- TAB 2: EVENT ASSETS -->
-            <div id="pm-content-assets" class="pm-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
-                <!-- Event Selector -->
-                <div style="margin-bottom:14px;">
-                    <select id="pm-event-select" onchange="pmAssetsLoad()" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:8px 10px;font-size:13px;border-radius:4px;">
-                        <option value="">-- Event wählen --</option>
-                    </select>
-                </div>
-
-                <div id="pm-assets-body" style="display:none;flex-direction:column;gap:12px;">
-                    <!-- Flags -->
-                    <div id="pm-flags" style="display:flex;flex-direction:column;gap:6px;"></div>
-
-                    <!-- FB Event -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">FB EVENT URL</div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <input type="url" id="pm-fb-url" placeholder="https://facebook.com/events/..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-fb-url')" title="Kopieren">&#128203;</button>
-                            <button class="pm-open-btn" onclick="pmOpenField('pm-fb-url')" title="Öffnen">&#8599;</button>
-                        </div>
-                    </div>
-
-                    <!-- VVK Link -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">VVK TICKET LINK</div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <input type="url" id="pm-vvk-url" placeholder="https://..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-vvk-url')" title="Kopieren">&#128203;</button>
-                            <button class="pm-open-btn" onclick="pmOpenField('pm-vvk-url')" title="Öffnen">&#8599;</button>
-                        </div>
-                    </div>
-
-                    <!-- Grafik -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">GRAFIK</div>
-                        <div style="display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
-                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="promoter" onchange="pmAssetsSave()"> Von Promoter erhalten</label>
-                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="fb" onchange="pmAssetsSave()"> FB Download</label>
-                            <label class="pm-radio"><input type="radio" name="pm-grafik" value="fehlt" onchange="pmAssetsSave()"> &#128308; Fehlt</label>
-                        </div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <input type="url" id="pm-grafik-url" placeholder="Google Drive Link..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-grafik-url')" title="Kopieren">&#128203;</button>
-                        </div>
-                    </div>
-
-                    <!-- Pressekit -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">PRESSEKIT</div>
-                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                            <label class="pm-radio"><input type="radio" name="pm-press" value="ja" onchange="pmAssetsSave()"> Erhalten</label>
-                            <label class="pm-radio"><input type="radio" name="pm-press" value="nein" onchange="pmAssetsSave()"> Nicht benötigt</label>
-                            <label class="pm-radio"><input type="radio" name="pm-press" value="ausstehend" onchange="pmAssetsSave()"> &#128308; Ausstehend</label>
-                        </div>
-                    </div>
-
-                    <!-- Short Link -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">SHORT LINK</div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <input type="url" id="pm-short-url" placeholder="https://..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-short-url')" title="Kopieren">&#128203;</button>
-                            <button class="pm-open-btn" onclick="pmOpenField('pm-short-url')" title="Öffnen">&#8599;</button>
-                        </div>
-                    </div>
-
-                    <!-- Promo Material / Press Kit -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">&#128193; PROMO MATERIAL / PRESS KIT</div>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <input type="url" id="pm-promo-folder" placeholder="Google Drive Ordner Link..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-promo-folder')" title="Kopieren">&#128203;</button>
-                            <button class="pm-open-btn" onclick="pmOpenField('pm-promo-folder')" title="Ordner öffnen">&#128193;</button>
-                        </div>
-                    </div>
-
-                    <!-- Linktree -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">LINKTREE</div>
-                        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
-                            <input type="url" id="pm-lt-url" placeholder="Ticket Link für dieses Event..." onchange="pmAssetsSave()" style="flex:1;" class="pm-input">
-                            <button class="pm-copy-btn" onclick="pmCopyField('pm-lt-url')" title="Kopieren">&#128203;</button>
-                            <button class="pm-open-btn" onclick="pmOpenField('pm-lt-url')" title="Öffnen">&#8599;</button>
-                        </div>
-                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                            <label class="pm-check-label">
-                                <input type="checkbox" id="pm-linktree" onchange="pmAssetsSave()">
-                                <span>Linktree gesetzt</span>
-                            </label>
-                            <a href="https://linktr.ee/admin" target="_blank" style="font-size:12px;color:#a78bfa;text-decoration:none;">Linktree Admin &#8599;</a>
-                            <a href="https://linktr.ee/grelletickets" target="_blank" style="font-size:12px;color:#a78bfa;text-decoration:none;">Live ansehen &#8599;</a>
-                        </div>
-                    </div>
-
-                    <!-- Checkboxes -->
-                    <div class="pm-field-group" style="display:flex;gap:20px;flex-wrap:wrap;">
-                        <label class="pm-check-label">
-                            <input type="checkbox" id="pm-sofie" onchange="pmAssetsSave()">
-                            <span>Sofie informiert</span>
-                        </label>
-                        <label class="pm-check-label">
-                            <input type="checkbox" id="pm-fb-cohost" onchange="pmAssetsSave()">
-                            <span>Co-Host angenommen</span>
-                        </label>
-                    </div>
-
-                    <!-- Notes -->
-                    <div class="pm-field-group">
-                        <div class="pm-field-label">NOTIZEN</div>
-                        <textarea id="pm-notes" rows="3" placeholder="Interne Notizen..." onchange="pmAssetsSave()" class="pm-input" style="resize:vertical;"></textarea>
-                    </div>
-
-                    <div style="font-size:11px;color:var(--text-muted);">Automatisch gespeichert pro Event (localStorage)</div>
-                </div>
-
-                <div id="pm-assets-empty" style="padding:30px;text-align:center;color:var(--text-muted);">Event oben wählen um Assets zu bearbeiten</div>
-            </div>
-
-            <!-- TAB 3: PROMO CHECKLIST -->
-            <div id="pm-content-checklist" class="pm-tab-content" style="flex:1;overflow-y:auto;padding:16px;display:none;">
-                <!-- Event Selector (synced) -->
-                <div style="margin-bottom:14px;">
-                    <select id="pm-cl-event-select" onchange="pmChecklistLoad()" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:8px 10px;font-size:13px;border-radius:4px;">
-                        <option value="">-- Event wählen --</option>
-                    </select>
-                </div>
-
-                <div id="pm-checklist-body" style="display:none;">
-                    <div id="pm-cl-event-info" style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;padding:8px 12px;background:var(--surface-alt);border-radius:4px;"></div>
-
-                    <!-- Milestones Table -->
-                    <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pm-cl-table">
-                        <thead>
-                            <tr style="background:var(--surface-alt);">
-                                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);">Milestone</th>
-                                <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);">Fällig</th>
-                                <th style="padding:8px 10px;text-align:center;border-bottom:1px solid var(--border);">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pm-cl-milestones"></tbody>
-                    </table>
-
-                    <!-- Posts Counter -->
-                    <div style="margin-top:16px;padding:12px 14px;background:var(--surface-alt);border-radius:4px;display:flex;align-items:center;gap:16px;">
-                        <span style="font-size:13px;font-weight:600;">Posts diese Woche</span>
-                        <button onclick="pmClPostsAdj(-1)" style="background:transparent;border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;">−</button>
-                        <span id="pm-cl-posts-count" style="font-size:18px;font-weight:700;min-width:24px;text-align:center;">0</span>
-                        <button onclick="pmClPostsAdj(1)" style="background:transparent;border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:4px;cursor:pointer;font-size:16px;line-height:1;">+</button>
-                        <span style="font-size:12px;color:var(--text-muted);">/ Ziel: 7</span>
-                    </div>
-                </div>
-
-                <div id="pm-checklist-empty" style="padding:30px;text-align:center;color:var(--text-muted);">Event oben wählen um Checklist zu sehen</div>
-            </div>
+            <!-- v15.9.251 (A4): Event-Assets- + Checklist-Tabs entfernt — Promo Catalogue ist die Promo-Sektion -->
         </div>
     </div>
 
@@ -7192,21 +7035,7 @@
         .pm-tab.active { color:var(--text);border-bottom-color:#f472b6;font-weight:600; }
         .pm-tab:hover { color:var(--text); }
         .pm-tab-content { display:flex;flex-direction:column; }
-        .pm-field-group { background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px; }
-        .pm-field-label { font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase; }
         .pm-input { width:100%;background:var(--bg,#0f0f1a);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:4px;font-size:13px;font-family:inherit;box-sizing:border-box; }
-        .pm-copy-btn,.pm-open-btn { background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:5px 9px;border-radius:4px;cursor:pointer;font-size:13px;flex-shrink:0;transition:all 0.1s; }
-        .pm-copy-btn:hover,.pm-open-btn:hover { color:var(--text);border-color:var(--text); }
-        .pm-radio { display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer; }
-        .pm-check-label { display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:6px 10px;background:var(--surface-alt);border:1px solid var(--border);border-radius:4px; }
-        .pm-flag { padding:7px 12px;border-radius:4px;font-size:12px;font-weight:600; }
-        .pm-flag-red { background:#7f1d1d;color:#fca5a5; }
-        .pm-flag-yellow { background:#78350f;color:#fcd34d; }
-        .pm-cl-row { border-bottom:1px solid var(--border); }
-        .pm-cl-row:last-child { border-bottom:none; }
-        .pm-cl-row td { padding:9px 10px; }
-        .pm-cl-overdue { background:#1f0a0a; }
-        .pm-cl-overdue td:first-child { color:#ef4444;font-weight:600; }
     </style>
 
     <!-- RUNNER STAFFING Modal -->
@@ -7703,7 +7532,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.250 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.251 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -7983,7 +7812,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.250</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.251</small>
             </div>
             </div>
         </div>
@@ -8395,8 +8224,8 @@
                     <span class="app-label">Projector</span>
                 </button>
                 <button class="app-tile" data-dept="sputnik" onclick="openPromoManager();">
-                    <span class="app-icon">&#127757;</span>
-                    <span class="app-label">Promo Mgr.</span>
+                    <span class="app-icon">&#128240;</span>
+                    <span class="app-label">Monatsprogramm</span>
                 </button>
                 <button class="app-tile" data-dept="office" onclick="openModal('guestlist-modal');glPopulateEventDropdown();">
                     <span class="app-icon">&#128157;</span>
@@ -8589,12 +8418,14 @@
         </div>
     </div>
     
-    <!-- ==================== PROMO CATALOGUE v15.9.250 ==================== -->
+    <!-- ==================== PROMO CATALOGUE v15.9.251 ==================== -->
     <div class="promo-section" id="promo-widget">
         <div class="promo-head">
             <span class="promo-title">Promo Catalogue</span>
-            <input class="promo-search" id="promo-search" placeholder="Event suchen…" oninput="promoRender()">
-            <button class="promo-refresh" onclick="promoRender()" title="Neu rendern">&#8635;</button>
+            <span class="promo-count" id="promo-count"></span>
+            <span class="promo-sync cache" id="promo-sync" onclick="promoForceSync()" title="Sync-Status — tippen für Neuladen"><span class="psdot"></span><span id="promo-sync-label">Cache</span></span>
+            <input class="promo-search" id="promo-search" placeholder="Suchen…" oninput="promoRender()">
+            <button class="promo-refresh" onclick="promoForceSync()" title="Sheet neu laden">&#8635;</button>
         </div>
         <div class="promo-ql">
             <span class="promo-ql-label">QUICK LAUNCH</span>
@@ -8608,13 +8439,13 @@
             <a class="promo-ql-chip" href="https://club.bookmetender.com" target="_blank" rel="noopener">BMT</a>
         </div>
         <div class="promo-filters" id="promo-filters">
-            <button class="promo-filter-btn active" data-pf="all" onclick="promoSetFilter('all')">All</button>
-            <button class="promo-filter-btn" data-pf="missingpics" onclick="promoSetFilter('missingpics')">Missing Pics</button>
-            <button class="promo-filter-btn" data-pf="noshort" onclick="promoSetFilter('noshort')">No Shortlink</button>
+            <button class="promo-filter-btn active" data-pf="all" onclick="promoSetFilter('all')">Alle</button>
+            <button class="promo-filter-btn" data-pf="missing" onclick="promoSetFilter('missing')">Missing</button>
             <button class="promo-filter-btn" data-pf="eigen" onclick="promoSetFilter('eigen')">EIGEN</button>
             <button class="promo-filter-btn" data-pf="fremd" onclick="promoSetFilter('fremd')">FREMD</button>
         </div>
         <div id="promo-cards"><div class="promo-empty">Lade Events…</div></div>
+        <button class="promo-showall" id="promo-showall" onclick="promoToggleAll()" style="display:none;">Alle anzeigen ▾</button>
     </div>
     <!-- ==================== /PROMO CATALOGUE ==================== -->
 
@@ -8799,7 +8630,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.250</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.251</span>
     </div>
     
     
@@ -10706,7 +10537,7 @@
             }
         }
         
-        // v15.9.250 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
+        // v15.9.251 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
         async function loadShiftplansLive(manual = false) {
             let okR = false, okB = false;
             try {
@@ -11920,7 +11751,7 @@
             }
         }
 
-        // v15.9.250: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.251: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -13168,7 +12999,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.251', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13328,7 +13159,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.251', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13402,7 +13233,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.251', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13509,7 +13340,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.251', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13593,7 +13424,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.251', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13902,7 +13733,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.251', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14049,7 +13880,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.251', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14194,7 +14025,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.250', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.251', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -15495,14 +15326,14 @@
             try {
                 const today = new Date();
                 const from = new Date(today);
-                from.setDate(from.getDate() - 45); // v15.9.250 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
+                from.setDate(from.getDate() - 45); // v15.9.251 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
                 const fromStr = from.toISOString().split('T')[0];
                 const until = new Date(today);
                 until.setDate(until.getDate() + 90);
                 const untilStr = until.toISOString().split('T')[0];
 
                 const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=60';
-                // v15.9.250: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
+                // v15.9.251: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
                 // CORS-Proxys entfernt (strippten den Auth-Header → 401/leer).
                 let data = null;
                 const controller = new AbortController();
@@ -19283,7 +19114,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.250';
+            const HUB_VERSION = 'v15.9.251';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19294,7 +19125,7 @@ Spittelauer Lnde 12/1
             initMsal();
             loadShiftplanFromStorage();
             loadBarFromStorage();
-            loadShiftplansLive(false); // v15.9.250 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
+            loadShiftplansLive(false); // v15.9.251 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
             loadTechnikerFromGoogleCalendar();
             updateProjection('turbo');
             updateProjection('nye');
@@ -20989,7 +20820,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.250</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.251</div>
                     </div>
                     
                     <div class="section">
@@ -21088,7 +20919,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.250 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.251 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21914,7 +21745,7 @@ Spittelauer Lnde 12/1
         openModal = function(id) {
             originalOpenModal(id);
             if (id === 'metrics-modal') {
-                // metrics modal removed v15.9.250
+                // metrics modal removed v15.9.251
             }
             // Track app usage
             const appMap = {
@@ -23376,246 +23207,16 @@ Spittelauer Lnde 12/1
 
         
         // ═══════════════════════════════════════════════════════
-        // C20 — PROMO MANAGER
+        // C20 — MONATSPROGRAMM (v15.9.251/A4: Assets+Checklist-Layer entfernt,
+        //       Promo Catalogue #promo-widget ist die Promo-Sektion)
         // ═══════════════════════════════════════════════════════
-
-        const PM_MILESTONES = [
-            { key: 'm28', label: '−28d Announce',        offset: -28 },
-            { key: 'm14', label: '−14d Push',             offset: -14 },
-            { key: 'm7',  label: '−7d Start täglich',     offset: -7  },
-            { key: 'm6',  label: '−6d Post',              offset: -6  },
-            { key: 'm5',  label: '−5d Post',              offset: -5  },
-            { key: 'm4',  label: '−4d Post',              offset: -4  },
-            { key: 'm3',  label: '−3d Post',              offset: -3  },
-            { key: 'm2',  label: '−2d Post',              offset: -2  },
-            { key: 'm1',  label: '−1d Final Push',        offset: -1  },
-            { key: 'p1',  label: '+1d Recap',             offset: +1  },
-        ];
-
-        let pmCurrentEventId = null;
-        let pmCurrentEventDate = null;
 
         function openPromoManager() {
             openModal('monatsprogramm-modal');
             mpLoad();
-            pmPopulateDropdowns();
-        }
-
-        function pmSwitchTab(tab) {
-            ['monthly','assets','checklist'].forEach(t => {
-                document.getElementById('pm-content-' + t).style.display = t === tab ? 'flex' : 'none';
-                document.getElementById('pm-tab-' + t).classList.toggle('active', t === tab);
-            });
-        }
-
-        function pmPopulateDropdowns() {
-            const sel1 = document.getElementById('pm-event-select');
-            const sel2 = document.getElementById('pm-cl-event-select');
-            if (!sel1 || !sel2) return;
-
-            if (!bmtEvents || bmtEvents.length === 0) {
-                sel1.innerHTML = '<option value="">Bitte BMT Events laden</option>';
-                sel2.innerHTML = '<option value="">Bitte BMT Events laden</option>';
-                return;
-            }
-
-            const now = new Date();
-            const future = bmtEvents.filter(e => {
-                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                const cat = e.category || '';
-                const isEvent = cat === 'eigen' || cat === 'fremd' || cat === 'konzert';
-                return d >= now && isEvent && e.status !== 'CANCELLED';
-            }).sort((a,b) => {
-                const da = a.dtstart instanceof Date ? a.dtstart : new Date(a.dtstart);
-                const db = b.dtstart instanceof Date ? b.dtstart : new Date(b.dtstart);
-                return da - db;
-            });
-
-            const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-            const opts = '<option value="">-- Event wählen --</option>' + future.map((e, i) => {
-                const d = e.dtstart instanceof Date ? e.dtstart : new Date(e.dtstart);
-                const key = 'pm_' + i + '_' + d.toISOString().slice(0,10).replace(/-/g,'');
-                const label = (e.summary || e.name || 'Event') + ' — ' + days[d.getDay()] + ' ' + d.toLocaleDateString('de-DE');
-                return `<option value="${key}" data-date="${d.toISOString()}" data-name="${(e.summary||e.name||'Event').replace(/"/g,'&quot;')}">${label}</option>`;
-            }).join('');
-
-            sel1.innerHTML = opts;
-            sel2.innerHTML = opts;
-        }
-
-        function pmAssetsLoad() {
-            const sel = document.getElementById('pm-event-select');
-            const opt = sel.options[sel.selectedIndex];
-            const id = sel.value;
-
-            // Sync to checklist dropdown
-            const cl = document.getElementById('pm-cl-event-select');
-            if (cl) cl.value = id;
-
-            if (!id) {
-                document.getElementById('pm-assets-body').style.display = 'none';
-                document.getElementById('pm-assets-empty').style.display = 'block';
-                pmCurrentEventId = null;
-                return;
-            }
-
-            pmCurrentEventId = id;
-            pmCurrentEventDate = opt.dataset.date ? new Date(opt.dataset.date) : null;
-
-            document.getElementById('pm-assets-empty').style.display = 'none';
-            document.getElementById('pm-assets-body').style.display = 'flex';
-
-            // Load from localStorage
-            const saved = JSON.parse(localStorage.getItem('promo_assets_' + id) || '{}');
-            document.getElementById('pm-fb-url').value = saved.fbUrl || '';
-            document.getElementById('pm-lt-url').value = saved.ltUrl || '';
-            document.getElementById('pm-vvk-url').value = saved.vvkUrl || '';
-            document.getElementById('pm-grafik-url').value = saved.grafikUrl || '';
-            document.getElementById('pm-short-url').value = saved.shortUrl || '';
-            document.getElementById('pm-promo-folder').value = saved.promoFolder || '';
-            document.getElementById('pm-notes').value = saved.notes || '';
-            document.getElementById('pm-sofie').checked = !!saved.sofie;
-            document.getElementById('pm-linktree').checked = !!saved.linktree;
-            document.getElementById('pm-fb-cohost').checked = !!saved.fbCohost;
-
-            // Radio buttons
-            if (saved.grafik) {
-                const r = document.querySelector(`input[name="pm-grafik"][value="${saved.grafik}"]`);
-                if (r) r.checked = true;
-            }
-            if (saved.press) {
-                const r = document.querySelector(`input[name="pm-press"][value="${saved.press}"]`);
-                if (r) r.checked = true;
-            }
-
-            pmUpdateFlags();
-        }
-
-        function pmAssetsSave() {
-            if (!pmCurrentEventId) return;
-            const grafik = document.querySelector('input[name="pm-grafik"]:checked')?.value || '';
-            const press = document.querySelector('input[name="pm-press"]:checked')?.value || '';
-            const data = {
-                fbUrl: document.getElementById('pm-fb-url').value,
-                ltUrl: document.getElementById('pm-lt-url').value,
-                vvkUrl: document.getElementById('pm-vvk-url').value,
-                grafikUrl: document.getElementById('pm-grafik-url').value,
-                shortUrl: document.getElementById('pm-short-url').value,
-                promoFolder: document.getElementById('pm-promo-folder').value,
-                notes: document.getElementById('pm-notes').value,
-                sofie: document.getElementById('pm-sofie').checked,
-                linktree: document.getElementById('pm-linktree').checked,
-                fbCohost: document.getElementById('pm-fb-cohost').checked,
-                grafik, press
-            };
-            localStorage.setItem('promo_assets_' + pmCurrentEventId, JSON.stringify(data));
-            pmUpdateFlags();
-        }
-
-        function pmUpdateFlags() {
-            const flags = document.getElementById('pm-flags');
-            if (!flags) return;
-            const fbUrl = document.getElementById('pm-fb-url').value.trim();
-            const vvkUrl = document.getElementById('pm-vvk-url').value.trim();
-            const grafik = document.querySelector('input[name="pm-grafik"]:checked')?.value || '';
-            const arr = [];
-            if (!fbUrl) arr.push({ cls:'pm-flag-red', msg:'⚠ Kein FB Event → Manuelle Kommunikation an Sofie nötig' });
-            if (!vvkUrl) arr.push({ cls:'pm-flag-red', msg:'⚠ VVK Link fehlt → Linktree kann nicht gesetzt werden' });
-            if (grafik === 'fehlt') arr.push({ cls:'pm-flag-yellow', msg:'⚠ Grafik fehlt → Posting eingeschränkt' });
-            flags.innerHTML = arr.map(f => `<div class="pm-flag ${f.cls}">${f.msg}</div>`).join('');
-        }
-
-        function pmCopyField(id) {
-            const val = document.getElementById(id)?.value;
-            if (!val) { showToast('Nichts zum Kopieren', true); return; }
-            navigator.clipboard.writeText(val).then(() => showToast('✓ Kopiert')).catch(() => showToast('Fehler', true));
-        }
-
-        function pmOpenField(id) {
-            const val = document.getElementById(id)?.value;
-            if (!val) { showToast('Kein Link eingetragen', true); return; }
-            window.open(val, '_blank');
-        }
-
-        function pmChecklistLoad() {
-            const sel = document.getElementById('pm-cl-event-select');
-            const opt = sel.options[sel.selectedIndex];
-            const id = sel.value;
-
-            // Sync to assets dropdown
-            const as = document.getElementById('pm-event-select');
-            if (as) as.value = id;
-
-            if (!id) {
-                document.getElementById('pm-checklist-body').style.display = 'none';
-                document.getElementById('pm-checklist-empty').style.display = 'block';
-                return;
-            }
-
-            pmCurrentEventId = id;
-            const eventDate = opt.dataset.date ? new Date(opt.dataset.date) : null;
-            const eventName = opt.dataset.name || opt.text.split(' — ')[0];
-            pmCurrentEventDate = eventDate;
-
-            document.getElementById('pm-checklist-empty').style.display = 'none';
-            document.getElementById('pm-checklist-body').style.display = 'block';
-            document.getElementById('pm-cl-event-info').textContent = eventName + (eventDate ? ' · ' + eventDate.toLocaleDateString('de-AT', {weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}) : '');
-
-            const saved = JSON.parse(localStorage.getItem('promo_cl_' + id) || '{}');
-            const now = new Date(); now.setHours(0,0,0,0);
-            const tbody = document.getElementById('pm-cl-milestones');
-            tbody.innerHTML = '';
-
-            PM_MILESTONES.forEach(ms => {
-                let dueDate = null;
-                if (eventDate) {
-                    dueDate = new Date(eventDate);
-                    dueDate.setDate(dueDate.getDate() + ms.offset);
-                    dueDate.setHours(0,0,0,0);
-                }
-                const checked = !!saved[ms.key];
-                const isOverdue = dueDate && dueDate < now && !checked;
-                const dueDateStr = dueDate ? dueDate.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'}) : '—';
-
-                const tr = document.createElement('tr');
-                tr.className = 'pm-cl-row' + (isOverdue ? ' pm-cl-overdue' : '');
-                tr.innerHTML = `
-                    <td>${ms.label}${isOverdue ? ' <span style="color:#ef4444;font-size:11px;">ÜBERFÄLLIG</span>' : ''}</td>
-                    <td style="color:var(--text-muted);">${dueDateStr}</td>
-                    <td style="text-align:center;">
-                        <input type="checkbox" ${checked ? 'checked' : ''} onchange="pmClSave('${id}','${ms.key}',this.checked,this.closest('tr'))" style="width:16px;height:16px;cursor:pointer;">
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Posts counter
-            document.getElementById('pm-cl-posts-count').textContent = saved._posts || 0;
-        }
-
-        function pmClSave(id, key, val, rowEl) {
-            const saved = JSON.parse(localStorage.getItem('promo_cl_' + id) || '{}');
-            saved[key] = val;
-            localStorage.setItem('promo_cl_' + id, JSON.stringify(saved));
-            // Update row styling
-            if (rowEl) {
-                const now = new Date(); now.setHours(0,0,0,0);
-                rowEl.classList.toggle('pm-cl-overdue', !val && rowEl.classList.contains('pm-cl-overdue'));
-            }
-        }
-
-        function pmClPostsAdj(delta) {
-            if (!pmCurrentEventId) return;
-            const el = document.getElementById('pm-cl-posts-count');
-            const saved = JSON.parse(localStorage.getItem('promo_cl_' + pmCurrentEventId) || '{}');
-            const count = Math.max(0, (saved._posts || 0) + delta);
-            saved._posts = count;
-            localStorage.setItem('promo_cl_' + pmCurrentEventId, JSON.stringify(saved));
-            el.textContent = count;
         }
         // ═══════════════════════════════════════════════════════
 
-        
         // ═══════════════════════════════════════════════════════
         // D13 — LINKTREE QUICK-PANEL
         // ═══════════════════════════════════════════════════════
@@ -24808,7 +24409,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.250 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.251 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24838,7 +24439,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.250',
+                hubVersion: 'v15.9.251',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -25080,7 +24681,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        // v15.9.250 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
+        // v15.9.251 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
         window.graphFetch = async function(url, opts, maxRetries = 2) {
             for (let attempt = 0; ; attempt++) {
                 const res = await fetch(url, opts);
@@ -25093,7 +24694,7 @@ Spittelauer Lnde 12/1
         };
 
         async function cockpitLoad() {
-            // v15.9.250 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
+            // v15.9.251 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
             if (window.__cockpitInflight) return window.__cockpitInflight;
             window.__cockpitInflight = _cockpitLoadInner();
             try { return await window.__cockpitInflight; }
@@ -25137,7 +24738,7 @@ Spittelauer Lnde 12/1
                 CP_DEPTS.forEach(d => cockpitData.byDept[d.key] = []);
 
                 // Fetch tasks for ALL lists, assign to dept by name
-                // v15.9.250 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
+                // v15.9.251 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
                 for (const list of allLists) {
                     const name = (list.displayName || '').toLowerCase();
                     let deptKey = null;
@@ -25155,7 +24756,7 @@ Spittelauer Lnde 12/1
                         const data = await res.json();
                         const tasks = data.value || [];
                         tasks.forEach(t => t.listId = list.id); // store listId on task
-                        // v15.9.250 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
+                        // v15.9.251 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
                         const existingIds = new Set(cockpitData.byDept[deptKey].map(t => t.id));
                         cockpitData.byDept[deptKey].push(...tasks.filter(t => !existingIds.has(t.id)));
                         TODO_LISTS[deptKey] = list.id; // update for toggleTask
@@ -25870,7 +25471,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// ALERT LAYER v15.9.250 — Strip-Aggregator + Shiftplan-Gap-Detection
+// ALERT LAYER v15.9.251 — Strip-Aggregator + Shiftplan-Gap-Detection
 // ═══════════════════════════════════════════════════════
 window.alertGetShiftplanGaps = function() {
     const gaps = [];
@@ -26105,7 +25706,7 @@ window.alertOpenStaffing = function() {
         const todayTasks = [];
 
         if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
-            const seenIds = new Set(); // v15.9.250 — Dedupe safety net
+            const seenIds = new Set(); // v15.9.251 — Dedupe safety net
             for (const dept of MYDAY_DEPTS) {
                 const tasks = cockpitData.byDept[dept] || [];
                 tasks.forEach(t => {
@@ -26333,7 +25934,11 @@ window.alertOpenStaffing = function() {
             return !bar || bar === '0' || bar === '-';
         };
 
-        const openEvents = dbvData.filter(isOpenEvent);
+        let openEvents = dbvData.filter(isOpenEvent);
+        // v15.9.251 (A5) — Sheet-Reminder-Status: done/snoozed ausblenden
+        if (typeof window.dbRemHidden === 'function') {
+            openEvents = openEvents.filter(r => !window.dbRemHidden(mydayParseDbDate(r['Datum'])));
+        }
 
         // Newest event WITH bar revenue = "last update" indicator
         let lastUpdate = null;
@@ -26360,9 +25965,10 @@ window.alertOpenStaffing = function() {
 
         const daysOld = oldestOpenDate ? Math.floor((today - oldestOpenDate) / 86400000) : 0;
 
-        // v15.9.250 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
+        // v15.9.251 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
         let bmtMissing = 0;
         let bmtOldest = null;
+        const bmtList = [];
         try {
             if (typeof bmtEvents !== 'undefined' && Array.isArray(bmtEvents) && lastUpdate) {
                 const dbDates = new Set(dbvData.map(r => {
@@ -26374,7 +25980,9 @@ window.alertOpenStaffing = function() {
                     if (isNaN(d)) return;
                     d.setHours(0,0,0,0);
                     if (d > lastUpdate && d < today && !dbDates.has(d.getTime())) {
+                        if (typeof window.dbRemHidden === 'function' && window.dbRemHidden(d)) return;
                         bmtMissing++;
+                        bmtList.push({ date: d, name: e.summary || 'Event' });
                         if (!bmtOldest || d < bmtOldest) bmtOldest = d;
                     }
                 });
@@ -26388,10 +25996,16 @@ window.alertOpenStaffing = function() {
         if (effDaysOld > 14) statusLevel = 'critical';
         else if (effDaysOld > 7) statusLevel = 'warning';
 
+        // v15.9.251 (A5) — Liste offener Events für Sticky-Reminder-Rows
+        const openList = openEvents.map(r => ({
+            date: mydayParseDbDate(r['Datum']),
+            name: r['Event Name'] || r['Event_Name'] || r['Promoter'] || 'Event'
+        })).concat(bmtList).filter(x => x.date).sort((a, b) => a.date - b.date);
         return {
             dataReady: true,
             needsUpdate: totalOpen > 0,
             openCount: totalOpen,
+            openList: openList,
             oldestDate: mydayFmtDbDate(effOldest),
             daysOld: effDaysOld,
             lastUpdate: mydayFmtDbDate(lastUpdate),
@@ -26402,27 +26016,33 @@ window.alertOpenStaffing = function() {
     };
 
     function mydayBuildDbStatusRow() {
+        // v15.9.251 (A5) — Sticky DB-Update-Reminder: pro Event eine Zeile,
+        // Buttons ✓ Erledigt / 🕓 Morgen — Status persistiert im REMINDERS-Sheet-Tab
         const s = mydayGetDbStatus();
         if (!s.needsUpdate) return '';
-
-        const colors = {
-            critical: { bg: 'rgba(239,68,68,0.10)', accent: '#ef4444', dot: '#ef4444' },
-            warning:  { bg: 'rgba(245,158,11,0.10)', accent: '#f59e0b', dot: '#f59e0b' },
-            ok:       { bg: 'rgba(59,130,246,0.10)', accent: '#3b82f6', dot: '#3b82f6' }
-        };
-        const c = colors[s.statusLevel];
+        const list = (s.openList || []).slice(0, 4);
+        const more = (s.openList || []).length - list.length;
+        const c = { critical: '#ef4444', warning: '#f59e0b', ok: '#3b82f6' }[s.statusLevel] || '#3b82f6';
         const label = s.openCount === 1 ? '1 Event offen' : s.openCount + ' Events offen';
-        const dayStr = s.daysOld === 1 ? '1 d' : s.daysOld + ' d';
-
-        return '<div class="myday-row" style="background:' + c.bg + ';border-left:3px solid ' + c.accent + ';cursor:pointer;" onclick="if(typeof dbUpdateOpen===\'function\'){dbUpdateOpen();}else{openModal(\'db-viewer-modal\');}">' +
+        let html = '<div class="myday-row" style="background:rgba(239,68,68,0.06);border-left:3px solid ' + c + ';cursor:pointer;" onclick="if(typeof dbUpdateOpen===\'function\'){dbUpdateOpen();}else{openModal(\'db-viewer-modal\');}">' +
             '<div class="myday-rowcontent">' +
-                '<span class="myday-statusicon" style="background:' + c.dot + ';color:#fff;border-color:' + c.accent + ';display:flex;align-items:center;justify-content:center;font-size:11px;">📊</span>' +
-                '<div class="myday-titlewrap">' +
-                    '<div class="myday-rowtitle" style="color:#fff;font-weight:600;">MAIN DB Update fällig <span style="color:rgba(255,255,255,0.7);font-weight:400;">— ' + label + ' seit ' + s.oldestDate + '</span></div>' +
-                '</div>' +
-                '<span class="myday-rowtime" style="color:' + c.accent + ';font-weight:700;">' + dayStr + '</span>' +
-            '</div>' +
-        '</div>';
+                '<span class="myday-statusicon" style="background:' + c + ';color:#fff;border-color:' + c + ';display:flex;align-items:center;justify-content:center;font-size:11px;">📊</span>' +
+                '<div class="myday-titlewrap"><div class="myday-rowtitle" style="font-weight:600;">MAIN DB Update fällig <span style="opacity:0.7;font-weight:400;">— ' + label + '</span></div></div>' +
+                '<span class="myday-rowtime" style="color:' + c + ';font-weight:700;">' + (s.daysOld === 1 ? '1 d' : s.daysOld + ' d') + '</span>' +
+            '</div></div>';
+        list.forEach(ev => {
+            const dk = mydayFmtDbDate(ev.date);
+            const nm = mydayEsc(ev.name).replace(/'/g, '&#39;');
+            html += '<div class="myday-row" style="padding-left:14px;">' +
+                '<div class="myday-rowcontent">' +
+                    '<span class="myday-statusicon" style="color:' + c + ';">›</span>' +
+                    '<div class="myday-titlewrap"><div class="myday-rowtitle">' + mydayEsc(ev.name) + ' <span style="color:var(--faint,#777);font-size:11px;">' + dk + '</span></div></div>' +
+                    '<button onclick="event.stopPropagation();dbRemMark(\'' + dk + '\',\'' + nm + '\',\'snooze\')" title="Morgen erinnern" style="background:none;border:0.5px solid rgba(255,255,255,0.15);border-radius:6px;color:#f59e0b;font-size:11px;cursor:pointer;padding:3px 8px;margin-right:5px;">🕓 Morgen</button>' +
+                    '<button onclick="event.stopPropagation();dbRemMark(\'' + dk + '\',\'' + nm + '\',\'done\')" title="Erledigt" style="background:none;border:0.5px solid rgba(255,255,255,0.15);border-radius:6px;color:#32d74b;font-size:11px;cursor:pointer;padding:3px 8px;">✓ Erledigt</button>' +
+                '</div></div>';
+        });
+        if (more > 0) html += '<div class="myday-row" style="padding-left:14px;"><div class="myday-rowcontent"><div class="myday-titlewrap"><div class="myday-rowtitle" style="color:var(--faint,#777);">+ ' + more + ' weitere — ⇓ DB Update öffnen</div></div></div></div>';
+        return html;
     }
 
     function mydayRender(events, taskBuckets, qnItems) {
@@ -26453,7 +26073,7 @@ window.alertOpenStaffing = function() {
         setPill('myday-pill-today', 'myday-pill-today-count', todayCount);
         setPill('myday-pill-overdue', 'myday-pill-overdue-count', overdueCount);
 
-        // Empty state (v15.9.250 — inkl. Flagged + Gaps)
+        // Empty state (v15.9.251 — inkl. Flagged + Gaps)
         const _flaggedN = (window.__alertFlagged || []).length;
         const _gapsN = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps().length : 0;
         if (eventCount + todayCount + overdueCount + _flaggedN + _gapsN === 0 && !hasDbAlert) {
@@ -26492,7 +26112,7 @@ window.alertOpenStaffing = function() {
             overdue.forEach(t => { html += mydayBuildTaskRow(t, true); });
         }
 
-        // ---- Section 4: Geflaggte Mails (v15.9.250) ----
+        // ---- Section 4: Geflaggte Mails (v15.9.251) ----
         const flaggedMails = window.__alertFlagged || [];
         if (flaggedMails.length > 0) {
             html += `<div class="myday-divider"><span>Geflaggte Mails</span><span class="myday-divider-count">${flaggedMails.length}</span></div>`;
@@ -26510,7 +26130,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Section 5: Shiftplan-Gaps (v15.9.250) ----
+        // ---- Section 5: Shiftplan-Gaps (v15.9.251) ----
         const gaps = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps() : [];
         if (gaps.length > 0) {
             html += `<div class="myday-divider is-overdue"><span>Shiftplan-Gaps</span><span class="myday-divider-count">${gaps.length}</span></div>`;
@@ -26526,7 +26146,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Alert-Strip Sync (v15.9.250) ----
+        // ---- Alert-Strip Sync (v15.9.251) ----
         window.__mydayCounts = { overdue: overdueCount, today: todayCount };
         window.__mydayLastRender = { events: events, taskBuckets: taskBuckets, qnItems: qnItems };
         if (typeof alertLayerUpdate === 'function') alertLayerUpdate();
@@ -26534,7 +26154,7 @@ window.alertOpenStaffing = function() {
         body.innerHTML = html;
     }
 
-    // ---- Rerender ohne Task-Refetch (v15.9.250 — für Flagged-Updates) ----
+    // ---- Rerender ohne Task-Refetch (v15.9.251 — für Flagged-Updates) ----
     window.mydayRerender = function() {
         const last = window.__mydayLastRender;
         if (!last) return;
@@ -27399,7 +27019,7 @@ window.alertOpenStaffing = function() {
         const apps = [
             { ico: '📧', label: 'Email Hub',       action: "openModal('email-modal')" },
             { ico: '🧾', label: 'Rechnungen',      action: "invScrollTo()" },
-            { ico: '🗓️', label: 'Promo Manager',   action: "openPromoManager()" },
+            { ico: '📰', label: 'Monatsprogramm',  action: "openPromoManager()" },
             { ico: '🤖', label: 'Claude Notepad',  action: "openModal('claude-notepad-modal')" },
             { ico: '📊', label: 'Database Viewer', action: "openModal('db-viewer-modal')" },
             { ico: '🎫', label: 'PreSale Calc',    action: "openModal('presale-modal')" },
@@ -28346,7 +27966,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.250';
+    const HUB_VER = 'v15.9.251';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28643,7 +28263,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /STATE SYNC =====
 
-// ===== DB UPDATE v15.9.250 =====
+// ===== DB UPDATE v15.9.251 =====
 (function() {
 
 const DB_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
@@ -28767,6 +28387,26 @@ function dbuBuildDropdown() {
                !cat.includes('special') && !cat.includes('termin') && !cat.includes('holiday') && !cat.includes('feiertag') &&
                (ev.status || 'CONFIRMED') !== 'CANCELLED';
     }).sort((a, b) => new Date(b.dtstart) - new Date(a.dtstart));
+    // v15.9.251 (A6): Programm-TXT als zusätzliche Dropdown-Quelle (BMT-unabhängig)
+    try {
+        const progMap = dbuParseProgramm();
+        const lbl = localStorage.getItem('gf_programm_label') || '';
+        const ym = lbl.match(/(19|20)\d{2}/);
+        const progYear = ym ? +ym[0] : now.getFullYear();
+        const have = new Set(recent.map(ev => {
+            const d = ev.dtstart instanceof Date ? ev.dtstart : new Date(ev.dtstart);
+            return d.toDateString();
+        }));
+        Object.keys(progMap).forEach(k => {
+            const m = k.match(/^(\d{2})\.(\d{2})$/);
+            if (!m) return;
+            const d = new Date(progYear, +m[2] - 1, +m[1], 12, 0, 0);
+            if (d < sixWeeksAgo || d > now) return;
+            if (have.has(d.toDateString())) return;
+            recent.push({ dtstart: d, summary: progMap[k].full_name, category: '', status: 'CONFIRMED', bookings: [], _prog: true });
+        });
+        recent.sort((a, b) => new Date(b.dtstart) - new Date(a.dtstart));
+    } catch (e) { console.warn('dbu programm merge:', e); }
     if (!recent.length) {
         sel.innerHTML += '<option disabled>— Keine Events gefunden (BMT laden?) —</option>';
         sel._recent = [];
@@ -28778,7 +28418,7 @@ function dbuBuildDropdown() {
         const isEigen = isEigenPromoter(ev.category, ev.summary);
         const opt = document.createElement('option');
         opt.value = idx;
-        opt.textContent = ds + '  ·  ' + (ev.summary || 'Unbekannt') + '  [' + (isEigen ? 'EIGEN' : 'FREMD') + ']';
+        opt.textContent = ds + '  ·  ' + (ev.summary || 'Unbekannt') + '  [' + (isEigen ? 'EIGEN' : 'FREMD') + ']' + (ev._prog ? '  · Programm' : '');
         sel.appendChild(opt);
     });
     sel._recent = recent;
@@ -28852,7 +28492,7 @@ window.dbuAddEvent = function() {
     dbuSummaryBar();
 };
 
-// ── v15.9.250: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
+// ── v15.9.251: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
 window.dbuAddManual = function() {
     const dateEl = document.getElementById('dbu2-man-date');
     const nameEl = document.getElementById('dbu2-man-name');
@@ -29315,7 +28955,7 @@ window.dbuFinish = function() {
 };
 
 })();
-// ===== /DB UPDATE v15.9.250 =====
+// ===== /DB UPDATE v15.9.251 =====
 </script>
 
 <!-- ==================== STATE SYNC MODAL v15.9.204 ==================== -->
@@ -29341,7 +28981,7 @@ window.dbuFinish = function() {
 </div>
 <!-- ==================== /STATE SYNC MODAL ==================== -->
 
-<!-- ==================== DB UPDATE MODAL (v15.9.250) ==================== -->
+<!-- ==================== DB UPDATE MODAL (v15.9.251) ==================== -->
 <div id="db-update-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:var(--raised);border:1px solid var(--hair);border-radius:10px;width:min(680px,96vw);height:min(90vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);">
         <!-- Header -->
@@ -29363,7 +29003,7 @@ window.dbuFinish = function() {
                     <button onclick="dbuAddEvent()" style="background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">+ Hinzufügen</button>
                 </div>
                 <div style="font-size:11px;color:var(--faint);margin-top:6px;">Events der letzten 6 Wochen · KONZERT ausgeblendet · EIGEN/FREMD aus BMT Kategorie auto-detect</div>
-                <!-- v15.9.250: Manueller Event-Eintrag (BMT-unabhängig) -->
+                <!-- v15.9.251: Manueller Event-Eintrag (BMT-unabhängig) -->
                 <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap;">
                     <input type="date" id="dbu2-man-date" style="background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 8px;border-radius:6px;font-size:12px;">
                     <input type="text" id="dbu2-man-name" placeholder="Event-Name (manuell)" style="flex:1;min-width:140px;background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 10px;border-radius:6px;font-size:12px;">
@@ -29427,34 +29067,182 @@ window.dbuFinish = function() {
 
 <script>
 // ═══════════════════════════════════════════════════════
-// PROMO CATALOGUE v15.9.250 — Phase 1 (Spec v2.1)
+// PROMO CATALOGUE v15.9.251 — Session A (Interop-Fundament)
+// Datenschicht: Google Sheet PROMO-Tab = Source of Truth,
+// localStorage = reiner Cache (gf_promo_store_v1) + Sync-Indikator.
 // Self-contained: eigene Helper, keine IIFE-Dependencies (§45.9)
-// Persistenz: localStorage gf_promo_<YYYY-MM-DD>_<slug>
 // ═══════════════════════════════════════════════════════
+const PROMO_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
+const PROMO_SECRET = 'turbo_db_2026';
+const PROMO_STORE_KEY = 'gf_promo_store_v1';
 const PROMO_LS_PREFIX = 'gf_promo_';
 const PROMO_EIGEN_WORDS = ['turbo', 'in house', 'selected', 'halloween', 'polyamor', 'nye', 'silvester', 'birthday', 'x-mas', 'sommerfest'];
-const PROMO_WD = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
-const PROMO_MON = ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ'];
+const PROMO_WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const PROMO_WD_LONG = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const PROMO_MONTHS = ['Jänner', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 const PROMO_LINEUP_TPL = 'DD.MM EVENT_NAME w/ HEADLINER\n\u25BA HEADLINER\n\u25BA Support Act (promoter)\n\u25BA Support Act 2\n----\nSTAGENAME by XYZ\n\u25BA Artist\n----\nTICKET LINK IN BIO \uD83C\uDF9F\n----\n#grelleforelle #wien #vienna #viennanightlife #techno';
-let promoFilter = 'all';
-const promoOpenSet = new Set();
-let promoInitTries = 0;
+const PROMO_COMPACT_N = 5;
 
+let promoFilter = 'all';
+let promoOpenKey = null;          // Accordion: nur EINE Card offen
+let promoExpandedAll = false;     // false = nächste 5 · true = Alle (Monatsgruppen)
+let promoInitTries = 0;
+let promoStore = {};              // key → entry {date,name,typ,fb,vvk,short,drive,lineup,notes,updated}
+let promoSyncState = 'cache';     // 'ok' | 'sync' | 'cache'
+let promoPendingWrites = 0;
+const promoDebounce = {};
+
+// ── Helper ──────────────────────────────────────────────
 function promoEsc(s) { const d = document.createElement('div'); d.textContent = String(s == null ? '' : s); return d.innerHTML; }
 function promoEscAttr(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function promoSlug(name) { return String(name || 'event').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'event'; }
 function promoDateStr(d) { const p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
 function promoKey(ev) { return PROMO_LS_PREFIX + promoDateStr(ev.dtstart) + '_' + promoSlug(ev.summary); }
-function promoGetData(key) { try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; } }
-function promoSave(key, field, value) { try { const d = promoGetData(key); d[field] = value; localStorage.setItem(key, JSON.stringify(d)); } catch (e) { console.error('promoSave', e); } }
 function promoIsEigen(ev) { if (ev.category === 'eigen') return true; const n = String(ev.summary || '').toLowerCase(); return PROMO_EIGEN_WORDS.some(w => n.includes(w)); }
 function promoMissing(d) { const m = []; if (!d.drive) m.push('Pics'); if (!d.short) m.push('Shortlink'); if (!d.fb) m.push('FB'); return m; }
 function promoToastMsg(msg) { if (typeof showToast === 'function') { showToast(msg); } }
+function promoPromoterOf(ev) {
+    const s = String(ev.summary || '');
+    const m = s.match(/^(.+?)(?:\s+w\/|\s+pres\.|\s+\||\s+\u2013|\s+-|\s+x\s)/i);
+    return m ? m[1].trim() : s.trim();
+}
+
+// ── Store (Sheet = Truth · localStorage = Cache) ───────
+function promoCacheLoad() { try { promoStore = JSON.parse(localStorage.getItem(PROMO_STORE_KEY) || '{}') || {}; } catch (e) { promoStore = {}; } }
+function promoCacheSave() { try { localStorage.setItem(PROMO_STORE_KEY, JSON.stringify(promoStore)); } catch (e) { console.warn('promoCacheSave', e); } }
+
+function promoGetData(key) { return promoStore[key] || {}; }
+
+function promoSetSync(state) {
+    promoSyncState = state;
+    const el = document.getElementById('promo-sync');
+    const lbl = document.getElementById('promo-sync-label');
+    if (!el || !lbl) return;
+    el.classList.remove('ok', 'sync', 'cache');
+    el.classList.add(state);
+    lbl.textContent = state === 'ok' ? 'Sheet \u2713' : (state === 'sync' ? 'Sync\u2026' : 'Cache');
+    el.title = state === 'ok' ? 'Mit Google Sheet synchronisiert' : (state === 'sync' ? 'Schreibe ins Sheet\u2026' : 'Offline-Cache — tippen f\u00FCr Neuladen');
+}
+
+// Legacy v250-Migration: einzelne gf_promo_*-Keys + promo_assets_pm_* (altes PM-Modal)
+function promoMigrateLegacy() {
+    try {
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (!k || !k.startsWith(PROMO_LS_PREFIX) || k === PROMO_STORE_KEY) continue;
+            if (k.startsWith('gf_promo_store') || k.startsWith('gf_promo_migr')) continue;
+            if (promoStore[k]) continue;
+            try {
+                const d = JSON.parse(localStorage.getItem(k) || '{}') || {};
+                if (Object.keys(d).length) { d.updated = d.updated || 0; promoStore[k] = d; }
+            } catch (e) {}
+        }
+        // Altes PM-Modal (promo_assets_pm_<idx>_YYYYMMDD) → per Datum in leere Entries hydrieren
+        const byDate = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            const m = k && k.match(/^promo_assets_pm_\d+_(\d{4})(\d{2})(\d{2})$/);
+            if (!m) continue;
+            try {
+                const a = JSON.parse(localStorage.getItem(k) || '{}') || {};
+                byDate[m[1] + '-' + m[2] + '-' + m[3]] = a;
+            } catch (e) {}
+        }
+        Object.keys(promoStore).forEach(key => {
+            const dm = key.match(/^gf_promo_(\d{4}-\d{2}-\d{2})_/);
+            if (!dm || !byDate[dm[1]]) return;
+            const a = byDate[dm[1]], e = promoStore[key];
+            if (!e.fb && a.fbUrl) e.fb = a.fbUrl;
+            if (!e.vvk && a.vvkUrl) e.vvk = a.vvkUrl;
+            if (!e.short && a.shortUrl) e.short = a.shortUrl;
+            if (!e.drive && a.promoFolder) e.drive = a.promoFolder;
+            if (!e.notes && a.notes) e.notes = a.notes;
+        });
+    } catch (e) { console.warn('promoMigrateLegacy', e); }
+}
+
+// Sheet-Read (GET → JSON, live, kein Publish-Cache-Lag)
+function promoSheetLoad() {
+    promoSetSync('sync');
+    return fetch(PROMO_AS_URL + '?action=promo_read&secret=' + encodeURIComponent(PROMO_SECRET))
+        .then(r => r.json())
+        .then(j => {
+            if (!j || !j.ok) throw new Error(j && j.error || 'promo_read failed');
+            const sheetKeys = new Set();
+            (j.entries || []).forEach(en => {
+                if (!en.key) return;
+                sheetKeys.add(en.key);
+                const loc = promoStore[en.key];
+                if (!loc || (en.updated || 0) >= (loc.updated || 0)) {
+                    promoStore[en.key] = { date: en.date, name: en.name, typ: en.typ, fb: en.fb, vvk: en.vvk, short: en.short, drive: en.drive, lineup: en.lineup, notes: en.notes, updated: en.updated || 0 };
+                } else {
+                    promoQueueWrite(en.key); // lokal neuer → hochschieben
+                }
+            });
+            // lokale Entries, die das Sheet noch nicht kennt → hochschieben
+            Object.keys(promoStore).forEach(k => { if (!sheetKeys.has(k) && promoHasContent(promoStore[k])) promoQueueWrite(k); });
+            promoCacheSave();
+            if (promoPendingWrites === 0) promoSetSync('ok');
+            promoRender();
+        })
+        .catch(e => { console.warn('promoSheetLoad:', e); promoSetSync('cache'); promoRender(); });
+}
+function promoHasContent(d) { return !!(d && (d.fb || d.vvk || d.short || d.drive || d.lineup || d.notes)); }
+
+// Sheet-Write (POST no-cors, debounced pro Key)
+function promoQueueWrite(key) {
+    clearTimeout(promoDebounce[key]);
+    promoDebounce[key] = setTimeout(() => promoSheetWrite(key), 1200);
+}
+function promoSheetWrite(key) {
+    const d = promoStore[key];
+    if (!d) return;
+    const dm = key.match(/^gf_promo_(\d{4}-\d{2}-\d{2})_/);
+    promoPendingWrites++;
+    promoSetSync('sync');
+    fetch(PROMO_AS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'promo_write', secret: PROMO_SECRET, entry: {
+            key: key, date: d.date || (dm ? dm[1] : ''), name: d.name || '', typ: d.typ || '',
+            fb: d.fb || '', vvk: d.vvk || '', short: d.short || '', drive: d.drive || '',
+            lineup: d.lineup || '', notes: d.notes || ''
+        } })
+    }).then(() => {
+        promoPendingWrites = Math.max(0, promoPendingWrites - 1);
+        if (promoPendingWrites === 0) promoSetSync('ok');
+    }).catch(e => {
+        console.warn('promoSheetWrite:', e);
+        promoPendingWrites = Math.max(0, promoPendingWrites - 1);
+        promoSetSync('cache');
+    });
+}
+
+function promoSave(key, field, value, ev) {
+    const d = promoStore[key] || {};
+    d[field] = value;
+    d.updated = Date.now();
+    if (ev) { d.date = promoDateStr(ev.dtstart); d.name = ev.summary || d.name || ''; d.typ = promoIsEigen(ev) ? 'EIGEN' : 'FREMD'; }
+    promoStore[key] = d;
+    promoCacheSave();
+    promoQueueWrite(key);
+    const asEl = document.getElementById('promo-autosave-live');
+    if (asEl) asEl.textContent = 'Autosave \u2713 ' + new Date().toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit' }) + ' \u00B7 Sheet-Sync';
+}
+window.promoForceSync = function() { promoSheetLoad(); };
+
+// ── Aktionen ────────────────────────────────────────────
 function promoCopy(btn) { const row = btn.closest('.promo-linkrow'); const inp = row ? row.querySelector('input') : null; const val = inp ? inp.value.trim() : ''; if (!val) { promoToastMsg('Feld ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Kopiert: ' + val.slice(0, 40))).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
 function promoCopyLineup(key) { const d = promoGetData(key); const val = (d.lineup || '').trim(); if (!val) { promoToastMsg('Lineup ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Lineup kopiert')).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
-function promoToggle(key) { if (promoOpenSet.has(key)) { promoOpenSet.delete(key); } else { promoOpenSet.add(key); } promoRender(); }
+function promoToggle(key) { promoOpenKey = (promoOpenKey === key) ? null : key; promoRender(); }
 function promoSetFilter(f) { promoFilter = f; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === f)); promoRender(); }
+function promoToggleAll() { promoExpandedAll = !promoExpandedAll; if (!promoExpandedAll) { promoFilter = 'all'; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === 'all')); } promoRender(); }
 function promoOpenUrl(key, field) { const d = promoGetData(key); const url = (d[field] || '').trim(); if (!url) { promoToastMsg('Kein Link hinterlegt'); return; } window.open(/^https?:\/\//i.test(url) ? url : 'https://' + url, '_blank', 'noopener'); }
+function promoFixShort(key) {
+    const card = document.querySelector('[data-pkey="' + key + '"] input[data-pf-short]');
+    if (card) { card.focus(); }
+    promoToastMsg('Shortlink via Chat: \u201EShortlink f\u00FCr [Event]\u201C \u2192 dann hier eintragen');
+}
 
 function promoEventList() {
     if (typeof bmtEvents === 'undefined' || !Array.isArray(bmtEvents)) return [];
@@ -29465,77 +29253,102 @@ function promoEventList() {
         .sort((a, b) => a.dtstart - b.dtstart);
 }
 
-function promoCardHTML(ev) {
+// ── Render ──────────────────────────────────────────────
+function promoRowHTML(ev) {
     const key = promoKey(ev);
     const d = promoGetData(key);
-    const missing = promoMissing(d);
-    const st = missing.length === 0 ? 'green' : (missing.length === 1 ? 'amber' : 'red');
-    const open = promoOpenSet.has(key);
+    const open = promoOpenKey === key;
     const eigen = promoIsEigen(ev);
     const dt = ev.dtstart;
-    const timeStr = String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0');
-    const badgeCls = st === 'red' ? 'red' : 'amber';
-    const missBadges = missing.map(m => '<span class="promo-missbadge ' + badgeCls + '">' + m + '</span>').join('');
-    const pill = st === 'green'
-        ? '<span class="promo-stpill green"><span class="pdot"></span>Ready</span>'
-        : '<span class="promo-stpill ' + st + '"><span class="pdot"></span>' + missing.length + ' offen</span>';
-    const head =
-        '<div class="promo-chead" onclick="promoToggle(\'' + key + '\')">' +
-            '<div class="promo-datechip"><div class="pdw">' + PROMO_WD[dt.getDay()] + '</div><div class="pdd">' + String(dt.getDate()).padStart(2, '0') + '</div><div class="pdm">' + PROMO_MON[dt.getMonth()] + '</div></div>' +
-            '<div class="promo-cinfo"><div class="promo-cname">' + promoEsc(ev.summary || 'Unbenannt') + '</div>' +
-            '<div class="promo-cmeta">' + timeStr + ' · ' + (eigen ? '<span class="promo-tag-eigen">EIGEN</span>' : '<span class="promo-tag-fremd">FREMD</span>') + '</div></div>' +
-            pill + missBadges +
-            '<span class="promo-chev">' + (open ? '&#9660;' : '&#9654;') + '</span>' +
+    const dots =
+        '<span class="promo-dots">' +
+        '<span class="promo-dot ' + (d.drive ? 'ok' : 'miss') + '" title="Pics/Drive"></span>' +
+        '<span class="promo-dot ' + (d.short ? 'ok' : 'miss') + '" title="Shortlink"></span>' +
+        '<span class="promo-dot ' + (d.fb ? 'ok' : 'miss') + '" title="FB Event"></span>' +
+        '</span>';
+    const row =
+        '<div class="promo-row' + (open ? ' open' : '') + '" onclick="promoToggle(\'' + key + '\')">' +
+            '<span class="promo-rdate">' + String(dt.getDate()).padStart(2, '0') + '.' + String(dt.getMonth() + 1).padStart(2, '0') +
+                '<span class="promo-rdow">' + (open ? PROMO_WD_LONG[dt.getDay()] : PROMO_WD[dt.getDay()]) + '</span></span>' +
+            '<span class="promo-rname">' + promoEsc(ev.summary || 'Unbenannt') +
+                '<span class="promo-rsub">' + promoEsc(eigen ? 'IN HOUSE' : promoPromoterOf(ev)) +
+                (open ? ' \u00B7 ' + String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0') : '') + '</span></span>' +
+            '<span class="promo-rtag ' + (eigen ? 'eigen' : 'fremd') + '">' + (eigen ? 'EIGEN' : 'FREMD') + '</span>' +
+            dots +
+            '<span class="promo-chevron">' + (open ? '\u2304' : '\u203A') + '</span>' +
         '</div>';
-    if (!open) return '<div class="promo-card st-' + st + '" data-pkey="' + key + '"><div class="promo-edge"></div><div class="promo-cmain">' + head + '</div></div>';
+    if (!open) return '<div data-pkey="' + key + '">' + row + '</div>';
     const body =
-        '<div class="promo-cbody">' +
-            '<div class="promo-col">' +
-                '<div class="promo-collabel"><span>LINKS</span></div>' +
-                '<div class="promo-linkrow"><input placeholder="FB Event Link" value="' + promoEscAttr(d.fb || '') + '" oninput="promoSave(\'' + key + '\',\'fb\',this.value)" onchange="promoRender()"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
-                '<div class="promo-linkrow"><input placeholder="VVK Link (OE)" value="' + promoEscAttr(d.vvk || '') + '" oninput="promoSave(\'' + key + '\',\'vvk\',this.value)"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
-                '<div class="promo-linkrow"><input placeholder="Shortlink grelle.club/…" value="' + promoEscAttr(d.short || '') + '" oninput="promoSave(\'' + key + '\',\'short\',this.value)" onchange="promoRender()"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">&#10064;</button></div>' +
-                '<div class="promo-linkrow"><input placeholder="Drive Folder Link" value="' + promoEscAttr(d.drive || '') + '" oninput="promoSave(\'' + key + '\',\'drive\',this.value)" onchange="promoRender()"><button class="promo-openbtn" onclick="promoOpenUrl(\'' + key + '\',\'drive\')" title="Öffnen">&#8599;</button></div>' +
-            '</div>' +
-            '<div class="promo-col">' +
-                '<div class="promo-collabel"><span>LINEUP</span><button class="promo-copybtn" onclick="promoCopyLineup(\'' + key + '\')" title="Lineup kopieren">&#10064;</button></div>' +
-                '<textarea class="promo-textarea" placeholder="' + promoEscAttr(PROMO_LINEUP_TPL) + '" oninput="promoSave(\'' + key + '\',\'lineup\',this.value)">' + promoEsc(d.lineup || '') + '</textarea>' +
-                '<div class="promo-autosave">Autosave · localStorage</div>' +
-            '</div>' +
-            '<div class="promo-col">' +
-                '<div class="promo-collabel"><span>NOTES</span></div>' +
-                '<textarea class="promo-textarea notes" placeholder="Notes (Sofie, Assets, Deadlines…)" oninput="promoSave(\'' + key + '\',\'notes\',this.value)">' + promoEsc(d.notes || '') + '</textarea>' +
+        '<div class="promo-xbody">' +
+            '<div class="promo-collabel"><span>LINKS</span></div>' +
+            '<div class="promo-linkrow"><input placeholder="FB Event Link" value="' + promoEscAttr(d.fb || '') + '" oninput="promoSaveEv(\'' + key + '\',\'fb\',this.value)" onchange="promoRender()"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">\u2750</button></div>' +
+            '<div class="promo-linkrow"><input placeholder="VVK Link (OE)" value="' + promoEscAttr(d.vvk || '') + '" oninput="promoSaveEv(\'' + key + '\',\'vvk\',this.value)"><button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">\u2750</button></div>' +
+            '<div class="promo-linkrow"><input data-pf-short placeholder="Shortlink grelle.club/\u2026" value="' + promoEscAttr(d.short || '') + '" oninput="promoSaveEv(\'' + key + '\',\'short\',this.value)" onchange="promoRender()">' + (d.short ? '<button class="promo-copybtn" onclick="promoCopy(this)" title="Copy">\u2750</button>' : '<button class="promo-fixbtn" onclick="event.stopPropagation();promoFixShort(\'' + key + '\')">Fix</button>') + '</div>' +
+            '<div class="promo-linkrow"><input placeholder="Drive Folder Link" value="' + promoEscAttr(d.drive || '') + '" oninput="promoSaveEv(\'' + key + '\',\'drive\',this.value)" onchange="promoRender()"><button class="promo-openbtn" onclick="promoOpenUrl(\'' + key + '\',\'drive\')" title="\u00D6ffnen">\u2197</button></div>' +
+            '<div class="promo-collabel"><span>LINEUP</span><button class="promo-copybtn" onclick="promoCopyLineup(\'' + key + '\')" title="Lineup kopieren">\u2750</button></div>' +
+            '<textarea class="promo-textarea" placeholder="' + promoEscAttr(PROMO_LINEUP_TPL) + '" oninput="promoSaveEv(\'' + key + '\',\'lineup\',this.value)">' + promoEsc(d.lineup || '') + '</textarea>' +
+            '<div class="promo-autosave" id="promo-autosave-live">Autosave \u00B7 Sheet-Sync (' + (promoSyncState === 'ok' ? 'Sheet \u2713' : promoSyncState === 'sync' ? 'Sync\u2026' : 'Cache') + ')</div>' +
+            '<div class="promo-collabel"><span>NOTES</span></div>' +
+            '<textarea class="promo-textarea notes" placeholder="Notes (Sofie, Assets, Deadlines\u2026)" oninput="promoSaveEv(\'' + key + '\',\'notes\',this.value)">' + promoEsc(d.notes || '') + '</textarea>' +
+            '<div class="promo-cfoot"><span class="pfl">OPEN \u2192</span>' +
+                '<a class="promo-openchip" href="https://www.instagram.com/grelle_forelle" target="_blank" rel="noopener">Instagram</a>' +
+                '<a class="promo-openchip" href="https://www.facebook.com/grelleforelle" target="_blank" rel="noopener">Facebook</a>' +
+                '<a class="promo-openchip" href="https://www.grelleforelle.com/programm/" target="_blank" rel="noopener">Website</a>' +
+                '<a class="promo-openchip" href="https://linktr.ee/grelletickets" target="_blank" rel="noopener">Linktree</a>' +
+                '<span class="promo-openchip" onclick="promoOpenUrl(\'' + key + '\',\'drive\')">Drive</span>' +
+                '<a class="promo-openchip" href="https://club.bookmetender.com" target="_blank" rel="noopener">BMT</a>' +
+                '<a class="promo-openchip" href="https://app.bitly.com" target="_blank" rel="noopener">QR</a>' +
             '</div>' +
         '</div>';
-    const foot =
-        '<div class="promo-cfoot"><span class="pfl">Open &#8594;</span>' +
-            '<a class="promo-openchip" href="https://www.instagram.com/grelle_forelle" target="_blank" rel="noopener">Instagram</a>' +
-            '<a class="promo-openchip" href="https://www.facebook.com/grelleforelle" target="_blank" rel="noopener">Facebook</a>' +
-            '<a class="promo-openchip" href="https://www.grelleforelle.com/programm/" target="_blank" rel="noopener">Website</a>' +
-            '<a class="promo-openchip" href="https://linktr.ee/grelletickets" target="_blank" rel="noopener">Linktree</a>' +
-            '<span class="promo-openchip" onclick="promoOpenUrl(\'' + key + '\',\'drive\')">Drive</span>' +
-            '<a class="promo-openchip" href="https://club.bookmetender.com" target="_blank" rel="noopener">BMT</a>' +
-            '<a class="promo-openchip" href="https://app.bitly.com" target="_blank" rel="noopener">QR</a>' +
-        '</div>';
-    return '<div class="promo-card st-' + st + '" data-pkey="' + key + '"><div class="promo-edge"></div><div class="promo-cmain">' + head + body + foot + '</div></div>';
+    return '<div data-pkey="' + key + '">' + row + body + '</div>';
+}
+// Save-Wrapper der Event-Metadaten (date/name/typ) mitschreibt
+function promoSaveEv(key, field, value) {
+    const ev = promoEventList().find(e => promoKey(e) === key);
+    promoSave(key, field, value, ev);
 }
 
 function promoRender() {
     const wrap = document.getElementById('promo-cards');
     if (!wrap) return;
-    let list = promoEventList();
+    let all = promoEventList();
+    const countEl = document.getElementById('promo-count');
+    if (countEl) countEl.textContent = all.length ? all.length + ' Events' : '';
     const q = (document.getElementById('promo-search')?.value || '').toLowerCase().trim();
+    let list = all;
     if (q) list = list.filter(ev => String(ev.summary || '').toLowerCase().includes(q));
-    if (promoFilter === 'eigen') list = list.filter(ev => promoIsEigen(ev));
-    if (promoFilter === 'fremd') list = list.filter(ev => !promoIsEigen(ev));
-    if (promoFilter === 'missingpics') list = list.filter(ev => !promoGetData(promoKey(ev)).drive);
-    if (promoFilter === 'noshort') list = list.filter(ev => !promoGetData(promoKey(ev)).short);
+    if (promoExpandedAll) {
+        if (promoFilter === 'eigen') list = list.filter(ev => promoIsEigen(ev));
+        if (promoFilter === 'fremd') list = list.filter(ev => !promoIsEigen(ev));
+        if (promoFilter === 'missing') list = list.filter(ev => promoMissing(promoGetData(promoKey(ev))).length > 0);
+    }
+    const filters = document.getElementById('promo-filters');
+    if (filters) filters.classList.toggle('expanded', promoExpandedAll);
+    const showAll = document.getElementById('promo-showall');
+    if (showAll) {
+        showAll.style.display = all.length > PROMO_COMPACT_N ? 'block' : 'none';
+        showAll.innerHTML = promoExpandedAll ? 'Einklappen \u25B4' : 'Alle anzeigen (' + all.length + ') \u25BE';
+    }
     if (!list.length) {
-        const anyEvents = promoEventList().length > 0;
-        wrap.innerHTML = '<div class="promo-empty">' + (anyEvents ? 'Keine Events für diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). &#8635; im BMT-Block laden.') + '</div>';
+        wrap.innerHTML = '<div class="promo-empty">' + (all.length ? 'Keine Events f\u00FCr diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). \u21BB im BMT-Block laden.') + '</div>';
         return;
     }
-    wrap.innerHTML = list.map(ev => promoCardHTML(ev)).join('');
+    if (!promoExpandedAll) {
+        wrap.innerHTML = list.slice(0, PROMO_COMPACT_N).map(ev => promoRowHTML(ev)).join('');
+        return;
+    }
+    // Alle anzeigen → Monatsgruppen
+    let html = '', curMonth = -1;
+    list.forEach(ev => {
+        const mk = ev.dtstart.getFullYear() * 100 + ev.dtstart.getMonth();
+        if (mk !== curMonth) {
+            curMonth = mk;
+            const n = list.filter(e => e.dtstart.getFullYear() * 100 + e.dtstart.getMonth() === mk).length;
+            html += '<div class="promo-monthhead">' + PROMO_MONTHS[ev.dtstart.getMonth()] + ' ' + ev.dtstart.getFullYear() + '<span class="pmc">' + n + ' Event' + (n !== 1 ? 's' : '') + '</span></div>';
+        }
+        html += promoRowHTML(ev);
+    });
+    wrap.innerHTML = html;
 }
 
 function promoInitPoll() {
@@ -29544,8 +29357,80 @@ function promoInitPoll() {
     if (has || promoInitTries >= 30) { promoRender(); if (has) return; }
     if (promoInitTries < 30) setTimeout(promoInitPoll, 1000);
 }
-document.addEventListener('DOMContentLoaded', () => { setTimeout(promoInitPoll, 500); });
+document.addEventListener('DOMContentLoaded', () => {
+    promoCacheLoad();
+    promoMigrateLegacy();
+    setTimeout(promoInitPoll, 500);
+    setTimeout(promoSheetLoad, 900);
+    setTimeout(dbRemLoad, 1400);
+});
+
+// ═══════════════════════════════════════════════════════
+// DB-UPDATE-REMINDER STORE v15.9.251 (A5) — Status im
+// REMINDERS-Sheet-Tab (Interop), localStorage = Cache.
+// Konsumiert von mydayGetDbStatus / mydayBuildDbStatusRow.
+// ═══════════════════════════════════════════════════════
+const REM_STORE_KEY = 'gf_rem_store_v1';
+let remStore = {};   // 'DD.MM.YYYY' → {name,status,snooze_until,updated}
+
+function remCacheLoad() { try { remStore = JSON.parse(localStorage.getItem(REM_STORE_KEY) || '{}') || {}; } catch (e) { remStore = {}; } }
+function remCacheSave() { try { localStorage.setItem(REM_STORE_KEY, JSON.stringify(remStore)); } catch (e) {} }
+function remDateKey(d) {
+    if (!(d instanceof Date) || isNaN(d)) return '';
+    return String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + d.getFullYear();
+}
+
+function dbRemLoad() {
+    remCacheLoad();
+    fetch(PROMO_AS_URL + '?action=reminder_read&secret=' + encodeURIComponent(PROMO_SECRET))
+        .then(r => r.json())
+        .then(j => {
+            if (!j || !j.ok) throw new Error('reminder_read failed');
+            (j.entries || []).forEach(en => {
+                if (!en.date) return;
+                const loc = remStore[en.date];
+                if (!loc || (en.updated || 0) >= (loc.updated || 0)) {
+                    remStore[en.date] = { name: en.name, status: en.status, snooze_until: en.snooze_until || 0, updated: en.updated || 0 };
+                }
+            });
+            remCacheSave();
+            try { if (typeof loadMyDay === 'function') loadMyDay(true); } catch (e) {}
+            try { if (typeof alertLayerUpdate === 'function') alertLayerUpdate(); } catch (e) {}
+        })
+        .catch(e => { console.warn('dbRemLoad (Cache aktiv):', e); });
+}
+
+// true = Event aus Reminder-Sicht ausblenden (done / snoozed-bis-Zukunft)
+window.dbRemHidden = function(d) {
+    const k = remDateKey(d);
+    if (!k) return false;
+    const en = remStore[k];
+    if (!en) return false;
+    if (en.status === 'done') return true;
+    if (en.status === 'snoozed' && (en.snooze_until || 0) > Date.now()) return true;
+    return false;
+};
+
+window.dbRemMark = function(dateKey, name, mode) {
+    const status = mode === 'done' ? 'done' : 'snoozed';
+    let snooze = 0;
+    if (status === 'snoozed') {
+        const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(8, 0, 0, 0);
+        snooze = t.getTime();
+    }
+    remStore[dateKey] = { name: name, status: status, snooze_until: snooze, updated: Date.now() };
+    remCacheSave();
+    fetch(PROMO_AS_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'reminder_write', secret: PROMO_SECRET, datum: dateKey, event_name: name, status: status, snooze_until: snooze || undefined })
+    }).catch(e => console.warn('dbRemMark write:', e));
+    promoToastMsg(status === 'done' ? '\u2713 Reminder erledigt: ' + name : '\uD83D\uDD53 Erinnere morgen: ' + name);
+    try { if (typeof loadMyDay === 'function') loadMyDay(true); } catch (e) {}
+    try { if (typeof alertLayerUpdate === 'function') alertLayerUpdate(); } catch (e) {}
+};
 // ═══ /PROMO CATALOGUE ═══
+
 </script>
 
 </body>
