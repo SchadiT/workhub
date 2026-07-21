@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.254</title>
+    <title>Turbo Projects Work Hub v15.9.255</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js for Promoter Analysis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <!-- v15.9.254: PDF V2 Export (jsPDF + AutoTable) -->
+    <!-- v15.9.255: PDF V2 Export (jsPDF + AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <!-- v15.9.254: html2canvas for Factsheet PNG export -->
+    <!-- v15.9.255: html2canvas for Factsheet PNG export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- MSAL Auth Library - Multiple fallbacks -->
     <script>
@@ -723,13 +723,6 @@
         }
         .app-tile-badge.hidden { display: none; }
 
-        /* ═══ QUICK ACCESS v15.9.254 — Unified Tabs (§43) ═══ */
-        .qa-widget { background: var(--raised); border: 0.5px solid var(--hair); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
-        .qa-head { padding: 11px 14px 0; font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--text); text-transform: uppercase; }
-        .qa-tabs { display: flex; gap: 2px; padding: 4px 10px 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .qa-tab { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--sub); background: none; border: none; border-bottom: 2px solid transparent; padding: 7px 12px 9px; cursor: pointer; font-family: inherit; white-space: nowrap; }
-        .qa-tab.active { color: var(--text); border-bottom-color: var(--accent, #ff453a); }
-        .qa-dock { border: none; border-top: 0.5px solid var(--hair); border-radius: 0; box-shadow: none; }
 
         /* Dropdown variant: tile sits inside .dropdown-container — dropdown menu opens beneath */
         .app-dock .dropdown-container {
@@ -3100,7 +3093,7 @@
             .dtw-apps-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ===== ALERT STRIP v15.9.254 ===== */
+        /* ===== ALERT STRIP v15.9.255 ===== */
         #alert-strip {
             display: flex;
             align-items: center;
@@ -3471,7 +3464,7 @@
         .linkbar-add-btn:hover { background: rgba(245,158,11,0.2); }
         /* ===== /v15.9.145 LINK BAR ===== */
 
-        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.254: theme-tokenized) ===== */
+        /* ===== v15.9.144 — MY WORK DAY Variant B (v15.9.255: theme-tokenized) ===== */
         .myday-row {
             background: var(--surface-2);
             color: var(--text);
@@ -3941,7 +3934,7 @@
             box-shadow: 0 14px 50px rgba(0,0,0,0.3);
         }
 
-        /* HERO STRIP — compact single-row date | stats right (v15.9.254) */
+        /* HERO STRIP — compact single-row date | stats right (v15.9.255) */
         .planner-hero {
             display: flex;
             align-items: stretch;
@@ -4890,7 +4883,7 @@
             #dtw-inbox-split { grid-template-columns: 1fr; }
         }
 
-        /* ── Zone 2/3 Splits v15.9.254 — Struktur Variante A ── */
+        /* ── Zone 2/3 Splits v15.9.255 — Struktur Variante A ── */
         #dtw-inbox-split .promo-section { margin-bottom: 0; }
         #inbox-qa-split {
             display: grid;
@@ -4900,7 +4893,8 @@
             align-items: start;
         }
         #inbox-qa-split .widget-block { height: auto; min-height: 200px; margin-bottom: 0; }
-        #inbox-qa-split .qa-widget { margin-bottom: 0; }
+        #inbox-qa-split #cockpit-widget { margin-bottom: 0; }
+        #inbox-qa-split #cockpit-col { min-width: 0; }
         @media (max-width: 860px) {
             #inbox-qa-split { grid-template-columns: 1fr; }
         }
@@ -5306,7 +5300,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
-        /* ── Planner Overlay Light Theme (v15.9.254) ── */
+        /* ── Planner Overlay Light Theme (v15.9.255) ── */
         [data-theme="light"] .planner-overlay-panel {
             background: #ffffff;
             border-color: rgba(0,0,0,0.12);
@@ -5356,7 +5350,7 @@
             color: rgba(239,68,68,0.85);
         }
 
-        /* ── Light skin contrast boost (v15.9.254) ── */
+        /* ── Light skin contrast boost (v15.9.255) ── */
         [data-theme="light"] .planner-col-label { color: #888; }
         [data-theme="light"] .planner-task-row { border-bottom-color: #e0e0e0; }
         [data-theme="light"] .planner-bottom-grid > .planner-col:first-child { border-right-color: #d8d8d8; }
@@ -5400,7 +5394,7 @@
            /COHESIVE OVERRIDE LAYER v15.9.204
            ═══════════════════════════════════════════════════════════════════ */
 
-        /* ═══ PROMO CATALOGUE v15.9.254 — Kompakt/Accordion + Sheet-Sync (§43) ═══ */
+        /* ═══ PROMO CATALOGUE v15.9.255 — Kompakt/Accordion + Sheet-Sync (§43) ═══ */
         .promo-section { background: var(--raised); border: 0.5px solid var(--hair); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
         .promo-head { display: flex; align-items: center; gap: 8px; padding: 11px 14px; flex-wrap: wrap; }
         .promo-title { font-size: 13px; font-weight: 600; color: var(--text); }
@@ -5650,7 +5644,7 @@
     </div>
     <!-- ==================== /LINK BAR ==================== -->
 
-    <!-- ==================== ALERT LAYER v15.9.254 ==================== -->
+    <!-- ==================== ALERT LAYER v15.9.255 ==================== -->
     <div id="alert-strip" style="display:none;" onclick="alertStripGo()">
         <span class="alert-strip-pulse"></span>
         <span class="alert-strip-text" id="alert-strip-text"></span>
@@ -5679,7 +5673,7 @@
         <!-- COHESIVE CARD — joins topbar via shared rounded canvas -->
         <div class="planner-card" id="planner-collapsed-card">
 
-            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.254) -->
+            <!-- HERO STRIP: day+kw in one row left | Offen + Quick Notes + Events right (v15.9.255) -->
             <div class="planner-hero" onclick="plannerOpen()" style="cursor:pointer;">
                 <div class="planner-hero-day">
                     <div class="planner-hero-day-inner">
@@ -5750,7 +5744,7 @@
                         <button class="planner-qa-btn" onclick="event.stopPropagation();dbUpdateOpen()"><span class="planner-qa-icon">&#8659;</span>DB Update</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('umsatz-ticker-modal');umsatzTickerOnOpen();"><span class="planner-qa-icon">💰</span>Umsatz Ticker</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();plannerOpen()"><span class="planner-qa-icon">📅</span>Planner</button>
-                        <button class="planner-qa-btn qa-placeholder" onclick="event.stopPropagation()"><span class="planner-qa-icon">＋</span>—</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();cnOpen()"><span class="planner-qa-icon">🤖</span>Claude AI</button>
                     </div>
                     <!-- CLUB -->
                     <div class="planner-qa-panel" data-qa-panel="club">
@@ -5762,7 +5756,7 @@
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('peak-grid-modal'); renderPeakGrid();"><span class="planner-qa-icon">📈</span>Peak Grid</button>
                         <button class="planner-qa-btn qa-qon" onclick="event.stopPropagation();dtwToggleDept('SPUTNIK')"><span class="planner-qa-icon">⚡</span>QON</button>
                         <button class="planner-qa-btn qa-loor" onclick="event.stopPropagation();openModal('bar-staffing-modal')"><span class="planner-qa-icon">✓</span>LOOR</button>
-                        <button class="planner-qa-btn qa-placeholder" onclick="event.stopPropagation()"><span class="planner-qa-icon">＋</span>—</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('security-orders-modal')"><span class="planner-qa-icon">😡</span>Sec. Orders</button>
                     </div>
                     <!-- FINANCE -->
                     <div class="planner-qa-panel" data-qa-panel="finance">
@@ -5773,8 +5767,8 @@
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('db-viewer-modal');dbvLoad();"><span class="planner-qa-icon">🗄</span>DB Viewer</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('promoter-analysis-modal');paLoad();"><span class="planner-qa-icon">📊</span>Promo Analyse</button>
                         <button class="planner-qa-btn" onclick="event.stopPropagation();openDeepAnalysis()"><span class="planner-qa-icon">🔬</span>Deep Analyse</button>
-                        <button class="planner-qa-btn qa-placeholder" onclick="event.stopPropagation()"><span class="planner-qa-icon">＋</span>—</button>
-                        <button class="planner-qa-btn qa-placeholder" onclick="event.stopPropagation()"><span class="planner-qa-icon">＋</span>—</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();pdfv2Open()"><span class="planner-qa-icon">📄</span>PDF Report</button>
+                        <button class="planner-qa-btn" onclick="event.stopPropagation();openModal('nye-projector-modal')"><span class="planner-qa-icon">🎆</span>NYE Proj.</button>
                     </div>
                 </div>
 
@@ -5848,10 +5842,10 @@
 
 
 
-    <!-- ZONE 2 — PROMO + DTW 50/50 SPLIT v15.9.254 (Struktur Variante A) -->
+    <!-- ZONE 2 — PROMO + DTW 50/50 SPLIT v15.9.255 (Struktur Variante A) -->
     <div id="dtw-inbox-split">
 
-    <!-- ==================== PROMO CATALOGUE v15.9.254 ==================== -->
+    <!-- ==================== PROMO CATALOGUE v15.9.255 ==================== -->
     <div class="promo-section" id="promo-widget">
         <div class="promo-head">
             <span class="promo-title">Promo Catalogue</span>
@@ -5915,7 +5909,7 @@
 
     </div><!-- end dtw-inbox-split -->
 
-    <!-- ZONE 3 — INBOX + QUICK ACCESS 50/50 SPLIT v15.9.254 -->
+    <!-- ZONE 3 — INBOX + COCKPIT 50/50 SPLIT v15.9.255 -->
     <div id="inbox-qa-split">
 
     <!-- INBOX BLOCK -->
@@ -5936,174 +5930,17 @@
         </div>
     </div>
 
-    <!-- ==================== QUICK ACCESS v15.9.254 — Unified Tabs (ersetzt Applications/Club Tools/Finance Expander) ==================== -->
-    <div class="qa-widget" id="qa-widget">
-        <div class="qa-head">&#128640; QUICK ACCESS</div>
-        <div class="qa-tabs" id="qa-tabs">
-            <button class="qa-tab active" data-qatab="fav" onclick="qaSetTab('fav')">&#9733; FAVORITES</button>
-            <button class="qa-tab" data-qatab="all" onclick="qaSetTab('all')">ALL</button>
-            <button class="qa-tab" data-qatab="admin" onclick="qaSetTab('admin')">ADMINISTRATION</button>
-            <button class="qa-tab" data-qatab="finance" onclick="qaSetTab('finance')">FINANCE</button>
-        </div>
-        <div class="app-dock qa-dock" id="qa-dock">
-                <button class="app-tile" data-qa="fav admin" data-dept="office" onclick="openModal('factsheet-modal')">
-                    <span class="app-icon">&#128203;</span>
-                    <span class="app-label">Factsheet</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="technik" onclick="openModal('security-orders-modal')">
-                    <span class="app-icon">&#128545;</span>
-                    <span class="app-label">Security</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="technik" onclick="openQuickSecOrder()">
-                    <span class="app-icon">&#9889;</span>
-                    <span class="app-label">Sec. Order</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="runner" onclick="openCleaningModal()">
-                    <span class="app-icon">&#129529;</span>
-                    <span class="app-label">Cleaning</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="bar" onclick="openModal('bar-staffing-modal')">
-                    <span class="app-icon">&#127864;</span>
-                    <span class="app-label">Bar Staff</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="runner" onclick="openModal('runner-staffing-modal')">
-                    <span class="app-icon">&#127939;</span>
-                    <span class="app-label">Runner</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="openEditor('notepad')">
-                    <span class="app-tile-badge notepad-badge hidden" id="notepad-badge">0</span>
-                    <span class="app-icon">&#9998;</span>
-                    <span class="app-label">Editor</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="office" onclick="openInbox()">
-                    <span class="app-tile-badge" id="inbox-unread-badge" style="display:none;"></span>
-                    <span class="app-icon">&#9993;</span>
-                    <span class="app-label">E-Mail</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin finance" data-dept="office" onclick="openModal('db-viewer-modal');dbvLoad();">
-                    <span class="app-icon">&#128202;</span>
-                    <span class="app-label">Database</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="openModal('promoter-analysis-modal');paLoad();">
-                    <span class="app-icon">&#128200;</span>
-                    <span class="app-label">Promoter</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="openModal('projector-modal')">
-                    <span class="app-icon">&#128202;</span>
-                    <span class="app-label">Projector</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="sputnik" onclick="openPromoManager();">
-                    <span class="app-icon">&#128240;</span>
-                    <span class="app-label">Monatsprogramm</span>
-                </button>
-                <button class="app-tile" data-qa="fav admin" data-dept="office" onclick="openModal('guestlist-modal');glPopulateEventDropdown();">
-                    <span class="app-icon">&#128157;</span>
-                    <span class="app-label">Guestlist</span>
-                </button>
-                <button class="app-tile" data-qa="fav finance" data-dept="finance" onclick="openModal('rechnungen-modal');invoiceOnOpen();">
-                    <span class="app-icon">&#128179;</span>
-                    <span class="app-label">Rechnungen</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="bar" onclick="openModal('umsatz-ticker-modal');umsatzTickerOnOpen();">
-                    <span class="app-icon">&#128200;</span>
-                    <span class="app-label">Umsatz Ticker</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="finance" onclick="openModal('presale-modal')">
-                    <span class="app-icon">&#127908;</span>
-                    <span class="app-label">PreSale</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="finance" onclick="openModal('cost-modal')">
-                    <span class="app-icon">&#128176;</span>
-                    <span class="app-label">Cost C.</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="openDeepAnalysis()">
-                    <span class="app-icon">&#128221;</span>
-                    <span class="app-label">Analysis</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="pdfv2Open()">
-                    <span class="app-icon">&#128196;</span>
-                    <span class="app-label">PDF Report</span>
-                </button>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="cnOpen()">
-                    <span class="app-icon">&#129302;</span>
-                    <span class="app-label">Claude AI</span>
-                </button>
-                <div class="dropdown-container" data-qa="admin">
-                    <button class="app-tile" data-dept="neutral" onclick="toggleDropdown('special-dropdown')">
-                        <span class="app-icon">&#11088;</span>
-                        <span class="app-label">Special</span>
-                    </button>
-                    <div id="special-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('peak-grid-modal');"><span class="icon"></span> Peak Grid</a>
-                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); openModal('nye-projector-modal');"><span class="icon"></span> NYE Projector</a>
-                    </div>
-                </div>
-                <div class="dropdown-container" data-qa="admin">
-                    <button class="app-tile" data-dept="sputnik" onclick="toggleDropdown('social-dropdown')">
-                        <span class="app-icon">&#128177;</span>
-                        <span class="app-label">Social</span>
-                    </button>
-                    <div id="social-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://www.instagram.com/grelle_forelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Instagram</a>
-                        <a href="https://www.facebook.com/GrelleForelle/" class="dropdown-item" target="_blank"><span class="icon"></span> Facebook</a>
-                        <a href="https://wa.me/" class="dropdown-item" target="_blank"><span class="icon"></span> WhatsApp</a>
-                        <a href="https://club.bookmetender.com/dashboards" class="dropdown-item" target="_blank"><span class="icon"></span> BMT Dashboard</a>
-                    </div>
-                </div>
-                <div class="dropdown-container" data-qa="finance">
-                    <button class="app-tile" data-dept="finance" onclick="toggleDropdown('sales-dropdown')">
-                        <span class="app-icon">&#127908;</span>
-                        <span class="app-label">Sales</span>
-                    </button>
-                    <div id="sales-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://wbv.azurewebsites.net/default.aspx" class="dropdown-item" target="_blank"><span class="icon"></span> WBV (POS)</a>
-                        <a href="https://linktr.ee/grelletickets" class="dropdown-item" target="_blank"><span class="icon"></span> Linktree</a>
-                        <a href="https://ntry.at/my/events?l=de" class="dropdown-item" target="_blank"><span class="icon"></span> ntry (Pre-Sale)</a>
-                        <a href="https://oeticket.light.oet.eu/dashboard" class="dropdown-item" target="_blank"><span class="icon"></span> OE TICKET</a>
-                    </div>
-                </div>
-                <div class="dropdown-container" data-qa="admin">
-                    <button class="app-tile" data-dept="office" onclick="toggleDropdown('storage-dropdown')">
-                        <span class="app-icon">&#128230;</span>
-                        <span class="app-label">Storage</span>
-                    </button>
-                    <div id="storage-dropdown" class="dropdown-content" style="top: 100%; left: 0; min-width: 100%;">
-                        <a href="https://drive.google.com/drive/my-drive" class="dropdown-item" target="_blank"><span class="icon"></span> Google Drive</a>
-                        <a href="https://onedrive.live.com" class="dropdown-item" target="_blank"><span class="icon"></span> OneDrive</a>
-                    </div>
-                </div>
-                <button class="app-tile" data-qa="admin" data-dept="office" onclick="showToast('&#128230; Inventory Tool - Coming Soon!');">
-                    <span class="app-icon">&#128230;</span>
-                    <span class="app-label">Inventory</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="finance" onclick="showToast('&#128182; Financials - Coming Soon!');">
-                    <span class="app-icon">&#128182;</span>
-                    <span class="app-label">Financials</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="sputnik" onclick="openModal('nye-projector-modal');">
-                    <span class="app-icon">&#127878;</span>
-                    <span class="app-label">NYE Proj.</span>
-                </button>
-                <button class="app-tile" data-qa="finance" data-dept="bar" onclick="openModal('peak-grid-modal'); renderPeakGrid();">
-                    <span class="app-icon">&#128200;</span>
-                    <span class="app-label">Peak Grid</span>
-                </button>
-        </div>
-    </div>
-    <!-- ==================== /QUICK ACCESS ==================== -->
-
-    </div><!-- end inbox-qa-split -->
-
-    <!--
-    <div id="cockpit-widget" style="margin-bottom:8px;">
+    <!-- COCKPIT — reaktiviert v15.9.255 (Zone 3, war auskommentiert seit v15.9.113) -->
+    <div id="cockpit-col">
+    <div id="cockpit-widget">
         <div id="cockpit-header" style="background:var(--section-header-bg);border-bottom:1px solid rgba(255,255,255,0.07);padding:8px 14px;display:flex;align-items:center;gap:10px;">
-            <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
-            <div style="height:4px;background:#111827;border-radius:2px;overflow:hidden;border:1px solid var(--border);width:100px;flex-shrink:0;">
+            <span onclick="cockpitToggleCollapse()" style="font-size:12px;font-weight:800;letter-spacing:2px;color:var(--text);text-transform:uppercase;cursor:pointer;flex-shrink:0;">🎯 COCKPIT</span>
+            <div style="height:4px;background:var(--raised2);border-radius:2px;overflow:hidden;border:1px solid var(--border);width:100px;flex-shrink:0;">
                 <div id="cp-bar" style="height:100%;background:#3b82f6;border-radius:2px;width:0%;transition:width 0.5s;"></div>
             </div>
             <span id="cp-pct" style="font-size:13px;font-weight:800;color:#3b82f6;min-width:38px;text-align:right;flex-shrink:0;">—</span>
-            <span id="cp-fraction" style="font-size:11px;color:#4b5563;flex-shrink:0;">0/0</span>
-            <span id="cp-toggle-btn" onclick="cockpitToggleCollapse()" style="font-size:10px;color:#4b5563;cursor:pointer;flex-shrink:0;padding:4px 6px;user-select:none;margin-left:auto;">▶</span>
+            <span id="cp-fraction" style="font-size:11px;color:var(--faint);flex-shrink:0;">0/0</span>
+            <span id="cp-toggle-btn" onclick="cockpitToggleCollapse()" style="font-size:10px;color:var(--faint);cursor:pointer;flex-shrink:0;padding:4px 6px;user-select:none;margin-left:auto;">▶</span>
         </div>
         <div id="cp-body" style="display:none;border:1px solid var(--border);border-top:none;">
             <div id="cp-alerts-bar" style="display:none;">
@@ -6164,16 +6001,20 @@
                 </div>
             </div>
             <div style="padding:6px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface);">
-                <span id="cp-status" style="font-size:11px;color:#4b5563;"></span>
+                <span id="cp-status" style="font-size:11px;color:var(--faint);"></span>
                 <div style="margin-left:auto;"><button onclick="cockpitLoad()" class="btn-secondary">&#8634; Refresh</button></div>
             </div>
         </div>
     </div>
-    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:#888;background:var(--surface);">
+    <div id="cp-signin-hint" style="display:none;margin-bottom:8px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:var(--sub);background:var(--surface);border-radius:12px;">
         &#9888;&#65039; Microsoft Login erforderlich f&#252;r COCKPIT.
     </div>
-    -->
-    <!-- END COCKPIT AUSKOMMENTIERT v15.9.113 -->
+    </div><!-- end cockpit-col -->
+
+
+    </div><!-- end inbox-qa-split -->
+
+    <!-- COCKPIT-Markup: seit v15.9.255 aktiv in #inbox-qa-split (Zone 3) -->
 
 
 
@@ -6959,7 +6800,7 @@
                     <button id="dbv-clear-selection-btn" onclick="dbvClearSelection()" style="background:var(--surface);border:1px solid var(--border);color:#888;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;display:none;">✗ Auswahl löschen</button>
                     <!-- v15.9.161: PDF Report from DBV Selection -->
                     <button id="dbv-pdf-btn" onclick="pdfv2OpenFromDBV()" style="background:linear-gradient(135deg,#3d1a5b,#1a0e2e);border:1px solid #6d28d9;color:#fff;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="PDF Report aus Auswahl generieren">&#128196; PDF Report</button>
-                    <!-- v15.9.254: DB Update Button -->
+                    <!-- v15.9.255: DB Update Button -->
                     <button id="dbv-update-btn" onclick="dbUpdateOpen()" style="background:linear-gradient(135deg,#0a2a1a,#051a0f);border:1px solid #22c55e;color:#22c55e;padding:5px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;" title="Revenue-Daten in DB schreiben">&#8659; DB Update</button>
                     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
                         <span id="dbv-selection-counter" style="font-size:11px;color:#a855f7;font-weight:600;display:none;">● 0 ausgewählt</span>
@@ -7248,7 +7089,7 @@
                 <div style="font-size:11px;color:var(--text-secondary);">Events aus BMT (EIGEN + FREMD, kein Konzert). Text direkt editierbar vor dem Kopieren.</div>
             </div>
 
-            <!-- v15.9.254 (A4): Event-Assets- + Checklist-Tabs entfernt — Promo Catalogue ist die Promo-Sektion -->
+            <!-- v15.9.255 (A4): Event-Assets- + Checklist-Tabs entfernt — Promo Catalogue ist die Promo-Sektion -->
         </div>
     </div>
 
@@ -7754,7 +7595,7 @@
     <div class="modal-overlay modal-overlay-app" id="factsheet-modal">
         <div class="modal modal-app fs-cmd-modal">
             <style>
-            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.254 (UI redesign, IDs preserved) ═══ */
+            /* ═══ FACTSHEET COMMAND WORKSPACE — v15.9.255 (UI redesign, IDs preserved) ═══ */
             #factsheet-modal .fs-cmd-modal{display:flex;flex-direction:column;padding:0;overflow:hidden;width:97vw;height:94vh;max-width:1400px;max-height:94vh;background:#080b11;border:1.5px solid var(--modal-border)}
             #factsheet-modal .fs-shell{display:grid;grid-template-rows:48px 1fr 44px;width:100%;height:100%;overflow:hidden}
             /* Header */
@@ -8034,7 +7875,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.254</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.255</small>
             </div>
             </div>
         </div>
@@ -8645,7 +8486,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.254</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.255</span>
     </div>
     
     
@@ -10552,7 +10393,7 @@
             }
         }
         
-        // v15.9.254 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
+        // v15.9.255 — LIVE-Fetch: Runner+Bar direkt von Google Publish-URLs
         async function loadShiftplansLive(manual = false) {
             let okR = false, okB = false;
             try {
@@ -11766,7 +11607,7 @@
             }
         }
 
-        // v15.9.254: fs-dz scrolls vertically — paper fills width, no forced scale needed
+        // v15.9.255: fs-dz scrolls vertically — paper fills width, no forced scale needed
         function fsScalePreview() {
             const dz = document.getElementById('fs-dz');
             const wrap = document.getElementById('fs-paper-wrap');
@@ -11874,20 +11715,7 @@
         document.addEventListener('click', e => { if (!e.target.closest('.dropdown-container')) document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show')); });
         function toggleEventCard(id) { document.getElementById(id).classList.toggle('open'); }
         
-        // v15.9.254 — QUICK ACCESS Tabs (ersetzt toggleApps/toggleTools/toggleFinanceTools)
-        function qaSetTab(tab) {
-            try { localStorage.setItem('gf_qa_tab', tab); } catch (e) {}
-            document.querySelectorAll('#qa-tabs .qa-tab').forEach(b => b.classList.toggle('active', b.dataset.qatab === tab));
-            document.querySelectorAll('#qa-dock > [data-qa]').forEach(el => {
-                const cats = (el.dataset.qa || '').split(' ');
-                el.style.display = (tab === 'all' || cats.indexOf(tab) !== -1) ? '' : 'none';
-            });
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            let t = 'fav';
-            try { t = localStorage.getItem('gf_qa_tab') || 'fav'; } catch (e) {}
-            qaSetTab(t);
-        });
+        // v15.9.255 — Quick-Access-Widget entfernt (Redundanz zu Planner Quick Actions); qaSetTab gelöscht
         
         function showToast(msg, isError) {
             const t = document.getElementById('toast');
@@ -13008,7 +12836,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.255', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13168,7 +12996,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.255', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13242,7 +13070,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.255', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13349,7 +13177,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.255', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13433,7 +13261,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.255', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13742,7 +13570,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.255', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13889,7 +13717,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.255', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14034,7 +13862,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.254', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.255', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -15335,14 +15163,14 @@
             try {
                 const today = new Date();
                 const from = new Date(today);
-                from.setDate(from.getDate() - 45); // v15.9.254 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
+                from.setDate(from.getDate() - 45); // v15.9.255 — war -14: DB-Backlog + Dropdown brauchen 6 Wochen Rückblick
                 const fromStr = from.toISOString().split('T')[0];
                 const until = new Date(today);
                 until.setDate(until.getDate() + 90);
                 const untilStr = until.toISOString().split('T')[0];
 
                 const url = BMT_API_URL + '?from=' + fromStr + '&until=' + untilStr + '&count=60';
-                // v15.9.254: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
+                // v15.9.255: Direkter Fetch — BMT erlaubt CORS für Authorization-Header.
                 // CORS-Proxys entfernt (strippten den Auth-Header → 401/leer).
                 let data = null;
                 const controller = new AbortController();
@@ -19123,7 +18951,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.254';
+            const HUB_VERSION = 'v15.9.255';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -19134,7 +18962,7 @@ Spittelauer Lnde 12/1
             initMsal();
             loadShiftplanFromStorage();
             loadBarFromStorage();
-            loadShiftplansLive(false); // v15.9.254 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
+            loadShiftplansLive(false); // v15.9.255 — Live-Sync von Google Sheets (Storage = Instant-Fallback)
             loadTechnikerFromGoogleCalendar();
             updateProjection('turbo');
             updateProjection('nye');
@@ -20829,7 +20657,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.254</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.255</div>
                     </div>
                     
                     <div class="section">
@@ -20928,7 +20756,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.254 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.255 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21754,7 +21582,7 @@ Spittelauer Lnde 12/1
         openModal = function(id) {
             originalOpenModal(id);
             if (id === 'metrics-modal') {
-                // metrics modal removed v15.9.254
+                // metrics modal removed v15.9.255
             }
             // Track app usage
             const appMap = {
@@ -23216,7 +23044,7 @@ Spittelauer Lnde 12/1
 
         
         // ═══════════════════════════════════════════════════════
-        // C20 — MONATSPROGRAMM (v15.9.254/A4: Assets+Checklist-Layer entfernt,
+        // C20 — MONATSPROGRAMM (v15.9.255/A4: Assets+Checklist-Layer entfernt,
         //       Promo Catalogue #promo-widget ist die Promo-Sektion)
         // ═══════════════════════════════════════════════════════
 
@@ -24418,7 +24246,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.254 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.255 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24448,7 +24276,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.254',
+                hubVersion: 'v15.9.255',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -24690,7 +24518,7 @@ Spittelauer Lnde 12/1
             });
         }
 
-        // v15.9.254 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
+        // v15.9.255 — Graph-Fetch mit 429-Backoff (Retry-After respektiert, max 2 Retries)
         window.graphFetch = async function(url, opts, maxRetries = 2) {
             for (let attempt = 0; ; attempt++) {
                 const res = await fetch(url, opts);
@@ -24703,7 +24531,7 @@ Spittelauer Lnde 12/1
         };
 
         async function cockpitLoad() {
-            // v15.9.254 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
+            // v15.9.255 — In-Flight-Guard gegen parallele Läufe (Duplikat-Race)
             if (window.__cockpitInflight) return window.__cockpitInflight;
             window.__cockpitInflight = _cockpitLoadInner();
             try { return await window.__cockpitInflight; }
@@ -24747,7 +24575,7 @@ Spittelauer Lnde 12/1
                 CP_DEPTS.forEach(d => cockpitData.byDept[d.key] = []);
 
                 // Fetch tasks for ALL lists, assign to dept by name
-                // v15.9.254 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
+                // v15.9.255 — sequenziell statt Promise.all (429-Throttling-Fix) + graphFetch-Backoff
                 for (const list of allLists) {
                     const name = (list.displayName || '').toLowerCase();
                     let deptKey = null;
@@ -24765,7 +24593,7 @@ Spittelauer Lnde 12/1
                         const data = await res.json();
                         const tasks = data.value || [];
                         tasks.forEach(t => t.listId = list.id); // store listId on task
-                        // v15.9.254 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
+                        // v15.9.255 — Dedupe: parallele cockpitLoad-Läufe pushen sonst doppelt
                         const existingIds = new Set(cockpitData.byDept[deptKey].map(t => t.id));
                         cockpitData.byDept[deptKey].push(...tasks.filter(t => !existingIds.has(t.id)));
                         TODO_LISTS[deptKey] = list.id; // update for toggleTask
@@ -25480,7 +25308,7 @@ Spittelauer Lnde 12/1
 })();
 
 // ═══════════════════════════════════════════════════════
-// ALERT LAYER v15.9.254 — Strip-Aggregator + Shiftplan-Gap-Detection
+// ALERT LAYER v15.9.255 — Strip-Aggregator + Shiftplan-Gap-Detection
 // ═══════════════════════════════════════════════════════
 window.alertGetShiftplanGaps = function() {
     const gaps = [];
@@ -25715,7 +25543,7 @@ window.alertOpenStaffing = function() {
         const todayTasks = [];
 
         if (typeof cockpitData !== 'undefined' && cockpitData && cockpitData.byDept) {
-            const seenIds = new Set(); // v15.9.254 — Dedupe safety net
+            const seenIds = new Set(); // v15.9.255 — Dedupe safety net
             for (const dept of MYDAY_DEPTS) {
                 const tasks = cockpitData.byDept[dept] || [];
                 tasks.forEach(t => {
@@ -25944,7 +25772,7 @@ window.alertOpenStaffing = function() {
         };
 
         let openEvents = dbvData.filter(isOpenEvent);
-        // v15.9.254 (A5) — Sheet-Reminder-Status: done/snoozed ausblenden
+        // v15.9.255 (A5) — Sheet-Reminder-Status: done/snoozed ausblenden
         if (typeof window.dbRemHidden === 'function') {
             openEvents = openEvents.filter(r => !window.dbRemHidden(mydayParseDbDate(r['Datum'])));
         }
@@ -25974,7 +25802,7 @@ window.alertOpenStaffing = function() {
 
         const daysOld = oldestOpenDate ? Math.floor((today - oldestOpenDate) / 86400000) : 0;
 
-        // v15.9.254 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
+        // v15.9.255 — BMT-Gap: vergangene BMT-Events NACH letztem Revenue-Eintrag, die noch keine DB-Row haben
         let bmtMissing = 0;
         let bmtOldest = null;
         const bmtList = [];
@@ -26005,7 +25833,7 @@ window.alertOpenStaffing = function() {
         if (effDaysOld > 14) statusLevel = 'critical';
         else if (effDaysOld > 7) statusLevel = 'warning';
 
-        // v15.9.254 (A5) — Liste offener Events für Sticky-Reminder-Rows
+        // v15.9.255 (A5) — Liste offener Events für Sticky-Reminder-Rows
         const openList = openEvents.map(r => ({
             date: mydayParseDbDate(r['Datum']),
             name: r['Event Name'] || r['Event_Name'] || r['Promoter'] || 'Event'
@@ -26025,7 +25853,7 @@ window.alertOpenStaffing = function() {
     };
 
     function mydayBuildDbStatusRow() {
-        // v15.9.254 (A5) — Sticky DB-Update-Reminder: pro Event eine Zeile,
+        // v15.9.255 (A5) — Sticky DB-Update-Reminder: pro Event eine Zeile,
         // Buttons ✓ Erledigt / 🕓 Morgen — Status persistiert im REMINDERS-Sheet-Tab
         const s = mydayGetDbStatus();
         if (!s.needsUpdate) return '';
@@ -26082,7 +25910,7 @@ window.alertOpenStaffing = function() {
         setPill('myday-pill-today', 'myday-pill-today-count', todayCount);
         setPill('myday-pill-overdue', 'myday-pill-overdue-count', overdueCount);
 
-        // Empty state (v15.9.254 — inkl. Flagged + Gaps)
+        // Empty state (v15.9.255 — inkl. Flagged + Gaps)
         const _flaggedN = (window.__alertFlagged || []).length;
         const _gapsN = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps().length : 0;
         if (eventCount + todayCount + overdueCount + _flaggedN + _gapsN === 0 && !hasDbAlert) {
@@ -26121,7 +25949,7 @@ window.alertOpenStaffing = function() {
             overdue.forEach(t => { html += mydayBuildTaskRow(t, true); });
         }
 
-        // ---- Section 4: Geflaggte Mails (v15.9.254) ----
+        // ---- Section 4: Geflaggte Mails (v15.9.255) ----
         const flaggedMails = window.__alertFlagged || [];
         if (flaggedMails.length > 0) {
             html += `<div class="myday-divider"><span>Geflaggte Mails</span><span class="myday-divider-count">${flaggedMails.length}</span></div>`;
@@ -26139,7 +25967,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Section 5: Shiftplan-Gaps (v15.9.254) ----
+        // ---- Section 5: Shiftplan-Gaps (v15.9.255) ----
         const gaps = (typeof alertGetShiftplanGaps === 'function') ? alertGetShiftplanGaps() : [];
         if (gaps.length > 0) {
             html += `<div class="myday-divider is-overdue"><span>Shiftplan-Gaps</span><span class="myday-divider-count">${gaps.length}</span></div>`;
@@ -26155,7 +25983,7 @@ window.alertOpenStaffing = function() {
             });
         }
 
-        // ---- Alert-Strip Sync (v15.9.254) ----
+        // ---- Alert-Strip Sync (v15.9.255) ----
         window.__mydayCounts = { overdue: overdueCount, today: todayCount };
         window.__mydayLastRender = { events: events, taskBuckets: taskBuckets, qnItems: qnItems };
         if (typeof alertLayerUpdate === 'function') alertLayerUpdate();
@@ -26163,7 +25991,7 @@ window.alertOpenStaffing = function() {
         body.innerHTML = html;
     }
 
-    // ---- Rerender ohne Task-Refetch (v15.9.254 — für Flagged-Updates) ----
+    // ---- Rerender ohne Task-Refetch (v15.9.255 — für Flagged-Updates) ----
     window.mydayRerender = function() {
         const last = window.__mydayLastRender;
         if (!last) return;
@@ -27975,7 +27803,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.254';
+    const HUB_VER = 'v15.9.255';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28272,7 +28100,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 })();
 // ===== /STATE SYNC =====
 
-// ===== DB UPDATE v15.9.254 =====
+// ===== DB UPDATE v15.9.255 =====
 (function() {
 
 const DB_AS_URL = 'https://script.google.com/macros/s/AKfycbzFArhOjO7g_yZNNQz_fMjdPmwD8qyeTw8KuN6aVhtFIsYn4p71F0E0vNrNOCEJjjW7gg/exec';
@@ -28396,7 +28224,7 @@ function dbuBuildDropdown() {
                !cat.includes('special') && !cat.includes('termin') && !cat.includes('holiday') && !cat.includes('feiertag') &&
                (ev.status || 'CONFIRMED') !== 'CANCELLED';
     }).sort((a, b) => new Date(b.dtstart) - new Date(a.dtstart));
-    // v15.9.254 (A6): Programm-TXT als zusätzliche Dropdown-Quelle (BMT-unabhängig)
+    // v15.9.255 (A6): Programm-TXT als zusätzliche Dropdown-Quelle (BMT-unabhängig)
     try {
         const progMap = dbuParseProgramm();
         const lbl = localStorage.getItem('gf_programm_label') || '';
@@ -28501,7 +28329,7 @@ window.dbuAddEvent = function() {
     dbuSummaryBar();
 };
 
-// ── v15.9.254: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
+// ── v15.9.255: Manueller Event-Eintrag (BMT-unabhängig) ──────────────────────
 window.dbuAddManual = function() {
     const dateEl = document.getElementById('dbu2-man-date');
     const nameEl = document.getElementById('dbu2-man-name');
@@ -28964,7 +28792,7 @@ window.dbuFinish = function() {
 };
 
 })();
-// ===== /DB UPDATE v15.9.254 =====
+// ===== /DB UPDATE v15.9.255 =====
 </script>
 
 <!-- ==================== STATE SYNC MODAL v15.9.204 ==================== -->
@@ -28990,7 +28818,7 @@ window.dbuFinish = function() {
 </div>
 <!-- ==================== /STATE SYNC MODAL ==================== -->
 
-<!-- ==================== DB UPDATE MODAL (v15.9.254) ==================== -->
+<!-- ==================== DB UPDATE MODAL (v15.9.255) ==================== -->
 <div id="db-update-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
     <div style="background:var(--raised);border:1px solid var(--hair);border-radius:10px;width:min(680px,96vw);height:min(90vh,700px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.8);">
         <!-- Header -->
@@ -29012,7 +28840,7 @@ window.dbuFinish = function() {
                     <button onclick="dbuAddEvent()" style="background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">+ Hinzufügen</button>
                 </div>
                 <div style="font-size:11px;color:var(--faint);margin-top:6px;">Events der letzten 6 Wochen · KONZERT ausgeblendet · EIGEN/FREMD aus BMT Kategorie auto-detect</div>
-                <!-- v15.9.254: Manueller Event-Eintrag (BMT-unabhängig) -->
+                <!-- v15.9.255: Manueller Event-Eintrag (BMT-unabhängig) -->
                 <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap;">
                     <input type="date" id="dbu2-man-date" style="background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 8px;border-radius:6px;font-size:12px;">
                     <input type="text" id="dbu2-man-name" placeholder="Event-Name (manuell)" style="flex:1;min-width:140px;background:var(--raised2);border:1px solid var(--hair);color:var(--text);padding:6px 10px;border-radius:6px;font-size:12px;">
@@ -29076,7 +28904,7 @@ window.dbuFinish = function() {
 
 <script>
 // ═══════════════════════════════════════════════════════
-// PROMO CATALOGUE v15.9.254 — Session A (Interop-Fundament)
+// PROMO CATALOGUE v15.9.255 — Session A (Interop-Fundament)
 // Datenschicht: Google Sheet PROMO-Tab = Source of Truth,
 // localStorage = reiner Cache (gf_promo_store_v1) + Sync-Indikator.
 // Self-contained: eigene Helper, keine IIFE-Dependencies (§45.9)
@@ -29375,7 +29203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ═══════════════════════════════════════════════════════
-// DB-UPDATE-REMINDER STORE v15.9.254 (A5) — Status im
+// DB-UPDATE-REMINDER STORE v15.9.255 (A5) — Status im
 // REMINDERS-Sheet-Tab (Interop), localStorage = Cache.
 // Konsumiert von mydayGetDbStatus / mydayBuildDbStatusRow.
 // ═══════════════════════════════════════════════════════
