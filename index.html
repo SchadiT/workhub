@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.260</title>
+    <title>Turbo Projects Work Hub v15.9.261</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -7083,6 +7083,14 @@
                     <select id="mp-year" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:13px;width:90px;"></select>
                     <button onclick="mpGenerate()" style="background:#f472b6;color:#000;border:none;padding:6px 16px;font-size:13px;font-weight:700;cursor:pointer;">GENERIEREN</button>
                     <button onclick="mpCopy()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:13px;cursor:pointer;">&#128203; COPY</button>
+                    <button onclick="mpSave()" id="mp-save-btn" style="background:#22c55e;color:#000;border:none;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;">&#128190; SPEICHERN</button>
+                </div>
+                <!-- v261: Archiv (Sheet-Tab PROGRAMM via Apps Script v4.3) + .txt-Upload -->
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                    <select id="mp-archive" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;font-size:12px;flex:1;min-width:160px;"><option value="">Archiv lädt…</option></select>
+                    <button onclick="mpArchiveLoad()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:12px;cursor:pointer;">&#128194; LADEN</button>
+                    <button onclick="document.getElementById('mp-upload-file').click()" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;font-size:12px;cursor:pointer;">&#11014; UPLOAD .txt</button>
+                    <input type="file" id="mp-upload-file" accept=".txt,text/plain" style="display:none;" onchange="mpUploadTxt(event)">
                 </div>
                 <div id="mp-status" style="font-size:12px;color:var(--text-secondary);"></div>
                 <textarea id="mp-output" rows="20" style="width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:12px;font-size:13px;font-family:monospace;line-height:1.6;resize:vertical;box-sizing:border-box;" placeholder="Monat wählen → GENERIEREN klicken..."></textarea>
@@ -7873,7 +7881,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.260</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.261</small>
             </div>
             </div>
         </div>
@@ -8484,7 +8492,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.260</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.261</span>
     </div>
     
     
@@ -12834,7 +12842,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.261', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12994,7 +13002,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.261', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13068,7 +13076,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.261', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13175,7 +13183,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.261', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13259,7 +13267,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.261', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13568,7 +13576,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.261', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13715,7 +13723,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.261', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13860,7 +13868,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.261', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18949,7 +18957,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.260';
+            const HUB_VERSION = 'v15.9.261';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20655,7 +20663,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.260</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.261</div>
                     </div>
                     
                     <div class="section">
@@ -20754,7 +20762,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.260 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.261 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21745,6 +21753,7 @@ Spittelauer Lnde 12/1
             dbvFiltered.sort((a, b) => {
                 let av = a[dbvSortCol] || '', bv = b[dbvSortCol] || '';
                 if (dbvSortCol === 'Datum') return (parseDate(av) - parseDate(bv)) * dbvSortDir;
+                if (dbvSortCol === 'Total_PAX') return (dbvComputePax(a) - dbvComputePax(b)) * dbvSortDir; // v261
                 const an = parseFloat(String(av).replace(',','.')), bn = parseFloat(String(bv).replace(',','.'));
                 if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dbvSortDir;
                 return String(av).localeCompare(String(bv)) * dbvSortDir;
@@ -21784,12 +21793,10 @@ Spittelauer Lnde 12/1
 
         // v260: PAX = FOH+VVK Tix bei EIGEN (Anzeige-Ebene, kein DB-Backfill). FREMD/manuell gesetzte Werte bleiben Vorrang.
         function dbvComputePax(r) {
+            // v261: manueller Wert gewinnt, sonst FOH+VVK für jeden Typ mit Tix-Daten
             const n = dbvFmtN(r['Total_PAX']);
             if (n > 0) return n;
-            if ((r['Type']||'').toUpperCase() === 'EIGEN') {
-                return dbvFmtN(r['FOH_Tickets_Sold']) + dbvFmtN(r['PreSale_TicketsSold']);
-            }
-            return 0;
+            return dbvFmtN(r['FOH_Tickets_Sold']) + dbvFmtN(r['PreSale_TicketsSold']);
         }
         function dbvRenderStats() {
             const n = dbvFiltered.length;
@@ -21812,18 +21819,18 @@ Spittelauer Lnde 12/1
             const cols = [
                 {k:'Datum',l:'Datum'},{k:'Tag',l:'Tag'},{k:'Type',l:'Typ'},{k:'Event Name',l:'Event'},{k:'Promoter',l:'Promoter'},{k:'Mainact',l:'Mainact'},
                 {k:'Bar_Revenue',l:'Bar Rev.'},{k:'FOH_Revenue',l:'FOH Rev.'},{k:'PreSale_Revenue',l:'VVK Rev.'},{k:'Miete',l:'Miete'},{k:'FOH_Tickets_Sold',l:'FOH Tix'},{k:'PreSale_TicketsSold',l:'VVK Tix'},
-                {k:'Total_PAX',l:'PAX'},{k:'Total_Revenue',l:'Total Rev.'},{k:'Bar_Per_Person',l:'Bar/P'}
+                {k:'Total_PAX',l:'PAX'},{k:'Total_Revenue',l:'Total Rev.'}
             ];
             // v15.9.158: PreSale_Revenue added to €-formatted columns
             const eurCols = new Set(['Bar_Revenue','FOH_Revenue','PreSale_Revenue','Miete','Total_Revenue','Bar_Per_Person','Revenue_Per_Person']);
             const numCols = new Set(['FOH_Tickets_Sold','PreSale_TicketsSold','Total_PAX']);
-            const thStyle = 'padding:6px 7px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.3px;color:#888;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--border);background:#1a1a1a;';
+            const thStyle = 'padding:5px 5px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.3px;color:#888;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--border);background:#1a1a1a;';
             // v260: Compact-Mode — Event/Promoter/Mainact truncaten statt Spalten aufblasen (Titel = voller Text via title-Attr)
-            const truncCols = { 'Event Name': 150, 'Promoter': 110, 'Mainact': 110 };
+            const truncCols = { 'Event Name': 135, 'Promoter': 95, 'Mainact': 95 };
             // v15.9.158: Master-Checkbox state (checked when all visible rows selected)
             const visibleIds = dbvFiltered.map(r => r['Event_ID']).filter(Boolean);
             const allVisibleSelected = visibleIds.length > 0 && visibleIds.every(id => dbvSelected.has(id));
-            let html = '<table style="width:100%;border-collapse:collapse;font-size:11.5px;"><thead><tr>';
+            let html = '<table style="width:100%;border-collapse:collapse;font-size:11px;"><thead><tr>';
             // v15.9.158: Checkbox column header
             html += `<th style="${thStyle}width:28px;text-align:center;cursor:default;padding:7px 4px;" title="Alle sichtbaren auswählen/abwählen"><input type="checkbox" id="dbv-master-checkbox" onclick="dbvToggleAllVisible(this.checked)" ${allVisibleSelected ? 'checked' : ''} style="cursor:pointer;accent-color:#a855f7;"></th>`;
             cols.forEach(c => {
@@ -21843,8 +21850,8 @@ Spittelauer Lnde 12/1
                     const val = r[c.k] || '';
                     const tw = truncCols[c.k];
                     const tdStyle = tw
-                        ? `padding:5px 7px;white-space:nowrap;max-width:${tw}px;overflow:hidden;text-overflow:ellipsis;`
-                        : 'padding:5px 7px;white-space:nowrap;';
+                        ? `padding:4px 5px;white-space:nowrap;max-width:${tw}px;overflow:hidden;text-overflow:ellipsis;`
+                        : 'padding:4px 5px;white-space:nowrap;';
                     const titleAttr = tw && val ? ` title="${String(val).replace(/"/g,'&quot;')}"` : '';
                     if (c.k === 'Type') {
                         const t = val.toUpperCase();
@@ -21856,7 +21863,9 @@ Spittelauer Lnde 12/1
                         html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
                     } else if (numCols.has(c.k)) {
                         const n = c.k === 'Total_PAX' ? dbvComputePax(r) : dbvFmtN(val);
-                        const disp = n > 0 ? n.toLocaleString('de-AT') : '<span style="color:#444">—</span>';
+                        // v261: FOH/VVK Tix in Akzent-Rot
+                        const tixCol = (c.k === 'FOH_Tickets_Sold' || c.k === 'PreSale_TicketsSold') ? '#ff453a' : '';
+                        const disp = n > 0 ? (tixCol ? '<span style="color:' + tixCol + ';font-weight:600;">' + n.toLocaleString('de-AT') + '</span>' : n.toLocaleString('de-AT')) : '<span style="color:#444">—</span>';
                         html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
                     } else {
                         html += `<td style="${tdStyle}"${titleAttr}>${val || '<span style="color:#444">—</span>'}</td>`;
@@ -22610,6 +22619,7 @@ Spittelauer Lnde 12/1
                 ySel.value = now.getFullYear();
             }
             document.getElementById('mp-status').textContent = '';
+            mpArchiveFetch(); // v261
         }
 
         function mpGenerate() {
@@ -22709,6 +22719,89 @@ Spittelauer Lnde 12/1
                 document.execCommand('copy');
                 showToast('✅ Text kopiert!');
             }
+        }
+
+        // ── v261: Monatsprogramm Sheet-Archiv (Tab PROGRAMM, Apps Script v4.3) ──
+        function mpMonthKey() {
+            const m = parseInt(document.getElementById('mp-month').value);
+            const y = document.getElementById('mp-year').value;
+            return { key: y + '-' + String(m + 1).padStart(2, '0'), label: MP_MONTHS[m] + ' ' + y };
+        }
+        function mpSetCurrent(txt) {
+            // Setzt aktives Programm (DB-Update-Modal-Match) — gleiches Label-Format wie mpGenerate
+            try {
+                localStorage.setItem('gf_programm_current', txt);
+                localStorage.setItem('gf_programm_label', document.getElementById('mp-month').value + ' ' + document.getElementById('mp-year').value);
+            } catch(e) {}
+        }
+        function mpSave() {
+            const txt = document.getElementById('mp-output').value;
+            const st = document.getElementById('mp-status');
+            if (!txt.trim()) { st.textContent = 'Nichts zu speichern — erst generieren oder .txt uploaden.'; return; }
+            const mk = mpMonthKey();
+            st.textContent = 'Speichern… (' + mk.label + ')';
+            mpSetCurrent(txt);
+            fetch(PROMO_AS_URL, {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'programm_write', secret: PROMO_SECRET, entry: { month_key: mk.key, label: mk.label, text: txt } })
+            }).then(() => {
+                st.textContent = '✓ Gespeichert: ' + mk.label + ' → Sheet-Tab PROGRAMM (auch als aktives Programm gesetzt)';
+                setTimeout(mpArchiveFetch, 2500);
+            }).catch(() => { st.textContent = '⚠ Speichern fehlgeschlagen (offline?) — lokal als aktives Programm gecacht.'; });
+        }
+        let mpArchiveData = [];
+        let mpArchiveInFlight = false;
+        function mpArchiveFetch() {
+            if (mpArchiveInFlight) return; // §45.13 In-Flight-Guard
+            mpArchiveInFlight = true;
+            const sel = document.getElementById('mp-archive');
+            fetch(PROMO_AS_URL + '?action=programm_read&secret=' + encodeURIComponent(PROMO_SECRET))
+                .then(r => r.json())
+                .then(j => {
+                    if (!j || !j.ok) throw new Error((j && j.error) || 'programm_read failed');
+                    mpArchiveData = j.entries || [];
+                    sel.innerHTML = '';
+                    const o0 = document.createElement('option'); o0.value = '';
+                    o0.textContent = mpArchiveData.length ? 'Archiv (' + mpArchiveData.length + ')…' : 'Archiv leer — erstes Programm speichern';
+                    sel.appendChild(o0);
+                    mpArchiveData.forEach(en => {
+                        const o = document.createElement('option'); o.value = en.month_key; o.textContent = en.label || en.month_key; sel.appendChild(o);
+                    });
+                })
+                .catch(e => {
+                    sel.innerHTML = '<option value="">Archiv nicht erreichbar — Apps Script v4.3 deployen</option>';
+                    console.warn('mpArchiveFetch:', e);
+                })
+                .finally(() => { mpArchiveInFlight = false; });
+        }
+        function mpArchiveLoad() {
+            const key = document.getElementById('mp-archive').value;
+            const st = document.getElementById('mp-status');
+            if (!key) { st.textContent = 'Erst einen Monat im Archiv wählen.'; return; }
+            const en = mpArchiveData.find(x => x.month_key === key);
+            if (!en) { st.textContent = 'Eintrag nicht gefunden — Archiv neu laden.'; return; }
+            document.getElementById('mp-output').value = en.text || '';
+            const p = key.split('-');
+            if (p.length === 2) {
+                document.getElementById('mp-month').value = String(parseInt(p[1]) - 1);
+                document.getElementById('mp-year').value = p[0];
+            }
+            mpSetCurrent(en.text || '');
+            st.textContent = '✓ Geladen: ' + (en.label || key) + ' (als aktives Programm für DB-Update gesetzt)';
+        }
+        function mpUploadTxt(ev) {
+            const file = ev.target.files && ev.target.files[0];
+            if (!file) return;
+            const st = document.getElementById('mp-status');
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('mp-output').value = e.target.result || '';
+                st.textContent = '✓ ' + file.name + ' geladen — Monat/Jahr oben prüfen, dann SPEICHERN.';
+            };
+            reader.onerror = () => { st.textContent = '⚠ Datei konnte nicht gelesen werden.'; };
+            reader.readAsText(file, 'UTF-8');
+            ev.target.value = '';
         }
 
     
@@ -24260,7 +24353,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.260 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.261 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24290,7 +24383,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.260',
+                hubVersion: 'v15.9.261',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27817,7 +27910,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.260';
+    const HUB_VER = 'v15.9.261';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
