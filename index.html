@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.263</title>
+    <title>Turbo Projects Work Hub v15.9.264</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -4283,7 +4283,11 @@
         }
         .planner-strip-card:hover { background: var(--raised2); }
         .planner-strip-card.konzert { border-left-color: var(--konzert); }
-        .planner-strip-date { font-family: inherit; font-size: 10px; color: var(--faint); font-variant-numeric: tabular-nums; }
+        .planner-strip-date { font-family: inherit; font-size: 10px; color: var(--faint); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 6px; }
+        /* v264: EIGEN/FREMD-Tag im Strip (gleiche Semantik wie Pipeline) */
+        .planner-strip-tag { margin-left: auto; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 8px; letter-spacing: 0.03em; }
+        .planner-strip-tag.eigen { background: rgba(50,215,75,0.12); color: #32d74b; }
+        .planner-strip-tag.fremd { background: rgba(79,142,247,0.12); color: #4F8EF7; }
         .planner-strip-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.01em; }
 
         /* legacy compat */
@@ -4870,34 +4874,23 @@
         }
 
         /* ── DTW + Inbox Split v15.9.204 ── */
-        #dtw-inbox-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: start;
-        }
-        #dtw-inbox-split #dtw-widget { margin-bottom: 0; }
-        #dtw-inbox-split .widget-block { height: auto; min-height: 200px; }
+        /* v264: Spalten-Layout — #zone-cols = 2-Spalten-Grid, alte Wrapper = Flex-Spalten */
+        #zone-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: start; }
+        @media (max-width: 860px) { #zone-cols { grid-template-columns: 1fr; } }
+        #dtw-inbox-split, #inbox-qa-split { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        #dtw-inbox-split #dtw-widget, #inbox-qa-split #dtw-widget { margin-bottom: 0; }
+        #dtw-inbox-split .widget-block { height: auto; min-height: 200px; margin-bottom: 0; }
         @media (max-width: 860px) {
-            #dtw-inbox-split { grid-template-columns: 1fr; }
+            /* v264: mobile 1-col via #zone-cols */
         }
 
         /* ── Zone 2/3 Splits v15.9.259 — Struktur Variante A ── */
         #dtw-inbox-split .promo-section { margin-bottom: 0; }
-        #inbox-qa-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: start;
-        }
+        /* v264: #inbox-qa-split ist jetzt Flex-Spalte (siehe #zone-cols oben) */
         #inbox-qa-split .widget-block { height: auto; min-height: 200px; margin-bottom: 0; }
         #inbox-qa-split #cockpit-widget { margin-bottom: 0; }
         #inbox-qa-split #cockpit-col { min-width: 0; }
-        @media (max-width: 860px) {
-            #inbox-qa-split { grid-template-columns: 1fr; }
-        }
+
 
         /* ── DTW (Department Tools Widget) ── */
         #dtw-widget {
@@ -5441,6 +5434,10 @@
         @media (max-width: 768px) { .promo-focus-col { border-right: none; border-bottom: 0.5px solid var(--hair); } }
         .promo-focus-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); padding: 9px 14px 5px; }
         .promo-monat-mini { display: flex; align-items: center; gap: 8px; padding: 10px 14px; margin: 6px 14px 10px; background: var(--raised2); border-radius: 8px; border: 0.5px solid var(--hair); }
+        /* v264: Pipeline-Spalte = Flex — Monatsprogramm-Mini dockt unten, kein Leerraum-Loch */
+        .promo-focus-split .promo-focus-col:last-child { display: flex; flex-direction: column; }
+        #promo-pipeline-cards { flex: 1; }
+        .promo-focus-col:last-child .promo-monat-mini { margin-top: auto; }
         .pmm-label { font-size: 11.5px; font-weight: 600; color: var(--text); }
         .pmm-status { font-size: 11px; color: var(--sub); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .pmm-open { font-size: 11px; color: var(--accent); background: var(--raised); border: 0.5px solid var(--accent); border-radius: 6px; padding: 4px 10px; cursor: pointer; flex-shrink: 0; }
@@ -5852,7 +5849,8 @@
 
 
 
-    <!-- ZONE 2 — PROMO + DTW 50/50 SPLIT v15.9.259 (Struktur Variante A) -->
+    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.264: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
+    <div id="zone-cols">
     <div id="dtw-inbox-split">
 
     <!-- ==================== PROMO CATALOGUE v15.9.259 ==================== -->
@@ -5903,6 +5901,29 @@
 
 
 
+    <!-- INBOX BLOCK -->
+    <div class="widget-block" id="mini-inbox-widget">
+        <div class="widget-block-hdr">
+            <div class="wbh-title">
+                &#9993; INBOX
+                <span id="mini-inbox-badge" style="display:none;background:#ef4444;color:#fff;padding:1px 8px;font-size:10px;font-weight:700;"></span>
+                <span id="mini-inbox-status" style="font-size:9px;color:#555;font-weight:400;"></span>
+            </div>
+            <div class="wbh-actions">
+                <button class="quick-notes-add" onclick="miniInboxLoad()" title="Refresh">&#8635;</button>
+                <button class="quick-notes-add" onclick="openInbox()" title="Vollansicht">&#8599;</button>
+            </div>
+        </div>
+        <div class="widget-block-body" id="mini-inbox-body">
+            <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:14px;">Lädt…</div>
+        </div>
+    </div>
+
+    </div><!-- end dtw-inbox-split (linke Spalte v264) -->
+
+    <!-- RECHTE SPALTE v264: DTW + Cockpit -->
+    <div id="inbox-qa-split">
+
     <!-- ==================== DEPARTMENT TOOLS WIDGET v15.9.116 ==================== -->
     <div id="dtw-widget">
         <div id="dtw-master-header">
@@ -5927,31 +5948,6 @@
                 <div id="dtw-tab-bar"></div>
                 <div id="dtw-tab-content"></div>
             </div>
-        </div>
-    </div>
-
-
-
-    </div><!-- end dtw-inbox-split -->
-
-    <!-- ZONE 3 — INBOX + COCKPIT 50/50 SPLIT v15.9.259 -->
-    <div id="inbox-qa-split">
-
-    <!-- INBOX BLOCK -->
-    <div class="widget-block" id="mini-inbox-widget">
-        <div class="widget-block-hdr">
-            <div class="wbh-title">
-                &#9993; INBOX
-                <span id="mini-inbox-badge" style="display:none;background:#ef4444;color:#fff;padding:1px 8px;font-size:10px;font-weight:700;"></span>
-                <span id="mini-inbox-status" style="font-size:9px;color:#555;font-weight:400;"></span>
-            </div>
-            <div class="wbh-actions">
-                <button class="quick-notes-add" onclick="miniInboxLoad()" title="Refresh">&#8635;</button>
-                <button class="quick-notes-add" onclick="openInbox()" title="Vollansicht">&#8599;</button>
-            </div>
-        </div>
-        <div class="widget-block-body" id="mini-inbox-body">
-            <div id="mini-inbox-list" style="font-size:12px;color:#888;padding:14px;">Lädt…</div>
         </div>
     </div>
 
@@ -6037,9 +6033,10 @@
     </div><!-- end cockpit-col -->
 
 
-    </div><!-- end inbox-qa-split -->
+    </div><!-- end inbox-qa-split (rechte Spalte v264) -->
+    </div><!-- end zone-cols -->
 
-    <!-- COCKPIT-Markup: seit v15.9.259 aktiv in #inbox-qa-split (Zone 3) -->
+    <!-- COCKPIT-Markup: seit v15.9.259 aktiv in #inbox-qa-split · v264: Spalten-Layout -->
 
 
 
@@ -7906,7 +7903,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.263</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.264</small>
             </div>
             </div>
         </div>
@@ -8517,7 +8514,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.263</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.264</span>
     </div>
     
     
@@ -12867,7 +12864,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.264', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13027,7 +13024,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13101,7 +13098,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13208,7 +13205,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13292,7 +13289,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13601,7 +13598,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.264', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13748,7 +13745,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.264', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13893,7 +13890,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18982,7 +18979,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.263';
+            const HUB_VERSION = 'v15.9.264';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20688,7 +20685,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.263</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.264</div>
                     </div>
                     
                     <div class="section">
@@ -20787,7 +20784,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.263 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.264 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21862,7 +21859,9 @@ Spittelauer Lnde 12/1
             cols.forEach(c => {
                 const sorted = dbvSortCol === c.k;
                 const arrow = sorted ? (dbvSortDir===1?'↑':'↓') : '↕';
-                html += `<th style="${thStyle}${sorted?'color:#fff;':''}" onclick="dbvSetSort('${c.k}')">${c.l} <span style="opacity:${sorted?1:.4}">${arrow}</span></th>`;
+                // v264: Zahlen-Spalten auf Content-Breite schrumpfen (width:1% + nowrap) — Restbreite geht an Event/Promoter/Mainact
+                const narrow = (eurCols.has(c.k) || numCols.has(c.k)) ? 'width:1%;text-align:right;' : '';
+                html += `<th style="${thStyle}${narrow}${sorted?'color:#fff;':''}" onclick="dbvSetSort('${c.k}')">${c.l} <span style="opacity:${sorted?1:.4}">${arrow}</span></th>`;
             });
             html += '</tr></thead><tbody>';
             dbvFiltered.forEach(r => {
@@ -21889,13 +21888,13 @@ Spittelauer Lnde 12/1
                         // v262: AK-Preis (FOH_Ticket_Price) ist ein Einzelpreis — 2 Nachkommastellen statt gerundet
                         const nStr = c.k === 'FOH_Ticket_Price' ? n.toLocaleString('de-AT', {minimumFractionDigits:2, maximumFractionDigits:2}) : Math.round(n).toLocaleString('de-AT');
                         const disp = n > 0 ? '<span style="color:#22c55e">€'+nStr+'</span>' : '<span style="color:#444">—</span>';
-                        html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
+                        html += `<td style="${tdStyle}text-align:right;width:1%;font-variant-numeric:tabular-nums;">${disp}</td>`;
                     } else if (numCols.has(c.k)) {
                         const n = c.k === 'Total_PAX' ? dbvComputePax(r) : dbvFmtN(val);
                         // v261: FOH/VVK Tix in Akzent-Rot
                         const tixCol = (c.k === 'FOH_Tickets_Sold' || c.k === 'PreSale_TicketsSold') ? '#ff453a' : '';
                         const disp = n > 0 ? (tixCol ? '<span style="color:' + tixCol + ';font-weight:600;">' + n.toLocaleString('de-AT') + '</span>' : n.toLocaleString('de-AT')) : '<span style="color:#444">—</span>';
-                        html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
+                        html += `<td style="${tdStyle}text-align:right;width:1%;font-variant-numeric:tabular-nums;">${disp}</td>`;
                     } else {
                         html += `<td style="${tdStyle}"${titleAttr}>${val || '<span style="color:#444">—</span>'}</td>`;
                     }
@@ -24382,7 +24381,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.263 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.264 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24412,7 +24411,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.263',
+                hubVersion: 'v15.9.264',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27529,8 +27528,11 @@ window.alertOpenStaffing = function() {
                     const isToday = e.date && e.date.toDateString() === new Date().toDateString();
                     const label = isToday ? 'HEUTE' : (e.dateStr || '—');
                     const dateStyle = isToday ? 'color:#ff6b1a;font-weight:700;' : '';
-                    return `<div class="planner-strip-card${cls}" onclick="plannerOpen()">
-                        <div class="planner-strip-date" style="${dateStyle}">${label}</div>
+                    // v264: Klick öffnet Factsheet für DIESES Event (statt generisches Weekly-Overlay)
+                    const tagHtml = (e.eigen === true) ? '<span class="planner-strip-tag eigen">EIGEN</span>'
+                                  : (e.eigen === false) ? '<span class="planner-strip-tag fremd">FREMD</span>' : '';
+                    return `<div class="planner-strip-card${cls}" onclick="plannerStripFactsheet('${e.ymd || ''}')" title="Factsheet für ${e.name} öffnen">
+                        <div class="planner-strip-date" style="${dateStyle}">${label}${tagHtml}</div>
                         <div class="planner-strip-name">${e.name}</div>
                     </div>`;
                 }).join('');
@@ -27712,7 +27714,29 @@ window.alertOpenStaffing = function() {
         const today = new Date(); today.setHours(0,0,0,0);
         const events = [];
 
-        // Primary: window.bmtData (set by hub's BMT loader)
+        // v264 PRIMARY: identische Quelle wie Promo-Pipeline (promoEventList) — Strip = erste 4 der Pipeline, nie abweichende Events
+        if (typeof promoEventList === 'function') {
+            try {
+                const plist = promoEventList();
+                if (Array.isArray(plist) && plist.length) {
+                    plannerState.bmtEvents = plist.slice(0, 5).map(e => {
+                        const d0 = new Date(e.dtstart); d0.setHours(0,0,0,0);
+                        return {
+                            name: String(e.summary || 'Event').substring(0, 32),
+                            time: '',
+                            type: (e.category === 'konzert') ? 'konzert' : 'club',
+                            eigen: (typeof promoIsEigen === 'function') ? promoIsEigen(e) : null,
+                            ymd: e.dtstart.toISOString().slice(0,10).replace(/-/g,''),
+                            date: d0,
+                            dateStr: d0.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'})
+                        };
+                    });
+                    return;
+                }
+            } catch (err) { console.warn('Strip: promoEventList-Quelle fehlgeschlagen, Fallback:', err); }
+        }
+
+        // Fallback: window.bmtData (set by hub's BMT loader)
         const sources = [window.bmtData, window.bmtEventsCache, window.allBmtEvents];
         for (const src of sources) {
             if (!src || !Array.isArray(src)) continue;
@@ -27726,6 +27750,8 @@ window.alertOpenStaffing = function() {
                         name: (e.title || e.name || e.eventName || 'Event').substring(0, 32),
                         time: e.time || e.startTime || e.start_time || '',
                         type: (e.type || '').toLowerCase().includes('konzert') ? 'konzert' : 'club',
+                        eigen: null,
+                        ymd: d.toISOString().slice(0,10).replace(/-/g,''),
                         date: d,
                         dateStr: d.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'})
                     });
@@ -27748,7 +27774,9 @@ window.alertOpenStaffing = function() {
                 if (d >= today) {
                     events.push({
                         name: nameEl.textContent.trim().substring(0,32),
-                        time: '', type: 'club', date: d,
+                        time: '', type: 'club', eigen: null,
+                        ymd: d.toISOString().slice(0,10).replace(/-/g,''),
+                        date: d,
                         dateStr: `${dateMatch[1]}.${dateMatch[2]}`
                     });
                 }
@@ -27765,6 +27793,20 @@ window.alertOpenStaffing = function() {
         });
         plannerState.bmtEvents = deduped.slice(0, 5);
     }
+
+    // ── v264: Strip-Klick → Factsheet-Modal, Event via Datum vorausgewählt ──
+    window.plannerStripFactsheet = function(ymd) {
+        if (typeof openModal === 'function') openModal('factsheet-modal');
+        if (typeof populateFactsheetDropdown === 'function') { try { populateFactsheetDropdown(); } catch(e) { console.warn('populateFactsheetDropdown:', e); } }
+        const sel = document.getElementById('fs-event-select');
+        if (sel && ymd) {
+            const opt = Array.from(sel.options).find(o => o.value && o.value.endsWith('_' + ymd));
+            if (opt) {
+                sel.value = opt.value;
+                if (typeof loadEventData === 'function') { try { loadEventData(); } catch(e) { console.warn('loadEventData:', e); } }
+            }
+        }
+    };
 
     // ── Toggle task (local + MS Graph) ──
     window.plannerToggleTask = async function(row, taskId, listId) {
@@ -27939,7 +27981,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.263';
+    const HUB_VER = 'v15.9.264';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -29456,7 +29498,7 @@ function promoRender() {
     wknd.innerHTML = split.wknd.length
         ? split.wknd.map(ev => promoRowHTML(ev)).join('')
         : '<div class="promo-empty">Kein Wochenende in Sicht.</div>';
-    pipe.innerHTML = split.rest.slice(0, PROMO_COMPACT_N).map(ev => promoRowHTML(ev)).join('');
+    pipe.innerHTML = split.rest.slice(0, 8).map(ev => promoRowHTML(ev)).join(''); // v264: 8 statt 5 — füllt Fokus-Spalten-Höhe
 }
 
 function promoInitPoll() {
