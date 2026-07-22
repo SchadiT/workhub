@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.262</title>
+    <title>Turbo Projects Work Hub v15.9.263</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5434,6 +5434,16 @@
         .promo-chevron { color: var(--faint); font-size: 11px; flex-shrink: 0; }
         .promo-monthhead { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--raised2); border-bottom: 0.5px solid var(--hair); font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sub); }
         .promo-monthhead .pmc { margin-left: auto; color: var(--faint); font-weight: 400; letter-spacing: 0; text-transform: none; }
+        /* v263 — P3 Fokus-Split */
+        .promo-focus-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 0; }
+        @media (max-width: 768px) { .promo-focus-split { grid-template-columns: 1fr; } }
+        .promo-focus-col { border-right: 0.5px solid var(--hair); }
+        @media (max-width: 768px) { .promo-focus-col { border-right: none; border-bottom: 0.5px solid var(--hair); } }
+        .promo-focus-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); padding: 9px 14px 5px; }
+        .promo-monat-mini { display: flex; align-items: center; gap: 8px; padding: 10px 14px; margin: 6px 14px 10px; background: var(--raised2); border-radius: 8px; border: 0.5px solid var(--hair); }
+        .pmm-label { font-size: 11.5px; font-weight: 600; color: var(--text); }
+        .pmm-status { font-size: 11px; color: var(--sub); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pmm-open { font-size: 11px; color: var(--accent); background: var(--raised); border: 0.5px solid var(--accent); border-radius: 6px; padding: 4px 10px; cursor: pointer; flex-shrink: 0; }
         .promo-showall { display: block; width: 100%; padding: 10px; background: none; border: none; border-top: 0.5px solid var(--hair); color: var(--sub); font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
         .promo-showall:active { background: var(--raised2); }
         /* Aufgeklappte Card */
@@ -5871,7 +5881,22 @@
             <button class="promo-filter-btn" data-pf="eigen" onclick="promoSetFilter('eigen')">EIGEN</button>
             <button class="promo-filter-btn" data-pf="fremd" onclick="promoSetFilter('fremd')">FREMD</button>
         </div>
-        <div id="promo-cards"><div class="promo-empty">Lade Events…</div></div>
+        <div class="promo-focus-split" id="promo-focus-split">
+            <div class="promo-focus-col">
+                <div class="promo-focus-label">Wochenende im Fokus</div>
+                <div id="promo-weekend-cards"><div class="promo-empty">Lade Events…</div></div>
+            </div>
+            <div class="promo-focus-col" style="border-right:none;">
+                <div class="promo-focus-label">Pipeline</div>
+                <div id="promo-pipeline-cards"></div>
+                <div class="promo-monat-mini" id="promo-monat-mini">
+                    <span class="pmm-label">Monatsprogramm</span>
+                    <span class="pmm-status" id="pmm-status">–</span>
+                    <button class="pmm-open" onclick="openPromoManager()">Öffnen</button>
+                </div>
+            </div>
+        </div>
+        <div id="promo-cards" style="display:none;"></div>
         <button class="promo-showall" id="promo-showall" onclick="promoToggleAll()" style="display:none;">Alle anzeigen ▾</button>
     </div>
     <!-- ==================== /PROMO CATALOGUE ==================== -->
@@ -7881,7 +7906,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.262</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.263</small>
             </div>
             </div>
         </div>
@@ -8492,7 +8517,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.262</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.263</span>
     </div>
     
     
@@ -12842,7 +12867,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.263', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13002,7 +13027,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13076,7 +13101,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13183,7 +13208,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13267,7 +13292,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13576,7 +13601,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.263', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13723,7 +13748,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.263', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13868,7 +13893,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.262', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.263', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18957,7 +18982,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.262';
+            const HUB_VERSION = 'v15.9.263';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20663,7 +20688,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.262</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.263</div>
                     </div>
                     
                     <div class="section">
@@ -20762,7 +20787,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.262 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.263 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24357,7 +24382,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.262 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.263 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24387,7 +24412,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.262',
+                hubVersion: 'v15.9.263',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27914,7 +27939,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.262';
+    const HUB_VER = 'v15.9.263';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -29192,7 +29217,10 @@ function promoMigrateLegacy() {
 }
 
 // Sheet-Read (GET → JSON, live, kein Publish-Cache-Lag)
+let promoSheetInFlight = false; // v263: Lade-Fix — verhindert überlappende Sheet-Reads
 function promoSheetLoad() {
+    if (promoSheetInFlight) return Promise.resolve();
+    promoSheetInFlight = true;
     promoSetSync('sync');
     return fetch(PROMO_AS_URL + '?action=promo_read&secret=' + encodeURIComponent(PROMO_SECRET))
         .then(r => r.json())
@@ -29215,7 +29243,8 @@ function promoSheetLoad() {
             if (promoPendingWrites === 0) promoSetSync('ok');
             promoRender();
         })
-        .catch(e => { console.warn('promoSheetLoad:', e); promoSetSync('cache'); promoRender(); });
+        .catch(e => { console.warn('promoSheetLoad:', e); promoSetSync('cache'); promoRender(); })
+        .finally(() => { promoSheetInFlight = false; }); // v263
 }
 function promoHasContent(d) { return !!(d && (d.fb || d.vvk || d.short || d.drive || d.lineup || d.notes)); }
 
@@ -29265,6 +29294,16 @@ window.promoForceSync = function() { promoSheetLoad(); };
 function promoCopy(btn) { const row = btn.closest('.promo-linkrow'); const inp = row ? row.querySelector('input') : null; const val = inp ? inp.value.trim() : ''; if (!val) { promoToastMsg('Feld ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Kopiert: ' + val.slice(0, 40))).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
 function promoCopyLineup(key) { const d = promoGetData(key); const val = (d.lineup || '').trim(); if (!val) { promoToastMsg('Lineup ist leer'); return; } navigator.clipboard.writeText(val).then(() => promoToastMsg('Lineup kopiert')).catch(() => promoToastMsg('Copy fehlgeschlagen')); }
 function promoToggle(key) { promoOpenKey = (promoOpenKey === key) ? null : key; promoRender(); }
+
+// v263: Monatsprogramm-Mini-Panel-Status im Promo Catalogue
+function _pmmStatusRender() {
+    const el = document.getElementById('pmm-status');
+    if (!el) return;
+    try {
+        const label = localStorage.getItem('gf_programm_label');
+        el.textContent = label ? 'Zuletzt: ' + label : 'Noch kein Programm gesetzt';
+    } catch (e) { el.textContent = '–'; }
+}
 function promoSetFilter(f) { promoFilter = f; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === f)); promoRender(); }
 function promoToggleAll() { promoExpandedAll = !promoExpandedAll; if (!promoExpandedAll) { promoFilter = 'all'; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === 'all')); } promoRender(); }
 function promoOpenUrl(key, field) { const d = promoGetData(key); const url = (d[field] || '').trim(); if (!url) { promoToastMsg('Kein Link hinterlegt'); return; } window.open(/^https?:\/\//i.test(url) ? url : 'https://' + url, '_blank', 'noopener'); }
@@ -29338,9 +29377,27 @@ function promoSaveEv(key, field, value) {
     promoSave(key, field, value, ev);
 }
 
+// v263 (P3): Wochenend-Cluster aus sortierter Liste extrahieren (Fr/Sa/So, erste zusammenhängende Gruppe)
+function promoSplitWeekend(list) {
+    const wknd = [], rest = [];
+    let anchor = null;
+    list.forEach(ev => {
+        const day = ev.dtstart.getDay(); // 0=So,5=Fr,6=Sa
+        const isWknd = (day === 5 || day === 6 || day === 0);
+        if (isWknd) {
+            if (!anchor) { anchor = new Date(ev.dtstart); anchor.setHours(0, 0, 0, 0); }
+            const diffDays = Math.round((ev.dtstart - anchor) / 86400000);
+            if (diffDays >= 0 && diffDays <= 2) { wknd.push(ev); return; }
+        }
+        rest.push(ev);
+    });
+    return { wknd: wknd, rest: rest };
+}
+
 function promoRender() {
+    const focusSplit = document.getElementById('promo-focus-split');
     const wrap = document.getElementById('promo-cards');
-    if (!wrap) return;
+    if (!wrap || !focusSplit) return;
     let all = promoEventList();
     const countEl = document.getElementById('promo-count');
     if (countEl) countEl.textContent = all.length ? all.length + ' Events' : '';
@@ -29359,26 +29416,47 @@ function promoRender() {
         showAll.style.display = all.length > PROMO_COMPACT_N ? 'block' : 'none';
         showAll.innerHTML = promoExpandedAll ? 'Einklappen \u25B4' : 'Alle anzeigen (' + all.length + ') \u25BE';
     }
-    if (!list.length) {
-        wrap.innerHTML = '<div class="promo-empty">' + (all.length ? 'Keine Events f\u00FCr diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). \u21BB im BMT-Block laden.') + '</div>';
-        return;
-    }
-    if (!promoExpandedAll) {
-        wrap.innerHTML = list.slice(0, PROMO_COMPACT_N).map(ev => promoRowHTML(ev)).join('');
-        return;
-    }
-    // Alle anzeigen → Monatsgruppen
-    let html = '', curMonth = -1;
-    list.forEach(ev => {
-        const mk = ev.dtstart.getFullYear() * 100 + ev.dtstart.getMonth();
-        if (mk !== curMonth) {
-            curMonth = mk;
-            const n = list.filter(e => e.dtstart.getFullYear() * 100 + e.dtstart.getMonth() === mk).length;
-            html += '<div class="promo-monthhead">' + PROMO_MONTHS[ev.dtstart.getMonth()] + ' ' + ev.dtstart.getFullYear() + '<span class="pmc">' + n + ' Event' + (n !== 1 ? 's' : '') + '</span></div>';
+    _pmmStatusRender(); // v263: Monatsprogramm-Mini-Status
+
+    if (promoExpandedAll) {
+        focusSplit.style.display = 'none';
+        wrap.style.display = 'block';
+        if (!list.length) {
+            wrap.innerHTML = '<div class="promo-empty">' + (all.length ? 'Keine Events f\u00FCr diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). \u21BB im BMT-Block laden.') + '</div>';
+            return;
         }
-        html += promoRowHTML(ev);
-    });
-    wrap.innerHTML = html;
+        let html = '', curMonth = -1;
+        list.forEach(ev => {
+            const mk = ev.dtstart.getFullYear() * 100 + ev.dtstart.getMonth();
+            if (mk !== curMonth) {
+                curMonth = mk;
+                const n = list.filter(e => e.dtstart.getFullYear() * 100 + e.dtstart.getMonth() === mk).length;
+                html += '<div class="promo-monthhead">' + PROMO_MONTHS[ev.dtstart.getMonth()] + ' ' + ev.dtstart.getFullYear() + '<span class="pmc">' + n + ' Event' + (n !== 1 ? 's' : '') + '</span></div>';
+            }
+            html += promoRowHTML(ev);
+        });
+        wrap.innerHTML = html;
+        return;
+    }
+
+    // v263 (P3): Fokus-Split — Wochenende groß + Pipeline kompakt
+    focusSplit.style.display = 'grid';
+    wrap.style.display = 'none';
+    const wknd = document.getElementById('promo-weekend-cards');
+    const pipe = document.getElementById('promo-pipeline-cards');
+    if (!list.length) {
+        wknd.innerHTML = '<div class="promo-empty">' + (all.length ? 'Keine Events f\u00FCr diesen Filter.' : 'Keine kommenden Events geladen (BMT/ICS). \u21BB im BMT-Block laden.') + '</div>';
+        pipe.innerHTML = '';
+        return;
+    }
+    const split = promoSplitWeekend(list);
+    if (split.wknd.length && !split.wknd.some(ev => promoKey(ev) === promoOpenKey)) {
+        promoOpenKey = promoKey(split.wknd[0]); // erstes Wochenend-Event automatisch aufklappen
+    }
+    wknd.innerHTML = split.wknd.length
+        ? split.wknd.map(ev => promoRowHTML(ev)).join('')
+        : '<div class="promo-empty">Kein Wochenende in Sicht.</div>';
+    pipe.innerHTML = split.rest.slice(0, PROMO_COMPACT_N).map(ev => promoRowHTML(ev)).join('');
 }
 
 function promoInitPoll() {
