@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.259</title>
+    <title>Turbo Projects Work Hub v15.9.260</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -7873,7 +7873,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.259</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.260</small>
             </div>
             </div>
         </div>
@@ -8484,7 +8484,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.259</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.260</span>
     </div>
     
     
@@ -12834,7 +12834,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.260', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -12994,7 +12994,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13068,7 +13068,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13175,7 +13175,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13259,7 +13259,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13568,7 +13568,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.260', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13715,7 +13715,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.260', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13860,7 +13860,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.259', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.260', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18949,7 +18949,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.259';
+            const HUB_VERSION = 'v15.9.260';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20655,7 +20655,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.259</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.260</div>
                     </div>
                     
                     <div class="section">
@@ -20754,7 +20754,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.259 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.260 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -21782,11 +21782,20 @@ Spittelauer Lnde 12/1
         }
         function dbvFmtEur(v) { const n = dbvFmtN(v); return n > 0 ? '€' + Math.round(n).toLocaleString('de-AT') : ''; }
 
+        // v260: PAX = FOH+VVK Tix bei EIGEN (Anzeige-Ebene, kein DB-Backfill). FREMD/manuell gesetzte Werte bleiben Vorrang.
+        function dbvComputePax(r) {
+            const n = dbvFmtN(r['Total_PAX']);
+            if (n > 0) return n;
+            if ((r['Type']||'').toUpperCase() === 'EIGEN') {
+                return dbvFmtN(r['FOH_Tickets_Sold']) + dbvFmtN(r['PreSale_TicketsSold']);
+            }
+            return 0;
+        }
         function dbvRenderStats() {
             const n = dbvFiltered.length;
             const barTotal = dbvFiltered.reduce((s,r) => s + dbvFmtN(r['Bar_Revenue']), 0);
             const revTotal = dbvFiltered.reduce((s,r) => s + dbvFmtN(r['Total_Revenue']), 0);
-            const paxTotal = dbvFiltered.reduce((s,r) => s + dbvFmtN(r['Total_PAX']), 0);
+            const paxTotal = dbvFiltered.reduce((s,r) => s + dbvComputePax(r), 0);
             document.getElementById('dbv-s-events').textContent = n;
             document.getElementById('dbv-s-bar').textContent = barTotal > 0 ? '€' + Math.round(barTotal).toLocaleString('de-AT') : '—';
             document.getElementById('dbv-s-bar-avg').textContent = n > 0 && barTotal > 0 ? '€' + Math.round(barTotal/n).toLocaleString('de-AT') : '—';
@@ -21808,11 +21817,13 @@ Spittelauer Lnde 12/1
             // v15.9.158: PreSale_Revenue added to €-formatted columns
             const eurCols = new Set(['Bar_Revenue','FOH_Revenue','PreSale_Revenue','Miete','Total_Revenue','Bar_Per_Person','Revenue_Per_Person']);
             const numCols = new Set(['FOH_Tickets_Sold','PreSale_TicketsSold','Total_PAX']);
-            const thStyle = 'padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:#888;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--border);background:#1a1a1a;';
+            const thStyle = 'padding:6px 7px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.3px;color:#888;white-space:nowrap;cursor:pointer;border-bottom:2px solid var(--border);background:#1a1a1a;';
+            // v260: Compact-Mode — Event/Promoter/Mainact truncaten statt Spalten aufblasen (Titel = voller Text via title-Attr)
+            const truncCols = { 'Event Name': 150, 'Promoter': 110, 'Mainact': 110 };
             // v15.9.158: Master-Checkbox state (checked when all visible rows selected)
             const visibleIds = dbvFiltered.map(r => r['Event_ID']).filter(Boolean);
             const allVisibleSelected = visibleIds.length > 0 && visibleIds.every(id => dbvSelected.has(id));
-            let html = '<table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr>';
+            let html = '<table style="width:100%;border-collapse:collapse;font-size:11.5px;"><thead><tr>';
             // v15.9.158: Checkbox column header
             html += `<th style="${thStyle}width:28px;text-align:center;cursor:default;padding:7px 4px;" title="Alle sichtbaren auswählen/abwählen"><input type="checkbox" id="dbv-master-checkbox" onclick="dbvToggleAllVisible(this.checked)" ${allVisibleSelected ? 'checked' : ''} style="cursor:pointer;accent-color:#a855f7;"></th>`;
             cols.forEach(c => {
@@ -21830,7 +21841,11 @@ Spittelauer Lnde 12/1
                 html += `<td style="padding:6px 4px;text-align:center;"><input type="checkbox" onclick="event.stopPropagation();dbvToggleSelect('${eid.replace(/'/g,"\\'")}',this.checked)" ${isSelected ? 'checked' : ''} ${eid ? '' : 'disabled'} style="cursor:pointer;accent-color:#a855f7;"></td>`;
                 cols.forEach(c => {
                     const val = r[c.k] || '';
-                    const tdStyle = 'padding:6px 10px;white-space:nowrap;';
+                    const tw = truncCols[c.k];
+                    const tdStyle = tw
+                        ? `padding:5px 7px;white-space:nowrap;max-width:${tw}px;overflow:hidden;text-overflow:ellipsis;`
+                        : 'padding:5px 7px;white-space:nowrap;';
+                    const titleAttr = tw && val ? ` title="${String(val).replace(/"/g,'&quot;')}"` : '';
                     if (c.k === 'Type') {
                         const t = val.toUpperCase();
                         const col = t==='EIGEN'?'#22c55e':t==='FREMD'?'#3b82f6':t==='CON'?'#a855f7':'#888';
@@ -21840,10 +21855,11 @@ Spittelauer Lnde 12/1
                         const n = dbvFmtN(val); const disp = n > 0 ? '<span style="color:#22c55e">€'+Math.round(n).toLocaleString('de-AT')+'</span>' : '<span style="color:#444">—</span>';
                         html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
                     } else if (numCols.has(c.k)) {
-                        const n = dbvFmtN(val); const disp = n > 0 ? n.toLocaleString('de-AT') : '<span style="color:#444">—</span>';
+                        const n = c.k === 'Total_PAX' ? dbvComputePax(r) : dbvFmtN(val);
+                        const disp = n > 0 ? n.toLocaleString('de-AT') : '<span style="color:#444">—</span>';
                         html += `<td style="${tdStyle}text-align:right;">${disp}</td>`;
                     } else {
-                        html += `<td style="${tdStyle}">${val || '<span style="color:#444">—</span>'}</td>`;
+                        html += `<td style="${tdStyle}"${titleAttr}>${val || '<span style="color:#444">—</span>'}</td>`;
                     }
                 });
                 html += '</tr>';
@@ -24244,7 +24260,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.259 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.260 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24274,7 +24290,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.259',
+                hubVersion: 'v15.9.260',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27801,7 +27817,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.259';
+    const HUB_VER = 'v15.9.260';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -28184,6 +28200,28 @@ function isEigenPromoter(category, summary) {
     return EIGEN_KEYWORDS.some(k => cat.includes(k) || sum.includes(k)) || cat === 'eigen';
 }
 
+// ── v260: EIGEN-Promoter-Lock (5-Wort) + Mainact-Auto-Extract ─────────────────
+const EIGEN_PROMOTER_LOCK = ['TURBO', 'IN HOUSE', 'SELECTED', 'HALLOWEEN', 'POLYAMOR'];
+function dbuPromoterLocked(promoter) {
+    return EIGEN_PROMOTER_LOCK.includes(String(promoter || '').trim().toUpperCase());
+}
+// Extrahiert Mainact aus Event-Titel wenn kein Headliner aus BMT-Bookings vorliegt.
+// Patterns: "... w/ ARTIST", "... pres. ARTIST" — nimmt den Teil NACH dem letzten Marker.
+function dbuExtractMainact(name) {
+    const s = String(name || '');
+    const m = s.match(/(?:\s+w\/|\s+pres\.)\s+(.+)$/i);
+    return m ? m[1].trim() : '';
+}
+// Aufgerufen wenn TYP-Dropdown im Edit-Card gewechselt wird (v260-Fix: SZG-Bug).
+window.dbuTypChange = function(qi, newTyp) {
+    dbuQueue[qi].typ = newTyp;
+    if (newTyp === 'EIGEN' && !dbuPromoterLocked(dbuQueue[qi].promoter)) {
+        dbuQueue[qi].promoter = 'IN HOUSE';
+        showToast('⚠ Promoter war nicht im EIGEN-Lock — auf "IN HOUSE" zurückgesetzt');
+    }
+    dbuRender();
+};
+
 // ── Open / Close ──────────────────────────────────────────────────────────────
 window.dbUpdateOpen = function() {
     dbuQueue    = [];
@@ -28294,6 +28332,7 @@ window.dbuAddEvent = function() {
     const headliners = (ev.bookings || [])
         .filter(b => b.performance_type === 'headliner' || b.performance_type === 'main')
         .map(b => b.name || (b.names||[]).join(' b2b '));
+    const autoMainact = headliners.length ? '' : dbuExtractMainact(ev.summary || '');
 
     // Match against Monatsprogramm TXT
     const progMap = dbuParseProgramm();
@@ -28308,7 +28347,7 @@ window.dbuAddEvent = function() {
     dbuQueue.push({
         datum:            ds,
         event_name:       eventName,
-        headliner:        headliners.join(', ') || '',
+        headliner:        headliners.join(', ') || autoMainact,
         typ:              isEigen ? 'EIGEN' : 'FREMD',
         promoter:         promoter,
         bar_revenue:      0,
@@ -28338,6 +28377,7 @@ window.dbuAddManual = function() {
     const d  = new Date(dateVal + 'T12:00:00');
     const ds = d.toLocaleDateString('de-AT', { day:'2-digit', month:'2-digit', year:'numeric' });
     const isEigen = typEl.value === 'EIGEN';
+    const autoMainact = dbuExtractMainact(nameVal);
     // Monatsprogramm-Match wie im Dropdown-Pfad
     const progMap = dbuParseProgramm();
     const dayKey = String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0');
@@ -28350,7 +28390,7 @@ window.dbuAddManual = function() {
     dbuQueue.push({
         datum:            ds,
         event_name:       eventName,
-        headliner:        '',
+        headliner:        autoMainact,
         typ:              isEigen ? 'EIGEN' : 'FREMD',
         promoter:         promoter,
         bar_revenue:      0,
@@ -28435,7 +28475,7 @@ function dbuRender() {
                 </div>
                 <div>
                     <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">TYP</label>
-                    <select oninput="dbuQueue[${qi}].typ=this.value;dbuRender();"
+                    <select onchange="dbuTypChange(${qi}, this.value);"
                         style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
                         <option value="EIGEN" ${isEigen?'selected':''}>EIGEN</option>
                         <option value="FREMD" ${!isEigen?'selected':''}>FREMD</option>
@@ -28451,8 +28491,9 @@ function dbuRender() {
             <div style="margin-bottom:10px;">
                 <label style="font-size:10px;color:var(--sub);display:block;margin-bottom:3px;">PROMOTER</label>
                 <input type="text" value="${ev.promoter||''}" placeholder="Promoter Name"
-                    oninput="dbuQueue[${qi}].promoter=this.value;"
+                    oninput="dbuQueue[${qi}].promoter=this.value;dbuRender();"
                     style="background:#111;border:1px solid #2a2a2a;color:var(--text);padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
+                ${isEigen && !dbuPromoterLocked(ev.promoter) ? `<div style="font-size:10.5px;color:#ff453a;margin-top:4px;">⚠ Nicht im EIGEN-Lock (TURBO / IN HOUSE / SELECTED / HALLOWEEN / POLYAMOR)</div>` : ''}
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
                 ${dbuRevInput(qi,'bar_revenue','BAR (WBV) €','#f59e0b',ev.bar_revenue,ev.bar_status,'')}
@@ -28479,13 +28520,13 @@ function dbuRender() {
                             style="background:#111;border:1px solid #2a2a2a;color:#f472b6;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
                     </div>
                     <div style="flex:1;min-width:76px;">
-                        <label style="font-size:10px;color:#60a5fa;font-weight:600;display:block;margin-bottom:3px;">FOH TICKET €</label>
+                        <label style="font-size:10px;color:#60a5fa;font-weight:600;display:block;margin-bottom:3px;">FOH Ø-PREIS €</label>
                         <input type="number" step="0.01" placeholder="0" value="${ev.foh_ticket_price||''}"
                             oninput="dbuQueue[${qi}].foh_ticket_price=parseFloat(this.value)||0;"
                             style="background:#111;border:1px solid #2a2a2a;color:#60a5fa;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
                     </div>
                     <div style="flex:1.4;min-width:110px;">
-                        <label style="font-size:10px;color:#a78bfa;font-weight:600;display:block;margin-bottom:3px;">PHASEN-PREISE (${ev.presale_phases||0})</label>
+                        <label style="font-size:10px;color:#a78bfa;font-weight:600;display:block;margin-bottom:3px;">PHASEN-PREISE (${(ev.presale_phase_prices||'').split('/').filter(x=>x.trim()).length||0})</label>
                         <input type="text" placeholder="z.B. 12/15/18" value="${ev.presale_phase_prices||''}"
                             oninput="dbuQueue[${qi}].presale_phase_prices=this.value;dbuQueue[${qi}].presale_phases=this.value.split('/').filter(x=>x.trim()).length;"
                             style="background:#111;border:1px solid #2a2a2a;color:#a78bfa;padding:5px 8px;border-radius:4px;font-size:12px;width:100%;box-sizing:border-box;">
@@ -28758,18 +28799,20 @@ window.dbuGoReview = function() {
                     <span style="color:#f59e0b;font-size:13px;font-weight:700;">€ ${total.toLocaleString('de-AT',{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
                 </div>
             </div>
-            <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:12px;">
+            <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:12px;margin-bottom:${isEigen && !dbuPromoterLocked(ev.promoter) ? '4' : '0'}px;">
+                <div><span style="color:var(--sub);">Promoter:</span> <span style="color:var(--text);font-weight:600;">${ev.promoter||'—'}</span></div>
                 <div><span style="color:var(--sub);">Bar:</span> <span style="color:#f59e0b;font-weight:600;">€ ${fmt(ev.bar_revenue)}</span></div>
                 ${isEigen ? `
                 <div><span style="color:var(--sub);">FOH:</span> <span style="color:#60a5fa;">€ ${fmt(ev.foh_revenue)} / ${ev.foh_tickets||0} Tkts</span></div>
                 <div><span style="color:var(--sub);">PreSale:</span> <span style="color:#a78bfa;">€ ${fmt(ev.presale_revenue)} / ${ev.presale_tickets||0} Tkts</span></div>
                 ${ev.vp_vollpreis ? `<div><span style="color:var(--sub);">VP:</span> <span style="color:#f472b6;">€ ${fmt(ev.vp_vollpreis)}</span></div>` : ''}
-                ${ev.foh_ticket_price ? `<div><span style="color:var(--sub);">FOH-Preis:</span> <span style="color:#60a5fa;">€ ${fmt(ev.foh_ticket_price)}</span></div>` : ''}
-                ${ev.presale_phase_prices ? `<div><span style="color:var(--sub);">Phasen (${ev.presale_phases||0}):</span> <span style="color:#a78bfa;">€ ${ev.presale_phase_prices}${ev.presale_phase_tickets ? ' · ' + ev.presale_phase_tickets + ' Tkts' : ''}</span></div>` : ''}
+                ${ev.foh_ticket_price ? `<div><span style="color:var(--sub);">FOH Ø-Preis:</span> <span style="color:#60a5fa;">€ ${fmt(ev.foh_ticket_price)}</span></div>` : ''}
+                ${ev.presale_phase_prices ? `<div><span style="color:var(--sub);">Phasen (${ev.presale_phase_prices.split('/').filter(x=>x.trim()).length}):</span> <span style="color:#a78bfa;">€ ${ev.presale_phase_prices}${ev.presale_phase_tickets ? ' · ' + ev.presale_phase_tickets + ' Tkts' : ''}</span></div>` : ''}
                 ` : `
                 <div><span style="color:var(--sub);">Miete:</span> <span style="color:#22c55e;">€ ${fmt(ev.miete||2940)}</span></div>
                 `}
             </div>
+            ${isEigen && !dbuPromoterLocked(ev.promoter) ? `<div style="font-size:10.5px;color:#ff453a;">⚠ Promoter "${ev.promoter||'—'}" ist nicht im EIGEN-Lock (TURBO / IN HOUSE / SELECTED / HALLOWEEN / POLYAMOR)</div>` : ''}
         </div>`;
     }).join('');
     document.getElementById('dbu2-step1').style.display = 'none';
