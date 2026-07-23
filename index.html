@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.264</title>
+    <title>Turbo Projects Work Hub v15.9.265</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5642,6 +5642,537 @@
     
     <div class="toast" id="toast"></div>
 
+    <!-- ═══════════════════════════════════════════════════════
+         vNEXT EXECUTIVE SHELL — ETAPPE 1 (v15.9.265)
+         Referenz: vNEXT_Shell_Mockup_v3.html (APPROVED 24.07.2026)
+         Additiv: kein bestehendes Markup verschoben. Alte Widgets via body.vx-on versteckt (§45.12).
+         ═══════════════════════════════════════════════════════ -->
+    <style id="vx-shell-css">
+        /* — Legacy-Sichtbarkeit — */
+        body.vx-on #linkbar-strip, body.vx-on #planner-widget { display: none; }
+        body.vx-on:not(.vx-legacy) #zone-cols, body.vx-on:not(.vx-legacy) #calendar-full-width { display: none; }
+        body.vx-on.vx-legacy #zone-cols { display: grid; }
+        body.vx-on { padding-left: 232px; }
+
+        /* — Sidebar — */
+        #vx-sidebar { position: fixed; top: 12px; left: 12px; bottom: 12px; width: 196px; z-index: 900;
+            background: #0d0d0f; border: 1px solid var(--hair); border-radius: 14px;
+            padding: 20px 12px 14px; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box; overflow-y: auto; }
+        [data-theme="light"] #vx-sidebar { background: var(--raised); }
+        .vx-logo { font-size: 15px; font-weight: 800; letter-spacing: 2px; color: var(--text); padding: 0 8px 4px; }
+        .vx-logo small { display: block; font-size: 8px; letter-spacing: 3px; color: var(--faint); font-weight: 600; }
+        .vx-sep { height: 1px; background: var(--hair); margin: 10px 4px 12px; }
+        .vx-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px;
+            font-size: 12.5px; font-weight: 500; color: var(--sub); cursor: pointer; user-select: none; white-space: nowrap; }
+        .vx-item:hover { background: var(--raised2); color: var(--text); }
+        .vx-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+        .vx-item .vx-ic { width: 18px; text-align: center; font-size: 13px; flex-shrink: 0; }
+        .vx-user { margin-top: auto; display: flex; align-items: center; gap: 9px; padding: 10px 8px 2px; border-top: 1px solid var(--hair); }
+        .vx-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+            display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+        .vx-user .n { font-size: 11.5px; font-weight: 600; color: var(--text); line-height: 1.2; }
+        .vx-user .r { font-size: 9.5px; color: var(--faint); }
+
+        /* — Shell Main — */
+        #vx-shell-main { margin-bottom: 8px; }
+        .vx-greet-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 14px 4px 12px; flex-wrap: wrap; }
+        .vx-greet h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+        .vx-greet .vx-greet-sub { font-size: 12px; color: var(--sub); margin-top: 3px; }
+        .vx-greet-right { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--sub); }
+        .vx-greet-right .vx-clock { font-size: 20px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+        #vx-burger { display: none; background: var(--raised); border: 1px solid var(--hair); border-radius: 9px;
+            color: var(--text); font-size: 16px; padding: 6px 12px; cursor: pointer; }
+
+        /* — KPI Row — */
+        .vx-kpi-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .vx-kpi { background: var(--raised); border: 1px solid var(--hair); border-radius: 11px; padding: 12px 14px;
+            cursor: pointer; min-width: 0; transition: background 0.12s; }
+        .vx-kpi:hover { background: var(--raised2); }
+        .vx-kpi .k-label { font-size: 10px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vx-kpi .k-val { font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vx-kpi .k-val small { font-size: 13px; font-weight: 700; color: var(--sub); }
+        .vx-kpi .k-sub { font-size: 10.5px; color: var(--sub); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .vx-kpi.vx-hero { background: linear-gradient(135deg, rgba(255,69,58,0.22), rgba(255,69,58,0.06)); border-color: rgba(255,69,58,0.35); }
+        .vx-kpi.vx-hero:hover { background: linear-gradient(135deg, rgba(255,69,58,0.3), rgba(255,69,58,0.1)); }
+        .vx-kpi.vx-hero .k-label { color: var(--accent); }
+        .vx-tag { display: inline-block; font-size: 8.5px; font-weight: 800; letter-spacing: 1px; padding: 2px 7px; border-radius: 4px; vertical-align: middle; margin-left: 7px; }
+        .vx-tag.eigen { background: var(--accent-soft); color: var(--accent); }
+        .vx-tag.fremd { background: rgba(79,142,247,0.15); color: #4F8EF7; }
+
+        /* — Quick Actions — */
+        .vx-qa-panel { background: var(--raised); border: 1px solid var(--hair); border-radius: 11px; padding: 12px 14px 14px; margin-bottom: 10px; }
+        .vx-qa-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .vx-qa-title { font-size: 13px; font-weight: 600; color: var(--text); }
+        .vx-qa-all { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-soft);
+            border: none; border-radius: 20px; padding: 5px 13px; cursor: pointer; font-family: inherit; }
+        .vx-qa-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+        .vx-qa-btn { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 4px 8px;
+            background: var(--canvas); border: 1px solid var(--hair); border-radius: 9px; color: var(--sub);
+            font-size: 10px; font-weight: 500; cursor: pointer; font-family: inherit; min-width: 0; }
+        .vx-qa-btn span.i { font-size: 16px; }
+        .vx-qa-btn:hover { background: var(--raised2); color: var(--text); }
+
+        /* — Flyout — */
+        #vx-flyout { position: fixed; z-index: 950; display: none; min-width: 178px;
+            background: var(--raised); border: 1px solid var(--hair); border-radius: 11px; padding: 6px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.45); }
+        #vx-flyout .vx-fly-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 7px;
+            font-size: 12px; color: var(--sub); cursor: pointer; white-space: nowrap; }
+        #vx-flyout .vx-fly-item:hover { background: var(--raised2); color: var(--text); }
+
+        /* — Alle-Apps Modal — */
+        #vx-apps-modal { position: fixed; inset: 0; z-index: 990; display: none; background: rgba(0,0,0,0.6);
+            align-items: center; justify-content: center; padding: 20px; }
+        #vx-apps-modal.open { display: flex; }
+        .vx-apps-box { background: var(--canvas); border: 1px solid var(--hair); border-radius: 14px;
+            max-width: 720px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 18px 20px 20px; }
+        .vx-apps-head { display: flex; align-items: center; margin-bottom: 14px; }
+        .vx-apps-head h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--text); }
+        .vx-apps-close { margin-left: auto; background: none; border: none; color: var(--faint); font-size: 20px; cursor: pointer; padding: 2px 8px; }
+        .vx-apps-grp { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--faint); margin: 12px 0 7px; }
+        .vx-apps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+
+        /* — Responsive — */
+        @media (min-width: 769px) and (max-width: 1099px) {
+            body.vx-on { padding-left: 92px; }
+            #vx-sidebar { width: 64px; padding: 16px 8px 12px; }
+            #vx-sidebar .vx-logo, #vx-sidebar .vx-item span:not(.vx-ic), #vx-sidebar .vx-user .n, #vx-sidebar .vx-user .r { display: none; }
+            #vx-sidebar .vx-item { justify-content: center; padding: 10px 0; }
+            #vx-sidebar .vx-user { justify-content: center; padding-left: 0; padding-right: 0; }
+            .vx-kpi-row { grid-template-columns: 1.6fr 1fr 1fr; }
+            .vx-qa-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+        @media (max-width: 768px) {
+            body.vx-on { padding-left: 12px; }
+            #vx-sidebar { transform: translateX(-115%); transition: transform 0.22s ease; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+            body.vx-drawer-open #vx-sidebar { transform: translateX(0); }
+            #vx-burger { display: inline-block; }
+            .vx-greet h1 { font-size: 19px; }
+            .vx-greet-right .vx-clock { display: none; }
+            .vx-kpi-row { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+            .vx-kpi { flex: 0 0 46vw; }
+            .vx-kpi.vx-hero { flex: 0 0 68vw; }
+            .vx-qa-grid, .vx-apps-grid { grid-template-columns: repeat(3, 1fr); }
+            #vx-flyout { left: 12px !important; right: 12px; top: auto !important; bottom: 12px; }
+        }
+    </style>
+
+    <aside id="vx-sidebar">
+        <div class="vx-logo">TURBO<small>PROJECTS</small></div>
+        <div class="vx-sep"></div>
+        <div class="vx-item active" id="vx-nav-cockpit" onclick="vxHome()"><span class="vx-ic">▦</span><span>Cockpit</span></div>
+        <div class="vx-item" onclick="vxNav('events', this)"><span class="vx-ic">🎪</span><span>Events</span></div>
+        <div class="vx-item" onclick="vxLaunch(function(){ plannerOpen(); })"><span class="vx-ic">✓</span><span>Tasks</span></div>
+        <div class="vx-item" onclick="vxNav('staffing', this)"><span class="vx-ic">👥</span><span>Staffing</span></div>
+        <div class="vx-item" onclick="vxNav('finance', this)"><span class="vx-ic">€</span><span>Finance</span></div>
+        <div class="vx-item" onclick="vxNav('analytics', this)"><span class="vx-ic">📊</span><span>Analytics</span></div>
+        <div class="vx-item" onclick="vxNav('comms', this)"><span class="vx-ic">✉</span><span>Communication</span></div>
+        <div class="vx-item" onclick="vxNav('database', this)"><span class="vx-ic">🗄</span><span>Database</span></div>
+        <div class="vx-item" onclick="vxNav('settings', this)"><span class="vx-ic">⚙</span><span>Settings</span></div>
+        <div class="vx-user">
+            <div class="vx-avatar">ST</div>
+            <div><div class="n">Schadi Tayyah</div><div class="r">CEO</div></div>
+        </div>
+    </aside>
+
+    <div id="vx-shell-main">
+        <div class="vx-greet-row">
+            <div class="vx-greet">
+                <h1 id="vx-greet-text">Servus, Schadi</h1>
+                <div class="vx-greet-sub" id="vx-greet-sub">—</div>
+            </div>
+            <div class="vx-greet-right">
+                <button id="vx-burger" onclick="vxDrawer()">☰</button>
+                <span id="vx-date">—</span>
+                <span class="vx-clock" id="vx-clock">—:—</span>
+            </div>
+        </div>
+
+        <div class="vx-kpi-row">
+            <div class="vx-kpi vx-hero" id="vx-kpi-next" onclick="vxNextEventGo()">
+                <div class="k-label">⚑ Next Event</div>
+                <div class="k-val" id="vx-next-name">Lädt…</div>
+                <div class="k-sub" id="vx-next-sub">—</div>
+            </div>
+            <div class="vx-kpi" onclick="vxLaunch(function(){ plannerOpen(); })">
+                <div class="k-label">☑ Due Today</div>
+                <div class="k-val" id="vx-kpi-due">—</div>
+                <div class="k-sub">MS To-Do · offen heute</div>
+            </div>
+            <div class="vx-kpi" onclick="document.getElementById('myday-widget') && document.getElementById('myday-widget').scrollIntoView({behavior:'smooth'})">
+                <div class="k-label">⚠ Needs Action</div>
+                <div class="k-val" id="vx-kpi-action">—</div>
+                <div class="k-sub" id="vx-kpi-action-sub">Überfällig · ⚡Heute</div>
+            </div>
+            <div class="vx-kpi" onclick="vxLaunch(function(){ openModal('presale-modal'); })">
+                <div class="k-label">🎟 Presale</div>
+                <div class="k-val" id="vx-kpi-presale">—</div>
+                <div class="k-sub" id="vx-kpi-presale-sub">OE · folgt (PACE)</div>
+            </div>
+            <div class="vx-kpi" onclick="vxLaunch(function(){ openModal('db-viewer-modal'); dbvLoad(); })">
+                <div class="k-label">€ Revenue (FY)</div>
+                <div class="k-val" id="vx-kpi-rev">—</div>
+                <div class="k-sub" id="vx-kpi-rev-sub">MAIN DB · Aug–Jul</div>
+            </div>
+        </div>
+
+        <div class="vx-qa-panel">
+            <div class="vx-qa-head">
+                <span class="vx-qa-title">Quick Actions</span>
+                <button class="vx-qa-all" onclick="vxAppsOpen()">⊞ Alle Apps</button>
+            </div>
+            <div class="vx-qa-grid" id="vx-qa-grid"></div>
+        </div>
+    </div>
+
+    <div id="vx-flyout"></div>
+
+    <div id="vx-apps-modal" onclick="if(event.target===this)vxAppsClose()">
+        <div class="vx-apps-box">
+            <div class="vx-apps-head">
+                <h3>Alle Apps</h3>
+                <button class="vx-apps-close" onclick="vxAppsClose()">×</button>
+            </div>
+            <div id="vx-apps-body"></div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        'use strict';
+        /* ── vNEXT Shell Etappe 1 (v15.9.265) — alle Handler global (window.*) wegen onclick-Attributen (§45.9) ── */
+
+        // ── App-Katalog: einzige Quelle für Quick Actions, Flyouts und Alle-Apps-Modal ──
+        var VX_APPS = {
+            'Operations': [
+                { i:'📋', n:'Factsheet',       f:function(){ openModal('factsheet-modal'); } },
+                { i:'⚡', n:'Quick Sec',       f:function(){ openQuickSecOrder(); } },
+                { i:'😡', n:'Sec. Orders',     f:function(){ openModal('security-orders-modal'); } },
+                { i:'📰', n:'Monatsprogramm',  f:function(){ openPromoManager(); } },
+                { i:'📅', n:'Planner',         f:function(){ plannerOpen(); } },
+                { i:'🤖', n:'Claude AI',       f:function(){ cnOpen(); } },
+                { i:'📝', n:'Notepad',         f:function(){ openEditor('notepad'); } },
+                { i:'🧹', n:'Cleaning',        f:function(){ openCleaningModal(); } }
+            ],
+            'Club': [
+                { i:'🍺', n:'Bar Roster',      f:function(){ openModal('bar-staffing-modal'); } },
+                { i:'🏃', n:'Runner',          f:function(){ openModal('runner-staffing-modal'); } },
+                { i:'📋', n:'Guestlist',       f:function(){ openModal('guestlist-modal'); glPopulateEventDropdown(); } },
+                { i:'📽', n:'Projector',       f:function(){ openModal('projector-modal'); } },
+                { i:'🎆', n:'NYE Proj.',       f:function(){ openModal('nye-projector-modal'); } },
+                { i:'📈', n:'Peak Grid',       f:function(){ openModal('peak-grid-modal'); renderPeakGrid(); } },
+                { i:'⚡', n:'QON',             f:function(){ vxLegacyShow('dtw-widget'); dtwToggleDept('SPUTNIK'); } },
+                { i:'🎪', n:'Promo Catalogue', f:function(){ vxLegacyShow('promo-widget'); } },
+                { i:'🗓', n:'Kalender',        f:function(){ vxLegacyShow('calendar-full-width'); } },
+                { i:'👥', n:'Departments',     f:function(){ vxLegacyShow('dtw-widget'); } }
+            ],
+            'Finance': [
+                { i:'💰', n:'Umsatz Ticker',   f:function(){ openModal('umsatz-ticker-modal'); umsatzTickerOnOpen(); } },
+                { i:'🧾', n:'Rechnungen',      f:function(){ openModal('rechnungen-modal'); invoiceOnOpen(); } },
+                { i:'🎟', n:'Presale',         f:function(){ openModal('presale-modal'); } },
+                { i:'📉', n:'Costs',           f:function(){ openModal('cost-modal'); } },
+                { i:'🗄', n:'DB Viewer',       f:function(){ openModal('db-viewer-modal'); dbvLoad(); } },
+                { i:'⇓',  n:'DB Update',       f:function(){ dbUpdateOpen(); } },
+                { i:'📊', n:'Promo Analyse',   f:function(){ openModal('promoter-analysis-modal'); paLoad(); } },
+                { i:'🔬', n:'Deep Analyse',    f:function(){ openDeepAnalysis(); } },
+                { i:'📄', n:'PDF Report',      f:function(){ pdfv2Open(); } }
+            ],
+            'Communication': [
+                { i:'📥', n:'Inbox',           f:function(){ openInbox(); } },
+                { i:'✉',  n:'Email',           f:function(){ openModal('email-modal'); } }
+            ]
+        };
+
+        var VX_FLYOUTS = {
+            events:    [ ['🎪','Promo Catalogue'], ['🗓','Kalender'], ['📰','Monatsprogramm'], ['📋','Guestlist'] ],
+            staffing:  [ ['🍺','Bar Roster'], ['🏃','Runner'], ['🧹','Cleaning'], ['😡','Sec. Orders'], ['👥','Departments'] ],
+            finance:   [ ['💰','Umsatz Ticker'], ['🧾','Rechnungen'], ['🎟','Presale'], ['📉','Costs'], ['🗄','DB Viewer'] ],
+            analytics: [ ['📊','Promo Analyse'], ['🔬','Deep Analyse'], ['📄','PDF Report'], ['📈','Peak Grid'] ],
+            comms:     [ ['📥','Inbox'], ['✉','Email'] ],
+            database:  [ ['⇓','DB Update'], ['🗄','DB Viewer'] ],
+            settings:  [ ['🌓','Skin Toggle'], ['↓','State Export'], ['↑','State Import'], ['🔑','Sign in'] ]
+        };
+        var VX_SETTINGS_FN = {
+            'Skin Toggle':  function(){ toggleTheme(); },
+            'State Export': function(){ hubExportState(); },
+            'State Import': function(){ var el = document.getElementById('sync-file-input'); if (el) el.click(); },
+            'Sign in':      function(){ handleAuth(); }
+        };
+
+        function vxFindApp(name) {
+            var grps = Object.keys(VX_APPS);
+            for (var g = 0; g < grps.length; g++) {
+                var arr = VX_APPS[grps[g]];
+                for (var k = 0; k < arr.length; k++) if (arr[k].n === name) return arr[k];
+            }
+            return null;
+        }
+
+        // ── Launch-Wrapper: schließt Flyout/Drawer/Apps-Modal, führt sicher aus ──
+        window.vxLaunch = function(fn) {
+            vxFlyClose(); vxAppsCloseInt(); document.body.classList.remove('vx-drawer-open');
+            try { fn(); } catch (e) { console.warn('vxLaunch:', e); }
+        };
+        window.vxRun = function(name) {
+            var fn = VX_SETTINGS_FN[name];
+            if (!fn) { var app = vxFindApp(name); fn = app ? app.f : null; }
+            if (fn) window.vxLaunch(fn);
+        };
+
+        // ── Legacy-Widgets (Übergang bis Etappe 2–4) ──
+        window.vxLegacyShow = function(targetId) {
+            document.body.classList.add('vx-legacy');
+            var nav = document.getElementById('vx-nav-cockpit'); if (nav) nav.classList.remove('active');
+            setTimeout(function(){
+                var el = document.getElementById(targetId);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 60);
+        };
+        window.vxHome = function() {
+            document.body.classList.remove('vx-legacy', 'vx-drawer-open');
+            vxFlyClose();
+            var nav = document.getElementById('vx-nav-cockpit'); if (nav) nav.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ── Sidebar-Flyout ──
+        var vxFlyOpenKey = null;
+        window.vxNav = function(key, el) {
+            var fly = document.getElementById('vx-flyout');
+            if (!fly) return;
+            if (vxFlyOpenKey === key) { vxFlyClose(); return; }
+            vxFlyOpenKey = key;
+            var items = VX_FLYOUTS[key] || [];
+            var html = '';
+            for (var k = 0; k < items.length; k++) {
+                html += '<div class="vx-fly-item" onclick="vxRun(\'' + items[k][1].replace(/'/g, "\\'") + '\')">' +
+                        '<span>' + items[k][0] + '</span><span>' + items[k][1] + '</span></div>';
+            }
+            fly.innerHTML = html;
+            fly.style.display = 'block';
+            if (window.innerWidth > 768 && el) {
+                var r = el.getBoundingClientRect();
+                fly.style.left = (r.right + 8) + 'px';
+                fly.style.top = Math.min(r.top, window.innerHeight - (items.length * 38 + 24)) + 'px';
+                fly.style.right = 'auto'; fly.style.bottom = 'auto';
+            }
+        };
+        function vxFlyClose() {
+            var fly = document.getElementById('vx-flyout');
+            if (fly) fly.style.display = 'none';
+            vxFlyOpenKey = null;
+        }
+        window.vxFlyClose = vxFlyClose;
+        document.addEventListener('click', function(ev) {
+            if (vxFlyOpenKey && !ev.target.closest('#vx-flyout') && !ev.target.closest('.vx-item')) vxFlyClose();
+        });
+
+        // ── Alle-Apps-Modal ──
+        window.vxAppsOpen = function() {
+            var body = document.getElementById('vx-apps-body');
+            if (body && !body.innerHTML) {
+                var html = '';
+                Object.keys(VX_APPS).forEach(function(grp) {
+                    html += '<div class="vx-apps-grp">' + grp + '</div><div class="vx-apps-grid">';
+                    VX_APPS[grp].forEach(function(a) {
+                        html += '<button class="vx-qa-btn" onclick="vxRun(\'' + a.n.replace(/'/g, "\\'") + '\')">' +
+                                '<span class="i">' + a.i + '</span>' + a.n + '</button>';
+                    });
+                    html += '</div>';
+                });
+                body.innerHTML = html;
+            }
+            var m = document.getElementById('vx-apps-modal');
+            if (m) m.classList.add('open');
+        };
+        function vxAppsCloseInt() {
+            var m = document.getElementById('vx-apps-modal');
+            if (m) m.classList.remove('open');
+        }
+        window.vxAppsClose = vxAppsCloseInt;
+
+        // ── Mobile Drawer ──
+        window.vxDrawer = function() { document.body.classList.toggle('vx-drawer-open'); };
+
+        // ── Quick-Actions-Grid (Top 8 aus Katalog) ──
+        function vxRenderQA() {
+            var grid = document.getElementById('vx-qa-grid');
+            if (!grid) return;
+            var top = ['Factsheet', 'Quick Sec', 'DB Update', 'DB Viewer', 'Monatsprogramm', 'Umsatz Ticker', 'Rechnungen', 'Claude AI'];
+            var html = '';
+            top.forEach(function(name) {
+                var a = vxFindApp(name);
+                if (a) html += '<button class="vx-qa-btn" onclick="vxRun(\'' + a.n.replace(/'/g, "\\'") + '\')">' +
+                               '<span class="i">' + a.i + '</span>' + a.n + '</button>';
+            });
+            grid.innerHTML = html;
+        }
+
+        // ── Greeting + Uhr ──
+        function vxClockTick() {
+            var now = new Date();
+            var h = now.getHours();
+            var greet = h < 5 ? 'Gute Nacht' : h < 11 ? 'Guten Morgen' : h < 17 ? 'Servus' : h < 22 ? 'Guten Abend' : 'Gute Nacht';
+            var el = document.getElementById('vx-greet-text');
+            if (el) el.textContent = greet + ', Schadi';
+            var jan1 = new Date(now.getFullYear(), 0, 1);
+            var kw = Math.ceil((((now - jan1) / 86400000) + jan1.getDay() + 1) / 7);
+            var dEl = document.getElementById('vx-date');
+            if (dEl) dEl.textContent = '📅 ' + now.toLocaleDateString('de-AT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + ' · KW ' + kw;
+            var cEl = document.getElementById('vx-clock');
+            if (cEl) cEl.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            var sEl = document.getElementById('vx-greet-sub');
+            if (sEl) sEl.textContent = 'Work Hub · Grelle Forelle';
+        }
+
+        // ── KPI-Mirror: liest bestehende Loader-Ziele (versteckt im DOM), keine Loader-Änderung ──
+        function vxKpiTick() {
+            // Next Event aus promoEventList (identische Quelle wie Pipeline/Strip, v264)
+            try {
+                if (typeof promoEventList === 'function') {
+                    var list = promoEventList();
+                    if (Array.isArray(list) && list.length) {
+                        var e = list[0];
+                        var nEl = document.getElementById('vx-next-name');
+                        var sEl2 = document.getElementById('vx-next-sub');
+                        var eigen = (typeof promoIsEigen === 'function') ? promoIsEigen(e) : null;
+                        if (nEl) nEl.innerHTML = vxEsc(String(e.summary || 'Event').substring(0, 26)) +
+                            (eigen === null ? '' : '<span class="vx-tag ' + (eigen ? 'eigen' : 'fremd') + '">' + (eigen ? 'EIGEN' : 'FREMD') + '</span>');
+                        if (sEl2) {
+                            var d0 = new Date(e.dtstart); d0.setHours(0, 0, 0, 0);
+                            var t0 = new Date(); t0.setHours(0, 0, 0, 0);
+                            var diff = Math.round((d0 - t0) / 86400000);
+                            var rel = diff === 0 ? 'heute' : diff === 1 ? 'morgen' : 'in ' + diff + ' Tagen';
+                            sEl2.textContent = d0.toLocaleDateString('de-AT', { weekday: 'short', day: '2-digit', month: '2-digit' }) +
+                                ' · Doors ' + String(e.dtstart.getHours()).padStart(2, '0') + ':' + String(e.dtstart.getMinutes()).padStart(2, '0') + ' · ' + rel;
+                        }
+                        window.vxNextYmd = e.dtstart.toISOString().slice(0, 10).replace(/-/g, '');
+                    }
+                }
+            } catch (err) { /* Quelle noch nicht geladen */ }
+
+            // Due Today: Mirror planner-s-open (MS To-Do Loader schreibt dorthin, Widget versteckt)
+            var src = document.getElementById('planner-s-open');
+            var due = document.getElementById('vx-kpi-due');
+            if (src && due && src.textContent && src.textContent !== '—') due.textContent = src.textContent;
+
+            // Needs Action: Mirror myday overdue+today Pills (Alert-Layer)
+            var ov = document.getElementById('myday-pill-overdue-count');
+            var td = document.getElementById('myday-pill-today-count');
+            var act = document.getElementById('vx-kpi-action');
+            var actSub = document.getElementById('vx-kpi-action-sub');
+            if (act) {
+                var nOv = ov ? parseInt(ov.textContent, 10) || 0 : 0;
+                var nTd = td ? parseInt(td.textContent, 10) || 0 : 0;
+                act.textContent = (nOv + nTd) || '0';
+                if (actSub) actSub.textContent = nOv + ' überfällig · ' + nTd + ' heute';
+            }
+        }
+        window.vxNextEventGo = function() {
+            if (window.vxNextYmd && typeof window.plannerStripFactsheet === 'function') {
+                window.plannerStripFactsheet(window.vxNextYmd);
+            } else {
+                window.vxLaunch(function(){ openModal('factsheet-modal'); });
+            }
+        };
+
+        function vxEsc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // ── Revenue FY: eigener CSV-Fetch (MAIN DB Publish, gleiche URL wie DB Viewer) — self-contained ──
+        var VX_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQQir1nzj2trr30gH2--twdboF-HlgJ0rdRkSGKHCIjJ1fekDiqjRkvY0yetv3MG8O8MyAp9sWymP9j/pub?gid=184884796&single=true&output=csv';
+        function vxParseNum(v) {
+            if (v === null || v === undefined || v === '') return 0;
+            var s = String(v).trim().replace(/[€\s]/g, '');
+            if (s.indexOf(',') >= 0 && s.indexOf('.') >= 0) {
+                if (s.lastIndexOf('.') > s.lastIndexOf(',')) s = s.replace(/,/g, '');
+                else s = s.replace(/\./g, '').replace(',', '.');
+            } else if (s.indexOf(',') >= 0) s = s.replace(',', '.');
+            var n = parseFloat(s);
+            return isNaN(n) ? 0 : n;
+        }
+        function vxCsvRows(text) {
+            var lines = text.split(/\r?\n/);
+            if (lines.length < 2) return [];
+            function pl(line) {
+                var vals = [], cur = '', inQ = false;
+                for (var i = 0; i < line.length; i++) {
+                    var c = line[i];
+                    if (c === '"') { if (inQ && line[i + 1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+                    else if (c === ',' && !inQ) { vals.push(cur); cur = ''; }
+                    else cur += c;
+                }
+                vals.push(cur);
+                return vals.map(function(v){ return v.trim().replace(/^"|"$/g, ''); });
+            }
+            var headers = pl(lines[0]);
+            var out = [];
+            for (var r = 1; r < lines.length; r++) {
+                if (!lines[r].trim()) continue;
+                var vals = pl(lines[r]);
+                var obj = {};
+                for (var h = 0; h < headers.length; h++) if (headers[h]) obj[headers[h]] = vals[h] || '';
+                if (obj['Event_ID'] && obj['Event_ID'] !== 'Event_ID') out.push(obj);
+            }
+            return out;
+        }
+        function vxRevenueLoad() {
+            try {
+                var cached = sessionStorage.getItem('vx_rev_fy');
+                if (cached) {
+                    var cObj = JSON.parse(cached);
+                    if (Date.now() - cObj.ts < 600000) { vxRevenueShow(cObj.sum, cObj.n); return; }
+                }
+            } catch (e) { /* Cache egal */ }
+            fetch(VX_CSV + '&t=' + Date.now())
+                .then(function(res){ return res.text(); })
+                .then(function(text) {
+                    var rows = vxCsvRows(text);
+                    var now = new Date();
+                    var fyStartYear = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+                    var fyStart = new Date(fyStartYear, 7, 1);
+                    var fyEnd = new Date(fyStartYear + 1, 6, 31, 23, 59, 59);
+                    var sum = 0, n = 0;
+                    rows.forEach(function(r) {
+                        var m = String(r['Datum'] || '').match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
+                        if (!m) return;
+                        var d = new Date(2000 + (parseInt(m[3], 10) % 100), parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+                        if (d < fyStart || d > fyEnd) return;
+                        sum += vxParseNum(r['Total_Revenue']);
+                        n++;
+                    });
+                    try { sessionStorage.setItem('vx_rev_fy', JSON.stringify({ ts: Date.now(), sum: sum, n: n })); } catch (e) {}
+                    vxRevenueShow(sum, n);
+                })
+                .catch(function() {
+                    var el = document.getElementById('vx-kpi-rev');
+                    if (el) el.textContent = '—';
+                });
+        }
+        function vxRevenueShow(sum, n) {
+            var el = document.getElementById('vx-kpi-rev');
+            var sub = document.getElementById('vx-kpi-rev-sub');
+            if (el) {
+                if (sum >= 1000000) el.innerHTML = '€' + (sum / 1000000).toFixed(2) + '<small>M</small>';
+                else el.textContent = '€' + Math.round(sum / 1000) + 'k';
+            }
+            if (sub) sub.textContent = 'MAIN DB · ' + n + ' Events · FY';
+        }
+
+        // ── Init ──
+        document.body.classList.add('vx-on');
+        vxRenderQA();
+        vxClockTick();
+        setInterval(vxClockTick, 30000);
+        vxKpiTick();
+        setInterval(vxKpiTick, 2500);
+        setTimeout(vxRevenueLoad, 2500);
+        console.log('vNEXT Shell Etappe 1 aktiv (v15.9.265)');
+    })();
+    </script>
+    <!-- ═══ /vNEXT SHELL ETAPPE 1 ═══ -->
+
     <!-- ==================== LINK BAR v15.9.145 ==================== -->
     <div class="linkbar-strip" id="linkbar-strip">
         <span class="linkbar-label">LINKS</span>
@@ -5849,7 +6380,7 @@
 
 
 
-    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.264: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
+    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.265: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
     <div id="zone-cols">
     <div id="dtw-inbox-split">
 
@@ -7903,7 +8434,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.264</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.265</small>
             </div>
             </div>
         </div>
@@ -8514,7 +9045,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.264</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.265</span>
     </div>
     
     
@@ -12864,7 +13395,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.265', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13024,7 +13555,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13098,7 +13629,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13205,7 +13736,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13289,7 +13820,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -13598,7 +14129,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.265', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -13745,7 +14276,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.265', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -13890,7 +14421,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.264', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -18979,7 +19510,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.264';
+            const HUB_VERSION = 'v15.9.265';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -20685,7 +21216,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.264</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.265</div>
                     </div>
                     
                     <div class="section">
@@ -20784,7 +21315,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.264 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.265 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24381,7 +24912,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.264 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.265 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24411,7 +24942,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.264',
+                hubVersion: 'v15.9.265',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -27981,7 +28512,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.264';
+    const HUB_VER = 'v15.9.265';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
