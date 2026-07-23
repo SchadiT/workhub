@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.265</title>
+    <title>Turbo Projects Work Hub v15.9.266</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5433,7 +5433,10 @@
         .promo-focus-col { border-right: 0.5px solid var(--hair); }
         @media (max-width: 768px) { .promo-focus-col { border-right: none; border-bottom: 0.5px solid var(--hair); } }
         .promo-focus-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); padding: 9px 14px 5px; }
-        .promo-monat-mini { display: flex; align-items: center; gap: 8px; padding: 10px 14px; margin: 6px 14px 10px; background: var(--raised2); border-radius: 8px; border: 0.5px solid var(--hair); }
+        .promo-monat-mini { display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; margin: 6px 14px 10px; background: var(--raised2); border-radius: 8px; border: 0.5px solid var(--hair); }
+        .pmm-head { display: flex; align-items: center; gap: 8px; }
+        .pmm-content { margin: 0; max-height: 180px; overflow-y: auto; font-size: 10.5px; line-height: 1.55; color: var(--sub); white-space: pre-wrap; font-family: inherit; border-top: 1px solid var(--hair); padding-top: 8px; }
+        .pmm-content:empty { display: none; }
         /* v264: Pipeline-Spalte = Flex — Monatsprogramm-Mini dockt unten, kein Leerraum-Loch */
         .promo-focus-split .promo-focus-col:last-child { display: flex; flex-direction: column; }
         #promo-pipeline-cards { flex: 1; }
@@ -5643,15 +5646,18 @@
     <div class="toast" id="toast"></div>
 
     <!-- ═══════════════════════════════════════════════════════
-         vNEXT EXECUTIVE SHELL — ETAPPE 1 (v15.9.265)
+         vNEXT EXECUTIVE SHELL — ETAPPE 1 (v15.9.266)
          Referenz: vNEXT_Shell_Mockup_v3.html (APPROVED 24.07.2026)
          Additiv: kein bestehendes Markup verschoben. Alte Widgets via body.vx-on versteckt (§45.12).
          ═══════════════════════════════════════════════════════ -->
     <style id="vx-shell-css">
         /* — Legacy-Sichtbarkeit — */
-        body.vx-on #linkbar-strip, body.vx-on #planner-widget { display: none; }
+        body.vx-on #planner-widget { display: none; }
         body.vx-on:not(.vx-legacy) #zone-cols, body.vx-on:not(.vx-legacy) #calendar-full-width { display: none; }
-        body.vx-on.vx-legacy #zone-cols { display: grid; }
+        body.vx-on.vx-legacy #zone-cols { display: grid; grid-template-columns: 1fr; }
+        body.vx-on #cockpit-col, body.vx-on #inbox-qa-split { display: none; }
+        #vx-dtw-slot { margin-bottom: 8px; }
+        #vx-dtw-slot #dtw-widget { margin-bottom: 0; }
         body.vx-on { padding-left: 232px; }
 
         /* — Sidebar — */
@@ -5840,7 +5846,7 @@
     <script>
     (function(){
         'use strict';
-        /* ── vNEXT Shell Etappe 1 (v15.9.265) — alle Handler global (window.*) wegen onclick-Attributen (§45.9) ── */
+        /* ── vNEXT Shell Etappe 1 (v15.9.266) — alle Handler global (window.*) wegen onclick-Attributen (§45.9) ── */
 
         // ── App-Katalog: einzige Quelle für Quick Actions, Flyouts und Alle-Apps-Modal ──
         var VX_APPS = {
@@ -6162,13 +6168,19 @@
 
         // ── Init ──
         document.body.classList.add('vx-on');
+        // v266: Department Tools permanent + volle Breite — Element-Umzug erhält Listener/IDs
+        (function(){
+            var slot = document.getElementById('vx-dtw-slot');
+            var dtw = document.getElementById('dtw-widget');
+            if (slot && dtw && dtw.parentNode !== slot) slot.appendChild(dtw);
+        })();
         vxRenderQA();
         vxClockTick();
         setInterval(vxClockTick, 30000);
         vxKpiTick();
         setInterval(vxKpiTick, 2500);
         setTimeout(vxRevenueLoad, 2500);
-        console.log('vNEXT Shell Etappe 1 aktiv (v15.9.265)');
+        console.log('vNEXT Shell Etappe 1 aktiv (v15.9.266)');
     })();
     </script>
     <!-- ═══ /vNEXT SHELL ETAPPE 1 ═══ -->
@@ -6204,6 +6216,9 @@
         <div id="myday-body"></div>
     </div>
     <!-- ==================== /ALERT LAYER ==================== -->
+
+    <!-- v15.9.266: DEPARTMENT TOOLS Full-Width-Slot — dtw-widget wird per JS hierher umgezogen (IDs/Handler 1:1) -->
+    <div id="vx-dtw-slot"></div>
 
     <!-- ==================== PLANNER WIDGET v15.9.204 — Cohesive ==================== -->
     <div id="planner-widget">
@@ -6380,7 +6395,7 @@
 
 
 
-    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.265: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
+    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.266: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
     <div id="zone-cols">
     <div id="dtw-inbox-split">
 
@@ -6419,9 +6434,12 @@
                 <div class="promo-focus-label">Pipeline</div>
                 <div id="promo-pipeline-cards"></div>
                 <div class="promo-monat-mini" id="promo-monat-mini">
-                    <span class="pmm-label">Monatsprogramm</span>
-                    <span class="pmm-status" id="pmm-status">–</span>
-                    <button class="pmm-open" onclick="openPromoManager()">Öffnen</button>
+                    <div class="pmm-head">
+                        <span class="pmm-label">Monatsprogramm</span>
+                        <span class="pmm-status" id="pmm-status">–</span>
+                        <button class="pmm-open" onclick="openPromoManager()">Öffnen</button>
+                    </div>
+                    <pre class="pmm-content" id="pmm-content"></pre>
                 </div>
             </div>
         </div>
@@ -8434,7 +8452,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.265</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.266</small>
             </div>
             </div>
         </div>
@@ -9045,7 +9063,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.265</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.266</span>
     </div>
     
     
@@ -13395,7 +13413,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.266', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13555,7 +13573,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.266', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13629,7 +13647,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.266', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13736,7 +13754,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.266', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13820,7 +13838,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.266', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14129,7 +14147,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.266', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14276,7 +14294,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.266', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14421,7 +14439,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.265', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.266', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19510,7 +19528,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.265';
+            const HUB_VERSION = 'v15.9.266';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -21216,7 +21234,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.265</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.266</div>
                     </div>
                     
                     <div class="section">
@@ -21315,7 +21333,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.265 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.266 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24912,7 +24930,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.265 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.266 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24942,7 +24960,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.265',
+                hubVersion: 'v15.9.266',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -28512,7 +28530,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.265';
+    const HUB_VER = 'v15.9.266';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
@@ -29875,6 +29893,12 @@ function _pmmStatusRender() {
     try {
         const label = localStorage.getItem('gf_programm_label');
         el.textContent = label ? 'Zuletzt: ' + label : 'Noch kein Programm gesetzt';
+        // v266: aktuelles Programm direkt anzeigen
+        const cEl = document.getElementById('pmm-content');
+        if (cEl) {
+            const txt = localStorage.getItem('gf_programm_current') || '';
+            cEl.textContent = txt.trim();
+        }
     } catch (e) { el.textContent = '–'; }
 }
 function promoSetFilter(f) { promoFilter = f; document.querySelectorAll('#promo-filters .promo-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.pf === f)); promoRender(); }
@@ -30023,13 +30047,16 @@ function promoRender() {
         return;
     }
     const split = promoSplitWeekend(list);
-    if (split.wknd.length && !split.wknd.some(ev => promoKey(ev) === promoOpenKey)) {
+    // v266: Auto-Open nur wenn promoOpenKey in der GESAMTEN Liste fehlt — Pipeline-Klicks bleiben erhalten
+    if (split.wknd.length && !list.some(ev => promoKey(ev) === promoOpenKey)) {
         promoOpenKey = promoKey(split.wknd[0]); // erstes Wochenend-Event automatisch aufklappen
     }
     wknd.innerHTML = split.wknd.length
         ? split.wknd.map(ev => promoRowHTML(ev)).join('')
         : '<div class="promo-empty">Kein Wochenende in Sicht.</div>';
-    pipe.innerHTML = split.rest.slice(0, 8).map(ev => promoRowHTML(ev)).join(''); // v264: 8 statt 5 — füllt Fokus-Spalten-Höhe
+    // v266: Pipeline = nur echte Club Nights (EIGEN+FREMD), Interna/CLOSED raus, max 4, klickbar
+    const pipeList = split.rest.filter(ev => !/closed|inventur|abholung|besichtigung|lieferung|termin|privat|wartung/i.test(String(ev.summary || '')));
+    pipe.innerHTML = pipeList.slice(0, 4).map(ev => promoRowHTML(ev)).join('');
 }
 
 function promoInitPoll() {
