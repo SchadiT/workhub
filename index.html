@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo Projects Work Hub v15.9.268</title>
+    <title>Turbo Projects Work Hub v15.9.269</title>
     <!-- JSZip Library for WhatsApp export ZIP files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <!-- SheetJS Library for Excel generation (Bar Staffing) -->
@@ -5646,7 +5646,7 @@
     <div class="toast" id="toast"></div>
 
     <!-- ═══════════════════════════════════════════════════════
-         vNEXT EXECUTIVE SHELL — ETAPPE 1 (v15.9.268)
+         vNEXT EXECUTIVE SHELL — ETAPPE 1 (v15.9.269)
          Referenz: vNEXT_Shell_Mockup_v3.html (APPROVED 24.07.2026)
          Additiv: kein bestehendes Markup verschoben. Alte Widgets via body.vx-on versteckt (§45.12).
          ═══════════════════════════════════════════════════════ -->
@@ -5846,7 +5846,7 @@
     <script>
     (function(){
         'use strict';
-        /* ── vNEXT Shell Etappe 1 (v15.9.268) — alle Handler global (window.*) wegen onclick-Attributen (§45.9) ── */
+        /* ── vNEXT Shell Etappe 1 (v15.9.269) — alle Handler global (window.*) wegen onclick-Attributen (§45.9) ── */
 
         // ── App-Katalog: einzige Quelle für Quick Actions, Flyouts und Alle-Apps-Modal ──
         var VX_APPS = {
@@ -6168,11 +6168,24 @@
 
         // ── Init ──
         document.body.classList.add('vx-on');
-        // v266: Department Tools permanent + volle Breite — Element-Umzug erhält Listener/IDs
+        // v269 KRITISCHER FIX: Der Move lief bisher SYNCHRON beim Parsen dieses <script>-Blocks,
+        // aber #vx-dtw-slot existiert im DOM erst weiter unten im HTML (noch ungeparst) —
+        // dtw.parentNode blieb also #inbox-qa-split, welches direkt danach per
+        // "body.vx-on #inbox-qa-split{display:none}" komplett unsichtbar gemacht wird.
+        // Ergebnis: DTW-Widget war NICHT NUR zugeklappt, sondern gar nicht im sichtbaren DOM.
+        // Fix: Move erst nach vollständigem Parsing ausführen (DOMContentLoaded), inkl. Fallback
+        // falls dieses Script selbst erst nach DOMContentLoaded läuft (readyState-Check).
         (function(){
-            var slot = document.getElementById('vx-dtw-slot');
-            var dtw = document.getElementById('dtw-widget');
-            if (slot && dtw && dtw.parentNode !== slot) slot.appendChild(dtw);
+            function dtwMoveToSlot(){
+                var slot = document.getElementById('vx-dtw-slot');
+                var dtw = document.getElementById('dtw-widget');
+                if (slot && dtw && dtw.parentNode !== slot) slot.appendChild(dtw);
+            }
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                dtwMoveToSlot();
+            } else {
+                document.addEventListener('DOMContentLoaded', dtwMoveToSlot);
+            }
         })();
         vxRenderQA();
         vxClockTick();
@@ -6180,7 +6193,7 @@
         vxKpiTick();
         setInterval(vxKpiTick, 2500);
         setTimeout(vxRevenueLoad, 2500);
-        console.log('vNEXT Shell Etappe 1 aktiv (v15.9.268)');
+        console.log('vNEXT Shell Etappe 1 aktiv (v15.9.269) — DTW-Move-Fix (§45.34)');
     })();
     </script>
     <!-- ═══ /vNEXT SHELL ETAPPE 1 ═══ -->
@@ -6217,7 +6230,7 @@
     </div>
     <!-- ==================== /ALERT LAYER ==================== -->
 
-    <!-- v15.9.268: DEPARTMENT TOOLS Full-Width-Slot — dtw-widget wird per JS hierher umgezogen (IDs/Handler 1:1) -->
+    <!-- v15.9.269: DEPARTMENT TOOLS Full-Width-Slot — dtw-widget wird per JS hierher umgezogen (IDs/Handler 1:1) -->
     <div id="vx-dtw-slot"></div>
 
     <!-- ==================== PLANNER WIDGET v15.9.204 — Cohesive ==================== -->
@@ -6395,7 +6408,7 @@
 
 
 
-    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.268: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
+    <!-- ZONE 2+3 — SPALTEN-LAYOUT v15.9.269: links [Promo, Inbox] · rechts [DTW, Cockpit] — Spalten fließen unabhängig, kein Grid-Stretch-Leerraum -->
     <div id="zone-cols">
     <div id="dtw-inbox-split">
 
@@ -8452,7 +8465,7 @@
                     <button onclick="resetFactsheet ? resetFactsheet() : null">Reset</button>
                     <button onclick="closeModal('factsheet-modal')">Schliessen</button>
                 </div>
-                <small id="fs-ftr-version">Factsheet Generator · v15.9.268</small>
+                <small id="fs-ftr-version">Factsheet Generator · v15.9.269</small>
             </div>
             </div>
         </div>
@@ -9063,7 +9076,7 @@
         <a href="https://to-do.live.com" target="_blank"> Open Microsoft To Do</a>
         <a href="dashboard.html" target="_blank" style="margin-top:8px;">&#128203; Dev Dashboard</a>
         <a href="curriculum.html" target="_blank" style="margin-top:8px;">&#128218; Claude Mastery Curriculum</a>
-        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.268</span>
+        <span style="display:block;margin-top:8px;font-size:11px;color:#555;letter-spacing:0.5px;">v15.9.269</span>
     </div>
     
     
@@ -13413,7 +13426,7 @@
             doc.text('S1  ·  STRATEGIC INTELLIGENCE REPORT', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal');
             doc.setTextColor(220);
-            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('Generated ' + new Date().toLocaleString('de-AT') + '  ·  Hub v15.9.269', W-12, 10.5, { align: 'right' });
             // Logo top-left
             pdfv2DrawLogo(doc, 12, 22, 50);
             // Title
@@ -13573,7 +13586,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S2  ·  REVENUE ANALYTICS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.269', W-12, 10.5, { align: 'right' });
             // Donut Revenue-Split
             const donutURL = pdfv2ChartCanvas({
                 type: 'doughnut',
@@ -13647,7 +13660,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S3  ·  OPERATIONAL PATTERNS', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.269', W-12, 10.5, { align: 'right' });
             // Wochentag aggregation
             const tagOrder = ['Mo','Di','Mi','Do','Fr','Sa','So'];
             const tagFull = { Mo:'Montag', Di:'Dienstag', Mi:'Mittwoch', Do:'Donnerstag', Fr:'Freitag', Sa:'Samstag', So:'Sonntag' };
@@ -13754,7 +13767,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S4  ·  FUNNEL & CONVERSION', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.269', W-12, 10.5, { align: 'right' });
             const totalVVK = kpi.totalVVKtix, totalFOH = kpi.totalFOHtix, totalPAX = kpi.totalPAX;
             const maxTier = Math.max(totalVVK, totalFOH, totalPAX, 1);
             const tiers = [
@@ -13838,7 +13851,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S5  ·  STRATEGIC INTELLIGENCE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('MAIN DB · ' + rows.length + ' Events · Hub v15.9.269', W-12, 10.5, { align: 'right' });
             function stdDev(vals) {
                 if (!vals.length) return 0;
                 const m = vals.reduce((a,b)=>a+b,0) / vals.length;
@@ -14147,7 +14160,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S6  ·  SALES VELOCITY CURVES', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.269', W-12, 10.5, { align: 'right' });
 
             const { matched, notMatched } = pdfv2MatchSelectedToPivot(selectedRows);
 
@@ -14294,7 +14307,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S7  ·  PATTERN DETECTION — SLEEPER vs HYPE', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY pivot · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY pivot · Hub v15.9.269', W-12, 10.5, { align: 'right' });
 
             const { matched } = pdfv2MatchSelectedToPivot(selectedRows);
             if (!matched.length) {
@@ -14439,7 +14452,7 @@
             doc.setTextColor(255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
             doc.text('S8  ·  OPTIMAL PUSH WINDOW', 12, 10.5);
             doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(220);
-            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.268', W-12, 10.5, { align: 'right' });
+            doc.text('NTRY tagesverteilung · ALLE Events · Hub v15.9.269', W-12, 10.5, { align: 'right' });
 
             const tag = PDFV2_STATE.ntryData.tagesverteilung || [];
             if (!tag.length) {
@@ -19528,7 +19541,7 @@ Spittelauer Lnde 12/1
         //
 
         document.addEventListener('DOMContentLoaded', () => {
-            const HUB_VERSION = 'v15.9.268';
+            const HUB_VERSION = 'v15.9.269';
             console.log('Work Hub ' + HUB_VERSION);
             const versionFooter = document.getElementById('hub-version-footer');
             if (versionFooter) versionFooter.textContent = 'Work Hub ' + HUB_VERSION;
@@ -21234,7 +21247,7 @@ Spittelauer Lnde 12/1
                 <body>
                     <div class="header">
                         <h1>ðŸ“Š Work Hub Metrics Report</h1>
-                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.268</div>
+                        <div class="subtitle">Turbo Projects GmbH | Generated: ${dateStr} ${timeStr} | Version v15.9.269</div>
                     </div>
                     
                     <div class="section">
@@ -21333,7 +21346,7 @@ Spittelauer Lnde 12/1
                     </div>
                     
                     <div class="footer">
-                        Work Hub v15.9.268 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
+                        Work Hub v15.9.269 | Turbo Projects GmbH | Grelle Forelle & Sputnik Bar
                     </div>
                     
                     <scr` + `ipt>window.onload = function() { window.print(); setTimeout(() => window.close(), 500); };</scr` + `ipt>
@@ -24930,7 +24943,7 @@ Spittelauer Lnde 12/1
             var ts = archiveFormatDate(new Date()).replace(/[:.\s]/g, '-');
             var md = '# Notepad Archiv — Export ' + ts + '\n\n' +
                      'Einträge: ' + arr.length + ' / ' + ARCHIVE_CAP + '  \n' +
-                     'Work Hub v15.9.268 — Turbo Projects GmbH\n\n---\n\n';
+                     'Work Hub v15.9.269 — Turbo Projects GmbH\n\n---\n\n';
             arr.forEach(function(e, idx){
                 md += '## ' + (idx + 1) + '. ' + (e.title || '(ohne Titel)') + '\n\n' +
                       '**Quelle:** ' + e.source + ' · **Gespeichert:** ' + e.savedAt +
@@ -24960,7 +24973,7 @@ Spittelauer Lnde 12/1
             var payload = {
                 format: 'hub_notepad_archive',
                 formatVersion: 1,
-                hubVersion: 'v15.9.268',
+                hubVersion: 'v15.9.269',
                 exportedAt: new Date().toISOString(),
                 entryCount: arr.length,
                 entries: arr
@@ -26960,7 +26973,7 @@ window.alertOpenStaffing = function() {
     let dtwSputnikCacheTs = 0;
 
     // ---- State helpers ----
-    // v15.9.268: Beim allerersten Laden (Key existiert noch nicht) ist OFFICE default-offen —
+    // v15.9.269: Beim allerersten Laden (Key existiert noch nicht) ist OFFICE default-offen —
     // Task-Grid inkl. DB Pflege sofort sichtbar, kein Klick nötig. Explizites Zuklappen bleibt
     // möglich und persistiert (Sentinel '' = "vom User geschlossen", unterscheidbar von "nie gesetzt").
     function dtwGetOpenDept() {
@@ -27122,7 +27135,7 @@ window.alertOpenStaffing = function() {
         try { localStorage.setItem('dtwTgFilter', JSON.stringify(Array.from(dtwTgFilter))); } catch(e) {}
     }
 
-    // ---- v15.9.268 DB PFLEGE — Datenquellen-Status als DTW-Tasks (§45.2 in-place: nutzt bestehende mydayGetDbStatus() Rückstand-Engine statt Parallel-Detection) ----
+    // ---- v15.9.269 DB PFLEGE — Datenquellen-Status als DTW-Tasks (§45.2 in-place: nutzt bestehende mydayGetDbStatus() Rückstand-Engine statt Parallel-Detection) ----
     function dtwDbMonthlyState() {
         try {
             return JSON.parse(localStorage.getItem('dbPflegeMonthly_v1') || '{}');
@@ -27192,7 +27205,7 @@ window.alertOpenStaffing = function() {
 
     function dtwTgCollectItems() {
         const items = [];
-        // v15.9.268: DB Pflege Items
+        // v15.9.269: DB Pflege Items
         items.push.apply(items, dtwDbPflegeCollect());
         // Tasks from cockpitData (MS To-Do)
         try {
@@ -28625,7 +28638,7 @@ ${todayTasks.map((t,i) => `<div class="task${t.completed?' done':''}"><div class
 // ===== STATE SYNC v15.9.204 =====
 (function() {
 
-    const HUB_VER = 'v15.9.268';
+    const HUB_VER = 'v15.9.269';
 
     // All localStorage keys to capture, grouped by category
     const SYNC_CATEGORIES = [
